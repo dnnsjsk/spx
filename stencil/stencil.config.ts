@@ -7,7 +7,7 @@ export const config: Config = {
     {
       type: 'www',
       serviceWorker: null,
-      dir: '../dist',
+      dir: '../js',
     },
   ],
 };

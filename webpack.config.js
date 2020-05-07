@@ -14,8 +14,8 @@ module.exports = {
         new CopyPlugin(
             [
                 {
-                    from: path.resolve(__dirname, 'dist/build'),
-                    to: path.resolve(__dirname, 'release/dist/build'),
+                    from: path.resolve(__dirname, 'js/build'),
+                    to: path.resolve(__dirname, 'release/js/build'),
                 },
                 {
                     from: path.resolve(__dirname, 'php'),
