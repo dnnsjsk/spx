@@ -8,7 +8,7 @@ module.exports = {
     },
     output: {
         filename: 'spx.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'js')
     },
     plugins: [
         new CopyPlugin(
