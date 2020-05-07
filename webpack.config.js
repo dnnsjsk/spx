@@ -7,19 +7,19 @@ module.exports = {
         index: path.resolve(__dirname, 'stencil/index.js'),
     },
     output: {
-        filename: 'spx.js',
-        path: path.resolve(__dirname, 'js')
+        filename: 'spxWebpack.js',
+        path: path.resolve(__dirname, 'assets/js')
     },
     plugins: [
         new CopyPlugin(
             [
                 {
-                    from: path.resolve(__dirname, 'js/build'),
-                    to: path.resolve(__dirname, 'release/js/build'),
+                    from: path.resolve(__dirname, 'assets/js/build'),
+                    to: path.resolve(__dirname, 'release/assets/js/build'),
                 },
                 {
-                    from: path.resolve(__dirname, 'php'),
-                    to: path.resolve(__dirname, 'release/php'),
+                    from: path.resolve(__dirname, 'includes'),
+                    to: path.resolve(__dirname, 'release/includes'),
                 },
                 {
                     from: path.resolve(__dirname, 'spx.php'),

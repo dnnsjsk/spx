@@ -28,13 +28,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 1.0
  */
 
-require_once plugin_dir_path( __FILE__ ) . 'php/classes/init.php';
-require_once plugin_dir_path( __FILE__ ) . 'php/classes/build.php';
-require_once plugin_dir_path( __FILE__ ) . 'php/classes/prepare.php';
-require_once plugin_dir_path( __FILE__ ) . 'php/classes/get.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/init.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/build.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/prepare.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/get.php';
 
-require_once plugin_dir_path( __FILE__ ) . 'php/functions/edit-ajax-handler.php';
-require_once plugin_dir_path( __FILE__ ) . 'php/functions/get.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/functions/edit-ajax-handler.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/functions/get.php';
 
 /**
  * Init spx.
