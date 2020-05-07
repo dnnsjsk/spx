@@ -29,14 +29,14 @@ class init {
 
 			wp_enqueue_script(
 				'spx-module',
-				plugins_url( '../dist/build/spx.esm.js', dirname( __FILE__ ) ),
+				plugins_url( '../js/build/spx.esm.js', dirname( __FILE__ ) ),
 				array(),
 				wp_get_theme()->get( 'Version' ),
 				false );
 
 			wp_enqueue_script(
 				'spx-nomodule',
-				plugins_url( '../dist/build/spx.js', dirname( __FILE__ ) ),
+				plugins_url( '../js/build/spx.js', dirname( __FILE__ ) ),
 				array(),
 				wp_get_theme()->get( 'Version' ),
 				false );
