@@ -10,9 +10,9 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
 
-define( 'SPX', __FILE__ )
+define( 'SPX', __FILE__ );
 
-use spx\init;;
+use spx\init;
 
 /**
  * Exit if accessed directly.
