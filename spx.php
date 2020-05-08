@@ -12,14 +12,7 @@
 
 use spx\init;
 
-/**
- * Constants for auto update.
- *
- * @since 1.0
- */
-
-define( 'SPX_SL_STORE_URL', 'https://spx.dev' );
-define( 'SPX_SL_ITEM_ID', 75 );
+define('SPX', __FILE__ );
 
 /**
  * Exit if accessed directly.

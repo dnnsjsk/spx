@@ -26,9 +26,9 @@ function spxPluginUpdater() {
 
 	$license_key = trim( get_option( 'spx_license_key' ) );
 
-	$edd_updater = new EDD_SL_Plugin_Updater( SPX_STORE_URL, __FILE__,
+	$edd_updater = new EDD_SL_Plugin_Updater( SPX_STORE_URL, SPX,
 		array(
-			'version' => wp_get_theme()->get( 'Version' ),
+			'version' => '1.8',
 			'license' => $license_key,
 			'item_id' => SPX_ITEM_ID,
 			'author'  => 'Harmoni',
