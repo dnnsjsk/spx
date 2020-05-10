@@ -15,15 +15,19 @@ module.exports = {
             [
                 {
                     from: path.resolve(__dirname, 'assets/js/build'),
-                    to: path.resolve(__dirname, '../../../../../../releases/spx/assets/js/build'),
+                    to: path.resolve(__dirname, '../../../../../../releases/spx-release/assets/js/build'),
                 },
                 {
                     from: path.resolve(__dirname, 'includes'),
-                    to: path.resolve(__dirname, '../../../../../../releases/spx/includes'),
+                    to: path.resolve(__dirname, '../../../../../../releases/spx-release/includes'),
                 },
                 {
                     from: path.resolve(__dirname, 'spx.php'),
-                    to: path.resolve(__dirname, '../../../../../../releases/spx'),
+                    to: path.resolve(__dirname, '../../../../../../releases/spx-release'),
+                },
+                {
+                    from: path.resolve(__dirname, 'readme.txt'),
+                    to: path.resolve(__dirname, '../../../../../../releases/spx-release'),
                 },
             ]
         ),
