@@ -26,9 +26,12 @@ function spxPluginUpdater() {
 
 	$license_key = trim( get_option( 'spx_license_key' ) );
 
+	$plugin_data = get_plugin_data( __FILE__ );
+    $plugin_version = $plugin_data['Version'];
+
 	$edd_updater = new EDD_SL_Plugin_Updater( SPX_STORE_URL, SPX,
 		array(
-			'version' => '1.8',
+			'version' => $plugin_version,
 			'license' => $license_key,
 			'item_id' => SPX_ITEM_ID,
 			'author'  => 'Harmoni',
