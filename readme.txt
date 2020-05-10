@@ -11,6 +11,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.04 =
+* Change description.
+
 = 1.03 =
 * Fixed some minor pre-launch issues.
 
