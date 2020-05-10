@@ -11,6 +11,12 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.03 =
+* Fixed some minor pre-launch issues.
+
+= 1.02 =
+* Add tested up to version to readme.
+
 = 1.01 =
 * Change folder structure and set up automatic updates.
 
