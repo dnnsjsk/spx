@@ -1,5 +1,5 @@
 === spx ===
-Plugin Homepage: https://spx.dev
+Homepage: https://spx.dev
 
 The web component page builder for WordPress.
 
