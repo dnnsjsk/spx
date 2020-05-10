@@ -5,7 +5,7 @@
  * Plugin URI: https://spx.dev
  * Description: The web component based page-builder for developers.
  * Author: Harmoni
- * Version: 1.35
+ * Version: 1.36
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
