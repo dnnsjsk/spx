@@ -11,6 +11,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.05 =
+* Add GPL license.
+
 = 1.04 =
 * Change description.
 
