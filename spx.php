@@ -5,13 +5,13 @@
  * Plugin URI: https://spx.dev
  * Description: The web component based page-builder for developers.
  * Author: Harmoni
- * Version: 1.395
+ * Version: 1.23
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
 
 define( 'SPX', __FILE__ );
-define( 'SPX_STORE_URL', 'https://spx.dev' );
+define( 'SPX_STORE_URL', 'http://spx.dev' );
 define( 'SPX_ITEM_ID', 75 );
 define( 'SPX_ITEM_NAME', 'spx' );
 define( 'SPX_LICENSE_PAGE', 'spx-license' );
@@ -42,7 +42,7 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/classes/get.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/functions/edit-ajax-handler.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/functions/get.php';
 
-require_once plugin_dir_path( __FILE__ ) . 'includes/spx-updater.php';
+include plugin_dir_path( __FILE__ ) . 'includes/spx-updater.php';
 
 /**
  * Init spx.

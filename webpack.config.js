@@ -25,10 +25,6 @@ module.exports = {
                     from: path.resolve(__dirname, 'spx.php'),
                     to: path.resolve(__dirname, '../../../../../../releases/spx-release'),
                 },
-                {
-                    from: path.resolve(__dirname, 'readme.txt'),
-                    to: path.resolve(__dirname, '../../../../../../releases/spx-release'),
-                },
             ]
         ),
         new CleanWebpackPlugin({
