@@ -3,7 +3,7 @@
 /**
  * Plugin Name: spx
  * Plugin URI: https://spx.dev
- * Description: The web component based page-builder for developers.
+ * Description: A web component page builder for WordPress developers like you!.
  * Author: Harmoni
  * Version: 1.03
  * License: GPL2+
