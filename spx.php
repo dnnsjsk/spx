@@ -5,12 +5,16 @@
  * Plugin URI: https://spx.dev
  * Description: The web component based page-builder for developers.
  * Author: Harmoni
- * Version: 1.36
+ * Version: 1.395
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
 
 define( 'SPX', __FILE__ );
+define( 'SPX_STORE_URL', 'https://spx.dev' );
+define( 'SPX_ITEM_ID', 75 );
+define( 'SPX_ITEM_NAME', 'spx' );
+define( 'SPX_LICENSE_PAGE', 'spx-license' );
 
 use spx\init;
 

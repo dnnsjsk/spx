@@ -6,11 +6,6 @@
  * @since 1.0
  */
 
-define( 'SPX_STORE_URL', 'http://spx.dev' );
-define( 'SPX_ITEM_ID', 75 );
-define( 'SPX_ITEM_NAME', 'spx' );
-define( 'SPX_LICENSE_PAGE', 'spx-license' );
-
 if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
 	// load our custom updater
 	include( plugin_dir_path( __FILE__ ) . '/edd-sl-updater.php' );
