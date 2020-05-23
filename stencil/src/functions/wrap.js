@@ -5,6 +5,6 @@
  */
 
 export function wrap(el, wrapper) {
-  el.parentNode.insertBefore(wrapper, el);
-  wrapper.appendChild(el);
+    el.parentNode.insertBefore(wrapper, el);
+    wrapper.appendChild(el);
 }

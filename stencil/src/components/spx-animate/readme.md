@@ -9,7 +9,6 @@
 
 | Property               | Attribute                | Description | Type      | Default     |
 | ---------------------- | ------------------------ | ----------- | --------- | ----------- |
-| `clipPath`             | `clip-path`              |             | `string`  | `undefined` |
 | `delay`                | `delay`                  |             | `number`  | `undefined` |
 | `duration`             | `duration`               |             | `number`  | `undefined` |
 | `ease`                 | `ease`                   |             | `string`  | `undefined` |

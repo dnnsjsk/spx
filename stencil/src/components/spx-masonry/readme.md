@@ -11,9 +11,8 @@
 | ---------------------------- | ------------------------------- | ----------- | --------- | ----------- |
 | `bpColumns`                  | `bp-columns`                    |             | `string`  | `undefined` |
 | `bpColumnsObject`            | --                              |             | `object`  | `undefined` |
-| `bpGap`                      | `bp-gap`                        |             | `string`  | `undefined` |
 | `columns`                    | `columns`                       |             | `number`  | `undefined` |
-| `gap`                        | `gap`                           |             | `string`  | `undefined` |
+| `gap`                        | `gap`                           |             | `string`  | `'10px'`    |
 | `imageSize`                  | `image-size`                    |             | `string`  | `undefined` |
 | `images`                     | `images`                        |             | `string`  | `undefined` |
 | `mobileFirst`                | `mobile-first`                  |             | `boolean` | `undefined` |

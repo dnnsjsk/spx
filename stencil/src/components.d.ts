@@ -19,7 +19,6 @@ export namespace Components {
         "styling": string;
     }
     interface SpxAnimate {
-        "clipPath": string;
         "delay": number;
         "duration": number;
         "ease": string;
@@ -54,11 +53,10 @@ export namespace Components {
     interface SpxEditButton {
         "background": string;
         "backgroundDiscard": string;
-        "border": string;
         "borderRadius": string;
         "bottom": string;
-        "boxShadow": string;
         "color": string;
+        "colorDiscard": string;
         "fontSize": string;
         "gap": string;
         "left": string;
@@ -69,6 +67,7 @@ export namespace Components {
         "textDiscard": string;
         "textEdit": string;
         "textSave": string;
+        "textSuccess": string;
         "top": string;
         "zIndex": number;
     }
@@ -85,7 +84,6 @@ export namespace Components {
     interface SpxMasonry {
         "bpColumns": string;
         "bpColumnsObject": object;
-        "bpGap": string;
         "columns": number;
         "gap": string;
         "imageSize": string;
@@ -111,17 +109,36 @@ export namespace Components {
         "type": string;
     }
     interface SpxNavigation {
-        "childBorderRadius": string;
+        "childBorder": string;
+        "childChildGap": string;
         "childGap": string;
         "childIndicatorGap": string;
-        "childItemGap": string;
-        "childPadding": string;
+        "childItemBackground": string;
+        "childItemBackgroundHover": string;
+        "childItemColor": string;
+        "childItemColorHover": string;
+        "childItemPadding": string;
         "iconChild": string;
-        "linkColor": string;
+        "itemUnderline": boolean;
+        "itemUnderlineHover": boolean;
         "menu": string;
         "mobile": number;
+        "mobilePlacement": string;
+        "parentItemBackground": string;
+        "parentItemBackgroundHover": string;
+        "parentItemColor": string;
+        "parentItemColorHover": string;
         "parentItemGap": string;
+        "parentItemPadding": string;
         "styling": string;
+        "vertical": boolean;
+    }
+    interface SpxScrollspy {
+        "contentClass": string;
+        "header": string;
+        "navClass": string;
+        "target": string;
+        "urlChange": boolean;
     }
     interface SpxSnackbar {
         "animationDelay": string;
@@ -203,6 +220,12 @@ declare global {
         prototype: HTMLSpxNavigationElement;
         new (): HTMLSpxNavigationElement;
     };
+    interface HTMLSpxScrollspyElement extends Components.SpxScrollspy, HTMLStencilElement {
+    }
+    var HTMLSpxScrollspyElement: {
+        prototype: HTMLSpxScrollspyElement;
+        new (): HTMLSpxScrollspyElement;
+    };
     interface HTMLSpxSnackbarElement extends Components.SpxSnackbar, HTMLStencilElement {
     }
     var HTMLSpxSnackbarElement: {
@@ -221,6 +244,7 @@ declare global {
         "spx-masonry": HTMLSpxMasonryElement;
         "spx-mockup": HTMLSpxMockupElement;
         "spx-navigation": HTMLSpxNavigationElement;
+        "spx-scrollspy": HTMLSpxScrollspyElement;
         "spx-snackbar": HTMLSpxSnackbarElement;
     }
 }
@@ -238,7 +262,6 @@ declare namespace LocalJSX {
         "styling"?: string;
     }
     interface SpxAnimate {
-        "clipPath"?: string;
         "delay"?: number;
         "duration"?: number;
         "ease"?: string;
@@ -273,11 +296,10 @@ declare namespace LocalJSX {
     interface SpxEditButton {
         "background"?: string;
         "backgroundDiscard"?: string;
-        "border"?: string;
         "borderRadius"?: string;
         "bottom"?: string;
-        "boxShadow"?: string;
         "color"?: string;
+        "colorDiscard"?: string;
         "fontSize"?: string;
         "gap"?: string;
         "left"?: string;
@@ -290,6 +312,7 @@ declare namespace LocalJSX {
         "textDiscard"?: string;
         "textEdit"?: string;
         "textSave"?: string;
+        "textSuccess"?: string;
         "top"?: string;
         "zIndex"?: number;
     }
@@ -306,7 +329,6 @@ declare namespace LocalJSX {
     interface SpxMasonry {
         "bpColumns"?: string;
         "bpColumnsObject"?: object;
-        "bpGap"?: string;
         "columns"?: number;
         "gap"?: string;
         "imageSize"?: string;
@@ -325,17 +347,36 @@ declare namespace LocalJSX {
         "type"?: string;
     }
     interface SpxNavigation {
-        "childBorderRadius"?: string;
+        "childBorder"?: string;
+        "childChildGap"?: string;
         "childGap"?: string;
         "childIndicatorGap"?: string;
-        "childItemGap"?: string;
-        "childPadding"?: string;
+        "childItemBackground"?: string;
+        "childItemBackgroundHover"?: string;
+        "childItemColor"?: string;
+        "childItemColorHover"?: string;
+        "childItemPadding"?: string;
         "iconChild"?: string;
-        "linkColor"?: string;
+        "itemUnderline"?: boolean;
+        "itemUnderlineHover"?: boolean;
         "menu"?: string;
         "mobile"?: number;
+        "mobilePlacement"?: string;
+        "parentItemBackground"?: string;
+        "parentItemBackgroundHover"?: string;
+        "parentItemColor"?: string;
+        "parentItemColorHover"?: string;
         "parentItemGap"?: string;
+        "parentItemPadding"?: string;
         "styling"?: string;
+        "vertical"?: boolean;
+    }
+    interface SpxScrollspy {
+        "contentClass"?: string;
+        "header"?: string;
+        "navClass"?: string;
+        "target"?: string;
+        "urlChange"?: boolean;
     }
     interface SpxSnackbar {
         "animationDelay"?: string;
@@ -361,6 +402,7 @@ declare namespace LocalJSX {
         "spx-masonry": SpxMasonry;
         "spx-mockup": SpxMockup;
         "spx-navigation": SpxNavigation;
+        "spx-scrollspy": SpxScrollspy;
         "spx-snackbar": SpxSnackbar;
     }
 }
@@ -379,6 +421,7 @@ declare module "@stencil/core" {
             "spx-masonry": LocalJSX.SpxMasonry & JSXBase.HTMLAttributes<HTMLSpxMasonryElement>;
             "spx-mockup": LocalJSX.SpxMockup & JSXBase.HTMLAttributes<HTMLSpxMockupElement>;
             "spx-navigation": LocalJSX.SpxNavigation & JSXBase.HTMLAttributes<HTMLSpxNavigationElement>;
+            "spx-scrollspy": LocalJSX.SpxScrollspy & JSXBase.HTMLAttributes<HTMLSpxScrollspyElement>;
             "spx-snackbar": LocalJSX.SpxSnackbar & JSXBase.HTMLAttributes<HTMLSpxSnackbarElement>;
         }
     }

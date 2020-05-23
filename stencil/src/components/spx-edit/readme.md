@@ -11,11 +11,10 @@
 | ------------------- | -------------------- | ----------- | -------- | ------------------------------------ |
 | `background`        | `background`         |             | `string` | `constants.styleBackground`          |
 | `backgroundDiscard` | `background-discard` |             | `string` | `constants.styleBackgroundSecondary` |
-| `border`            | `border`             |             | `string` | `'none'`                             |
 | `borderRadius`      | `border-radius`      |             | `string` | `constants.styleBorderRadius`        |
 | `bottom`            | `bottom`             |             | `string` | `'12px'`                             |
-| `boxShadow`         | `box-shadow`         |             | `string` | `undefined`                          |
 | `color`             | `color`              |             | `string` | `constants.styleColor`               |
+| `colorDiscard`      | `color-discard`      |             | `string` | `constants.styleColor`               |
 | `fontSize`          | `font-size`          |             | `string` | `'16px'`                             |
 | `gap`               | `gap`                |             | `string` | `'8px'`                              |
 | `left`              | `left`               |             | `string` | `undefined`                          |
@@ -26,6 +25,7 @@
 | `textDiscard`       | `text-discard`       |             | `string` | `'Discard'`                          |
 | `textEdit`          | `text-edit`          |             | `string` | `'Edit site'`                        |
 | `textSave`          | `text-save`          |             | `string` | `'Save'`                             |
+| `textSuccess`       | `text-success`       |             | `string` | `'Save was successful.'`             |
 | `top`               | `top`                |             | `string` | `undefined`                          |
 | `zIndex`            | `z-index`            |             | `number` | `999999`                             |
 
