@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.08 =
+* Bug fixes.
+
 = 1.07 =
 * Fix Navigation component.
 
