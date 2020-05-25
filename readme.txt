@@ -16,6 +16,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 == Changelog ==
 
 = 1.08 =
+* Pre-release bug fix.
+
+= 1.08 =
 * Bug fixes.
 
 = 1.07 =
