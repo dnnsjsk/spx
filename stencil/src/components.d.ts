@@ -77,6 +77,11 @@ export namespace Components {
         "icon": string;
         "type": string;
     }
+    interface SpxIframe {
+        "height": string;
+        "src": string;
+        "width": string;
+    }
     interface SpxLoader {
         "color": string;
         "speed": string;
@@ -196,6 +201,12 @@ declare global {
         prototype: HTMLSpxIconElement;
         new (): HTMLSpxIconElement;
     };
+    interface HTMLSpxIframeElement extends Components.SpxIframe, HTMLStencilElement {
+    }
+    var HTMLSpxIframeElement: {
+        prototype: HTMLSpxIframeElement;
+        new (): HTMLSpxIframeElement;
+    };
     interface HTMLSpxLoaderElement extends Components.SpxLoader, HTMLStencilElement {
     }
     var HTMLSpxLoaderElement: {
@@ -240,6 +251,7 @@ declare global {
         "spx-edit-button": HTMLSpxEditButtonElement;
         "spx-group": HTMLSpxGroupElement;
         "spx-icon": HTMLSpxIconElement;
+        "spx-iframe": HTMLSpxIframeElement;
         "spx-loader": HTMLSpxLoaderElement;
         "spx-masonry": HTMLSpxMasonryElement;
         "spx-mockup": HTMLSpxMockupElement;
@@ -322,6 +334,11 @@ declare namespace LocalJSX {
         "icon"?: string;
         "type"?: string;
     }
+    interface SpxIframe {
+        "height"?: string;
+        "src"?: string;
+        "width"?: string;
+    }
     interface SpxLoader {
         "color"?: string;
         "speed"?: string;
@@ -398,6 +415,7 @@ declare namespace LocalJSX {
         "spx-edit-button": SpxEditButton;
         "spx-group": SpxGroup;
         "spx-icon": SpxIcon;
+        "spx-iframe": SpxIframe;
         "spx-loader": SpxLoader;
         "spx-masonry": SpxMasonry;
         "spx-mockup": SpxMockup;
@@ -417,6 +435,7 @@ declare module "@stencil/core" {
             "spx-edit-button": LocalJSX.SpxEditButton & JSXBase.HTMLAttributes<HTMLSpxEditButtonElement>;
             "spx-group": LocalJSX.SpxGroup & JSXBase.HTMLAttributes<HTMLSpxGroupElement>;
             "spx-icon": LocalJSX.SpxIcon & JSXBase.HTMLAttributes<HTMLSpxIconElement>;
+            "spx-iframe": LocalJSX.SpxIframe & JSXBase.HTMLAttributes<HTMLSpxIframeElement>;
             "spx-loader": LocalJSX.SpxLoader & JSXBase.HTMLAttributes<HTMLSpxLoaderElement>;
             "spx-masonry": LocalJSX.SpxMasonry & JSXBase.HTMLAttributes<HTMLSpxMasonryElement>;
             "spx-mockup": LocalJSX.SpxMockup & JSXBase.HTMLAttributes<HTMLSpxMockupElement>;

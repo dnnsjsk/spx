@@ -228,7 +228,7 @@ export class SpxNavigation {
 
         if (mobileMenu) {
             createPopper(mobileMenu, mobileMenu.querySelector('.spx-navigation--mobile'), {
-                placement: 'bottom',
+                placement: 'bottom-end',
             });
         }
 
@@ -256,14 +256,10 @@ export class SpxNavigation {
             },
 
             'ul ul, .spx-navigation--mobile ul': {
-                display: 'grid',
-                gridAutoFlow: 'row',
-                gridAutoRows: 'max-content',
-                gridAutoColumns: 'max-content',
                 border: !this.mobileBP && 'var(--spx-navigation-child-border, ' + this.childBorder + ')',
             },
 
-            '.spx-navigation--parent > ul': {
+            '.spx-navigation--parent:not(.spx-navigation--mobile) > ul': {
                 display: 'grid',
                 gridAutoFlow: (this.mobileBP || this.vertical) ? 'row' : 'column',
                 gridAutoColumns: 'max-content',

@@ -1,4 +1,4 @@
-# spx-loader
+# spx-iframe
 
 
 
@@ -9,23 +9,22 @@
 
 | Property | Attribute | Description | Type     | Default     |
 | -------- | --------- | ----------- | -------- | ----------- |
-| `color`  | `color`   |             | `string` | `'#ffffff'` |
-| `speed`  | `speed`   |             | `string` | `'1.5s'`    |
+| `height` | `height`  |             | `string` | `undefined` |
+| `src`    | `src`     |             | `string` | `undefined` |
+| `width`  | `width`   |             | `string` | `undefined` |
 
 
 ## Dependencies
 
-### Used by
+### Depends on
 
- - [spx-edit-button](../spx-edit)
- - [spx-iframe](../spx-iframe)
+- [spx-loader](../spx-loader)
 
 ### Graph
 ```mermaid
 graph TD;
-  spx-edit-button --> spx-loader
   spx-iframe --> spx-loader
-  style spx-loader fill:#f9f,stroke:#333,stroke-width:4px
+  style spx-iframe fill:#f9f,stroke:#333,stroke-width:4px
 ```
 
 ----------------------------------------------
