@@ -15,7 +15,10 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
-= 1.08 =
+= 1.10 =
+* Fix plugin header.
+
+= 1.09 =
 * Pre-release bug fix.
 
 = 1.08 =
