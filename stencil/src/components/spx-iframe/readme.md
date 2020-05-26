@@ -9,9 +9,8 @@
 
 | Property | Attribute | Description | Type     | Default     |
 | -------- | --------- | ----------- | -------- | ----------- |
-| `height` | `height`  |             | `string` | `undefined` |
+| `size`   | `size`    |             | `string` | `'1440px'`  |
 | `src`    | `src`     |             | `string` | `undefined` |
-| `width`  | `width`   |             | `string` | `undefined` |
 
 
 ## Dependencies
