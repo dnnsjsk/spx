@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.11 =
+* Add iframe component.
+
 = 1.10 =
 * Fix plugin header.
 
