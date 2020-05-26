@@ -78,9 +78,8 @@ export namespace Components {
         "type": string;
     }
     interface SpxIframe {
-        "height": string;
+        "size": string;
         "src": string;
-        "width": string;
     }
     interface SpxLoader {
         "color": string;
@@ -335,9 +334,8 @@ declare namespace LocalJSX {
         "type"?: string;
     }
     interface SpxIframe {
-        "height"?: string;
+        "size"?: string;
         "src"?: string;
-        "width"?: string;
     }
     interface SpxLoader {
         "color"?: string;

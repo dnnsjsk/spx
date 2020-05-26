@@ -8,11 +8,14 @@ export class SpxIframe {
     @Element() el: HTMLElement;
 
     @Prop() src: string;
-    @Prop() height: string;
-    @Prop() width: string;
+    @Prop() size: string = '1440px';
+    @State() height: string;
+    @State() width: string;
     @State() iframe;
     @State() parent;
     @State() parentHeight;
+
+    /** Resize function to keep src element in proportion. */
 
     handleResize() {
         let ratio = this.parent.offsetWidth / this.iframe.offsetWidth;
@@ -31,12 +34,17 @@ export class SpxIframe {
     }
 
     componentDidLoad() {
-        let thisNested = this;
+
+        /** Assign states. */
+
         this.iframe = this.el.querySelector('iframe');
         this.parent = this.el;
+
+        /** Resize and wait for iFrame to load before showing content. */
+
         this.handleResize();
-        this.el.querySelector('iframe').onload = function () {
-            thisNested.el.classList.add('loaded');
+        this.el.querySelector('iframe').onload = () => {
+            this.el.classList.add('loaded');
         }
     }
 
@@ -51,7 +59,7 @@ export class SpxIframe {
 
             'iframe': {
                 border: 'none',
-                width: '1440px',
+                width: this.size,
                 height: '100vh',
                 transformOrigin: 'left top',
                 position: 'absolute',
