@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.12 =
+* Fix file versioning to prevent JS errors after updates.
+
 = 1.11 =
 * Add iframe component.
 

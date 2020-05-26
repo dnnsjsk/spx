@@ -31,14 +31,14 @@ class init {
 				'spx-module',
 				plugins_url( '../assets/js/build/spx.esm.js', dirname( __FILE__ ) ),
 				array(),
-				wp_get_theme()->get( 'Version' ),
+				filemtime( SPX_DIR . '/assets/js/build/spx.esm.js' ),
 				false );
 
 			wp_enqueue_script(
 				'spx-nomodule',
 				plugins_url( '../assets/js/build/spx.js', dirname( __FILE__ ) ),
 				array(),
-				wp_get_theme()->get( 'Version' ),
+				filemtime( SPX_DIR . '/assets/js/build/spx.js' ),
 				false );
 
 			wp_localize_script( 'spx-module', 'spx', $localizeArray );

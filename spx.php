@@ -5,12 +5,13 @@
  * Plugin URI: https://spx.dev
  * Description: A web component page builder for WordPress developers like you!
  * Author: Harmoni
- * Version: 1.11
+ * Version: 1.12
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
 
 define( 'SPX', __FILE__ );
+define( 'SPX_DIR', __DIR__ );
 define( 'SPX_STORE_URL', 'http://spx.dev' );
 define( 'SPX_ITEM_ID', 75 );
 define( 'SPX_ITEM_NAME', 'spx' );
