@@ -7,6 +7,8 @@ import * as constants from '../../constants/style.js';
 })
 
 export class SpxEditButton {
+    @Prop() test: boolean = false;
+
     @Prop({reflectToAttr: true}) styling: string;
 
     @Prop({reflectToAttr: true}) textEdit: string = 'Edit site';
@@ -37,7 +39,6 @@ export class SpxEditButton {
 
     @State() open: boolean = false;
     @State() loading: boolean = false;
-    @State() test: boolean = false;
 
     onClickEdit() {
         this.open = true;

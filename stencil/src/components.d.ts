@@ -64,6 +64,7 @@ export namespace Components {
         "position": string;
         "right": string;
         "styling": string;
+        "test": boolean;
         "textDiscard": string;
         "textEdit": string;
         "textSave": string;
@@ -320,6 +321,7 @@ declare namespace LocalJSX {
         "position"?: string;
         "right"?: string;
         "styling"?: string;
+        "test"?: boolean;
         "textDiscard"?: string;
         "textEdit"?: string;
         "textSave"?: string;
