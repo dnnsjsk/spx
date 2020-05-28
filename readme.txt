@@ -15,6 +15,11 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.15 =
+* Add Metabox helper for Masonry component.
+* Add child menu positioning props to Navigation component.
+* Add positioning props to Edit Button component.
+
 = 1.14 =
 * Fix readme file.
 
