@@ -16,9 +16,9 @@ export class SpxEditButton {
     @Prop({reflectToAttr: true}) textDiscard: string = 'Discard';
     @Prop({reflectToAttr: true}) textSuccess: string = 'Save was successful.';
 
-    @Prop({reflectToAttr: true}) position: string = 'fixed';
     @Prop({reflectToAttr: true}) gap: string = '8px';
 
+    @Prop({reflectToAttr: true}) position: string = 'fixed';
     @Prop({reflectToAttr: true}) top: string;
     @Prop({reflectToAttr: true}) right: string = '12px';
     @Prop({reflectToAttr: true}) bottom: string = '12px';
@@ -143,7 +143,11 @@ export class SpxEditButton {
             fontFamily: constants.styleFontFamily,
             display: 'grid',
             gridGap: 'var(--spx-edit-button-gap, ' + this.gap + ')',
-            position: 'fixed',
+            position: this.position === 'static' ? 'static' :
+                this.position === 'relative' ? 'relative' :
+                    this.position === 'absolute' ? 'absolute' :
+                        this.position === 'sticky' ? 'sticky' :
+                            'fixed',
             top: this.top ? 'var(--spx-edit-button-top, ' + this.top + ')' : 'var(--spx-edit-button-top)',
             right: this.right ? 'var(--spx-edit-button-right, ' + this.right + ')' : 'var(--spx-edit-button-right)',
             bottom: this.bottom ? 'var(--spx-edit-button-bottom, ' + this.bottom + ')' : 'var(--spx-edit-button-bottom)',

@@ -15,6 +15,18 @@ function spxGetAcfGallery( $field ) {
 }
 
 /**
+ * ACF gallery function.
+ *
+ * @param $field
+ *
+ * @since 1.15
+ */
+
+function spxGetMbGallery( $field ) {
+	get::mbGallery( $field );
+}
+
+/**
  * Get navigation.
  *
  * @param $name

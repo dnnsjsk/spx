@@ -93,6 +93,7 @@ export namespace Components {
         "gap": string;
         "imageSize": string;
         "images": string;
+        "imagesSrc": string;
         "mobileFirst": boolean;
         /**
           * Wrapper for recalculation.
@@ -123,6 +124,7 @@ export namespace Components {
         "childItemColor": string;
         "childItemColorHover": string;
         "childItemPadding": string;
+        "childPlacement": string;
         "iconChild": string;
         "itemUnderline": boolean;
         "itemUnderlineHover": boolean;
@@ -350,6 +352,7 @@ declare namespace LocalJSX {
         "gap"?: string;
         "imageSize"?: string;
         "images"?: string;
+        "imagesSrc"?: string;
         "mobileFirst"?: boolean;
         "onSpxMasonryDidLoad"?: (event: CustomEvent<any>) => void;
         "trueOrder"?: boolean;
@@ -373,6 +376,7 @@ declare namespace LocalJSX {
         "childItemColor"?: string;
         "childItemColorHover"?: string;
         "childItemPadding"?: string;
+        "childPlacement"?: string;
         "iconChild"?: string;
         "itemUnderline"?: boolean;
         "itemUnderlineHover"?: boolean;

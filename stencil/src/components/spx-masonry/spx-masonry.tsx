@@ -23,6 +23,7 @@ export class SpxMasonry {
 
     @Prop({reflectToAttr: true}) gap: string = '10px';
 
+    @Prop({reflectToAttr: true}) imagesSrc: string;
     @Prop({reflectToAttr: true}) images: string;
     @State() imagesArray: Array<string>;
     @Prop({reflectToAttr: true}) imageSize: string;
@@ -139,13 +140,23 @@ export class SpxMasonry {
                      margin: 'calc(var(--spx-masonry-gap, ' + this.gap + ') * -1) calc(var(--spx-masonry-gap, ' + this.gap + ') / 2 * -1) 0 calc(var(--spx-masonry-gap, ' + this.gap + ') / 2 * -1)',
                  })}>
 
-                {this.images ?
+                {this.images && !this.imagesSrc ?
 
-                    /** Iterate through array if prop was set. */
+                    /** Iterate through ACF array if prop was set. */
 
-                    this.imagesArray.map((el) => (<img
-                        src={el['sizes'][this.imageSize] || el['url']}/>))
-                    : <slot/>}
+                    this.imagesArray.map((el) => (
+
+                        <img src={this.imageSize ? el['sizes'][this.imageSize] : el['url']}/>)) :
+
+                    /** Iterate through MB array if prop was set. */
+
+                    this.images && this.imagesSrc === 'mb' ?
+
+                        Object.values(this.imagesArray).map((object) => (
+
+                            <img src={this.imageSize ? object['sizes'][this.imageSize]['url'] : object['full_url']}/>))
+
+                        : <slot/>}
 
             </div>
         </Host>;

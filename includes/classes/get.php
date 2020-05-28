@@ -26,6 +26,21 @@ class get {
 	}
 
 	/**
+	 * Metabox gallery.
+	 *
+	 * @param $field
+	 *
+	 * @since 1.15
+	 */
+
+	public static function mbGallery( $field ) {
+
+		$array = rwmb_get_value( $field );
+		prepare::JSON( $array );
+
+	}
+
+	/**
 	 * Navigation.
 	 *
 	 * @param $name

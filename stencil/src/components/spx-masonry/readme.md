@@ -15,6 +15,7 @@
 | `gap`                        | `gap`                           |             | `string`  | `'10px'`    |
 | `imageSize`                  | `image-size`                    |             | `string`  | `undefined` |
 | `images`                     | `images`                        |             | `string`  | `undefined` |
+| `imagesSrc`                  | `images-src`                    |             | `string`  | `undefined` |
 | `mobileFirst`                | `mobile-first`                  |             | `boolean` | `undefined` |
 | `trueOrder`                  | `true-order`                    |             | `boolean` | `undefined` |
 | `useContainerForBreakpoints` | `use-container-for-breakpoints` |             | `boolean` | `undefined` |

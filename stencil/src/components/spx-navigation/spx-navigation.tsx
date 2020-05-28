@@ -39,10 +39,11 @@ export class SpxNavigation {
     @Prop({reflectToAttr: true}) childItemColorHover: string = '#202020';
     @Prop({reflectToAttr: true}) childItemBackground: string = '#ffffff';
     @Prop({reflectToAttr: true}) childItemBackgroundHover: string = '#f5f5f5';
+    @Prop({reflectToAttr: true}) childPlacement: string = 'bottom-start';
 
     @Prop({reflectToAttr: true}) iconChild: string;
 
-    @Prop({reflectToAttr: true}) mobilePlacement: string = 'bottom';
+    @Prop({reflectToAttr: true}) mobilePlacement: string = 'bottom-start';
 
     /** Init popper on mouse/touch enter. */
 
@@ -179,7 +180,7 @@ export class SpxNavigation {
             parentMenu.forEach(item => {
                 createPopper(item, item.querySelector('div'), {
                     // @ts-ignore
-                    placement: this.mobilePlacement,
+                    placement: this.childPlacement,
                 });
             })
         }
@@ -228,7 +229,8 @@ export class SpxNavigation {
 
         if (mobileMenu) {
             createPopper(mobileMenu, mobileMenu.querySelector('.spx-navigation--mobile'), {
-                placement: 'bottom-end',
+                // @ts-ignore
+                placement: this.mobilePlacement,
             });
         }
 
@@ -284,6 +286,7 @@ export class SpxNavigation {
 
                     'a': {
                         width: '100%',
+                        whiteSpace: 'nowrap',
                         color: !this.mobileBP && 'var(--spx-navigation-child-item-color, ' + this.childItemColor + ')',
                         background: !this.mobileBP && 'var(--spx-navigation-child-item-background, ' + this.childItemBackground + ')',
 
