@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.16 =
+* Optimized queries of Masonry PHP helper component.
+
 = 1.15 =
 * Add Metabox helper for Masonry component.
 * Add child menu positioning props to Navigation component.
