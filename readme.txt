@@ -15,6 +15,12 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.14 =
+* Fix readme file.
+
+= 1.13 =
+* Fix test-mode for edit-button component.
+
 = 1.12 =
 * Fix file versioning to prevent JS errors after updates.
 
