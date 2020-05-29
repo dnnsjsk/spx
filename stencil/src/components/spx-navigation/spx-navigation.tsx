@@ -35,6 +35,7 @@ export class SpxNavigation {
     @Prop({reflectToAttr: true}) childChildGap: string = '12px';
     @Prop({reflectToAttr: true}) childIndicatorGap: string = '4px';
     @Prop({reflectToAttr: true}) childItemPadding: string = '8px 12px';
+    @Prop({reflectToAttr: true}) childItemMarginLeft: string = '10px';
     @Prop({reflectToAttr: true}) childItemColor: string = '#444444';
     @Prop({reflectToAttr: true}) childItemColorHover: string = '#202020';
     @Prop({reflectToAttr: true}) childItemBackground: string = '#ffffff';
@@ -49,6 +50,7 @@ export class SpxNavigation {
 
     @Listen('ontouchstart', {target: this.el})
     @Listen('mouseenter', {target: this.el})
+    @Listen('focusin', {target: this.el})
     clickListener() {
         if (this.styling !== 'none') {
             if (this.mobileBP) {
@@ -126,13 +128,13 @@ export class SpxNavigation {
                         <a href={object['url']}>
                             {object['title']}
 
-                            {(objectChild && !this.mobileBP && !this.iconChild) ?
+                            {(objectChild && (!this.mobileBP && !this.vertical) && !this.iconChild) ?
 
                                 /** Render caret if has any children. */
 
                                 <spx-icon type="caret"/>
 
-                                : (objectChild && !this.mobileBP && this.iconChild) ?
+                                : (objectChild && (!this.mobileBP && !this.vertical) && this.iconChild) ?
 
                                     <i class={this.iconChild}/>
 
@@ -172,52 +174,55 @@ export class SpxNavigation {
 
     initPopperDesktop() {
 
-        /** Init popper for parent menu. */
+        if (!this.vertical) {
 
-        let parentMenu = this.el.querySelectorAll('.spx-navigation--parent .spx-navigation__item--parent.spx-navigation__item--has-child');
+            /** Init popper for parent menu. */
 
-        if (parentMenu) {
-            parentMenu.forEach(item => {
-                createPopper(item, item.querySelector('div'), {
-                    // @ts-ignore
-                    placement: this.childPlacement,
-                });
-            })
-        }
+            let parentMenu = this.el.querySelectorAll('.spx-navigation--parent .spx-navigation__item--parent.spx-navigation__item--has-child');
 
-        /** Init popper for child menu. */
+            if (parentMenu) {
+                parentMenu.forEach(item => {
+                    createPopper(item, item.querySelector('div'), {
+                        // @ts-ignore
+                        placement: this.childPlacement,
+                    });
+                })
+            }
 
-        let childMenus = this.el.querySelectorAll('.spx-navigation--child .spx-navigation__item--child.spx-navigation__item--has-child');
+            /** Init popper for child menu. */
 
-        if (childMenus) {
-            childMenus.forEach(item => {
-                createPopper(item, item.querySelector('div'), {
-                    placement: 'right-start',
-                    modifiers: [
-                        {
-                            name: 'flip',
-                            options: {
-                                fallbackPlacements: ['left-start'],
-                            },
-                        },
+            let childMenus = this.el.querySelectorAll('.spx-navigation--child .spx-navigation__item--child.spx-navigation__item--has-child');
 
-                        /** Calculate offset depending on parent padding/margin. */
-
-                        {
-                            name: 'offset',
-                            options: {
-                                offset: ({placement}) => {
-                                    if (placement === 'right-start') {
-                                        return [-Math.abs(item.getBoundingClientRect().top - item.parentElement.getBoundingClientRect().top), Math.abs(item.getBoundingClientRect().right - item.parentElement.getBoundingClientRect().right)];
-                                    } else {
-                                        return [-Math.abs(item.getBoundingClientRect().top - item.parentElement.getBoundingClientRect().top), Math.abs(item.getBoundingClientRect().left - item.parentElement.getBoundingClientRect().left)];
-                                    }
+            if (childMenus) {
+                childMenus.forEach(item => {
+                    createPopper(item, item.querySelector('div'), {
+                        placement: 'right-start',
+                        modifiers: [
+                            {
+                                name: 'flip',
+                                options: {
+                                    fallbackPlacements: ['left-start'],
                                 },
                             },
-                        },
-                    ],
-                });
-            })
+
+                            /** Calculate offset depending on parent padding/margin. */
+
+                            {
+                                name: 'offset',
+                                options: {
+                                    offset: ({placement}) => {
+                                        if (placement === 'right-start') {
+                                            return [-Math.abs(item.getBoundingClientRect().top - item.parentElement.getBoundingClientRect().top), Math.abs(item.getBoundingClientRect().right - item.parentElement.getBoundingClientRect().right)];
+                                        } else {
+                                            return [-Math.abs(item.getBoundingClientRect().top - item.parentElement.getBoundingClientRect().top), Math.abs(item.getBoundingClientRect().left - item.parentElement.getBoundingClientRect().left)];
+                                        }
+                                    },
+                                },
+                            },
+                        ],
+                    });
+                })
+            }
         }
     }
 
@@ -253,7 +258,9 @@ export class SpxNavigation {
                 listStyleType: 'none',
 
                 'ul': {
-                    paddingLeft: this.mobileBP && '10px',
+                    paddingLeft: (this.mobileBP || this.vertical) && 'var(--spx-navigation-child-item-margin-left, ' + this.childItemMarginLeft + ')',
+                    display: this.vertical && 'grid',
+                    gridGap: this.vertical && 'var(--spx-navigation-parent-item-gap, ' + this.parentItemGap + ')',
                 }
             },
 
@@ -283,6 +290,7 @@ export class SpxNavigation {
 
                 '&.spx-navigation__item--has-child > .spx-navigation--child': {
                     flexDirection: 'column',
+                    marginTop: this.vertical && 'var(--spx-navigation-parent-item-gap, ' + this.parentItemGap + ')',
 
                     'a': {
                         width: '100%',
@@ -299,7 +307,7 @@ export class SpxNavigation {
                     '::before': {
                         content: '" "',
                         position: 'relative',
-                        display: this.mobileBP ? 'none' : 'block',
+                        display: (this.mobileBP || this.vertical) ? 'none' : 'block',
                         minHeight: 'var(--spx-navigation-child-gap, ' + this.childGap + ')',
                         width: '100%',
                     }
@@ -307,9 +315,9 @@ export class SpxNavigation {
             },
 
             '.spx-navigation--child, .spx-navigation--mobile': {
-                pointerEvents: 'none',
-                opacity: '0',
-                position: 'absolute',
+                pointerEvents: !this.vertical ? 'none' : 'auto',
+                opacity: !this.vertical ? '0' : '1',
+                position: !this.vertical ? 'absolute' : 'relative',
                 display: 'flex',
                 flexDirection: this.mobileBP ? 'column' : 'row',
             },
@@ -340,7 +348,7 @@ export class SpxNavigation {
                 '[data-popper-placement]::before': {
                     content: '" "',
                     position: 'relative',
-                    display: this.mobileBP ? 'none' : 'block',
+                    display: (this.mobileBP || this.vertical) ? 'none' : 'block',
                     minWidth: 'var(--spx-navigation-child-child-gap, ' + this.childChildGap + ')',
                     height: '100%',
                 }
@@ -348,7 +356,7 @@ export class SpxNavigation {
 
             'li': {
                 position: 'relative',
-                display: !this.mobileBP && 'flex',
+                display: (!this.mobileBP && !this.vertical) && 'flex',
                 flexDirection: 'row',
             },
 

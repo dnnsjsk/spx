@@ -15,6 +15,13 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.17 =
+* Add: scrollspy component.
+* Navigation: fixed position calculation when tabbing through links.
+* Navigation: vertical now renders correctly.
+* Navigation: added child-item-margin-left attribute for mobile and vertical mode.
+* StencilJS: Updated to 1.13.0.
+
 = 1.16 =
 * Optimized queries of Masonry PHP helper component.
 

@@ -9,10 +9,12 @@ export class SpxScrollspy {
     @Element() el: HTMLElement;
 
     @Prop({reflectToAttr: true}) target: string = 'a';
-    @Prop({reflectToAttr: true}) header: string = 'header';
     @Prop({reflectToAttr: true}) navClass: string = 'is-active';
     @Prop({reflectToAttr: true}) contentClass: string = 'is-active';
+    @Prop({reflectToAttr: true}) offset: any;
     @Prop({reflectToAttr: true}) urlChange: boolean = false;
+
+    /** Replace state of URL bar . */
 
     @Listen('gumshoeActivate', {target: 'document'})
     linkChanger(event) {
@@ -24,9 +26,18 @@ export class SpxScrollspy {
             reflow: true,
             navClass: this.navClass,
             contentClass: this.contentClass,
+
+            /** Only activate events when URL should be changed. */
+
             events: this.urlChange,
+
             offset: () => {
-                return document.querySelector(this.header).getBoundingClientRect().height;
+
+                /** Check if prop is a number otherwise look for querySelector. */
+
+                return (this.offset && !isNaN(this.offset)) ? this.offset
+                    ? this.offset : document.querySelector(this.offset).getBoundingClientRect().height
+                    : 0;
             }
         });
     }

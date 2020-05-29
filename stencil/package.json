@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@popperjs/core": "^2.4.0",
-    "@stencil/core": "^1.12.7",
+    "@stencil/core": "^1.13.0",
     "@types/node": "^13.13.5",
     "emotion": "^10.0.27",
     "gsap": "^3.2.6",

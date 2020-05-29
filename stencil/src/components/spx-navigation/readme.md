@@ -17,6 +17,7 @@
 | `childItemBackgroundHover`  | `child-item-background-hover`  |             | `string`  | `'#f5f5f5'`           |
 | `childItemColor`            | `child-item-color`             |             | `string`  | `'#444444'`           |
 | `childItemColorHover`       | `child-item-color-hover`       |             | `string`  | `'#202020'`           |
+| `childItemMarginLeft`       | `child-item-margin-left`       |             | `string`  | `'10px'`              |
 | `childItemPadding`          | `child-item-padding`           |             | `string`  | `'8px 12px'`          |
 | `childPlacement`            | `child-placement`              |             | `string`  | `'bottom-start'`      |
 | `iconChild`                 | `icon-child`                   |             | `string`  | `undefined`           |

@@ -123,6 +123,7 @@ export namespace Components {
         "childItemBackgroundHover": string;
         "childItemColor": string;
         "childItemColorHover": string;
+        "childItemMarginLeft": string;
         "childItemPadding": string;
         "childPlacement": string;
         "iconChild": string;
@@ -142,8 +143,8 @@ export namespace Components {
     }
     interface SpxScrollspy {
         "contentClass": string;
-        "header": string;
         "navClass": string;
+        "offset": any;
         "target": string;
         "urlChange": boolean;
     }
@@ -375,6 +376,7 @@ declare namespace LocalJSX {
         "childItemBackgroundHover"?: string;
         "childItemColor"?: string;
         "childItemColorHover"?: string;
+        "childItemMarginLeft"?: string;
         "childItemPadding"?: string;
         "childPlacement"?: string;
         "iconChild"?: string;
@@ -394,8 +396,8 @@ declare namespace LocalJSX {
     }
     interface SpxScrollspy {
         "contentClass"?: string;
-        "header"?: string;
         "navClass"?: string;
+        "offset"?: any;
         "target"?: string;
         "urlChange"?: boolean;
     }
