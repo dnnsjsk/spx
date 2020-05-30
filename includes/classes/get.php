@@ -55,4 +55,18 @@ class get {
 
 	}
 
+	/**
+	 * Post.
+	 *
+	 * @param $id
+	 *
+	 * @since 1.18
+	 */
+
+	public static function post( $id ) {
+
+		prepare::JSON( get_post( $id === null ? get_the_ID() : $id, 'object', 'display' ) );
+
+	}
+
 }

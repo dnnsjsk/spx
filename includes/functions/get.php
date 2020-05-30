@@ -38,3 +38,15 @@ function spxGetMbGallery( $field ) {
 function spxGetNavigation( $name ) {
 	get::navigation( $name );
 }
+
+/**
+ * Get post.
+ *
+ * @param $id
+ *
+ * @since 1.0
+ */
+
+function spxGetPost( $id ) {
+	get::post( $id );
+}

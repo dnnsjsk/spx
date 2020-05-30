@@ -148,6 +148,9 @@ export namespace Components {
         "target": string;
         "urlChange": boolean;
     }
+    interface SpxSectionSingle {
+        "styling": string;
+    }
     interface SpxSnackbar {
         "animationDelay": string;
         "animationDuration": string;
@@ -240,6 +243,12 @@ declare global {
         prototype: HTMLSpxScrollspyElement;
         new (): HTMLSpxScrollspyElement;
     };
+    interface HTMLSpxSectionSingleElement extends Components.SpxSectionSingle, HTMLStencilElement {
+    }
+    var HTMLSpxSectionSingleElement: {
+        prototype: HTMLSpxSectionSingleElement;
+        new (): HTMLSpxSectionSingleElement;
+    };
     interface HTMLSpxSnackbarElement extends Components.SpxSnackbar, HTMLStencilElement {
     }
     var HTMLSpxSnackbarElement: {
@@ -260,6 +269,7 @@ declare global {
         "spx-mockup": HTMLSpxMockupElement;
         "spx-navigation": HTMLSpxNavigationElement;
         "spx-scrollspy": HTMLSpxScrollspyElement;
+        "spx-section-single": HTMLSpxSectionSingleElement;
         "spx-snackbar": HTMLSpxSnackbarElement;
     }
 }
@@ -401,6 +411,9 @@ declare namespace LocalJSX {
         "target"?: string;
         "urlChange"?: boolean;
     }
+    interface SpxSectionSingle {
+        "styling"?: string;
+    }
     interface SpxSnackbar {
         "animationDelay"?: string;
         "animationDuration"?: string;
@@ -427,6 +440,7 @@ declare namespace LocalJSX {
         "spx-mockup": SpxMockup;
         "spx-navigation": SpxNavigation;
         "spx-scrollspy": SpxScrollspy;
+        "spx-section-single": SpxSectionSingle;
         "spx-snackbar": SpxSnackbar;
     }
 }
@@ -447,6 +461,7 @@ declare module "@stencil/core" {
             "spx-mockup": LocalJSX.SpxMockup & JSXBase.HTMLAttributes<HTMLSpxMockupElement>;
             "spx-navigation": LocalJSX.SpxNavigation & JSXBase.HTMLAttributes<HTMLSpxNavigationElement>;
             "spx-scrollspy": LocalJSX.SpxScrollspy & JSXBase.HTMLAttributes<HTMLSpxScrollspyElement>;
+            "spx-section-single": LocalJSX.SpxSectionSingle & JSXBase.HTMLAttributes<HTMLSpxSectionSingleElement>;
             "spx-snackbar": LocalJSX.SpxSnackbar & JSXBase.HTMLAttributes<HTMLSpxSnackbarElement>;
         }
     }

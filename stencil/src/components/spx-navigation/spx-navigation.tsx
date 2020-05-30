@@ -10,10 +10,10 @@ import {createPopper} from '@popperjs/core';
 export class SpxNavigation {
     @Element() el: HTMLElement;
 
+    @Prop({reflectToAttr: true}) styling: string;
+
     @Prop({reflectToAttr: true}) menu: string;
     @State() menuArray: Array<string>;
-
-    @Prop({reflectToAttr: true}) styling: string;
 
     @Prop({reflectToAttr: true}) mobile: number;
     @State() mobileBP: boolean;
@@ -40,11 +40,11 @@ export class SpxNavigation {
     @Prop({reflectToAttr: true}) childItemColorHover: string = '#202020';
     @Prop({reflectToAttr: true}) childItemBackground: string = '#ffffff';
     @Prop({reflectToAttr: true}) childItemBackgroundHover: string = '#f5f5f5';
-    @Prop({reflectToAttr: true}) childPlacement: string = 'bottom-start';
+    @Prop({reflectToAttr: true}) childPlacement: string = 'start';
 
     @Prop({reflectToAttr: true}) iconChild: string;
 
-    @Prop({reflectToAttr: true}) mobilePlacement: string = 'bottom-start';
+    @Prop({reflectToAttr: true}) mobilePlacement: string = 'start';
 
     /** Init popper on mouse/touch enter. */
 
@@ -184,7 +184,7 @@ export class SpxNavigation {
                 parentMenu.forEach(item => {
                     createPopper(item, item.querySelector('div'), {
                         // @ts-ignore
-                        placement: this.childPlacement,
+                        placement: 'bottom-' + this.childPlacement + '',
                     });
                 })
             }
@@ -235,7 +235,7 @@ export class SpxNavigation {
         if (mobileMenu) {
             createPopper(mobileMenu, mobileMenu.querySelector('.spx-navigation--mobile'), {
                 // @ts-ignore
-                placement: this.mobilePlacement,
+                placement: 'bottom-' + this.mobilePlacement + '',
             });
         }
 
@@ -388,7 +388,7 @@ export class SpxNavigation {
                         content: '" "',
                         position: 'relative',
                         display: 'block',
-                        minHeight: 'var(--spx-navigation-child-child-gap, ' + this.childChildGap + ')',
+                        minHeight: 'var(--spx-navigation-child-gap, ' + this.childGap + ')',
                         width: '100%',
                     },
 

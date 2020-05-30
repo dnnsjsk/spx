@@ -19,13 +19,13 @@
 | `childItemColorHover`       | `child-item-color-hover`       |             | `string`  | `'#202020'`           |
 | `childItemMarginLeft`       | `child-item-margin-left`       |             | `string`  | `'10px'`              |
 | `childItemPadding`          | `child-item-padding`           |             | `string`  | `'8px 12px'`          |
-| `childPlacement`            | `child-placement`              |             | `string`  | `'bottom-start'`      |
+| `childPlacement`            | `child-placement`              |             | `string`  | `'start'`             |
 | `iconChild`                 | `icon-child`                   |             | `string`  | `undefined`           |
 | `itemUnderline`             | `item-underline`               |             | `boolean` | `undefined`           |
 | `itemUnderlineHover`        | `item-underline-hover`         |             | `boolean` | `undefined`           |
 | `menu`                      | `menu`                         |             | `string`  | `undefined`           |
 | `mobile`                    | `mobile`                       |             | `number`  | `undefined`           |
-| `mobilePlacement`           | `mobile-placement`             |             | `string`  | `'bottom-start'`      |
+| `mobilePlacement`           | `mobile-placement`             |             | `string`  | `'start'`             |
 | `parentItemBackground`      | `parent-item-background`       |             | `string`  | `'#ffffff'`           |
 | `parentItemBackgroundHover` | `parent-item-background-hover` |             | `string`  | `'#f5f5f5'`           |
 | `parentItemColor`           | `parent-item-color`            |             | `string`  | `'#444444'`           |

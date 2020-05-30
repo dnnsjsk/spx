@@ -15,6 +15,10 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.18 =
+* Navigation: simplified child and mobile placement. (always defaults to bottom)
+* Navigation: fixed CSS variable for distance between mobile menu button and menu.
+
 = 1.17 =
 * Add: scrollspy component.
 * Navigation: fixed position calculation when tabbing through links.

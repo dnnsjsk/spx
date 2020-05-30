@@ -25,7 +25,7 @@
 
 ### Used by
 
- - [spx-edit-button](../spx-edit)
+ - [spx-edit-button](../spx-edit-button)
 
 ### Graph
 ```mermaid
