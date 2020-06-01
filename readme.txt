@@ -15,12 +15,15 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.19 =
+* New: share component.
+
 = 1.18 =
 * Navigation: simplified child and mobile placement. (always defaults to bottom)
 * Navigation: fixed CSS variable for distance between mobile menu button and menu.
 
 = 1.17 =
-* Add: scrollspy component.
+* New: scrollspy component.
 * Navigation: fixed position calculation when tabbing through links.
 * Navigation: vertical now renders correctly.
 * Navigation: added child-item-margin-left attribute for mobile and vertical mode.
@@ -30,24 +33,24 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Optimized queries of Masonry PHP helper component.
 
 = 1.15 =
-* Add Metabox helper for Masonry component.
-* Add child menu positioning props to Navigation component.
-* Add positioning props to Edit Button component.
+* New: Metabox helper for Masonry component.
+* New: child menu positioning props to Navigation component.
+* New: positioning props to Edit Button component.
 
 = 1.14 =
-* Fix readme file.
+* Fix: readme file.
 
 = 1.13 =
-* Fix test-mode for edit-button component.
+* Fix: test-mode for edit-button component.
 
 = 1.12 =
-* Fix file versioning to prevent JS errors after updates.
+* Fix: file versioning to prevent JS errors after updates.
 
 = 1.11 =
-* Add iframe component.
+* New: iframe component.
 
 = 1.10 =
-* Fix plugin header.
+* Fix: plugin header.
 
 = 1.09 =
 * Pre-release bug fix.
@@ -56,7 +59,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Bug fixes.
 
 = 1.07 =
-* Fix Navigation component.
+* Fix: navigation component.
 
 = 1.06 =
 * Add other readme tags so WP validator is happy.

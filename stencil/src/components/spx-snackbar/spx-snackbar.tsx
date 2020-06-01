@@ -78,7 +78,7 @@ export class SpxSnackbar {
             {[styleDefault]: !this.styling}
         )}>
             <div>
-                {this.text}
+                {this.text ? this.text : <slot/>}
             </div>
         </Host>;
     }

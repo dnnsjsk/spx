@@ -60,12 +60,25 @@ class get {
 	 *
 	 * @param $id
 	 *
-	 * @since 1.18
+	 * @param null $dateFormat
+	 *
+	 * @param null $size
+	 *
+	 * @since 1.19
 	 */
 
-	public static function post( $id ) {
+	public static function post( $id = null, $dateFormat = null, $size = null ) {
 
-		prepare::JSON( get_post( $id === null ? get_the_ID() : $id, 'object', 'display' ) );
+		$idCheck = $id === null ? get_the_ID() : $id;
+
+		$object = (object) [
+			'title'   => get_the_title( $idCheck ),
+			'date'    => get_the_date( $dateFormat, $idCheck ),
+			'image'   => get_the_post_thumbnail_url( $idCheck, $size === null ? 'original' : $size ),
+			'content' => do_blocks( get_the_content( $idCheck ) )
+		];
+
+		prepare::JSON( $object );
 
 	}
 

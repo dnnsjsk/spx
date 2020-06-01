@@ -1,6 +1,6 @@
 import {Component, h, Host, Element, Prop, State, Watch, Listen} from '@stencil/core';
 import {css, cx} from "emotion";
-import * as constants from '../../constants/style.js'
+import * as constants from '../../constants/style.js';
 import {createPopper} from '@popperjs/core';
 
 @Component({

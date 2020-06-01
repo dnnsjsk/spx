@@ -47,6 +47,6 @@ function spxGetNavigation( $name ) {
  * @since 1.0
  */
 
-function spxGetPost( $id ) {
+function spxGetPost( $id = null ) {
 	get::post( $id );
 }

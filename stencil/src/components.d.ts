@@ -149,7 +149,32 @@ export namespace Components {
         "urlChange": boolean;
     }
     interface SpxSectionSingle {
+        "containerMaxWidth": string;
+        "content": boolean;
+        "contentMarginTop": string;
+        "date": boolean;
+        "dateColor": string;
+        "dateFontSize": string;
+        "dateMarginTop": string;
+        "image": boolean;
+        "imageBorderRadius": string;
+        "imageMaxHeight": string;
+        "imageObjectPosition": string;
+        "post": string;
         "styling": string;
+        "titleColor": string;
+        "titleFontSize": string;
+        "titleMarginTop": string;
+    }
+    interface SpxShare {
+        "itemBorderRadius": string;
+        "itemGap": string;
+        "itemPadding": string;
+        "itemSize": string;
+        "styling": string;
+        "target": string;
+        "theme": string;
+        "vertical": boolean;
     }
     interface SpxSnackbar {
         "animationDelay": string;
@@ -249,6 +274,12 @@ declare global {
         prototype: HTMLSpxSectionSingleElement;
         new (): HTMLSpxSectionSingleElement;
     };
+    interface HTMLSpxShareElement extends Components.SpxShare, HTMLStencilElement {
+    }
+    var HTMLSpxShareElement: {
+        prototype: HTMLSpxShareElement;
+        new (): HTMLSpxShareElement;
+    };
     interface HTMLSpxSnackbarElement extends Components.SpxSnackbar, HTMLStencilElement {
     }
     var HTMLSpxSnackbarElement: {
@@ -270,6 +301,7 @@ declare global {
         "spx-navigation": HTMLSpxNavigationElement;
         "spx-scrollspy": HTMLSpxScrollspyElement;
         "spx-section-single": HTMLSpxSectionSingleElement;
+        "spx-share": HTMLSpxShareElement;
         "spx-snackbar": HTMLSpxSnackbarElement;
     }
 }
@@ -412,7 +444,32 @@ declare namespace LocalJSX {
         "urlChange"?: boolean;
     }
     interface SpxSectionSingle {
+        "containerMaxWidth"?: string;
+        "content"?: boolean;
+        "contentMarginTop"?: string;
+        "date"?: boolean;
+        "dateColor"?: string;
+        "dateFontSize"?: string;
+        "dateMarginTop"?: string;
+        "image"?: boolean;
+        "imageBorderRadius"?: string;
+        "imageMaxHeight"?: string;
+        "imageObjectPosition"?: string;
+        "post"?: string;
         "styling"?: string;
+        "titleColor"?: string;
+        "titleFontSize"?: string;
+        "titleMarginTop"?: string;
+    }
+    interface SpxShare {
+        "itemBorderRadius"?: string;
+        "itemGap"?: string;
+        "itemPadding"?: string;
+        "itemSize"?: string;
+        "styling"?: string;
+        "target"?: string;
+        "theme"?: string;
+        "vertical"?: boolean;
     }
     interface SpxSnackbar {
         "animationDelay"?: string;
@@ -441,6 +498,7 @@ declare namespace LocalJSX {
         "spx-navigation": SpxNavigation;
         "spx-scrollspy": SpxScrollspy;
         "spx-section-single": SpxSectionSingle;
+        "spx-share": SpxShare;
         "spx-snackbar": SpxSnackbar;
     }
 }
@@ -462,6 +520,7 @@ declare module "@stencil/core" {
             "spx-navigation": LocalJSX.SpxNavigation & JSXBase.HTMLAttributes<HTMLSpxNavigationElement>;
             "spx-scrollspy": LocalJSX.SpxScrollspy & JSXBase.HTMLAttributes<HTMLSpxScrollspyElement>;
             "spx-section-single": LocalJSX.SpxSectionSingle & JSXBase.HTMLAttributes<HTMLSpxSectionSingleElement>;
+            "spx-share": LocalJSX.SpxShare & JSXBase.HTMLAttributes<HTMLSpxShareElement>;
             "spx-snackbar": LocalJSX.SpxSnackbar & JSXBase.HTMLAttributes<HTMLSpxSnackbarElement>;
         }
     }
