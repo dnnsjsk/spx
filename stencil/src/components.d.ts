@@ -53,24 +53,22 @@ export namespace Components {
     interface SpxEditButton {
         "background": string;
         "backgroundDiscard": string;
+        "border": string;
         "borderRadius": string;
-        "bottom": string;
         "color": string;
         "colorDiscard": string;
+        "distanceX": string;
+        "distanceY": string;
         "fontSize": string;
         "gap": string;
-        "left": string;
         "padding": string;
         "position": string;
-        "right": string;
         "styling": string;
         "test": boolean;
         "textDiscard": string;
         "textEdit": string;
         "textSave": string;
         "textSuccess": string;
-        "top": string;
-        "zIndex": number;
     }
     interface SpxGroup {
     }
@@ -180,11 +178,18 @@ export namespace Components {
         "animationDelay": string;
         "animationDuration": string;
         "background": string;
+        "border": string;
         "borderRadius": string;
-        "bottom": string;
+        "closeable": boolean;
         "color": string;
+        "distanceX": string;
+        "distanceY": string;
+        "fixed": boolean;
         "fontSize": string;
         "padding": string;
+        "position": string;
+        "reverse": boolean;
+        "size": string;
         "styling": string;
         "text": string;
     }
@@ -353,26 +358,24 @@ declare namespace LocalJSX {
     interface SpxEditButton {
         "background"?: string;
         "backgroundDiscard"?: string;
+        "border"?: string;
         "borderRadius"?: string;
-        "bottom"?: string;
         "color"?: string;
         "colorDiscard"?: string;
+        "distanceX"?: string;
+        "distanceY"?: string;
         "fontSize"?: string;
         "gap"?: string;
-        "left"?: string;
         "onSpxEditDiscardChanges"?: (event: CustomEvent<any>) => void;
         "onSpxEditSaveChanges"?: (event: CustomEvent<any>) => void;
         "padding"?: string;
         "position"?: string;
-        "right"?: string;
         "styling"?: string;
         "test"?: boolean;
         "textDiscard"?: string;
         "textEdit"?: string;
         "textSave"?: string;
         "textSuccess"?: string;
-        "top"?: string;
-        "zIndex"?: number;
     }
     interface SpxGroup {
     }
@@ -475,11 +478,18 @@ declare namespace LocalJSX {
         "animationDelay"?: string;
         "animationDuration"?: string;
         "background"?: string;
+        "border"?: string;
         "borderRadius"?: string;
-        "bottom"?: string;
+        "closeable"?: boolean;
         "color"?: string;
+        "distanceX"?: string;
+        "distanceY"?: string;
+        "fixed"?: boolean;
         "fontSize"?: string;
         "padding"?: string;
+        "position"?: string;
+        "reverse"?: boolean;
+        "size"?: string;
         "styling"?: string;
         "text"?: string;
     }

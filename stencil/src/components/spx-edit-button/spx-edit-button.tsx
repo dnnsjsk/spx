@@ -1,6 +1,7 @@
 import {Component, Event, EventEmitter, h, Host, Prop, State} from '@stencil/core';
 import {css, cx} from "emotion";
 import * as constants from '../../constants/style.js';
+import {stylePosition} from "../../constants/style";
 
 @Component({
     tag: 'spx-edit-button',
@@ -18,27 +19,29 @@ export class SpxEditButton {
 
     @Prop({reflectToAttr: true}) gap: string = '8px';
 
-    @Prop({reflectToAttr: true}) position: string = 'fixed';
-    @Prop({reflectToAttr: true}) top: string;
-    @Prop({reflectToAttr: true}) right: string = '12px';
-    @Prop({reflectToAttr: true}) bottom: string = '12px';
-    @Prop({reflectToAttr: true}) left: string;
-    @Prop({reflectToAttr: true}) padding: string = '12px 24px';
+    @Prop({reflectToAttr: true}) position: string = 'bottom-center';
+    @State() positionArray;
+    @Prop({reflectToAttr: true}) distanceX: string = '1em';
+    @Prop({reflectToAttr: true}) distanceY: string = '1em';
 
+    @Prop({reflectToAttr: true}) padding: string = '12px 24px';
     @Prop({reflectToAttr: true}) fontSize: string = '16px';
     @Prop({reflectToAttr: true}) color: string = constants.styleColor;
     @Prop({reflectToAttr: true}) colorDiscard: string = constants.styleColor;
     @Prop({reflectToAttr: true}) background: string = constants.styleBackground;
     @Prop({reflectToAttr: true}) backgroundDiscard: string = constants.styleBackgroundSecondary;
+    @Prop({reflectToAttr: true}) border: string = 'none';
     @Prop({reflectToAttr: true}) borderRadius: string = constants.styleBorderRadius;
-
-    @Prop({reflectToAttr: true}) zIndex: number = 999999;
 
     @Event({eventName: 'spxEditDiscardChanges'}) spxEditDiscardChanges: EventEmitter;
     @Event({eventName: 'spxEditSaveChanges'}) spxEditSaveChanges: EventEmitter;
 
     @State() open: boolean = false;
     @State() loading: boolean = false;
+
+    componentWillLoad() {
+        this.positionArray = this.position.split('-');
+    }
 
     onClickEdit() {
         this.open = true;
@@ -140,21 +143,15 @@ export class SpxEditButton {
         /** Style default. */
 
         const styleDefault = css({
+            ...stylePosition('edit-button', this.positionArray, this.distanceX, this.distanceY),
             fontFamily: constants.styleFontFamily,
             display: 'grid',
             gridGap: 'var(--spx-edit-button-gap, ' + this.gap + ')',
-            position: this.position === 'static' ? 'static' :
-                this.position === 'relative' ? 'relative' :
-                    this.position === 'absolute' ? 'absolute' :
-                        this.position === 'sticky' ? 'sticky' :
-                            'fixed',
-            top: this.top ? 'var(--spx-edit-button-top, ' + this.top + ')' : 'var(--spx-edit-button-top)',
-            right: this.right ? 'var(--spx-edit-button-right, ' + this.right + ')' : 'var(--spx-edit-button-right)',
-            bottom: this.bottom ? 'var(--spx-edit-button-bottom, ' + this.bottom + ')' : 'var(--spx-edit-button-bottom)',
-            left: this.left ? 'var(--spx-edit-button-left, ' + this.left + ')' : 'var(--spx-edit-button-left)',
-            zIndex: this.zIndex,
+            position: 'fixed',
+            zIndex: 999998,
 
             '.spx-edit-button': {
+                fontFamily: 'inherit',
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -164,6 +161,7 @@ export class SpxEditButton {
                 padding: 'var(--spx-edit-button-padding, ' + this.padding + ')',
                 color: 'var(--spx-edit-button-color, ' + this.color + ')',
                 background: 'var(--spx-edit-button-background, ' + this.background + ')',
+                border: 'var(--spx-edit-button-border, ' + this.border + ')',
                 borderRadius: 'var(--spx-edit-button-border-radius, ' + this.borderRadius + ')',
 
                 'spx-loader': {

@@ -15,6 +15,12 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.20 =
+* New: Snackbar component.
+* Edit button: Adapted new positioning properties from Snackbar component.
+* Edit button: Fixed font inheritance.
+* StencilJS: Update to 1.14.0.
+
 = 1.19 =
 * New: share component.
 
@@ -23,25 +29,25 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Navigation: fixed CSS variable for distance between mobile menu button and menu.
 
 = 1.17 =
-* New: scrollspy component.
+* New: Scrollspy component.
 * Navigation: fixed position calculation when tabbing through links.
 * Navigation: vertical now renders correctly.
 * Navigation: added child-item-margin-left attribute for mobile and vertical mode.
-* StencilJS: Updated to 1.13.0.
+* StencilJS: Update to 1.13.0.
 
 = 1.16 =
 * Optimized queries of Masonry PHP helper component.
 
 = 1.15 =
 * New: Metabox helper for Masonry component.
-* New: child menu positioning props to Navigation component.
-* New: positioning props to Edit Button component.
+* New: child menu positioning props for Navigation component.
+* New: positioning props for Edit Button component.
 
 = 1.14 =
 * Fix: readme file.
 
 = 1.13 =
-* Fix: test-mode for edit-button component.
+* Fix: test-mode for Edit Button component.
 
 = 1.12 =
 * Fix: file versioning to prevent JS errors after updates.
@@ -59,7 +65,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Bug fixes.
 
 = 1.07 =
-* Fix: navigation component.
+* Fix: Navigation.
 
 = 1.06 =
 * Add other readme tags so WP validator is happy.

@@ -1,7 +1,5 @@
 /**
  * Style constants for components.
- *
- * @since 1.0
  */
 
 import {css} from "emotion";
@@ -18,4 +16,14 @@ export const styleBackgroundSecondary = '#555555';
 export const styleBase = css({
     display: styleDisplay,
     fontFamily: styleFontFamily,
+});
+
+/** Positioning properties. */
+
+export const stylePosition = (component, array, distanceX, distanceY) => ({
+    top: array[0] === 'top' && 'var(--spx-' + component + '-distance-y, ' + distanceY + ')',
+    right: array[1] === 'right' ? 'var(--spx-' + component + '-distance-x, ' + distanceX + ')' : null,
+    bottom: array[0] === 'bottom' && 'var(--spx-' + component + '-distance-y, ' + distanceY + ')',
+    left: array[1] === 'center' ? '50%' : array[1] === 'left' ? 'var(--spx-' + component + '-distance-x, ' + distanceX + ')' : null,
+    transform: array[1] === 'center' && 'translate(-50%, 0)',
 });

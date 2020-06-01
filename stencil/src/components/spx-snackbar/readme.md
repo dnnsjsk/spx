@@ -7,18 +7,25 @@
 
 ## Properties
 
-| Property            | Attribute            | Description | Type     | Default                       |
-| ------------------- | -------------------- | ----------- | -------- | ----------------------------- |
-| `animationDelay`    | `animation-delay`    |             | `string` | `'0.2s'`                      |
-| `animationDuration` | `animation-duration` |             | `string` | `'2s'`                        |
-| `background`        | `background`         |             | `string` | `constants.styleBackground`   |
-| `borderRadius`      | `border-radius`      |             | `string` | `constants.styleBorderRadius` |
-| `bottom`            | `bottom`             |             | `string` | `'1em'`                       |
-| `color`             | `color`              |             | `string` | `constants.styleColor`        |
-| `fontSize`          | `font-size`          |             | `string` | `'16px'`                      |
-| `padding`           | `padding`            |             | `string` | `'10px 15px'`                 |
-| `styling`           | `styling`            |             | `string` | `undefined`                   |
-| `text`              | `text`               |             | `string` | `undefined`                   |
+| Property            | Attribute            | Description | Type      | Default                       |
+| ------------------- | -------------------- | ----------- | --------- | ----------------------------- |
+| `animationDelay`    | `animation-delay`    |             | `string`  | `'200ms'`                     |
+| `animationDuration` | `animation-duration` |             | `string`  | `'2s'`                        |
+| `background`        | `background`         |             | `string`  | `constants.styleBackground`   |
+| `border`            | `border`             |             | `string`  | `'none'`                      |
+| `borderRadius`      | `border-radius`      |             | `string`  | `constants.styleBorderRadius` |
+| `closeable`         | `closeable`          |             | `boolean` | `undefined`                   |
+| `color`             | `color`              |             | `string`  | `constants.styleColor`        |
+| `distanceX`         | `distance-x`         |             | `string`  | `'1em'`                       |
+| `distanceY`         | `distance-y`         |             | `string`  | `'1em'`                       |
+| `fixed`             | `fixed`              |             | `boolean` | `undefined`                   |
+| `fontSize`          | `font-size`          |             | `string`  | `'18px'`                      |
+| `padding`           | `padding`            |             | `string`  | `'20px'`                      |
+| `position`          | `position`           |             | `string`  | `'bottom-center'`             |
+| `reverse`           | `reverse`            |             | `boolean` | `undefined`                   |
+| `size`              | `size`               |             | `string`  | `undefined`                   |
+| `styling`           | `styling`            |             | `string`  | `undefined`                   |
+| `text`              | `text`               |             | `string`  | `"Hello, I'm a snackbar."`    |
 
 
 ## Dependencies
