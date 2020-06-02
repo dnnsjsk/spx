@@ -247,6 +247,7 @@ export class SpxNavigation {
 
         const styleDefault = css({
             display: constants.styleDisplay,
+            zIndex: 999999,
 
             '*': {
                 fontFamily: constants.styleFontFamily,
@@ -377,6 +378,11 @@ export class SpxNavigation {
                 padding: 'var(--spx-navigation-parent-item-padding, ' + this.parentItemPadding + ')',
                 color: 'var(--spx-navigation-parent-item-color, ' + this.parentItemColor + ')',
                 background: 'var(--spx-navigation-parent-item-background, ' + this.parentItemBackground + ')',
+
+                'a': {
+                    color: 'var(--spx-navigation-child-item-color, ' + this.childItemColor + ')',
+                    background: 'var(--spx-navigation-child-item-background, ' + this.childItemBackground + ')'
+                },
 
                 '&:hover': {
                     color: 'var(--spx-navigation-parent-item-color-hover, ' + this.parentItemColorHover + ')',

@@ -8,10 +8,14 @@
 
 namespace spx;
 
+use Hybrid\Breadcrumbs\Breadcrumbs;
+use Hybrid\Breadcrumbs\Trail;
+
 class get {
 
 	/**
 	 * ACF gallery.
+	 * deprecated
 	 *
 	 * @param $field
 	 *
@@ -27,6 +31,7 @@ class get {
 
 	/**
 	 * Metabox gallery.
+	 * deprecated
 	 *
 	 * @param $field
 	 *
@@ -37,6 +42,33 @@ class get {
 
 		$array = rwmb_get_value( $field );
 		prepare::JSON( $array );
+
+	}
+
+	/**
+	 * Gallery function.
+	 *
+	 * @param $field
+	 * @param $type
+	 *
+	 * @since 1.21
+	 */
+
+	public static function gallery( $field, $type ) {
+
+		if ( $type === 'acf' ) {
+
+			$array = get_field( $field );
+			prepare::JSON( $array );
+
+		}
+
+		if ( $type === 'mb' ) {
+
+			$array = rwmb_get_value( $field );
+			prepare::JSON( $array );
+
+		}
 
 	}
 
@@ -59,9 +91,7 @@ class get {
 	 * Post.
 	 *
 	 * @param $id
-	 *
 	 * @param null $dateFormat
-	 *
 	 * @param null $size
 	 *
 	 * @since 1.19
@@ -79,6 +109,18 @@ class get {
 		];
 
 		prepare::JSON( $object );
+
+	}
+
+	/**
+	 * Breadcrumbs.
+	 *
+	 * @since 1.21
+	 */
+
+	public static function breadcrumbs() {
+
+
 
 	}
 

@@ -27,6 +27,19 @@ function spxGetMbGallery( $field ) {
 }
 
 /**
+ * Get gallery.
+ *
+ * @param $field
+ * @param $type
+ *
+ * @since 1.21
+ */
+
+function spxGetGallery( $field, $type ) {
+	get::gallery( $field, $type );
+}
+
+/**
  * Get navigation.
  *
  * @param $name
@@ -43,10 +56,22 @@ function spxGetNavigation( $name ) {
  * Get post.
  *
  * @param $id
+ * @param null $dateFormat
+ * @param null $size
  *
  * @since 1.0
  */
 
-function spxGetPost( $id = null ) {
-	get::post( $id );
+function spxGetPost( $id = null, $dateFormat = null, $size = null ) {
+	get::post( $id, $dateFormat, $size );
+}
+
+/**
+ * Get breadcrumbs.
+ *
+ * @since 1.0
+ */
+
+function spxGetBreadcrumbs() {
+	get::breadcrumbs();
 }

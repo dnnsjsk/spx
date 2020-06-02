@@ -11,7 +11,7 @@
 | ------------------- | -------------------- | ----------- | --------- | ------------------------------------ |
 | `background`        | `background`         |             | `string`  | `constants.styleBackground`          |
 | `backgroundDiscard` | `background-discard` |             | `string`  | `constants.styleBackgroundSecondary` |
-| `border`            | `border`             |             | `string`  | `'none'`                             |
+| `border`            | `border`             |             | `string`  | `undefined`                          |
 | `borderRadius`      | `border-radius`      |             | `string`  | `constants.styleBorderRadius`        |
 | `color`             | `color`              |             | `string`  | `constants.styleColor`               |
 | `colorDiscard`      | `color-discard`      |             | `string`  | `constants.styleColor`               |

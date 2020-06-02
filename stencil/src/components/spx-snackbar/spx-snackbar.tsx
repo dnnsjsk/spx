@@ -28,7 +28,7 @@ export class SpxSnackbar {
     @Prop({reflectToAttr: true}) fontSize: string = '18px';
     @Prop({reflectToAttr: true}) color: string = constants.styleColor;
     @Prop({reflectToAttr: true}) background: string = constants.styleBackground;
-    @Prop({reflectToAttr: true}) border: string = 'none';
+    @Prop({reflectToAttr: true}) border: string;
     @Prop({reflectToAttr: true}) borderRadius: string = constants.styleBorderRadius;
 
     @Prop({reflectToAttr: true}) animationDelay: string = '200ms';

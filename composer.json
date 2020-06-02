@@ -1,0 +1,6 @@
+{
+  "require": {
+    "justintadlock/hybrid-breadcrumbs": "1.0.1",
+    "ext-json": "*"
+  }
+}

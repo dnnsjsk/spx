@@ -12,7 +12,7 @@
 | `animationDelay`    | `animation-delay`    |             | `string`  | `'200ms'`                     |
 | `animationDuration` | `animation-duration` |             | `string`  | `'2s'`                        |
 | `background`        | `background`         |             | `string`  | `constants.styleBackground`   |
-| `border`            | `border`             |             | `string`  | `'none'`                      |
+| `border`            | `border`             |             | `string`  | `undefined`                   |
 | `borderRadius`      | `border-radius`      |             | `string`  | `constants.styleBorderRadius` |
 | `closeable`         | `closeable`          |             | `boolean` | `undefined`                   |
 | `color`             | `color`              |             | `string`  | `constants.styleColor`        |

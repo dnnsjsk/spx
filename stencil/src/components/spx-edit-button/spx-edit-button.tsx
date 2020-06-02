@@ -30,7 +30,7 @@ export class SpxEditButton {
     @Prop({reflectToAttr: true}) colorDiscard: string = constants.styleColor;
     @Prop({reflectToAttr: true}) background: string = constants.styleBackground;
     @Prop({reflectToAttr: true}) backgroundDiscard: string = constants.styleBackgroundSecondary;
-    @Prop({reflectToAttr: true}) border: string = 'none';
+    @Prop({reflectToAttr: true}) border: string;
     @Prop({reflectToAttr: true}) borderRadius: string = constants.styleBorderRadius;
 
     @Event({eventName: 'spxEditDiscardChanges'}) spxEditDiscardChanges: EventEmitter;

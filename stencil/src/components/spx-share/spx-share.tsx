@@ -18,6 +18,8 @@ export class SpxShare {
 
     @Prop({reflectToAttr: true}) itemGap: string = '8px';
     @Prop({reflectToAttr: true}) itemSize: string = '16px';
+    @Prop({reflectToAttr: true}) itemColor: string;
+    @Prop({reflectToAttr: true}) itemBackgroundColor: string;
     @Prop({reflectToAttr: true}) itemPadding: string = '8px';
     @Prop({reflectToAttr: true}) itemBorderRadius: string = '0.15em';
 
@@ -45,32 +47,44 @@ export class SpxShare {
                 height: 'var(--spx-share-item-size, ' + this.itemSize + ')',
                 padding: 'var(--spx-share-item-padding, ' + this.itemPadding + ')',
                 borderRadius: 'var(--spx-share-item-border-radius, ' + this.itemBorderRadius + ')',
+                color: 'var(--spx-share-item-color, ' + this.itemColor + ')',
+                backgroundColor: 'var(--spx-share-item-background-color, ' + this.itemBackgroundColor + ')',
 
                 'svg': {
                     height: '100%'
                 },
 
                 '&.spx-share__facebook': {
-                    backgroundColor: !this.theme && '#1877F2',
-                    color: this.theme ? '#1877F2' : '#ffffff',
+                    backgroundColor: !this.theme && !this.itemBackgroundColor && '#1877F2',
+                    color:
+                        this.theme ? '#1877F2' :
+                            !this.itemColor ? '#ffffff' :
+                                null,
                     border: this.theme === 'outline' && '1px solid #1877F2',
                 },
 
                 '&.spx-share__twitter': {
-                    backgroundColor: !this.theme && '#1DA1F2',
-                    color: this.theme === 'outline' || this.theme === 'minimal' ? '#1DA1F2' : '#ffffff',
+                    backgroundColor: !this.theme && !this.itemBackgroundColor && '#1DA1F2',
+                    color:
+                        (this.theme === 'outline' || this.theme === 'minimal') ? '#1DA1F2' :
+                            !this.itemColor ? '#ffffff' :
+                                null,
                     border: this.theme === 'outline' && '1px solid #1DA1F2',
                 },
 
                 '&.spx-share__whatsapp': {
-                    backgroundColor: !this.theme && '#25D366',
-                    color: this.theme === 'outline' || this.theme === 'minimal' ? '#25D366' : '#ffffff',
+                    backgroundColor: !this.theme && !this.itemBackgroundColor && '#25D366',
+                    color: (this.theme === 'outline' || this.theme === 'minimal') ? '#25D366' :
+                        !this.itemColor ? '#ffffff' :
+                            null,
                     border: this.theme === 'outline' && '1px solid #25D366',
                 },
 
                 '&.spx-share__email': {
-                    backgroundColor: !this.theme && '#c6c6c6',
-                    color: this.theme === 'outline' || this.theme === 'minimal' ? '#c6c6c6' : '#ffffff',
+                    backgroundColor: !this.theme && !this.itemBackgroundColor && '#c6c6c6',
+                    color: this.theme === 'outline' || this.theme === 'minimal' ? '#c6c6c6' :
+                        !this.itemColor ? '#ffffff' :
+                            null,
                     border: this.theme === 'outline' && '1px solid #c6c6c6',
                 }
             }

@@ -165,7 +165,9 @@ export namespace Components {
         "titleMarginTop": string;
     }
     interface SpxShare {
+        "itemBackgroundColor": string;
         "itemBorderRadius": string;
+        "itemColor": string;
         "itemGap": string;
         "itemPadding": string;
         "itemSize": string;
@@ -465,7 +467,9 @@ declare namespace LocalJSX {
         "titleMarginTop"?: string;
     }
     interface SpxShare {
+        "itemBackgroundColor"?: string;
         "itemBorderRadius"?: string;
+        "itemColor"?: string;
         "itemGap"?: string;
         "itemPadding"?: string;
         "itemSize"?: string;

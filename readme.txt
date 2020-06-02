@@ -15,6 +15,11 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.21 =
+* Share: custom colour options.
+* New: add new gallery helper function.
+* Navigation: fix mobile menu link styles.
+
 = 1.20 =
 * New: Snackbar component.
 * Edit button: Adapted new positioning properties from Snackbar component.
@@ -22,7 +27,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * StencilJS: Update to 1.14.0.
 
 = 1.19 =
-* New: share component.
+* New: Share component.
 
 = 1.18 =
 * Navigation: simplified child and mobile placement. (always defaults to bottom)
