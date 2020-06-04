@@ -11,16 +11,16 @@
 | ------------------- | -------------------- | ----------- | --------- | ----------------------------- |
 | `animationDelay`    | `animation-delay`    |             | `string`  | `'200ms'`                     |
 | `animationDuration` | `animation-duration` |             | `string`  | `'2s'`                        |
-| `background`        | `background`         |             | `string`  | `constants.styleBackground`   |
+| `background`        | `background`         |             | `string`  | `constants.stylePrimary900`   |
 | `border`            | `border`             |             | `string`  | `undefined`                   |
 | `borderRadius`      | `border-radius`      |             | `string`  | `constants.styleBorderRadius` |
 | `closeable`         | `closeable`          |             | `boolean` | `undefined`                   |
-| `color`             | `color`              |             | `string`  | `constants.styleColor`        |
+| `color`             | `color`              |             | `string`  | `'#ffffff'`                   |
 | `distanceX`         | `distance-x`         |             | `string`  | `'1em'`                       |
 | `distanceY`         | `distance-y`         |             | `string`  | `'1em'`                       |
 | `fixed`             | `fixed`              |             | `boolean` | `undefined`                   |
 | `fontSize`          | `font-size`          |             | `string`  | `'18px'`                      |
-| `padding`           | `padding`            |             | `string`  | `'20px'`                      |
+| `padding`           | `padding`            |             | `string`  | `'1em'`                       |
 | `position`          | `position`           |             | `string`  | `'bottom-center'`             |
 | `reverse`           | `reverse`            |             | `boolean` | `undefined`                   |
 | `size`              | `size`               |             | `string`  | `undefined`                   |

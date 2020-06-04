@@ -6,7 +6,7 @@
  * @since 1.0
  */
 
-function spxEditAjaxHandler() {
+function spxEditButtonAjaxHandler() {
 	if ( current_user_can( 'edit_posts' ) ) {
 
 		/** Get post ID. */
@@ -24,7 +24,7 @@ function spxEditAjaxHandler() {
 
 		/** Create hook. */
 
-		do_action( 'spxEditAjax' );
+		do_action( 'spxEditButtonAjax' );
 
 		die();
 	} else {
@@ -32,4 +32,4 @@ function spxEditAjaxHandler() {
 	}
 }
 
-add_action( 'wp_ajax_spxEditAjaxHandler', 'spxEditAjaxHandler' );
+add_action( 'wp_ajax_spxEditButtonAjaxHandler', 'spxEditButtonAjaxHandler' );

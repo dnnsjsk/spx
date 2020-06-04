@@ -1,5 +1,8 @@
 import {Component, Element, h, Host, Prop, Listen} from '@stencil/core';
 import Gumshoe from '../../../../stencil/node_modules/gumshoejs/dist/gumshoe.js';
+import {css} from "emotion";
+import * as constants from "../../constants/style";
+import {offset} from '../../functions/offset.js';
 
 @Component({
     tag: 'spx-scrollspy',
@@ -9,8 +12,8 @@ export class SpxScrollspy {
     @Element() el: HTMLElement;
 
     @Prop({reflectToAttr: true}) target: string = 'a';
-    @Prop({reflectToAttr: true}) navClass: string = 'is-active';
-    @Prop({reflectToAttr: true}) contentClass: string = 'is-active';
+    @Prop({reflectToAttr: true}) navClass: string = 'spx-scrollspy__nav--active';
+    @Prop({reflectToAttr: true}) contentClass: string = 'spx-scrollspy__content--active';
     @Prop({reflectToAttr: true}) offset: any;
     @Prop({reflectToAttr: true}) urlChange: boolean = false;
 
@@ -35,15 +38,13 @@ export class SpxScrollspy {
 
                 /** Check if prop is a number otherwise look for querySelector. */
 
-                return (this.offset && !isNaN(this.offset)) ? this.offset
-                    ? this.offset : document.querySelector(this.offset).getBoundingClientRect().height
-                    : 0;
+                return offset(this.offset);
             }
         });
     }
 
     render() {
-        return <Host>
+        return <Host class={css({display: constants.styleDisplay})}>
         </Host>
     }
 }

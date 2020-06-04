@@ -7,18 +7,19 @@
 
 ## Properties
 
-| Property              | Attribute               | Description | Type      | Default     |
-| --------------------- | ----------------------- | ----------- | --------- | ----------- |
-| `itemBackgroundColor` | `item-background-color` |             | `string`  | `undefined` |
-| `itemBorderRadius`    | `item-border-radius`    |             | `string`  | `'0.15em'`  |
-| `itemColor`           | `item-color`            |             | `string`  | `undefined` |
-| `itemGap`             | `item-gap`              |             | `string`  | `'8px'`     |
-| `itemPadding`         | `item-padding`          |             | `string`  | `'8px'`     |
-| `itemSize`            | `item-size`             |             | `string`  | `'16px'`    |
-| `styling`             | `styling`               |             | `string`  | `undefined` |
-| `target`              | `target`                |             | `string`  | `'_blank'`  |
-| `theme`               | `theme`                 |             | `string`  | `undefined` |
-| `vertical`            | `vertical`              |             | `boolean` | `undefined` |
+| Property              | Attribute               | Description | Type      | Default                       |
+| --------------------- | ----------------------- | ----------- | --------- | ----------------------------- |
+| `fontSize`            | `font-size`             |             | `string`  | `constants.styleFontSize`     |
+| `itemBackgroundColor` | `item-background-color` |             | `string`  | `undefined`                   |
+| `itemBorderRadius`    | `item-border-radius`    |             | `string`  | `constants.styleBorderRadius` |
+| `itemColor`           | `item-color`            |             | `string`  | `undefined`                   |
+| `itemGap`             | `item-gap`              |             | `string`  | `'0.5em'`                     |
+| `itemPadding`         | `item-padding`          |             | `string`  | `'0.5em'`                     |
+| `itemSize`            | `item-size`             |             | `string`  | `'1em'`                       |
+| `styling`             | `styling`               |             | `string`  | `undefined`                   |
+| `target`              | `target`                |             | `string`  | `'_blank'`                    |
+| `theme`               | `theme`                 |             | `string`  | `undefined`                   |
+| `vertical`            | `vertical`              |             | `boolean` | `undefined`                   |
 
 
 ----------------------------------------------

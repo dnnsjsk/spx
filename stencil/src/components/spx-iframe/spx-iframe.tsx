@@ -1,5 +1,6 @@
 import {Component, Host, h, Prop, State, Listen, Element} from '@stencil/core';
 import {css} from "emotion";
+import * as constants from '../../constants/style.js';
 
 @Component({
     tag: 'spx-iframe',
@@ -66,8 +67,8 @@ export class SpxIframe {
             },
 
             '.spx-iframe__loader-wrap': {
-                padding: '12px',
-                borderRadius: '0.25em',
+                padding: '0.8em',
+                borderRadius: constants.styleBorderRadius,
                 backgroundColor: 'rgba(0, 0, 0, 0.7)',
                 position: 'absolute',
                 left: '50%',

@@ -1,7 +1,7 @@
 import {Component, h, Host, Prop, Element, State} from '@stencil/core';
 import {css, cx, keyframes} from "emotion";
-import * as constants from "../../constants/style";
-import {stylePosition} from "../../constants/style";
+import * as constants from '../../constants/style.js';
+import {stylePosition} from "../../constants/style.js";
 
 @Component({
     tag: 'spx-snackbar',
@@ -23,11 +23,11 @@ export class SpxSnackbar {
     @Prop({reflectToAttr: true}) distanceX: string = '1em';
     @Prop({reflectToAttr: true}) distanceY: string = '1em';
 
-    @Prop({reflectToAttr: true}) size: string;
-    @Prop({reflectToAttr: true}) padding: string = '20px';
     @Prop({reflectToAttr: true}) fontSize: string = '18px';
-    @Prop({reflectToAttr: true}) color: string = constants.styleColor;
-    @Prop({reflectToAttr: true}) background: string = constants.styleBackground;
+    @Prop({reflectToAttr: true}) size: string;
+    @Prop({reflectToAttr: true}) padding: string = '1em';
+    @Prop({reflectToAttr: true}) color: string = '#ffffff';
+    @Prop({reflectToAttr: true}) background: string = constants.stylePrimary900;
     @Prop({reflectToAttr: true}) border: string;
     @Prop({reflectToAttr: true}) borderRadius: string = constants.styleBorderRadius;
 
@@ -83,40 +83,26 @@ export class SpxSnackbar {
 
         /** Style default. */
 
-        const paddingSm = '16px';
-        const paddingMd = '20px';
-        const paddingLg = '24px';
-
         const styleDefault = css({
             ...stylePosition('snackbar', this.positionArray, this.distanceX, this.distanceY),
             fontFamily: constants.styleFontFamily,
+            fontSize:
+                this.size === 'sm' ? '16px' :
+                    this.size === 'md' ? '18px' :
+                        this.size === 'lg' ? '20px' :
+                            constants.styleFontBase('snackbar', this.fontSize),
             position: 'fixed',
             display: 'flex',
             flexDirection: !this.reverse ? 'row-reverse' : 'row',
             alignItems: 'center',
             userSelect: 'none',
             paddingTop: !this.closeable && 'var(--spx-snackbar-padding, ' + this.padding + ')',
-            paddingRight:
-                (this.reverse && this.size === 'sm') ? paddingSm :
-                    (this.reverse && this.size === 'md') ? paddingMd :
-                        (this.reverse && this.size === 'lg') ? paddingLg :
-                            this.reverse || !this.closeable ? 'var(--spx-snackbar-padding, ' + this.padding + ')' :
-                                null,
+            paddingRight: ((this.closeable && this.reverse) || !this.closeable) && 'var(--spx-snackbar-padding, ' + this.padding + ')',
             paddingBottom: !this.closeable && 'var(--spx-snackbar-padding, ' + this.padding + ')',
-            paddingLeft:
-                (!this.reverse && this.size === 'sm') ? paddingSm :
-                    (!this.reverse && this.size === 'md') ? paddingMd :
-                        (!this.reverse && this.size === 'lg') ? paddingLg :
-                            !this.reverse ? 'var(--spx-snackbar-padding, ' + this.padding + ')' :
-                                null,
+            paddingLeft: ((this.closeable && !this.reverse) || !this.closeable) && 'var(--spx-snackbar-padding, ' + this.padding + ')',
             zIndex: 999999,
             opacity: 0,
-            fontSize:
-                this.size === 'sm' ? '16px' :
-                    this.size === 'md' ? '18px' :
-                        this.size === 'lg' ? '20px' :
-                            'var(--spx-snackbar-font-size, ' + this.fontSize + ')',
-            color: 'var(--spx-snackbar-background, ' + this.color + ')',
+            color: 'var(--spx-snackbar-color, ' + this.color + ')',
             background: 'var(--spx-snackbar-background, ' + this.background + ')',
             border: 'var(--spx-snackbar-border, ' + this.border + ')',
             borderRadius: 'var(--spx-snackbar-border-radius, ' + this.borderRadius + ')',
@@ -137,13 +123,9 @@ export class SpxSnackbar {
 
             <div onClick={this.removeItem.bind(this)}
                  class={css({
-                     width: '0.8em',
+                     width: '0.7em',
                      opacity: '0.3',
-                     padding:
-                         this.size === 'sm' ? paddingSm :
-                             this.size === 'md' ? paddingMd :
-                                 this.size === 'lg' ? paddingLg :
-                                     'var(--spx-snackbar-padding, ' + this.padding + ')',
+                     padding: 'var(--spx-snackbar-padding, ' + this.padding + ')',
                      boxSizing: 'content-box',
                      cursor: 'pointer',
                  })}>

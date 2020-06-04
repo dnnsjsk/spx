@@ -46,7 +46,7 @@ export class SpxEdit {
 
     /** Discard changes. */
 
-    @Listen('spxEditDiscardChanges', {target: "document"})
+    @Listen('spxEditButtonDiscardChanges', {target: "document"})
     discardChanges() {
         this.el.parentElement.innerHTML = this.originalText;
         this.editable = false;
@@ -54,7 +54,7 @@ export class SpxEdit {
 
     /** Save changes. */
 
-    @Listen('spxEditSaveChanges', {target: "document"})
+    @Listen('spxEditButtonSaveChanges', {target: "document"})
     saveChanges() {
         this.editable = false;
     }

@@ -18,7 +18,7 @@ class build {
 		$branch = array();
 		foreach ( $elements as &$element ) {
 			if ( $element->menu_item_parent == $parentId ) {
-				$current = ( $_SERVER['REQUEST_URI'] == parse_url( $element->url, PHP_URL_PATH ) ) ? 'spx-navigation__item--is-active' : '';
+				$current = ( $_SERVER['REQUEST_URI'] == parse_url( $element->url, PHP_URL_PATH ) ) ? 'spx-navigation__item--active' : '';
 				if ( $current ) {
 					if ( ! empty( $element->classes ) ) {
 						array_push( $element->classes, $current );

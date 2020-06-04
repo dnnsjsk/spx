@@ -5,11 +5,24 @@
 import {css} from "emotion";
 
 export const styleDisplay = 'block';
+export const styleMobileBP = 768;
+
+export const styleFontSize = '16px';
+export const styleFontBase = (component, base) => 'var(--spx-' + component + '-font-size, var(--spx-font-size, ' + base + '))';
 export const styleFontFamily = 'var(--spx-font-family, helvetica, segoe, arial, sans-serif)';
-export const styleBorderRadius = '0.25em';
-export const styleColor = '#ffffff';
-export const styleBackground = '#202020';
-export const styleBackgroundSecondary = '#555555';
+
+export const stylePrimary000 = 'var(--spx-color-primary-000, #FAFAFA)';
+export const stylePrimary100 = 'var(--spx-color-primary-100, #F5F5F5)';
+export const stylePrimary200 = 'var(--spx-color-primary-200, #EEEEEE)';
+export const stylePrimary300 = 'var(--spx-color-primary-300, #E0E0E0)';
+export const stylePrimary400 = 'var(--spx-color-primary-400, #BDBDBD)';
+export const stylePrimary500 = 'var(--spx-color-primary-500, #9E9E9E)';
+export const stylePrimary600 = 'var(--spx-color-primary-600, #757575)';
+export const stylePrimary700 = 'var(--spx-color-primary-700, #616161)';
+export const stylePrimary800 = 'var(--spx-color-primary-800, #424242)';
+export const stylePrimary900 = 'var(--spx-color-primary-900, #212121)';
+
+export const styleBorderRadius = 'var(--spx-border-radius, 0.25em)';
 
 /** Base style. */
 

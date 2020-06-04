@@ -15,31 +15,33 @@ export class SpxNavigation {
     @Prop({reflectToAttr: true}) menu: string;
     @State() menuArray: Array<string>;
 
-    @Prop({reflectToAttr: true}) mobile: number;
+    @Prop({reflectToAttr: true}) mobile: number = constants.styleMobileBP;
     @State() mobileBP: boolean;
 
     @Prop({reflectToAttr: true}) vertical: boolean;
 
+    @Prop({reflectToAttr: true}) fontSize: string = constants.styleFontSize;
+
     @Prop({reflectToAttr: true}) itemUnderline: boolean;
     @Prop({reflectToAttr: true}) itemUnderlineHover: boolean;
 
-    @Prop({reflectToAttr: true}) parentItemGap: string = '8px';
-    @Prop({reflectToAttr: true}) parentItemPadding: string = '8px';
-    @Prop({reflectToAttr: true}) parentItemColor: string = '#444444';
-    @Prop({reflectToAttr: true}) parentItemColorHover: string = '#202020';
+    @Prop({reflectToAttr: true}) parentItemGap: string = '0.4em';
+    @Prop({reflectToAttr: true}) parentItemPadding: string = '0.6em';
+    @Prop({reflectToAttr: true}) parentItemColor: string = constants.stylePrimary800;
+    @Prop({reflectToAttr: true}) parentItemColorHover: string = constants.stylePrimary900;
     @Prop({reflectToAttr: true}) parentItemBackground: string = '#ffffff';
-    @Prop({reflectToAttr: true}) parentItemBackgroundHover: string = '#f5f5f5';
+    @Prop({reflectToAttr: true}) parentItemBackgroundHover: string = constants.stylePrimary100;
 
-    @Prop({reflectToAttr: true}) childGap: string = '8px';
-    @Prop({reflectToAttr: true}) childBorder: string = '1px solid #eeeeee';
-    @Prop({reflectToAttr: true}) childChildGap: string = '12px';
-    @Prop({reflectToAttr: true}) childIndicatorGap: string = '4px';
-    @Prop({reflectToAttr: true}) childItemPadding: string = '8px 12px';
-    @Prop({reflectToAttr: true}) childItemMarginLeft: string = '10px';
-    @Prop({reflectToAttr: true}) childItemColor: string = '#444444';
-    @Prop({reflectToAttr: true}) childItemColorHover: string = '#202020';
+    @Prop({reflectToAttr: true}) childGap: string = '0.5em';
+    @Prop({reflectToAttr: true}) childBorder: string = '1px solid ' + constants.stylePrimary300 + '';
+    @Prop({reflectToAttr: true}) childChildGap: string = '0.8em';
+    @Prop({reflectToAttr: true}) childIndicatorGap: string = '0.2em';
+    @Prop({reflectToAttr: true}) childItemPadding: string = '0.6em 0.8em';
+    @Prop({reflectToAttr: true}) childItemMarginLeft: string = '0.8em';
+    @Prop({reflectToAttr: true}) childItemColor: string = constants.stylePrimary700;
+    @Prop({reflectToAttr: true}) childItemColorHover: string = constants.stylePrimary900;
     @Prop({reflectToAttr: true}) childItemBackground: string = '#ffffff';
-    @Prop({reflectToAttr: true}) childItemBackgroundHover: string = '#f5f5f5';
+    @Prop({reflectToAttr: true}) childItemBackgroundHover: string = constants.stylePrimary100;
     @Prop({reflectToAttr: true}) childPlacement: string = 'start';
 
     @Prop({reflectToAttr: true}) iconChild: string;
@@ -109,7 +111,7 @@ export class SpxNavigation {
             }
         }
 
-        return <div class={checkMobile()}>
+        return <nav class={checkMobile()}>
             <ul>
                 {Object.values(obj).map((object) => {
                     let objectChild = object['spxChildren'];
@@ -151,7 +153,7 @@ export class SpxNavigation {
                     </li>
                 })}
             </ul>
-        </div>
+        </nav>
     }
 
     sortMenuItem() {
@@ -182,7 +184,7 @@ export class SpxNavigation {
 
             if (parentMenu) {
                 parentMenu.forEach(item => {
-                    createPopper(item, item.querySelector('div'), {
+                    createPopper(item, item.querySelector('nav'), {
                         // @ts-ignore
                         placement: 'bottom-' + this.childPlacement + '',
                     });
@@ -195,7 +197,7 @@ export class SpxNavigation {
 
             if (childMenus) {
                 childMenus.forEach(item => {
-                    createPopper(item, item.querySelector('div'), {
+                    createPopper(item, item.querySelector('nav'), {
                         placement: 'right-start',
                         modifiers: [
                             {
@@ -247,11 +249,9 @@ export class SpxNavigation {
 
         const styleDefault = css({
             display: constants.styleDisplay,
+            fontFamily: constants.styleFontFamily,
+            fontSize: constants.styleFontBase('navigation', this.fontSize),
             zIndex: 999999,
-
-            '*': {
-                fontFamily: constants.styleFontFamily,
-            },
 
             'ul': {
                 margin: '0',
@@ -362,7 +362,7 @@ export class SpxNavigation {
             },
 
             'a': {
-                display: 'grid',
+                display: 'inline-grid',
                 gridAutoFlow: 'column',
                 gridColumnGap: 'var(--spx-navigation-child-indicator-gap, ' + this.childIndicatorGap + ')',
                 textDecoration: this.itemUnderline ? 'underline' : 'none',

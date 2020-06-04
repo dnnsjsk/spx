@@ -7,10 +7,13 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface SpxAccordion {
+        "contentColor": string;
         "contentCustom": boolean;
         "contentText": string;
         "contentTextTag": string;
+        "fontSize": string;
         "gap": string;
+        "headerColor": string;
         "headerCustom": boolean;
         "headerGap": string;
         "headerText": string;
@@ -124,6 +127,7 @@ export namespace Components {
         "childItemMarginLeft": string;
         "childItemPadding": string;
         "childPlacement": string;
+        "fontSize": string;
         "iconChild": string;
         "itemUnderline": boolean;
         "itemUnderlineHover": boolean;
@@ -158,13 +162,29 @@ export namespace Components {
         "imageBorderRadius": string;
         "imageMaxHeight": string;
         "imageObjectPosition": string;
+        "mobile": number;
         "post": string;
         "styling": string;
+        "tableOfContents": boolean;
+        "tableOfContentsBackground": string;
+        "tableOfContentsBorder": string;
+        "tableOfContentsBorderRadius": string;
+        "tableOfContentsHeading": string;
+        "tableOfContentsHeadingColor": string;
+        "tableOfContentsHeadingFontSize": string;
+        "tableOfContentsHeadingMarginBottom": string;
+        "tableOfContentsItemColor": string;
+        "tableOfContentsItemColorActive": string;
+        "tableOfContentsItemGap": string;
+        "tableOfContentsMarginTop": string;
+        "tableOfContentsOffset": any;
+        "tableOfContentsPadding": string;
         "titleColor": string;
         "titleFontSize": string;
         "titleMarginTop": string;
     }
     interface SpxShare {
+        "fontSize": string;
         "itemBackgroundColor": string;
         "itemBorderRadius": string;
         "itemColor": string;
@@ -314,10 +334,13 @@ declare global {
 }
 declare namespace LocalJSX {
     interface SpxAccordion {
+        "contentColor"?: string;
         "contentCustom"?: boolean;
         "contentText"?: string;
         "contentTextTag"?: string;
+        "fontSize"?: string;
         "gap"?: string;
+        "headerColor"?: string;
         "headerCustom"?: boolean;
         "headerGap"?: string;
         "headerText"?: string;
@@ -368,8 +391,8 @@ declare namespace LocalJSX {
         "distanceY"?: string;
         "fontSize"?: string;
         "gap"?: string;
-        "onSpxEditDiscardChanges"?: (event: CustomEvent<any>) => void;
-        "onSpxEditSaveChanges"?: (event: CustomEvent<any>) => void;
+        "onSpxEditButtonDiscardChanges"?: (event: CustomEvent<any>) => void;
+        "onSpxEditButtonSaveChanges"?: (event: CustomEvent<any>) => void;
         "padding"?: string;
         "position"?: string;
         "styling"?: string;
@@ -426,6 +449,7 @@ declare namespace LocalJSX {
         "childItemMarginLeft"?: string;
         "childItemPadding"?: string;
         "childPlacement"?: string;
+        "fontSize"?: string;
         "iconChild"?: string;
         "itemUnderline"?: boolean;
         "itemUnderlineHover"?: boolean;
@@ -460,13 +484,30 @@ declare namespace LocalJSX {
         "imageBorderRadius"?: string;
         "imageMaxHeight"?: string;
         "imageObjectPosition"?: string;
+        "mobile"?: number;
+        "onSpxSectionSingleLoaded"?: (event: CustomEvent<any>) => void;
         "post"?: string;
         "styling"?: string;
+        "tableOfContents"?: boolean;
+        "tableOfContentsBackground"?: string;
+        "tableOfContentsBorder"?: string;
+        "tableOfContentsBorderRadius"?: string;
+        "tableOfContentsHeading"?: string;
+        "tableOfContentsHeadingColor"?: string;
+        "tableOfContentsHeadingFontSize"?: string;
+        "tableOfContentsHeadingMarginBottom"?: string;
+        "tableOfContentsItemColor"?: string;
+        "tableOfContentsItemColorActive"?: string;
+        "tableOfContentsItemGap"?: string;
+        "tableOfContentsMarginTop"?: string;
+        "tableOfContentsOffset"?: any;
+        "tableOfContentsPadding"?: string;
         "titleColor"?: string;
         "titleFontSize"?: string;
         "titleMarginTop"?: string;
     }
     interface SpxShare {
+        "fontSize"?: string;
         "itemBackgroundColor"?: string;
         "itemBorderRadius"?: string;
         "itemColor"?: string;

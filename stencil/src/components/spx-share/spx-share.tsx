@@ -16,12 +16,14 @@ export class SpxShare {
 
     @Prop({reflectToAttr: true}) target: string = '_blank';
 
-    @Prop({reflectToAttr: true}) itemGap: string = '8px';
-    @Prop({reflectToAttr: true}) itemSize: string = '16px';
+    @Prop({reflectToAttr: true}) fontSize: string = constants.styleFontSize;
+
+    @Prop({reflectToAttr: true}) itemGap: string = '0.5em';
+    @Prop({reflectToAttr: true}) itemSize: string = '1em';
     @Prop({reflectToAttr: true}) itemColor: string;
     @Prop({reflectToAttr: true}) itemBackgroundColor: string;
-    @Prop({reflectToAttr: true}) itemPadding: string = '8px';
-    @Prop({reflectToAttr: true}) itemBorderRadius: string = '0.15em';
+    @Prop({reflectToAttr: true}) itemPadding: string = '0.5em';
+    @Prop({reflectToAttr: true}) itemBorderRadius: string = constants.styleBorderRadius;
 
     @State() location;
 
@@ -31,6 +33,7 @@ export class SpxShare {
 
     render() {
         const styleDefault = css({
+            fontSize: constants.styleFontBase('share', this.fontSize),
             display: 'grid',
             gridAutoFlow: this.vertical ? 'row' : 'column',
             gridAutoColumns: !this.vertical && 'max-content',

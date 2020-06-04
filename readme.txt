@@ -16,9 +16,15 @@ Supercharge your workflow using handy components for the next project. Works wit
 == Changelog ==
 
 = 1.21 =
-* Share: custom colour options.
-* New: add new gallery helper function.
+* New: new color scale CSS variable for all colour attributes
+* New: unified gallery helper function.
+* Enhanced: all components (where applicable) have a font-size attribute with variable set in place now.
+* Enhanced: all font-sizes and paddings/margins are now in em.
+* Accordion: add color attributes for header and content.
 * Navigation: fix mobile menu link styles.
+* Navigation: change wrapper tag to <nav>.
+* Navigation: add default mobile breakpoint. (768)
+* Share: added custom colour options.
 
 = 1.20 =
 * New: Snackbar component.
