@@ -366,6 +366,8 @@ export class SpxNavigation {
                 gridAutoFlow: 'column',
                 gridColumnGap: 'var(--spx-navigation-child-indicator-gap, ' + this.childIndicatorGap + ')',
                 textDecoration: this.itemUnderline ? 'underline' : 'none',
+                width: '100%',
+                fontSize: 'inherit',
 
                 '&:hover': {
                     textDecoration: this.itemUnderlineHover && 'underline'

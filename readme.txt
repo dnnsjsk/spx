@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.22 =
+* Navigation: fix font-size inheritance.
+
 = 1.21 =
 * New: new color scale CSS variable for all colour attributes
 * New: unified gallery helper function.
