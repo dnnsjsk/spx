@@ -1,6 +1,6 @@
 import {Component, Element, h, Host, Prop, State} from '@stencil/core';
 import {css, cx} from "emotion";
-import * as constants from '../../constants/style.js'
+import * as constants from '../../constants/style.js';
 
 @Component({
     tag: 'spx-accordion',

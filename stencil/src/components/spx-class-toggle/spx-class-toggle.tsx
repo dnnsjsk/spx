@@ -8,29 +8,14 @@ import {css} from "emotion";
 export class SpxClassToggle {
     @Element() el: HTMLElement;
 
-    @Prop({reflectToAttr: true}) toggle: string;
+    @Prop({reflectToAttr: true}) toggle: string = 'spx-class-toggle--active';
     @Prop({reflectToAttr: true}) target: string;
     @Prop({reflectToAttr: true}) local: string;
 
-    @State() targetState;
-    @State() classesArray;
+    @State() classesArray = this.toggle.replace(/ /g, ',').split(',');
     @State() toggled;
 
     componentDidLoad() {
-
-        /** Convert Prop for iteration. */
-
-        if (this.toggle) {
-            this.classesArray = this.toggle.replace(/ /g, ',').split(',');
-        }
-
-        /** Set target state. */
-
-        if (this.target) {
-            this.targetState = document.querySelector(this.target);
-        } else {
-            this.targetState = this.el.querySelector(':scope > *');
-        }
 
         /** Check if local storage is set. */
 
@@ -45,17 +30,20 @@ export class SpxClassToggle {
 
     toggleClasses() {
         this.classesArray.forEach(item => {
-            if (this.targetState.classList.contains(item)) {
-                this.targetState.classList.remove(item);
-                if (this.local) {
-                    localStorage.removeItem(this.local);
-                }
-            } else {
-                this.targetState.classList.add(item);
-                if (this.local) {
-                    localStorage.setItem(this.local, String(true));
-                }
-            }
+            (this.target ? document.querySelectorAll(this.target) : this.el.querySelectorAll('*'))
+                .forEach(itemInner => {
+                    if (itemInner.classList.contains(item)) {
+                        itemInner.classList.remove(item);
+                        if (this.local) {
+                            localStorage.removeItem(this.local);
+                        }
+                    } else {
+                        itemInner.classList.add(item);
+                        if (this.local) {
+                            localStorage.setItem(this.local, String(true));
+                        }
+                    }
+                })
         });
     }
 
@@ -63,11 +51,14 @@ export class SpxClassToggle {
 
     addClasses() {
         this.classesArray.forEach(item => {
-            if (this.targetState.classList.contains(item)) {
-                this.targetState.classList.remove(item);
-            } else {
-                this.targetState.classList.add(item);
-            }
+            (this.target ? document.querySelectorAll(this.target) : this.el.querySelectorAll('*'))
+                .forEach(itemInner => {
+                    if (itemInner.classList.contains(item)) {
+                        itemInner.classList.remove(item);
+                    } else {
+                        itemInner.classList.add(item);
+                    }
+                })
         });
     }
 

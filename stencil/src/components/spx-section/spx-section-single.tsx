@@ -59,7 +59,7 @@ export class SpxSectionSingle {
 
     tableOfContentsContainer: HTMLElement;
 
-    @Event({eventName: 'spxSectionSingleLoaded'}) spxSectionSingleLoaded: EventEmitter;
+    @Event({eventName: 'spxSectionSingleDidLoad'}) spxSectionSingleDidLoad: EventEmitter;
 
     /** Watch post prop and parse to iteratable array. */
 
@@ -86,7 +86,7 @@ export class SpxSectionSingle {
 
         /** Emit event when component has loaded. */
 
-        this.spxSectionSingleLoaded.emit({target: 'document'});
+        this.spxSectionSingleDidLoad.emit({target: 'document'});
 
         /** Use slot to render content if it's set. */
 
@@ -142,7 +142,7 @@ export class SpxSectionSingle {
 
         /** Emit event after render. */
 
-        this.spxSectionSingleLoaded.emit({target: 'document'});
+        this.spxSectionSingleDidLoad.emit({target: 'document'});
     }
 
     render() {

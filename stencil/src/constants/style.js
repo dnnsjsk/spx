@@ -31,6 +31,12 @@ export const styleBase = css({
     fontFamily: styleFontFamily,
 });
 
+/** Block style. */
+
+export const styleBlock = css({
+    display: styleDisplay,
+});
+
 /** Positioning properties. */
 
 export const stylePosition = (component, array, distanceX, distanceY) => ({

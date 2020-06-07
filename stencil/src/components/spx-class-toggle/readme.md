@@ -7,11 +7,11 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type     | Default     |
-| -------- | --------- | ----------- | -------- | ----------- |
-| `local`  | `local`   |             | `string` | `undefined` |
-| `target` | `target`  |             | `string` | `undefined` |
-| `toggle` | `toggle`  |             | `string` | `undefined` |
+| Property | Attribute | Description | Type     | Default                      |
+| -------- | --------- | ----------- | -------- | ---------------------------- |
+| `local`  | `local`   |             | `string` | `undefined`                  |
+| `target` | `target`  |             | `string` | `undefined`                  |
+| `toggle` | `toggle`  |             | `string` | `'spx-class-toggle--active'` |
 
 
 ----------------------------------------------

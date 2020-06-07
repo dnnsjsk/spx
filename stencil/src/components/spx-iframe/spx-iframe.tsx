@@ -16,6 +16,11 @@ export class SpxIframe {
     @State() parent;
     @State() parentHeight;
 
+    @Listen('resize', {target: 'window'})
+    handleResizer() {
+        this.handleResize()
+    }
+
     /** Resize function to keep src element in proportion. */
 
     handleResize() {
@@ -23,11 +28,6 @@ export class SpxIframe {
         this.iframe.style.transform = 'scale(calc((' + ratio + '))';
         this.parentHeight = this.parent.offsetHeight;
         this.iframe.style.height = this.parentHeight / ratio + 'px';
-    }
-
-    @Listen('resize', {target: 'window'})
-    handleResizer() {
-        this.handleResize()
     }
 
     componentDidUpdate() {

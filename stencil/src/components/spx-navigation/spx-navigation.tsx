@@ -1,4 +1,4 @@
-import {Component, h, Host, Element, Prop, State, Watch, Listen} from '@stencil/core';
+import {Component, h, Host, Element, Prop, State, Watch, Listen, Event, EventEmitter} from '@stencil/core';
 import {css, cx} from "emotion";
 import * as constants from '../../constants/style.js';
 import {createPopper} from '@popperjs/core';
@@ -48,6 +48,8 @@ export class SpxNavigation {
 
     @Prop({reflectToAttr: true}) mobilePlacement: string = 'start';
 
+    @Event({eventName: 'spxNavigationDidLoad'}) spxNavigationDidLoad: EventEmitter;
+
     /** Init popper on mouse/touch enter. */
 
     @Listen('ontouchstart', {target: this.el})
@@ -93,6 +95,10 @@ export class SpxNavigation {
         /** Sort menu items. */
 
         this.sortMenuItem();
+
+        /** Emit event after render. */
+
+        this.spxNavigationDidLoad.emit({target: 'document'});
     }
 
     componentDidUpdate() {
@@ -127,7 +133,7 @@ export class SpxNavigation {
 
                         data-order={object['menu_order']}>
 
-                        <a href={object['url']}>
+                        <a href={object['url'] === '#' ? '#0' : object['url']}>
                             {object['title']}
 
                             {(objectChild && (!this.mobileBP && !this.vertical) && !this.iconChild) ?

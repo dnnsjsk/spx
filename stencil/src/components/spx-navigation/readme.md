@@ -37,6 +37,13 @@
 | `vertical`                  | `vertical`                     |             | `boolean` | `undefined`                                     |
 
 
+## Events
+
+| Event                  | Description | Type               |
+| ---------------------- | ----------- | ------------------ |
+| `spxNavigationDidLoad` |             | `CustomEvent<any>` |
+
+
 ## Dependencies
 
 ### Depends on

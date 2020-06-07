@@ -8,9 +8,6 @@
 
 namespace spx;
 
-use Hybrid\Breadcrumbs\Breadcrumbs;
-use Hybrid\Breadcrumbs\Trail;
-
 class get {
 
 	/**

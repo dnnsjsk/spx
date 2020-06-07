@@ -22,6 +22,10 @@ module.exports = {
                     to: path.resolve(__dirname, '../../../../../releases/spx-release/includes'),
                 },
                 {
+                    from: path.resolve(__dirname, 'vendor'),
+                    to: path.resolve(__dirname, '../../../../../releases/spx-release/vendor'),
+                },
+                {
                     from: path.resolve(__dirname, 'spx.php'),
                     to: path.resolve(__dirname, '../../../../../releases/spx-release'),
                 },

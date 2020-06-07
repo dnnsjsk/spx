@@ -34,8 +34,8 @@ export namespace Components {
         "viewportMarginLeft": string;
         "viewportMarginRight": string;
         "viewportMarginTop": string;
-        "x": string;
-        "y": string;
+        "x": number;
+        "y": number;
     }
     interface SpxClassToggle {
         "local": string;
@@ -113,6 +113,15 @@ export namespace Components {
         "browserBackground": string;
         "browserUrlBarBackground": string;
         "browserUrlBarBorder": string;
+        "color": string;
+        "colorGalaxyS8": string;
+        "colorGooglePixel": string;
+        "colorIpadPro": string;
+        "colorIphone8": string;
+        "colorMacbook": string;
+        "colorMacbookPro": string;
+        "imagePosition": string;
+        "src": string;
         "type": string;
     }
     interface SpxNavigation {
@@ -142,6 +151,9 @@ export namespace Components {
         "parentItemPadding": string;
         "styling": string;
         "vertical": boolean;
+    }
+    interface SpxOffset {
+        "target": string;
     }
     interface SpxScrollspy {
         "contentClass": string;
@@ -289,6 +301,12 @@ declare global {
         prototype: HTMLSpxNavigationElement;
         new (): HTMLSpxNavigationElement;
     };
+    interface HTMLSpxOffsetElement extends Components.SpxOffset, HTMLStencilElement {
+    }
+    var HTMLSpxOffsetElement: {
+        prototype: HTMLSpxOffsetElement;
+        new (): HTMLSpxOffsetElement;
+    };
     interface HTMLSpxScrollspyElement extends Components.SpxScrollspy, HTMLStencilElement {
     }
     var HTMLSpxScrollspyElement: {
@@ -326,6 +344,7 @@ declare global {
         "spx-masonry": HTMLSpxMasonryElement;
         "spx-mockup": HTMLSpxMockupElement;
         "spx-navigation": HTMLSpxNavigationElement;
+        "spx-offset": HTMLSpxOffsetElement;
         "spx-scrollspy": HTMLSpxScrollspyElement;
         "spx-section-single": HTMLSpxSectionSingleElement;
         "spx-share": HTMLSpxShareElement;
@@ -361,8 +380,8 @@ declare namespace LocalJSX {
         "viewportMarginLeft"?: string;
         "viewportMarginRight"?: string;
         "viewportMarginTop"?: string;
-        "x"?: string;
-        "y"?: string;
+        "x"?: number;
+        "y"?: number;
     }
     interface SpxClassToggle {
         "local"?: string;
@@ -435,6 +454,15 @@ declare namespace LocalJSX {
         "browserBackground"?: string;
         "browserUrlBarBackground"?: string;
         "browserUrlBarBorder"?: string;
+        "color"?: string;
+        "colorGalaxyS8"?: string;
+        "colorGooglePixel"?: string;
+        "colorIpadPro"?: string;
+        "colorIphone8"?: string;
+        "colorMacbook"?: string;
+        "colorMacbookPro"?: string;
+        "imagePosition"?: string;
+        "src"?: string;
         "type"?: string;
     }
     interface SpxNavigation {
@@ -456,6 +484,7 @@ declare namespace LocalJSX {
         "menu"?: string;
         "mobile"?: number;
         "mobilePlacement"?: string;
+        "onSpxNavigationDidLoad"?: (event: CustomEvent<any>) => void;
         "parentItemBackground"?: string;
         "parentItemBackgroundHover"?: string;
         "parentItemColor"?: string;
@@ -464,6 +493,9 @@ declare namespace LocalJSX {
         "parentItemPadding"?: string;
         "styling"?: string;
         "vertical"?: boolean;
+    }
+    interface SpxOffset {
+        "target"?: string;
     }
     interface SpxScrollspy {
         "contentClass"?: string;
@@ -485,7 +517,7 @@ declare namespace LocalJSX {
         "imageMaxHeight"?: string;
         "imageObjectPosition"?: string;
         "mobile"?: number;
-        "onSpxSectionSingleLoaded"?: (event: CustomEvent<any>) => void;
+        "onSpxSectionSingleDidLoad"?: (event: CustomEvent<any>) => void;
         "post"?: string;
         "styling"?: string;
         "tableOfContents"?: boolean;
@@ -551,6 +583,7 @@ declare namespace LocalJSX {
         "spx-masonry": SpxMasonry;
         "spx-mockup": SpxMockup;
         "spx-navigation": SpxNavigation;
+        "spx-offset": SpxOffset;
         "spx-scrollspy": SpxScrollspy;
         "spx-section-single": SpxSectionSingle;
         "spx-share": SpxShare;
@@ -573,6 +606,7 @@ declare module "@stencil/core" {
             "spx-masonry": LocalJSX.SpxMasonry & JSXBase.HTMLAttributes<HTMLSpxMasonryElement>;
             "spx-mockup": LocalJSX.SpxMockup & JSXBase.HTMLAttributes<HTMLSpxMockupElement>;
             "spx-navigation": LocalJSX.SpxNavigation & JSXBase.HTMLAttributes<HTMLSpxNavigationElement>;
+            "spx-offset": LocalJSX.SpxOffset & JSXBase.HTMLAttributes<HTMLSpxOffsetElement>;
             "spx-scrollspy": LocalJSX.SpxScrollspy & JSXBase.HTMLAttributes<HTMLSpxScrollspyElement>;
             "spx-section-single": LocalJSX.SpxSectionSingle & JSXBase.HTMLAttributes<HTMLSpxSectionSingleElement>;
             "spx-share": LocalJSX.SpxShare & JSXBase.HTMLAttributes<HTMLSpxShareElement>;

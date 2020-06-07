@@ -15,6 +15,19 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.23 =
+* NEW: Native Oxygen integration. (animate, class-toggle, mockup & offset component)
+* New: Offset component.
+* Navigation: add loaded event.
+* Navigation: prevent hash link from jumping to the top.
+* Animate: add sane defaults.
+* Class toggle: add sane defaults.
+* Class toggle: optimized selector selection.
+* Class toggle: target will now toggle all elements with selector.
+* Mockup: 13 new responsive devices. (https://picturepan2.github.io/devices.css/)
+* Enhanced: spx now has it's own page in the admin.
+* Enhanced: alignments on admin page.
+
 = 1.22 =
 * Navigation: fix font-size inheritance.
 

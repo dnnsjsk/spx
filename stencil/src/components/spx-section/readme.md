@@ -44,9 +44,9 @@
 
 ## Events
 
-| Event                    | Description | Type               |
-| ------------------------ | ----------- | ------------------ |
-| `spxSectionSingleLoaded` |             | `CustomEvent<any>` |
+| Event                     | Description | Type               |
+| ------------------------- | ----------- | ------------------ |
+| `spxSectionSingleDidLoad` |             | `CustomEvent<any>` |
 
 
 ## Dependencies

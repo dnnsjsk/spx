@@ -31,7 +31,7 @@ function spxPluginUpdater() {
 			'item_id' => SPX_ITEM_ID,
 			'author'  => 'Harmoni',
 			'url'     => home_url(),
-			'beta'    => false,
+			'beta'    => FALSE,
 		)
 	);
 
@@ -46,7 +46,7 @@ add_action( 'admin_init', 'spxPluginUpdater', 0 );
  */
 
 function spxLicenseMenu() {
-	add_plugins_page( 'SPX License', 'SPX License', 'manage_options', SPX_LICENSE_PAGE, 'spxLicensePage' );
+	add_menu_page( 'spx', 'spx', 'manage_options', SPX_LICENSE_PAGE, 'spxLicensePage' );
 }
 add_action('admin_menu', 'spxLicenseMenu');
 
@@ -66,19 +66,19 @@ function spxLicensePage() {
 						<th scope="row" valign="top">
 							<?php _e('License Key'); ?>
 						</th>
-						<td>
+						<td style="display: flex; align-items: center;">
 							<input id="spx_license_key" name="spx_license_key" type="text" class="regular-text" value="<?php esc_attr_e( $license ); ?>" />
-							<label class="description" for="spx_license_key"><?php _e('Enter your license key'); ?></label>
+							<label style="margin-left: 20px;" class="description" for="spx_license_key"><?php _e('Enter your license key'); ?></label>
 						</td>
 					</tr>
-					<?php if( false !== $license ) { ?>
+					<?php if( FALSE !== $license ) { ?>
 						<tr valign="top">
 							<th scope="row" valign="top">
 								<?php _e('Activate License'); ?>
 							</th>
-							<td>
-								<?php if( $status !== false && $status == 'valid' ) { ?>
-									<span style="color:green;"><?php _e('active'); ?></span>
+							<td style="display: flex; align-items: center;">
+								<?php if( $status !== FALSE && $status == 'valid' ) { ?>
+									<span style="color:green; margin-right: 20px;"><?php _e('active'); ?></span>
 									<?php wp_nonce_field( 'spx_nonce', 'spx_nonce' ); ?>
 									<input type="submit" class="button-secondary" name="spx_license_deactivate" value="<?php _e('Deactivate License'); ?>"/>
 								<?php } else {
@@ -142,7 +142,7 @@ function spxActivateLicense() {
 		);
 
 		// Call the custom API.
-		$response = wp_remote_post( SPX_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+		$response = wp_remote_post( SPX_STORE_URL, array( 'timeout' => 15, 'sslverify' => FALSE, 'body' => $api_params ) );
 
 		// make sure the response came back okay
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
@@ -157,7 +157,7 @@ function spxActivateLicense() {
 
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
-			if ( false === $license_data->success ) {
+			if ( FALSE === $license_data->success ) {
 
 				switch( $license_data->error ) {
 
@@ -253,7 +253,7 @@ function spxDeactivateLicense() {
 		);
 
 		// Call the custom API.
-		$response = wp_remote_post( SPX_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+		$response = wp_remote_post( SPX_STORE_URL, array( 'timeout' => 15, 'sslverify' => FALSE, 'body' => $api_params ) );
 
 		// make sure the response came back okay
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
@@ -306,10 +306,10 @@ function spxCheckLicense() {
 	);
 
 	// Call the custom API.
-	$response = wp_remote_post( SPX_STORE_URL, array( 'timeout' => 15, 'sslverify' => false, 'body' => $api_params ) );
+	$response = wp_remote_post( SPX_STORE_URL, array( 'timeout' => 15, 'sslverify' => FALSE, 'body' => $api_params ) );
 
 	if ( is_wp_error( $response ) )
-		{return false;}
+		{return FALSE;}
 
 	$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
@@ -344,7 +344,14 @@ function spxAdminNotices() {
 
 			case 'true':
 			default:
-				// Developers can put a custom success message here for when activation is successful if they way.
+				$message = urldecode( $_GET['message'] );
+				?>
+				<div class="notice notice-success">
+					<p><?php echo $message; ?></p>
+				</div>
+				<?php
+				break;
+
 				break;
 
 		}

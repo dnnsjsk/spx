@@ -32,14 +32,14 @@ class init {
 				plugins_url( '../assets/js/build/spx.esm.js', dirname( __FILE__ ) ),
 				array(),
 				filemtime( SPX_DIR . '/assets/js/build/spx.esm.js' ),
-				false );
+				FALSE );
 
 			wp_enqueue_script(
 				'spx-nomodule',
 				plugins_url( '../assets/js/build/spx.js', dirname( __FILE__ ) ),
 				array(),
 				filemtime( SPX_DIR . '/assets/js/build/spx.js' ),
-				false );
+				FALSE );
 
 			wp_localize_script( 'spx-module', 'spx', $localizeArray );
 
