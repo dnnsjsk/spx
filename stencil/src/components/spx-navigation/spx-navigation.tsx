@@ -37,7 +37,6 @@ export class SpxNavigation {
     @Prop({reflectToAttr: true}) childChildGap: string = '0.8em';
     @Prop({reflectToAttr: true}) childIndicatorGap: string = '0.2em';
     @Prop({reflectToAttr: true}) childItemPadding: string = '0.6em 0.8em';
-    @Prop({reflectToAttr: true}) childItemMarginLeft: string = '0.8em';
     @Prop({reflectToAttr: true}) childItemColor: string = constants.stylePrimary700;
     @Prop({reflectToAttr: true}) childItemColorHover: string = constants.stylePrimary900;
     @Prop({reflectToAttr: true}) childItemBackground: string = '#ffffff';
@@ -47,6 +46,12 @@ export class SpxNavigation {
     @Prop({reflectToAttr: true}) iconChild: string;
 
     @Prop({reflectToAttr: true}) mobilePlacement: string = 'start';
+    @Prop({reflectToAttr: true}) mobileItemPadding: string = '0.6em';
+    @Prop({reflectToAttr: true}) mobileItemNestedMarginLeft: string = '0.8em';
+    @Prop({reflectToAttr: true}) mobileItemColor: string = constants.stylePrimary800;
+    @Prop({reflectToAttr: true}) mobileItemColorHover: string = constants.stylePrimary900;
+    @Prop({reflectToAttr: true}) mobileItemBackground: string = '#ffffff';
+    @Prop({reflectToAttr: true}) mobileItemBackgroundHover: string = constants.stylePrimary100;
 
     @Event({eventName: 'spxNavigationDidLoad'}) spxNavigationDidLoad: EventEmitter;
 
@@ -238,7 +243,7 @@ export class SpxNavigation {
 
         /** Init popper for mobile menu. */
 
-        let mobileMenu = this.el.querySelector('.spx-navigation-mobile-button');
+        let mobileMenu = this.el.querySelector('.spx-navigation__mobile-button');
 
         if (mobileMenu) {
             createPopper(mobileMenu, mobileMenu.querySelector('.spx-navigation--mobile'), {
@@ -265,9 +270,9 @@ export class SpxNavigation {
                 listStyleType: 'none',
 
                 'ul': {
-                    paddingLeft: (this.mobileBP || this.vertical) && 'var(--spx-navigation-child-item-margin-left, ' + this.childItemMarginLeft + ')',
                     display: this.vertical && 'grid',
                     gridGap: this.vertical && 'var(--spx-navigation-parent-item-gap, ' + this.parentItemGap + ')',
+                    marginLeft: (this.mobileBP || this.vertical) && 'var(--spx-navigation-mobile-item-nested-margin-left, ' + this.mobileItemNestedMarginLeft + ')',
                 }
             },
 
@@ -294,31 +299,31 @@ export class SpxNavigation {
                         background: 'var(--spx-navigation-parent-item-background-hover, ' + this.parentItemBackgroundHover + ')',
                     }
                 },
+            },
 
-                '&.spx-navigation__item--has-child > .spx-navigation--child': {
-                    flexDirection: 'column',
-                    marginTop: this.vertical && 'var(--spx-navigation-parent-item-gap, ' + this.parentItemGap + ')',
+            '.spx-navigation__item--has-child > .spx-navigation--child': {
+                flexDirection: 'column',
+                marginTop: this.vertical && 'var(--spx-navigation-parent-item-gap, ' + this.parentItemGap + ')',
 
-                    'a': {
-                        width: '100%',
-                        whiteSpace: 'nowrap',
-                        color: !this.mobileBP && 'var(--spx-navigation-child-item-color, ' + this.childItemColor + ')',
-                        background: !this.mobileBP && 'var(--spx-navigation-child-item-background, ' + this.childItemBackground + ')',
+                'a': {
+                    width: '100%',
+                    whiteSpace: 'nowrap',
+                    color: !this.mobileBP && 'var(--spx-navigation-child-item-color, ' + this.childItemColor + ')',
+                    background: !this.mobileBP && 'var(--spx-navigation-child-item-background, ' + this.childItemBackground + ')',
 
-                        '&:hover': {
-                            color: !this.mobileBP && 'var(--spx-navigation-child-item-color-hover, ' + this.childItemColorHover + ')',
-                            background: !this.mobileBP && 'var(--spx-navigation-child-item-background-hover, ' + this.childItemBackgroundHover + ')',
-                        }
-                    },
-
-                    '::before': {
-                        content: '" "',
-                        position: 'relative',
-                        display: (this.mobileBP || this.vertical) ? 'none' : 'block',
-                        minHeight: 'var(--spx-navigation-child-gap, ' + this.childGap + ')',
-                        width: '100%',
+                    '&:hover': {
+                        color: !this.mobileBP && 'var(--spx-navigation-child-item-color-hover, ' + this.childItemColorHover + ')',
+                        background: !this.mobileBP && 'var(--spx-navigation-child-item-background-hover, ' + this.childItemBackgroundHover + ')',
                     }
                 },
+
+                '::before': {
+                    content: '" "',
+                    position: 'relative',
+                    display: (this.mobileBP || this.vertical) ? 'none' : 'block',
+                    minHeight: 'var(--spx-navigation-child-gap, ' + this.childGap + ')',
+                    width: '100%',
+                }
             },
 
             '.spx-navigation--child, .spx-navigation--mobile': {
@@ -335,10 +340,10 @@ export class SpxNavigation {
 
             ['li:hover > .spx-navigation--child, ' +
             'li:focus-within > .spx-navigation--child, ' +
-            '.spx-navigation-mobile-button:hover .spx-navigation--mobile, ' +
-            '.spx-navigation-mobile-button:focus-within .spx-navigation--mobile' +
-            '.spx-navigation-mobile-button:hover .spx-navigation--child, ' +
-            '.spx-navigation-mobile-button:focus-within .spx-navigation--child']: {
+            '.spx-navigation__mobile-button:hover .spx-navigation--mobile, ' +
+            '.spx-navigation__mobile-button:focus-within .spx-navigation--mobile' +
+            '.spx-navigation__mobile-button:hover .spx-navigation--child, ' +
+            '.spx-navigation__mobile-button:focus-within .spx-navigation--child']: {
                 opacity: '1',
                 pointerEvents: 'auto',
             },
@@ -380,7 +385,7 @@ export class SpxNavigation {
                 }
             },
 
-            '.spx-navigation-mobile-button': {
+            '.spx-navigation__mobile-button': {
                 cursor: 'pointer',
                 maxWidth: 'fit-content',
                 padding: 'var(--spx-navigation-parent-item-padding, ' + this.parentItemPadding + ')',
@@ -388,13 +393,14 @@ export class SpxNavigation {
                 background: 'var(--spx-navigation-parent-item-background, ' + this.parentItemBackground + ')',
 
                 'a': {
-                    color: 'var(--spx-navigation-child-item-color, ' + this.childItemColor + ')',
-                    background: 'var(--spx-navigation-child-item-background, ' + this.childItemBackground + ')'
-                },
+                    padding: 'var(--spx-navigation-mobile-item-padding, ' + this.mobileItemPadding + ')',
+                    color: 'var(--spx-navigation-mobile-item-color, ' + this.mobileItemColor + ')',
+                    background: 'var(--spx-navigation-mobile-item-background, ' + this.mobileItemBackground + ')',
 
-                '&:hover': {
-                    color: 'var(--spx-navigation-parent-item-color-hover, ' + this.parentItemColorHover + ')',
-                    background: 'var(--spx-navigation-parent-item-background-hover, ' + this.parentItemBackgroundHover + ')',
+                    '&:hover': {
+                        color: 'var(--spx-navigation-mobile-item-color-hover, ' + this.mobileItemColorHover + ')',
+                        background: 'var(--spx-navigation-mobile-item-background-hover, ' + this.mobileItemBackgroundHover + ')'
+                    },
                 },
 
                 '.spx-navigation--parent': {
@@ -430,7 +436,7 @@ export class SpxNavigation {
 
             /** Render mobile menu. */
 
-            <div class='spx-navigation-mobile-button'>
+            <div class='spx-navigation__mobile-button'>
                 Menu
                 {this.renderMenu(this.menuArray, 'parent', true)}
             </div>}

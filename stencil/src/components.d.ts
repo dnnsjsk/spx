@@ -133,7 +133,6 @@ export namespace Components {
         "childItemBackgroundHover": string;
         "childItemColor": string;
         "childItemColorHover": string;
-        "childItemMarginLeft": string;
         "childItemPadding": string;
         "childPlacement": string;
         "fontSize": string;
@@ -142,6 +141,12 @@ export namespace Components {
         "itemUnderlineHover": boolean;
         "menu": string;
         "mobile": number;
+        "mobileItemBackground": string;
+        "mobileItemBackgroundHover": string;
+        "mobileItemColor": string;
+        "mobileItemColorHover": string;
+        "mobileItemNestedMarginLeft": string;
+        "mobileItemPadding": string;
         "mobilePlacement": string;
         "parentItemBackground": string;
         "parentItemBackgroundHover": string;
@@ -474,7 +479,6 @@ declare namespace LocalJSX {
         "childItemBackgroundHover"?: string;
         "childItemColor"?: string;
         "childItemColorHover"?: string;
-        "childItemMarginLeft"?: string;
         "childItemPadding"?: string;
         "childPlacement"?: string;
         "fontSize"?: string;
@@ -483,6 +487,12 @@ declare namespace LocalJSX {
         "itemUnderlineHover"?: boolean;
         "menu"?: string;
         "mobile"?: number;
+        "mobileItemBackground"?: string;
+        "mobileItemBackgroundHover"?: string;
+        "mobileItemColor"?: string;
+        "mobileItemColorHover"?: string;
+        "mobileItemNestedMarginLeft"?: string;
+        "mobileItemPadding"?: string;
         "mobilePlacement"?: string;
         "onSpxNavigationDidLoad"?: (event: CustomEvent<any>) => void;
         "parentItemBackground"?: string;
