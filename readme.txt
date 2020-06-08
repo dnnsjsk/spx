@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.27 =
+* Animate: add easing options in Oxygen.
+
 = 1.26 =
 * Animate: fix animation in Oxygen editor.
 
