@@ -299,31 +299,31 @@ export class SpxNavigation {
                         background: 'var(--spx-navigation-parent-item-background-hover, ' + this.parentItemBackgroundHover + ')',
                     }
                 },
-            },
 
-            '.spx-navigation__item--has-child > .spx-navigation--child': {
-                flexDirection: 'column',
-                marginTop: this.vertical && 'var(--spx-navigation-parent-item-gap, ' + this.parentItemGap + ')',
+                '&.spx-navigation__item--has-child > .spx-navigation--child': {
+                    flexDirection: 'column',
+                    marginTop: this.vertical && 'var(--spx-navigation-parent-item-gap, ' + this.parentItemGap + ')',
 
-                'a': {
-                    width: '100%',
-                    whiteSpace: 'nowrap',
-                    color: !this.mobileBP && 'var(--spx-navigation-child-item-color, ' + this.childItemColor + ')',
-                    background: !this.mobileBP && 'var(--spx-navigation-child-item-background, ' + this.childItemBackground + ')',
+                    'a': {
+                        width: '100%',
+                        whiteSpace: 'nowrap',
+                        color: !this.mobileBP && 'var(--spx-navigation-child-item-color, ' + this.childItemColor + ')',
+                        background: !this.mobileBP && 'var(--spx-navigation-child-item-background, ' + this.childItemBackground + ')',
 
-                    '&:hover': {
-                        color: !this.mobileBP && 'var(--spx-navigation-child-item-color-hover, ' + this.childItemColorHover + ')',
-                        background: !this.mobileBP && 'var(--spx-navigation-child-item-background-hover, ' + this.childItemBackgroundHover + ')',
+                        '&:hover': {
+                            color: !this.mobileBP && 'var(--spx-navigation-child-item-color-hover, ' + this.childItemColorHover + ')',
+                            background: !this.mobileBP && 'var(--spx-navigation-child-item-background-hover, ' + this.childItemBackgroundHover + ')',
+                        }
+                    },
+
+                    '::before': {
+                        content: '" "',
+                        position: 'relative',
+                        display: (this.mobileBP || this.vertical) ? 'none' : 'block',
+                        minHeight: 'var(--spx-navigation-child-gap, ' + this.childGap + ')',
+                        width: '100%',
                     }
                 },
-
-                '::before': {
-                    content: '" "',
-                    position: 'relative',
-                    display: (this.mobileBP || this.vertical) ? 'none' : 'block',
-                    minHeight: 'var(--spx-navigation-child-gap, ' + this.childGap + ')',
-                    width: '100%',
-                }
             },
 
             '.spx-navigation--child, .spx-navigation--mobile': {

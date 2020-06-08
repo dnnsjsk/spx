@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.25 =
+* Navigation: fix sub menu positioning.
+
 = 1.24 =
 * Navigation: add options for mobile items. (padding, color, color-hover, background & background-hover)
 
