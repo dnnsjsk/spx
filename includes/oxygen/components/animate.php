@@ -174,7 +174,7 @@ class spxOxygenAnimate extends spxOxygenElement {
 				'type'      => 'buttons-list',
 				'name'      => 'Only animate once',
 				'slug'      => 'spxAnimateOnce',
-				'condition' => 'viewport=true',
+				'condition' => 'spxAnimateViewport=true',
 				"selector"  => $this->selector(),
 			)
 

@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.26 =
+* Animate: fix animation in Oxygen editor.
+
 = 1.25 =
 * Navigation: fix sub menu positioning.
 

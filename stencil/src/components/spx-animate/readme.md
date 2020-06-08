@@ -13,7 +13,7 @@
 | `duration`             | `duration`               |             | `number`  | `1`            |
 | `ease`                 | `ease`                   |             | `string`  | `'power1.out'` |
 | `once`                 | `once`                   |             | `boolean` | `undefined`    |
-| `opacity`              | `opacity`                |             | `number`  | `0`            |
+| `opacity`              | `opacity`                |             | `number`  | `1`            |
 | `stagger`              | `stagger`                |             | `number`  | `0.15`         |
 | `target`               | `target`                 |             | `string`  | `'*'`          |
 | `viewport`             | `viewport`               |             | `boolean` | `undefined`    |
