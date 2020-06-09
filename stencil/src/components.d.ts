@@ -72,6 +72,7 @@ export namespace Components {
         "textEdit": string;
         "textSave": string;
         "textSuccess": string;
+        "type": string;
     }
     interface SpxGroup {
     }
@@ -425,6 +426,7 @@ declare namespace LocalJSX {
         "textEdit"?: string;
         "textSave"?: string;
         "textSuccess"?: string;
+        "type"?: string;
     }
     interface SpxGroup {
     }

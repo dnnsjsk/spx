@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.28 =
+* Edit Button: added wp_options support.
+
 = 1.27 =
 * Animate: add easing options in Oxygen.
 

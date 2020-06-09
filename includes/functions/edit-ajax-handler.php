@@ -7,19 +7,35 @@
  */
 
 function spxEditButtonAjaxHandler() {
-	if ( current_user_can( 'edit_posts' ) ) {
+	if ( current_user_can( 'manage_options' ) ) {
 
 		/** Get post ID. */
 
 		$post_id = $_POST['post_id'];
+		$type    = $_POST['type'];
 
-		/** For each loop. */
+		if ( $type === 'acf' ) {
 
-		foreach ( $_POST as $key => $value ) {
+			/** For each loop. */
 
-			/** Update ACF field. */
+			foreach ( $_POST as $key => $value ) {
 
-			update_field( $key, $value, $post_id );
+				/** Update ACF field. */
+
+				update_field( $key, esc_html( $value ), $post_id );
+			}
+
+		} else {
+
+			/** For each loop. */
+
+			foreach ( $_POST as $key => $value ) {
+
+				/** Update option. */
+
+				update_option( $key, esc_html( $value ) );
+			}
+
 		}
 
 		/** Create hook. */
@@ -32,4 +48,8 @@ function spxEditButtonAjaxHandler() {
 	}
 }
 
-add_action( 'wp_ajax_spxEditButtonAjaxHandler', 'spxEditButtonAjaxHandler' );
+add_action( 'plugins_loaded', function () {
+	if ( current_user_can( 'manage_options' ) ) {
+		add_action( 'wp_ajax_spxEditButtonAjaxHandler', 'spxEditButtonAjaxHandler' );
+	}
+} );

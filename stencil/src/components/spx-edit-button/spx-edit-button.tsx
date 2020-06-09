@@ -12,6 +12,8 @@ export class SpxEditButton {
 
     @Prop({reflectToAttr: true}) styling: string;
 
+    @Prop({reflectToAttr: true}) type: string = 'option';
+
     @Prop({reflectToAttr: true}) textEdit: string = 'Edit site';
     @Prop({reflectToAttr: true}) textSave: string = 'Save';
     @Prop({reflectToAttr: true}) textDiscard: string = 'Discard';
@@ -116,7 +118,7 @@ export class SpxEditButton {
                 credentials: 'same-origin',
                 headers: new Headers({'Content-Type': 'application/x-www-form-urlencoded'}),
                 // @ts-ignore
-                body: 'action=spxEditButtonAjaxHandler' + getBodyString() + '' + '&post_id=' + spx.postId + ''
+                body: 'action=spxEditButtonAjaxHandler' + getBodyString() + '' + '&post_id=' + spx.postId + '' + '&type=' + this.type + ''
             })
                 .then((response) => {
                     if (response.status === 200) {

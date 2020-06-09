@@ -27,6 +27,7 @@
 | `textEdit`          | `text-edit`          |             | `string`  | `'Edit site'`                 |
 | `textSave`          | `text-save`          |             | `string`  | `'Save'`                      |
 | `textSuccess`       | `text-success`       |             | `string`  | `'Save was successful.'`      |
+| `type`              | `type`               |             | `string`  | `'option'`                    |
 
 
 ## Events
