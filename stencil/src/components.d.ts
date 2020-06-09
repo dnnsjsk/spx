@@ -62,6 +62,7 @@ export namespace Components {
         "colorDiscard": string;
         "distanceX": string;
         "distanceY": string;
+        "editId": string;
         "fontSize": string;
         "gap": string;
         "padding": string;
@@ -414,10 +415,11 @@ declare namespace LocalJSX {
         "colorDiscard"?: string;
         "distanceX"?: string;
         "distanceY"?: string;
+        "editId"?: string;
         "fontSize"?: string;
         "gap"?: string;
-        "onSpxEditButtonDiscardChanges"?: (event: CustomEvent<any>) => void;
-        "onSpxEditButtonSaveChanges"?: (event: CustomEvent<any>) => void;
+        "onSpxEditButtonDiscard"?: (event: CustomEvent<any>) => void;
+        "onSpxEditButtonSave"?: (event: CustomEvent<any>) => void;
         "padding"?: string;
         "position"?: string;
         "styling"?: string;

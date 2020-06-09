@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.29 =
+* Edit Button: add JS events and edit-id capabilities.
+
 = 1.28 =
 * Edit Button: added wp_options support.
 

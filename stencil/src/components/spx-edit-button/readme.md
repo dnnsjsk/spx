@@ -17,6 +17,7 @@
 | `colorDiscard`      | `color-discard`      |             | `string`  | `'#ffffff'`                   |
 | `distanceX`         | `distance-x`         |             | `string`  | `'1em'`                       |
 | `distanceY`         | `distance-y`         |             | `string`  | `'1em'`                       |
+| `editId`            | `edit-id`            |             | `string`  | `undefined`                   |
 | `fontSize`          | `font-size`          |             | `string`  | `constants.styleFontSize`     |
 | `gap`               | `gap`                |             | `string`  | `'0.4em'`                     |
 | `padding`           | `padding`            |             | `string`  | `'0.8em 1.2em'`               |
@@ -32,10 +33,10 @@
 
 ## Events
 
-| Event                         | Description | Type               |
-| ----------------------------- | ----------- | ------------------ |
-| `spxEditButtonDiscardChanges` |             | `CustomEvent<any>` |
-| `spxEditButtonSaveChanges`    |             | `CustomEvent<any>` |
+| Event                  | Description | Type               |
+| ---------------------- | ----------- | ------------------ |
+| `spxEditButtonDiscard` |             | `CustomEvent<any>` |
+| `spxEditButtonSave`    |             | `CustomEvent<any>` |
 
 
 ## Dependencies

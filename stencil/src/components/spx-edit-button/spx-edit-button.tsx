@@ -13,6 +13,7 @@ export class SpxEditButton {
     @Prop({reflectToAttr: true}) styling: string;
 
     @Prop({reflectToAttr: true}) type: string = 'option';
+    @Prop({reflectToAttr: true}) editId: string;
 
     @Prop({reflectToAttr: true}) textEdit: string = 'Edit site';
     @Prop({reflectToAttr: true}) textSave: string = 'Save';
@@ -35,8 +36,8 @@ export class SpxEditButton {
 
     @Prop({reflectToAttr: true}) gap: string = '0.4em';
 
-    @Event({eventName: 'spxEditButtonDiscardChanges'}) spxEditButtonDiscardChanges: EventEmitter;
-    @Event({eventName: 'spxEditButtonSaveChanges'}) spxEditButtonSaveChanges: EventEmitter;
+    @Event({eventName: 'spxEditButtonSave'}) spxEditButtonSave: EventEmitter;
+    @Event({eventName: 'spxEditButtonDiscard'}) spxEditButtonDiscard: EventEmitter;
 
     @State() open: boolean = false;
     @State() loading: boolean = false;
@@ -50,7 +51,7 @@ export class SpxEditButton {
 
         /** Generate edit components around text. */
 
-        let elements = document.querySelectorAll('[data-spx-edit]');
+        let elements = this.editId ? document.querySelectorAll('[data-spx-edit][data-spx-edit-id=' + this.editId + ']') : document.querySelectorAll('[data-spx-edit]');
 
         elements.forEach(item => {
             let field = item.getAttribute('data-spx-edit');
@@ -67,7 +68,7 @@ export class SpxEditButton {
 
         /** Emit closing event to document. */
 
-        this.spxEditButtonDiscardChanges.emit({target: 'document'});
+        this.spxEditButtonDiscard.emit({target: 'document'});
     }
 
     onClickSave() {
@@ -102,7 +103,7 @@ export class SpxEditButton {
 
             /** Save changes event. */
 
-            this.spxEditButtonSaveChanges.emit({target: 'document'});
+            this.spxEditButtonSave.emit({target: 'document'});
 
             /** Remove loader and close on success. */
 
