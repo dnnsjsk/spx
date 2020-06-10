@@ -24,6 +24,8 @@ export const stylePrimary900 = 'var(--spx-color-primary-900, #212121)';
 
 export const styleBorderRadius = 'var(--spx-border-radius, 0.25em)';
 
+export const styleZindex = 999999999999999999;
+
 /** Base style. */
 
 export const styleBase = css({

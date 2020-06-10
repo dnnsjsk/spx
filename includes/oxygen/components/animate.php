@@ -13,7 +13,7 @@ class spxOxygenAnimate extends spxOxygenElement {
 	}
 
 	function spx_button_place() {
-		return "tools";
+		return "utilities";
 	}
 
 	function render( $options, $defaults, $content ) {
@@ -28,8 +28,8 @@ class spxOxygenAnimate extends spxOxygenElement {
 		$ease         = isset( $options['spxAnimateEase'] ) ? $options['spxAnimateEase'] : 'power1';
 		$easeProperty = isset( $options['spxAnimateEaseProperty'] ) ? $options['spxAnimateEaseProperty'] : 'out';
 		$easeFull     = $ease . '.' . $easeProperty;
-		$viewport     = ( $options['spxAnimateViewport'] == 'true' ) ? 'viewport' : NULL;
-		$once         = ( $options['spxAnimateOnce'] == 'true' ) ? 'once' : NULL;
+		$viewport     = isset( $options['spxAnimateViewport'] ) && $options["spxAnimateViewport"] == "true" ? 'viewport' : NULL;
+		$once         = isset( $options['spxAnimateOnce'] ) && $options["spxAnimateOnce"] == "true" ? 'once' : NULL;
 
 		$output = '<spx-animate 
 		class="oxy-inner-content" 
@@ -62,108 +62,137 @@ class spxOxygenAnimate extends spxOxygenElement {
 
 		$this->addOptionControl(
 			array(
-				"type"     => 'textfield',
-				"name"     => __( 'Target selector' ),
-				"slug"     => 'spxAnimateTarget',
-				"default"  => '*',
-				"selector" => $this->selector(),
+				'type'    => 'textfield',
+				'name'    => __( 'Target selector' ),
+				'slug'    => 'spxAnimateTarget',
+				'default' => '*',
+				'css'     => FALSE,
 			)
 		);
 
 		/**
-		 * Duration.
-		 */
-
-		$this->addStyleControl(
-			array(
-				"name"         => __( 'Animation duration' ),
-				"slug"         => "spxAnimateDuration",
-				"control_type" => 'slider-measurebox',
-				"value"        => '1',
-				"selector"     => $this->selector(),
-			)
-		)->setRange( 0, 50, 1 );
-
-		/**
-		 * Opacity.
-		 */
-
-		$this->addStyleControl(
-			array(
-				"name"         => __( 'Opacity animation starts from' ),
-				"slug"         => "spxAnimateOpacity",
-				"control_type" => 'slider-measurebox',
-				"value"        => '0',
-				"selector"     => $this->selector(),
-			)
-		)->setRange( 0, 1, 0.01 );
-
-		/**
-		 * X position.
-		 */
-
-		$this->addStyleControl(
-			array(
-				"name"         => __( 'X position animation starts from' ),
-				"slug"         => "spxAnimatePositionX",
-				"control_type" => 'slider-measurebox',
-				"value"        => '0',
-				"selector"     => $this->selector(),
-			)
-		)->setRange( 0, 1000, 1 );
-
-		/**
-		 * Y position.
-		 */
-
-		$this->addStyleControl(
-			array(
-				"name"         => __( 'Y position animation starts from' ),
-				"slug"         => "spxAnimatePositionY",
-				"control_type" => 'slider-measurebox',
-				"value"        => '0',
-				"selector"     => $this->selector(),
-			)
-		)->setRange( 0, 1000, 1 );
-
-		/**
-		 * Delay.
-		 */
-
-		$this->addStyleControl(
-			array(
-				"name"         => __( 'Delay before animation starts' ),
-				"slug"         => "spxAnimateDelay",
-				"control_type" => 'slider-measurebox',
-				"value"        => '0',
-				"selector"     => $this->selector(),
-			)
-		)->setRange( 0, 50, 1 );
-
-		/**
-		 * Stagger.
-		 */
-
-		$this->addStyleControl(
-			array(
-				"name"         => __( 'Stagger element animation' ),
-				"slug"         => "spxAnimateStagger",
-				"control_type" => 'slider-measurebox',
-				"value"        => '0.15',
-				"selector"     => $this->selector(),
-			)
-		)->setRange( 0, 5, 0.01 );
-
-		/**
-		 * Ease.
+		 * Viewport.
 		 */
 
 		$this->addOptionControl(
 			array(
-				"type"     => "dropdown",
-				"name"     => "Ease",
-				"slug"     => "spxAnimateEase",
-				"selector" => $this->selector(),
+				'type'  => 'checkbox',
+				'name'  => 'Start animation when element is in viewport',
+				'slug'  => 'spxAnimateViewport',
+				'value' => 'false',
+				'css'   => FALSE,
+			)
+
+		);
+
+		/**
+		 * Once.
+		 */
+
+		$this->addOptionControl(
+			array(
+				'type'      => 'checkbox',
+				'name'      => 'Only animate once',
+				'slug'      => 'spxAnimateOnce',
+				'condition' => 'spxAnimateViewport=true',
+				'css'       => FALSE,
+			)
+
+		);
+
+		/**
+		 * Section: Options.
+		 */
+
+		$sectionProperties = $this->addControlSection( "spxAnimateProperties", __( "Properties" ), "assets/icon.png", $this );
+
+		/** Duration. */
+
+		$sectionProperties->addStyleControl(
+			array(
+				'name'         => __( 'Animation duration' ),
+				'slug'         => 'spxAnimateDuration',
+				'control_type' => 'slider-measurebox',
+				'value'        => '1',
+				'css'          => FALSE,
+			)
+		)->setRange( 0, 50, 1 );
+
+		/** Opacity. */
+
+		$sectionProperties->addStyleControl(
+			array(
+				'name'         => __( 'Opacity animation starts from' ),
+				'slug'         => 'spxAnimateOpacity',
+				'control_type' => 'slider-measurebox',
+				'value'        => '0',
+				'css'          => FALSE,
+			)
+		)->setRange( 0, 1, 0.01 );
+
+		/** Position X. */
+
+		$sectionProperties->addStyleControl(
+			array(
+				'name'         => __( 'X position animation starts from' ),
+				'slug'         => 'spxAnimatePositionX',
+				'control_type' => 'slider-measurebox',
+				'value'        => '0',
+				'css'          => FALSE,
+			)
+		)->setRange( 0, 1000, 1 );
+
+		/** Position Y. */
+
+		$sectionProperties->addStyleControl(
+			array(
+				'name'         => __( 'Y position animation starts from' ),
+				'slug'         => 'spxAnimatePositionY',
+				'control_type' => 'slider-measurebox',
+				'value'        => '0',
+				'css'          => FALSE,
+			)
+		)->setRange( 0, 1000, 1 );
+
+		/** Delay. */
+
+		$sectionProperties->addStyleControl(
+			array(
+				'name'         => __( 'Delay before animation starts' ),
+				'slug'         => 'spxAnimateDelay',
+				'control_type' => 'slider-measurebox',
+				'value'        => '0',
+				'css'          => FALSE,
+			)
+		)->setRange( 0, 50, 1 );
+
+		/** Stagger. */
+
+		$sectionProperties->addStyleControl(
+			array(
+				'name'         => __( 'Stagger element animation' ),
+				'slug'         => 'spxAnimateStagger',
+				'control_type' => 'slider-measurebox',
+				'value'        => '0.15',
+				'css'          => FALSE,
+			)
+		)->setRange( 0, 5, 0.01 );
+
+		/**
+		 * Section: Ease.
+		 */
+
+		$sectionEase = $this->addControlSection( "spxAnimateEase", __( "Ease" ), "assets/icon.png", $this );
+
+		/** Ease. */
+
+		$sectionEase->addOptionControl(
+			array(
+				'type'    => 'dropdown',
+				'name'    => 'Ease',
+				'slug'    => 'spxAnimateEase',
+				'default' => 'power1',
+				'css'     => FALSE,
 			)
 		)->setValue( array(
 				'power1'  => 'Power 1',
@@ -179,16 +208,15 @@ class spxOxygenAnimate extends spxOxygenElement {
 			)
 		);
 
-		/**
-		 * Ease property.
-		 */
+		/** Ease property. */
 
-		$this->addOptionControl(
+		$sectionEase->addOptionControl(
 			array(
-				"type"     => "dropdown",
-				"name"     => "Ease property",
-				"slug"     => "spxAnimateEaseProperty",
-				"selector" => $this->selector(),
+				'type'    => 'dropdown',
+				'name'    => 'Ease property',
+				'slug'    => 'spxAnimateEaseProperty',
+				'default' => 'in',
+				'css'     => FALSE,
 			)
 		)->setValue( array(
 				'in'    => 'in',
@@ -197,36 +225,6 @@ class spxOxygenAnimate extends spxOxygenElement {
 			)
 		);
 
-		/**
-		 * Viewport.
-		 */
-
-		$this->addOptionControl(
-			array(
-				'type'     => 'buttons-list',
-				'name'     => 'Start animation when element is in viewport',
-				'slug'     => 'spxAnimateViewport',
-				"selector" => $this->selector(),
-			)
-
-		)->setValue( array( "TRUE" => "TRUE", "FALSE" => "FALSE" ) )
-		     ->setDefaultValue( 'false' );
-
-		/**
-		 * Once.
-		 */
-
-		$this->addOptionControl(
-			array(
-				'type'      => 'buttons-list',
-				'name'      => 'Only animate once',
-				'slug'      => 'spxAnimateOnce',
-				'condition' => 'spxAnimateViewport=true',
-				"selector"  => $this->selector(),
-			)
-
-		)->setValue( array( "TRUE" => "TRUE", "FALSE" => "FALSE" ) )
-		     ->setDefaultValue( 'false' );
 	}
 
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * spx-iframe Oxygen wrapper.
+ * spx-offset Oxygen wrapper.
  *
  * @since 1.23
  */
@@ -13,12 +13,12 @@ class spxOxygenOffset extends spxOxygenElement {
 	}
 
 	function spx_button_place() {
-		return "tools";
+		return "utilities";
 	}
 
 	function render( $options, $defaults, $content ) {
 
-		$target = isset( $options['target'] ) ? $options['target'] : 'header';
+		$target = isset( $options['spxOffsetTarget'] ) ? $options['spxOffsetTarget'] : 'header';
 
 		$output = '<spx-offset 
 		class="oxy-inner-content" 
@@ -42,11 +42,11 @@ class spxOxygenOffset extends spxOxygenElement {
 
 		$this->addOptionControl(
 			array(
-				"type"     => 'textfield',
-				"name"     => __( 'Target element' ),
-				"slug"     => 'target',
-				"default"  => 'header',
-				"selector" => $this->selector(),
+				'type'    => 'textfield',
+				'name'    => __( 'Target element' ),
+				'slug'    => 'spxOffsetTarget',
+				'default' => 'header',
+				'css'     => FALSE,
 			)
 		);
 

@@ -4,10 +4,10 @@ import {startsWith} from 'lodash-es';
  * Pass attributes to nested components.
  */
 
-export const passAttributes = (source, component) => {
-    let elements = source.querySelectorAll(component)
+export const passAttributes = (selector, element, component) => {
+    let elements = selector.querySelectorAll(component)
 
-    for (let att, i = 0, atts = source.attributes, n = atts.length; i < n; i++) {
+    for (let att, i = 0, atts = element.attributes, n = atts.length; i < n; i++) {
         att = atts[i];
         if (startsWith(att.nodeName, component)) {
             elements.forEach(item => {

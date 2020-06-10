@@ -27,8 +27,11 @@ if ( ! class_exists( 'spxOxygen' ) ) {
 
 		function registerSubSections() { ?>
 
-            <h2><?php _e( "Tools", 'oxygen' ); ?></h2>
-			<?php do_action( "oxygen_add_plus_spx_tools" ); ?>
+            <h2><?php _e( "utilities", 'oxygen' ); ?></h2>
+			<?php do_action( "oxygen_add_plus_spx_utilities" ); ?>
+
+            <h2><?php _e( "Elements", 'oxygen' ); ?></h2>
+			<?php do_action( "oxygen_add_plus_spx_elements" ); ?>
 
 		<?php }
 
@@ -39,6 +42,7 @@ if ( ! class_exists( 'spxOxygen' ) ) {
 			include plugin_dir_path( __FILE__ ) . 'components/class-toggle.php';
 			include plugin_dir_path( __FILE__ ) . 'components/mockup.php';
 			include plugin_dir_path( __FILE__ ) . 'components/offset.php';
+			include plugin_dir_path( __FILE__ ) . 'components/snackbar.php';
 
 		}
 

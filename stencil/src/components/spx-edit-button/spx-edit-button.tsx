@@ -152,7 +152,7 @@ export class SpxEditButton {
             display: 'grid',
             gridGap: 'var(--spx-edit-button-gap, ' + this.gap + ')',
             position: 'fixed',
-            zIndex: 999998,
+            zIndex: constants.styleZindex,
 
             '.spx-edit-button': {
                 fontFamily: 'inherit',

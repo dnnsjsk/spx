@@ -32,7 +32,7 @@ export class SpxSnackbar {
     @Prop({reflectToAttr: true}) borderRadius: string = constants.styleBorderRadius;
 
     @Prop({reflectToAttr: true}) animationDelay: string = '200ms';
-    @Prop({reflectToAttr: true}) animationDuration: string = '2s';
+    @Prop({reflectToAttr: true}) animationDuration: string = '2000ms';
 
     componentWillLoad() {
         this.positionArray = this.position.split('-');
@@ -100,7 +100,7 @@ export class SpxSnackbar {
             paddingRight: ((this.closeable && this.reverse) || !this.closeable) && 'var(--spx-snackbar-padding, ' + this.padding + ')',
             paddingBottom: !this.closeable && 'var(--spx-snackbar-padding, ' + this.padding + ')',
             paddingLeft: ((this.closeable && !this.reverse) || !this.closeable) && 'var(--spx-snackbar-padding, ' + this.padding + ')',
-            zIndex: 999999,
+            zIndex: constants.styleZindex,
             opacity: 0,
             color: 'var(--spx-snackbar-color, ' + this.color + ')',
             background: 'var(--spx-snackbar-background, ' + this.background + ')',
@@ -121,15 +121,21 @@ export class SpxSnackbar {
 
             {this.closeable &&
 
-            <div onClick={this.removeItem.bind(this)}
+            <div role="button" onClick={this.removeItem.bind(this)}
                  class={css({
+                     padding: 'var(--spx-snackbar-padding, ' + this.padding + ')',
                      width: '0.7em',
                      opacity: '0.3',
-                     padding: 'var(--spx-snackbar-padding, ' + this.padding + ')',
                      boxSizing: 'content-box',
                      cursor: 'pointer',
+                     display: 'flex',
+                     alignItems: 'center',
+                     justifycontent: 'center',
                  })}>
-                <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
+                <svg class={css({
+                    height: '1em',
+                })}
+                     aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
                      viewBox="0 0 320 512">
                     <path fill="currentColor"
                           d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z"/>

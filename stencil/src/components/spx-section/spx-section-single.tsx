@@ -132,7 +132,7 @@ export class SpxSectionSingle {
 
             /** Pass custom attributes to scrollspy. */
 
-            passAttributes(this.el, 'spx-scrollspy');
+            passAttributes(this.el, this.el, 'spx-scrollspy');
 
             /** Check if is mobile view. */
 

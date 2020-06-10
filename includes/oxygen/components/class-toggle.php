@@ -13,14 +13,14 @@ class spxOxygenClassToggle extends spxOxygenElement {
 	}
 
 	function spx_button_place() {
-		return "tools";
+		return "utilities";
 	}
 
 	function render( $options, $defaults, $content ) {
 
-		$toggle = isset( $options['toggle'] ) ? $options['toggle'] : 'spx-class-toggle--active';
-		$target = isset( $options['target'] ) ? $options['target'] : NULL;
-		$local  = isset( $options['local'] ) ? $options['local'] : NULL;
+		$toggle = isset( $options['spxClassToggleToggle'] ) ? $options['spxClassToggleToggle'] : 'spx-class-toggle--active';
+		$target = isset( $options['spxClassToggleTarget'] ) ? $options['spxClassToggleTarget'] : NULL;
+		$local  = isset( $options['spxClassToggleLocal'] ) ? $options['spxClassToggleLocal'] : NULL;
 
 		$output = '<spx-class-toggle 
 		class="oxy-inner-content" 
@@ -46,12 +46,13 @@ class spxOxygenClassToggle extends spxOxygenElement {
 
 		$this->addOptionControl(
 			array(
-				"type"    => 'textfield',
-				"name"    => __( 'Classes to toggle (must be seperated by space)' ),
-				"slug"    => 'toggle',
-				"default" => 'spx-class-toggle--active',
-				"selector" => $this->selector(),
-			) );
+				'type'    => 'textfield',
+				'name'    => __( 'Classes to toggle (must be seperated by space)' ),
+				'slug'    => 'spxClassToggleToggle',
+				'default' => 'spx-class-toggle--active',
+				'css'     => FALSE,
+			)
+		);
 
 		/**
 		 * Toggle.
@@ -59,12 +60,13 @@ class spxOxygenClassToggle extends spxOxygenElement {
 
 		$this->addOptionControl(
 			array(
-				"type"    => 'textfield',
-				"name"    => __( 'Target selector' ),
-				"slug"    => 'target',
-				"default" => NULL,
-				"selector" => $this->selector(),
-			) );
+				'type'    => 'textfield',
+				'name'    => __( 'Target selector' ),
+				'slug'    => 'spxClassToggleTarget',
+				'default' => NULL,
+				'css'     => FALSE,
+			)
+		);
 
 		/**
 		 * Target.
@@ -72,12 +74,13 @@ class spxOxygenClassToggle extends spxOxygenElement {
 
 		$this->addOptionControl(
 			array(
-				"type"    => 'textfield',
-				"name"    => __( 'Local storage string' ),
-				"slug"    => 'local',
-				"default" => NULL,
-				"selector" => $this->selector(),
-			) );
+				'type'    => 'textfield',
+				'name'    => __( 'Local storage string' ),
+				'slug'    => 'spxClassToggleLocal',
+				'default' => NULL,
+				'css'     => FALSE,
+			)
+		);
 
 	}
 

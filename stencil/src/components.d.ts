@@ -234,6 +234,8 @@ export namespace Components {
         "styling": string;
         "text": string;
     }
+    interface SpxSnackbarToggle {
+    }
 }
 declare global {
     interface HTMLSpxAccordionElement extends Components.SpxAccordion, HTMLStencilElement {
@@ -338,6 +340,12 @@ declare global {
         prototype: HTMLSpxSnackbarElement;
         new (): HTMLSpxSnackbarElement;
     };
+    interface HTMLSpxSnackbarToggleElement extends Components.SpxSnackbarToggle, HTMLStencilElement {
+    }
+    var HTMLSpxSnackbarToggleElement: {
+        prototype: HTMLSpxSnackbarToggleElement;
+        new (): HTMLSpxSnackbarToggleElement;
+    };
     interface HTMLElementTagNameMap {
         "spx-accordion": HTMLSpxAccordionElement;
         "spx-animate": HTMLSpxAnimateElement;
@@ -356,6 +364,7 @@ declare global {
         "spx-section-single": HTMLSpxSectionSingleElement;
         "spx-share": HTMLSpxShareElement;
         "spx-snackbar": HTMLSpxSnackbarElement;
+        "spx-snackbar-toggle": HTMLSpxSnackbarToggleElement;
     }
 }
 declare namespace LocalJSX {
@@ -584,6 +593,8 @@ declare namespace LocalJSX {
         "styling"?: string;
         "text"?: string;
     }
+    interface SpxSnackbarToggle {
+    }
     interface IntrinsicElements {
         "spx-accordion": SpxAccordion;
         "spx-animate": SpxAnimate;
@@ -602,6 +613,7 @@ declare namespace LocalJSX {
         "spx-section-single": SpxSectionSingle;
         "spx-share": SpxShare;
         "spx-snackbar": SpxSnackbar;
+        "spx-snackbar-toggle": SpxSnackbarToggle;
     }
 }
 export { LocalJSX as JSX };
@@ -625,6 +637,7 @@ declare module "@stencil/core" {
             "spx-section-single": LocalJSX.SpxSectionSingle & JSXBase.HTMLAttributes<HTMLSpxSectionSingleElement>;
             "spx-share": LocalJSX.SpxShare & JSXBase.HTMLAttributes<HTMLSpxShareElement>;
             "spx-snackbar": LocalJSX.SpxSnackbar & JSXBase.HTMLAttributes<HTMLSpxSnackbarElement>;
+            "spx-snackbar-toggle": LocalJSX.SpxSnackbarToggle & JSXBase.HTMLAttributes<HTMLSpxSnackbarToggleElement>;
         }
     }
 }

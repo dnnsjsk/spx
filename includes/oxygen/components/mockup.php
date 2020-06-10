@@ -1,7 +1,7 @@
 <?php
 
 /**
- * spx-iframe Oxygen wrapper.
+ * spx-mockup Oxygen wrapper.
  *
  * @since 1.23
  */
@@ -17,20 +17,20 @@ class spxOxygenMockup extends spxOxygenElement {
 	}
 
 	function spx_button_place() {
-		return "tools";
+		return "elements";
 	}
 
 	function render( $options, $defaults, $content ) {
 
-		$type             = isset( $options['type'] ) ? $options['type'] : 'iphone-x';
-		$src              = isset( $options['src'] ) ? 'src="' . $options['src'] . '"' : NULL;
-		$imagePosition    = $options['imagePosition'];
-		$colorIphone8     = $options['type'] == 'iphone-8' ? 'color-iphone-8="' . $options['spxMockupIphone8'] . '"' : NULL;
-		$colorGooglePixel = $options['type'] == 'google-pixel' ? 'color-google-pixel="' . $options['spxMockupGooglePixel'] . '"' : NULL;
-		$colorGalaxyS8    = $options['type'] == 'galaxy-s8' ? 'color-galaxy-s-8="' . $options['spxMockupGalaxyS8'] . '"' : NULL;
-		$colorIpadPro     = $options['type'] == 'ipad-pro' ? 'color-ipad-pro="' . $options['spxMockupIpadPro'] . '"' : NULL;
-		$colorMacbook     = $options['type'] == 'macbook' ? 'color-macbook="' . $options['spxMockupMacbook'] . '"' : NULL;
-		$colorMacbookPro  = $options['type'] == 'macbook-pro' ? 'color-macbook-pro="' . $options['spxMockupMacbookPro'] . '"' : NULL;
+		$type             = isset( $options['spxMockupType'] ) ? $options['spxMockupType'] : 'iphone-x';
+		$src              = isset( $options['spxMockupSrc'] ) ? 'src="' . $options['spxMockupSrc'] . '"' : NULL;
+		$imagePosition    = $options['spxMockupImagePosition'];
+		$colorIphone8     = $options['spxMockupType'] == 'iphone-8' ? 'color-iphone-8="' . $options['spxMockupColorIphone8'] . '"' : NULL;
+		$colorGooglePixel = $options['spxMockupType'] == 'google-pixel' ? 'color-google-pixel="' . $options['spxMockupColorGooglePixel'] . '"' : NULL;
+		$colorGalaxyS8    = $options['spxMockupType'] == 'galaxy-s8' ? 'color-galaxy-s-8="' . $options['spxMockupColorGalaxyS8'] . '"' : NULL;
+		$colorIpadPro     = $options['spxMockupType'] == 'ipad-pro' ? 'color-ipad-pro="' . $options['spxMockupColorIpadPro'] . '"' : NULL;
+		$colorMacbook     = $options['spxMockupType'] == 'macbook' ? 'color-macbook="' . $options['spxMockupColorMacbook'] . '"' : NULL;
+		$colorMacbookPro  = $options['spxMockupType'] == 'macbook-pro' ? 'color-macbook-pro="' . $options['spxMockupColorMacbookPro'] . '"' : NULL;
 
 		$output = '<spx-mockup 
 		type="' . $type . '"
@@ -57,10 +57,10 @@ class spxOxygenMockup extends spxOxygenElement {
 
 		$this->addOptionControl(
 			array(
-				"type"     => "dropdown",
-				"name"     => "Type",
-				"slug"     => "type",
-				"selector" => $this->selector(),
+				'type' => 'dropdown',
+				'name' => 'Type',
+				'slug' => 'spxMockupType',
+				'css'  => FALSE,
 			)
 		)->setValue( array(
 				'iphone-x'          => 'iPhone X',
@@ -87,12 +87,12 @@ class spxOxygenMockup extends spxOxygenElement {
 
 		$this->addOptionControl(
 			array(
-				"type"      => "dropdown",
-				"name"      => "Color",
-				"slug"      => "spxMockupIphone8",
-				"condition" => "type=iphone-8",
-				"default"   => "gold",
-				"selector"  => $this->selector(),
+				'type'      => 'dropdown',
+				'name'      => 'Color',
+				'slug'      => 'spxMockupColorIphone8',
+				'condition' => 'spxMockupType=iphone-8',
+				'default'   => 'gold',
+				'css'       => FALSE,
 			)
 		)->setValue( array(
 				'gold'      => 'Gold',
@@ -105,12 +105,12 @@ class spxOxygenMockup extends spxOxygenElement {
 
 		$this->addOptionControl(
 			array(
-				"type"      => "dropdown",
-				"name"      => "Color",
-				"slug"      => "spxMockupGooglePixel",
-				"condition" => "type=google-pixel",
-				"default"   => "black",
-				"selector"  => $this->selector(),
+				'type'      => 'dropdown',
+				'name'      => 'Color',
+				'slug'      => 'spxMockupColorGooglePixel',
+				'condition' => 'spxMockupType=google-pixel',
+				'default'   => 'black',
+				'css'       => FALSE,
 			)
 		)->setValue( array(
 				'black'  => 'Black',
@@ -123,12 +123,12 @@ class spxOxygenMockup extends spxOxygenElement {
 
 		$this->addOptionControl(
 			array(
-				"type"      => "dropdown",
-				"name"      => "Color",
-				"slug"      => "spxMockupGalaxyS8",
-				"condition" => "type=galaxy-s8",
-				"default"   => "black",
-				"selector"  => $this->selector(),
+				'type'      => 'dropdown',
+				'name'      => 'Color',
+				'slug'      => 'spxMockupColorGalaxyS8',
+				'condition' => 'spxMockupType=galaxy-s8',
+				'default'   => 'black',
+				'css'       => FALSE,
 			)
 		)->setValue(
 			array(
@@ -141,12 +141,12 @@ class spxOxygenMockup extends spxOxygenElement {
 
 		$this->addOptionControl(
 			array(
-				"type"      => "dropdown",
-				"name"      => "Color",
-				"slug"      => "spxMockupIpadPro",
-				"condition" => "type=ipad-pro",
-				"default"   => "gold",
-				"selector"  => $this->selector(),
+				'type'      => 'dropdown',
+				'name'      => 'Color',
+				'slug'      => 'spxMockupColorIpadPro',
+				'condition' => 'spxMockupType=ipad-pro',
+				'default'   => 'gold',
+				'css'       => FALSE,
 			)
 		)->setValue(
 			array(
@@ -161,12 +161,12 @@ class spxOxygenMockup extends spxOxygenElement {
 
 		$this->addOptionControl(
 			array(
-				"type"      => "dropdown",
-				"name"      => "Color",
-				"slug"      => "spxMockupMacbook",
-				"condition" => "type=macbook",
-				"default"   => "gold",
-				"selector"  => $this->selector(),
+				'type'      => 'dropdown',
+				'name'      => 'Color',
+				'slug'      => 'spxMockupColorMacbook',
+				'condition' => 'spxMockupType=macbook',
+				'default'   => 'gold',
+				'css'       => FALSE,
 			)
 		)->setValue(
 			array(
@@ -181,12 +181,12 @@ class spxOxygenMockup extends spxOxygenElement {
 
 		$this->addOptionControl(
 			array(
-				"type"      => "dropdown",
-				"name"      => "Color",
-				"slug"      => "spxMockupMacbookPro",
-				"condition" => "type=macbook-pro",
-				"default"   => "silver",
-				"selector"  => $this->selector(),
+				'type'      => 'dropdown',
+				'name'      => 'Color',
+				'slug'      => 'spxMockupColorMacbookPro',
+				'condition' => 'spxMockupType=macbook-pro',
+				'default'   => 'silver',
+				'css'       => FALSE,
 			)
 		)->setValue(
 			array(
@@ -201,12 +201,12 @@ class spxOxygenMockup extends spxOxygenElement {
 
 		$this->addOptionControl(
 			array(
-				"name"     => "Image URL",
-				"type"     => "mediaurl",
-				"heading"  => __( "Image URL" ),
-				"slug"     => "src",
-				"value"    => "http://placehold.it/1600x900",
-				"selector" => $this->selector(),
+				'name'    => 'Image URL',
+				'type'    => 'mediaurl',
+				'heading' => __( 'Image URL' ),
+				'slug'    => 'spxMockupSrc',
+				'value'   => 'http://placehold.it/1600x900',
+				'css'     => FALSE,
 			)
 		)->rebuildElementOnChange();
 
@@ -216,11 +216,11 @@ class spxOxygenMockup extends spxOxygenElement {
 
 		$this->addOptionControl(
 			array(
-				"type"     => 'textfield',
-				"name"     => __( 'Image position' ),
-				"slug"     => 'imagePosition',
-				"default"  => '50% 50%',
-				"selector" => $this->selector(),
+				'type'    => 'textfield',
+				'name'    => __( 'Image position' ),
+				'slug'    => 'spxMockupImagePosition',
+				'default' => '50% 50%',
+				'css'     => FALSE,
 			)
 		);
 
