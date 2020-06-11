@@ -25,6 +25,7 @@ export class SpxSnackbarToggle {
 
     render() {
         return <Host onClick={this.createSnackbar.bind(this)}>
+            <slot/>
         </Host>
     }
 }

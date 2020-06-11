@@ -96,10 +96,10 @@ export class SpxSnackbar {
             flexDirection: !this.reverse ? 'row-reverse' : 'row',
             alignItems: 'center',
             userSelect: 'none',
-            paddingTop: !this.closeable && 'var(--spx-snackbar-padding, ' + this.padding + ')',
-            paddingRight: ((this.closeable && this.reverse) || !this.closeable) && 'var(--spx-snackbar-padding, ' + this.padding + ')',
-            paddingBottom: !this.closeable && 'var(--spx-snackbar-padding, ' + this.padding + ')',
-            paddingLeft: ((this.closeable && !this.reverse) || !this.closeable) && 'var(--spx-snackbar-padding, ' + this.padding + ')',
+            paddingTop: 'var(--spx-snackbar-padding, ' + this.padding + ')',
+            paddingRight: (this.reverse || !this.closeable) && 'var(--spx-snackbar-padding, ' + this.padding + ')',
+            paddingBottom: 'var(--spx-snackbar-padding, ' + this.padding + ')',
+            paddingLeft: !this.reverse && 'var(--spx-snackbar-padding, ' + this.padding + ')',
             zIndex: constants.styleZindex,
             opacity: 0,
             color: 'var(--spx-snackbar-color, ' + this.color + ')',
@@ -123,14 +123,14 @@ export class SpxSnackbar {
 
             <div role="button" onClick={this.removeItem.bind(this)}
                  class={css({
-                     padding: 'var(--spx-snackbar-padding, ' + this.padding + ')',
+                     padding: '0 var(--spx-snackbar-padding, ' + this.padding + ')',
                      width: '0.7em',
                      opacity: '0.3',
                      boxSizing: 'content-box',
                      cursor: 'pointer',
                      display: 'flex',
                      alignItems: 'center',
-                     justifycontent: 'center',
+                     justifyContent: 'center',
                  })}>
                 <svg class={css({
                     height: '1em',

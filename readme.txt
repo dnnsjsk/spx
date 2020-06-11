@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.31 =
+* Snackbar: make height even when component is closeable.
+
 = 1.30 =
 * Oxygen: disabled editor CSS generation.
 * Oxygen: organized components better.
