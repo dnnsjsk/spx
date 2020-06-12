@@ -27,7 +27,7 @@ if ( ! class_exists( 'spxOxygen' ) ) {
 
 		function registerSubSections() { ?>
 
-            <h2><?php _e( "utilities", 'oxygen' ); ?></h2>
+            <h2><?php _e( "Utilities", 'oxygen' ); ?></h2>
 			<?php do_action( "oxygen_add_plus_spx_utilities" ); ?>
 
             <h2><?php _e( "Elements", 'oxygen' ); ?></h2>

@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.33 =
+* Oxygen: Fix typo in editor subheading.
+
 = 1.32 =
 * New: Typewriter component.
 * Scrollspy: Don't force url-change to be true.
