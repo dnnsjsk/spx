@@ -32,7 +32,8 @@
     "gumshoejs": "^5.1.2",
     "lodash-es": "^4.17.15",
     "macy": "^2.5.1",
-    "tippy.js": "^6.2.3"
+    "tippy.js": "^6.2.3",
+    "typewriter-effect": "^2.13.1"
   },
   "license": "MIT",
   "dependencies": {}

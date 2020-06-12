@@ -15,7 +15,7 @@ export class SpxScrollspy {
     @Prop({reflectToAttr: true}) navClass: string = 'spx-scrollspy__nav--active';
     @Prop({reflectToAttr: true}) contentClass: string = 'spx-scrollspy__content--active';
     @Prop({reflectToAttr: true}) offset: any;
-    @Prop({reflectToAttr: true}) urlChange: boolean = false;
+    @Prop({reflectToAttr: true}) urlChange: boolean;
 
     /** Replace state of URL bar . */
 

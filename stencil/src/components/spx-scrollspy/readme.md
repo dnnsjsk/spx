@@ -13,7 +13,7 @@
 | `navClass`     | `nav-class`     |             | `string`  | `'spx-scrollspy__nav--active'`     |
 | `offset`       | `offset`        |             | `any`     | `undefined`                        |
 | `target`       | `target`        |             | `string`  | `'a'`                              |
-| `urlChange`    | `url-change`    |             | `boolean` | `false`                            |
+| `urlChange`    | `url-change`    |             | `boolean` | `undefined`                        |
 
 
 ## Dependencies

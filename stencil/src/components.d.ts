@@ -236,6 +236,22 @@ export namespace Components {
     }
     interface SpxSnackbarToggle {
     }
+    interface SpxTypewriter {
+        "autoStart": boolean;
+        "delay": any;
+        "deleteSpeed": any;
+        "inner": boolean;
+        "loop": boolean;
+        /**
+          * External method to start animation.
+         */
+        "start": () => Promise<void>;
+        /**
+          * External method to stop animation.
+         */
+        "stop": () => Promise<void>;
+        "text": string;
+    }
 }
 declare global {
     interface HTMLSpxAccordionElement extends Components.SpxAccordion, HTMLStencilElement {
@@ -346,6 +362,12 @@ declare global {
         prototype: HTMLSpxSnackbarToggleElement;
         new (): HTMLSpxSnackbarToggleElement;
     };
+    interface HTMLSpxTypewriterElement extends Components.SpxTypewriter, HTMLStencilElement {
+    }
+    var HTMLSpxTypewriterElement: {
+        prototype: HTMLSpxTypewriterElement;
+        new (): HTMLSpxTypewriterElement;
+    };
     interface HTMLElementTagNameMap {
         "spx-accordion": HTMLSpxAccordionElement;
         "spx-animate": HTMLSpxAnimateElement;
@@ -365,6 +387,7 @@ declare global {
         "spx-share": HTMLSpxShareElement;
         "spx-snackbar": HTMLSpxSnackbarElement;
         "spx-snackbar-toggle": HTMLSpxSnackbarToggleElement;
+        "spx-typewriter": HTMLSpxTypewriterElement;
     }
 }
 declare namespace LocalJSX {
@@ -595,6 +618,14 @@ declare namespace LocalJSX {
     }
     interface SpxSnackbarToggle {
     }
+    interface SpxTypewriter {
+        "autoStart"?: boolean;
+        "delay"?: any;
+        "deleteSpeed"?: any;
+        "inner"?: boolean;
+        "loop"?: boolean;
+        "text"?: string;
+    }
     interface IntrinsicElements {
         "spx-accordion": SpxAccordion;
         "spx-animate": SpxAnimate;
@@ -614,6 +645,7 @@ declare namespace LocalJSX {
         "spx-share": SpxShare;
         "spx-snackbar": SpxSnackbar;
         "spx-snackbar-toggle": SpxSnackbarToggle;
+        "spx-typewriter": SpxTypewriter;
     }
 }
 export { LocalJSX as JSX };
@@ -638,6 +670,7 @@ declare module "@stencil/core" {
             "spx-share": LocalJSX.SpxShare & JSXBase.HTMLAttributes<HTMLSpxShareElement>;
             "spx-snackbar": LocalJSX.SpxSnackbar & JSXBase.HTMLAttributes<HTMLSpxSnackbarElement>;
             "spx-snackbar-toggle": LocalJSX.SpxSnackbarToggle & JSXBase.HTMLAttributes<HTMLSpxSnackbarToggleElement>;
+            "spx-typewriter": LocalJSX.SpxTypewriter & JSXBase.HTMLAttributes<HTMLSpxTypewriterElement>;
         }
     }
 }

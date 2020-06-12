@@ -22,7 +22,7 @@ export class SpxSectionSingle {
     @Prop({reflectToAttr: true}) mobile: number = constants.styleMobileBP;
     @State() mobileBP: boolean;
 
-    @Prop({reflectToAttr: true}) image: boolean = true;
+    @Prop({reflectToAttr: true}) image: boolean;
     @Prop({reflectToAttr: true}) imageBorderRadius: string = constants.styleBorderRadius;
     @Prop({reflectToAttr: true}) imageMaxHeight: string;
     @Prop({reflectToAttr: true}) imageObjectPosition: string = '50% 50%';
@@ -33,7 +33,7 @@ export class SpxSectionSingle {
     @Prop({reflectToAttr: true}) titleFontSize: string = '2rem';
     @Prop({reflectToAttr: true}) titleColor: string = '#000000';
 
-    @Prop({reflectToAttr: true}) date: boolean = true;
+    @Prop({reflectToAttr: true}) date: boolean;
     @Prop({reflectToAttr: true}) dateMarginTop: string = '1.2rem';
     @Prop({reflectToAttr: true}) dateFontSize: string = '1rem';
     @Prop({reflectToAttr: true}) dateColor: string = '#999999';

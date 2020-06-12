@@ -3,10 +3,10 @@
 /**
  * spx-snackbar Oxygen wrapper.
  *
- * @since 1.23
+ * @since 1.30
  */
 
-class spxSnackbar extends spxOxygenElement {
+class spxOxygenSnackbar extends spxOxygenElement {
 
 	function name() {
 		return __( 'Snackbar' );
@@ -266,4 +266,4 @@ class spxSnackbar extends spxOxygenElement {
 
 }
 
-new spxSnackbar();
+new spxOxygenSnackbar();

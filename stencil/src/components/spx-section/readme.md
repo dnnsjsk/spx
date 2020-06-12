@@ -12,11 +12,11 @@
 | `containerMaxWidth`                  | `container-max-width`                     |             | `string`  | `'700px'`                                       |
 | `content`                            | `content`                                 |             | `boolean` | `undefined`                                     |
 | `contentMarginTop`                   | `content-margin-top`                      |             | `string`  | `'1rem'`                                        |
-| `date`                               | `date`                                    |             | `boolean` | `true`                                          |
+| `date`                               | `date`                                    |             | `boolean` | `undefined`                                     |
 | `dateColor`                          | `date-color`                              |             | `string`  | `'#999999'`                                     |
 | `dateFontSize`                       | `date-font-size`                          |             | `string`  | `'1rem'`                                        |
 | `dateMarginTop`                      | `date-margin-top`                         |             | `string`  | `'1.2rem'`                                      |
-| `image`                              | `image`                                   |             | `boolean` | `true`                                          |
+| `image`                              | `image`                                   |             | `boolean` | `undefined`                                     |
 | `imageBorderRadius`                  | `image-border-radius`                     |             | `string`  | `constants.styleBorderRadius`                   |
 | `imageMaxHeight`                     | `image-max-height`                        |             | `string`  | `undefined`                                     |
 | `imageObjectPosition`                | `image-object-position`                   |             | `string`  | `'50% 50%'`                                     |

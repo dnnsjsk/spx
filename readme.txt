@@ -15,16 +15,20 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.32 =
+* New: Typewriter component.
+* Scrollspy: Don't force url-change to be true.
+
 = 1.31 =
 * Snackbar: make height even when component is closeable.
 
 = 1.30 =
 * Oxygen: disabled editor CSS generation.
-* Oxygen: organized components better.
+* Oxygen: organized components more logically.
 * Oxygen: add snackbar element.
 * Animate: fix viewport conditions in editor.
 * Animate: swap button lists for checkboxes.
-* Snackbar: give snackbar close button aria role="button".
+* Snackbar: give snackbar close button the following aria attribute: role="button".
 
 = 1.29 =
 * Edit Button: add JS events and edit-id capabilities.

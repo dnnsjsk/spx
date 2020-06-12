@@ -82,7 +82,6 @@ class spxOxygenAnimate extends spxOxygenElement {
 				'value' => 'false',
 				'css'   => FALSE,
 			)
-
 		);
 
 		/**
