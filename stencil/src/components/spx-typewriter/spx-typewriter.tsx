@@ -1,5 +1,7 @@
 import {Component, Element, h, Host, Prop, State, Method} from '@stencil/core';
 import Typewriter from 'typewriter-effect/dist/core';
+import {css} from "emotion";
+import * as constants from "../../constants/style";
 
 @Component({
     tag: 'spx-typewriter',
@@ -52,17 +54,29 @@ export class SpxTypewriter {
 
         }
 
-        /** Wait 500ms when in Oxygen. */
+        /** Oxygen: wait for Element. */
 
         if (document.body.classList.contains('oxygen-builder-body')) {
-            setTimeout(init, 200)
+
+            const search = () => {
+                if (this.el.querySelector('h1, h2, h3, h4, h5, h6, p, span')) {
+                    init();
+                } else {
+                    setTimeout(search, 100);
+                }
+            }
+
+            search();
+
         } else {
             init();
         }
     }
 
     render() {
-        return <Host>
+        return <Host class={css({
+            display: constants.styleDisplay,
+        })}>
         </Host>
     }
 }

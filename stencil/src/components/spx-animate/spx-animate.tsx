@@ -41,7 +41,7 @@ export class SpxAnimate {
 
             /** Check if list is empty. */
 
-            if (this.elements === undefined || this.elements.length === 0) {
+            if ((this.elements === undefined || this.elements.length === 0) && document.body.classList.contains('oxygen-builder-body')) {
 
                 setTimeout(init, 100);
 

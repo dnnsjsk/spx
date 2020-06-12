@@ -15,6 +15,10 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.34 =
+* Oxygen: fix Typewriter JS error.
+* Oxygen: fix possible Animate bottleneck on front-end.
+
 = 1.33 =
 * Oxygen: Fix typo in editor subheading.
 
