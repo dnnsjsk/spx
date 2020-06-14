@@ -1,5 +1,6 @@
 import {Component, Element, h, Host, Prop, State} from '@stencil/core';
 import {css} from "emotion";
+import * as constants from '../../constants/style.js';
 
 @Component({
     tag: 'spx-class-toggle',
@@ -7,6 +8,8 @@ import {css} from "emotion";
 
 export class SpxClassToggle {
     @Element() el: HTMLElement;
+
+    @Prop({reflectToAttr: true}) display: string = 'block';
 
     @Prop({reflectToAttr: true}) toggle: string = 'spx-class-toggle--active';
     @Prop({reflectToAttr: true}) target: string;
@@ -65,7 +68,7 @@ export class SpxClassToggle {
     render() {
         return <Host onClick={this.toggleClasses.bind(this)}
                      class={css({
-                         display: 'block'
+                         display: constants.styleDisplay('class-toggle', this.display)
                      })}>
             <slot/>
         </Host>

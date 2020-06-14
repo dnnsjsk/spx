@@ -10,6 +10,8 @@ import * as constants from '../../constants/style.js';
 export class SpxAnimate {
     @Element() el: HTMLElement;
 
+    @Prop({reflectToAttr: true}) display: string = 'block';
+
     @Prop() target: string = '*';
 
     @Prop() duration: number = 1;
@@ -104,7 +106,7 @@ export class SpxAnimate {
     render() {
         return <Host
             class={css({
-                display: constants.styleDisplay,
+                display: constants.styleDisplay('animate', this.display),
             })}>
             <slot/>
         </Host>;

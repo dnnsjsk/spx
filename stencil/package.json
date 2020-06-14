@@ -22,12 +22,13 @@
     "generate": "stencil generate"
   },
   "devDependencies": {
-    "@popperjs/core": "^2.4.0",
+    "@popperjs/core": "^2.4.2",
     "@stencil/core": "^1.14.0",
     "@types/node": "^13.13.5",
     "@wordpress/block-serialization-default-parser": "^3.6.0",
     "animejs": "^3.2.0",
     "emotion": "^10.0.27",
+    "glightbox": "^2.0.6",
     "gsap": "^3.2.6",
     "gumshoejs": "^5.1.2",
     "lodash-es": "^4.17.15",

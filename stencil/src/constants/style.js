@@ -1,10 +1,8 @@
-/**
- * Style constants for components.
- */
+/** Style constants for components. */
 
 import {css} from "emotion";
 
-export const styleDisplay = 'block';
+export const styleDisplay = (component, base) => 'var(--spx-' + component + '-display, ' + base + ')';
 export const styleMobileBP = 768;
 
 export const styleFontSize = '16px';

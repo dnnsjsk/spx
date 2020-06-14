@@ -23,6 +23,7 @@ export namespace Components {
     }
     interface SpxAnimate {
         "delay": number;
+        "display": string;
         "duration": number;
         "ease": string;
         "once": boolean;
@@ -38,11 +39,13 @@ export namespace Components {
         "y": number;
     }
     interface SpxClassToggle {
+        "display": string;
         "local": string;
         "target": string;
         "toggle": string;
     }
     interface SpxEdit {
+        "display": string;
         "editable": boolean;
         "name": string;
         "outline": string;
@@ -76,6 +79,7 @@ export namespace Components {
         "type": string;
     }
     interface SpxGroup {
+        "display": string;
     }
     interface SpxIcon {
         "icon": string;
@@ -84,6 +88,10 @@ export namespace Components {
     interface SpxIframe {
         "size": string;
         "src": string;
+    }
+    interface SpxLightbox {
+        "display": string;
+        "effect": string;
     }
     interface SpxLoader {
         "color": string;
@@ -122,6 +130,7 @@ export namespace Components {
         "colorIphone8": string;
         "colorMacbook": string;
         "colorMacbookPro": string;
+        "display": string;
         "imagePosition": string;
         "src": string;
         "type": string;
@@ -160,10 +169,12 @@ export namespace Components {
         "vertical": boolean;
     }
     interface SpxOffset {
+        "display": string;
         "target": string;
     }
     interface SpxScrollspy {
         "contentClass": string;
+        "display": string;
         "navClass": string;
         "offset": any;
         "target": string;
@@ -240,6 +251,7 @@ export namespace Components {
         "autoStart": boolean;
         "delay": any;
         "deleteSpeed": any;
+        "display": string;
         "inner": boolean;
         "loop": boolean;
         /**
@@ -301,6 +313,12 @@ declare global {
     var HTMLSpxIframeElement: {
         prototype: HTMLSpxIframeElement;
         new (): HTMLSpxIframeElement;
+    };
+    interface HTMLSpxLightboxElement extends Components.SpxLightbox, HTMLStencilElement {
+    }
+    var HTMLSpxLightboxElement: {
+        prototype: HTMLSpxLightboxElement;
+        new (): HTMLSpxLightboxElement;
     };
     interface HTMLSpxLoaderElement extends Components.SpxLoader, HTMLStencilElement {
     }
@@ -377,6 +395,7 @@ declare global {
         "spx-group": HTMLSpxGroupElement;
         "spx-icon": HTMLSpxIconElement;
         "spx-iframe": HTMLSpxIframeElement;
+        "spx-lightbox": HTMLSpxLightboxElement;
         "spx-loader": HTMLSpxLoaderElement;
         "spx-masonry": HTMLSpxMasonryElement;
         "spx-mockup": HTMLSpxMockupElement;
@@ -408,6 +427,7 @@ declare namespace LocalJSX {
     }
     interface SpxAnimate {
         "delay"?: number;
+        "display"?: string;
         "duration"?: number;
         "ease"?: string;
         "once"?: boolean;
@@ -423,11 +443,13 @@ declare namespace LocalJSX {
         "y"?: number;
     }
     interface SpxClassToggle {
+        "display"?: string;
         "local"?: string;
         "target"?: string;
         "toggle"?: string;
     }
     interface SpxEdit {
+        "display"?: string;
         "editable"?: boolean;
         "name"?: string;
         "outline"?: string;
@@ -463,6 +485,7 @@ declare namespace LocalJSX {
         "type"?: string;
     }
     interface SpxGroup {
+        "display"?: string;
     }
     interface SpxIcon {
         "icon"?: string;
@@ -471,6 +494,10 @@ declare namespace LocalJSX {
     interface SpxIframe {
         "size"?: string;
         "src"?: string;
+    }
+    interface SpxLightbox {
+        "display"?: string;
+        "effect"?: string;
     }
     interface SpxLoader {
         "color"?: string;
@@ -502,6 +529,7 @@ declare namespace LocalJSX {
         "colorIphone8"?: string;
         "colorMacbook"?: string;
         "colorMacbookPro"?: string;
+        "display"?: string;
         "imagePosition"?: string;
         "src"?: string;
         "type"?: string;
@@ -541,12 +569,15 @@ declare namespace LocalJSX {
         "vertical"?: boolean;
     }
     interface SpxOffset {
+        "display"?: string;
         "target"?: string;
     }
     interface SpxScrollspy {
         "contentClass"?: string;
+        "display"?: string;
         "navClass"?: string;
         "offset"?: any;
+        "onSpxScrollspyDidLoad"?: (event: CustomEvent<any>) => void;
         "target"?: string;
         "urlChange"?: boolean;
     }
@@ -622,6 +653,7 @@ declare namespace LocalJSX {
         "autoStart"?: boolean;
         "delay"?: any;
         "deleteSpeed"?: any;
+        "display"?: string;
         "inner"?: boolean;
         "loop"?: boolean;
         "text"?: string;
@@ -635,6 +667,7 @@ declare namespace LocalJSX {
         "spx-group": SpxGroup;
         "spx-icon": SpxIcon;
         "spx-iframe": SpxIframe;
+        "spx-lightbox": SpxLightbox;
         "spx-loader": SpxLoader;
         "spx-masonry": SpxMasonry;
         "spx-mockup": SpxMockup;
@@ -660,6 +693,7 @@ declare module "@stencil/core" {
             "spx-group": LocalJSX.SpxGroup & JSXBase.HTMLAttributes<HTMLSpxGroupElement>;
             "spx-icon": LocalJSX.SpxIcon & JSXBase.HTMLAttributes<HTMLSpxIconElement>;
             "spx-iframe": LocalJSX.SpxIframe & JSXBase.HTMLAttributes<HTMLSpxIframeElement>;
+            "spx-lightbox": LocalJSX.SpxLightbox & JSXBase.HTMLAttributes<HTMLSpxLightboxElement>;
             "spx-loader": LocalJSX.SpxLoader & JSXBase.HTMLAttributes<HTMLSpxLoaderElement>;
             "spx-masonry": LocalJSX.SpxMasonry & JSXBase.HTMLAttributes<HTMLSpxMasonryElement>;
             "spx-mockup": LocalJSX.SpxMockup & JSXBase.HTMLAttributes<HTMLSpxMockupElement>;

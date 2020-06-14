@@ -1,7 +1,7 @@
 import {Component, Element, h, Host, Prop, State, Method} from '@stencil/core';
 import Typewriter from 'typewriter-effect/dist/core';
 import {css} from "emotion";
-import * as constants from "../../constants/style";
+import * as constants from "../../constants/style.js";
 
 @Component({
     tag: 'spx-typewriter',
@@ -9,6 +9,8 @@ import * as constants from "../../constants/style";
 
 export class SpxTypewriter {
     @Element() el: HTMLElement;
+
+    @Prop({reflectToAttr: true}) display: string = 'block';
 
     @Prop({reflectToAttr: true}) text: string = "I'm a typewriter";
     @Prop({reflectToAttr: true}) delay: any = 'natural';
@@ -75,7 +77,7 @@ export class SpxTypewriter {
 
     render() {
         return <Host class={css({
-            display: constants.styleDisplay,
+            display: constants.styleDisplay('typewriter', this.display),
         })}>
         </Host>
     }

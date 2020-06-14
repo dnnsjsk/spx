@@ -7,11 +7,12 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type     | Default                      |
-| -------- | --------- | ----------- | -------- | ---------------------------- |
-| `local`  | `local`   |             | `string` | `undefined`                  |
-| `target` | `target`  |             | `string` | `undefined`                  |
-| `toggle` | `toggle`  |             | `string` | `'spx-class-toggle--active'` |
+| Property  | Attribute | Description | Type     | Default                      |
+| --------- | --------- | ----------- | -------- | ---------------------------- |
+| `display` | `display` |             | `string` | `'block'`                    |
+| `local`   | `local`   |             | `string` | `undefined`                  |
+| `target`  | `target`  |             | `string` | `undefined`                  |
+| `toggle`  | `toggle`  |             | `string` | `'spx-class-toggle--active'` |
 
 
 ----------------------------------------------

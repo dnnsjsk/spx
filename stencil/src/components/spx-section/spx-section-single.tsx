@@ -29,7 +29,7 @@ export class SpxSectionSingle {
 
     @Prop({reflectToAttr: true}) containerMaxWidth: string = '700px';
 
-    @Prop({reflectToAttr: true}) titleMarginTop: string = '2.5rem';
+    @Prop({reflectToAttr: true}) titleMarginTop: string = '3rem';
     @Prop({reflectToAttr: true}) titleFontSize: string = '2rem';
     @Prop({reflectToAttr: true}) titleColor: string = '#000000';
 
@@ -39,7 +39,7 @@ export class SpxSectionSingle {
     @Prop({reflectToAttr: true}) dateColor: string = '#999999';
 
     @Prop({reflectToAttr: true}) content: boolean;
-    @Prop({reflectToAttr: true}) contentMarginTop: string = '1rem';
+    @Prop({reflectToAttr: true}) contentMarginTop: string = '2rem';
 
     @Prop({reflectToAttr: true}) tableOfContents: boolean;
     @Prop({reflectToAttr: true}) tableOfContentsOffset: any;
@@ -151,7 +151,7 @@ export class SpxSectionSingle {
 
         const styleDefault = css({
             fontSize: constants.styleFontSize,
-            display: constants.styleDisplay,
+            display: 'block',
 
             '.spx-section-single__outer': {
                 display: this.tableOfContents ? 'grid' : constants.styleDisplay,
@@ -247,55 +247,59 @@ export class SpxSectionSingle {
                 {[styleDefault]: !this.styling}
             )}>
 
-            {/** Slot: start */}
-            <slot name="start"/>
+            <article>
 
-            {this.image && this.postArray['image'] &&
-            /** Image. */
-            <div class="spx-section-single__image-wrap">
-                <img alt={this.postArray['title']} class="spx-section-single__image" src={this.postArray['image']}/>
-            </div>}
+                {/** Slot: start */}
+                <slot name="start"/>
 
-            <div class="spx-section-single__outer">
+                {this.image && this.postArray['image'] &&
+                /** Image. */
+                <div class="spx-section-single__image-wrap">
+                    <img alt={this.postArray['title']} class="spx-section-single__image" src={this.postArray['image']}/>
+                </div>}
 
-                <div class="spx-section-single__wrap">
+                <div class="spx-section-single__outer">
 
-                    {/** Slot: before post title. */}
-                    <slot name="before-title"/>
+                    <div class="spx-section-single__wrap">
 
-                    {this.postArray['title'] &&
-                    /** Post title. */
-                    <h1 class="spx-section-single__title">{this.postArray['title']}</h1>}
+                        {/** Slot: before post title. */}
+                        <slot name="before-title"/>
 
-                    {/** Slot: before date. */}
-                    <slot name="before-date"/>
+                        {this.postArray['title'] &&
+                        /** Post title. */
+                        <h1 class="spx-section-single__title">{this.postArray['title']}</h1>}
 
-                    {this.date && this.postArray['date'] &&
-                    /** Post title. */
-                    <span class="spx-section-single__date">{this.postArray['date']}</span>}
+                        {/** Slot: before date. */}
+                        <slot name="before-date"/>
 
-                    {/** Slot: before content. */}
-                    <slot name="before-content"/>
+                        {this.date && this.postArray['date'] &&
+                        /** Post title. */
+                        <span class="spx-section-single__date">{this.postArray['date']}</span>}
 
-                    {this.content &&
-                    /** Post content. */
-                    <div ref={(el) => this.postContentContainer = el as HTMLElement}
-                         class="spx-section-single__content"/>}
+                        {/** Slot: before content. */}
+                        <slot name="before-content"/>
 
-                    {!this.content &&
-                    /** Slot: content. */
-                    <slot name="content"/>}
+                        {this.content &&
+                        /** Post content. */
+                        <div ref={(el) => this.postContentContainer = el as HTMLElement}
+                             class="spx-section-single__content"/>}
+
+                        {!this.content &&
+                        /** Slot: content. */
+                        <slot name="content"/>}
+
+                    </div>
+
+                    {this.tableOfContents &&
+                    <div>
+                        <div ref={(el) => this.tableOfContentsContainer = el as HTMLElement}
+                             class="spx-section-single__table-of-contents">
+                        </div>
+                    </div>}
 
                 </div>
 
-                {this.tableOfContents &&
-                <div>
-                    <div ref={(el) => this.tableOfContentsContainer = el as HTMLElement}
-                         class="spx-section-single__table-of-contents">
-                    </div>
-                </div>}
-
-            </div>
+            </article>
 
         </Host>
     }

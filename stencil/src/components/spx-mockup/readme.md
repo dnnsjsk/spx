@@ -19,6 +19,7 @@
 | `colorIphone8`            | `color-iphone-8`             |             | `string` | `undefined`                        |
 | `colorMacbook`            | `color-macbook`              |             | `string` | `undefined`                        |
 | `colorMacbookPro`         | `color-macbook-pro`          |             | `string` | `undefined`                        |
+| `display`                 | `display`                    |             | `string` | `'block'`                          |
 | `imagePosition`           | `image-position`             |             | `string` | `"50% 50%"`                        |
 | `src`                     | `src`                        |             | `string` | `undefined`                        |
 | `type`                    | `type`                       |             | `string` | `'iphone-8'`                       |

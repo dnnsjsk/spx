@@ -128,9 +128,10 @@ export class SpxMasonry {
 
                 /** Force 100% width for elements. */
 
-                'div > div > *': {
+                'div > div *': {
                     width: '100%',
-                }
+                    maxWidth: '100%',
+                },
             })}>
             <div ref={(el) => this.container = el as HTMLElement}
                  class={css({

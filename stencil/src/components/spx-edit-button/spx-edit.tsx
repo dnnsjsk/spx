@@ -1,6 +1,6 @@
 import {Component, Element, h, Host, Prop, State, Watch, Listen} from '@stencil/core';
 import {css, cx} from "emotion";
-import * as constants from "../../constants/style";
+import * as constants from "../../constants/style.js";
 
 @Component({
     tag: 'spx-edit',
@@ -8,6 +8,8 @@ import * as constants from "../../constants/style";
 
 export class SpxEdit {
     @Element() el: HTMLElement;
+
+    @Prop({reflectToAttr: true}) display: string = 'inline';
 
     @Prop({reflectToAttr: true}) type: string = 'acf';
     @Prop({reflectToAttr: true}) name: string;
@@ -84,7 +86,7 @@ export class SpxEdit {
         /** Style default. */
 
         const styleDefault = css({
-            display: constants.styleBase,
+            display: constants.styleDisplay('edit', this.display),
             position: 'relative',
 
             '&[contenteditable]': {

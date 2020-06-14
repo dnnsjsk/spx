@@ -1,7 +1,7 @@
-import {Component, Element, h, Host, Prop, Listen} from '@stencil/core';
+import {Component, Element, h, Host, Prop, Listen, Event, EventEmitter} from '@stencil/core';
 import Gumshoe from '../../../../stencil/node_modules/gumshoejs/dist/gumshoe.js';
 import {css} from "emotion";
-import * as constants from "../../constants/style";
+import * as constants from "../../constants/style.js";
 import {offset} from '../../functions/offset.js';
 
 @Component({
@@ -11,11 +11,15 @@ import {offset} from '../../functions/offset.js';
 export class SpxScrollspy {
     @Element() el: HTMLElement;
 
+    @Prop({reflectToAttr: true}) display: string = 'block';
+
     @Prop({reflectToAttr: true}) target: string = 'a';
     @Prop({reflectToAttr: true}) navClass: string = 'spx-scrollspy__nav--active';
     @Prop({reflectToAttr: true}) contentClass: string = 'spx-scrollspy__content--active';
     @Prop({reflectToAttr: true}) offset: any;
     @Prop({reflectToAttr: true}) urlChange: boolean;
+
+    @Event({eventName: 'spxScrollspyDidLoad'}) spxScrollspyDidLoad: EventEmitter;
 
     /** Replace state of URL bar . */
 
@@ -41,10 +45,16 @@ export class SpxScrollspy {
                 return offset(this.offset);
             }
         });
+
+        /** Emit event after render. */
+
+        this.spxScrollspyDidLoad.emit({target: 'document'});
     }
 
     render() {
-        return <Host class={css({display: constants.styleDisplay})}>
+        return <Host class={css({
+            display: constants.styleDisplay('scrollspy', this.display)
+        })}>
         </Host>
     }
 }

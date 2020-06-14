@@ -11,7 +11,7 @@
 | ------------------------------------ | ----------------------------------------- | ----------- | --------- | ----------------------------------------------- |
 | `containerMaxWidth`                  | `container-max-width`                     |             | `string`  | `'700px'`                                       |
 | `content`                            | `content`                                 |             | `boolean` | `undefined`                                     |
-| `contentMarginTop`                   | `content-margin-top`                      |             | `string`  | `'1rem'`                                        |
+| `contentMarginTop`                   | `content-margin-top`                      |             | `string`  | `'2rem'`                                        |
 | `date`                               | `date`                                    |             | `boolean` | `undefined`                                     |
 | `dateColor`                          | `date-color`                              |             | `string`  | `'#999999'`                                     |
 | `dateFontSize`                       | `date-font-size`                          |             | `string`  | `'1rem'`                                        |
@@ -39,7 +39,7 @@
 | `tableOfContentsPadding`             | `table-of-contents-padding`               |             | `string`  | `'2.5rem'`                                      |
 | `titleColor`                         | `title-color`                             |             | `string`  | `'#000000'`                                     |
 | `titleFontSize`                      | `title-font-size`                         |             | `string`  | `'2rem'`                                        |
-| `titleMarginTop`                     | `title-margin-top`                        |             | `string`  | `'2.5rem'`                                      |
+| `titleMarginTop`                     | `title-margin-top`                        |             | `string`  | `'3rem'`                                        |
 
 
 ## Events

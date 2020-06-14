@@ -10,10 +10,18 @@
 | Property       | Attribute       | Description | Type      | Default                            |
 | -------------- | --------------- | ----------- | --------- | ---------------------------------- |
 | `contentClass` | `content-class` |             | `string`  | `'spx-scrollspy__content--active'` |
+| `display`      | `display`       |             | `string`  | `'block'`                          |
 | `navClass`     | `nav-class`     |             | `string`  | `'spx-scrollspy__nav--active'`     |
 | `offset`       | `offset`        |             | `any`     | `undefined`                        |
 | `target`       | `target`        |             | `string`  | `'a'`                              |
 | `urlChange`    | `url-change`    |             | `boolean` | `undefined`                        |
+
+
+## Events
+
+| Event                 | Description | Type               |
+| --------------------- | ----------- | ------------------ |
+| `spxScrollspyDidLoad` |             | `CustomEvent<any>` |
 
 
 ## Dependencies

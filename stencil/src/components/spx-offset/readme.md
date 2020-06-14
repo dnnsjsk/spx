@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type     | Default    |
-| -------- | --------- | ----------- | -------- | ---------- |
-| `target` | `target`  |             | `string` | `'header'` |
+| Property  | Attribute | Description | Type     | Default    |
+| --------- | --------- | ----------- | -------- | ---------- |
+| `display` | `display` |             | `string` | `'block'`  |
+| `target`  | `target`  |             | `string` | `'header'` |
 
 
 ----------------------------------------------

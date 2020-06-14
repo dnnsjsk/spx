@@ -66,6 +66,7 @@ export class SpxNavigation {
                 this.initPopperMobile();
             } else {
                 this.initPopperDesktop();
+                this.initPopperDesktop();
             }
         }
     }
@@ -84,6 +85,13 @@ export class SpxNavigation {
         if (newValue) this.menuArray = JSON.parse(newValue);
     }
 
+    connectedCallback() {
+
+        /** Check if is mobile view. */
+
+        this.checkIfMobile();
+    }
+
     componentWillLoad() {
 
         /** If menu prop is set. */
@@ -92,10 +100,6 @@ export class SpxNavigation {
     }
 
     componentDidLoad() {
-
-        /** Check if is mobile view. */
-
-        this.checkIfMobile();
 
         /** Sort menu items. */
 
@@ -122,7 +126,7 @@ export class SpxNavigation {
             }
         }
 
-        return <nav class={checkMobile()}>
+        return <nav role="navigation" class={checkMobile()}>
             <ul>
                 {Object.values(obj).map((object) => {
                     let objectChild = object['spxChildren'];
@@ -159,8 +163,6 @@ export class SpxNavigation {
 
                         {objectChild && mobile &&
                         this.renderMenu(object['spxChildren'], 'child', true)}
-
-                        {}
                     </li>
                 })}
             </ul>
@@ -210,6 +212,7 @@ export class SpxNavigation {
                 childMenus.forEach(item => {
                     createPopper(item, item.querySelector('nav'), {
                         placement: 'right-start',
+                        strategy: 'fixed',
                         modifiers: [
                             {
                                 name: 'flip',
@@ -230,6 +233,16 @@ export class SpxNavigation {
                                             return [-Math.abs(item.getBoundingClientRect().top - item.parentElement.getBoundingClientRect().top), Math.abs(item.getBoundingClientRect().left - item.parentElement.getBoundingClientRect().left)];
                                         }
                                     },
+                                },
+                            },
+
+                            /** Make fixed position work properly. */
+
+                            {
+                                name: 'preventOverflow',
+                                options: {
+                                    rootBoundary: item,
+                                    padding: -1,
                                 },
                             },
                         ],
@@ -259,7 +272,7 @@ export class SpxNavigation {
         /** Style default. */
 
         const styleDefault = css({
-            display: constants.styleDisplay,
+            display: 'block',
             fontFamily: constants.styleFontFamily,
             fontSize: constants.styleFontBase('navigation', this.fontSize),
             zIndex: 999999,

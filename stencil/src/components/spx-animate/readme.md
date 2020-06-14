@@ -10,6 +10,7 @@
 | Property               | Attribute                | Description | Type      | Default        |
 | ---------------------- | ------------------------ | ----------- | --------- | -------------- |
 | `delay`                | `delay`                  |             | `number`  | `0`            |
+| `display`              | `display`                |             | `string`  | `'block'`      |
 | `duration`             | `duration`               |             | `number`  | `1`            |
 | `ease`                 | `ease`                   |             | `string`  | `'power1.out'` |
 | `once`                 | `once`                   |             | `boolean` | `undefined`    |

@@ -1,5 +1,7 @@
-import {Component, Element, h, Host} from '@stencil/core';
+import {Component, Element, h, Host, Prop} from '@stencil/core';
 import {startsWith} from 'lodash-es';
+import {css} from "emotion";
+import * as constants from "../../constants/style.js";
 
 @Component({
     tag: 'spx-group',
@@ -7,6 +9,8 @@ import {startsWith} from 'lodash-es';
 
 export class SpxGroup {
     @Element() el: HTMLElement;
+
+    @Prop({reflectToAttr: true}) display: string = 'block';
 
     componentDidLoad() {
 
@@ -35,7 +39,9 @@ export class SpxGroup {
     }
 
     render() {
-        return <Host>
+        return <Host class={css({
+            display: constants.styleDisplay('group', this.display)
+        })}>
             <slot/>
         </Host>
     }

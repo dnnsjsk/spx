@@ -10,6 +10,8 @@ import * as constants from '../../constants/style.js';
 export class SpxMockup {
     @Element() el: HTMLElement;
 
+    @Prop({reflectToAttr: true}) display: string = 'block';
+
     @Prop({reflectToAttr: true}) type: string = 'iphone-8';
     @Prop({reflectToAttr: true}) src: string;
     @Prop({reflectToAttr: true}) imagePosition: string = "50% 50%"
@@ -116,7 +118,7 @@ export class SpxMockup {
         });
 
         const styleDevice = css({
-            display: constants.styleBlock,
+            display: constants.styleDisplay('mockup', this.display),
             maxWidth: '100%',
         });
 

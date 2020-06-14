@@ -12,6 +12,7 @@
 | `autoStart`   | `auto-start`   |             | `boolean` | `undefined`          |
 | `delay`       | `delay`        |             | `any`     | `'natural'`          |
 | `deleteSpeed` | `delete-speed` |             | `any`     | `'natural'`          |
+| `display`     | `display`      |             | `string`  | `'block'`            |
 | `inner`       | `inner`        |             | `boolean` | `undefined`          |
 | `loop`        | `loop`         |             | `boolean` | `undefined`          |
 | `text`        | `text`         |             | `string`  | `"I'm a typewriter"` |

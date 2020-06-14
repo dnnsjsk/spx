@@ -1,5 +1,6 @@
 import {Component, Element, h, Host, Listen, Prop} from '@stencil/core';
 import {css} from "emotion";
+import * as constants from "../../constants/style.js";
 
 @Component({
     tag: 'spx-offset',
@@ -7,6 +8,8 @@ import {css} from "emotion";
 
 export class SpxOffset {
     @Element() el: HTMLElement;
+
+    @Prop({reflectToAttr: true}) display: string = 'block';
 
     @Prop({reflectToAttr: true}) target: string = 'header';
 
@@ -33,7 +36,7 @@ export class SpxOffset {
 
     render() {
         return <Host class={css({
-            display: 'block',
+            display: constants.styleDisplay('lightbox', this.display)
         })}>
             <slot/>
         </Host>
