@@ -155,7 +155,7 @@ export class SpxSectionSingle {
 
             '.spx-section-single__outer': {
                 display: this.tableOfContents ? 'grid' : constants.styleDisplay,
-                gridTemplateColumns: this.tableOfContents && '1fr auto',
+                gridTemplateColumns: this.tableOfContents && !this.mobileBP && '1fr auto',
                 gridGap: '40px',
             },
 

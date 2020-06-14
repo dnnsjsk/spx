@@ -3,6 +3,7 @@ import GLightbox from 'glightbox'
 import {wrap} from '../../functions/wrap.js';
 import {css} from "emotion";
 import * as constants from "../../constants/style.js";
+import {disableBodyScroll, clearAllBodyScrollLocks} from 'body-scroll-lock';
 
 @Component({
     tag: 'spx-lightbox',
@@ -43,6 +44,13 @@ export class SpxLightbox {
             touchNavigation: true,
             openEffect: this.effect === 'fade' ? 'fadeIn' : 'none',
             closeEffect: this.effect === 'fade' ? 'fadeOut' : 'none',
+            onOpen: () => {
+                let lightbox = document.querySelector('#glightbox-body');
+                disableBodyScroll(lightbox);
+            },
+            onClose: () => {
+                clearAllBodyScrollLocks();
+            },
         });
 
     }

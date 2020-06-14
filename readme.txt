@@ -15,6 +15,10 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.37 =
+* Lightbox: make body not scrollable when open.
+* Lightbox: avoid scroll to top when opening on mobile.
+
 = 1.36 =
 * Navigation: only create one nav tag.
 * Edit Button: position new defaults to bottom-right again.
