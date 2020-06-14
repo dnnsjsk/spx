@@ -21,7 +21,7 @@
 | `fontSize`          | `font-size`          |             | `string`  | `constants.styleFontSize`     |
 | `gap`               | `gap`                |             | `string`  | `'0.4em'`                     |
 | `padding`           | `padding`            |             | `string`  | `'0.8em 1.2em'`               |
-| `position`          | `position`           |             | `string`  | `'bottom-center'`             |
+| `position`          | `position`           |             | `string`  | `'bottom-right'`              |
 | `styling`           | `styling`            |             | `string`  | `undefined`                   |
 | `test`              | `test`               |             | `boolean` | `false`                       |
 | `textDiscard`       | `text-discard`       |             | `string`  | `'Discard'`                   |

@@ -126,7 +126,7 @@ export class SpxNavigation {
             }
         }
 
-        return <nav role="navigation" class={checkMobile()}>
+        return <div class={checkMobile()}>
             <ul>
                 {Object.values(obj).map((object) => {
                     let objectChild = object['spxChildren'];
@@ -166,7 +166,7 @@ export class SpxNavigation {
                     </li>
                 })}
             </ul>
-        </nav>
+        </div>
     }
 
     sortMenuItem() {
@@ -197,7 +197,7 @@ export class SpxNavigation {
 
             if (parentMenu) {
                 parentMenu.forEach(item => {
-                    createPopper(item, item.querySelector('nav'), {
+                    createPopper(item, item.querySelector('div'), {
                         // @ts-ignore
                         placement: 'bottom-' + this.childPlacement + '',
                     });
@@ -210,7 +210,7 @@ export class SpxNavigation {
 
             if (childMenus) {
                 childMenus.forEach(item => {
-                    createPopper(item, item.querySelector('nav'), {
+                    createPopper(item, item.querySelector('div'), {
                         placement: 'right-start',
                         strategy: 'fixed',
                         modifiers: [
@@ -439,20 +439,24 @@ export class SpxNavigation {
                 {[styleDefault]: !this.styling}
             )}>
 
-            {this.menu && !this.mobileBP &&
+            <nav>
 
-            /** Render desktop menu. */
+                {this.menu && !this.mobileBP &&
 
-            this.renderMenu(this.menuArray, 'parent', false)}
+                /** Render desktop menu. */
 
-            {this.menu && this.mobileBP &&
+                this.renderMenu(this.menuArray, 'parent', false)}
 
-            /** Render mobile menu. */
+                {this.menu && this.mobileBP &&
 
-            <div class='spx-navigation__mobile-button'>
-                Menu
-                {this.renderMenu(this.menuArray, 'parent', true)}
-            </div>}
+                /** Render mobile menu. */
+
+                <div class='spx-navigation__mobile-button'>
+                    Menu
+                    {this.renderMenu(this.menuArray, 'parent', true)}
+                </div>}
+
+            </nav>
 
         </Host>
     }

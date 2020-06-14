@@ -15,9 +15,13 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.36 =
+* Navigation: only create one nav tag.
+* Edit Button: position new defaults to bottom-right again.
+
 = 1.35 =
 * New: Lightbox component.
-* Masonry: fix generated CSS to fix when being nested inside Lightbox.
+* Masonry: fix generated CSS when being nested inside Lightbox.
 * Scrollspy: add DidLoad event.
 * Navigation: fix desktop menu flashing in when on mobile.
 * Navigation: fix sub sub menus not positioning correctly when navigation is fixed.

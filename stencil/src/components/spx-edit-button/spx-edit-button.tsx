@@ -20,7 +20,7 @@ export class SpxEditButton {
     @Prop({reflectToAttr: true}) textDiscard: string = 'Discard';
     @Prop({reflectToAttr: true}) textSuccess: string = 'Save was successful.';
 
-    @Prop({reflectToAttr: true}) position: string = 'bottom-center';
+    @Prop({reflectToAttr: true}) position: string = 'bottom-right';
     @State() positionArray;
     @Prop({reflectToAttr: true}) distanceX: string = '1em';
     @Prop({reflectToAttr: true}) distanceY: string = '1em';
