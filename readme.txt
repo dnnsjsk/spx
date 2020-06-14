@@ -1,7 +1,7 @@
 === spx ===
 Contributors: dnnsjsk
 Requires at least: 5.0
-Tested up to: 5.4.1
+Tested up to: 5.4.2
 Requires PHP: 7.0
 Stable tag: 1.0
 License: GPLv2 or later
@@ -14,6 +14,9 @@ A web component page builder for WordPress developers like you!
 Supercharge your workflow using handy components for the next project. Works with any theme, browser and existing code.
 
 == Changelog ==
+
+= 1.38 =
+* Fix: bump "Tested up to" version to 5.4.2.
 
 = 1.37 =
 * Lightbox: make body not scrollable when open.
