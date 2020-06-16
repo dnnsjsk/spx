@@ -40,6 +40,7 @@ if ( ! class_exists( 'spxOxygen' ) ) {
 			include plugin_dir_path( __FILE__ ) . 'spx-oxygen-element.php';
 			include plugin_dir_path( __FILE__ ) . 'components/animate.php';
 			include plugin_dir_path( __FILE__ ) . 'components/class-toggle.php';
+			include plugin_dir_path( __FILE__ ) . 'components/image-comparison.php';
 			include plugin_dir_path( __FILE__ ) . 'components/mockup.php';
 			include plugin_dir_path( __FILE__ ) . 'components/offset.php';
 			include plugin_dir_path( __FILE__ ) . 'components/snackbar.php';

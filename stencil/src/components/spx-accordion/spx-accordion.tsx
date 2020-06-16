@@ -21,7 +21,7 @@ export class SpxAccordion {
     @Prop({reflectToAttr: true}) headerGap: string = '0.4em';
     @Prop({reflectToAttr: true}) headerCustom: boolean;
 
-    @Prop({reflectToAttr: true}) iconIndicator: string;
+    @Prop({reflectToAttr: true}) indicatorIcon: string;
 
     @Prop({reflectToAttr: true}) contentColor: string = constants.stylePrimary900;
     @Prop({reflectToAttr: true}) contentText: string = 'Default Content Text';
@@ -113,8 +113,8 @@ export class SpxAccordion {
                 {!this.headerCustom &&
                 <div class="spx-accordion__header-icon">
 
-                    {this.iconIndicator ?
-                        <i class={this.iconIndicator}/> :
+                    {this.indicatorIcon ?
+                        <i class={this.indicatorIcon}/> :
                         <spx-icon type="caret"/>}
 
                 </div>}

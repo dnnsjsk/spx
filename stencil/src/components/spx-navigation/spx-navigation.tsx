@@ -32,6 +32,7 @@ export class SpxNavigation {
     @Prop({reflectToAttr: true}) parentItemBackground: string = '#ffffff';
     @Prop({reflectToAttr: true}) parentItemBackgroundHover: string = constants.stylePrimary100;
 
+    @Prop({reflectToAttr: true}) childIcon: string;
     @Prop({reflectToAttr: true}) childGap: string = '0.5em';
     @Prop({reflectToAttr: true}) childBorder: string = '1px solid ' + constants.stylePrimary300 + '';
     @Prop({reflectToAttr: true}) childChildGap: string = '0.8em';
@@ -43,8 +44,7 @@ export class SpxNavigation {
     @Prop({reflectToAttr: true}) childItemBackgroundHover: string = constants.stylePrimary100;
     @Prop({reflectToAttr: true}) childPlacement: string = 'start';
 
-    @Prop({reflectToAttr: true}) iconChild: string;
-
+    @Prop({reflectToAttr: true}) mobileIcon: string;
     @Prop({reflectToAttr: true}) mobilePlacement: string = 'start';
     @Prop({reflectToAttr: true}) mobileItemPadding: string = '0.6em';
     @Prop({reflectToAttr: true}) mobileItemNestedMarginLeft: string = '0.8em';
@@ -145,15 +145,15 @@ export class SpxNavigation {
                         <a href={object['url'] === '#' ? '#0' : object['url']}>
                             {object['title']}
 
-                            {(objectChild && (!this.mobileBP && !this.vertical) && !this.iconChild) ?
+                            {(objectChild && (!this.mobileBP && !this.vertical) && !this.childIcon) ?
 
                                 /** Render caret if has any children. */
 
                                 <spx-icon type="caret"/>
 
-                                : (objectChild && (!this.mobileBP && !this.vertical) && this.iconChild) ?
+                                : (objectChild && (!this.mobileBP && !this.vertical) && this.childIcon) ?
 
-                                    <i class={this.iconChild}/>
+                                    <i class={this.childIcon}/>
 
                                     : null}
                         </a>
@@ -193,7 +193,7 @@ export class SpxNavigation {
 
             /** Init popper for parent menu. */
 
-            let parentMenu = this.el.querySelectorAll('.spx-navigation--parent .spx-navigation__item--parent.spx-navigation__item--has-child');
+            let parentMenu = this.el.querySelectorAll('nav > .spx-navigation--parent .spx-navigation__item--parent.spx-navigation__item--has-child');
 
             if (parentMenu) {
                 parentMenu.forEach(item => {
@@ -206,7 +206,7 @@ export class SpxNavigation {
 
             /** Init popper for child menu. */
 
-            let childMenus = this.el.querySelectorAll('.spx-navigation--child .spx-navigation__item--child.spx-navigation__item--has-child');
+            let childMenus = this.el.querySelectorAll('nav > .spx-navigation--parent .spx-navigation--child .spx-navigation__item--child.spx-navigation__item--has-child');
 
             if (childMenus) {
                 childMenus.forEach(item => {
@@ -276,6 +276,10 @@ export class SpxNavigation {
             fontFamily: constants.styleFontFamily,
             fontSize: constants.styleFontBase('navigation', this.fontSize),
             zIndex: 999999,
+
+            'nav > .spx-navigation--parent': {
+                display: this.mobileBP ? 'none' : 'grid',
+            },
 
             'ul': {
                 margin: '0',
@@ -354,7 +358,7 @@ export class SpxNavigation {
             ['li:hover > .spx-navigation--child, ' +
             'li:focus-within > .spx-navigation--child, ' +
             '.spx-navigation__mobile-button:hover .spx-navigation--mobile, ' +
-            '.spx-navigation__mobile-button:focus-within .spx-navigation--mobile' +
+            '.spx-navigation__mobile-button:focus-within .spx-navigation--mobile, ' +
             '.spx-navigation__mobile-button:hover .spx-navigation--child, ' +
             '.spx-navigation__mobile-button:focus-within .spx-navigation--child']: {
                 opacity: '1',
@@ -404,6 +408,10 @@ export class SpxNavigation {
                 padding: 'var(--spx-navigation-parent-item-padding, ' + this.parentItemPadding + ')',
                 color: 'var(--spx-navigation-parent-item-color, ' + this.parentItemColor + ')',
                 background: 'var(--spx-navigation-parent-item-background, ' + this.parentItemBackground + ')',
+                gridGap: '0.4rem',
+                gridAutoFlow: 'column',
+                alignItems: 'center',
+                display: this.mobileBP ? 'grid' : 'none',
 
                 'a': {
                     padding: 'var(--spx-navigation-mobile-item-padding, ' + this.mobileItemPadding + ')',
@@ -441,20 +449,19 @@ export class SpxNavigation {
 
             <nav>
 
-                {this.menu && !this.mobileBP &&
+                {this.menu &&
 
                 /** Render desktop menu. */
 
-                this.renderMenu(this.menuArray, 'parent', false)}
+                [this.renderMenu(this.menuArray, 'parent', false),
 
-                {this.menu && this.mobileBP &&
+                    /** Render mobile menu. */
 
-                /** Render mobile menu. */
-
-                <div class='spx-navigation__mobile-button'>
-                    Menu
-                    {this.renderMenu(this.menuArray, 'parent', true)}
-                </div>}
+                    <div tabindex="0" role="button" class='spx-navigation__mobile-button'>
+                        {this.mobileIcon && <i class={this.mobileIcon}/>}
+                        <span>Menu</span>
+                        {this.renderMenu(this.menuArray, 'parent', true)}
+                    </div>]}
 
             </nav>
 

@@ -15,6 +15,15 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.39 =
+* New: Image Comparison component. (Main & Oxygen)
+* Lightbox: make icons uniform.
+* Lightbox: fix hover states.
+* Navigation: component now renders desktop & menu version once and then hides it via CSS.
+* Navigation: add icon support for mobile button.
+* Navigation: make mobile button focusable.
+* Navigation: give mobile button aria role="button".
+
 = 1.38 =
 * Fix: bump "Tested up to" version to 5.4.2.
 

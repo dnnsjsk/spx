@@ -18,7 +18,7 @@ export namespace Components {
         "headerGap": string;
         "headerText": string;
         "headerTextTag": string;
-        "iconIndicator": string;
+        "indicatorIcon": string;
         "styling": string;
     }
     interface SpxAnimate {
@@ -89,6 +89,13 @@ export namespace Components {
         "size": string;
         "src": string;
     }
+    interface SpxImageComparison {
+        "color": string;
+        "iconColor": string;
+        "srcAfter": string;
+        "srcBefore": string;
+        "start": number;
+    }
     interface SpxLightbox {
         "display": string;
         "effect": string;
@@ -139,6 +146,7 @@ export namespace Components {
         "childBorder": string;
         "childChildGap": string;
         "childGap": string;
+        "childIcon": string;
         "childIndicatorGap": string;
         "childItemBackground": string;
         "childItemBackgroundHover": string;
@@ -147,11 +155,11 @@ export namespace Components {
         "childItemPadding": string;
         "childPlacement": string;
         "fontSize": string;
-        "iconChild": string;
         "itemUnderline": boolean;
         "itemUnderlineHover": boolean;
         "menu": string;
         "mobile": number;
+        "mobileIcon": string;
         "mobileItemBackground": string;
         "mobileItemBackgroundHover": string;
         "mobileItemColor": string;
@@ -314,6 +322,12 @@ declare global {
         prototype: HTMLSpxIframeElement;
         new (): HTMLSpxIframeElement;
     };
+    interface HTMLSpxImageComparisonElement extends Components.SpxImageComparison, HTMLStencilElement {
+    }
+    var HTMLSpxImageComparisonElement: {
+        prototype: HTMLSpxImageComparisonElement;
+        new (): HTMLSpxImageComparisonElement;
+    };
     interface HTMLSpxLightboxElement extends Components.SpxLightbox, HTMLStencilElement {
     }
     var HTMLSpxLightboxElement: {
@@ -395,6 +409,7 @@ declare global {
         "spx-group": HTMLSpxGroupElement;
         "spx-icon": HTMLSpxIconElement;
         "spx-iframe": HTMLSpxIframeElement;
+        "spx-image-comparison": HTMLSpxImageComparisonElement;
         "spx-lightbox": HTMLSpxLightboxElement;
         "spx-loader": HTMLSpxLoaderElement;
         "spx-masonry": HTMLSpxMasonryElement;
@@ -422,7 +437,7 @@ declare namespace LocalJSX {
         "headerGap"?: string;
         "headerText"?: string;
         "headerTextTag"?: string;
-        "iconIndicator"?: string;
+        "indicatorIcon"?: string;
         "styling"?: string;
     }
     interface SpxAnimate {
@@ -495,6 +510,13 @@ declare namespace LocalJSX {
         "size"?: string;
         "src"?: string;
     }
+    interface SpxImageComparison {
+        "color"?: string;
+        "iconColor"?: string;
+        "srcAfter"?: string;
+        "srcBefore"?: string;
+        "start"?: number;
+    }
     interface SpxLightbox {
         "display"?: string;
         "effect"?: string;
@@ -538,6 +560,7 @@ declare namespace LocalJSX {
         "childBorder"?: string;
         "childChildGap"?: string;
         "childGap"?: string;
+        "childIcon"?: string;
         "childIndicatorGap"?: string;
         "childItemBackground"?: string;
         "childItemBackgroundHover"?: string;
@@ -546,11 +569,11 @@ declare namespace LocalJSX {
         "childItemPadding"?: string;
         "childPlacement"?: string;
         "fontSize"?: string;
-        "iconChild"?: string;
         "itemUnderline"?: boolean;
         "itemUnderlineHover"?: boolean;
         "menu"?: string;
         "mobile"?: number;
+        "mobileIcon"?: string;
         "mobileItemBackground"?: string;
         "mobileItemBackgroundHover"?: string;
         "mobileItemColor"?: string;
@@ -667,6 +690,7 @@ declare namespace LocalJSX {
         "spx-group": SpxGroup;
         "spx-icon": SpxIcon;
         "spx-iframe": SpxIframe;
+        "spx-image-comparison": SpxImageComparison;
         "spx-lightbox": SpxLightbox;
         "spx-loader": SpxLoader;
         "spx-masonry": SpxMasonry;
@@ -693,6 +717,7 @@ declare module "@stencil/core" {
             "spx-group": LocalJSX.SpxGroup & JSXBase.HTMLAttributes<HTMLSpxGroupElement>;
             "spx-icon": LocalJSX.SpxIcon & JSXBase.HTMLAttributes<HTMLSpxIconElement>;
             "spx-iframe": LocalJSX.SpxIframe & JSXBase.HTMLAttributes<HTMLSpxIframeElement>;
+            "spx-image-comparison": LocalJSX.SpxImageComparison & JSXBase.HTMLAttributes<HTMLSpxImageComparisonElement>;
             "spx-lightbox": LocalJSX.SpxLightbox & JSXBase.HTMLAttributes<HTMLSpxLightboxElement>;
             "spx-loader": LocalJSX.SpxLoader & JSXBase.HTMLAttributes<HTMLSpxLoaderElement>;
             "spx-masonry": LocalJSX.SpxMasonry & JSXBase.HTMLAttributes<HTMLSpxMasonryElement>;

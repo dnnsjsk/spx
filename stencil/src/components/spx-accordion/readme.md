@@ -20,7 +20,7 @@
 | `headerGap`      | `header-gap`       |             | `string`  | `'0.4em'`                   |
 | `headerText`     | `header-text`      |             | `string`  | `'Default Header Text'`     |
 | `headerTextTag`  | `header-text-tag`  |             | `string`  | `'span'`                    |
-| `iconIndicator`  | `icon-indicator`   |             | `string`  | `undefined`                 |
+| `indicatorIcon`  | `indicator-icon`   |             | `string`  | `undefined`                 |
 | `styling`        | `styling`          |             | `string`  | `undefined`                 |
 
 

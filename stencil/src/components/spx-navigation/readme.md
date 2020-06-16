@@ -12,6 +12,7 @@
 | `childBorder`                | `child-border`                   |             | `string`  | `'1px solid ' + constants.stylePrimary300 + ''` |
 | `childChildGap`              | `child-child-gap`                |             | `string`  | `'0.8em'`                                       |
 | `childGap`                   | `child-gap`                      |             | `string`  | `'0.5em'`                                       |
+| `childIcon`                  | `child-icon`                     |             | `string`  | `undefined`                                     |
 | `childIndicatorGap`          | `child-indicator-gap`            |             | `string`  | `'0.2em'`                                       |
 | `childItemBackground`        | `child-item-background`          |             | `string`  | `'#ffffff'`                                     |
 | `childItemBackgroundHover`   | `child-item-background-hover`    |             | `string`  | `constants.stylePrimary100`                     |
@@ -20,11 +21,11 @@
 | `childItemPadding`           | `child-item-padding`             |             | `string`  | `'0.6em 0.8em'`                                 |
 | `childPlacement`             | `child-placement`                |             | `string`  | `'start'`                                       |
 | `fontSize`                   | `font-size`                      |             | `string`  | `constants.styleFontSize`                       |
-| `iconChild`                  | `icon-child`                     |             | `string`  | `undefined`                                     |
 | `itemUnderline`              | `item-underline`                 |             | `boolean` | `undefined`                                     |
 | `itemUnderlineHover`         | `item-underline-hover`           |             | `boolean` | `undefined`                                     |
 | `menu`                       | `menu`                           |             | `string`  | `undefined`                                     |
 | `mobile`                     | `mobile`                         |             | `number`  | `constants.styleMobileBP`                       |
+| `mobileIcon`                 | `mobile-icon`                    |             | `string`  | `undefined`                                     |
 | `mobileItemBackground`       | `mobile-item-background`         |             | `string`  | `'#ffffff'`                                     |
 | `mobileItemBackgroundHover`  | `mobile-item-background-hover`   |             | `string`  | `constants.stylePrimary100`                     |
 | `mobileItemColor`            | `mobile-item-color`              |             | `string`  | `constants.stylePrimary800`                     |

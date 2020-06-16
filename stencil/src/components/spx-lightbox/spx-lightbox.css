@@ -962,7 +962,7 @@ iframe.wait-autoplay {
 }
 
 /*
-    SPX STYLES
+    spx styles
  */
 
 .glightbox-open {
@@ -978,9 +978,34 @@ iframe.wait-autoplay {
 }
 
 .goverlay {
-    background: var(--spx-lightbox-overlay-color, rgba(0, 0, 0, .92)) !important;
+    background: var(--spx-lightbox-overlay-color, rgba(0, 0, 0, 0.92)) !important;
 }
 
 .gslide {
     max-width: var(--spx-lightbox-max-width, 100%) !important;
+}
+
+.gbtn {
+    width: 40px !important;
+    height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background-color: transparent !important;
+    padding: 0 !important;
+    opacity: 0.7;
+}
+
+.gbtn:hover {
+    opacity: 1;
+}
+
+.gbtn.disabled {
+    opacity: 0 !important;
+}
+
+.gbtn svg {
+    height: 80% !important;
+    width: 80% !important;
+    color: var(--spx-lightbox-icon-color, #ffffff) !important;
 }

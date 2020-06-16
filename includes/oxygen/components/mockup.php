@@ -12,18 +12,18 @@ class spxOxygenMockup extends spxOxygenElement {
 		return __( 'Mockup' );
 	}
 
-	function init() {
-		$this->El->useAJAXControls();
-	}
-
 	function spx_button_place() {
 		return "elements";
+	}
+
+	function init() {
+		$this->El->useAJAXControls();
 	}
 
 	function render( $options, $defaults, $content ) {
 
 		$type             = isset( $options['spxMockupType'] ) ? $options['spxMockupType'] : 'iphone-x';
-		$src              = isset( $options['spxMockupSrc'] ) ? 'src="' . $options['spxMockupSrc'] . '"' : NULL;
+		$src              = isset( $options['spxMockupSrc'] ) ? 'src="' . $options['spxMockupSrc'] . '"' : 'http://placehold.it/1600x900';
 		$imagePosition    = $options['spxMockupImagePosition'];
 		$colorIphone8     = $options['spxMockupType'] == 'iphone-8' ? 'color-iphone-8="' . $options['spxMockupColorIphone8'] . '"' : NULL;
 		$colorGooglePixel = $options['spxMockupType'] == 'google-pixel' ? 'color-google-pixel="' . $options['spxMockupColorGooglePixel'] . '"' : NULL;
