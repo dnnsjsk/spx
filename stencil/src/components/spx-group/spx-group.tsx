@@ -14,6 +14,23 @@ export class SpxGroup {
 
     componentDidLoad() {
 
+        this.forwardAttributes();
+
+        /** Set up mutation observer. */
+
+        let observer = new MutationObserver((mutations) => {
+            mutations.forEach(() => {
+                this.forwardAttributes();
+            })
+        });
+
+        observer.observe(this.el, {
+            attributes: true
+        });
+    }
+
+    forwardAttributes() {
+
         /** Function to filter elements. */
 
         const getAllTagMatches = (regEx) => {

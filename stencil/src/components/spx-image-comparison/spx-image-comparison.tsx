@@ -1,4 +1,4 @@
-import {Component, Element, h, Host, Prop, State} from '@stencil/core';
+import {Component, Element, h, Host, Prop, State, Watch} from '@stencil/core';
 import {css} from 'emotion';
 import * as constants from '../../constants/style.js';
 
@@ -18,7 +18,19 @@ export class SpxImageComparison {
 
     @State() active: boolean;
 
+    @Watch('start')
+    startIt(x) {
+
+        /** Scroll image in start */
+
+        let transform = Math.max(0, (Math.min(x, (this.el.querySelector('.spx-image-comparison__container') as HTMLElement).offsetWidth)));
+        (this.el.querySelector('.spx-image-comparison__image--after') as HTMLElement).style.width = transform + "px";
+        (this.el.querySelector('.spx-image-comparison__scroller') as HTMLElement).style.left = transform - 25 + "px";
+    }
+
     componentDidLoad() {
+
+        /** Disable for Oxygen */
 
         if (document.body.classList.contains('oxygen-builder-body')) {
             (this.el.querySelector('.spx-image-comparison__scroller') as HTMLElement).style.pointerEvents = 'none';
@@ -55,20 +67,11 @@ export class SpxImageComparison {
             if (!this.active) return;
             let x = e.pageX;
             x -= this.el.querySelector('.spx-image-comparison__container').getBoundingClientRect().left;
-            scrollIt(x);
+            this.startIt(x);
         }));
 
-        /** Scroll function */
-
-        const scrollIt = (x) => {
-            let transform = Math.max(0, (Math.min(x, (this.el.querySelector('.spx-image-comparison__container') as HTMLElement).offsetWidth)));
-            (this.el.querySelector('.spx-image-comparison__image--after') as HTMLElement).style.width = transform + "px";
-            (this.el.querySelector('.spx-image-comparison__scroller') as HTMLElement).style.left = transform - 25 + "px";
-        }
-
         /** Set starting width */
-
-        scrollIt(this.start);
+        this.startIt(this.start);
 
         /** Repeat for touch events */
 

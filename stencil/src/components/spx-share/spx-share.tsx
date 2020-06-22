@@ -10,7 +10,7 @@ export class SpxShare {
     @Element() el: HTMLElement;
 
     @Prop({reflectToAttr: true}) styling: string;
-    @Prop({reflectToAttr: true}) theme: string;
+    @Prop({reflectToAttr: true}) theme: string = 'default';
 
     @Prop({reflectToAttr: true}) vertical: boolean;
 
@@ -58,16 +58,20 @@ export class SpxShare {
                 },
 
                 '&.spx-share__facebook': {
-                    backgroundColor: !this.theme && !this.itemBackgroundColor && '#1877F2',
+                    backgroundColor:
+                        this.theme === 'default' && !this.itemBackgroundColor ? '#1877F2'
+                            : this.theme === 'default' && this.itemBackgroundColor ? this.itemBackgroundColor : null,
                     color:
-                        this.theme ? '#1877F2' :
+                        (this.theme === 'outline' || this.theme === 'minimal') ? '#1877F2' :
                             !this.itemColor ? '#ffffff' :
                                 null,
                     border: this.theme === 'outline' && '1px solid #1877F2',
                 },
 
                 '&.spx-share__twitter': {
-                    backgroundColor: !this.theme && !this.itemBackgroundColor && '#1DA1F2',
+                    backgroundColor:
+                        this.theme === 'default' && !this.itemBackgroundColor ? '#1DA1F2'
+                            : this.theme === 'default' && this.itemBackgroundColor ? this.itemBackgroundColor : null,
                     color:
                         (this.theme === 'outline' || this.theme === 'minimal') ? '#1DA1F2' :
                             !this.itemColor ? '#ffffff' :
@@ -76,7 +80,9 @@ export class SpxShare {
                 },
 
                 '&.spx-share__whatsapp': {
-                    backgroundColor: !this.theme && !this.itemBackgroundColor && '#25D366',
+                    backgroundColor:
+                        this.theme === 'default' && !this.itemBackgroundColor ? '#25D366'
+                            : this.theme === 'default' && this.itemBackgroundColor ? this.itemBackgroundColor : null,
                     color: (this.theme === 'outline' || this.theme === 'minimal') ? '#25D366' :
                         !this.itemColor ? '#ffffff' :
                             null,
@@ -84,7 +90,9 @@ export class SpxShare {
                 },
 
                 '&.spx-share__email': {
-                    backgroundColor: !this.theme && !this.itemBackgroundColor && '#c6c6c6',
+                    backgroundColor:
+                        this.theme === 'default' && !this.itemBackgroundColor ? '#c6c6c6'
+                            : this.theme === 'default' && this.itemBackgroundColor ? this.itemBackgroundColor : null,
                     color: this.theme === 'outline' || this.theme === 'minimal' ? '#c6c6c6' :
                         !this.itemColor ? '#ffffff' :
                             null,

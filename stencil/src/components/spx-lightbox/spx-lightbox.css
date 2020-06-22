@@ -988,7 +988,7 @@ iframe.wait-autoplay {
 .gbtn {
     width: 40px !important;
     height: 40px !important;
-    display: flex !important;
+    display: flex;
     align-items: center !important;
     justify-content: center !important;
     background-color: transparent !important;

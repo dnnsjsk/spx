@@ -1,4 +1,4 @@
-import {Component, Element, h, Host, Prop, State} from '@stencil/core';
+import {Component, Element, h, Host, Prop, State, Watch} from '@stencil/core';
 import {css} from "emotion";
 import * as constants from '../../constants/style.js';
 
@@ -15,10 +15,17 @@ export class SpxClassToggle {
     @Prop({reflectToAttr: true}) target: string;
     @Prop({reflectToAttr: true}) local: string;
 
-    @State() classesArray = this.toggle.replace(/ /g, ',').split(',');
+    @State() classesArray;
     @State() toggled;
 
+    @Watch('toggle')
+    watchToggle() {
+        this.createToggleArray();
+    }
+
     componentDidLoad() {
+
+        this.createToggleArray();
 
         /** Check if local storage is set. */
 
@@ -27,6 +34,12 @@ export class SpxClassToggle {
                 this.addClasses();
             }
         }
+    }
+
+    /** Set toggle array. */
+
+    createToggleArray() {
+        this.classesArray = this.toggle.replace(/ /g, ',').split(',')
     }
 
     /** Toggle classes. */

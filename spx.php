@@ -5,7 +5,7 @@
  * Plugin URI: https://spx.dev
  * Description: A web component page builder for WordPress developers like you!
  * Author: Harmoni
- * Version: 1.39
+ * Version: 1.40
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
@@ -34,9 +34,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @since 1.0
  */
-
-
-require_once plugin_dir_path( __FILE__ ) . 'vendor/autoload.php';
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/init.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/build.php';

@@ -154,7 +154,11 @@ export namespace Components {
         "childItemColorHover": string;
         "childItemPadding": string;
         "childPlacement": string;
+        "childTransitionDuration": string;
+        "childTransitionTimingFunction": string;
         "fontSize": string;
+        "itemTransitionDuration": string;
+        "itemTransitionTimingFunction": string;
         "itemUnderline": boolean;
         "itemUnderlineHover": boolean;
         "menu": string;
@@ -568,7 +572,11 @@ declare namespace LocalJSX {
         "childItemColorHover"?: string;
         "childItemPadding"?: string;
         "childPlacement"?: string;
+        "childTransitionDuration"?: string;
+        "childTransitionTimingFunction"?: string;
         "fontSize"?: string;
+        "itemTransitionDuration"?: string;
+        "itemTransitionTimingFunction"?: string;
         "itemUnderline"?: boolean;
         "itemUnderlineHover"?: boolean;
         "menu"?: string;

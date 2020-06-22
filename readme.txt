@@ -15,6 +15,18 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.40 =
+* New: introduce global transition CSS variables.
+* Class Toggle: fix generated class array.
+* Edit Button: remove dot from success message.
+* Edit Button: fix position array generation.
+* Group: make all properties reflect to changes.
+* Image Comparison: make start prop reflect to changes.
+* Lightbox: fix arrow displaying if only one item in gallery.
+* Masonry: make columns prop reflect to changes.
+* Navigation: add transitions for item hover and child opacity.
+* Fix: remove composer.
+
 = 1.39 =
 * New: Image Comparison component. (Main & Oxygen)
 * Lightbox: make icons uniform.

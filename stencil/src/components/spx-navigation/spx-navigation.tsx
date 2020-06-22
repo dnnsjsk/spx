@@ -24,6 +24,8 @@ export class SpxNavigation {
 
     @Prop({reflectToAttr: true}) itemUnderline: boolean;
     @Prop({reflectToAttr: true}) itemUnderlineHover: boolean;
+    @Prop({reflectToAttr: true}) itemTransitionDuration: string = constants.styleTransitionDuration;
+    @Prop({reflectToAttr: true}) itemTransitionTimingFunction: string = constants.styleTransitionTimingFunction;
 
     @Prop({reflectToAttr: true}) parentItemGap: string = '0.4em';
     @Prop({reflectToAttr: true}) parentItemPadding: string = '0.6em';
@@ -43,6 +45,8 @@ export class SpxNavigation {
     @Prop({reflectToAttr: true}) childItemBackground: string = '#ffffff';
     @Prop({reflectToAttr: true}) childItemBackgroundHover: string = constants.stylePrimary100;
     @Prop({reflectToAttr: true}) childPlacement: string = 'start';
+    @Prop({reflectToAttr: true}) childTransitionDuration: string = constants.styleTransitionDuration;
+    @Prop({reflectToAttr: true}) childTransitionTimingFunction: string = constants.styleTransitionTimingFunction;
 
     @Prop({reflectToAttr: true}) mobileIcon: string;
     @Prop({reflectToAttr: true}) mobilePlacement: string = 'start';
@@ -349,6 +353,9 @@ export class SpxNavigation {
                 position: !this.vertical ? 'absolute' : 'relative',
                 display: 'flex',
                 flexDirection: this.mobileBP ? 'column' : 'row',
+                transitionProperty: 'opacity',
+                transitionDuration: constants.styleTransitionDurationBase('navigation', this.childTransitionDuration),
+                transitionTimingFunction: constants.styleTransitionTimingFunctionBase('navigation', this.childTransitionTimingFunction),
             },
 
             '.spx-navigation--mobile .spx-navigation--child': {
@@ -363,6 +370,7 @@ export class SpxNavigation {
             '.spx-navigation__mobile-button:focus-within .spx-navigation--child']: {
                 opacity: '1',
                 pointerEvents: 'auto',
+                transform: 'translateY(0px)',
             },
 
             '.spx-navigation__item--child': {
@@ -396,6 +404,9 @@ export class SpxNavigation {
                 textDecoration: this.itemUnderline ? 'underline' : 'none',
                 width: '100%',
                 fontSize: 'inherit',
+                transitionProperty: 'color, background',
+                transitionDuration: constants.styleTransitionDurationBase('navigation', this.itemTransitionDuration),
+                transitionTimingFunction: constants.styleTransitionTimingFunctionBase('navigation', this.itemTransitionTimingFunction),
 
                 '&:hover': {
                     textDecoration: this.itemUnderlineHover && 'underline'

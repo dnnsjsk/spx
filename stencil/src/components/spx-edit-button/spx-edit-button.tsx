@@ -1,4 +1,4 @@
-import {Component, Event, EventEmitter, h, Host, Prop, State} from '@stencil/core';
+import {Component, Event, EventEmitter, h, Host, Prop, State, Watch} from '@stencil/core';
 import {css, cx} from "emotion";
 import * as constants from '../../constants/style.js';
 import {stylePosition} from "../../constants/style";
@@ -18,7 +18,7 @@ export class SpxEditButton {
     @Prop({reflectToAttr: true}) textEdit: string = 'Edit site';
     @Prop({reflectToAttr: true}) textSave: string = 'Save';
     @Prop({reflectToAttr: true}) textDiscard: string = 'Discard';
-    @Prop({reflectToAttr: true}) textSuccess: string = 'Save was successful.';
+    @Prop({reflectToAttr: true}) textSuccess: string = 'Save was successful';
 
     @Prop({reflectToAttr: true}) position: string = 'bottom-right';
     @State() positionArray;
@@ -42,7 +42,16 @@ export class SpxEditButton {
     @State() open: boolean = false;
     @State() loading: boolean = false;
 
+    @Watch('position')
+    watchPosition() {
+        this.createPositionArray();
+    }
+
     componentWillLoad() {
+        this.createPositionArray();
+    }
+
+    createPositionArray() {
         this.positionArray = this.position.split('-');
     }
 

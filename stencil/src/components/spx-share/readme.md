@@ -18,7 +18,7 @@
 | `itemSize`            | `item-size`             |             | `string`  | `'1em'`                       |
 | `styling`             | `styling`               |             | `string`  | `undefined`                   |
 | `target`              | `target`                |             | `string`  | `'_blank'`                    |
-| `theme`               | `theme`                 |             | `string`  | `undefined`                   |
+| `theme`               | `theme`                 |             | `string`  | `'default'`                   |
 | `vertical`            | `vertical`              |             | `boolean` | `undefined`                   |
 
 

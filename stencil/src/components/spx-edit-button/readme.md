@@ -27,7 +27,7 @@
 | `textDiscard`       | `text-discard`       |             | `string`  | `'Discard'`                   |
 | `textEdit`          | `text-edit`          |             | `string`  | `'Edit site'`                 |
 | `textSave`          | `text-save`          |             | `string`  | `'Save'`                      |
-| `textSuccess`       | `text-success`       |             | `string`  | `'Save was successful.'`      |
+| `textSuccess`       | `text-success`       |             | `string`  | `'Save was successful'`       |
 | `type`              | `type`               |             | `string`  | `'option'`                    |
 
 

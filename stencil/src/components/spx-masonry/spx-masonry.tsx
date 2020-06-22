@@ -11,11 +11,10 @@ export class SpxMasonry {
     @Element() el: HTMLElement;
     container: HTMLElement;
 
-    @Prop({reflectToAttr: true}) trueOrder: boolean;
-    @Prop({reflectToAttr: true}) waitForImages: boolean;
-    @Prop({reflectToAttr: true}) useOwnImageLoader: boolean;
-    @Prop({reflectToAttr: true}) mobileFirst: boolean;
-    @Prop({reflectToAttr: true}) useContainerForBreakpoints: boolean;
+    @Prop({reflectToAttr: true}) imagesSrc: string;
+    @Prop({reflectToAttr: true}) images: string;
+    @State() imagesArray: Array<string>;
+    @Prop({reflectToAttr: true}) imageSize: string;
 
     @Prop({reflectToAttr: true}) columns: number;
     @Prop({reflectToAttr: true}) bpColumns: string;
@@ -23,10 +22,11 @@ export class SpxMasonry {
 
     @Prop({reflectToAttr: true}) gap: string = '10px';
 
-    @Prop({reflectToAttr: true}) imagesSrc: string;
-    @Prop({reflectToAttr: true}) images: string;
-    @State() imagesArray: Array<string>;
-    @Prop({reflectToAttr: true}) imageSize: string;
+    @Prop({reflectToAttr: true}) trueOrder: boolean;
+    @Prop({reflectToAttr: true}) waitForImages: boolean;
+    @Prop({reflectToAttr: true}) useOwnImageLoader: boolean;
+    @Prop({reflectToAttr: true}) mobileFirst: boolean;
+    @Prop({reflectToAttr: true}) useContainerForBreakpoints: boolean;
 
     @State() macyState;
 
@@ -53,6 +53,14 @@ export class SpxMasonry {
         this.macyState.reInit();
     }
 
+    /** Watch columns. */
+
+    @Watch('columns')
+    watchColumns() {
+        this.macyState.remove();
+        this.initMacy();
+    }
+
     componentWillLoad() {
 
         /** If image prop is set. */
@@ -74,21 +82,7 @@ export class SpxMasonry {
 
         /** Init Macy. */
 
-        this.macyState = Macy({
-            container: this.container,
-            margin: 0,
-            trueOrder: this.trueOrder || false,
-            waitForImages: this.waitForImages || false,
-            useOwnImageLoader: this.useOwnImageLoader || false,
-            mobileFirst: this.mobileFirst || false,
-            useContainerForBreakpoints: this.useContainerForBreakpoints || false,
-            columns: this.columns || 4,
-            breakAt:
-                this.bpColumns ?
-                    this.bpColumnsObject : {
-                        9999: this.columns ? this.columns : 4,
-                    },
-        });
+        this.initMacy();
 
         /** Wrap all children in div. */
 
@@ -112,6 +106,24 @@ export class SpxMasonry {
 
     disconnectedCallback() {
         this.macyState.remove();
+    }
+
+    initMacy() {
+        this.macyState = Macy({
+            container: this.container,
+            margin: 0,
+            trueOrder: this.trueOrder || false,
+            waitForImages: this.waitForImages || false,
+            useOwnImageLoader: this.useOwnImageLoader || false,
+            mobileFirst: this.mobileFirst || false,
+            useContainerForBreakpoints: this.useContainerForBreakpoints || false,
+            columns: this.columns || 4,
+            breakAt:
+                this.bpColumns ?
+                    this.bpColumnsObject : {
+                        9999: this.columns ? this.columns : 4,
+                    },
+        });
     }
 
     render() {

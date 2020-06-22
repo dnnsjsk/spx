@@ -22,6 +22,11 @@ export const stylePrimary900 = 'var(--spx-color-primary-900, #212121)';
 
 export const styleBorderRadius = 'var(--spx-border-radius, 0.25em)';
 
+export const styleTransitionDuration = '150ms';
+export const styleTransitionDurationBase = (component, base) => 'var(--spx-' + component + '-transition-duration, var(--spx-transition-duration, ' + base + '))';
+export const styleTransitionTimingFunction = 'cubic-bezier(0.4, 0, 0.2, 1)';
+export const styleTransitionTimingFunctionBase = (component, base) => 'var(--spx-' + component + '-transition-timing-function, var(--spx-transition-timing-function, ' + base + '))';
+
 export const styleZindex = 999999999999999999;
 
 /** Base style. */
