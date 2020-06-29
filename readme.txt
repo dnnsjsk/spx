@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.41 =
+* Image Comparison: fix slider on touch devices.
+
 = 1.40 =
 * New: introduce global transition CSS variables.
 * Class Toggle: fix generated class array.

@@ -1,4 +1,4 @@
-import {Component, Element, h, Host, Prop, State, Watch} from '@stencil/core';
+import {Component, Element, h, Host, Prop, State, Watch, Listen} from '@stencil/core';
 import {css} from 'emotion';
 import * as constants from '../../constants/style.js';
 
@@ -17,6 +17,14 @@ export class SpxImageComparison {
     @Prop({reflectToAttr: true}) iconColor: string = constants.stylePrimary500;
 
     @State() active: boolean;
+    @State() width: number;
+
+    @Listen('resize', {target: 'window'})
+    watchResize() {
+        if (this.el.offsetWidth !== this.width) {
+            this.startIt(this.start);
+        }
+    }
 
     @Watch('start')
     startIt(x) {
@@ -29,6 +37,10 @@ export class SpxImageComparison {
     }
 
     componentDidLoad() {
+
+        /** Set starting width */
+
+        this.width = this.el.offsetWidth;
 
         /** Disable for Oxygen */
 
@@ -88,6 +100,13 @@ export class SpxImageComparison {
         document.body.addEventListener('touchcancel', (() => {
             this.active = false;
             this.el.querySelector('.spx-image-comparison__scroller').classList.remove('spx-image-comparison--scrolling');
+        }));
+
+        document.body.addEventListener('touchmove', ((e) => {
+            if (!this.active) return;
+            let x = e.targetTouches[0].pageX;
+            x -= this.el.querySelector('.spx-image-comparison__container').getBoundingClientRect().left;
+            this.startIt(x);
         }));
     }
 
