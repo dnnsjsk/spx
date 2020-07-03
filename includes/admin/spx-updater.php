@@ -125,13 +125,16 @@ function spxActivateLicense() {
 
 	// listen for our activate button to be clicked
 	if( isset( $_POST['spx_license_activate'] ) ) {
-
+        ob_start();
 		// run a quick security check
 	 	if( ! check_admin_referer( 'spx_nonce', 'spx_nonce' ) )
 			{return;}
 
-		$license = trim( get_option( 'spx_license_key' ) );
+	 	// retrieve the license from the database
+		// $license = trim( get_option( 'spx_license_key' ) );
+	 	$license = $_POST['spx_license_key'] ? sanitize_text_field($_POST['spx_license_key']) : FALSE;
 
+	 	update_option( 'spx_license_key', $license );
 
 		// data to send in our API request
 		$api_params = array(
@@ -216,7 +219,6 @@ function spxActivateLicense() {
 		}
 
 		// $license_data->license will be either "valid" or "invalid"
-
 		update_option( 'spx_license_status', $license_data->license );
 		wp_redirect( admin_url( 'plugins.php?page=' . SPX_LICENSE_PAGE ) );
 		exit();
@@ -235,14 +237,14 @@ function spxDeactivateLicense() {
 
 	// listen for our activate button to be clicked
 	if( isset( $_POST['spx_license_deactivate'] ) ) {
-
+        ob_start();
 		// run a quick security check
 	 	if( ! check_admin_referer( 'spx_nonce', 'spx_nonce' ) )
 			{return;} // get out if we didn't click the Activate button
 
 		// retrieve the license from the database
 		$license = trim( get_option( 'spx_license_key' ) );
-
+        $license = $_POST['spxlicense_key'] && strlen($_POST['spx_license_key']) > 8 ? sanitize_text_field($_POST['spx_license_key']) : $license;
 
 		// data to send in our API request
 		$api_params = array(
@@ -272,12 +274,15 @@ function spxDeactivateLicense() {
 		}
 
 		// decode the license data
-		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+		// $license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
 		// $license_data->license will be either "deactivated" or "failed"
-		if( $license_data->license == 'deactivated' ) {
-			delete_option( 'spx_license_status' );
-		}
+		// if( $license_data->license == 'deactivated' ) {
+		//	delete_option( 'spx_license_status' );
+		// }
+
+		delete_option( 'spx_license_status' );
+		delete_option( 'spx_license_key' );
 
 		wp_redirect( admin_url( 'plugins.php?page=' . SPX_LICENSE_PAGE ) );
 		exit();

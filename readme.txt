@@ -15,6 +15,11 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 1.42 =
+* Fix: license activating/deactivating.
+* Fix: build directory filling up after every release.
+* Fix: remove composer. (again)
+
 = 1.41 =
 * Image Comparison: fix slider on touch devices.
 
