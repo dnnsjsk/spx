@@ -1,177 +1,203 @@
-import {Component, h, Host, Element, Prop, State, Method, Watch, Event, EventEmitter} from '@stencil/core';
-import {css} from 'emotion';
-import Macy from 'macy';
-import {wrap} from '../../functions/wrap.js';
+// eslint-disable-next-line no-unused-vars
+import { Component, h, Host, Element, Prop, State, Method, Watch, Event, EventEmitter } from '@stencil/core'
+import { css } from 'emotion'
+import Macy from 'macy'
+import { wrap } from '../../utils/wrap'
+import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
+
+/**
+ * Arrange images in a masonry layout.
+ */
 
 @Component({
-    tag: 'spx-masonry',
+  tag: 'spx-masonry'
 })
 
 export class SpxMasonry {
-    @Element() el: HTMLElement;
-    container: HTMLElement;
+    @Element() el: HTMLSpxMasonryElement
+    private container: HTMLElement
 
-    @Prop({reflectToAttr: true}) imagesSrc: string;
-    @Prop({reflectToAttr: true}) images: string;
-    @State() imagesArray: Array<string>;
-    @Prop({reflectToAttr: true}) imageSize: string;
+    @State() bpColumnsObject: object
+    @State() imagesArray: Array<string>
+    @State() macyState
 
-    @Prop({reflectToAttr: true}) columns: number;
-    @Prop({reflectToAttr: true}) bpColumns: string;
-    @Prop({reflectToAttr: true}) bpColumnsObject: object;
+    /** Columns for different screen sizes. Example value: 1000:3;600:2 - this will switch to a three column layout when the screen size is under 1000px and to a two column layout under 600px. */
 
-    @Prop({reflectToAttr: true}) gap: string = '10px';
+    @Prop({ reflect: true }) bpColumns: string
 
-    @Prop({reflectToAttr: true}) trueOrder: boolean;
-    @Prop({reflectToAttr: true}) waitForImages: boolean;
-    @Prop({reflectToAttr: true}) useOwnImageLoader: boolean;
-    @Prop({reflectToAttr: true}) mobileFirst: boolean;
-    @Prop({reflectToAttr: true}) useContainerForBreakpoints: boolean;
+    /** Number of columns. */
 
-    @State() macyState;
+    @Prop({ reflect: true }) columns: number
 
-    @Event({eventName: 'spxMasonryDidLoad'}) spxMasonryDidLoad: EventEmitter;
+    /**
+     * Gap between images.
+     * @CSS
+     */
+
+    @Prop({ reflect: true }) gap: string = '10px'
+
+    /**
+     * WordPress media size when using the helper function..
+     */
+
+    @Prop({ reflect: true }) imageSize: string
+
+    /**
+     * Gets images from an ACF or Metabox field.
+     * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+     */
+
+    @Prop({ reflect: true }) images: string
+
+    /**
+     * Gets images from an ACF or Metabox field.
+     * @choice 'acf', 'mb
+     */
+
+    @Prop({ reflect: true }) imagesSrc: string
 
     /** Watch images prop and parse to iteratable array. */
 
     @Watch('images')
-    parseImagesProp(newValue: string) {
-        if (newValue) this.imagesArray = JSON.parse(newValue);
-    }
-
-    /** Wrapper for recalculation. */
-
-    @Method()
-    async recalc() {
-        this.macyState.recalculate();
-    }
-
-    /** Wrapper for reinit. */
-
-    @Method()
-    async restart() {
-        this.macyState.reInit();
+    imagesChanged (newValue: string) {
+      if (newValue) this.imagesArray = JSON.parse(newValue)
     }
 
     /** Watch columns. */
 
     @Watch('columns')
-    watchColumns() {
-        this.macyState.remove();
-        this.initMacy();
+    columnsChanged () {
+      this.macyState.remove()
+      this.initMacy()
     }
 
-    componentWillLoad() {
+    @Event({ eventName: 'spxMasonryDidLoad' }) spxMasonryDidLoad: EventEmitter
 
-        /** If image prop is set. */
+    componentWillLoad () {
+      /** If image prop is set. */
 
-        if (this.images) {
-
-            this.parseImagesProp(this.images);
-
-        }
+      if (this.images) {
+        this.imagesChanged(this.images)
+      }
     }
 
-    componentDidLoad() {
+    componentDidLoad () {
+      globalComponentDidLoad(this.el)
 
-        /** Create object for breakpoint attribute. */
+      /** Create object for breakpoint attribute. */
 
-        if (this.bpColumns) {
-            this.bpColumnsObject = JSON.parse('{' + this.bpColumns.replace(/([0-9]+)/g, '"$1"') + '}');
-        }
+      if (this.bpColumns) {
+        this.bpColumnsObject = JSON.parse('{' + this.bpColumns.replace(/([0-9]+)/g, '"$1"') + '}')
+      }
 
-        /** Init Macy. */
+      /** Init Macy. */
 
-        this.initMacy();
+      this.initMacy()
 
-        /** Wrap all children in div. */
+      /** Wrap all children in div. */
 
-        Array.from(this.container.children).forEach(item => {
-            wrap(item, document.createElement('div'));
-        });
+      Array.from(this.container.children).forEach(item => {
+        wrap(item, document.createElement('div'))
+      })
 
-        /** Emit event to document when Masonry finished loading. */
+      /** Emit event to document when Masonry finished loading. */
 
-        this.spxMasonryDidLoad.emit({target: 'document'});
+      this.spxMasonryDidLoad.emit({ target: 'document' })
     }
 
     /** After update lifecycle. */
 
-    componentDidUpdate() {
-        this.restart();
-        this.recalc();
+    componentDidUpdate () {
+      this.reload()
+      this.recalc()
     }
 
     /** Remove Macy on disconnect. */
 
-    disconnectedCallback() {
-        this.macyState.remove();
+    disconnectedCallback () {
+      this.macyState.remove()
     }
 
-    initMacy() {
-        this.macyState = Macy({
-            container: this.container,
-            margin: 0,
-            trueOrder: this.trueOrder || false,
-            waitForImages: this.waitForImages || false,
-            useOwnImageLoader: this.useOwnImageLoader || false,
-            mobileFirst: this.mobileFirst || false,
-            useContainerForBreakpoints: this.useContainerForBreakpoints || false,
-            columns: this.columns || 4,
-            breakAt:
-                this.bpColumns ?
-                    this.bpColumnsObject : {
-                        9999: this.columns ? this.columns : 4,
-                    },
-        });
+    /** Recalculate grid. */
+
+    @Method()
+    async recalc () {
+      this.macyState.recalculate()
     }
 
-    render() {
-        return <Host
-            class={css({
-                display: 'block',
+    @Method()
+    async reload () {
+      this.macyState.reInit()
+    }
 
-                /** Convert gap to correct padding for elements. */
+    private initMacy () {
+      this.macyState = Macy({
+        container: this.container,
+        margin: 0,
+        mobileFirst: true,
+        columns: this.columns || 4,
+        breakAt:
+                this.bpColumns
+                  ? this.bpColumnsObject : {
+                    9999: this.columns ? this.columns : 4
+                  }
+      })
+    }
 
-                'div > div': {
-                    padding: 'var(--spx-masonry-gap, ' + this.gap + ') calc(var(--spx-masonry-gap, ' + this.gap + ') / 2) 0 calc(var(--spx-masonry-gap, ' + this.gap + ') / 2)',
-                    boxSizing: 'border-box',
-                },
+    render () {
+      /** Host styles. */
 
-                /** Force 100% width for elements. */
+      const styleHost = css({
+        display: 'block',
 
-                'div > div *': {
-                    width: '100%',
-                    maxWidth: '100%',
-                },
-            })}>
-            <div ref={(el) => this.container = el as HTMLElement}
-                 class={css({
+        /** Convert gap to correct padding for elements. */
 
-                     /** Adjust container margin to make up for element paddings. */
+        'div > div': {
+          padding: 'var(--spx-masonry-gap, ' + this.gap + ') calc(var(--spx-masonry-gap, ' + this.gap + ') / 2) 0 calc(var(--spx-masonry-gap, ' + this.gap + ') / 2)',
+          boxSizing: 'border-box'
+        },
 
-                     margin: 'calc(var(--spx-masonry-gap, ' + this.gap + ') * -1) calc(var(--spx-masonry-gap, ' + this.gap + ') / 2 * -1) 0 calc(var(--spx-masonry-gap, ' + this.gap + ') / 2 * -1)',
-                 })}>
+        /** Force 100% width for elements. */
 
-                {this.images && !this.imagesSrc ?
+        'div > div *': {
+          width: '100%',
+          maxWidth: '100%'
+        }
+      })
 
-                    /** Iterate through ACF array if prop was set. */
+      /** Container styles. */
 
-                    this.imagesArray.map((el) => (
+      const styleContainer = css({
 
-                        <img src={this.imageSize ? el['sizes'][this.imageSize] : el['url']}/>)) :
+        /** Adjust container margin to make up for element paddings. */
 
-                    /** Iterate through MB array if prop was set. */
+        margin: 'calc(var(--spx-masonry-gap, ' + this.gap + ') * -1) calc(var(--spx-masonry-gap, ' + this.gap + ') / 2 * -1) 0 calc(var(--spx-masonry-gap, ' + this.gap + ') / 2 * -1)'
+      })
 
-                    this.images && this.imagesSrc === 'mb' ?
+      return <Host
+        class={styleHost}>
+        <div ref={(el) => this.container = el as HTMLElement}
+          class={styleContainer}>
 
-                        Object.values(this.imagesArray).map((object) => (
+          {this.images && !this.imagesSrc
 
-                            <img src={this.imageSize ? object['sizes'][this.imageSize]['url'] : object['full_url']}/>))
+          /** Iterate through ACF array if prop was set. */
 
-                        : <slot/>}
+            ? this.imagesArray.map((el) => (
 
-            </div>
-        </Host>;
+              <img src={this.imageSize ? el['sizes'][this.imageSize] : el['url']}/>))
+
+          /** Iterate through MB array if prop was set. */
+
+            : this.images && this.imagesSrc === 'mb'
+
+              ? Object.values(this.imagesArray).map((object) => (
+
+                <img src={this.imageSize ? object['sizes'][this.imageSize].url : object['full_url']}/>))
+
+              : <slot/>}
+
+        </div>
+      </Host>
     }
 }

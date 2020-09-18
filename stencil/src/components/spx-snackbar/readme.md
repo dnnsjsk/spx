@@ -1,4 +1,4 @@
-# spx-snackbar
+# spx-snackbar-toggle
 
 
 

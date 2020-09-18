@@ -1,223 +1,328 @@
-import {Component, Event, EventEmitter, h, Host, Prop, State, Watch} from '@stencil/core';
-import {css, cx} from "emotion";
-import * as constants from '../../constants/style.js';
-import {stylePosition} from "../../constants/style";
+// eslint-disable-next-line no-unused-vars
+import { Component, Element, Event, EventEmitter, h, Host, Method, Prop, State, Watch } from '@stencil/core'
+import { css } from 'emotion'
+import * as c from '../../constants/style'
+import { position } from '../../constants/style'
+import { setVar } from '../../utils/setVar'
+import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
+
+const tag = 'spx-edit-button'
+
+/**
+ * Let your clients edit text on their site using this handy component.
+ * Updates are being sent via AJAX, making this a solution that works completely on the front-end without reloading.
+ * To enable front-end editing, just add the spx-edit-button component to a page. After that, you have to mark all elements that you want to be editable on the site.
+ * This is being done by adding the data-spx-edit attribute to existing text elements.
+ */
 
 @Component({
-    tag: 'spx-edit-button',
+  tag: 'spx-edit-button'
 })
 
 export class SpxEditButton {
-    @Prop() test: boolean = false;
+    @Element() el: HTMLSpxEditButtonElement
 
-    @Prop({reflectToAttr: true}) styling: string;
+    @State() loading: boolean = false
+    @State() open: boolean = false
+    @State() positionArray
 
-    @Prop({reflectToAttr: true}) type: string = 'option';
-    @Prop({reflectToAttr: true}) editId: string;
+    @Prop() test: boolean = false
 
-    @Prop({reflectToAttr: true}) textEdit: string = 'Edit site';
-    @Prop({reflectToAttr: true}) textSave: string = 'Save';
-    @Prop({reflectToAttr: true}) textDiscard: string = 'Discard';
-    @Prop({reflectToAttr: true}) textSuccess: string = 'Save was successful';
+    @Prop({ reflect: true }) background: string = 'var(--spx-color-gray-900)'
 
-    @Prop({reflectToAttr: true}) position: string = 'bottom-right';
-    @State() positionArray;
-    @Prop({reflectToAttr: true}) distanceX: string = '1em';
-    @Prop({reflectToAttr: true}) distanceY: string = '1em';
+    /**
+     * Discard button background.
+     * @CSS
+     */
 
-    @Prop({reflectToAttr: true}) fontSize: string = constants.styleFontSize;
-    @Prop({reflectToAttr: true}) padding: string = '0.8em 1.2em';
-    @Prop({reflectToAttr: true}) color: string = '#ffffff';
-    @Prop({reflectToAttr: true}) colorDiscard: string = '#ffffff';
-    @Prop({reflectToAttr: true}) background: string = constants.stylePrimary900;
-    @Prop({reflectToAttr: true}) backgroundDiscard: string = constants.stylePrimary600;
-    @Prop({reflectToAttr: true}) border: string;
-    @Prop({reflectToAttr: true}) borderRadius: string = constants.styleBorderRadius;
+    @Prop({ reflect: true }) backgroundDiscard: string = 'var(--spx-color-gray-600)'
 
-    @Prop({reflectToAttr: true}) gap: string = '0.4em';
+    @Prop({ reflect: true }) border: string = 'none'
 
-    @Event({eventName: 'spxEditButtonSave'}) spxEditButtonSave: EventEmitter;
-    @Event({eventName: 'spxEditButtonDiscard'}) spxEditButtonDiscard: EventEmitter;
+    @Prop({ reflect: true }) borderRadius: string = c.borderRadius
 
-    @State() open: boolean = false;
-    @State() loading: boolean = false;
+    @Prop({ reflect: true }) color: string = '#ffffff'
+
+    /**
+     * Discard button color.
+     * @CSS
+     */
+
+    @Prop({ reflect: true }) colorDiscard: string = '#ffffff'
+
+    /**
+     * Distance to the edge of the viewport on the x-axis.
+     * @CSS
+     */
+
+    @Prop({ reflect: true }) distanceX: string = '1em'
+
+    /**
+     * Distance to the edge of the viewport on the y-axis.
+     * @CSS
+     */
+
+    @Prop({ reflect: true }) distanceY: string = '1em'
+
+    /**
+     * Corresponding ID for editable fields. This property is needed when multiple edit-button components are used on the page. Simply apply a "data-spx-edit-id" attribute with the same value to editable elements.
+     */
+
+    @Prop({ reflect: true }) editId: string
+
+    @Prop({ reflect: true }) fontFamily: string = c.fontFamily
+
+    @Prop({ reflect: true }) fontSize: string = c.fontSize
+
+    /**
+     * Gap between the buttons.
+     * @CSS
+     */
+
+    @Prop({ reflect: true }) gap: string = '0.4em'
+
+    @Prop({ reflect: true }) padding: string = '0.8em 1.2em'
+
+    /**
+     * Component position in page.
+     * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
+     */
+
+    @Prop({ reflect: true }) position: string = 'bottom-right'
+
+    /**
+     * Discard button text.
+     */
+
+    @Prop({ reflect: true }) textDiscard: string = 'Discard'
+
+    /**
+     * Edit button text.
+     */
+
+    @Prop({ reflect: true }) textEdit: string = 'Edit site'
+
+    /**
+     * Save button text.
+     */
+
+    @Prop({ reflect: true }) textSave: string = 'Save'
+
+    /**
+     * Success message.
+     */
+
+    @Prop({ reflect: true }) textSuccess: string = 'Save was successful'
+
+    /**
+     * Type of data being sent.
+     * @choice 'option', 'acf'
+     */
+
+    @Prop({ reflect: true }) type: string = 'option'
+
+    @Prop({ reflect: true }) zIndex: number = 99
 
     @Watch('position')
-    watchPosition() {
-        this.createPositionArray();
+    positionChanged () {
+      this.createPositionArray()
     }
 
-    componentWillLoad() {
-        this.createPositionArray();
+    /**
+     * Fires after pressing the discard button.
+     */
+
+    @Event({ eventName: 'spxEditButtonDiscard' }) spxEditButtonDiscard: EventEmitter
+
+    /**
+     * Fires after pressing the save button.
+     */
+
+    @Event({ eventName: 'spxEditButtonSave' }) spxEditButtonSave: EventEmitter
+
+    componentWillLoad () {
+      this.createPositionArray()
     }
 
-    createPositionArray() {
-        this.positionArray = this.position.split('-');
+    componentDidLoad () {
+      globalComponentDidLoad(this.el)
     }
 
-    onClickEdit() {
-        this.open = true;
+    private createPositionArray () {
+      this.positionArray = this.position.split('-')
+    }
 
-        /** Generate edit components around text. */
+    private clickEdit = () => {
+      this.open = true
 
-        let elements = this.editId ? document.querySelectorAll('[data-spx-edit][data-spx-edit-id=' + this.editId + ']') : document.querySelectorAll('[data-spx-edit]');
+      /** Generate edit components around text. */
 
+      const elements = this.editId ? document.querySelectorAll('[data-spx-edit][data-spx-edit-id=' + this.editId + ']') : document.querySelectorAll('[data-spx-edit]')
+
+      elements.forEach(item => {
+        const field = item.getAttribute('data-spx-edit')
+        const text = item.innerHTML
+        item.innerHTML = '<spx-edit name="' + field + '" editable>' + text + '</spx-edit>'
+      })
+    }
+
+    private clickDiscard = () => {
+      /** Close buttons again. */
+
+      this.open = false
+
+      /** Emit closing event to document. */
+
+      this.spxEditButtonDiscard.emit({ target: 'document' })
+    }
+
+    private clickSave = () => {
+      this.loading = true
+
+      /** Emit save event to document. */
+
+      const getBodyString = () => {
+        const string = Math.random().toString(36).substr(2, 9)
+        const bodyStringArray = []
+        const elements = document.querySelectorAll('spx-edit')
         elements.forEach(item => {
-            let field = item.getAttribute('data-spx-edit');
-            let text = item.innerHTML;
-            item.innerHTML = '<spx-edit name="' + field + '" editable>' + text + '</spx-edit>';
+          const withoutAmpersand = item.getAttribute('body-string').replace('&', '').replace('=', string)
+          const encoded = encodeURIComponent(withoutAmpersand)
+          const final = '&' + encoded
+          bodyStringArray.push(final.replace(string, '='))
         })
-    }
 
-    onClickDiscard() {
+        return bodyStringArray.toString().replace(/,/g, '')
+      }
 
-        /** Close buttons again. */
+      const afterSuccess = () => {
+        /** Insert snackbar. */
 
-        this.open = false;
+        const snackbar = document.createElement('spx-snackbar')
+        snackbar.setAttribute('text', this.textSuccess)
+        document.body.appendChild(snackbar)
 
-        /** Emit closing event to document. */
+        /** Remove edit components. */
 
-        this.spxEditButtonDiscard.emit({target: 'document'});
-    }
+        const elements = document.querySelectorAll('spx-edit')
+        elements.forEach(item => {
+          item.parentElement.innerHTML = item.innerHTML
+        })
 
-    onClickSave() {
+        /** Save changes event. */
 
-        this.loading = true;
+        this.spxEditButtonSave.emit({ target: 'document' })
 
-        /** Emit save event to document. */
+        /** Remove loader and close on success. */
 
-        const getBodyString = () => {
-            let bodyStringArray = []
-            let elements = document.querySelectorAll('spx-edit');
-            elements.forEach(item => {
-                bodyStringArray.push(item.getAttribute('body-string'));
-            })
+        this.open = false
+        this.loading = false
+      }
 
-            return bodyStringArray.toString().replace(/,/g, '');
-        }
+      if (!this.test) {
+        // @ts-ignore
+        // eslint-disable-next-line no-undef
+        fetch(spx.ajax, {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: new Headers({ 'Content-Type': 'application/x-www-form-urlencoded' }),
+          // @ts-ignore
+          // eslint-disable-next-line no-undef
+          body: 'action=spxEditButtonAjaxHandler' + getBodyString() + '' + '&post_id=' + spx.postId + '' + '&type=' + this.type + ''
+        })
+          .then((response) => {
+            if (response.status === 200) {
+              afterSuccess()
+            } else if (response.status === 500) {
+              /** Remove loader on fail. */
 
-        const afterSuccess = () => {
-            /** Insert snackbar. */
-
-            let snackbar = document.createElement('spx-snackbar');
-            snackbar.setAttribute('text', this.textSuccess);
-            document.body.appendChild(snackbar);
-
-            /** Remove edit components. */
-
-            let elements = document.querySelectorAll('spx-edit');
-            elements.forEach(item => {
-                item.parentElement.innerHTML = item.innerHTML;
-            });
-
-            /** Save changes event. */
-
-            this.spxEditButtonSave.emit({target: 'document'});
-
-            /** Remove loader and close on success. */
-
-            this.open = false;
-            this.loading = false;
-        }
-
-        if (!this.test) {
-
-            // @ts-ignore
-            fetch(spx.ajax, {
-                method: 'POST',
-                credentials: 'same-origin',
-                headers: new Headers({'Content-Type': 'application/x-www-form-urlencoded'}),
-                // @ts-ignore
-                body: 'action=spxEditButtonAjaxHandler' + getBodyString() + '' + '&post_id=' + spx.postId + '' + '&type=' + this.type + ''
-            })
-                .then((response) => {
-                    if (response.status === 200) {
-
-                        afterSuccess();
-
-                    } else if (response.status === 500) {
-
-                        /** Remove loader on fail. */
-
-                        this.loading = false;
-
-                    }
-                })
-        } else {
-
-            afterSuccess();
-
-        }
-    }
-
-    render() {
-
-        /** Style default. */
-
-        const styleDefault = css({
-            ...stylePosition('edit-button', this.positionArray, this.distanceX, this.distanceY),
-            fontFamily: constants.styleFontFamily,
-            fontSize: constants.styleFontBase('edit-button', this.fontSize),
-            display: 'grid',
-            gridGap: 'var(--spx-edit-button-gap, ' + this.gap + ')',
-            position: 'fixed',
-            zIndex: constants.styleZindex,
-
-            '.spx-edit-button': {
-                fontFamily: 'inherit',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                textAlign: 'center',
-                cursor: 'pointer',
-                fontSize: 'var(--spx-edit-button-font-size, ' + this.fontSize + ')',
-                padding: 'var(--spx-edit-button-padding, ' + this.padding + ')',
-                color: 'var(--spx-edit-button-color, ' + this.color + ')',
-                background: 'var(--spx-edit-button-background, ' + this.background + ')',
-                border: 'var(--spx-edit-button-border, ' + this.border + ')',
-                borderRadius: 'var(--spx-edit-button-border-radius, ' + this.borderRadius + ')',
-
-                'spx-loader': {
-                    paddingRight: '8px',
-                }
-            },
-
-            '.spx-edit-button--discard': {
-                color: 'var(--spx-edit-button-color-discard, ' + this.colorDiscard + ')',
-                background: 'var(--spx-edit-button-background-discard, ' + this.backgroundDiscard + ')',
+              this.loading = false
             }
-        });
+          })
+      } else {
+        afterSuccess()
+      }
+    }
 
-        return <Host
-            class={cx(
-                {[constants.styleBase]: this.styling === 'none'},
-                {[styleDefault]: !this.styling}
-            )}>
+    @Method()
+    async reload () {
+      this.componentWillLoad()
+    }
 
-            {!this.open ?
+    render () {
+      /** Host styles. */
 
-                /** Edit button. */
+      const styleHost = css({
+        ...position('edit-button', this.positionArray, this.distanceX, this.distanceY),
+        fontFamily: c.fontFamily,
+        fontSize: setVar(tag, 'font-size', this.fontSize),
+        display: 'grid',
+        gridGap: setVar(tag, 'gap', this.gap),
+        position: 'fixed',
+        zIndex: this.zIndex
+      })
 
-                <button class="spx-edit-button spx-edit-button--edit"
-                        onClick={this.onClickEdit.bind(this)}>
-                    {this.textEdit || <slot name="edit"/>}
-                </button> :
+      /** Button styles. */
 
-                /** Discard button. */
+      const styleButton = css({
+        fontFamily: setVar(tag, 'font-family', this.fontFamily),
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        cursor: 'pointer',
+        fontSize: '1em',
+        padding: setVar(tag, 'padding', this.padding),
+        color: setVar(tag, 'color', this.color),
+        background: setVar(tag, 'background', this.background),
+        border: setVar(tag, 'border', this.border),
+        borderRadius: setVar(tag, 'border-radius', this.borderRadius)
+      })
 
-                [<button class="spx-edit-button spx-edit-button--discard"
-                         onClick={this.onClickDiscard.bind(this)}>
-                    {this.textDiscard || <slot name="discard"/>}
-                </button>,
+      /** Discard button styles. */
 
-                    /** Save button. */
+      const styleButtonDiscard = css({
+        color: setVar(tag, 'color-discard', this.colorDiscard),
+        background: setVar(tag, 'background-discard', this.backgroundDiscard)
+      })
 
-                    <button class="spx-edit-button spx-edit-button--save"
-                            onClick={this.onClickSave.bind(this)}>
-                        {this.loading && <spx-loader/>}
-                        {this.textSave || <slot name="save"/>}
-                    </button>]}
+      /** Loader styles. */
 
-        </Host>
+      const styleLoader = css({
+        paddingRight: '8px'
+      })
+
+      return <Host
+        class={styleHost}>
+
+        {!this.open
+
+        /** Edit button. */
+
+          ? <button
+            onClick={this.clickEdit}
+            class={styleButton}>
+            {this.textEdit || <slot name="edit"/>}
+          </button>
+
+        /** Discard button. */
+
+          : [<button
+            onClick={this.clickDiscard}
+            class={css([styleButton, styleButtonDiscard])}>
+            {this.textDiscard || <slot name="discard"/>}
+          </button>,
+
+          /** Save button. */
+
+          <button
+            onClick={this.clickSave}
+            class={styleButton}>
+            {this.loading &&
+                        <spx-loader class={styleLoader}/>}
+            {this.textSave || <slot name="save"/>}
+          </button>]}
+
+      </Host>
     }
 }

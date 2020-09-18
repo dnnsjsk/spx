@@ -11,38 +11,6 @@ namespace spx;
 class get {
 
 	/**
-	 * ACF gallery.
-	 * deprecated
-	 *
-	 * @param $field
-	 *
-	 * @since 1.0
-	 */
-
-	public static function acfGallery( $field ) {
-
-		$array = get_field( $field );
-		prepare::JSON( $array );
-
-	}
-
-	/**
-	 * Metabox gallery.
-	 * deprecated
-	 *
-	 * @param $field
-	 *
-	 * @since 1.15
-	 */
-
-	public static function mbGallery( $field ) {
-
-		$array = rwmb_get_value( $field );
-		prepare::JSON( $array );
-
-	}
-
-	/**
 	 * Gallery function.
 	 *
 	 * @param $field
@@ -80,7 +48,7 @@ class get {
 	public static function navigation( $name ) {
 
 		$items = wp_get_nav_menu_items( $name );
-		prepare::JSON( $items ? build::navTree( $items, 0 ) : null );
+		prepare::JSON( $items ? build::navTree( $items, 0 ) : NULL );
 
 	}
 
@@ -94,30 +62,18 @@ class get {
 	 * @since 1.19
 	 */
 
-	public static function post( $id = null, $dateFormat = null, $size = null ) {
+	public static function post( $id = NULL, $dateFormat = NULL, $size = NULL ) {
 
-		$idCheck = $id === null ? get_the_ID() : $id;
+		$idCheck = $id === NULL ? get_the_ID() : $id;
 
 		$object = (object) [
 			'title'   => get_the_title( $idCheck ),
 			'date'    => get_the_date( $dateFormat, $idCheck ),
-			'image'   => get_the_post_thumbnail_url( $idCheck, $size === null ? 'original' : $size ),
+			'image'   => get_the_post_thumbnail_url( $idCheck, $size === NULL ? 'original' : $size ),
 			'content' => do_blocks( get_the_content( $idCheck ) )
 		];
 
 		prepare::JSON( $object );
-
-	}
-
-	/**
-	 * Breadcrumbs.
-	 *
-	 * @since 1.21
-	 */
-
-	public static function breadcrumbs() {
-
-
 
 	}
 

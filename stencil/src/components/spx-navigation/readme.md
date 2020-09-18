@@ -1,4 +1,4 @@
-# harmoni-tooltip
+# spx-navigation
 
 
 
@@ -7,51 +7,63 @@
 
 ## Properties
 
-| Property                        | Attribute                          | Description | Type      | Default                                         |
-| ------------------------------- | ---------------------------------- | ----------- | --------- | ----------------------------------------------- |
-| `childBorder`                   | `child-border`                     |             | `string`  | `'1px solid ' + constants.stylePrimary300 + ''` |
-| `childChildGap`                 | `child-child-gap`                  |             | `string`  | `'0.8em'`                                       |
-| `childGap`                      | `child-gap`                        |             | `string`  | `'0.5em'`                                       |
-| `childIcon`                     | `child-icon`                       |             | `string`  | `undefined`                                     |
-| `childIndicatorGap`             | `child-indicator-gap`              |             | `string`  | `'0.2em'`                                       |
-| `childItemBackground`           | `child-item-background`            |             | `string`  | `'#ffffff'`                                     |
-| `childItemBackgroundHover`      | `child-item-background-hover`      |             | `string`  | `constants.stylePrimary100`                     |
-| `childItemColor`                | `child-item-color`                 |             | `string`  | `constants.stylePrimary700`                     |
-| `childItemColorHover`           | `child-item-color-hover`           |             | `string`  | `constants.stylePrimary900`                     |
-| `childItemPadding`              | `child-item-padding`               |             | `string`  | `'0.6em 0.8em'`                                 |
-| `childPlacement`                | `child-placement`                  |             | `string`  | `'start'`                                       |
-| `childTransitionDuration`       | `child-transition-duration`        |             | `string`  | `constants.styleTransitionDuration`             |
-| `childTransitionTimingFunction` | `child-transition-timing-function` |             | `string`  | `constants.styleTransitionTimingFunction`       |
-| `fontSize`                      | `font-size`                        |             | `string`  | `constants.styleFontSize`                       |
-| `itemTransitionDuration`        | `item-transition-duration`         |             | `string`  | `constants.styleTransitionDuration`             |
-| `itemTransitionTimingFunction`  | `item-transition-timing-function`  |             | `string`  | `constants.styleTransitionTimingFunction`       |
-| `itemUnderline`                 | `item-underline`                   |             | `boolean` | `undefined`                                     |
-| `itemUnderlineHover`            | `item-underline-hover`             |             | `boolean` | `undefined`                                     |
-| `menu`                          | `menu`                             |             | `string`  | `undefined`                                     |
-| `mobile`                        | `mobile`                           |             | `number`  | `constants.styleMobileBP`                       |
-| `mobileIcon`                    | `mobile-icon`                      |             | `string`  | `undefined`                                     |
-| `mobileItemBackground`          | `mobile-item-background`           |             | `string`  | `'#ffffff'`                                     |
-| `mobileItemBackgroundHover`     | `mobile-item-background-hover`     |             | `string`  | `constants.stylePrimary100`                     |
-| `mobileItemColor`               | `mobile-item-color`                |             | `string`  | `constants.stylePrimary800`                     |
-| `mobileItemColorHover`          | `mobile-item-color-hover`          |             | `string`  | `constants.stylePrimary900`                     |
-| `mobileItemNestedMarginLeft`    | `mobile-item-nested-margin-left`   |             | `string`  | `'0.8em'`                                       |
-| `mobileItemPadding`             | `mobile-item-padding`              |             | `string`  | `'0.6em'`                                       |
-| `mobilePlacement`               | `mobile-placement`                 |             | `string`  | `'start'`                                       |
-| `parentItemBackground`          | `parent-item-background`           |             | `string`  | `'#ffffff'`                                     |
-| `parentItemBackgroundHover`     | `parent-item-background-hover`     |             | `string`  | `constants.stylePrimary100`                     |
-| `parentItemColor`               | `parent-item-color`                |             | `string`  | `constants.stylePrimary800`                     |
-| `parentItemColorHover`          | `parent-item-color-hover`          |             | `string`  | `constants.stylePrimary900`                     |
-| `parentItemGap`                 | `parent-item-gap`                  |             | `string`  | `'0.4em'`                                       |
-| `parentItemPadding`             | `parent-item-padding`              |             | `string`  | `'0.6em'`                                       |
-| `styling`                       | `styling`                          |             | `string`  | `undefined`                                     |
-| `vertical`                      | `vertical`                         |             | `boolean` | `undefined`                                     |
+| Property                       | Attribute                         | Description                                              | Type      | Default                                 |
+| ------------------------------ | --------------------------------- | -------------------------------------------------------- | --------- | --------------------------------------- |
+| `childBorder`                  | `child-border`                    |                                                          | `string`  | `'1px solid var(--spx-color-gray-200)'` |
+| `childBorderRadius`            | `child-border-radius`             | Child menu border-radius.                                | `string`  | `c.borderRadius`                        |
+| `childBoxShadow`               | `child-box-shadow`                | Child menu box-shadow.                                   | `string`  | `'0 3px 10px 0 rgba(0,0,0,0.05)'`       |
+| `childChildGap`                | `child-child-gap`                 | Gap between nested child menus.                          | `string`  | `'0.8em'`                               |
+| `childGap`                     | `child-gap`                       | Gap between top level menu items and child menus.        | `string`  | `'0.5em'`                               |
+| `childIcon`                    | `child-icon`                      | Indicator icon. Accepts any Font Awesome icon class.     | `string`  | `undefined`                             |
+| `childIndicatorGap`            | `child-indicator-gap`             | Gap between child menu indicator and text.               | `string`  | `'0.2em'`                               |
+| `childItemBackground`          | `child-item-background`           |                                                          | `string`  | `'#ffffff'`                             |
+| `childItemBackgroundHover`     | `child-item-background-hover`     |                                                          | `string`  | `'var(--spx-color-gray-100)'`           |
+| `childItemColor`               | `child-item-color`                |                                                          | `string`  | `'var(--spx-color-gray-700)'`           |
+| `childItemColorHover`          | `child-item-color-hover`          |                                                          | `string`  | `'var(--spx-color-gray-900)'`           |
+| `childItemPadding`             | `child-item-padding`              |                                                          | `string`  | `'0.6em 0.8em'`                         |
+| `childPlacement`               | `child-placement`                 | Child menu placement.                                    | `string`  | `'start'`                               |
+| `fontSize`                     | `font-size`                       |                                                          | `string`  | `c.fontSize`                            |
+| `itemTransitionDuration`       | `item-transition-duration`        |                                                          | `string`  | `c.transitionDuration`                  |
+| `itemTransitionTimingFunction` | `item-transition-timing-function` |                                                          | `string`  | `c.transitionTimingFunction`            |
+| `itemUnderline`                | `item-underline`                  | Underlines all links.                                    | `boolean` | `undefined`                             |
+| `itemUnderlineHover`           | `item-underline-hover`            | Underlines all links on hover.                           | `boolean` | `undefined`                             |
+| `menu`                         | `menu`                            | Renders a WordPress menu.                                | `string`  | `undefined`                             |
+| `mobile`                       | `mobile`                          | Mobile breakpoint.                                       | `number`  | `c.mobileBpWidth`                       |
+| `mobileIcon`                   | `mobile-icon`                     | Mobile button icon. Accepts any Font Awesome icon class. | `string`  | `undefined`                             |
+| `mobileItemBackground`         | `mobile-item-background`          |                                                          | `string`  | `'#ffffff'`                             |
+| `mobileItemBackgroundHover`    | `mobile-item-background-hover`    |                                                          | `string`  | `'var(--spx-color-gray-100)'`           |
+| `mobileItemColor`              | `mobile-item-color`               |                                                          | `string`  | `'var(--spx-color-gray-800)'`           |
+| `mobileItemColorHover`         | `mobile-item-color-hover`         |                                                          | `string`  | `'var(--spx-color-gray-900)'`           |
+| `mobileItemNestedMarginLeft`   | `mobile-item-nested-margin-left`  |                                                          | `string`  | `'0.8em'`                               |
+| `mobileItemPadding`            | `mobile-item-padding`             |                                                          | `string`  | `'0.6em'`                               |
+| `mobilePlacement`              | `mobile-placement`                | Mobile placement.                                        | `string`  | `'start'`                               |
+| `parentItemBackground`         | `parent-item-background`          |                                                          | `string`  | `'#ffffff'`                             |
+| `parentItemBackgroundHover`    | `parent-item-background-hover`    |                                                          | `string`  | `'var(--spx-color-gray-100)'`           |
+| `parentItemColor`              | `parent-item-color`               |                                                          | `string`  | `'var(--spx-color-gray-800)'`           |
+| `parentItemColorHover`         | `parent-item-color-hover`         |                                                          | `string`  | `'var(--spx-color-gray-900)'`           |
+| `parentItemGap`                | `parent-item-gap`                 | Gap between parent menu items.                           | `string`  | `'0.4em'`                               |
+| `parentItemPadding`            | `parent-item-padding`             |                                                          | `string`  | `'0.6em'`                               |
+| `vertical`                     | `vertical`                        | Renders menu vertically.                                 | `boolean` | `undefined`                             |
 
 
 ## Events
 
-| Event                  | Description | Type               |
-| ---------------------- | ----------- | ------------------ |
-| `spxNavigationDidLoad` |             | `CustomEvent<any>` |
+| Event                  | Description                      | Type               |
+| ---------------------- | -------------------------------- | ------------------ |
+| `spxNavigationDidLoad` | Fires when component has loaded. | `CustomEvent<any>` |
+
+
+## Methods
+
+### `reload() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ## Dependencies

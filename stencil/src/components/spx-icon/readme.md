@@ -1,4 +1,4 @@
-# harmoni-icon
+# spx-icon
 
 
 

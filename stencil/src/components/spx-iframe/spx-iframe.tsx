@@ -1,89 +1,122 @@
-import {Component, Host, h, Prop, State, Listen, Element} from '@stencil/core';
-import {css} from "emotion";
-import * as constants from '../../constants/style.js';
+// eslint-disable-next-line no-unused-vars
+import { Component, Host, h, Prop, State, Listen, Element, Method } from '@stencil/core'
+import { css } from 'emotion'
+import * as c from '../../constants/style'
+import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
+
+/**
+ * A wrapper around a standard iframe element, which scales proportionally to its parent.
+ * Great for showing desktop versions of a website in a small section.
+ */
 
 @Component({
-    tag: 'spx-iframe',
+  tag: 'spx-iframe'
 })
+
 export class SpxIframe {
-    @Element() el: HTMLElement;
+    @Element() el: HTMLSpxIframeElement
 
-    @Prop() src: string;
-    @Prop() size: string = '1440px';
-    @State() height: string;
-    @State() width: string;
-    @State() iframe;
-    @State() parent;
-    @State() parentHeight;
+    @State() height: string
+    @State() iframe
+    @State() loaded: boolean
+    @State() parent
+    @State() parentHeight
+    @State() width: string
 
-    @Listen('resize', {target: 'window'})
-    handleResizer() {
-        this.handleResize()
+    /** Screen size of the site shown inside the iframe. */
+
+    @Prop() size: string = '1440px'
+
+    /** Source for the iframe. */
+
+    @Prop() src: string
+
+    @Listen('resize', { target: 'window' })
+    onResize () {
+      this.handleResize()
+    }
+
+    componentDidLoad () {
+      globalComponentDidLoad(this.el)
+
+      /** Assign states. */
+
+      this.iframe = this.el.querySelector('iframe')
+      this.parent = this.el
+
+      /** Resize and wait for iFrame to load before showing content. */
+
+      this.handleResize()
+      this.el.querySelector('iframe').onload = () => {
+        this.loaded = true
+      }
+    }
+
+    componentDidUpdate () {
+      this.handleResize()
     }
 
     /** Resize function to keep src element in proportion. */
 
-    handleResize() {
-        let ratio = this.parent.offsetWidth / this.iframe.offsetWidth;
-        this.iframe.style.transform = 'scale(calc((' + ratio + '))';
-        this.parentHeight = this.parent.offsetHeight;
-        this.iframe.style.height = this.parentHeight / ratio + 'px';
+    private handleResize () {
+      const ratio = this.parent.offsetWidth / this.iframe.offsetWidth
+      this.iframe.style.transform = 'scale(calc((' + ratio + '))'
+      this.parentHeight = this.parent.offsetHeight
+      this.iframe.style.height = this.parentHeight / ratio + 'px'
     }
 
-    componentDidUpdate() {
-        this.handleResize();
+    @Method()
+    async reload () {
+      this.componentDidLoad()
     }
 
-    componentDidLoad() {
+    render () {
+      /** Host styles. */
 
-        /** Assign states. */
+      const styleHost = css({
+        height: '100%',
+        width: '100%',
+        position: 'relative',
+        overflowX: 'scroll',
+        overflowY: 'hidden',
+        display: 'block'
+      })
 
-        this.iframe = this.el.querySelector('iframe');
-        this.parent = this.el;
+      /** Iframe styles. */
 
-        /** Resize and wait for iFrame to load before showing content. */
+      const styleIframe = css({
+        border: 'none',
+        width: this.size,
+        height: '100vh',
+        transformOrigin: 'left top',
+        position: 'absolute'
+      })
 
-        this.handleResize();
-        this.el.querySelector('iframe').onload = () => {
-            this.el.classList.add('loaded');
-        }
-    }
+      /** Loader styles. */
 
-    render() {
-        return <Host class={css({
-            height: '100%',
-            width: '100%',
-            position: 'relative',
-            overflowX: 'scroll',
-            overflowY: 'hidden',
-            display: 'block',
+      const styleLoader = css({
+        padding: '0.8em',
+        borderRadius: c.borderRadius,
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%) scale(2)'
+      })
 
-            'iframe': {
-                border: 'none',
-                width: this.size,
-                height: '100vh',
-                transformOrigin: 'left top',
-                position: 'absolute',
-            },
+      return <Host class={styleHost}>
 
-            '.spx-iframe__loader-wrap': {
-                padding: '0.8em',
-                borderRadius: constants.styleBorderRadius,
-                backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                position: 'absolute',
-                left: '50%',
-                top: '50%',
-                transform: 'translate(-50%, -50%) scale(2)',
-            },
+        {/** iFrame. */}
 
-            '&.loaded .spx-iframe__loader-wrap': {
-                display: 'none',
-            }
-        })}>
-            <iframe tabindex="-1" src={this.src}/>
-            <div class="spx-iframe__loader-wrap">
-                <spx-loader/>
-            </div>
-        </Host>;
+        <iframe class={styleIframe} tabindex="-1" src={this.src}/>
+
+        {/** Loader. */}
+
+        {!this.loaded &&
+            <div class={styleLoader}>
+              <spx-loader/>
+            </div>}
+
+      </Host>
     }
 }

@@ -1,4 +1,4 @@
-# harmoni-gallery
+# spx-masonry
 
 
 
@@ -7,20 +7,14 @@
 
 ## Properties
 
-| Property                     | Attribute                       | Description | Type      | Default     |
-| ---------------------------- | ------------------------------- | ----------- | --------- | ----------- |
-| `bpColumns`                  | `bp-columns`                    |             | `string`  | `undefined` |
-| `bpColumnsObject`            | --                              |             | `object`  | `undefined` |
-| `columns`                    | `columns`                       |             | `number`  | `undefined` |
-| `gap`                        | `gap`                           |             | `string`  | `'10px'`    |
-| `imageSize`                  | `image-size`                    |             | `string`  | `undefined` |
-| `images`                     | `images`                        |             | `string`  | `undefined` |
-| `imagesSrc`                  | `images-src`                    |             | `string`  | `undefined` |
-| `mobileFirst`                | `mobile-first`                  |             | `boolean` | `undefined` |
-| `trueOrder`                  | `true-order`                    |             | `boolean` | `undefined` |
-| `useContainerForBreakpoints` | `use-container-for-breakpoints` |             | `boolean` | `undefined` |
-| `useOwnImageLoader`          | `use-own-image-loader`          |             | `boolean` | `undefined` |
-| `waitForImages`              | `wait-for-images`               |             | `boolean` | `undefined` |
+| Property    | Attribute    | Description                                                                                                                                                                              | Type     | Default     |
+| ----------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
+| `bpColumns` | `bp-columns` | Columns for different screen sizes. Example value: 1000:3;600:2 - this will switch to a three column layout when the screen size is under 1000px and to a two column layout under 600px. | `string` | `undefined` |
+| `columns`   | `columns`    | Number of columns.                                                                                                                                                                       | `number` | `undefined` |
+| `gap`       | `gap`        | Gap between images.                                                                                                                                                                      | `string` | `'10px'`    |
+| `imageSize` | `image-size` | WordPress media size when using the helper function..                                                                                                                                    | `string` | `undefined` |
+| `images`    | `images`     | Gets images from an ACF or Metabox field.                                                                                                                                                | `string` | `undefined` |
+| `imagesSrc` | `images-src` | Gets images from an ACF or Metabox field.                                                                                                                                                | `string` | `undefined` |
 
 
 ## Events
@@ -34,7 +28,7 @@
 
 ### `recalc() => Promise<void>`
 
-Wrapper for recalculation.
+Recalculate grid.
 
 #### Returns
 
@@ -42,9 +36,9 @@ Type: `Promise<void>`
 
 
 
-### `restart() => Promise<void>`
+### `reload() => Promise<void>`
 
-Wrapper for reinit.
+
 
 #### Returns
 

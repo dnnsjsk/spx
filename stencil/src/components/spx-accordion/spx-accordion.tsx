@@ -1,130 +1,181 @@
-import {Component, Element, h, Host, Prop, State} from '@stencil/core';
-import {css, cx} from "emotion";
-import * as constants from '../../constants/style.js';
+// eslint-disable-next-line no-unused-vars
+import { Component, Element, h, Host, Method, Prop, State } from '@stencil/core'
+import { css } from 'emotion'
+import * as c from '../../constants/style'
+import { setVar } from '../../utils/setVar'
+import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
+
+const tag = 'spx-accordion'
+
+/**
+ * Accordions are the classic method to show and hide elements on your website.
+ * @slot header - Header.
+ * @slot content - Content.
+ */
 
 @Component({
-    tag: 'spx-accordion',
+  tag: 'spx-accordion'
 })
 
 export class SpxAccordion {
-    @Element() el: HTMLElement;
+    @Element() el: HTMLSpxAccordionElement
 
-    @Prop({reflectToAttr: true}) styling: string;
+    @State() contentCustom: boolean
+    @State() headerCustom: boolean
+    @State() open: boolean = false
 
-    @Prop({reflectToAttr: true}) gap: string = '0.4em';
+    @Prop({ reflect: true }) contentColor: string = 'var(--spx-color-gray-900)'
 
-    @Prop({reflectToAttr: true}) fontSize: string = constants.styleFontSize;
+    /** Content text. */
 
-    @Prop({reflectToAttr: true}) headerColor: string = constants.stylePrimary900;
-    @Prop({reflectToAttr: true}) headerText: string = 'Default Header Text';
-    @Prop({reflectToAttr: true}) headerTextTag: string = 'span';
-    @Prop({reflectToAttr: true}) headerGap: string = '0.4em';
-    @Prop({reflectToAttr: true}) headerCustom: boolean;
+    @Prop({ reflect: true }) contentText: string = 'Default Content Text'
 
-    @Prop({reflectToAttr: true}) indicatorIcon: string;
+    /** Content text tag. */
 
-    @Prop({reflectToAttr: true}) contentColor: string = constants.stylePrimary900;
-    @Prop({reflectToAttr: true}) contentText: string = 'Default Content Text';
-    @Prop({reflectToAttr: true}) contentTextTag: string = 'span';
-    @Prop({reflectToAttr: true}) contentCustom: boolean;
+    @Prop({ reflect: true }) contentTextTag: string = 'span'
 
-    @State() open: boolean = false;
+    @Prop({ reflect: true }) fontSize: string = c.fontSize
 
-    componentDidLoad() {
-        if (this.el.querySelector('[slot="header"]')) {
-            this.headerCustom = true;
-        }
-        if (this.el.querySelector('[slot="content"]')) {
-            this.contentCustom = true;
-        }
+    /**
+     * Space between header and content.
+     * @CSS
+     */
+
+    @Prop({ reflect: true }) gap: string = '0.4em'
+
+    @Prop({ reflect: true }) headerColor: string = 'var(--spx-color-gray-900)'
+
+    /**
+     * Gap between header text and icon.
+     * @CSS
+     */
+
+    @Prop({ reflect: true }) headerGap: string = '0.4em'
+
+    /** Header text. */
+
+    @Prop({ reflect: true }) headerText: string = 'Default Header Text'
+
+    /** Header text tag. */
+
+    @Prop({ reflect: true }) headerTextTag: string = 'span'
+
+    /** Icon class. Accepts any Font Awesome icon class. */
+
+    @Prop({ reflect: true }) indicatorIcon: string
+
+    /** Indicator icon transform. */
+
+    @Prop({ reflect: true }) indicatorIconTransform: string = 'rotate(90deg)'
+
+    componentDidLoad () {
+      globalComponentDidLoad(this.el)
+
+      if (this.el.querySelector('[slot="header"]')) {
+        this.headerCustom = true
+      }
+      if (this.el.querySelector('[slot="content"]')) {
+        this.contentCustom = true
+      }
     }
 
     /** Toggle content. */
 
-    onClickHeader() {
-        this.open = !this.open;
+    private clickHeader = () => {
+      this.open = !this.open
     }
 
-    render() {
+    @Method()
+    async reload () {
+      this.componentDidLoad()
+    }
 
-        /** Create custom variables for Header/Content. */
+    render () {
+      /** Host styles. */
 
-        const styleText = (tag, part) => css({
-            color: 'var(--spx-accordion-' + tag + '-color, ' + part + ')'
-        });
+      const styleHost = css({
+        fontFamily: c.fontFamily,
+        fontSize: setVar(tag, 'font-size', this.fontSize),
+        display: 'grid',
+        gridAutoFlow: 'row',
+        gridRowGap: setVar(tag, 'gap', this.gap)
+      })
 
-        /** Render inner element for header/content. */
+      /** Header styles. */
 
-        const textReturn = (condition, tag, text, slot, part) => {
-            return condition ?
-                (tag === 'h1' ? <h1 class={styleText(tag, part)}>{text}</h1>
-                    : tag === 'h2' ? <h2 class={styleText(tag, part)}>{text}</h2>
-                        : tag === 'h3' ? <h3 class={styleText(tag, part)}>{text}</h3>
-                            : tag === 'h4' ? <h4 class={styleText(tag, part)}>{text}</h4>
-                                : tag === 'h5' ? <h5 class={styleText(tag, part)}>{text}</h5>
-                                    : tag === 'h6' ? <h6 class={styleText(tag, part)}>{text}</h6>
-                                        : tag === 'p' ? <p class={styleText(tag, part)}>{text}</p>
-                                            : <span class={styleText(tag, part)}>{text}</span>) : <slot name={slot}/>
+      const styleHeader = css({
+        display: 'grid',
+        gridAutoFlow: 'column',
+        gridAutoColumns: 'max-content',
+        gridColumnGap: setVar(tag, 'header-gap', this.headerGap),
+        cursor: 'pointer',
+
+        '*:not([slot])': {
+          margin: '0'
         }
+      })
 
-        /** Style default. */
+      /** Header custom styles. */
 
-        const styleDefault = css({
-            fontFamily: constants.styleFontFamily,
-            fontSize: constants.styleFontBase('accordion', this.fontSize),
-            display: 'grid',
-            gridAutoFlow: 'row',
-            gridRowGap: 'var(--spx-accordion-gap, ' + this.gap + ')',
+      const styleHeaderCustom = css({
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        transformOrigin: 'center',
+        transform: this.open && setVar(tag, 'indicator-icon-transform', this.indicatorIconTransform),
+        color: setVar(tag, 'header-color', this.headerColor)
+      })
 
-            '.spx-accordion__header': {
-                display: 'grid',
-                gridAutoFlow: 'column',
-                gridAutoColumns: 'max-content',
-                gridColumnGap: 'var(--spx-accordion-header-gap, ' + this.headerGap + ')',
-                cursor: 'pointer',
+      /** Create custom variables for Header/Content. */
 
-                '*:not([slot])': {
-                    margin: '0'
-                }
-            },
+      const styleText = (tag, part) => css({
+        color: 'var(--spx-accordion-' + tag + '-color, ' + part + ')'
+      })
 
-            '.spx-accordion__header-icon': {
-                height: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                transformOrigin: 'center',
-                transform: this.open && 'rotate(180deg)',
-                color: 'var(--spx-accordion-header-color, ' + this.headerColor + ')'
-            },
+      /** Renders inner element for header/content. */
 
-            '.spx-accordion__content': {
-                display: this.open ? 'block' : 'none',
-            }
-        });
+      const textReturn = (condition, tag, text, slot, part) => {
+        return condition
+          ? (tag === 'h1' ? <h1 class={styleText(tag, part)}>{text}</h1>
+            : tag === 'h2' ? <h2 class={styleText(tag, part)}>{text}</h2>
+              : tag === 'h3' ? <h3 class={styleText(tag, part)}>{text}</h3>
+                : tag === 'h4' ? <h4 class={styleText(tag, part)}>{text}</h4>
+                  : tag === 'h5' ? <h5 class={styleText(tag, part)}>{text}</h5>
+                    : tag === 'h6' ? <h6 class={styleText(tag, part)}>{text}</h6>
+                      : tag === 'p' ? <p class={styleText(tag, part)}>{text}</p>
+                        : <span class={styleText(tag, part)}>{text}</span>) : <slot name={slot}/>
+      }
 
-        return <Host
-            class={cx(
-                {[constants.styleBase]: this.styling === 'none'},
-                {[styleDefault]: !this.styling}
-            )}>
+      return <Host
+        class={styleHost}>
 
-            <div onClick={this.onClickHeader.bind(this)} class="spx-accordion__header">
-                {!this.headerCustom &&
-                <div class="spx-accordion__header-icon">
+        {/** Header. */}
 
-                    {this.indicatorIcon ?
-                        <i class={this.indicatorIcon}/> :
-                        <spx-icon type="caret"/>}
+        <div
+          onClick={this.clickHeader}
+          class={styleHeader}>
+
+          {/** Header custom. */}
+
+          {!this.headerCustom &&
+                <div class={styleHeaderCustom}>
+
+                  {this.indicatorIcon
+                    ? <i class={this.indicatorIcon}/>
+                    : <spx-icon type="caret"/>}
 
                 </div>}
-                {textReturn(!this.headerCustom, this.headerTextTag, this.headerText, 'header', this.headerColor)}
-            </div>
+          {textReturn(!this.headerCustom, this.headerTextTag, this.headerText, 'header', this.headerColor)}
+        </div>
 
-            <div
-                class={'spx-accordion__content' + ' ' + (this.open ? 'spx-accordion__content--open' : 'spx-accordion__content--closed')}>
-                {textReturn(!this.contentCustom, this.contentTextTag, this.contentText, 'content', this.contentColor)}
-            </div>
-        </Host>
+        {/** Content. */}
+
+        <div class={css({
+          display: this.open ? 'block' : 'none'
+        })}>
+          {textReturn(!this.contentCustom, this.contentTextTag, this.contentText, 'content', this.contentColor)}
+        </div>
+      </Host>
     }
 }

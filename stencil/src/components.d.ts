@@ -8,44 +8,243 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface SpxAccordion {
         "contentColor": string;
-        "contentCustom": boolean;
+        /**
+          * Content text.
+         */
         "contentText": string;
+        /**
+          * Content text tag.
+         */
         "contentTextTag": string;
         "fontSize": string;
+        /**
+          * Space between header and content.
+          * @CSS
+         */
         "gap": string;
         "headerColor": string;
-        "headerCustom": boolean;
+        /**
+          * Gap between header text and icon.
+          * @CSS
+         */
         "headerGap": string;
+        /**
+          * Header text.
+         */
         "headerText": string;
+        /**
+          * Header text tag.
+         */
         "headerTextTag": string;
+        /**
+          * Icon class. Accepts any Font Awesome icon class.
+         */
         "indicatorIcon": string;
-        "styling": string;
+        /**
+          * Indicator icon transform.
+         */
+        "indicatorIconTransform": string;
+        "reload": () => Promise<void>;
     }
     interface SpxAnimate {
+        /**
+          * Delay before animation starts.
+         */
         "delay": number;
         "display": string;
+        /**
+          * Animation duration.
+         */
         "duration": number;
+        /**
+          * Ease being used. Accepts all common GSAP options.
+         */
         "ease": string;
+        /**
+          * Determines if animation should only play once. (if viewport is true)
+         */
         "once": boolean;
+        /**
+          * Opacity level the animation starts from.
+         */
         "opacity": number;
+        "reload": () => Promise<void>;
+        /**
+          * Amount of time elements should be staggered by.
+         */
         "stagger": number;
+        /**
+          * The target element that should be animated inside the component.
+         */
         "target": string;
+        /**
+          * Starts animation when target is in the viewport.
+         */
         "viewport": boolean;
+        /**
+          * Adjust the root margin of the animation start.
+         */
         "viewportMarginBottom": string;
+        /**
+          * Adjust the root margin of the animation start.
+         */
         "viewportMarginLeft": string;
+        /**
+          * Adjust the root margin of the animation start.
+         */
         "viewportMarginRight": string;
+        /**
+          * Adjust the root margin of the animation start.
+         */
         "viewportMarginTop": string;
+        /**
+          * X position the animation starts from.
+         */
         "x": number;
+        /**
+          * Y position the animation starts from.
+         */
         "y": number;
     }
     interface SpxClassToggle {
         "display": string;
+        /**
+          * Specify a local storage item, so the toggle state will be remembered when the user visits the site again.
+         */
         "local": string;
+        "reload": () => Promise<void>;
+        /**
+          * Target element. Can take any querySelector value. (id, class, tag etc.) If none is set it will default to the first element inside.
+         */
         "target": string;
+        /**
+          * List of classes that should be toggled.
+         */
         "toggle": string;
+    }
+    interface SpxCode {
+        "borderRadius": string;
+        "padding": string;
+        "reload": () => Promise<void>;
+        /**
+          * Colour theme.
+          * @choice 'default', 'dracula'
+         */
+        "theme": string;
+        /**
+          * Determines the programming language.
+         */
+        "type": string;
+    }
+    interface SpxContainer {
+        /**
+          * Mobile breakpoint width.
+         */
+        "bpMobile": number;
+        "buttonBorderRadius": string;
+        "buttonFontSizeMultiplier": number;
+        "buttonFontWeight": string;
+        "buttonMarginTop": string;
+        "buttonMarginX": string;
+        /**
+          * Reverse color of buttons.
+          * @choice 'all', 'primary', 'secondary'
+         */
+        "buttonReverseColor": string;
+        "buttonTextTransform": string;
+        /**
+          * Primary color which will be used for sections and pages.
+          * @choice 'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'
+         */
+        "colorPrimary": string;
+        /**
+          * Secondary color which will be used for sections and pages.
+          * @choice 'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'
+         */
+        "colorSecondary": string;
+        /**
+          * Primary font-family.
+         */
+        "fontFamilyPrimary": string;
+        /**
+          * Secondary font-family.
+         */
+        "fontFamilySecondary": string;
+        "imageMaxWidth": string;
+        /**
+          * Section max-width on mobile.
+         */
+        "maxWidth": string;
+        /**
+          * Offsets first section to the height of the header.
+         */
+        "offsetHeader": boolean;
+        "preTitleBackground": string;
+        "preTitleBorderRadius": string;
+        "preTitleColor": string;
+        "preTitleFontSizeMultiplier": number;
+        "preTitleFontWeight": string;
+        "preTitleLetterSpacing": string;
+        "preTitleLineHeight": string;
+        "preTitleMarginBottom": string;
+        "preTitlePadding": string;
+        "preTitleTextTransform": string;
+        /**
+          * Space between content and outer edge of the viewport.
+          * @CSS
+         */
+        "spaceX": string;
+        /**
+          * Space between content and outer edge of the viewport.
+          * @CSS
+         */
+        "spaceXSm": string;
+        /**
+          * Space between the sections.
+          * @CSS
+         */
+        "spaceY": string;
+        /**
+          * Space base for space-scale.
+          * @CSS
+         */
+        "spacing": string;
+        /**
+          * Margin between tab items.
+          * @CSS
+         */
+        "tabsMarginBetween": string;
+        /**
+          * Top margin for first tab item.
+          * @CSS
+         */
+        "tabsMarginFirst": string;
+        /**
+          * Tabs opacity.
+          * @CSS
+         */
+        "tabsOpacity": number;
+        "textColor": string;
+        "textFontSizeMultiplier": number;
+        "textFontWeight": string;
+        "textLetterSpacing": string;
+        "textLineHeight": string;
+        "textMarginTop": string;
+        "textMaxWidth": string;
+        "textTransform": string;
+        "titleColor": string;
+        "titleFontSizeMultiplier": number;
+        "titleFontWeight": number;
+        "titleLetterSpacing": string;
+        "titleLineHeight": string;
+        "titleMaxWidth": string;
+        "titleTextTransform": string;
     }
     interface SpxEdit {
         "display": string;
+        /**
+          * Watch editable state.
+         */
         "editable": boolean;
         "name": string;
         "outline": string;
@@ -58,111 +257,263 @@ export namespace Components {
     }
     interface SpxEditButton {
         "background": string;
+        /**
+          * Discard button background.
+          * @CSS
+         */
         "backgroundDiscard": string;
         "border": string;
         "borderRadius": string;
         "color": string;
+        /**
+          * Discard button color.
+          * @CSS
+         */
         "colorDiscard": string;
+        /**
+          * Distance to the edge of the viewport on the x-axis.
+          * @CSS
+         */
         "distanceX": string;
+        /**
+          * Distance to the edge of the viewport on the y-axis.
+          * @CSS
+         */
         "distanceY": string;
+        /**
+          * Corresponding ID for editable fields. This property is needed when multiple edit-button components are used on the page. Simply apply a "data-spx-edit-id" attribute with the same value to editable elements.
+         */
         "editId": string;
+        "fontFamily": string;
         "fontSize": string;
+        /**
+          * Gap between the buttons.
+          * @CSS
+         */
         "gap": string;
         "padding": string;
+        /**
+          * Component position in page.
+          * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
+         */
         "position": string;
-        "styling": string;
+        "reload": () => Promise<void>;
         "test": boolean;
+        /**
+          * Discard button text.
+         */
         "textDiscard": string;
+        /**
+          * Edit button text.
+         */
         "textEdit": string;
+        /**
+          * Save button text.
+         */
         "textSave": string;
+        /**
+          * Success message.
+         */
         "textSuccess": string;
+        /**
+          * Type of data being sent.
+          * @choice 'option', 'acf'
+         */
         "type": string;
+        "zIndex": number;
     }
     interface SpxGroup {
         "display": string;
+        "reload": () => Promise<void>;
+        /**
+          * Specifies a target element.
+         */
+        "target": string;
     }
     interface SpxIcon {
         "icon": string;
         "type": string;
     }
     interface SpxIframe {
+        "reload": () => Promise<void>;
+        /**
+          * Screen size of the site shown inside the iframe.
+         */
         "size": string;
+        /**
+          * Source for the iframe.
+         */
         "src": string;
     }
     interface SpxImageComparison {
         "color": string;
         "iconColor": string;
+        "reload": () => Promise<void>;
+        /**
+          * Image URL of the before image.
+         */
         "srcAfter": string;
+        /**
+          * Image URL of the after image.
+         */
         "srcBefore": string;
+        /**
+          * Opening state in pixels.
+         */
         "start": number;
     }
     interface SpxLightbox {
         "display": string;
         "effect": string;
+        "reload": () => Promise<void>;
     }
     interface SpxLoader {
         "color": string;
         "speed": string;
     }
     interface SpxMasonry {
-        "bpColumns": string;
-        "bpColumnsObject": object;
-        "columns": number;
-        "gap": string;
-        "imageSize": string;
-        "images": string;
-        "imagesSrc": string;
-        "mobileFirst": boolean;
         /**
-          * Wrapper for recalculation.
+          * Columns for different screen sizes. Example value: 1000:3;600:2 - this will switch to a three column layout when the screen size is under 1000px and to a two column layout under 600px.
+         */
+        "bpColumns": string;
+        /**
+          * Number of columns.
+         */
+        "columns": number;
+        /**
+          * Gap between images.
+          * @CSS
+         */
+        "gap": string;
+        /**
+          * WordPress media size when using the helper function..
+         */
+        "imageSize": string;
+        /**
+          * Gets images from an ACF or Metabox field.
+          * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+         */
+        "images": string;
+        /**
+          * Gets images from an ACF or Metabox field.
+          * @choice 'acf', 'mb
+         */
+        "imagesSrc": string;
+        /**
+          * Recalculate grid.
          */
         "recalc": () => Promise<void>;
-        /**
-          * Wrapper for reinit.
-         */
-        "restart": () => Promise<void>;
-        "trueOrder": boolean;
-        "useContainerForBreakpoints": boolean;
-        "useOwnImageLoader": boolean;
-        "waitForImages": boolean;
+        "reload": () => Promise<void>;
     }
     interface SpxMockup {
-        "browserBackground": string;
-        "browserUrlBarBackground": string;
-        "browserUrlBarBorder": string;
-        "color": string;
+        /**
+          * Samsung S8 color.
+          * @choice 'black', 'blue'
+         */
         "colorGalaxyS8": string;
+        /**
+          * Google Pixel color.
+          * @choice 'silver', 'black', 'blue'
+         */
         "colorGooglePixel": string;
+        /**
+          * iPad Pro color.
+          * @choice 'silver', 'gold', 'rosegold', 'spacegray'
+         */
         "colorIpadPro": string;
+        /**
+          * iPhone 8 color.
+          * @choice 'silver', 'gold', 'spacegray'
+         */
         "colorIphone8": string;
+        /**
+          * MacBook color.
+          * @choice 'silver', 'gold', 'rosegold', 'spacegray'
+         */
         "colorMacbook": string;
+        /**
+          * MacBook Pro color.
+          * @choice 'silver', 'spacegray',
+         */
         "colorMacbookPro": string;
         "display": string;
         "imagePosition": string;
+        "reload": () => Promise<void>;
+        /**
+          * Image src if no inner slot is used.
+         */
         "src": string;
+        /**
+          * Device type.
+          * @choice 'iphone-x', 'iphone-8', 'google-pixel-2-xl', 'google-pixel', 'galaxy-s8', 'ipad-pro', 'surface-pro', 'surface-book', 'macbook', 'macbook-pro', 'surface-studio', 'imac-pro', 'apple-watch'
+         */
         "type": string;
     }
     interface SpxNavigation {
         "childBorder": string;
+        /**
+          * Child menu border-radius.
+          * @CSS
+         */
+        "childBorderRadius": string;
+        /**
+          * Child menu box-shadow.
+          * @CSS
+         */
+        "childBoxShadow": string;
+        /**
+          * Gap between nested child menus.
+          * @CSS
+         */
         "childChildGap": string;
+        /**
+          * Gap between top level menu items and child menus.
+          * @CSS
+         */
         "childGap": string;
+        /**
+          * Indicator icon. Accepts any Font Awesome icon class.
+         */
         "childIcon": string;
+        /**
+          * Gap between child menu indicator and text.
+          * @CSS
+         */
         "childIndicatorGap": string;
         "childItemBackground": string;
         "childItemBackgroundHover": string;
         "childItemColor": string;
         "childItemColorHover": string;
         "childItemPadding": string;
+        /**
+          * Child menu placement.
+          * @CSS 
+          * @choice 'start', 'end'
+         */
         "childPlacement": string;
-        "childTransitionDuration": string;
-        "childTransitionTimingFunction": string;
         "fontSize": string;
         "itemTransitionDuration": string;
         "itemTransitionTimingFunction": string;
+        /**
+          * Underlines all links.
+         */
         "itemUnderline": boolean;
+        /**
+          * Underlines all links on hover.
+         */
         "itemUnderlineHover": boolean;
+        /**
+          * Renders a WordPress menu.
+          * @helper &lt;?php spx\get::navigation("myMenu") ?>
+         */
         "menu": string;
+        /**
+          * Mobile breakpoint.
+         */
         "mobile": number;
+        /**
+          * Mobile button icon. Accepts any Font Awesome icon class.
+         */
         "mobileIcon": string;
         "mobileItemBackground": string;
         "mobileItemBackgroundHover": string;
@@ -170,73 +521,497 @@ export namespace Components {
         "mobileItemColorHover": string;
         "mobileItemNestedMarginLeft": string;
         "mobileItemPadding": string;
+        /**
+          * Mobile placement.
+          * @CSS 
+          * @choice 'start', 'end'
+         */
         "mobilePlacement": string;
         "parentItemBackground": string;
         "parentItemBackgroundHover": string;
         "parentItemColor": string;
         "parentItemColorHover": string;
+        /**
+          * Gap between parent menu items.
+          * @CSS
+         */
         "parentItemGap": string;
         "parentItemPadding": string;
-        "styling": string;
+        "reload": () => Promise<void>;
+        /**
+          * Renders menu vertically.
+         */
         "vertical": boolean;
+    }
+    interface SpxNotation {
+        /**
+          * Turn animation on or off when animation.
+         */
+        "animation": boolean;
+        /**
+          * Animation duration.
+         */
+        "animationDuration": number;
+        /**
+          * Remove the annotation.
+         */
+        "clear": () => Promise<void>;
+        "color": string;
+        "display": string;
+        /**
+          * Hides the annotation. (non animated)
+         */
+        "hide": () => Promise<void>;
+        /**
+          * Number of iterations.
+         */
+        "iterations": number;
+        /**
+          * Annotate multiline text.
+         */
+        "multiline": boolean;
+        "reload": () => Promise<void>;
+        /**
+          * Draws the annotation.
+         */
+        "show": () => Promise<void>;
+        /**
+          * Stroke width.
+         */
+        "strokeWidth": number;
+        /**
+          * Type of notation.
+          * @choice 'underline', 'box', 'circle', 'highlight', 'strike-through', 'crossed-off', 'bracket'
+         */
+        "type": 'underline' | 'box' | 'circle' | 'highlight' | 'strike-through' | 'crossed-off' | 'bracket';
     }
     interface SpxOffset {
         "display": string;
+        "reload": () => Promise<void>;
+        /**
+          * Target element.
+         */
         "target": string;
     }
-    interface SpxScrollspy {
-        "contentClass": string;
-        "display": string;
-        "navClass": string;
-        "offset": any;
-        "target": string;
-        "urlChange": boolean;
+    interface SpxPageDocs {
+        "bpMobile": number;
+        "contentHeadingFontFamily": string;
+        "navigationBackground": string;
+        "navigationFontFamily": string;
+        "navigationFontSizeMultiplier": number;
+        "navigationGap": string;
+        "navigationLinkColor": string;
+        "navigationLinkColorActive": string;
+        "navigationLinkFontSizeMultiplier": number;
+        "navigationLinkFontWeight": string;
+        "navigationLinkLetterSpacing": string;
+        "navigationLinkLineHeight": string;
+        "navigationLinkTextTransform": string;
+        "navigationTitleColor": string;
+        "navigationTitleFontWeight": string;
+        "navigationTitleLetterSpacing": string;
+        "navigationTitleLineHeight": string;
+        "navigationTitleTextTransform": string;
+        "offsetMarginTop": string;
+        /**
+          * Distance to the edge of the viewport on the x-axis.
+          * @CSS
+         */
+        "spaceX": string;
+        /**
+          * Distance to the edge of the viewport on the y-axis.
+          * @CSS
+         */
+        "spaceY": string;
+        "uniqueId": boolean;
     }
-    interface SpxSectionSingle {
-        "containerMaxWidth": string;
-        "content": boolean;
+    interface SpxPageSingle {
         "contentMarginTop": string;
+        "contentMaxWidth": string;
+        /**
+          * Display date.
+         */
         "date": boolean;
         "dateColor": string;
-        "dateFontSize": string;
+        "dateFontFamily": string;
+        "dateFontSizeMultiplier": number;
+        "dateFontWeight": string;
+        "dateLetterSpacing": string;
+        "dateLineHeight": string;
         "dateMarginTop": string;
+        "dateTextTransform": string;
+        /**
+          * Display image.
+         */
         "image": boolean;
         "imageBorderRadius": string;
-        "imageMaxHeight": string;
+        "imageHeight": string;
         "imageObjectPosition": string;
+        "imageSpaceY": string;
+        /**
+          * Mobile breakpoint.
+         */
         "mobile": number;
+        /**
+          * Gets a WordPress post to render.
+          * @helper &lt;?php spx\get::post() ?>
+         */
         "post": string;
-        "styling": string;
-        "tableOfContents": boolean;
-        "tableOfContentsBackground": string;
-        "tableOfContentsBorder": string;
-        "tableOfContentsBorderRadius": string;
-        "tableOfContentsHeading": string;
-        "tableOfContentsHeadingColor": string;
-        "tableOfContentsHeadingFontSize": string;
-        "tableOfContentsHeadingMarginBottom": string;
-        "tableOfContentsItemColor": string;
-        "tableOfContentsItemColorActive": string;
-        "tableOfContentsItemGap": string;
-        "tableOfContentsMarginTop": string;
-        "tableOfContentsOffset": any;
-        "tableOfContentsPadding": string;
+        /**
+          * Space to edge of the viewport.
+         */
+        "spaceX": string;
         "titleColor": string;
-        "titleFontSize": string;
+        "titleFontFamily": string;
+        "titleFontSizeMultiplier": number;
+        "titleFontWeight": string;
+        "titleLetterSpacing": string;
+        "titleLineHeight": string;
         "titleMarginTop": string;
+        "titleTextTransform": string;
+    }
+    interface SpxScrollspy {
+        /**
+          * Applied class to active content element.
+         */
+        "contentClass": string;
+        "display": string;
+        /**
+          * Applied class to active navigation element.
+         */
+        "navClass": string;
+        /**
+          * Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated..
+         */
+        "offset": any;
+        "reload": () => Promise<void>;
+        /**
+          * Target element. Can take any querySelector value. (id, class, tag etc.)
+         */
+        "target": string;
+        /**
+          * Appends the currently active link to the end of the URL.
+         */
+        "urlChange": boolean;
+    }
+    interface SpxSectionButton {
+        /**
+          * Link href.
+         */
+        "href": string;
+        /**
+          * Reverse text color.
+         */
+        "reverseColor": boolean;
+        /**
+          * Target.
+         */
+        "target": string;
+        "transitionDuration": string;
+        "transitionTimingFunction": string;
+        /**
+          * Button type.
+          * @choice 'primary', 'secondary'
+         */
+        "type": string;
+    }
+    interface SpxSectionCard {
+        "boxShadow": string;
+        "padding": string;
+        "textColor": string;
+        "textFontSizeMultiplier": number;
+        "textFontWeight": string;
+        "textLetterSpacing": string;
+        "textLineHeight": string;
+        "textMarginTop": string;
+        "textMaxWidth": string;
+        "textTransform": string;
+        "titleColor": string;
+        "titleFontSizeMultiplier": number;
+        "titleFontWeight": string;
+        "titleLetterSpacing": string;
+        "titleLineHeight": string;
+        "titleMaxWidth": string;
+        "titleTextTransform": string;
+    }
+    interface SpxSectionFooter {
+        /**
+          * Maximum column size.
+          * @CSS
+         */
+        "columnSizeMax": string;
+        /**
+          * Minimum column size.
+          * @CSS
+         */
+        "columnSizeMin": string;
+        /**
+          * Gap between columns.
+          * @CSS
+         */
+        "gap": string;
+        "imageMaxHeight": string;
+        /**
+          * Space before the footer.
+          * @CSS
+         */
+        "spaceBefore": string;
+        /**
+          * Distance to the edge of the viewport on the y-axis.
+          * @CSS
+         */
+        "spaceY": string;
+        "textMaxWidth": string;
+        /**
+          * Footer theme.
+          * @choice 'dark', 'light'
+         */
+        "theme": string;
+    }
+    interface SpxSectionHeader {
+        "backdropFilter": string;
+        "background": string;
+        /**
+          * Turns on background after scroll.
+         */
+        "backgroundScroll": number;
+        "borderBottom": string;
+        /**
+          * URL the logo links to.
+         */
+        "logoLink": string;
+        "logoMaxHeight": string;
+        /**
+          * Logo src.
+         */
+        "logoSrc": string;
+        /**
+          * Logo mobile src.
+         */
+        "logoSrcMobile": string;
+        /**
+          * Component positioning.
+         */
+        "position": 'fixed' | 'static';
+        /**
+          * Distance to the edge of the viewport on the y-axis.
+          * @CSS
+         */
+        "spaceX": string;
+        "zIndex": number;
+    }
+    interface SpxSectionTextMedia {
+        "background": string;
+        /**
+          * Column size.
+          * @CSS
+         */
+        "columnSize": string;
+        /**
+          * If set, component will transform the header offset to the top-padding value.
+         */
+        "first": boolean;
+        /**
+          * Gap between columns.
+          * @CSS
+         */
+        "gap": string;
+        /**
+          * Gap between images.
+          * @CSS
+         */
+        "imagesGap": string;
+        /**
+          * Layout of the section.
+          * @choice 'horizontal', 'vertical'
+         */
+        "layout": string;
+        /**
+          * Background color for the media column.
+          * @CSS
+         */
+        "mediaBackground": string;
+        /**
+          * Overlaps the background with the media column.
+         */
+        "mediaBackgroundOverlap": boolean;
+        /**
+          * Removes the outer spacing for the media column.
+         */
+        "mediaFull": boolean;
+        /**
+          * Adds padding to the media column on mobile.
+         */
+        "mediaFullMobileFix": boolean;
+        /**
+          * Reverses the column order.
+         */
+        "reverse": boolean;
+        /**
+          * Alignment for the inner text wrapper.
+         */
+        "textAlignInner": 'left' | 'center' | 'right';
+        /**
+          * Alignment for the outer text wrapper.
+         */
+        "textAlignOuter": 'left' | 'center' | 'right';
+        /**
+          * Background color for the text column.
+          * @CSS
+         */
+        "textBackground": string;
+        /**
+          * Overlaps the background with the text column.
+         */
+        "textBackgroundOverlap": boolean;
     }
     interface SpxShare {
         "fontSize": string;
-        "itemBackgroundColor": string;
+        "itemBackground": string;
         "itemBorderRadius": string;
+        /**
+          * Gap between buttons.
+          * @CSS
+         */
         "itemColor": string;
+        /**
+          * Gap between buttons.
+          * @CSS
+         */
         "itemGap": string;
         "itemPadding": string;
         "itemSize": string;
-        "styling": string;
+        "reload": () => Promise<void>;
+        /**
+          * Button href target.
+         */
         "target": string;
+        /**
+          * Button theme.
+          * @choice 'default', 'outline', 'minimal'
+         */
         "theme": string;
+        /**
+          * Render buttons vertically.
+         */
         "vertical": boolean;
+    }
+    interface SpxSlider {
+        /**
+          * Automatically adjusts height of slider.
+         */
+        "autoheight": boolean;
+        /**
+          * Starts navigating to the next slide when page is loaded.
+         */
+        "autoplay": boolean;
+        /**
+          * Autoplay delay.
+         */
+        "autoplayDelay": number;
+        /**
+          * Disable autoplay after interaction with slides.
+         */
+        "autoplayDisableOnInteraction": boolean;
+        /**
+          * Starts navigating to the next slide when page is loaded.
+         */
+        "bpTabs": string;
+        /**
+          * Centers slides in viewport.
+         */
+        "centeredSlides": boolean;
+        /**
+          * Slider direction.
+          * @choice 'horizontal', 'vertical'
+         */
+        "direction": string;
+        /**
+          * Loops all slides infinitely.
+         */
+        "loop": boolean;
+        "maxHeight": string;
+        "navigation": boolean;
+        "navigationBackground": string;
+        "navigationBorderRadius": string;
+        "navigationColor": string;
+        /**
+          * Navigation distance.
+          * @CSS
+         */
+        "navigationDistanceX": string;
+        "navigationPadding": string;
+        /**
+          * Navigation size.
+          * @CSS
+         */
+        "navigationSize": string;
+        /**
+          * Pagination type.
+          * @choice 'bullets', 'tabs'
+         */
+        "pagination": string;
+        "paginationBulletsBackground": string;
+        "paginationBulletsBackgroundActive": string;
+        /**
+          * Make bullets clickable.
+         */
+        "paginationBulletsClickable": boolean;
+        /**
+          * Will only keep a selected amount of bullets visible.
+         */
+        "paginationBulletsDynamic": boolean;
+        /**
+          * Amount of dynamic bullets.
+         */
+        "paginationBulletsDynamicAmount": number;
+        /**
+          * Size of the bullets.
+          * @CSS
+         */
+        "paginationBulletsSize": string;
+        /**
+          * Space between the bullets.
+          * @CSS
+         */
+        "paginationBulletsSpaceBetween": string;
+        "paginationTabsMaxWidth": string;
+        "paginationTransitionDuration": string;
+        "paginationTransitionTimingFunction": string;
+        /**
+          * Filter property for the previous and next elements.
+         */
+        "prevNextFilter": string;
+        "reload": () => Promise<void>;
+        /**
+          * Amount of slides shown at once.
+         */
+        "slidesPerView": number;
+        /**
+          * Space between the slides.
+         */
+        "spaceBetween": number;
+        /**
+          * Sliding speed.
+         */
+        "speed": number;
+    }
+    interface SpxSlideshow {
+        /**
+          * Duration of slideshow to complete one cycle.
+          * @CSS
+         */
+        "duration": string;
+        /**
+          * Gap between inner elements.
+          * @CSS
+         */
+        "gap": string;
+        /**
+          * Max width of inner elements.
+          * @CSS
+         */
+        "maxWidth": string;
     }
     interface SpxSnackbar {
         "animationDelay": string;
@@ -244,36 +1019,95 @@ export namespace Components {
         "background": string;
         "border": string;
         "borderRadius": string;
+        /**
+          * Adds option to close snackbar after its creation.
+         */
         "closeable": boolean;
         "color": string;
+        /**
+          * Distance to the edge of the viewport on the x-axis.
+          * @CSS
+         */
         "distanceX": string;
+        /**
+          * Distance to the edge of the viewport on the y-axis.
+          * @CSS
+         */
         "distanceY": string;
+        /**
+          * Makes snackbar not removable.
+         */
         "fixed": boolean;
         "fontSize": string;
         "padding": string;
+        /**
+          * Component position in page.
+          * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
+         */
         "position": string;
+        "reload": () => Promise<void>;
+        /**
+          * Reverses the close button if "closable" prop is true.
+         */
         "reverse": boolean;
+        /**
+          * Defined component size.
+          * @choice 'sm', 'md', 'lg'
+         */
         "size": string;
-        "styling": string;
+        /**
+          * Text inside snackbar.
+         */
         "text": string;
+        "zIndex": number;
     }
     interface SpxSnackbarToggle {
     }
+    interface SpxText {
+        "contentFontSizeMultiplier": number;
+        "headingColor": string;
+        "headingFontFamily": string;
+        "headingFontWeight": string;
+        "headingLetterSpacing": string;
+        "headingLineHeight": string;
+        "headingTextTransform": string;
+        "maxWidth": string;
+        "textColor": string;
+        "textFontFamily": string;
+        "textFontWeight": string;
+        "textLetterSpacing": string;
+        "textLineHeight": string;
+        "textTextTransform": string;
+    }
     interface SpxTypewriter {
+        /**
+          * Automatically starts writing.
+         */
         "autoStart": boolean;
+        /**
+          * Writing delay in ms. Also accepts 'natural' value.
+         */
         "delay": any;
+        /**
+          * Delete delay in ms. Also accepts 'natural' value.
+         */
         "deleteSpeed": any;
         "display": string;
-        "inner": boolean;
+        /**
+          * Loops the animation.
+         */
         "loop": boolean;
         /**
-          * External method to start animation.
+          * Start animation.
          */
         "start": () => Promise<void>;
         /**
-          * External method to stop animation.
+          * Stop animation.
          */
         "stop": () => Promise<void>;
+        /**
+          * Text that should be written.
+         */
         "text": string;
     }
 }
@@ -295,6 +1129,18 @@ declare global {
     var HTMLSpxClassToggleElement: {
         prototype: HTMLSpxClassToggleElement;
         new (): HTMLSpxClassToggleElement;
+    };
+    interface HTMLSpxCodeElement extends Components.SpxCode, HTMLStencilElement {
+    }
+    var HTMLSpxCodeElement: {
+        prototype: HTMLSpxCodeElement;
+        new (): HTMLSpxCodeElement;
+    };
+    interface HTMLSpxContainerElement extends Components.SpxContainer, HTMLStencilElement {
+    }
+    var HTMLSpxContainerElement: {
+        prototype: HTMLSpxContainerElement;
+        new (): HTMLSpxContainerElement;
     };
     interface HTMLSpxEditElement extends Components.SpxEdit, HTMLStencilElement {
     }
@@ -362,11 +1208,29 @@ declare global {
         prototype: HTMLSpxNavigationElement;
         new (): HTMLSpxNavigationElement;
     };
+    interface HTMLSpxNotationElement extends Components.SpxNotation, HTMLStencilElement {
+    }
+    var HTMLSpxNotationElement: {
+        prototype: HTMLSpxNotationElement;
+        new (): HTMLSpxNotationElement;
+    };
     interface HTMLSpxOffsetElement extends Components.SpxOffset, HTMLStencilElement {
     }
     var HTMLSpxOffsetElement: {
         prototype: HTMLSpxOffsetElement;
         new (): HTMLSpxOffsetElement;
+    };
+    interface HTMLSpxPageDocsElement extends Components.SpxPageDocs, HTMLStencilElement {
+    }
+    var HTMLSpxPageDocsElement: {
+        prototype: HTMLSpxPageDocsElement;
+        new (): HTMLSpxPageDocsElement;
+    };
+    interface HTMLSpxPageSingleElement extends Components.SpxPageSingle, HTMLStencilElement {
+    }
+    var HTMLSpxPageSingleElement: {
+        prototype: HTMLSpxPageSingleElement;
+        new (): HTMLSpxPageSingleElement;
     };
     interface HTMLSpxScrollspyElement extends Components.SpxScrollspy, HTMLStencilElement {
     }
@@ -374,17 +1238,53 @@ declare global {
         prototype: HTMLSpxScrollspyElement;
         new (): HTMLSpxScrollspyElement;
     };
-    interface HTMLSpxSectionSingleElement extends Components.SpxSectionSingle, HTMLStencilElement {
+    interface HTMLSpxSectionButtonElement extends Components.SpxSectionButton, HTMLStencilElement {
     }
-    var HTMLSpxSectionSingleElement: {
-        prototype: HTMLSpxSectionSingleElement;
-        new (): HTMLSpxSectionSingleElement;
+    var HTMLSpxSectionButtonElement: {
+        prototype: HTMLSpxSectionButtonElement;
+        new (): HTMLSpxSectionButtonElement;
+    };
+    interface HTMLSpxSectionCardElement extends Components.SpxSectionCard, HTMLStencilElement {
+    }
+    var HTMLSpxSectionCardElement: {
+        prototype: HTMLSpxSectionCardElement;
+        new (): HTMLSpxSectionCardElement;
+    };
+    interface HTMLSpxSectionFooterElement extends Components.SpxSectionFooter, HTMLStencilElement {
+    }
+    var HTMLSpxSectionFooterElement: {
+        prototype: HTMLSpxSectionFooterElement;
+        new (): HTMLSpxSectionFooterElement;
+    };
+    interface HTMLSpxSectionHeaderElement extends Components.SpxSectionHeader, HTMLStencilElement {
+    }
+    var HTMLSpxSectionHeaderElement: {
+        prototype: HTMLSpxSectionHeaderElement;
+        new (): HTMLSpxSectionHeaderElement;
+    };
+    interface HTMLSpxSectionTextMediaElement extends Components.SpxSectionTextMedia, HTMLStencilElement {
+    }
+    var HTMLSpxSectionTextMediaElement: {
+        prototype: HTMLSpxSectionTextMediaElement;
+        new (): HTMLSpxSectionTextMediaElement;
     };
     interface HTMLSpxShareElement extends Components.SpxShare, HTMLStencilElement {
     }
     var HTMLSpxShareElement: {
         prototype: HTMLSpxShareElement;
         new (): HTMLSpxShareElement;
+    };
+    interface HTMLSpxSliderElement extends Components.SpxSlider, HTMLStencilElement {
+    }
+    var HTMLSpxSliderElement: {
+        prototype: HTMLSpxSliderElement;
+        new (): HTMLSpxSliderElement;
+    };
+    interface HTMLSpxSlideshowElement extends Components.SpxSlideshow, HTMLStencilElement {
+    }
+    var HTMLSpxSlideshowElement: {
+        prototype: HTMLSpxSlideshowElement;
+        new (): HTMLSpxSlideshowElement;
     };
     interface HTMLSpxSnackbarElement extends Components.SpxSnackbar, HTMLStencilElement {
     }
@@ -398,6 +1298,12 @@ declare global {
         prototype: HTMLSpxSnackbarToggleElement;
         new (): HTMLSpxSnackbarToggleElement;
     };
+    interface HTMLSpxTextElement extends Components.SpxText, HTMLStencilElement {
+    }
+    var HTMLSpxTextElement: {
+        prototype: HTMLSpxTextElement;
+        new (): HTMLSpxTextElement;
+    };
     interface HTMLSpxTypewriterElement extends Components.SpxTypewriter, HTMLStencilElement {
     }
     var HTMLSpxTypewriterElement: {
@@ -408,6 +1314,8 @@ declare global {
         "spx-accordion": HTMLSpxAccordionElement;
         "spx-animate": HTMLSpxAnimateElement;
         "spx-class-toggle": HTMLSpxClassToggleElement;
+        "spx-code": HTMLSpxCodeElement;
+        "spx-container": HTMLSpxContainerElement;
         "spx-edit": HTMLSpxEditElement;
         "spx-edit-button": HTMLSpxEditButtonElement;
         "spx-group": HTMLSpxGroupElement;
@@ -419,56 +1327,261 @@ declare global {
         "spx-masonry": HTMLSpxMasonryElement;
         "spx-mockup": HTMLSpxMockupElement;
         "spx-navigation": HTMLSpxNavigationElement;
+        "spx-notation": HTMLSpxNotationElement;
         "spx-offset": HTMLSpxOffsetElement;
+        "spx-page-docs": HTMLSpxPageDocsElement;
+        "spx-page-single": HTMLSpxPageSingleElement;
         "spx-scrollspy": HTMLSpxScrollspyElement;
-        "spx-section-single": HTMLSpxSectionSingleElement;
+        "spx-section-button": HTMLSpxSectionButtonElement;
+        "spx-section-card": HTMLSpxSectionCardElement;
+        "spx-section-footer": HTMLSpxSectionFooterElement;
+        "spx-section-header": HTMLSpxSectionHeaderElement;
+        "spx-section-text-media": HTMLSpxSectionTextMediaElement;
         "spx-share": HTMLSpxShareElement;
+        "spx-slider": HTMLSpxSliderElement;
+        "spx-slideshow": HTMLSpxSlideshowElement;
         "spx-snackbar": HTMLSpxSnackbarElement;
         "spx-snackbar-toggle": HTMLSpxSnackbarToggleElement;
+        "spx-text": HTMLSpxTextElement;
         "spx-typewriter": HTMLSpxTypewriterElement;
     }
 }
 declare namespace LocalJSX {
     interface SpxAccordion {
         "contentColor"?: string;
-        "contentCustom"?: boolean;
+        /**
+          * Content text.
+         */
         "contentText"?: string;
+        /**
+          * Content text tag.
+         */
         "contentTextTag"?: string;
         "fontSize"?: string;
+        /**
+          * Space between header and content.
+          * @CSS
+         */
         "gap"?: string;
         "headerColor"?: string;
-        "headerCustom"?: boolean;
+        /**
+          * Gap between header text and icon.
+          * @CSS
+         */
         "headerGap"?: string;
+        /**
+          * Header text.
+         */
         "headerText"?: string;
+        /**
+          * Header text tag.
+         */
         "headerTextTag"?: string;
+        /**
+          * Icon class. Accepts any Font Awesome icon class.
+         */
         "indicatorIcon"?: string;
-        "styling"?: string;
+        /**
+          * Indicator icon transform.
+         */
+        "indicatorIconTransform"?: string;
     }
     interface SpxAnimate {
+        /**
+          * Delay before animation starts.
+         */
         "delay"?: number;
         "display"?: string;
+        /**
+          * Animation duration.
+         */
         "duration"?: number;
+        /**
+          * Ease being used. Accepts all common GSAP options.
+         */
         "ease"?: string;
+        /**
+          * Determines if animation should only play once. (if viewport is true)
+         */
         "once"?: boolean;
+        /**
+          * Opacity level the animation starts from.
+         */
         "opacity"?: number;
+        /**
+          * Amount of time elements should be staggered by.
+         */
         "stagger"?: number;
+        /**
+          * The target element that should be animated inside the component.
+         */
         "target"?: string;
+        /**
+          * Starts animation when target is in the viewport.
+         */
         "viewport"?: boolean;
+        /**
+          * Adjust the root margin of the animation start.
+         */
         "viewportMarginBottom"?: string;
+        /**
+          * Adjust the root margin of the animation start.
+         */
         "viewportMarginLeft"?: string;
+        /**
+          * Adjust the root margin of the animation start.
+         */
         "viewportMarginRight"?: string;
+        /**
+          * Adjust the root margin of the animation start.
+         */
         "viewportMarginTop"?: string;
+        /**
+          * X position the animation starts from.
+         */
         "x"?: number;
+        /**
+          * Y position the animation starts from.
+         */
         "y"?: number;
     }
     interface SpxClassToggle {
         "display"?: string;
+        /**
+          * Specify a local storage item, so the toggle state will be remembered when the user visits the site again.
+         */
         "local"?: string;
+        /**
+          * Target element. Can take any querySelector value. (id, class, tag etc.) If none is set it will default to the first element inside.
+         */
         "target"?: string;
+        /**
+          * List of classes that should be toggled.
+         */
         "toggle"?: string;
+    }
+    interface SpxCode {
+        "borderRadius"?: string;
+        "padding"?: string;
+        /**
+          * Colour theme.
+          * @choice 'default', 'dracula'
+         */
+        "theme"?: string;
+        /**
+          * Determines the programming language.
+         */
+        "type"?: string;
+    }
+    interface SpxContainer {
+        /**
+          * Mobile breakpoint width.
+         */
+        "bpMobile"?: number;
+        "buttonBorderRadius"?: string;
+        "buttonFontSizeMultiplier"?: number;
+        "buttonFontWeight"?: string;
+        "buttonMarginTop"?: string;
+        "buttonMarginX"?: string;
+        /**
+          * Reverse color of buttons.
+          * @choice 'all', 'primary', 'secondary'
+         */
+        "buttonReverseColor"?: string;
+        "buttonTextTransform"?: string;
+        /**
+          * Primary color which will be used for sections and pages.
+          * @choice 'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'
+         */
+        "colorPrimary"?: string;
+        /**
+          * Secondary color which will be used for sections and pages.
+          * @choice 'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'
+         */
+        "colorSecondary"?: string;
+        /**
+          * Primary font-family.
+         */
+        "fontFamilyPrimary"?: string;
+        /**
+          * Secondary font-family.
+         */
+        "fontFamilySecondary"?: string;
+        "imageMaxWidth"?: string;
+        /**
+          * Section max-width on mobile.
+         */
+        "maxWidth"?: string;
+        /**
+          * Offsets first section to the height of the header.
+         */
+        "offsetHeader"?: boolean;
+        "preTitleBackground"?: string;
+        "preTitleBorderRadius"?: string;
+        "preTitleColor"?: string;
+        "preTitleFontSizeMultiplier"?: number;
+        "preTitleFontWeight"?: string;
+        "preTitleLetterSpacing"?: string;
+        "preTitleLineHeight"?: string;
+        "preTitleMarginBottom"?: string;
+        "preTitlePadding"?: string;
+        "preTitleTextTransform"?: string;
+        /**
+          * Space between content and outer edge of the viewport.
+          * @CSS
+         */
+        "spaceX"?: string;
+        /**
+          * Space between content and outer edge of the viewport.
+          * @CSS
+         */
+        "spaceXSm"?: string;
+        /**
+          * Space between the sections.
+          * @CSS
+         */
+        "spaceY"?: string;
+        /**
+          * Space base for space-scale.
+          * @CSS
+         */
+        "spacing"?: string;
+        /**
+          * Margin between tab items.
+          * @CSS
+         */
+        "tabsMarginBetween"?: string;
+        /**
+          * Top margin for first tab item.
+          * @CSS
+         */
+        "tabsMarginFirst"?: string;
+        /**
+          * Tabs opacity.
+          * @CSS
+         */
+        "tabsOpacity"?: number;
+        "textColor"?: string;
+        "textFontSizeMultiplier"?: number;
+        "textFontWeight"?: string;
+        "textLetterSpacing"?: string;
+        "textLineHeight"?: string;
+        "textMarginTop"?: string;
+        "textMaxWidth"?: string;
+        "textTransform"?: string;
+        "titleColor"?: string;
+        "titleFontSizeMultiplier"?: number;
+        "titleFontWeight"?: number;
+        "titleLetterSpacing"?: string;
+        "titleLineHeight"?: string;
+        "titleMaxWidth"?: string;
+        "titleTextTransform"?: string;
     }
     interface SpxEdit {
         "display"?: string;
+        /**
+          * Watch editable state.
+         */
         "editable"?: boolean;
         "name"?: string;
         "outline"?: string;
@@ -481,44 +1594,113 @@ declare namespace LocalJSX {
     }
     interface SpxEditButton {
         "background"?: string;
+        /**
+          * Discard button background.
+          * @CSS
+         */
         "backgroundDiscard"?: string;
         "border"?: string;
         "borderRadius"?: string;
         "color"?: string;
+        /**
+          * Discard button color.
+          * @CSS
+         */
         "colorDiscard"?: string;
+        /**
+          * Distance to the edge of the viewport on the x-axis.
+          * @CSS
+         */
         "distanceX"?: string;
+        /**
+          * Distance to the edge of the viewport on the y-axis.
+          * @CSS
+         */
         "distanceY"?: string;
+        /**
+          * Corresponding ID for editable fields. This property is needed when multiple edit-button components are used on the page. Simply apply a "data-spx-edit-id" attribute with the same value to editable elements.
+         */
         "editId"?: string;
+        "fontFamily"?: string;
         "fontSize"?: string;
+        /**
+          * Gap between the buttons.
+          * @CSS
+         */
         "gap"?: string;
+        /**
+          * Fires after pressing the discard button.
+         */
         "onSpxEditButtonDiscard"?: (event: CustomEvent<any>) => void;
+        /**
+          * Fires after pressing the save button.
+         */
         "onSpxEditButtonSave"?: (event: CustomEvent<any>) => void;
         "padding"?: string;
+        /**
+          * Component position in page.
+          * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
+         */
         "position"?: string;
-        "styling"?: string;
         "test"?: boolean;
+        /**
+          * Discard button text.
+         */
         "textDiscard"?: string;
+        /**
+          * Edit button text.
+         */
         "textEdit"?: string;
+        /**
+          * Save button text.
+         */
         "textSave"?: string;
+        /**
+          * Success message.
+         */
         "textSuccess"?: string;
+        /**
+          * Type of data being sent.
+          * @choice 'option', 'acf'
+         */
         "type"?: string;
+        "zIndex"?: number;
     }
     interface SpxGroup {
         "display"?: string;
+        /**
+          * Specifies a target element.
+         */
+        "target"?: string;
     }
     interface SpxIcon {
         "icon"?: string;
         "type"?: string;
     }
     interface SpxIframe {
+        /**
+          * Screen size of the site shown inside the iframe.
+         */
         "size"?: string;
+        /**
+          * Source for the iframe.
+         */
         "src"?: string;
     }
     interface SpxImageComparison {
         "color"?: string;
         "iconColor"?: string;
+        /**
+          * Image URL of the before image.
+         */
         "srcAfter"?: string;
+        /**
+          * Image URL of the after image.
+         */
         "srcBefore"?: string;
+        /**
+          * Opening state in pixels.
+         */
         "start"?: number;
     }
     interface SpxLightbox {
@@ -530,57 +1712,143 @@ declare namespace LocalJSX {
         "speed"?: string;
     }
     interface SpxMasonry {
+        /**
+          * Columns for different screen sizes. Example value: 1000:3;600:2 - this will switch to a three column layout when the screen size is under 1000px and to a two column layout under 600px.
+         */
         "bpColumns"?: string;
-        "bpColumnsObject"?: object;
+        /**
+          * Number of columns.
+         */
         "columns"?: number;
+        /**
+          * Gap between images.
+          * @CSS
+         */
         "gap"?: string;
+        /**
+          * WordPress media size when using the helper function..
+         */
         "imageSize"?: string;
+        /**
+          * Gets images from an ACF or Metabox field.
+          * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+         */
         "images"?: string;
+        /**
+          * Gets images from an ACF or Metabox field.
+          * @choice 'acf', 'mb
+         */
         "imagesSrc"?: string;
-        "mobileFirst"?: boolean;
         "onSpxMasonryDidLoad"?: (event: CustomEvent<any>) => void;
-        "trueOrder"?: boolean;
-        "useContainerForBreakpoints"?: boolean;
-        "useOwnImageLoader"?: boolean;
-        "waitForImages"?: boolean;
     }
     interface SpxMockup {
-        "browserBackground"?: string;
-        "browserUrlBarBackground"?: string;
-        "browserUrlBarBorder"?: string;
-        "color"?: string;
+        /**
+          * Samsung S8 color.
+          * @choice 'black', 'blue'
+         */
         "colorGalaxyS8"?: string;
+        /**
+          * Google Pixel color.
+          * @choice 'silver', 'black', 'blue'
+         */
         "colorGooglePixel"?: string;
+        /**
+          * iPad Pro color.
+          * @choice 'silver', 'gold', 'rosegold', 'spacegray'
+         */
         "colorIpadPro"?: string;
+        /**
+          * iPhone 8 color.
+          * @choice 'silver', 'gold', 'spacegray'
+         */
         "colorIphone8"?: string;
+        /**
+          * MacBook color.
+          * @choice 'silver', 'gold', 'rosegold', 'spacegray'
+         */
         "colorMacbook"?: string;
+        /**
+          * MacBook Pro color.
+          * @choice 'silver', 'spacegray',
+         */
         "colorMacbookPro"?: string;
         "display"?: string;
         "imagePosition"?: string;
+        /**
+          * Image src if no inner slot is used.
+         */
         "src"?: string;
+        /**
+          * Device type.
+          * @choice 'iphone-x', 'iphone-8', 'google-pixel-2-xl', 'google-pixel', 'galaxy-s8', 'ipad-pro', 'surface-pro', 'surface-book', 'macbook', 'macbook-pro', 'surface-studio', 'imac-pro', 'apple-watch'
+         */
         "type"?: string;
     }
     interface SpxNavigation {
         "childBorder"?: string;
+        /**
+          * Child menu border-radius.
+          * @CSS
+         */
+        "childBorderRadius"?: string;
+        /**
+          * Child menu box-shadow.
+          * @CSS
+         */
+        "childBoxShadow"?: string;
+        /**
+          * Gap between nested child menus.
+          * @CSS
+         */
         "childChildGap"?: string;
+        /**
+          * Gap between top level menu items and child menus.
+          * @CSS
+         */
         "childGap"?: string;
+        /**
+          * Indicator icon. Accepts any Font Awesome icon class.
+         */
         "childIcon"?: string;
+        /**
+          * Gap between child menu indicator and text.
+          * @CSS
+         */
         "childIndicatorGap"?: string;
         "childItemBackground"?: string;
         "childItemBackgroundHover"?: string;
         "childItemColor"?: string;
         "childItemColorHover"?: string;
         "childItemPadding"?: string;
+        /**
+          * Child menu placement.
+          * @CSS 
+          * @choice 'start', 'end'
+         */
         "childPlacement"?: string;
-        "childTransitionDuration"?: string;
-        "childTransitionTimingFunction"?: string;
         "fontSize"?: string;
         "itemTransitionDuration"?: string;
         "itemTransitionTimingFunction"?: string;
+        /**
+          * Underlines all links.
+         */
         "itemUnderline"?: boolean;
+        /**
+          * Underlines all links on hover.
+         */
         "itemUnderlineHover"?: boolean;
+        /**
+          * Renders a WordPress menu.
+          * @helper &lt;?php spx\get::navigation("myMenu") ?>
+         */
         "menu"?: string;
+        /**
+          * Mobile breakpoint.
+         */
         "mobile"?: number;
+        /**
+          * Mobile button icon. Accepts any Font Awesome icon class.
+         */
         "mobileIcon"?: string;
         "mobileItemBackground"?: string;
         "mobileItemBackgroundHover"?: string;
@@ -588,76 +1856,484 @@ declare namespace LocalJSX {
         "mobileItemColorHover"?: string;
         "mobileItemNestedMarginLeft"?: string;
         "mobileItemPadding"?: string;
+        /**
+          * Mobile placement.
+          * @CSS 
+          * @choice 'start', 'end'
+         */
         "mobilePlacement"?: string;
+        /**
+          * Fires when component has loaded.
+         */
         "onSpxNavigationDidLoad"?: (event: CustomEvent<any>) => void;
         "parentItemBackground"?: string;
         "parentItemBackgroundHover"?: string;
         "parentItemColor"?: string;
         "parentItemColorHover"?: string;
+        /**
+          * Gap between parent menu items.
+          * @CSS
+         */
         "parentItemGap"?: string;
         "parentItemPadding"?: string;
-        "styling"?: string;
+        /**
+          * Renders menu vertically.
+         */
         "vertical"?: boolean;
+    }
+    interface SpxNotation {
+        /**
+          * Turn animation on or off when animation.
+         */
+        "animation"?: boolean;
+        /**
+          * Animation duration.
+         */
+        "animationDuration"?: number;
+        "color"?: string;
+        "display"?: string;
+        /**
+          * Number of iterations.
+         */
+        "iterations"?: number;
+        /**
+          * Annotate multiline text.
+         */
+        "multiline"?: boolean;
+        /**
+          * Stroke width.
+         */
+        "strokeWidth"?: number;
+        /**
+          * Type of notation.
+          * @choice 'underline', 'box', 'circle', 'highlight', 'strike-through', 'crossed-off', 'bracket'
+         */
+        "type"?: 'underline' | 'box' | 'circle' | 'highlight' | 'strike-through' | 'crossed-off' | 'bracket';
     }
     interface SpxOffset {
         "display"?: string;
+        /**
+          * Target element.
+         */
         "target"?: string;
     }
-    interface SpxScrollspy {
-        "contentClass"?: string;
-        "display"?: string;
-        "navClass"?: string;
-        "offset"?: any;
-        "onSpxScrollspyDidLoad"?: (event: CustomEvent<any>) => void;
-        "target"?: string;
-        "urlChange"?: boolean;
+    interface SpxPageDocs {
+        "bpMobile"?: number;
+        "contentHeadingFontFamily"?: string;
+        "navigationBackground"?: string;
+        "navigationFontFamily"?: string;
+        "navigationFontSizeMultiplier"?: number;
+        "navigationGap"?: string;
+        "navigationLinkColor"?: string;
+        "navigationLinkColorActive"?: string;
+        "navigationLinkFontSizeMultiplier"?: number;
+        "navigationLinkFontWeight"?: string;
+        "navigationLinkLetterSpacing"?: string;
+        "navigationLinkLineHeight"?: string;
+        "navigationLinkTextTransform"?: string;
+        "navigationTitleColor"?: string;
+        "navigationTitleFontWeight"?: string;
+        "navigationTitleLetterSpacing"?: string;
+        "navigationTitleLineHeight"?: string;
+        "navigationTitleTextTransform"?: string;
+        "offsetMarginTop"?: string;
+        /**
+          * Distance to the edge of the viewport on the x-axis.
+          * @CSS
+         */
+        "spaceX"?: string;
+        /**
+          * Distance to the edge of the viewport on the y-axis.
+          * @CSS
+         */
+        "spaceY"?: string;
+        "uniqueId"?: boolean;
     }
-    interface SpxSectionSingle {
-        "containerMaxWidth"?: string;
-        "content"?: boolean;
+    interface SpxPageSingle {
         "contentMarginTop"?: string;
+        "contentMaxWidth"?: string;
+        /**
+          * Display date.
+         */
         "date"?: boolean;
         "dateColor"?: string;
-        "dateFontSize"?: string;
+        "dateFontFamily"?: string;
+        "dateFontSizeMultiplier"?: number;
+        "dateFontWeight"?: string;
+        "dateLetterSpacing"?: string;
+        "dateLineHeight"?: string;
         "dateMarginTop"?: string;
+        "dateTextTransform"?: string;
+        /**
+          * Display image.
+         */
         "image"?: boolean;
         "imageBorderRadius"?: string;
-        "imageMaxHeight"?: string;
+        "imageHeight"?: string;
         "imageObjectPosition"?: string;
+        "imageSpaceY"?: string;
+        /**
+          * Mobile breakpoint.
+         */
         "mobile"?: number;
-        "onSpxSectionSingleDidLoad"?: (event: CustomEvent<any>) => void;
+        /**
+          * Gets a WordPress post to render.
+          * @helper &lt;?php spx\get::post() ?>
+         */
         "post"?: string;
-        "styling"?: string;
-        "tableOfContents"?: boolean;
-        "tableOfContentsBackground"?: string;
-        "tableOfContentsBorder"?: string;
-        "tableOfContentsBorderRadius"?: string;
-        "tableOfContentsHeading"?: string;
-        "tableOfContentsHeadingColor"?: string;
-        "tableOfContentsHeadingFontSize"?: string;
-        "tableOfContentsHeadingMarginBottom"?: string;
-        "tableOfContentsItemColor"?: string;
-        "tableOfContentsItemColorActive"?: string;
-        "tableOfContentsItemGap"?: string;
-        "tableOfContentsMarginTop"?: string;
-        "tableOfContentsOffset"?: any;
-        "tableOfContentsPadding"?: string;
+        /**
+          * Space to edge of the viewport.
+         */
+        "spaceX"?: string;
         "titleColor"?: string;
-        "titleFontSize"?: string;
+        "titleFontFamily"?: string;
+        "titleFontSizeMultiplier"?: number;
+        "titleFontWeight"?: string;
+        "titleLetterSpacing"?: string;
+        "titleLineHeight"?: string;
         "titleMarginTop"?: string;
+        "titleTextTransform"?: string;
+    }
+    interface SpxScrollspy {
+        /**
+          * Applied class to active content element.
+         */
+        "contentClass"?: string;
+        "display"?: string;
+        /**
+          * Applied class to active navigation element.
+         */
+        "navClass"?: string;
+        /**
+          * Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated..
+         */
+        "offset"?: any;
+        "onSpxScrollspyDidLoad"?: (event: CustomEvent<any>) => void;
+        /**
+          * Target element. Can take any querySelector value. (id, class, tag etc.)
+         */
+        "target"?: string;
+        /**
+          * Appends the currently active link to the end of the URL.
+         */
+        "urlChange"?: boolean;
+    }
+    interface SpxSectionButton {
+        /**
+          * Link href.
+         */
+        "href"?: string;
+        /**
+          * Reverse text color.
+         */
+        "reverseColor"?: boolean;
+        /**
+          * Target.
+         */
+        "target"?: string;
+        "transitionDuration"?: string;
+        "transitionTimingFunction"?: string;
+        /**
+          * Button type.
+          * @choice 'primary', 'secondary'
+         */
+        "type"?: string;
+    }
+    interface SpxSectionCard {
+        "boxShadow"?: string;
+        "padding"?: string;
+        "textColor"?: string;
+        "textFontSizeMultiplier"?: number;
+        "textFontWeight"?: string;
+        "textLetterSpacing"?: string;
+        "textLineHeight"?: string;
+        "textMarginTop"?: string;
+        "textMaxWidth"?: string;
+        "textTransform"?: string;
+        "titleColor"?: string;
+        "titleFontSizeMultiplier"?: number;
+        "titleFontWeight"?: string;
+        "titleLetterSpacing"?: string;
+        "titleLineHeight"?: string;
+        "titleMaxWidth"?: string;
+        "titleTextTransform"?: string;
+    }
+    interface SpxSectionFooter {
+        /**
+          * Maximum column size.
+          * @CSS
+         */
+        "columnSizeMax"?: string;
+        /**
+          * Minimum column size.
+          * @CSS
+         */
+        "columnSizeMin"?: string;
+        /**
+          * Gap between columns.
+          * @CSS
+         */
+        "gap"?: string;
+        "imageMaxHeight"?: string;
+        /**
+          * Space before the footer.
+          * @CSS
+         */
+        "spaceBefore"?: string;
+        /**
+          * Distance to the edge of the viewport on the y-axis.
+          * @CSS
+         */
+        "spaceY"?: string;
+        "textMaxWidth"?: string;
+        /**
+          * Footer theme.
+          * @choice 'dark', 'light'
+         */
+        "theme"?: string;
+    }
+    interface SpxSectionHeader {
+        "backdropFilter"?: string;
+        "background"?: string;
+        /**
+          * Turns on background after scroll.
+         */
+        "backgroundScroll"?: number;
+        "borderBottom"?: string;
+        /**
+          * URL the logo links to.
+         */
+        "logoLink"?: string;
+        "logoMaxHeight"?: string;
+        /**
+          * Logo src.
+         */
+        "logoSrc"?: string;
+        /**
+          * Logo mobile src.
+         */
+        "logoSrcMobile"?: string;
+        /**
+          * Component positioning.
+         */
+        "position"?: 'fixed' | 'static';
+        /**
+          * Distance to the edge of the viewport on the y-axis.
+          * @CSS
+         */
+        "spaceX"?: string;
+        "zIndex"?: number;
+    }
+    interface SpxSectionTextMedia {
+        "background"?: string;
+        /**
+          * Column size.
+          * @CSS
+         */
+        "columnSize"?: string;
+        /**
+          * If set, component will transform the header offset to the top-padding value.
+         */
+        "first"?: boolean;
+        /**
+          * Gap between columns.
+          * @CSS
+         */
+        "gap"?: string;
+        /**
+          * Gap between images.
+          * @CSS
+         */
+        "imagesGap"?: string;
+        /**
+          * Layout of the section.
+          * @choice 'horizontal', 'vertical'
+         */
+        "layout"?: string;
+        /**
+          * Background color for the media column.
+          * @CSS
+         */
+        "mediaBackground"?: string;
+        /**
+          * Overlaps the background with the media column.
+         */
+        "mediaBackgroundOverlap"?: boolean;
+        /**
+          * Removes the outer spacing for the media column.
+         */
+        "mediaFull"?: boolean;
+        /**
+          * Adds padding to the media column on mobile.
+         */
+        "mediaFullMobileFix"?: boolean;
+        /**
+          * Reverses the column order.
+         */
+        "reverse"?: boolean;
+        /**
+          * Alignment for the inner text wrapper.
+         */
+        "textAlignInner"?: 'left' | 'center' | 'right';
+        /**
+          * Alignment for the outer text wrapper.
+         */
+        "textAlignOuter"?: 'left' | 'center' | 'right';
+        /**
+          * Background color for the text column.
+          * @CSS
+         */
+        "textBackground"?: string;
+        /**
+          * Overlaps the background with the text column.
+         */
+        "textBackgroundOverlap"?: boolean;
     }
     interface SpxShare {
         "fontSize"?: string;
-        "itemBackgroundColor"?: string;
+        "itemBackground"?: string;
         "itemBorderRadius"?: string;
+        /**
+          * Gap between buttons.
+          * @CSS
+         */
         "itemColor"?: string;
+        /**
+          * Gap between buttons.
+          * @CSS
+         */
         "itemGap"?: string;
         "itemPadding"?: string;
         "itemSize"?: string;
-        "styling"?: string;
+        /**
+          * Button href target.
+         */
         "target"?: string;
+        /**
+          * Button theme.
+          * @choice 'default', 'outline', 'minimal'
+         */
         "theme"?: string;
+        /**
+          * Render buttons vertically.
+         */
         "vertical"?: boolean;
+    }
+    interface SpxSlider {
+        /**
+          * Automatically adjusts height of slider.
+         */
+        "autoheight"?: boolean;
+        /**
+          * Starts navigating to the next slide when page is loaded.
+         */
+        "autoplay"?: boolean;
+        /**
+          * Autoplay delay.
+         */
+        "autoplayDelay"?: number;
+        /**
+          * Disable autoplay after interaction with slides.
+         */
+        "autoplayDisableOnInteraction"?: boolean;
+        /**
+          * Starts navigating to the next slide when page is loaded.
+         */
+        "bpTabs"?: string;
+        /**
+          * Centers slides in viewport.
+         */
+        "centeredSlides"?: boolean;
+        /**
+          * Slider direction.
+          * @choice 'horizontal', 'vertical'
+         */
+        "direction"?: string;
+        /**
+          * Loops all slides infinitely.
+         */
+        "loop"?: boolean;
+        "maxHeight"?: string;
+        "navigation"?: boolean;
+        "navigationBackground"?: string;
+        "navigationBorderRadius"?: string;
+        "navigationColor"?: string;
+        /**
+          * Navigation distance.
+          * @CSS
+         */
+        "navigationDistanceX"?: string;
+        "navigationPadding"?: string;
+        /**
+          * Navigation size.
+          * @CSS
+         */
+        "navigationSize"?: string;
+        /**
+          * Pagination type.
+          * @choice 'bullets', 'tabs'
+         */
+        "pagination"?: string;
+        "paginationBulletsBackground"?: string;
+        "paginationBulletsBackgroundActive"?: string;
+        /**
+          * Make bullets clickable.
+         */
+        "paginationBulletsClickable"?: boolean;
+        /**
+          * Will only keep a selected amount of bullets visible.
+         */
+        "paginationBulletsDynamic"?: boolean;
+        /**
+          * Amount of dynamic bullets.
+         */
+        "paginationBulletsDynamicAmount"?: number;
+        /**
+          * Size of the bullets.
+          * @CSS
+         */
+        "paginationBulletsSize"?: string;
+        /**
+          * Space between the bullets.
+          * @CSS
+         */
+        "paginationBulletsSpaceBetween"?: string;
+        "paginationTabsMaxWidth"?: string;
+        "paginationTransitionDuration"?: string;
+        "paginationTransitionTimingFunction"?: string;
+        /**
+          * Filter property for the previous and next elements.
+         */
+        "prevNextFilter"?: string;
+        /**
+          * Amount of slides shown at once.
+         */
+        "slidesPerView"?: number;
+        /**
+          * Space between the slides.
+         */
+        "spaceBetween"?: number;
+        /**
+          * Sliding speed.
+         */
+        "speed"?: number;
+    }
+    interface SpxSlideshow {
+        /**
+          * Duration of slideshow to complete one cycle.
+          * @CSS
+         */
+        "duration"?: string;
+        /**
+          * Gap between inner elements.
+          * @CSS
+         */
+        "gap"?: string;
+        /**
+          * Max width of inner elements.
+          * @CSS
+         */
+        "maxWidth"?: string;
     }
     interface SpxSnackbar {
         "animationDelay"?: string;
@@ -665,34 +2341,94 @@ declare namespace LocalJSX {
         "background"?: string;
         "border"?: string;
         "borderRadius"?: string;
+        /**
+          * Adds option to close snackbar after its creation.
+         */
         "closeable"?: boolean;
         "color"?: string;
+        /**
+          * Distance to the edge of the viewport on the x-axis.
+          * @CSS
+         */
         "distanceX"?: string;
+        /**
+          * Distance to the edge of the viewport on the y-axis.
+          * @CSS
+         */
         "distanceY"?: string;
+        /**
+          * Makes snackbar not removable.
+         */
         "fixed"?: boolean;
         "fontSize"?: string;
         "padding"?: string;
+        /**
+          * Component position in page.
+          * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
+         */
         "position"?: string;
+        /**
+          * Reverses the close button if "closable" prop is true.
+         */
         "reverse"?: boolean;
+        /**
+          * Defined component size.
+          * @choice 'sm', 'md', 'lg'
+         */
         "size"?: string;
-        "styling"?: string;
+        /**
+          * Text inside snackbar.
+         */
         "text"?: string;
+        "zIndex"?: number;
     }
     interface SpxSnackbarToggle {
     }
+    interface SpxText {
+        "contentFontSizeMultiplier"?: number;
+        "headingColor"?: string;
+        "headingFontFamily"?: string;
+        "headingFontWeight"?: string;
+        "headingLetterSpacing"?: string;
+        "headingLineHeight"?: string;
+        "headingTextTransform"?: string;
+        "maxWidth"?: string;
+        "textColor"?: string;
+        "textFontFamily"?: string;
+        "textFontWeight"?: string;
+        "textLetterSpacing"?: string;
+        "textLineHeight"?: string;
+        "textTextTransform"?: string;
+    }
     interface SpxTypewriter {
+        /**
+          * Automatically starts writing.
+         */
         "autoStart"?: boolean;
+        /**
+          * Writing delay in ms. Also accepts 'natural' value.
+         */
         "delay"?: any;
+        /**
+          * Delete delay in ms. Also accepts 'natural' value.
+         */
         "deleteSpeed"?: any;
         "display"?: string;
-        "inner"?: boolean;
+        /**
+          * Loops the animation.
+         */
         "loop"?: boolean;
+        /**
+          * Text that should be written.
+         */
         "text"?: string;
     }
     interface IntrinsicElements {
         "spx-accordion": SpxAccordion;
         "spx-animate": SpxAnimate;
         "spx-class-toggle": SpxClassToggle;
+        "spx-code": SpxCode;
+        "spx-container": SpxContainer;
         "spx-edit": SpxEdit;
         "spx-edit-button": SpxEditButton;
         "spx-group": SpxGroup;
@@ -704,12 +2440,22 @@ declare namespace LocalJSX {
         "spx-masonry": SpxMasonry;
         "spx-mockup": SpxMockup;
         "spx-navigation": SpxNavigation;
+        "spx-notation": SpxNotation;
         "spx-offset": SpxOffset;
+        "spx-page-docs": SpxPageDocs;
+        "spx-page-single": SpxPageSingle;
         "spx-scrollspy": SpxScrollspy;
-        "spx-section-single": SpxSectionSingle;
+        "spx-section-button": SpxSectionButton;
+        "spx-section-card": SpxSectionCard;
+        "spx-section-footer": SpxSectionFooter;
+        "spx-section-header": SpxSectionHeader;
+        "spx-section-text-media": SpxSectionTextMedia;
         "spx-share": SpxShare;
+        "spx-slider": SpxSlider;
+        "spx-slideshow": SpxSlideshow;
         "spx-snackbar": SpxSnackbar;
         "spx-snackbar-toggle": SpxSnackbarToggle;
+        "spx-text": SpxText;
         "spx-typewriter": SpxTypewriter;
     }
 }
@@ -720,6 +2466,8 @@ declare module "@stencil/core" {
             "spx-accordion": LocalJSX.SpxAccordion & JSXBase.HTMLAttributes<HTMLSpxAccordionElement>;
             "spx-animate": LocalJSX.SpxAnimate & JSXBase.HTMLAttributes<HTMLSpxAnimateElement>;
             "spx-class-toggle": LocalJSX.SpxClassToggle & JSXBase.HTMLAttributes<HTMLSpxClassToggleElement>;
+            "spx-code": LocalJSX.SpxCode & JSXBase.HTMLAttributes<HTMLSpxCodeElement>;
+            "spx-container": LocalJSX.SpxContainer & JSXBase.HTMLAttributes<HTMLSpxContainerElement>;
             "spx-edit": LocalJSX.SpxEdit & JSXBase.HTMLAttributes<HTMLSpxEditElement>;
             "spx-edit-button": LocalJSX.SpxEditButton & JSXBase.HTMLAttributes<HTMLSpxEditButtonElement>;
             "spx-group": LocalJSX.SpxGroup & JSXBase.HTMLAttributes<HTMLSpxGroupElement>;
@@ -731,12 +2479,22 @@ declare module "@stencil/core" {
             "spx-masonry": LocalJSX.SpxMasonry & JSXBase.HTMLAttributes<HTMLSpxMasonryElement>;
             "spx-mockup": LocalJSX.SpxMockup & JSXBase.HTMLAttributes<HTMLSpxMockupElement>;
             "spx-navigation": LocalJSX.SpxNavigation & JSXBase.HTMLAttributes<HTMLSpxNavigationElement>;
+            "spx-notation": LocalJSX.SpxNotation & JSXBase.HTMLAttributes<HTMLSpxNotationElement>;
             "spx-offset": LocalJSX.SpxOffset & JSXBase.HTMLAttributes<HTMLSpxOffsetElement>;
+            "spx-page-docs": LocalJSX.SpxPageDocs & JSXBase.HTMLAttributes<HTMLSpxPageDocsElement>;
+            "spx-page-single": LocalJSX.SpxPageSingle & JSXBase.HTMLAttributes<HTMLSpxPageSingleElement>;
             "spx-scrollspy": LocalJSX.SpxScrollspy & JSXBase.HTMLAttributes<HTMLSpxScrollspyElement>;
-            "spx-section-single": LocalJSX.SpxSectionSingle & JSXBase.HTMLAttributes<HTMLSpxSectionSingleElement>;
+            "spx-section-button": LocalJSX.SpxSectionButton & JSXBase.HTMLAttributes<HTMLSpxSectionButtonElement>;
+            "spx-section-card": LocalJSX.SpxSectionCard & JSXBase.HTMLAttributes<HTMLSpxSectionCardElement>;
+            "spx-section-footer": LocalJSX.SpxSectionFooter & JSXBase.HTMLAttributes<HTMLSpxSectionFooterElement>;
+            "spx-section-header": LocalJSX.SpxSectionHeader & JSXBase.HTMLAttributes<HTMLSpxSectionHeaderElement>;
+            "spx-section-text-media": LocalJSX.SpxSectionTextMedia & JSXBase.HTMLAttributes<HTMLSpxSectionTextMediaElement>;
             "spx-share": LocalJSX.SpxShare & JSXBase.HTMLAttributes<HTMLSpxShareElement>;
+            "spx-slider": LocalJSX.SpxSlider & JSXBase.HTMLAttributes<HTMLSpxSliderElement>;
+            "spx-slideshow": LocalJSX.SpxSlideshow & JSXBase.HTMLAttributes<HTMLSpxSlideshowElement>;
             "spx-snackbar": LocalJSX.SpxSnackbar & JSXBase.HTMLAttributes<HTMLSpxSnackbarElement>;
             "spx-snackbar-toggle": LocalJSX.SpxSnackbarToggle & JSXBase.HTMLAttributes<HTMLSpxSnackbarToggleElement>;
+            "spx-text": LocalJSX.SpxText & JSXBase.HTMLAttributes<HTMLSpxTextElement>;
             "spx-typewriter": LocalJSX.SpxTypewriter & JSXBase.HTMLAttributes<HTMLSpxTypewriterElement>;
         }
     }

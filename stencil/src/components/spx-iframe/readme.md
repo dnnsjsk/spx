@@ -7,10 +7,23 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type     | Default     |
-| -------- | --------- | ----------- | -------- | ----------- |
-| `size`   | `size`    |             | `string` | `'1440px'`  |
-| `src`    | `src`     |             | `string` | `undefined` |
+| Property | Attribute | Description                                      | Type     | Default     |
+| -------- | --------- | ------------------------------------------------ | -------- | ----------- |
+| `size`   | `size`    | Screen size of the site shown inside the iframe. | `string` | `'1440px'`  |
+| `src`    | `src`     | Source for the iframe.                           | `string` | `undefined` |
+
+
+## Methods
+
+### `reload() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ## Dependencies

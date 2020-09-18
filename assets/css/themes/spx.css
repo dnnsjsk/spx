@@ -1,0 +1,48 @@
+body {
+    --spx-container-pre-title-font-weight: 500;
+    --spx-container-space-y: var(--spx-space-xl);
+    --spx-container-text-letter-spacing: -0.025em;
+    --spx-container-text-max-width: 500px;
+    --spx-container-title-letter-spacing: -0.05em;
+    --spx-slider-pagination-tabs-max-width: 100%;
+    --spx-space-unit: 0.7em;
+}
+
+@media (min-width: 375px) {
+    body {
+        --spx-slider-pagination-tabs-max-width: 320px;
+        --spx-container-text-max-width: 500px;
+    }
+}
+
+@media (min-width: 1024px) {
+    body {
+        --spx-container-button-font-size-multiplier: 1.1;
+        --spx-container-space-y: var(--spx-space-2xl);
+        --spx-container-text-font-size-multiplier: 0.9;
+        --spx-container-title-font-size-multiplier: 0.8;
+        --spx-space-unit: clamp(0.8em, 1vw, 1em);
+    }
+}
+
+@media (min-width: 1120px) {
+    body {
+        --spx-container-text-max-width: 800px;
+    }
+}
+
+@media (min-width: 1680px) {
+    body {
+        --spx-container-button-font-size-multiplier: 1;
+        --spx-container-space-y: var(--spx-space-3xl);
+        --spx-navigation-font-size: 24px;
+        --spx-section-header-logo-max-height: 50px;
+        --spx-container-text-font-size-multiplier: 1;
+    }
+}
+
+@media (min-width: 1860px) {
+    body {
+        --spx-container-title-font-size-multiplier: 1;
+    }
+}

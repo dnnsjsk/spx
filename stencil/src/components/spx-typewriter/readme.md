@@ -7,22 +7,21 @@
 
 ## Properties
 
-| Property      | Attribute      | Description | Type      | Default              |
-| ------------- | -------------- | ----------- | --------- | -------------------- |
-| `autoStart`   | `auto-start`   |             | `boolean` | `undefined`          |
-| `delay`       | `delay`        |             | `any`     | `'natural'`          |
-| `deleteSpeed` | `delete-speed` |             | `any`     | `'natural'`          |
-| `display`     | `display`      |             | `string`  | `'block'`            |
-| `inner`       | `inner`        |             | `boolean` | `undefined`          |
-| `loop`        | `loop`         |             | `boolean` | `undefined`          |
-| `text`        | `text`         |             | `string`  | `"I'm a typewriter"` |
+| Property      | Attribute      | Description                                        | Type      | Default              |
+| ------------- | -------------- | -------------------------------------------------- | --------- | -------------------- |
+| `autoStart`   | `auto-start`   | Automatically starts writing.                      | `boolean` | `true`               |
+| `delay`       | `delay`        | Writing delay in ms. Also accepts 'natural' value. | `any`     | `'natural'`          |
+| `deleteSpeed` | `delete-speed` | Delete delay in ms. Also accepts 'natural' value.  | `any`     | `'natural'`          |
+| `display`     | `display`      |                                                    | `string`  | `'block'`            |
+| `loop`        | `loop`         | Loops the animation.                               | `boolean` | `undefined`          |
+| `text`        | `text`         | Text that should be written.                       | `string`  | `"I'm a typewriter"` |
 
 
 ## Methods
 
 ### `start() => Promise<void>`
 
-External method to start animation.
+Start animation.
 
 #### Returns
 
@@ -32,7 +31,7 @@ Type: `Promise<void>`
 
 ### `stop() => Promise<void>`
 
-External method to stop animation.
+Stop animation.
 
 #### Returns
 

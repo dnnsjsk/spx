@@ -1,32 +1,49 @@
-import {Component, h, Host, Prop} from '@stencil/core';
-import {css} from "emotion";
+// eslint-disable-next-line no-unused-vars
+import { Component, Element, h, Host, Prop } from '@stencil/core'
+import { css } from 'emotion'
+import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
 
 @Component({
-    tag: 'spx-icon',
+  tag: 'spx-icon'
 })
 
 export class SpxIcon {
-    @Prop({reflectToAttr: true}) type: string = 'fa';
-    @Prop({reflectToAttr: true}) icon: string;
+    @Element() el: HTMLSpxIconElement;
 
-    render() {
-        return <Host class={css({
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        })}>
+    @Prop({ reflect: true }) icon: string
 
-            {this.icon ?
+    @Prop({ reflect: true }) type: string = 'fa'
 
-                <i class={this.icon}/> :
+    componentDidLoad () {
+      globalComponentDidLoad(this.el)
+    }
 
-                this.type === 'caret' ?
+    render () {
+      /** Host styles. */
 
-                    <i class={css({
-                        fontSize: '0.7em',
-                    })}>▼</i>
+      const styleHost = css({
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      })
 
-                    : null}
-        </Host>
+      /** Icon styles. */
+
+      const styleIcon = css({
+        fontSize: '0.7em'
+      })
+
+      return <Host class={styleHost}>
+
+        {this.icon
+
+          ? <i class={this.icon}/>
+
+          : this.type === 'caret'
+
+            ? <i class={styleIcon}>▼</i>
+
+            : null}
+      </Host>
     }
 }

@@ -1,9 +1,9 @@
 === spx ===
 Contributors: dnnsjsk
 Requires at least: 5.0
-Tested up to: 5.4.2
+Tested up to: 5.5.1
 Requires PHP: 7.0
-Stable tag: 1.0
+Stable tag: 2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -14,6 +14,40 @@ A web component page builder for WordPress developers like you!
 Supercharge your workflow using handy components for the next project. Works with any theme, browser and existing code.
 
 == Changelog ==
+
+= 2.0 =
+
+* New: Section section system (container, button, card, footer, header, text-media).
+* New: Full page components (single post, documentation).
+* New: Slider component.
+* New: Notation component.
+* New: Code component.
+* New: Slideshow component.
+* New: Text component.
+* New: responsive settings can be now applied using the "bp-" attribute.
+* New: elements can now have a custom font-size variable where applicable. (overwrites the global variable)
+* New: elements can now have a custom border-radius variable where applicable. (overwrites the global variable)
+* New: elements can now have a custom transition-delay variable where applicable. (overwrites the global variable)
+* New: elements can now have a custom transition-timing-function variable where applicable. (overwrites the global variable)
+* New: global space-scale for components and sections.
+* Oxygen: new wrapper component that replaces all other native elements.
+* Fix: gray color scale is now always applied to the body element as CSS variables.
+* Fix: remove unnecessary classes from some components. The Attribute/CSS vars API should now the main way of styling elements.
+* Fix: remove possibility for components to have no styling.
+* Fix: moved spx admin menu to "Tools".
+* Removed: getAcfGallery and getMbGallery have been removed, use getGallery instead.
+* Accordion: add icon rotation property.
+* Animate: replace endless loop for inner elements with Mutation Observer.
+* Edit Button: fixed a bug that wouldn't save fields if they contained special characters.
+* Group: additional target prop can be used to only apply settings to certain elements.
+* Image Comparison: apply user-select: none to prevent selecting of images.
+* Navigation: added border-radius prop.
+* Navigation: added box-shadow prop.
+* Navigation: adjusted default design.
+* Share: background-color prop has been renamed to background.
+* Typewriter: fix cursor animation.
+* Typewriter: remove "inner" prop. Component now automatically recognizes inner elements.
+* Typewriter: replace endless loop for inner elements with Mutation Observer.
 
 = 1.42 =
 * Fix: license activating/deactivating.

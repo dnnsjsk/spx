@@ -1,60 +1,96 @@
-import {Component, Element, h, Host, Prop, Listen, Event, EventEmitter} from '@stencil/core';
-import Gumshoe from '../../../../stencil/node_modules/gumshoejs/dist/gumshoe.js';
-import {css} from "emotion";
-import * as constants from "../../constants/style.js";
-import {offset} from '../../functions/offset.js';
+// eslint-disable-next-line no-unused-vars
+import { Component, Element, h, Host, Prop, Listen, Event, EventEmitter, Method, State } from '@stencil/core'
+import Gumshoe from '../../../../stencil/node_modules/gumshoejs/dist/gumshoe.js'
+import { css } from 'emotion'
+import { offset } from '../../utils/offset'
+import { setVar } from '../../utils/setVar'
+import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
+
+const tag = 'spx-scrollspy'
+
+/**
+ * Automatically add CSS classes to navigation items and content elements depending on the scroll position.
+ * You can see it in action on the left of this page! (on desktop)
+ */
 
 @Component({
-    tag: 'spx-scrollspy',
+  tag: 'spx-scrollspy'
 })
 
 export class SpxScrollspy {
-    @Element() el: HTMLElement;
+    @Element() el: HTMLSpxScrollspyElement
 
-    @Prop({reflectToAttr: true}) display: string = 'block';
+    @State() myGumshoe
 
-    @Prop({reflectToAttr: true}) target: string = 'a';
-    @Prop({reflectToAttr: true}) navClass: string = 'spx-scrollspy__nav--active';
-    @Prop({reflectToAttr: true}) contentClass: string = 'spx-scrollspy__content--active';
-    @Prop({reflectToAttr: true}) offset: any;
-    @Prop({reflectToAttr: true}) urlChange: boolean;
+    /** Applied class to active content element. */
 
-    @Event({eventName: 'spxScrollspyDidLoad'}) spxScrollspyDidLoad: EventEmitter;
+    @Prop({ reflect: true }) contentClass: string = 'spx-scrollspy__content--active'
+
+    @Prop({ reflect: true }) display: string = 'block'
+
+    /** Applied class to active navigation element. */
+
+    @Prop({ reflect: true }) navClass: string = 'spx-scrollspy__nav--active'
+
+    /** Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated.. */
+
+    @Prop({ reflect: true }) offset: any = 0
+
+    /** Target element. Can take any querySelector value. (id, class, tag etc.) */
+
+    @Prop({ reflect: true }) target: string = 'a'
+
+    /** Appends the currently active link to the end of the URL. */
+
+    @Prop({ reflect: true }) urlChange: boolean = false
 
     /** Replace state of URL bar . */
 
-    @Listen('gumshoeActivate', {target: 'document'})
-    linkChanger(event) {
-        history.replaceState(null, null, event.detail.link.getAttribute('href'));
+    @Listen('gumshoeActivate', { target: 'document' })
+    onLinkChange (event) {
+      history.replaceState(null, null, event.detail.link.getAttribute('href'))
     }
 
-    componentDidLoad() {
-        new Gumshoe(':scope ' + this.target + '', {
-            reflow: true,
-            navClass: this.navClass,
-            contentClass: this.contentClass,
+    @Event({ eventName: 'spxScrollspyDidLoad' }) spxScrollspyDidLoad: EventEmitter
 
-            /** Only activate events when URL should be changed. */
+    componentDidLoad () {
+      globalComponentDidLoad(this.el)
 
-            events: this.urlChange,
+      // eslint-disable-next-line no-new
+      this.myGumshoe = new Gumshoe(':scope ' + this.target + '', {
+        reflow: true,
+        navClass: this.navClass,
+        contentClass: this.contentClass,
 
-            offset: () => {
+        /** Only activate events when URL should be changed. */
 
-                /** Check if prop is a number otherwise look for querySelector. */
+        events: this.urlChange,
 
-                return offset(this.offset);
-            }
-        });
+        offset: () => {
+          /** Check if prop is a number otherwise look for querySelector. */
 
-        /** Emit event after render. */
+          return offset(this.offset)
+        }
+      })
 
-        this.spxScrollspyDidLoad.emit({target: 'document'});
+      /** Emit event after render. */
+
+      this.spxScrollspyDidLoad.emit({ target: 'document' })
     }
 
-    render() {
-        return <Host class={css({
-            display: constants.styleDisplay('scrollspy', this.display)
-        })}>
-        </Host>
+    @Method()
+    async reload () {
+      this.myGumshoe.setup()
+    }
+
+    render () {
+      /** Host styles. */
+
+      const styleHost = css({
+        display: setVar(tag, 'display', this.display)
+      })
+
+      return <Host class={styleHost}>
+      </Host>
     }
 }

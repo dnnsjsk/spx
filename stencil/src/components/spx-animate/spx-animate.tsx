@@ -1,114 +1,152 @@
-import {Component, Host, h, Prop, Element, State} from '@stencil/core';
-import {css} from 'emotion';
-import {gsap} from 'gsap';
-import * as constants from '../../constants/style.js';
+// eslint-disable-next-line no-unused-vars
+import { Component, Host, h, Prop, Element, State, Method } from '@stencil/core'
+import { css } from 'emotion'
+import { gsap } from 'gsap'
+import { setVar } from '../../utils/setVar'
+import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
+
+const tag = 'spx-animate'
+
+/**
+ * Wrapper around GSAP that allows for staggered and scroll-based animation.
+ */
 
 @Component({
-    tag: 'spx-animate',
+  tag: 'spx-animate'
 })
 
 export class SpxAnimate {
-    @Element() el: HTMLElement;
+    @Element() el: HTMLSpxAnimateElement;
 
-    @Prop({reflectToAttr: true}) display: string = 'block';
+    @State() elements
+    @State() tl
 
-    @Prop() target: string = '*';
+    /** Delay before animation starts. */
 
-    @Prop() duration: number = 1;
-    @Prop() opacity: number = 1;
-    @Prop() x: number = 0;
-    @Prop() y: number = 0;
+    @Prop() delay: number = 0
 
-    @Prop() delay: number = 0;
-    @Prop() stagger: number = 0.15;
-    @Prop() ease: string = 'power1.out';
+    /** Animation duration. */
 
-    @Prop() viewport: boolean;
-    @Prop() once: boolean;
-    @Prop() viewportMarginTop: string;
-    @Prop() viewportMarginRight: string;
-    @Prop() viewportMarginBottom: string;
-    @Prop() viewportMarginLeft: string;
+    @Prop() duration: number = 1
 
-    @State() tl;
-    @State() elements;
+    /** Ease being used. Accepts all common GSAP options. */
 
-    componentDidLoad() {
+    @Prop() ease: string = 'power1.out'
 
-        const init = () => {
+    /** Determines if animation should only play once. (if viewport is true) */
 
-            /** Get inner elements. */
+    @Prop() once: boolean
 
-            this.elements = this.el.querySelectorAll(this.target);
+    /** Opacity level the animation starts from. */
 
-            /** Check if list is empty. */
+    @Prop() opacity: number = 1
 
-            if ((this.elements === undefined || this.elements.length === 0) && document.body.classList.contains('oxygen-builder-body')) {
+    /** Amount of time elements should be staggered by. */
 
-                setTimeout(init, 100);
+    @Prop() stagger: number = 0.15
 
-            } else {
+    /** The target element that should be animated inside the component. */
 
-                /** Init else. */
+    @Prop() target: string = '*'
 
-                this.tl = gsap.timeline({
-                    defaults: {
-                        ease: this.ease,
-                    },
-                    paused: true,
-                });
+    /** Starts animation when target is in the viewport. */
 
-                this.tl.from([].slice.call(this.elements), {
-                    duration: this.duration,
-                    opacity: this.opacity,
-                    x: this.x,
-                    y: this.y,
-                    delay: this.delay,
-                    stagger: this.stagger,
-                });
+    @Prop() viewport: boolean
 
-                /** Play immediately when not in viewport. */
+    /** Adjust the root margin of the animation start. */
 
-                if (!this.viewport) {
-                    this.tl.play();
-                }
+    @Prop() viewportMarginBottom: string
 
-                /** Check viewport before playing. */
+    /** Adjust the root margin of the animation start. */
 
-                if (this.viewport) {
-                    const options = {
-                        rootMargin: '' +
+    @Prop() viewportMarginLeft: string
+
+    /** Adjust the root margin of the animation start. */
+
+    @Prop() viewportMarginRight: string
+
+    /** Adjust the root margin of the animation start. */
+
+    @Prop() viewportMarginTop: string
+
+    /** X position the animation starts from. */
+
+    @Prop() x: number = 0
+
+    /** Y position the animation starts from. */
+
+    @Prop() y: number = 0
+
+    @Prop({ reflect: true }) display: string = 'block'
+
+    componentDidLoad () {
+      globalComponentDidLoad(this.el)
+
+      this.elements = this.el.querySelectorAll(this.target)
+
+      this.tl = gsap.timeline({
+        defaults: {
+          ease: this.ease
+        },
+        paused: true
+      })
+
+      this.tl.from([].slice.call(this.elements), {
+        duration: this.duration,
+        opacity: this.opacity,
+        x: this.x,
+        y: this.y,
+        delay: this.delay,
+        stagger: this.stagger
+      })
+
+      /** Play immediately when not in viewport. */
+
+      if (!this.viewport) {
+        this.tl.play()
+      }
+
+      /** Check viewport before playing. */
+
+      if (this.viewport) {
+        const options = {
+          rootMargin: '' +
                             '' + (this.viewportMarginTop || '0px') + ' ' +
                             '' + (this.viewportMarginRight || '0px') + ' ' +
                             '' + (this.viewportMarginBottom || '0px') + ' ' +
-                            '' + (this.viewportMarginLeft || '0px') + '',
-                    };
+                            '' + (this.viewportMarginLeft || '0px') + ''
+        }
 
-                    const intersectionObserver = new IntersectionObserver((entries) => {
-                        entries.forEach((entry) => {
-                            if (entry.isIntersecting) {
-                                this.tl.play();
-                            } else {
-                                if (!this.once) {
-                                    this.tl.reverse();
-                                }
-                            }
-                        });
-                    }, options);
-                    intersectionObserver.observe(this.el);
-                }
+        const intersectionObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              this.tl.play()
+            } else {
+              if (!this.once) {
+                this.tl.reverse()
+              }
             }
-        };
-
-        init();
+          })
+        }, options)
+        intersectionObserver.observe(this.el)
+      }
     }
 
-    render() {
-        return <Host
-            class={css({
-                display: constants.styleDisplay('animate', this.display),
-            })}>
-            <slot/>
-        </Host>;
+    @Method()
+    async reload () {
+      this.componentDidLoad()
+    }
+
+    render () {
+      /** Host styles. */
+
+      const styleHost = css({
+        display: setVar(tag, 'display', this.display)
+      })
+
+      return <Host
+        class={styleHost}>
+        <slot/>
+      </Host>
     }
 }

@@ -1,481 +1,573 @@
-import {Component, h, Host, Element, Prop, State, Watch, Listen, Event, EventEmitter} from '@stencil/core';
-import {css, cx} from "emotion";
-import * as constants from '../../constants/style.js';
-import {createPopper} from '@popperjs/core';
+// eslint-disable-next-line no-unused-vars
+import { Component, h, Host, Element, Prop, State, Watch, Listen, Event, EventEmitter, Method } from '@stencil/core'
+import { css } from 'emotion'
+import * as c from '../../constants/style'
+import { createPopper } from '@popperjs/core'
+import { setVar } from '../../utils/setVar'
+import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
+
+const tag = 'spx-navigation'
+
+/**
+ * Render a complete WordPress menu with nested submenus and automatic positioning.
+ */
 
 @Component({
-    tag: 'spx-navigation',
+  tag: 'spx-navigation'
 })
 
 export class SpxNavigation {
-    @Element() el: HTMLElement;
+    @Element() el: HTMLSpxNavigationElement
 
-    @Prop({reflectToAttr: true}) styling: string;
+    @State() menuArray: Array<string>
+    @State() mobileBP: boolean
 
-    @Prop({reflectToAttr: true}) menu: string;
-    @State() menuArray: Array<string>;
+    @Prop({ reflect: true }) childBorder: string = '1px solid var(--spx-color-gray-200)'
 
-    @Prop({reflectToAttr: true}) mobile: number = constants.styleMobileBP;
-    @State() mobileBP: boolean;
+    /**
+     * Child menu border-radius.
+     * @CSS
+     */
 
-    @Prop({reflectToAttr: true}) vertical: boolean;
+    @Prop({ reflect: true }) childBorderRadius: string = c.borderRadius
 
-    @Prop({reflectToAttr: true}) fontSize: string = constants.styleFontSize;
+    /**
+     * Child menu box-shadow.
+     * @CSS
+     */
 
-    @Prop({reflectToAttr: true}) itemUnderline: boolean;
-    @Prop({reflectToAttr: true}) itemUnderlineHover: boolean;
-    @Prop({reflectToAttr: true}) itemTransitionDuration: string = constants.styleTransitionDuration;
-    @Prop({reflectToAttr: true}) itemTransitionTimingFunction: string = constants.styleTransitionTimingFunction;
+    @Prop({ reflect: true }) childBoxShadow: string = '0 3px 10px 0 rgba(0,0,0,0.05)'
 
-    @Prop({reflectToAttr: true}) parentItemGap: string = '0.4em';
-    @Prop({reflectToAttr: true}) parentItemPadding: string = '0.6em';
-    @Prop({reflectToAttr: true}) parentItemColor: string = constants.stylePrimary800;
-    @Prop({reflectToAttr: true}) parentItemColorHover: string = constants.stylePrimary900;
-    @Prop({reflectToAttr: true}) parentItemBackground: string = '#ffffff';
-    @Prop({reflectToAttr: true}) parentItemBackgroundHover: string = constants.stylePrimary100;
+    /**
+     * Gap between nested child menus.
+     * @CSS
+     */
 
-    @Prop({reflectToAttr: true}) childIcon: string;
-    @Prop({reflectToAttr: true}) childGap: string = '0.5em';
-    @Prop({reflectToAttr: true}) childBorder: string = '1px solid ' + constants.stylePrimary300 + '';
-    @Prop({reflectToAttr: true}) childChildGap: string = '0.8em';
-    @Prop({reflectToAttr: true}) childIndicatorGap: string = '0.2em';
-    @Prop({reflectToAttr: true}) childItemPadding: string = '0.6em 0.8em';
-    @Prop({reflectToAttr: true}) childItemColor: string = constants.stylePrimary700;
-    @Prop({reflectToAttr: true}) childItemColorHover: string = constants.stylePrimary900;
-    @Prop({reflectToAttr: true}) childItemBackground: string = '#ffffff';
-    @Prop({reflectToAttr: true}) childItemBackgroundHover: string = constants.stylePrimary100;
-    @Prop({reflectToAttr: true}) childPlacement: string = 'start';
-    @Prop({reflectToAttr: true}) childTransitionDuration: string = constants.styleTransitionDuration;
-    @Prop({reflectToAttr: true}) childTransitionTimingFunction: string = constants.styleTransitionTimingFunction;
+    @Prop({ reflect: true }) childChildGap: string = '0.8em'
 
-    @Prop({reflectToAttr: true}) mobileIcon: string;
-    @Prop({reflectToAttr: true}) mobilePlacement: string = 'start';
-    @Prop({reflectToAttr: true}) mobileItemPadding: string = '0.6em';
-    @Prop({reflectToAttr: true}) mobileItemNestedMarginLeft: string = '0.8em';
-    @Prop({reflectToAttr: true}) mobileItemColor: string = constants.stylePrimary800;
-    @Prop({reflectToAttr: true}) mobileItemColorHover: string = constants.stylePrimary900;
-    @Prop({reflectToAttr: true}) mobileItemBackground: string = '#ffffff';
-    @Prop({reflectToAttr: true}) mobileItemBackgroundHover: string = constants.stylePrimary100;
+    /**
+     * Gap between top level menu items and child menus.
+     * @CSS
+     */
 
-    @Event({eventName: 'spxNavigationDidLoad'}) spxNavigationDidLoad: EventEmitter;
+    @Prop({ reflect: true }) childGap: string = '0.5em'
 
-    /** Init popper on mouse/touch enter. */
+    /** Indicator icon. Accepts any Font Awesome icon class. */
 
-    @Listen('ontouchstart', {target: this.el})
-    @Listen('mouseenter', {target: this.el})
-    @Listen('focusin', {target: this.el})
-    clickListener() {
-        if (this.styling !== 'none') {
-            if (this.mobileBP) {
-                this.initPopperMobile();
-            } else {
-                this.initPopperDesktop();
-                this.initPopperDesktop();
-            }
-        }
-    }
+    @Prop({ reflect: true }) childIcon: string
 
-    /** Listen to window resize. */
+    /**
+     * Gap between child menu indicator and text.
+     * @CSS
+     */
 
-    @Listen('resize', {target: 'window'})
-    checkIfMobile() {
-        this.mobileBP = window.innerWidth < this.mobile;
-    }
+    @Prop({ reflect: true }) childIndicatorGap: string = '0.2em'
+
+    @Prop({ reflect: true }) childItemBackground: string = '#ffffff'
+
+    @Prop({ reflect: true }) childItemBackgroundHover: string = 'var(--spx-color-gray-100)'
+
+    @Prop({ reflect: true }) childItemColor: string = 'var(--spx-color-gray-700)'
+
+    @Prop({ reflect: true }) childItemColorHover: string = 'var(--spx-color-gray-900)'
+
+    @Prop({ reflect: true }) childItemPadding: string = '0.6em 0.8em'
+
+    /**
+     * Child menu placement.
+     * @CSS
+     * @choice 'start', 'end'
+     */
+
+    @Prop({ reflect: true }) childPlacement: string = 'start'
+
+    @Prop({ reflect: true }) fontSize: string = c.fontSize
+
+    @Prop({ reflect: true }) itemTransitionDuration: string = c.transitionDuration
+
+    @Prop({ reflect: true }) itemTransitionTimingFunction: string = c.transitionTimingFunction
+
+    /** Underlines all links. */
+
+    @Prop({ reflect: true }) itemUnderline: boolean
+
+    /** Underlines all links on hover. */
+
+    @Prop({ reflect: true }) itemUnderlineHover: boolean
+
+    /**
+     * Renders a WordPress menu.
+     * @helper &lt;?php spx\get::navigation("myMenu") ?>
+     */
+
+    @Prop({ reflect: true }) menu: string
+
+    /** Mobile breakpoint. */
+
+    @Prop({ reflect: true }) mobile: number = c.mobileBpWidth
+
+    /** Mobile button icon. Accepts any Font Awesome icon class. */
+
+    @Prop({ reflect: true }) mobileIcon: string
+
+    @Prop({ reflect: true }) mobileItemBackground: string = '#ffffff'
+
+    @Prop({ reflect: true }) mobileItemBackgroundHover: string = 'var(--spx-color-gray-100)'
+
+    @Prop({ reflect: true }) mobileItemColor: string = 'var(--spx-color-gray-800)'
+
+    @Prop({ reflect: true }) mobileItemColorHover: string = 'var(--spx-color-gray-900)'
+
+    @Prop({ reflect: true }) mobileItemNestedMarginLeft: string = '0.8em'
+
+    @Prop({ reflect: true }) mobileItemPadding: string = '0.6em'
+
+    /**
+     * Mobile placement.
+     * @CSS
+     * @choice 'start', 'end'
+     */
+
+    @Prop({ reflect: true }) mobilePlacement: string = 'start'
+
+    @Prop({ reflect: true }) parentItemBackground: string = '#ffffff'
+
+    @Prop({ reflect: true }) parentItemBackgroundHover: string = 'var(--spx-color-gray-100)'
+
+    @Prop({ reflect: true }) parentItemColor: string = 'var(--spx-color-gray-800)'
+
+    @Prop({ reflect: true }) parentItemColorHover: string = 'var(--spx-color-gray-900)'
+
+    /**
+     * Gap between parent menu items.
+     * @CSS
+     */
+
+    @Prop({ reflect: true }) parentItemGap: string = '0.4em'
+
+    @Prop({ reflect: true }) parentItemPadding: string = '0.6em'
+
+    /** Renders menu vertically. */
+
+    @Prop({ reflect: true }) vertical: boolean
 
     /** Watch menu prop and parse to iteratable array. */
 
     @Watch('menu')
-    parseImagesProp(newValue: string) {
-        if (newValue) this.menuArray = JSON.parse(newValue);
+    imagesChanged (newValue: string) {
+      if (newValue) this.menuArray = JSON.parse(newValue)
     }
 
-    connectedCallback() {
+    /** Fires when component has loaded. */
 
-        /** Check if is mobile view. */
+    @Event({ eventName: 'spxNavigationDidLoad' }) spxNavigationDidLoad: EventEmitter
 
-        this.checkIfMobile();
+    /** Init popper on mouse/touch enter. */
+
+    @Listen('ontouchstart', { target: this.el })
+    @Listen('mouseenter', { target: this.el })
+    @Listen('focusin', { target: this.el })
+    onClick () {
+      if (this.mobileBP) {
+        this.initPopperMobile()
+      } else {
+        this.initPopperDesktop()
+        this.initPopperDesktop()
+      }
     }
 
-    componentWillLoad() {
+    /** Listen to window resize. */
 
-        /** If menu prop is set. */
-
-        this.parseImagesProp(this.menu);
+    @Listen('resize', { target: 'window' })
+    onResize () {
+      this.mobileBP = window.innerWidth < this.mobile
     }
 
-    componentDidLoad() {
+    connectedCallback () {
+      /** Check if is mobile view. */
 
-        /** Sort menu items. */
-
-        this.sortMenuItem();
-
-        /** Emit event after render. */
-
-        this.spxNavigationDidLoad.emit({target: 'document'});
+      this.onResize()
     }
 
-    componentDidUpdate() {
-        this.sortMenuItem();
+    componentWillLoad () {
+      /** If menu prop is set. */
+
+      this.imagesChanged(this.menu)
+    }
+
+    componentDidLoad () {
+      globalComponentDidLoad(this.el)
+
+      /** Sort menu items. */
+
+      this.sortMenuItem()
+
+      /** Emit event after render. */
+
+      this.spxNavigationDidLoad.emit({ target: 'document' })
+    }
+
+    componentDidUpdate () {
+      this.sortMenuItem()
     }
 
     /** Render menu function. */
 
-    renderMenu(obj, type, mobile) {
-
-        function checkMobile() {
-            if (mobile) {
-                return 'spx-navigation--' + type + '' + ' ' + 'spx-navigation--mobile';
-            } else {
-                return 'spx-navigation--' + type + '';
-            }
+    private renderMenu (obj, type, mobile) {
+      function checkMobile () {
+        if (mobile) {
+          return 'spx-navigation--' + type + '' + ' ' + 'spx-navigation--mobile'
+        } else {
+          return 'spx-navigation--' + type + ''
         }
+      }
 
-        return <div class={checkMobile()}>
-            <ul>
-                {Object.values(obj).map((object) => {
-                    let objectChild = object['spxChildren'];
-                    let extraClasses = object['classes'].map((objectClasses) => objectClasses).toString().replace(/,/g, '  ');
+      return <div class={checkMobile()}>
+        <ul>
+          {Object.values(obj).map((object) => {
+            const objectChild = object['spxChildren']
+            const extraClasses = object['classes'].map((objectClasses) => objectClasses).toString().replace(/,/g, '  ')
 
-                    return <li
-                        class={object['spxChildren']
+            return <li
+              class={object['spxChildren']
 
-                            /** Check if menu has any children. */
+              /** Check if menu has any children. */
 
-                            ? 'spx-navigation__item--' + type + '' + ' ' + 'spx-navigation__item--has-child' + extraClasses
-                            : 'spx-navigation__item--' + type + '' + ' ' + extraClasses}
+                ? 'spx-navigation__item--' + type + '' + ' ' + 'spx-navigation__item--has-child' + extraClasses
+                : 'spx-navigation__item--' + type + '' + ' ' + extraClasses}
 
-                        data-order={object['menu_order']}>
+              data-order={object['menu_order']}>
 
-                        <a href={object['url'] === '#' ? '#0' : object['url']}>
-                            {object['title']}
+              <a href={object['url'] === '#' ? '#0' : object['url']}>
+                {object['title']}
 
-                            {(objectChild && (!this.mobileBP && !this.vertical) && !this.childIcon) ?
+                {(objectChild && (!this.mobileBP && !this.vertical) && !this.childIcon)
 
-                                /** Render caret if has any children. */
+                /** Render caret if has any children. */
 
-                                <spx-icon type="caret"/>
+                  ? <spx-icon type="caret"/>
 
-                                : (objectChild && (!this.mobileBP && !this.vertical) && this.childIcon) ?
+                  : (objectChild && (!this.mobileBP && !this.vertical) && this.childIcon)
 
-                                    <i class={this.childIcon}/>
+                    ? <i class={this.childIcon}/>
 
-                                    : null}
-                        </a>
+                    : null}
+              </a>
 
-                        {objectChild && !mobile &&
+              {objectChild && !mobile &&
                         this.renderMenu(object['spxChildren'], 'child', false)}
 
-                        {objectChild && mobile &&
+              {objectChild && mobile &&
                         this.renderMenu(object['spxChildren'], 'child', true)}
-                    </li>
-                })}
-            </ul>
-        </div>
+            </li>
+          })}
+        </ul>
+      </div>
     }
 
-    sortMenuItem() {
+    private sortMenuItem () {
+      /** Sort menu items depending on menu order. */
 
-        /** Sort menu items depending on menu order. */
+      const dataItems = this.el.querySelectorAll('li')
+      const dataArray = []
+      for (let i = 0; i < dataItems.length; ++i) {
+        dataArray.push(dataItems[i])
+      }
+      dataArray.sort(function (a, b) {
+        return +a.getAttribute('data-order') - +b.getAttribute('data-order')
+      })
 
-        let dataItems = this.el.querySelectorAll("li");
-        let dataArray = [];
-        for (let i = 0; i < dataItems.length; ++i) {
-            dataArray.push(dataItems[i]);
-        }
-        dataArray.sort(function (a, b) {
-            return +a.getAttribute("data-order") - +b.getAttribute("data-order");
-        });
-
-        dataArray.forEach(e => {
-            e.closest('ul').appendChild(e);
-        });
+      dataArray.forEach(e => {
+        e.closest('ul').appendChild(e)
+      })
     }
 
-    initPopperDesktop() {
+    private initPopperDesktop () {
+      if (!this.vertical) {
+        /** Init popper for parent menu. */
 
-        if (!this.vertical) {
+        const parentMenu = this.el.querySelectorAll('nav > .spx-navigation--parent .spx-navigation__item--parent.spx-navigation__item--has-child')
 
-            /** Init popper for parent menu. */
-
-            let parentMenu = this.el.querySelectorAll('nav > .spx-navigation--parent .spx-navigation__item--parent.spx-navigation__item--has-child');
-
-            if (parentMenu) {
-                parentMenu.forEach(item => {
-                    createPopper(item, item.querySelector('div'), {
-                        // @ts-ignore
-                        placement: 'bottom-' + this.childPlacement + '',
-                    });
-                })
-            }
-
-            /** Init popper for child menu. */
-
-            let childMenus = this.el.querySelectorAll('nav > .spx-navigation--parent .spx-navigation--child .spx-navigation__item--child.spx-navigation__item--has-child');
-
-            if (childMenus) {
-                childMenus.forEach(item => {
-                    createPopper(item, item.querySelector('div'), {
-                        placement: 'right-start',
-                        strategy: 'fixed',
-                        modifiers: [
-                            {
-                                name: 'flip',
-                                options: {
-                                    fallbackPlacements: ['left-start'],
-                                },
-                            },
-
-                            /** Calculate offset depending on parent padding/margin. */
-
-                            {
-                                name: 'offset',
-                                options: {
-                                    offset: ({placement}) => {
-                                        if (placement === 'right-start') {
-                                            return [-Math.abs(item.getBoundingClientRect().top - item.parentElement.getBoundingClientRect().top), Math.abs(item.getBoundingClientRect().right - item.parentElement.getBoundingClientRect().right)];
-                                        } else {
-                                            return [-Math.abs(item.getBoundingClientRect().top - item.parentElement.getBoundingClientRect().top), Math.abs(item.getBoundingClientRect().left - item.parentElement.getBoundingClientRect().left)];
-                                        }
-                                    },
-                                },
-                            },
-
-                            /** Make fixed position work properly. */
-
-                            {
-                                name: 'preventOverflow',
-                                options: {
-                                    rootBoundary: item,
-                                    padding: -1,
-                                },
-                            },
-                        ],
-                    });
-                })
-            }
-        }
-    }
-
-    initPopperMobile() {
-
-        /** Init popper for mobile menu. */
-
-        let mobileMenu = this.el.querySelector('.spx-navigation__mobile-button');
-
-        if (mobileMenu) {
-            createPopper(mobileMenu, mobileMenu.querySelector('.spx-navigation--mobile'), {
-                // @ts-ignore
-                placement: 'bottom-' + this.mobilePlacement + '',
-            });
+        if (parentMenu) {
+          parentMenu.forEach(item => {
+            createPopper(item, item.querySelector('div'), {
+              // @ts-ignore
+              placement: 'bottom-' + this.childPlacement + ''
+            })
+          })
         }
 
-    }
+        /** Init popper for child menu. */
 
-    render() {
+        const childMenus = this.el.querySelectorAll('nav > .spx-navigation--parent .spx-navigation--child .spx-navigation__item--child.spx-navigation__item--has-child')
 
-        /** Style default. */
+        if (childMenus) {
+          childMenus.forEach(item => {
+            createPopper(item, item.querySelector('div'), {
+              placement: 'right-start',
+              strategy: 'fixed',
+              modifiers: [
+                {
+                  name: 'flip',
+                  options: {
+                    fallbackPlacements: ['left-start']
+                  }
+                },
 
-        const styleDefault = css({
-            display: 'block',
-            fontFamily: constants.styleFontFamily,
-            fontSize: constants.styleFontBase('navigation', this.fontSize),
-            zIndex: 999999,
+                /** Calculate offset depending on parent padding/margin. */
 
-            'nav > .spx-navigation--parent': {
-                display: this.mobileBP ? 'none' : 'grid',
-            },
+                {
+                  name: 'offset',
+                  options: {
+                    offset: ({ placement }) => {
+                      if (placement === 'right-start') {
+                        return [-Math.abs(item.getBoundingClientRect().top - item.parentElement.getBoundingClientRect().top), Math.abs(item.getBoundingClientRect().right - item.parentElement.getBoundingClientRect().right)]
+                      } else {
+                        return [-Math.abs(item.getBoundingClientRect().top - item.parentElement.getBoundingClientRect().top), Math.abs(item.getBoundingClientRect().left - item.parentElement.getBoundingClientRect().left)]
+                      }
+                    }
+                  }
+                },
 
-            'ul': {
-                margin: '0',
-                padding: '0',
-                listStyleType: 'none',
+                /** Make fixed position work properly. */
 
-                'ul': {
-                    display: this.vertical && 'grid',
-                    gridGap: this.vertical && 'var(--spx-navigation-parent-item-gap, ' + this.parentItemGap + ')',
-                    marginLeft: (this.mobileBP || this.vertical) && 'var(--spx-navigation-mobile-item-nested-margin-left, ' + this.mobileItemNestedMarginLeft + ')',
+                {
+                  name: 'preventOverflow',
+                  options: {
+                    rootBoundary: item,
+                    padding: -1
+                  }
                 }
+              ]
+            })
+          })
+        }
+      }
+    }
+
+    private initPopperMobile () {
+      /** Init popper for mobile menu. */
+
+      const mobileMenu = this.el.querySelector('.spx-navigation__mobile-button')
+
+      if (mobileMenu) {
+        createPopper(mobileMenu, mobileMenu.querySelector('.spx-navigation--mobile'), {
+          // @ts-ignore
+          placement: 'bottom-' + this.mobilePlacement + ''
+        })
+      }
+    }
+
+    @Method()
+    async reload () {
+      this.componentDidLoad()
+    }
+
+    render () {
+      /** Host styles. */
+
+      const styleHost = css({
+        display: 'block',
+        fontFamily: c.fontFamily,
+        fontSize: setVar(tag, 'font-size', this.fontSize),
+        zIndex: 999999,
+
+        'nav > .spx-navigation--parent': {
+          display: this.mobileBP ? 'none' : 'grid'
+        },
+
+        ul: {
+          margin: '0',
+          padding: '0',
+          listStyleType: 'none',
+
+          ul: {
+            display: this.vertical && 'grid',
+            gridGap: this.vertical && setVar(tag, 'parent-item-gap', this.parentItemGap),
+            marginLeft: (this.mobileBP || this.vertical) && setVar(tag, 'mobile-item-nested-margin-left', this.mobileItemNestedMarginLeft)
+          }
+        },
+
+        'ul ul, .spx-navigation--mobile ul': {
+          border: !this.mobileBP && setVar(tag, 'child-border', this.childBorder),
+          borderRadius: setVar(tag, 'child-border-radius', this.childBorderRadius),
+          overflow: 'hidden',
+          boxShadow: !this.mobileBP && setVar(tag, 'child-box-shadow', this.childBoxShadow)
+        },
+
+        '.spx-navigation--parent:not(.spx-navigation--mobile) > ul': {
+          display: 'grid',
+          gridAutoFlow: (this.mobileBP || this.vertical) ? 'row' : 'column',
+          gridAutoColumns: 'max-content',
+          gridAutoRows: (this.mobileBP || this.vertical) && 'max-content',
+          gridGap: setVar(tag, 'parent-item-gap', this.parentItemGap)
+        },
+
+        '.spx-navigation__item--parent': {
+          a: {
+            padding: setVar(tag, 'parent-item-padding', this.parentItemPadding),
+            color: setVar(tag, 'parent-item-color', this.parentItemColor),
+            background: setVar(tag, 'parent-item-background', this.parentItemBackground),
+
+            '&:hover': {
+              color: setVar(tag, 'parent-item-color-hover', this.parentItemColorHover),
+              background: setVar(tag, 'parent-item-color-background-hover', this.parentItemBackgroundHover)
+            }
+          },
+
+          '&.spx-navigation__item--has-child > .spx-navigation--child': {
+            flexDirection: 'column',
+            marginTop: this.vertical && setVar(tag, 'parent-item-gap', this.parentItemGap),
+
+            a: {
+              width: '100%',
+              whiteSpace: 'nowrap',
+              color: !this.mobileBP && setVar(tag, 'child-item-color', this.childItemColor),
+              background: !this.mobileBP && setVar(tag, 'child-item-background', this.childItemBackground),
+
+              '&:hover': {
+                color: !this.mobileBP && setVar(tag, 'child-item-color-hover', this.childItemColorHover),
+                background: !this.mobileBP && setVar(tag, 'child-item-color-background-hover', this.childItemBackgroundHover)
+              }
             },
 
-            'ul ul, .spx-navigation--mobile ul': {
-                border: !this.mobileBP && 'var(--spx-navigation-child-border, ' + this.childBorder + ')',
-            },
+            '::before': {
+              content: '" "',
+              position: 'relative',
+              display: (this.mobileBP || this.vertical) ? 'none' : 'block',
+              minHeight: setVar(tag, 'child-gap', this.childGap),
+              width: '100%'
+            }
+          }
+        },
 
-            '.spx-navigation--parent:not(.spx-navigation--mobile) > ul': {
-                display: 'grid',
-                gridAutoFlow: (this.mobileBP || this.vertical) ? 'row' : 'column',
-                gridAutoColumns: 'max-content',
-                gridAutoRows: (this.mobileBP || this.vertical) && 'max-content',
-                gridGap: 'var(--spx-navigation-parent-item-gap, ' + this.parentItemGap + ')',
-            },
+        '.spx-navigation--child, .spx-navigation--mobile': {
+          pointerEvents: !this.vertical ? 'none' : 'auto',
+          opacity: !this.vertical ? '0' : '1',
+          position: !this.vertical ? 'absolute' : 'relative',
+          display: 'flex',
+          flexDirection: this.mobileBP ? 'column' : 'row',
+          transitionProperty: 'opacity',
+          transitionDuration: setVar(tag, 'item-transition-duration', this.itemTransitionDuration),
+          transitionTimingFunction: setVar(tag, 'item-transition-timing-function', this.itemTransitionTimingFunction)
+        },
 
-            '.spx-navigation__item--parent': {
-                'a': {
-                    padding: 'var(--spx-navigation-parent-item-padding, ' + this.parentItemPadding + ')',
-                    color: 'var(--spx-navigation-parent-item-color, ' + this.parentItemColor + ')',
-                    background: 'var(--spx-navigation-parent-item-background, ' + this.parentItemBackground + ')',
+        '.spx-navigation--mobile .spx-navigation--child': {
+          position: 'relative'
+        },
 
-                    '&:hover': {
-                        color: 'var(--spx-navigation-parent-item-color-hover, ' + this.parentItemColorHover + ')',
-                        background: 'var(--spx-navigation-parent-item-background-hover, ' + this.parentItemBackgroundHover + ')',
-                    }
-                },
-
-                '&.spx-navigation__item--has-child > .spx-navigation--child': {
-                    flexDirection: 'column',
-                    marginTop: this.vertical && 'var(--spx-navigation-parent-item-gap, ' + this.parentItemGap + ')',
-
-                    'a': {
-                        width: '100%',
-                        whiteSpace: 'nowrap',
-                        color: !this.mobileBP && 'var(--spx-navigation-child-item-color, ' + this.childItemColor + ')',
-                        background: !this.mobileBP && 'var(--spx-navigation-child-item-background, ' + this.childItemBackground + ')',
-
-                        '&:hover': {
-                            color: !this.mobileBP && 'var(--spx-navigation-child-item-color-hover, ' + this.childItemColorHover + ')',
-                            background: !this.mobileBP && 'var(--spx-navigation-child-item-background-hover, ' + this.childItemBackgroundHover + ')',
-                        }
-                    },
-
-                    '::before': {
-                        content: '" "',
-                        position: 'relative',
-                        display: (this.mobileBP || this.vertical) ? 'none' : 'block',
-                        minHeight: 'var(--spx-navigation-child-gap, ' + this.childGap + ')',
-                        width: '100%',
-                    }
-                },
-            },
-
-            '.spx-navigation--child, .spx-navigation--mobile': {
-                pointerEvents: !this.vertical ? 'none' : 'auto',
-                opacity: !this.vertical ? '0' : '1',
-                position: !this.vertical ? 'absolute' : 'relative',
-                display: 'flex',
-                flexDirection: this.mobileBP ? 'column' : 'row',
-                transitionProperty: 'opacity',
-                transitionDuration: constants.styleTransitionDurationBase('navigation', this.childTransitionDuration),
-                transitionTimingFunction: constants.styleTransitionTimingFunctionBase('navigation', this.childTransitionTimingFunction),
-            },
-
-            '.spx-navigation--mobile .spx-navigation--child': {
-                position: 'relative'
-            },
-
-            ['li:hover > .spx-navigation--child, ' +
+        ['li:hover > .spx-navigation--child, ' +
             'li:focus-within > .spx-navigation--child, ' +
             '.spx-navigation__mobile-button:hover .spx-navigation--mobile, ' +
             '.spx-navigation__mobile-button:focus-within .spx-navigation--mobile, ' +
             '.spx-navigation__mobile-button:hover .spx-navigation--child, ' +
             '.spx-navigation__mobile-button:focus-within .spx-navigation--child']: {
-                opacity: '1',
-                pointerEvents: 'auto',
-                transform: 'translateY(0px)',
+          opacity: '1',
+          pointerEvents: 'auto',
+          transform: 'translateY(0px)'
+        },
+
+        '.spx-navigation__item--child': {
+          a: {
+            padding: setVar(tag, 'child-item-padding', this.childItemPadding)
+          },
+
+          '[data-popper-placement="left-start"]': {
+            flexDirection: 'row-reverse'
+          },
+
+          '[data-popper-placement]::before': {
+            content: '" "',
+            position: 'relative',
+            display: (this.mobileBP || this.vertical) ? 'none' : 'block',
+            minWidth: setVar(tag, 'child-child-gap', this.childChildGap),
+            height: '100%'
+          }
+        },
+
+        li: {
+          position: 'relative',
+          display: (!this.mobileBP && !this.vertical) && 'flex',
+          flexDirection: 'row'
+        },
+
+        a: {
+          display: 'inline-grid',
+          gridAutoFlow: 'column',
+          gridColumnGap: setVar(tag, 'child-indicator-gap', this.childIndicatorGap),
+          textDecoration: this.itemUnderline ? 'underline' : 'none',
+          width: '100%',
+          fontSize: 'inherit',
+          transitionProperty: 'color, background',
+          transitionDuration: setVar(tag, 'item-transition-duration', this.itemTransitionDuration),
+          transitionTimingFunction: setVar(tag, 'item-transition-timing-function', this.itemTransitionTimingFunction),
+
+          '&:hover': {
+            textDecoration: this.itemUnderlineHover && 'underline'
+          }
+        },
+
+        '.spx-navigation__mobile-button': {
+          cursor: 'pointer',
+          maxWidth: 'fit-content',
+          padding: setVar(tag, 'parent-item-padding', this.parentItemPadding),
+          color: setVar(tag, 'parent-item-color', this.parentItemColor),
+          background: setVar(tag, 'parent-item-background', this.parentItemBackground),
+          gridGap: '0.4rem',
+          gridAutoFlow: 'column',
+          alignItems: 'center',
+          display: this.mobileBP ? 'grid' : 'none',
+
+          a: {
+            padding: setVar(tag, 'mobile-item-padding', this.mobileItemPadding),
+            color: setVar(tag, 'mobile-item-color', this.mobileItemColor),
+            background: setVar(tag, 'mobile-item-background', this.mobileItemBackground),
+
+            '&:hover': {
+              color: setVar(tag, 'mobile-item-color-hover', this.mobileItemColorHover),
+              background: setVar(tag, 'mobile-item-background-hover', this.mobileItemBackgroundHover)
+            }
+          },
+
+          '.spx-navigation--parent': {
+            '::before': {
+              content: '" "',
+              position: 'relative',
+              display: 'block',
+              minHeight: setVar(tag, 'child-gap', this.childGap),
+              width: '100%'
             },
 
-            '.spx-navigation__item--child': {
-                'a': {
-                    padding: 'var(--spx-navigation-child-item-padding, ' + this.childItemPadding + ')',
-                },
+            '> ul': {
+              background: setVar(tag, 'child-item-background', this.childItemBackground),
+              border: setVar(tag, 'child-border', this.childBorder),
+              boxShadow: setVar(tag, 'child-box-shadow', this.childBoxShadow)
+            }
+          }
+        }
+      })
 
-                '[data-popper-placement="left-start"]': {
-                    flexDirection: 'row-reverse',
-                },
+      return <Host
+        class={styleHost}>
 
-                '[data-popper-placement]::before': {
-                    content: '" "',
-                    position: 'relative',
-                    display: (this.mobileBP || this.vertical) ? 'none' : 'block',
-                    minWidth: 'var(--spx-navigation-child-child-gap, ' + this.childChildGap + ')',
-                    height: '100%',
-                }
-            },
+        <nav>
 
-            'li': {
-                position: 'relative',
-                display: (!this.mobileBP && !this.vertical) && 'flex',
-                flexDirection: 'row',
-            },
+          {this.menu &&
 
-            'a': {
-                display: 'inline-grid',
-                gridAutoFlow: 'column',
-                gridColumnGap: 'var(--spx-navigation-child-indicator-gap, ' + this.childIndicatorGap + ')',
-                textDecoration: this.itemUnderline ? 'underline' : 'none',
-                width: '100%',
-                fontSize: 'inherit',
-                transitionProperty: 'color, background',
-                transitionDuration: constants.styleTransitionDurationBase('navigation', this.itemTransitionDuration),
-                transitionTimingFunction: constants.styleTransitionTimingFunctionBase('navigation', this.itemTransitionTimingFunction),
-
-                '&:hover': {
-                    textDecoration: this.itemUnderlineHover && 'underline'
-                }
-            },
-
-            '.spx-navigation__mobile-button': {
-                cursor: 'pointer',
-                maxWidth: 'fit-content',
-                padding: 'var(--spx-navigation-parent-item-padding, ' + this.parentItemPadding + ')',
-                color: 'var(--spx-navigation-parent-item-color, ' + this.parentItemColor + ')',
-                background: 'var(--spx-navigation-parent-item-background, ' + this.parentItemBackground + ')',
-                gridGap: '0.4rem',
-                gridAutoFlow: 'column',
-                alignItems: 'center',
-                display: this.mobileBP ? 'grid' : 'none',
-
-                'a': {
-                    padding: 'var(--spx-navigation-mobile-item-padding, ' + this.mobileItemPadding + ')',
-                    color: 'var(--spx-navigation-mobile-item-color, ' + this.mobileItemColor + ')',
-                    background: 'var(--spx-navigation-mobile-item-background, ' + this.mobileItemBackground + ')',
-
-                    '&:hover': {
-                        color: 'var(--spx-navigation-mobile-item-color-hover, ' + this.mobileItemColorHover + ')',
-                        background: 'var(--spx-navigation-mobile-item-background-hover, ' + this.mobileItemBackgroundHover + ')'
-                    },
-                },
-
-                '.spx-navigation--parent': {
-                    '::before': {
-                        content: '" "',
-                        position: 'relative',
-                        display: 'block',
-                        minHeight: 'var(--spx-navigation-child-gap, ' + this.childGap + ')',
-                        width: '100%',
-                    },
-
-                    '> ul': {
-                        background: 'var(--spx-navigation-child-item-background, ' + this.childItemBackground + ')',
-                        border: 'var(--spx-navigation-child-border, ' + this.childBorder + ')',
-                    },
-                }
-            },
-        });
-
-        return <Host
-            class={cx(
-                {[constants.styleBase]: this.styling === 'none'},
-                {[styleDefault]: !this.styling}
-            )}>
-
-            <nav>
-
-                {this.menu &&
-
-                /** Render desktop menu. */
+          /** Render desktop menu. */
 
                 [this.renderMenu(this.menuArray, 'parent', false),
 
-                    /** Render mobile menu. */
+                  /** Render mobile menu. */
 
-                    <div tabindex="0" role="button" class='spx-navigation__mobile-button'>
-                        {this.mobileIcon && <i class={this.mobileIcon}/>}
-                        <span>Menu</span>
-                        {this.renderMenu(this.menuArray, 'parent', true)}
-                    </div>]}
+                  <div tabindex="0" role="button" class='spx-navigation__mobile-button'>
+                    {this.mobileIcon && <i class={this.mobileIcon}/>}
+                    <span>Menu</span>
+                    {this.renderMenu(this.menuArray, 'parent', true)}
+                  </div>]}
 
-            </nav>
+        </nav>
 
-        </Host>
+      </Host>
     }
 }

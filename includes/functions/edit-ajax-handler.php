@@ -22,7 +22,7 @@ function spxEditButtonAjaxHandler() {
 
 				/** Update ACF field. */
 
-				update_field( $key, esc_html( $value ), $post_id );
+				update_field( $key, htmlspecialchars( $value, ENT_QUOTES, 'UTF-8' ), $post_id );
 			}
 
 		} else {
@@ -33,7 +33,7 @@ function spxEditButtonAjaxHandler() {
 
 				/** Update option. */
 
-				update_option( $key, esc_html( $value ) );
+				update_option( $key, htmlspecialchars( $value, ENT_QUOTES, 'UTF-8' ) );
 			}
 
 		}
@@ -47,9 +47,3 @@ function spxEditButtonAjaxHandler() {
 		die();
 	}
 }
-
-add_action( 'plugins_loaded', function () {
-	if ( current_user_can( 'manage_options' ) ) {
-		add_action( 'wp_ajax_spxEditButtonAjaxHandler', 'spxEditButtonAjaxHandler' );
-	}
-} );

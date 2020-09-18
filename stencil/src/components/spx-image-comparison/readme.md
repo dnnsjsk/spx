@@ -7,13 +7,26 @@
 
 ## Properties
 
-| Property    | Attribute    | Description | Type     | Default                     |
-| ----------- | ------------ | ----------- | -------- | --------------------------- |
-| `color`     | `color`      |             | `string` | `'#ffffff'`                 |
-| `iconColor` | `icon-color` |             | `string` | `constants.stylePrimary500` |
-| `srcAfter`  | `src-after`  |             | `string` | `undefined`                 |
-| `srcBefore` | `src-before` |             | `string` | `undefined`                 |
-| `start`     | `start`      |             | `number` | `150`                       |
+| Property    | Attribute    | Description                    | Type     | Default                       |
+| ----------- | ------------ | ------------------------------ | -------- | ----------------------------- |
+| `color`     | `color`      |                                | `string` | `'#ffffff'`                   |
+| `iconColor` | `icon-color` |                                | `string` | `'var(--spx-color-gray-500)'` |
+| `srcAfter`  | `src-after`  | Image URL of the before image. | `string` | `undefined`                   |
+| `srcBefore` | `src-before` | Image URL of the after image.  | `string` | `undefined`                   |
+| `start`     | `start`      | Opening state in pixels.       | `number` | `150`                         |
+
+
+## Methods
+
+### `reload() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ----------------------------------------------

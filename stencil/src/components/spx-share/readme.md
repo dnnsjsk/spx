@@ -7,19 +7,31 @@
 
 ## Properties
 
-| Property              | Attribute               | Description | Type      | Default                       |
-| --------------------- | ----------------------- | ----------- | --------- | ----------------------------- |
-| `fontSize`            | `font-size`             |             | `string`  | `constants.styleFontSize`     |
-| `itemBackgroundColor` | `item-background-color` |             | `string`  | `undefined`                   |
-| `itemBorderRadius`    | `item-border-radius`    |             | `string`  | `constants.styleBorderRadius` |
-| `itemColor`           | `item-color`            |             | `string`  | `undefined`                   |
-| `itemGap`             | `item-gap`              |             | `string`  | `'0.5em'`                     |
-| `itemPadding`         | `item-padding`          |             | `string`  | `'0.5em'`                     |
-| `itemSize`            | `item-size`             |             | `string`  | `'1em'`                       |
-| `styling`             | `styling`               |             | `string`  | `undefined`                   |
-| `target`              | `target`                |             | `string`  | `'_blank'`                    |
-| `theme`               | `theme`                 |             | `string`  | `'default'`                   |
-| `vertical`            | `vertical`              |             | `boolean` | `undefined`                   |
+| Property           | Attribute            | Description                | Type      | Default          |
+| ------------------ | -------------------- | -------------------------- | --------- | ---------------- |
+| `fontSize`         | `font-size`          |                            | `string`  | `c.fontSize`     |
+| `itemBackground`   | `item-background`    |                            | `string`  | `undefined`      |
+| `itemBorderRadius` | `item-border-radius` |                            | `string`  | `c.borderRadius` |
+| `itemColor`        | `item-color`         | Gap between buttons.       | `string`  | `undefined`      |
+| `itemGap`          | `item-gap`           | Gap between buttons.       | `string`  | `'0.5em'`        |
+| `itemPadding`      | `item-padding`       |                            | `string`  | `'0.5em'`        |
+| `itemSize`         | `item-size`          |                            | `string`  | `'1em'`          |
+| `target`           | `target`             | Button href target.        | `string`  | `'_blank'`       |
+| `theme`            | `theme`              | Button theme.              | `string`  | `'default'`      |
+| `vertical`         | `vertical`           | Render buttons vertically. | `boolean` | `undefined`      |
+
+
+## Methods
+
+### `reload() => Promise<void>`
+
+
+
+#### Returns
+
+Type: `Promise<void>`
+
+
 
 
 ----------------------------------------------

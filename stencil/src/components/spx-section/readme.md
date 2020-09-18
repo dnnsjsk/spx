@@ -7,60 +7,24 @@
 
 ## Properties
 
-| Property                             | Attribute                                 | Description | Type      | Default                                         |
-| ------------------------------------ | ----------------------------------------- | ----------- | --------- | ----------------------------------------------- |
-| `containerMaxWidth`                  | `container-max-width`                     |             | `string`  | `'700px'`                                       |
-| `content`                            | `content`                                 |             | `boolean` | `undefined`                                     |
-| `contentMarginTop`                   | `content-margin-top`                      |             | `string`  | `'2rem'`                                        |
-| `date`                               | `date`                                    |             | `boolean` | `undefined`                                     |
-| `dateColor`                          | `date-color`                              |             | `string`  | `'#999999'`                                     |
-| `dateFontSize`                       | `date-font-size`                          |             | `string`  | `'1rem'`                                        |
-| `dateMarginTop`                      | `date-margin-top`                         |             | `string`  | `'1.2rem'`                                      |
-| `image`                              | `image`                                   |             | `boolean` | `undefined`                                     |
-| `imageBorderRadius`                  | `image-border-radius`                     |             | `string`  | `constants.styleBorderRadius`                   |
-| `imageMaxHeight`                     | `image-max-height`                        |             | `string`  | `undefined`                                     |
-| `imageObjectPosition`                | `image-object-position`                   |             | `string`  | `'50% 50%'`                                     |
-| `mobile`                             | `mobile`                                  |             | `number`  | `constants.styleMobileBP`                       |
-| `post`                               | `post`                                    |             | `string`  | `undefined`                                     |
-| `styling`                            | `styling`                                 |             | `string`  | `undefined`                                     |
-| `tableOfContents`                    | `table-of-contents`                       |             | `boolean` | `undefined`                                     |
-| `tableOfContentsBackground`          | `table-of-contents-background`            |             | `string`  | `constants.stylePrimary000`                     |
-| `tableOfContentsBorder`              | `table-of-contents-border`                |             | `string`  | `'1px solid ' + constants.stylePrimary100 + ''` |
-| `tableOfContentsBorderRadius`        | `table-of-contents-border-radius`         |             | `string`  | `constants.styleBorderRadius`                   |
-| `tableOfContentsHeading`             | `table-of-contents-heading`               |             | `string`  | `'Table of contents'`                           |
-| `tableOfContentsHeadingColor`        | `table-of-contents-heading-color`         |             | `string`  | `constants.stylePrimary700`                     |
-| `tableOfContentsHeadingFontSize`     | `table-of-contents-heading-font-size`     |             | `string`  | `'1.5rem'`                                      |
-| `tableOfContentsHeadingMarginBottom` | `table-of-contents-heading-margin-bottom` |             | `string`  | `'1rem'`                                        |
-| `tableOfContentsItemColor`           | `table-of-contents-item-color`            |             | `string`  | `constants.stylePrimary600`                     |
-| `tableOfContentsItemColorActive`     | `table-of-contents-item-color-active`     |             | `string`  | `constants.stylePrimary900`                     |
-| `tableOfContentsItemGap`             | `table-of-contents-item-gap`              |             | `string`  | `'1rem'`                                        |
-| `tableOfContentsMarginTop`           | `table-of-contents-margin-top`            |             | `string`  | `'3rem'`                                        |
-| `tableOfContentsOffset`              | `table-of-contents-offset`                |             | `any`     | `undefined`                                     |
-| `tableOfContentsPadding`             | `table-of-contents-padding`               |             | `string`  | `'2.5rem'`                                      |
-| `titleColor`                         | `title-color`                             |             | `string`  | `'#000000'`                                     |
-| `titleFontSize`                      | `title-font-size`                         |             | `string`  | `'2rem'`                                        |
-| `titleMarginTop`                     | `title-margin-top`                        |             | `string`  | `'3rem'`                                        |
+| Property                 | Attribute                  | Description                                                                  | Type                            | Default                  |
+| ------------------------ | -------------------------- | ---------------------------------------------------------------------------- | ------------------------------- | ------------------------ |
+| `background`             | `background`               |                                                                              | `string`                        | `undefined`              |
+| `columnSize`             | `column-size`              | Column size.                                                                 | `string`                        | `'1fr 1fr'`              |
+| `first`                  | `first`                    | If set, component will transform the header offset to the top-padding value. | `boolean`                       | `undefined`              |
+| `gap`                    | `gap`                      | Gap between columns.                                                         | `string`                        | `'var(--spx-space-2xl)'` |
+| `imagesGap`              | `images-gap`               | Gap between images.                                                          | `string`                        | `'var(--spx-space-md)'`  |
+| `layout`                 | `layout`                   | Layout of the section.                                                       | `string`                        | `'horizontal'`           |
+| `mediaBackground`        | `media-background`         | Background color for the media column.                                       | `string`                        | `undefined`              |
+| `mediaBackgroundOverlap` | `media-background-overlap` | Overlaps the background with the media column.                               | `boolean`                       | `undefined`              |
+| `mediaFull`              | `media-full`               | Removes the outer spacing for the media column.                              | `boolean`                       | `undefined`              |
+| `mediaFullMobileFix`     | `media-full-mobile-fix`    | Adds padding to the media column on mobile.                                  | `boolean`                       | `undefined`              |
+| `reverse`                | `reverse`                  | Reverses the column order.                                                   | `boolean`                       | `undefined`              |
+| `textAlignInner`         | `text-align-inner`         | Alignment for the inner text wrapper.                                        | `"center" \| "left" \| "right"` | `'left'`                 |
+| `textAlignOuter`         | `text-align-outer`         | Alignment for the outer text wrapper.                                        | `"center" \| "left" \| "right"` | `'left'`                 |
+| `textBackground`         | `text-background`          | Background color for the text column.                                        | `string`                        | `undefined`              |
+| `textBackgroundOverlap`  | `text-background-overlap`  | Overlaps the background with the text column.                                | `boolean`                       | `undefined`              |
 
-
-## Events
-
-| Event                     | Description | Type               |
-| ------------------------- | ----------- | ------------------ |
-| `spxSectionSingleDidLoad` |             | `CustomEvent<any>` |
-
-
-## Dependencies
-
-### Depends on
-
-- [spx-scrollspy](../spx-scrollspy)
-
-### Graph
-```mermaid
-graph TD;
-  spx-section-single --> spx-scrollspy
-  style spx-section-single fill:#f9f,stroke:#333,stroke-width:4px
-```
 
 ----------------------------------------------
 

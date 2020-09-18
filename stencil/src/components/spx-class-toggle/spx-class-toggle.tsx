@@ -1,89 +1,116 @@
-import {Component, Element, h, Host, Prop, State, Watch} from '@stencil/core';
-import {css} from "emotion";
-import * as constants from '../../constants/style.js';
+// eslint-disable-next-line no-unused-vars
+import { Component, Element, h, Host, Method, Prop, State, Watch } from '@stencil/core'
+import { css } from 'emotion'
+import { setVar } from '../../utils/setVar'
+import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
+
+const tag = 'spx-class-toggle'
+
+/**
+ * Toggle CSS classes on any element in the document.
+ */
 
 @Component({
-    tag: 'spx-class-toggle',
+  tag: 'spx-class-toggle'
 })
 
 export class SpxClassToggle {
-    @Element() el: HTMLElement;
+    @Element() el: HTMLSpxClassToggleElement
 
-    @Prop({reflectToAttr: true}) display: string = 'block';
+    @State() classesArray
+    @State() toggled
 
-    @Prop({reflectToAttr: true}) toggle: string = 'spx-class-toggle--active';
-    @Prop({reflectToAttr: true}) target: string;
-    @Prop({reflectToAttr: true}) local: string;
+    @Prop({ reflect: true }) display: string = 'block'
 
-    @State() classesArray;
-    @State() toggled;
+    /** Specify a local storage item, so the toggle state will be remembered when the user visits the site again. */
+
+    @Prop({ reflect: true }) local: string
+
+    /** Target element. Can take any querySelector value. (id, class, tag etc.) If none is set it will default to the first element inside. */
+
+    @Prop({ reflect: true }) target: string
+
+    /** List of classes that should be toggled. */
+
+    @Prop({ reflect: true }) toggle: string = 'spx-class-toggle--active'
 
     @Watch('toggle')
-    watchToggle() {
-        this.createToggleArray();
+    toggleChanged () {
+      this.createToggleArray()
     }
 
-    componentDidLoad() {
+    componentDidLoad () {
+      globalComponentDidLoad(this.el)
 
-        this.createToggleArray();
+      this.createToggleArray()
 
-        /** Check if local storage is set. */
+      /** Check if local storage is set. */
 
-        if (this.local) {
-            if (localStorage.getItem(this.local)) {
-                this.addClasses();
-            }
+      if (this.local) {
+        if (localStorage.getItem(this.local)) {
+          this.addClasses()
         }
+      }
     }
 
     /** Set toggle array. */
 
-    createToggleArray() {
-        this.classesArray = this.toggle.replace(/ /g, ',').split(',')
+    private createToggleArray = () => {
+      this.classesArray = this.toggle.replace(/ /g, ',').split(',')
     }
 
     /** Toggle classes. */
 
-    toggleClasses() {
-        this.classesArray.forEach(item => {
-            (this.target ? document.querySelectorAll(this.target) : this.el.querySelectorAll('*'))
-                .forEach(itemInner => {
-                    if (itemInner.classList.contains(item)) {
-                        itemInner.classList.remove(item);
-                        if (this.local) {
-                            localStorage.removeItem(this.local);
-                        }
-                    } else {
-                        itemInner.classList.add(item);
-                        if (this.local) {
-                            localStorage.setItem(this.local, String(true));
-                        }
-                    }
-                })
-        });
+    private toggleClasses = () => {
+      this.classesArray.forEach(item => {
+        (this.target ? document.querySelectorAll(this.target) : this.el.querySelectorAll('*'))
+          .forEach(itemInner => {
+            if (itemInner.classList.contains(item)) {
+              itemInner.classList.remove(item)
+              if (this.local) {
+                localStorage.removeItem(this.local)
+              }
+            } else {
+              itemInner.classList.add(item)
+              if (this.local) {
+                localStorage.setItem(this.local, String(true))
+              }
+            }
+          })
+      })
     }
 
     /** Add classes. */
 
-    addClasses() {
-        this.classesArray.forEach(item => {
-            (this.target ? document.querySelectorAll(this.target) : this.el.querySelectorAll('*'))
-                .forEach(itemInner => {
-                    if (itemInner.classList.contains(item)) {
-                        itemInner.classList.remove(item);
-                    } else {
-                        itemInner.classList.add(item);
-                    }
-                })
-        });
+    private addClasses () {
+      this.classesArray.forEach(item => {
+        (this.target ? document.querySelectorAll(this.target) : this.el.querySelectorAll('*'))
+          .forEach(itemInner => {
+            if (itemInner.classList.contains(item)) {
+              itemInner.classList.remove(item)
+            } else {
+              itemInner.classList.add(item)
+            }
+          })
+      })
     }
 
-    render() {
-        return <Host onClick={this.toggleClasses.bind(this)}
-                     class={css({
-                         display: constants.styleDisplay('class-toggle', this.display)
-                     })}>
-            <slot/>
-        </Host>
+    @Method()
+    async reload () {
+      this.componentDidLoad()
+    }
+
+    render () {
+      /** Host styles. */
+
+      const styleHost = css({
+        display: setVar(tag, 'display', this.display)
+      })
+
+      return <Host
+        onClick={this.toggleClasses}
+        class={styleHost}>
+        <slot/>
+      </Host>
     }
 }

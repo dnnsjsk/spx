@@ -1,116 +1,118 @@
-import {Component, Element, h, Host, Prop, State, Watch, Listen} from '@stencil/core';
-import {css, cx} from "emotion";
-import * as constants from "../../constants/style.js";
+// eslint-disable-next-line no-unused-vars
+import { Component, Element, h, Host, Prop, State, Watch, Listen } from '@stencil/core'
+import { css } from 'emotion'
+import { setVar } from '../../utils/setVar'
+
+const tag = 'spx-edit'
 
 @Component({
-    tag: 'spx-edit',
+  tag: 'spx-edit'
 })
 
 export class SpxEdit {
-    @Element() el: HTMLElement;
+    @Element() el: HTMLSpxEditElement
 
-    @Prop({reflectToAttr: true}) display: string = 'inline';
+    @State() originalText: string
 
-    @Prop({reflectToAttr: true}) type: string = 'acf';
-    @Prop({reflectToAttr: true}) name: string;
-    @Prop({reflectToAttr: true}) styling: string;
-    @Prop({reflectToAttr: true}) editable: boolean;
+    @Prop({ reflect: true }) display: string = 'inline'
 
-    @Prop({reflectToAttr: true}) placeholder: string = 'Enter some text here.';
-    @Prop({reflectToAttr: true}) placeholderColor: string = 'inherit';
-    @Prop({reflectToAttr: true}) placeholderOpacity: string = '0.7';
+    @Prop({ reflect: true }) name: string
 
-    @Prop({reflectToAttr: true}) outline: string = '2px solid red';
-    @Prop({reflectToAttr: true}) outlineFocus: string = 'blue';
+    @Prop({ reflect: true }) outline: string = '2px solid red'
 
-    @State() originalText: string;
+    @Prop({ reflect: true }) outlineFocus: string = 'blue'
+
+    @Prop({ reflect: true }) placeholder: string = 'Enter some text here.'
+
+    @Prop({ reflect: true }) placeholderColor: string = 'inherit'
+
+    @Prop({ reflect: true }) placeholderOpacity: string = '0.7'
+
+    @Prop({ reflect: true }) styling: string
+
+    @Prop({ reflect: true }) type: string = 'acf'
 
     /** Watch editable state. */
 
+    @Prop({ reflect: true }) editable: boolean
     @Watch('editable')
-    watchEditable() {
-        if (this.editable) {
-            this.el.setAttribute('contenteditable', 'true')
-        } else {
-            this.el.removeAttribute('contenteditable')
-        }
+    watchEditable () {
+      if (this.editable) {
+        this.el.setAttribute('contenteditable', 'true')
+      } else {
+        this.el.removeAttribute('contenteditable')
+      }
     }
 
     /** Prevent enter key. */
 
-    @Listen('keydown', {target: this.el})
-    preventEnter(evt) {
-
-        if (evt.keyCode === 13) {
-            evt.preventDefault();
-        }
+    @Listen('keydown', { target: this.el })
+    onClickEnter (evt) {
+      if (evt.keyCode === 13) {
+        evt.preventDefault()
+      }
     }
 
     /** Discard changes. */
 
-    @Listen('spxEditButtonDiscard', {target: "document"})
-    discardChanges() {
-        this.el.parentElement.innerHTML = this.originalText;
-        this.editable = false;
+    @Listen('spxEditButtonDiscard', { target: 'document' })
+    onClickDiscard () {
+      this.el.parentElement.innerHTML = this.originalText
+      this.editable = false
     }
 
     /** Save changes. */
 
-    @Listen('spxEditButtonSave', {target: "document"})
-    saveChanges() {
-        this.editable = false;
+    @Listen('spxEditButtonSave', { target: 'document' })
+    onClickSave () {
+      this.editable = false
     }
 
     /** Sets the new body string correctly on key press. */
 
-    @Listen('keyup', {target: this.el})
-    keyupListener() {
-        this.el.setAttribute('body-string', '&' + this.name + '=' + this.el.innerText);
+    @Listen('keyup', { target: this.el })
+    onClickKeyup () {
+      this.el.setAttribute('body-string', '&' + this.name + '=' + this.el.innerText)
     }
 
-    componentDidLoad() {
+    componentDidLoad () {
+      this.watchEditable()
 
-        this.watchEditable();
+      /** Set inner text as state. */
 
-        /** Set inner text as state. */
+      this.originalText = this.el.innerText
 
-        this.originalText = this.el.innerText;
+      /** Set original body string. */
 
-        /** Set original body string. */
-
-        this.el.setAttribute('body-string', '&' + this.name + '=' + this.originalText);
+      this.el.setAttribute('body-string', '&' + this.name + '=' + this.originalText)
     }
 
-    render() {
+    render () {
+      /** Host styles. */
 
-        /** Style default. */
+      const styleHost = css({
+        display: setVar(tag, 'display', this.display),
+        position: 'relative',
 
-        const styleDefault = css({
-            display: constants.styleDisplay('edit', this.display),
-            position: 'relative',
+        '&[contenteditable]': {
+          outline: this.outline,
+          cursor: 'text',
 
-            '&[contenteditable]': {
-                outline: this.outline,
-                cursor: 'text',
+          ':focus': {
+            outlineColor: this.outlineFocus
+          },
 
-                ':focus': {
-                    outlineColor: this.outlineFocus,
-                },
+          ':empty:before': {
+            content: '"' + this.placeholder + ' "',
+            color: this.placeholderColor,
+            opacity: this.placeholderOpacity
+          }
+        }
+      })
 
-                ':empty:before': {
-                    content: '"' + this.placeholder + ' "',
-                    color: this.placeholderColor,
-                    opacity: this.placeholderOpacity,
-                },
-            }
-        });
-
-        return <Host
-            class={cx(
-                {[constants.styleBase]: this.styling === 'none'},
-                {[styleDefault]: !this.styling}
-            )}>
-            <slot/>
-        </Host>
+      return <Host
+        class={styleHost}>
+        <slot/>
+      </Host>
     }
 }

@@ -1,65 +1,90 @@
-import {Component, Element, h, Host, Prop} from '@stencil/core';
-import {startsWith} from 'lodash-es';
-import {css} from "emotion";
-import * as constants from "../../constants/style.js";
+// eslint-disable-next-line no-unused-vars
+import { Component, Element, h, Host, Method, Prop } from '@stencil/core'
+import { startsWith } from 'lodash-es'
+import { css } from 'emotion'
+import { setVar } from '../../utils/setVar'
+import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
+
+const tag = 'spx-group'
+
+/**
+ * Pass attributes to all inner (spx) child elements.
+ * All attributes that start with g-* will be passed on to child elements.
+ * For example, to change all icons for a group of accordions, the data attribute would look like that:
+ * g-icon-indicator='far fa-arrow-down'
+ */
 
 @Component({
-    tag: 'spx-group',
+  tag: 'spx-group'
 })
 
 export class SpxGroup {
-    @Element() el: HTMLElement;
+    @Element() el: HTMLSpxGroupElement;
 
-    @Prop({reflectToAttr: true}) display: string = 'block';
+    @Prop({ reflect: true }) display: string = 'block'
 
-    componentDidLoad() {
+    /** Specifies a target element. */
 
-        this.forwardAttributes();
+    @Prop({ reflect: true }) target: string
 
-        /** Set up mutation observer. */
+    componentDidLoad () {
+      globalComponentDidLoad(this.el)
 
-        let observer = new MutationObserver((mutations) => {
-            mutations.forEach(() => {
-                this.forwardAttributes();
-            })
-        });
+      this.forwardAttributes()
 
-        observer.observe(this.el, {
-            attributes: true
-        });
+      /** Set up mutation observer. */
+
+      const observer = new MutationObserver((mutations) => {
+        mutations.forEach(() => {
+          this.forwardAttributes()
+        })
+      })
+
+      observer.observe(this.el, {
+        attributes: true
+      })
     }
 
-    forwardAttributes() {
+    private forwardAttributes () {
+      /** Function to filter elements. */
 
-        /** Function to filter elements. */
+      const getAllTagMatches = (regEx) => {
+        return Array.prototype.slice.call(this.el.querySelectorAll('*')).filter(function (el) {
+          return el.tagName.match(regEx)
+        })
+      }
 
-        const getAllTagMatches = (regEx) => {
-            return Array.prototype.slice.call(this.el.querySelectorAll(':scope > *')).filter(function (el) {
-                return el.tagName.match(regEx);
-            });
+      /** Get all tag matches. */
+
+      const elements = this.target ? getAllTagMatches(new RegExp(this.target, 'i')) : getAllTagMatches(/^spx/i)
+
+      /** Loop matches. */
+
+      for (var att, i = 0, atts = this.el.attributes, n = atts.length; i < n; i++) {
+        att = atts[i]
+        if (startsWith(att.nodeName, 'g-')) {
+          elements.forEach(item => {
+            item.setAttribute(att.nodeName.substring(2), att.nodeValue)
+          })
         }
-
-        /** Get all tag matches. */
-
-        let elements = getAllTagMatches(/^sp/i);
-
-        /** Loop matches. */
-
-        for (var att, i = 0, atts = this.el.attributes, n = atts.length; i < n; i++) {
-            att = atts[i];
-            if (startsWith(att.nodeName, 'g-')) {
-                elements.forEach(item => {
-                    item.setAttribute(att.nodeName.substring(2), att.nodeValue);
-                });
-            }
-        }
+      }
     }
 
-    render() {
-        return <Host class={css({
-            display: constants.styleDisplay('group', this.display)
-        })}>
-            <slot/>
-        </Host>
+    @Method()
+    async reload () {
+      this.componentDidLoad()
+    }
+
+    render () {
+      /** Host styles. */
+
+      const styleHost = css({
+        display: setVar(tag, 'display', this.display)
+      })
+
+      return <Host
+        class={styleHost}>
+        <slot/>
+      </Host>
     }
 }

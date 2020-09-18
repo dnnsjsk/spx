@@ -3,30 +3,6 @@
 use spx\get;
 
 /**
- * ACF gallery function.
- *
- * @param $field
- *
- * @since 1.0
- */
-
-function spxGetAcfGallery( $field ) {
-	get::acfGallery( $field );
-}
-
-/**
- * ACF gallery function.
- *
- * @param $field
- *
- * @since 1.15
- */
-
-function spxGetMbGallery( $field ) {
-	get::mbGallery( $field );
-}
-
-/**
  * Get gallery.
  *
  * @param $field
@@ -62,16 +38,6 @@ function spxGetNavigation( $name ) {
  * @since 1.0
  */
 
-function spxGetPost( $id = null, $dateFormat = null, $size = null ) {
+function spxGetPost( $id = NULL, $dateFormat = NULL, $size = NULL ) {
 	get::post( $id, $dateFormat, $size );
-}
-
-/**
- * Get breadcrumbs.
- *
- * @since 1.0
- */
-
-function spxGetBreadcrumbs() {
-	get::breadcrumbs();
 }

@@ -1,155 +1,215 @@
-import {Component, h, Host, Prop, Element, State} from '@stencil/core';
-import {css, cx, keyframes} from "emotion";
-import * as constants from '../../constants/style.js';
-import {stylePosition} from "../../constants/style.js";
+// eslint-disable-next-line no-unused-vars
+import { Component, h, Host, Prop, Element, State, Method } from '@stencil/core'
+import { css, keyframes } from 'emotion'
+import * as c from '../../constants/style'
+import { position } from '../../constants/style'
+import { setVar } from '../../utils/setVar'
+import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
+
+const tag = 'spx-snackbar'
+
+/**
+ * Notification bars with a variety of options.
+ * Great for success or failure messages.
+ * In default mode, the snackbar will fade out and remove itself from the DOM.
+ */
 
 @Component({
-    tag: 'spx-snackbar',
+  tag: 'spx-snackbar'
 })
 
 export class SpxSnackbar {
-    @Element() el: HTMLElement;
+    @Element() el: HTMLSpxSnackbarElement
 
-    @Prop({reflectToAttr: true}) styling: string;
+    @State() positionArray
 
-    @Prop({reflectToAttr: true}) text: string = "Hello, I'm a snackbar.";
+    @Prop({ reflect: true }) animationDelay: string = '200ms'
+    @Prop({ reflect: true }) animationDuration: string = '2000ms'
+    @Prop({ reflect: true }) background: string = 'var(--spx-color-gray-900)'
+    @Prop({ reflect: true }) border: string
+    @Prop({ reflect: true }) borderRadius: string = c.borderRadius
 
-    @Prop({reflectToAttr: true}) fixed: boolean;
-    @Prop({reflectToAttr: true}) closeable: boolean;
-    @Prop({reflectToAttr: true}) reverse: boolean;
+    /** Adds option to close snackbar after its creation. */
 
-    @Prop({reflectToAttr: true}) position: string = 'bottom-center';
-    @State() positionArray;
-    @Prop({reflectToAttr: true}) distanceX: string = '1em';
-    @Prop({reflectToAttr: true}) distanceY: string = '1em';
+    @Prop({ reflect: true }) closeable: boolean
+    @Prop({ reflect: true }) color: string = '#ffffff'
 
-    @Prop({reflectToAttr: true}) fontSize: string = '18px';
-    @Prop({reflectToAttr: true}) size: string;
-    @Prop({reflectToAttr: true}) padding: string = '1em';
-    @Prop({reflectToAttr: true}) color: string = '#ffffff';
-    @Prop({reflectToAttr: true}) background: string = constants.stylePrimary900;
-    @Prop({reflectToAttr: true}) border: string;
-    @Prop({reflectToAttr: true}) borderRadius: string = constants.styleBorderRadius;
+    /**
+     * Distance to the edge of the viewport on the x-axis.
+     * @CSS
+     */
 
-    @Prop({reflectToAttr: true}) animationDelay: string = '200ms';
-    @Prop({reflectToAttr: true}) animationDuration: string = '2000ms';
+    @Prop({ reflect: true }) distanceX: string = '1em'
 
-    componentWillLoad() {
-        this.positionArray = this.position.split('-');
+    /**
+     * Distance to the edge of the viewport on the y-axis.
+     * @CSS
+     */
+
+    @Prop({ reflect: true }) distanceY: string = '1em'
+
+    /** Makes snackbar not removable. */
+
+    @Prop({ reflect: true }) fixed: boolean
+    @Prop({ reflect: true }) fontSize: string = '18px'
+    @Prop({ reflect: true }) padding: string = '1em'
+
+    /**
+     * Component position in page.
+     * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
+     */
+
+    @Prop({ reflect: true }) position: string = 'bottom-center'
+
+    /** Reverses the close button if "closable" prop is true. */
+
+    @Prop({ reflect: true }) reverse: boolean
+
+    /**
+     * Defined component size.
+     * @choice 'sm', 'md', 'lg'
+     */
+
+    @Prop({ reflect: true }) size: string
+
+    /** Text inside snackbar. */
+
+    @Prop({ reflect: true }) text: string = "Hello, I'm a snackbar."
+
+    @Prop({ reflect: true }) zIndex: number = 99
+
+    componentWillLoad () {
+      this.positionArray = this.position.split('-')
     }
 
-    componentDidRender() {
+    componentDidLoad () {
+      globalComponentDidLoad(this.el)
+    }
 
-        const removeItem = () => {
-            let el = this.el;
-            el.remove();
+    componentDidRender () {
+      const removeItem = () => {
+        const el = this.el
+        el.remove()
+      }
+
+      /** Remove snackbar from dom after 5 seconds. */
+
+      if (!this.fixed) {
+        setTimeout(removeItem, 5000)
+      }
+    }
+
+    private removeItem = () => {
+      const el = this.el
+      el.remove()
+    }
+
+    @Method()
+    async reload () {
+      this.componentDidLoad()
+    }
+
+    render () {
+      /** Animation in and out. */
+
+      const kfOut = keyframes({
+        '0%, 100%': {
+          opacity: 0
+        },
+        '30%, 80%': {
+          opacity: 1
         }
+      })
 
-        /** Remove snackbar from dom after 5 seconds. */
+      /** Animation in. */
 
-        if (!this.fixed) {
-            setTimeout(removeItem, 5000)
+      const kfIn = keyframes({
+        '0%': {
+          opacity: 0
+        },
+        '30%, 100%': {
+          opacity: 1
         }
-    }
+      })
 
-    removeItem() {
-        let el = this.el;
-        el.remove();
-    }
+      /** Host styles. */
 
-    render() {
+      const styleHost = css({
+        ...position('snackbar', this.positionArray, this.distanceX, this.distanceY),
+        fontFamily: c.fontFamily,
+        fontSize:
+                this.size === 'sm' ? '16px'
+                  : this.size === 'md' ? '18px'
+                    : this.size === 'lg' ? '20px'
+                      : setVar(tag, 'font-size', this.fontSize),
+        position: 'fixed',
+        display: 'flex',
+        flexDirection: !this.reverse ? 'row-reverse' : 'row',
+        alignItems: 'center',
+        userSelect: 'none',
+        paddingTop: setVar(tag, 'padding', this.padding),
+        paddingRight: (this.reverse || !this.closeable) && setVar(tag, 'padding', this.padding),
+        paddingBottom: setVar(tag, 'padding', this.padding),
+        paddingLeft: !this.reverse && setVar(tag, 'padding', this.padding),
+        zIndex: this.zIndex,
+        opacity: 0,
+        color: setVar(tag, 'color', this.color),
+        background: setVar(tag, 'background', this.background),
+        border: setVar(tag, 'border', this.border),
+        borderRadius: setVar(tag, 'border-radius', this.borderRadius),
+        animation: !this.fixed ? kfOut : kfIn,
+        animationDelay: setVar(tag, 'animation-delay', this.animationDelay),
+        animationDuration: setVar(tag, 'animation-duration', this.animationDuration),
+        animationFillMode: 'forwards'
+      })
 
-        /** Animation in and out. */
+      /** Button styles. */
 
-        const kfOut = keyframes({
-            '0%, 100%': {
-                opacity: 0,
-            },
-            '30%, 80%': {
-                opacity: 1,
-            }
-        });
+      const styleButton = css({
+        padding: '0 ' + setVar(tag, 'padding', this.padding) + '',
+        width: '0.7em',
+        opacity: '0.3',
+        boxSizing: 'content-box',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
 
-        /** Animation in. */
+        svg: {
+          height: '1em'
+        }
+      })
 
-        const kfIn = keyframes({
-            '0%': {
-                opacity: 0,
-            },
-            '30%, 100%': {
-                opacity: 1,
-            }
-        });
+      /** Text styles. */
 
-        /** Style default. */
+      const styleText = css({
+        whiteSpace: 'nowrap'
+      })
 
-        const styleDefault = css({
-            ...stylePosition('snackbar', this.positionArray, this.distanceX, this.distanceY),
-            fontFamily: constants.styleFontFamily,
-            fontSize:
-                this.size === 'sm' ? '16px' :
-                    this.size === 'md' ? '18px' :
-                        this.size === 'lg' ? '20px' :
-                            constants.styleFontBase('snackbar', this.fontSize),
-            position: 'fixed',
-            display: 'flex',
-            flexDirection: !this.reverse ? 'row-reverse' : 'row',
-            alignItems: 'center',
-            userSelect: 'none',
-            paddingTop: 'var(--spx-snackbar-padding, ' + this.padding + ')',
-            paddingRight: (this.reverse || !this.closeable) && 'var(--spx-snackbar-padding, ' + this.padding + ')',
-            paddingBottom: 'var(--spx-snackbar-padding, ' + this.padding + ')',
-            paddingLeft: !this.reverse && 'var(--spx-snackbar-padding, ' + this.padding + ')',
-            zIndex: constants.styleZindex,
-            opacity: 0,
-            color: 'var(--spx-snackbar-color, ' + this.color + ')',
-            background: 'var(--spx-snackbar-background, ' + this.background + ')',
-            border: 'var(--spx-snackbar-border, ' + this.border + ')',
-            borderRadius: 'var(--spx-snackbar-border-radius, ' + this.borderRadius + ')',
-            animation: !this.fixed ? kfOut : kfIn,
-            animationDelay: 'var(--spx-snackbar-animation-delay, ' + this.animationDelay + ')',
-            animationDuration: 'var(--spx-snackbar-animation-duration, ' + this.animationDuration + ')',
-            animationFillMode: 'forwards',
-        });
+      return <Host class={styleHost}>
 
-        return <Host class={cx(
-            {[constants.styleBase]: this.styling === 'none'},
-            {[styleDefault]: !this.styling}
-        )}>
+        {/** Close button. */}
 
-            {/** Close button. */}
+        {this.closeable &&
 
-            {this.closeable &&
-
-            <div role="button" onClick={this.removeItem.bind(this)}
-                 class={css({
-                     padding: '0 var(--spx-snackbar-padding, ' + this.padding + ')',
-                     width: '0.7em',
-                     opacity: '0.3',
-                     boxSizing: 'content-box',
-                     cursor: 'pointer',
-                     display: 'flex',
-                     alignItems: 'center',
-                     justifyContent: 'center',
-                 })}>
-                <svg class={css({
-                    height: '1em',
-                })}
-                     aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 320 512">
-                    <path fill="currentColor"
-                          d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z"/>
-                </svg>
+            <div
+              role="button"
+              onClick={this.removeItem}
+              class={styleButton}>
+              <svg
+                aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 320 512">
+                <path fill="currentColor"
+                  d="M193.94 256L296.5 153.44l21.15-21.15c3.12-3.12 3.12-8.19 0-11.31l-22.63-22.63c-3.12-3.12-8.19-3.12-11.31 0L160 222.06 36.29 98.34c-3.12-3.12-8.19-3.12-11.31 0L2.34 120.97c-3.12 3.12-3.12 8.19 0 11.31L126.06 256 2.34 379.71c-3.12 3.12-3.12 8.19 0 11.31l22.63 22.63c3.12 3.12 8.19 3.12 11.31 0L160 289.94 262.56 392.5l21.15 21.15c3.12 3.12 8.19 3.12 11.31 0l22.63-22.63c3.12-3.12 3.12-8.19 0-11.31L193.94 256z"/>
+              </svg>
             </div>}
 
-            {/** Text. */}
+        {/** Text. */}
 
-            <div class={css({
-                whiteSpace: 'nowrap'
-            })}>
-                {this.text ? this.text : <slot/>}
-            </div>
+        <div class={styleText}>
+          {this.text ? this.text : <slot/>}
+        </div>
 
-        </Host>;
+      </Host>
     }
 }

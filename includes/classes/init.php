@@ -29,16 +29,16 @@ class init {
 
 			wp_enqueue_script(
 				'spx-module',
-				plugins_url( '../assets/js/build/spx.esm.js', dirname( __FILE__ ) ),
+				plugins_url( '../assets/js/components/build/spx.esm.js', dirname( __FILE__ ) ),
 				array(),
-				filemtime( SPX_DIR . '/assets/js/build/spx.esm.js' ),
+				filemtime( SPX_DIR . '/assets/js/components/build/spx.esm.js' ),
 				FALSE );
 
 			wp_enqueue_script(
 				'spx-nomodule',
-				plugins_url( '../assets/js/build/spx.js', dirname( __FILE__ ) ),
+				plugins_url( '../assets/js/components/build/spx.js', dirname( __FILE__ ) ),
 				array(),
-				filemtime( SPX_DIR . '/assets/js/build/spx.js' ),
+				filemtime( SPX_DIR . '/assets/js/components/build/spx.js' ),
 				FALSE );
 
 			wp_localize_script( 'spx-module', 'spx', $localizeArray );
@@ -71,4 +71,51 @@ class init {
 
 	}
 
+	/**
+	 * Add footer script.
+	 *
+	 * @since 2.0
+	 */
+
+	public static function addFooterScript() {
+
+		add_action( 'wp_footer', function () {
+
+			echo '
+				<script 
+				id="spx-footer">
+				' . file_get_contents( SPX_DIR . '/assets/js/footer.js' ) . '
+				</script>';
+
+		} );
+
+	}
+
+	/**
+	 * Initialise theme.
+	 *
+	 * @param $name
+	 *
+	 * @since 2.0
+	 */
+
+	public static function theme( $name ) {
+
+		add_action( 'wp_head', function () use ( &$name ) {
+
+			echo '
+				<style id="spx-style">
+				' . file_get_contents( SPX_DIR . '/assets/css/spx.css' ) . '
+				</style>';
+
+			echo '
+				<style id="spx-theme-' . $name . '">
+				' . file_get_contents( SPX_DIR . '/assets/css/themes/' . $name . '.css' ) . '
+				</style>';
+
+		} );
+
+	}
+
 }
+
