@@ -37,7 +37,14 @@ async function generateCustomElementsJSON (docsData: JsonDocs) {
         name: prop.name,
         type: prop.type,
         description: prop.docs,
-        defaultValue: prop.default,
+        defaultValue:
+            prop.default === 'c.mobileBpWidth' ? '\'768\''
+              : prop.default === 'c.fontFamily' ? '\'var(--spx-font-family)\''
+                : prop.default === 'c.fontSize' ? '\'var(--spx-font-size)\''
+                  : prop.default === 'c.borderRadius' ? '\'var(--spx-border-radius)\''
+                    : prop.default === 'c.transitionDuration' ? '\'var(--spx-transition-duration)\''
+                      : prop.default === 'c.transitionDuration2' ? '\'var(--spx-transition-duration-2)\''
+                        : prop.default === 'c.transitionTimingFunction' ? '\'var(--spx-transition-timing-function)\'' : prop.default,
         tags: prop.docsTags
       })),
 

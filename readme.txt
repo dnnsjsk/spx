@@ -15,6 +15,18 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 2.03 =
+* Edit Button: fix ajax handler.
+
+= 2.02 =
+* Fix: capability for admin menu item.
+* Fix: don't load footer script when section system isn't used.
+* Fix: author name.
+* Fix: remove unnecessary files from build folder.
+
+= 2.01 =
+* Fix: version number in WP plugin menu.
+
 = 2.0 =
 
 * New: Section section system (container, button, card, footer, header, text-media).
@@ -30,6 +42,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * New: elements can now have a custom transition-delay variable where applicable. (overwrites the global variable)
 * New: elements can now have a custom transition-timing-function variable where applicable. (overwrites the global variable)
 * New: global space-scale for components and sections.
+* New: reload method for all components.
 * Oxygen: new wrapper component that replaces all other native elements.
 * Fix: gray color scale is now always applied to the body element as CSS variables.
 * Fix: remove unnecessary classes from some components. The Attribute/CSS vars API should now the main way of styling elements.

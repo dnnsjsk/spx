@@ -72,26 +72,6 @@ class init {
 	}
 
 	/**
-	 * Add footer script.
-	 *
-	 * @since 2.0
-	 */
-
-	public static function addFooterScript() {
-
-		add_action( 'wp_footer', function () {
-
-			echo '
-				<script 
-				id="spx-footer">
-				' . file_get_contents( SPX_DIR . '/assets/js/footer.js' ) . '
-				</script>';
-
-		} );
-
-	}
-
-	/**
 	 * Initialise theme.
 	 *
 	 * @param $name
@@ -112,6 +92,16 @@ class init {
 				<style id="spx-theme-' . $name . '">
 				' . file_get_contents( SPX_DIR . '/assets/css/themes/' . $name . '.css' ) . '
 				</style>';
+
+		} );
+
+		add_action( 'wp_footer', function () {
+
+			echo '
+				<script 
+				id="spx-footer">
+				' . file_get_contents( SPX_DIR . '/assets/js/footer.js' ) . '
+				</script>';
 
 		} );
 

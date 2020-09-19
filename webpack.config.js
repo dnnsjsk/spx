@@ -38,6 +38,12 @@ module.exports = {
         path.resolve(__dirname, '../../../../../releases/spx-release/includes/*'),
         path.resolve(__dirname, '../../../../../releases/spx-release/readme.txt'),
         path.resolve(__dirname, '../../../../../releases/spx-release/spx.php')],
+      cleanAfterEveryBuildPatterns: [
+        path.resolve(__dirname, '../../../../../releases/spx-release/assets/js/components/host.config.json'),
+        path.resolve(__dirname, '../../../../../releases/spx-release/assets/js/spxWebpack.js'),
+        path.resolve(__dirname, '../../../../../releases/spx-release/assets/.DS_STORE'),
+        path.resolve(__dirname, '../../../../../releases/spx-release/.DS_STORE')
+      ],
       dangerouslyAllowCleanPatternsOutsideProject: true
     })
   ]

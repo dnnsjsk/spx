@@ -46,7 +46,7 @@ add_action( 'admin_init', 'spxPluginUpdater', 0 );
  */
 
 function spxLicenseMenu() {
-	add_submenu_page( 'tools.php', 'spx', 'spx', 'spx', SPX_LICENSE_PAGE, 'spxLicensePage' );
+	add_submenu_page( 'tools.php', 'spx', 'spx', 'administrator', SPX_LICENSE_PAGE, 'spxLicensePage' );
 }
 
 add_action('admin_menu', 'spxLicenseMenu');

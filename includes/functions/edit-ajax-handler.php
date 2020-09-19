@@ -47,3 +47,9 @@ function spxEditButtonAjaxHandler() {
 		die();
 	}
 }
+
+add_action( 'plugins_loaded', function () {
+	if ( current_user_can( 'manage_options' ) ) {
+		add_action( 'wp_ajax_spxEditButtonAjaxHandler', 'spxEditButtonAjaxHandler' );
+	}
+} );

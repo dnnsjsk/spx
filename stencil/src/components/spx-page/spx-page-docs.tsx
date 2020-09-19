@@ -88,10 +88,13 @@ export class SpxPageDocs {
       this.mobile = window.innerWidth < this.bpMobile
     }
 
+    componentWillLoad () {
+      this.onResize()
+    }
+
     componentDidLoad () {
       globalComponentDidLoad(this.el)
       this.createNavigation()
-      this.onResize()
 
       if (window.location.hash) {
         document.querySelector(window.location.hash).scrollIntoView()
@@ -131,7 +134,7 @@ export class SpxPageDocs {
       /** Host. */
 
       const styleHost = css({
-        display: 'grid',
+        display: this.mobile ? 'block' : 'grid',
         gridTemplateColumns: !this.mobile && 'auto 1fr',
         gridAutoFlow: 'column'
       })
@@ -207,7 +210,7 @@ export class SpxPageDocs {
         },
 
         'spx-code': {
-          maxWidth: 'calc(100vw - 2 * ' + this.spaceX + ')'
+          maxWidth: 'calc(100vw - ' + this.spaceX + ')'
         },
 
         img: {
@@ -221,7 +224,7 @@ export class SpxPageDocs {
 
       return <Host class={styleHost}>
         <div class={styleNavigationWrap}>
-          <spx-scrollspy display="grid" url-change
+          <spx-scrollspy display="grid" url-change={true} offset="100"
             class={styleNavigationMerge}>
             <ul ref={(el) => this.navigation = el as HTMLElement}/>
           </spx-scrollspy>

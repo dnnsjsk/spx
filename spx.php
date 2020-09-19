@@ -4,8 +4,8 @@
  * Plugin Name: spx
  * Plugin URI: https://spx.dev
  * Description: An ever growing collection of flexible web components to supercharge your workflow.
- * Author: Harmoni
- * Version: 1.5
+ * Author: Dennis Josek
+ * Version: 2.03
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
@@ -61,4 +61,3 @@ include plugin_dir_path( __FILE__ ) . 'includes/admin/spx-updater.php';
 
 init::enqueueScripts();
 init::addScriptTags();
-init::addFooterScript();
