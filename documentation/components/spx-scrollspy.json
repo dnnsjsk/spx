@@ -1,0 +1,68 @@
+{
+  "name": "spx-scrollspy",
+  "description": "Automatically add CSS classes to navigation items and content elements depending on the scroll position.\nYou can see it in action on the left of this page! (on desktop)",
+  "properties": [
+    {
+      "id": "scrollspy-contentClass",
+      "name": "contentClass",
+      "type": "string",
+      "description": "Applied class to active content element.",
+      "defaultValue": "'spx-scrollspy__content--active'",
+      "tags": []
+    },
+    {
+      "id": "scrollspy-display",
+      "name": "display",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'block'",
+      "tags": []
+    },
+    {
+      "id": "scrollspy-navClass",
+      "name": "navClass",
+      "type": "string",
+      "description": "Applied class to active navigation element.",
+      "defaultValue": "'spx-scrollspy__nav--active'",
+      "tags": []
+    },
+    {
+      "id": "scrollspy-offset",
+      "name": "offset",
+      "type": "any",
+      "description": "Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated..",
+      "defaultValue": "0",
+      "tags": []
+    },
+    {
+      "id": "scrollspy-target",
+      "name": "target",
+      "type": "string",
+      "description": "Target element. Can take any querySelector value. (id, class, tag etc.)",
+      "defaultValue": "'a'",
+      "tags": []
+    },
+    {
+      "id": "scrollspy-urlChange",
+      "name": "urlChange",
+      "type": "boolean",
+      "description": "Appends the currently active link to the end of the URL.",
+      "defaultValue": "false",
+      "tags": []
+    }
+  ],
+  "events": [
+    {
+      "name": "spxScrollspyDidLoad",
+      "description": ""
+    }
+  ],
+  "methods": [
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    }
+  ],
+  "slots": []
+}

@@ -1,0 +1,98 @@
+{
+  "name": "spx-section-footer",
+  "description": "Footer component for sections.",
+  "properties": [
+    {
+      "id": "section-footer-columnSizeMax",
+      "name": "columnSizeMax",
+      "type": "string",
+      "description": "Maximum column size.",
+      "defaultValue": "'1fr'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "section-footer-columnSizeMin",
+      "name": "columnSizeMin",
+      "type": "string",
+      "description": "Minimum column size.",
+      "defaultValue": "'200px'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "section-footer-gap",
+      "name": "gap",
+      "type": "string",
+      "description": "Gap between columns.",
+      "defaultValue": "'var(--spx-space-md)'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "section-footer-imageMaxHeight",
+      "name": "imageMaxHeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'40px'",
+      "tags": []
+    },
+    {
+      "id": "section-footer-spaceBefore",
+      "name": "spaceBefore",
+      "type": "string",
+      "description": "Space before the footer.",
+      "defaultValue": "'var(--spx-space-4xl)'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "section-footer-spaceY",
+      "name": "spaceY",
+      "type": "string",
+      "description": "Distance to the edge of the viewport on the y-axis.",
+      "defaultValue": "'var(--spx-space-3xl)'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "section-footer-textMaxWidth",
+      "name": "textMaxWidth",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'370px'",
+      "tags": []
+    },
+    {
+      "id": "section-footer-theme",
+      "name": "theme",
+      "type": "string",
+      "description": "Footer theme.",
+      "defaultValue": "'dark'",
+      "tags": [
+        {
+          "text": "'dark', 'light'",
+          "name": "choice"
+        }
+      ]
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

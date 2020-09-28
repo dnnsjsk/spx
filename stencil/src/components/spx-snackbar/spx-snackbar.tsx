@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { Component, h, Host, Prop, Element, State, Method } from '@stencil/core'
+import { Component, h, Host, Prop, Element, State, Method, Watch } from '@stencil/core'
 import { css, keyframes } from 'emotion'
 import * as c from '../../constants/style'
 import { position } from '../../constants/style'
@@ -59,18 +59,15 @@ export class SpxSnackbar {
      * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
      */
 
-    @Prop({ reflect: true }) position: string = 'bottom-center'
+    @Prop({ reflect: true }) position: string = 'bottom-right'
+
+    /** CSS property position of button. */
+
+    @Prop({ reflect: true }) positionCss: 'fixed' | 'absolute' | 'relative' | 'static' = 'fixed'
 
     /** Reverses the close button if "closable" prop is true. */
 
     @Prop({ reflect: true }) reverse: boolean
-
-    /**
-     * Defined component size.
-     * @choice 'sm', 'md', 'lg'
-     */
-
-    @Prop({ reflect: true }) size: string
 
     /** Text inside snackbar. */
 
@@ -78,8 +75,13 @@ export class SpxSnackbar {
 
     @Prop({ reflect: true }) zIndex: number = 99
 
+    @Watch('position')
+    positionChanged () {
+      this.createPositionArray()
+    }
+
     componentWillLoad () {
-      this.positionArray = this.position.split('-')
+      this.createPositionArray()
     }
 
     componentDidLoad () {
@@ -97,6 +99,10 @@ export class SpxSnackbar {
       if (!this.fixed) {
         setTimeout(removeItem, 5000)
       }
+    }
+
+    private createPositionArray () {
+      this.positionArray = this.position.split('-')
     }
 
     private removeItem = () => {
@@ -136,13 +142,7 @@ export class SpxSnackbar {
 
       const styleHost = css({
         ...position('snackbar', this.positionArray, this.distanceX, this.distanceY),
-        fontFamily: c.fontFamily,
-        fontSize:
-                this.size === 'sm' ? '16px'
-                  : this.size === 'md' ? '18px'
-                    : this.size === 'lg' ? '20px'
-                      : setVar(tag, 'font-size', this.fontSize),
-        position: 'fixed',
+        position: this.positionCss,
         display: 'flex',
         flexDirection: !this.reverse ? 'row-reverse' : 'row',
         alignItems: 'center',
@@ -150,7 +150,7 @@ export class SpxSnackbar {
         paddingTop: setVar(tag, 'padding', this.padding),
         paddingRight: (this.reverse || !this.closeable) && setVar(tag, 'padding', this.padding),
         paddingBottom: setVar(tag, 'padding', this.padding),
-        paddingLeft: !this.reverse && setVar(tag, 'padding', this.padding),
+        paddingLeft: this.closeable && this.reverse ? 0 : setVar(tag, 'padding', this.padding),
         zIndex: this.zIndex,
         opacity: 0,
         color: setVar(tag, 'color', this.color),
@@ -183,7 +183,9 @@ export class SpxSnackbar {
       /** Text styles. */
 
       const styleText = css({
-        whiteSpace: 'nowrap'
+        whiteSpace: 'nowrap',
+        fontFamily: c.fontFamily,
+        fontSize: setVar(tag, 'font-size', this.fontSize)
       })
 
       return <Host class={styleHost}>
@@ -206,9 +208,7 @@ export class SpxSnackbar {
 
         {/** Text. */}
 
-        <div class={styleText}>
-          {this.text ? this.text : <slot/>}
-        </div>
+        <span class={styleText}>{this.text ? this.text : <slot/>}</span>
 
       </Host>
     }

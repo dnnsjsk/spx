@@ -1,0 +1,160 @@
+{
+  "name": "spx-snackbar",
+  "description": "Notification bars with a variety of options.\nGreat for success or failure messages.\nIn default mode, the snackbar will fade out and remove itself from the DOM.",
+  "properties": [
+    {
+      "id": "snackbar-animationDelay",
+      "name": "animationDelay",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'200ms'",
+      "tags": []
+    },
+    {
+      "id": "snackbar-animationDuration",
+      "name": "animationDuration",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'2000ms'",
+      "tags": []
+    },
+    {
+      "id": "snackbar-background",
+      "name": "background",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-900)'",
+      "tags": []
+    },
+    {
+      "id": "snackbar-border",
+      "name": "border",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "snackbar-borderRadius",
+      "name": "borderRadius",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-border-radius)'",
+      "tags": []
+    },
+    {
+      "id": "snackbar-closeable",
+      "name": "closeable",
+      "type": "boolean",
+      "description": "Adds option to close snackbar after its creation.",
+      "tags": []
+    },
+    {
+      "id": "snackbar-color",
+      "name": "color",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'#ffffff'",
+      "tags": []
+    },
+    {
+      "id": "snackbar-distanceX",
+      "name": "distanceX",
+      "type": "string",
+      "description": "Distance to the edge of the viewport on the x-axis.",
+      "defaultValue": "'1em'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "snackbar-distanceY",
+      "name": "distanceY",
+      "type": "string",
+      "description": "Distance to the edge of the viewport on the y-axis.",
+      "defaultValue": "'1em'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "snackbar-fixed",
+      "name": "fixed",
+      "type": "boolean",
+      "description": "Makes snackbar not removable.",
+      "tags": []
+    },
+    {
+      "id": "snackbar-fontSize",
+      "name": "fontSize",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'18px'",
+      "tags": []
+    },
+    {
+      "id": "snackbar-padding",
+      "name": "padding",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'1em'",
+      "tags": []
+    },
+    {
+      "id": "snackbar-position",
+      "name": "position",
+      "type": "string",
+      "description": "Component position in page.",
+      "defaultValue": "'bottom-right'",
+      "tags": [
+        {
+          "text": "'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "snackbar-positionCss",
+      "name": "positionCss",
+      "type": "\"absolute\" | \"fixed\" | \"relative\" | \"static\"",
+      "description": "CSS property position of button.",
+      "defaultValue": "'fixed'",
+      "tags": []
+    },
+    {
+      "id": "snackbar-reverse",
+      "name": "reverse",
+      "type": "boolean",
+      "description": "Reverses the close button if \"closable\" prop is true.",
+      "tags": []
+    },
+    {
+      "id": "snackbar-text",
+      "name": "text",
+      "type": "string",
+      "description": "Text inside snackbar.",
+      "defaultValue": "\"Hello, I'm a snackbar.\"",
+      "tags": []
+    },
+    {
+      "id": "snackbar-zIndex",
+      "name": "zIndex",
+      "type": "number",
+      "description": "",
+      "defaultValue": "99",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    }
+  ],
+  "slots": []
+}

@@ -1,0 +1,52 @@
+{
+  "name": "spx-code",
+  "description": "Highlight a block of code similar to a code editor.",
+  "properties": [
+    {
+      "id": "code-borderRadius",
+      "name": "borderRadius",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-border-radius)'",
+      "tags": []
+    },
+    {
+      "id": "code-padding",
+      "name": "padding",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-space-lg)'",
+      "tags": []
+    },
+    {
+      "id": "code-theme",
+      "name": "theme",
+      "type": "string",
+      "description": "Colour theme.",
+      "defaultValue": "'default'",
+      "tags": [
+        {
+          "text": "'default', 'dracula'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "code-type",
+      "name": "type",
+      "type": "string",
+      "description": "Determines the programming language.",
+      "defaultValue": "'markup'",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    }
+  ],
+  "slots": []
+}

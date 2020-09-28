@@ -1,0 +1,45 @@
+{
+  "name": "spx-slideshow",
+  "description": "Continuously playing slideshow.",
+  "properties": [
+    {
+      "id": "slideshow-duration",
+      "name": "duration",
+      "type": "string",
+      "description": "Duration of slideshow to complete one cycle.",
+      "defaultValue": "'60s'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "slideshow-gap",
+      "name": "gap",
+      "type": "string",
+      "description": "Gap between inner elements.",
+      "defaultValue": "'var(--spx-space-lg)'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "slideshow-maxWidth",
+      "name": "maxWidth",
+      "type": "string",
+      "description": "Max width of inner elements.",
+      "defaultValue": "'350px'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

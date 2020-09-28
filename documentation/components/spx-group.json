@@ -1,0 +1,30 @@
+{
+  "name": "spx-group",
+  "description": "Pass attributes to all inner (spx) child elements.\nAll attributes that start with g-* will be passed on to child elements.\nFor example, to change all icons for a group of accordions, the data attribute would look like that:\ng-icon-indicator='far fa-arrow-down'",
+  "properties": [
+    {
+      "id": "group-display",
+      "name": "display",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'block'",
+      "tags": []
+    },
+    {
+      "id": "group-target",
+      "name": "target",
+      "type": "string",
+      "description": "Specifies a target element.",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    }
+  ],
+  "slots": []
+}

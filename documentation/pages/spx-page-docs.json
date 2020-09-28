@@ -1,0 +1,191 @@
+{
+  "name": "spx-page-docs",
+  "description": "Renders a documentation page similar to the one you are currently seeing here.\nEvery h1 tag becomes a navigation entry, while navigation headings get created by applying\nthe \"data-spx-docs-heading\" attribute to the first h1 of a new section.",
+  "properties": [
+    {
+      "id": "page-docs-bpMobile",
+      "name": "bpMobile",
+      "type": "number",
+      "description": "",
+      "defaultValue": "1024",
+      "tags": []
+    },
+    {
+      "id": "page-docs-contentHeadingFontFamily",
+      "name": "contentHeadingFontFamily",
+      "type": "string",
+      "description": "",
+      "defaultValue": "state.fontFamilyPrimary",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationBackground",
+      "name": "navigationBackground",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationFontFamily",
+      "name": "navigationFontFamily",
+      "type": "string",
+      "description": "",
+      "defaultValue": "state.fontFamilyPrimary",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationFontSizeMultiplier",
+      "name": "navigationFontSizeMultiplier",
+      "type": "number",
+      "description": "",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationGap",
+      "name": "navigationGap",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-space-2xs)'",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationLinkColor",
+      "name": "navigationLinkColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-800)'",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationLinkColorActive",
+      "name": "navigationLinkColorActive",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-primary-A700)'",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationLinkFontSizeMultiplier",
+      "name": "navigationLinkFontSizeMultiplier",
+      "type": "number",
+      "description": "",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationLinkFontWeight",
+      "name": "navigationLinkFontWeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'500'",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationLinkLetterSpacing",
+      "name": "navigationLinkLetterSpacing",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0'",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationLinkLineHeight",
+      "name": "navigationLinkLineHeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'1.25'",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationLinkTextTransform",
+      "name": "navigationLinkTextTransform",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'default'",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationTitleColor",
+      "name": "navigationTitleColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-600)'",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationTitleFontWeight",
+      "name": "navigationTitleFontWeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'500'",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationTitleLetterSpacing",
+      "name": "navigationTitleLetterSpacing",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0'",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationTitleLineHeight",
+      "name": "navigationTitleLineHeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'1.25'",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationTitleTextTransform",
+      "name": "navigationTitleTextTransform",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'uppercase'",
+      "tags": []
+    },
+    {
+      "id": "page-docs-offsetMarginTop",
+      "name": "offsetMarginTop",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-space-md)'",
+      "tags": []
+    },
+    {
+      "id": "page-docs-spaceX",
+      "name": "spaceX",
+      "type": "string",
+      "description": "Distance to the edge of the viewport on the x-axis.",
+      "defaultValue": "state.spaceX",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "page-docs-spaceY",
+      "name": "spaceY",
+      "type": "string",
+      "description": "Distance to the edge of the viewport on the y-axis.",
+      "defaultValue": "'var(--spx-space-xl)'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "page-docs-uniqueId",
+      "name": "uniqueId",
+      "type": "boolean",
+      "description": "",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

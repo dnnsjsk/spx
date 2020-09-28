@@ -1,0 +1,24 @@
+{
+  "name": "spx-icon",
+  "description": "",
+  "properties": [
+    {
+      "id": "icon-icon",
+      "name": "icon",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "icon-type",
+      "name": "type",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'fa'",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

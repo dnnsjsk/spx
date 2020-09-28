@@ -1,0 +1,45 @@
+{
+  "name": "spx-class-toggle",
+  "description": "Toggle CSS classes on any element in the document.",
+  "properties": [
+    {
+      "id": "class-toggle-display",
+      "name": "display",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'block'",
+      "tags": []
+    },
+    {
+      "id": "class-toggle-local",
+      "name": "local",
+      "type": "string",
+      "description": "Specify a local storage item, so the toggle state will be remembered when the user visits the site again.",
+      "tags": []
+    },
+    {
+      "id": "class-toggle-target",
+      "name": "target",
+      "type": "string",
+      "description": "Target element. Can take any querySelector value. (id, class, tag etc.) If none is set it will default to the first element inside.",
+      "tags": []
+    },
+    {
+      "id": "class-toggle-toggle",
+      "name": "toggle",
+      "type": "string",
+      "description": "List of classes that should be toggled.",
+      "defaultValue": "'spx-class-toggle--active'",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    }
+  ],
+  "slots": []
+}

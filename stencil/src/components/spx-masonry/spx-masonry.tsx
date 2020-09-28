@@ -27,7 +27,7 @@ export class SpxMasonry {
 
     /** Number of columns. */
 
-    @Prop({ reflect: true }) columns: number
+    @Prop({ reflect: true }) columns: number = 4
 
     /**
      * Gap between images.
@@ -135,7 +135,8 @@ export class SpxMasonry {
         container: this.container,
         margin: 0,
         mobileFirst: true,
-        columns: this.columns || 4,
+        runOnImageLoad: true,
+        columns: this.columns,
         breakAt:
                 this.bpColumns
                   ? this.bpColumnsObject : {

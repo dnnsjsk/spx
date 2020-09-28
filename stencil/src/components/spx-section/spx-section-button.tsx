@@ -90,7 +90,9 @@ export class SpxSectionButton {
       /** Host styles. */
 
       const styleHost = css({
-        display: 'block',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         cursor: 'pointer',
         border: 'none',
         background: this.applyColors('background'),
@@ -98,6 +100,14 @@ export class SpxSectionButton {
         transitionProperty: 'background',
         transitionDuration: setVar(tag, 'transition-duration', this.transitionDuration),
         transitionTimingFunction: setVar(tag, 'transition-timing-function', this.transitionDuration),
+
+        a: {
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center'
+        },
 
         '&:hover': {
           background: this.applyColors('background-hover')

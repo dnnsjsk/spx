@@ -44,6 +44,10 @@ export class SpxSectionTextMedia {
 
     @Prop({ reflect: true }) gap: string = 'var(--spx-space-2xl)'
 
+    /** Hides the media column. */
+
+    @Prop({ reflect: true }) hideMedia: boolean
+
     /**
      * Gap between images.
      * @CSS
@@ -194,7 +198,7 @@ export class SpxSectionTextMedia {
         display: 'flex',
         flexWrap: 'wrap',
         width: this.layout === 'vertical' && '100%',
-        justifyContent: this.layout === 'vertical' && 'center'
+        justifyContent: textAlignInner
       })
 
       /** Media styles. */
@@ -245,9 +249,11 @@ export class SpxSectionTextMedia {
 
         {/** Media. */}
 
+        {!this.hideMedia &&
+
         <div class={styleMedia}>
           <slot name="media"/>
-        </div>
+        </div>}
 
       </Host>
     }

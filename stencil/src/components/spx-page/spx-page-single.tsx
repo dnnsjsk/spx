@@ -26,7 +26,23 @@ export class SpxPageSingle {
     @State() postArray: Array<string>
     @State() postContent: Document
 
-    @Prop({ reflect: true }) contentMarginTop: string = '2rem'
+    @Prop({ reflect: true }) authorColor: string = 'var(--spx-color-800)'
+
+    @Prop({ reflect: true }) authorFontFamily: string = state.fontFamilyPrimary
+
+    @Prop({ reflect: true }) authorFontSizeMultiplier: number = 1
+
+    @Prop({ reflect: true }) authorFontWeight: string = '500'
+
+    @Prop({ reflect: true }) authorLetterSpacing: string = '0'
+
+    @Prop({ reflect: true }) authorLineHeight: string = '1.25'
+
+    @Prop({ reflect: true }) authorMarginTop: string = 'var(--spx-space-lg)'
+
+    @Prop({ reflect: true }) authorTextTransform: string = 'uppercase'
+
+    @Prop({ reflect: true }) contentMarginTop: string = 'var(--spx-space-xl)'
 
     @Prop({ reflect: true }) contentMaxWidth: string = '700px'
 
@@ -46,9 +62,13 @@ export class SpxPageSingle {
 
     @Prop({ reflect: true }) dateLineHeight: string = '1.25'
 
-    @Prop({ reflect: true }) dateMarginTop: string = 'var(--spx-space-md)'
+    @Prop({ reflect: true }) dateMarginTop: string = 'var(--spx-space-sm)'
 
     @Prop({ reflect: true }) dateTextTransform: string = 'default'
+
+    @Prop({ reflect: true }) headerPaddingBottom: string = 'var(--spx-space-xl)'
+
+    @Prop({ reflect: true }) headerBorderBottom: string = '1px solid var(--spx-color-gray-100)'
 
     /** Display image. */
 
@@ -153,7 +173,26 @@ export class SpxPageSingle {
 
       const styleHeaderContainer = css({
         maxWidth: 'var(--spx-text-max-width)',
-        margin: '0 auto'
+        margin: '0 auto',
+        paddingBottom: setVar(tag, 'header-padding-bottom', this.headerPaddingBottom),
+        borderBottom: setVar(tag, 'header-padding-bottom', this.headerBorderBottom)
+      })
+
+      const styleAuthor = css(merge({
+        display: 'flex',
+        alignItems: 'center',
+        marginTop: setVar(tag, 'author-margin-top', this.authorMarginTop),
+
+        span: {
+          marginLeft: 'var(--spx-space-sm)',
+          ...c.text(tag, 'title', this.authorColor, '12px', '12px', '12px', this.authorFontSizeMultiplier, this.authorFontWeight, this.authorLetterSpacing, this.authorLineHeight, this.authorTextTransform)
+        }
+      }), {})
+
+      const styleAuthorImg = css({
+        height: '30px',
+        width: '30px',
+        borderRadius: '9999px'
       })
 
       const styleTitle = css(merge({
@@ -202,8 +241,16 @@ export class SpxPageSingle {
               <slot name="before-date"/>
 
               {this.date && this.postArray['date'] &&
-                        /** Post title. */
-                        <span class={styleDate}>{this.postArray['date']}</span>}
+                /** Post title. */
+                <span class={styleDate}>{this.postArray['date']}</span>}
+
+              {/** Slot: before author. */}
+              <slot name="before-author"/>
+
+              <div class={styleAuthor}>
+                <img class={styleAuthorImg} src={this.postArray['author_image']}/>
+                <span>By {this.postArray['author_first_name']} {this.postArray['author_last_name']} </span>
+              </div>
 
             </div>
 

@@ -13,6 +13,7 @@
 | `columnSize`             | `column-size`              | Column size.                                                                 | `string`                        | `'1fr 1fr'`              |
 | `first`                  | `first`                    | If set, component will transform the header offset to the top-padding value. | `boolean`                       | `undefined`              |
 | `gap`                    | `gap`                      | Gap between columns.                                                         | `string`                        | `'var(--spx-space-2xl)'` |
+| `hideMedia`              | `hide-media`               | Hides the media column.                                                      | `boolean`                       | `undefined`              |
 | `imagesGap`              | `images-gap`               | Gap between images.                                                          | `string`                        | `'var(--spx-space-md)'`  |
 | `layout`                 | `layout`                   | Layout of the section.                                                       | `string`                        | `'horizontal'`           |
 | `mediaBackground`        | `media-background`         | Background color for the media column.                                       | `string`                        | `undefined`              |

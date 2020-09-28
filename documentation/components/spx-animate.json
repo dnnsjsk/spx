@@ -1,0 +1,139 @@
+{
+  "name": "spx-animate",
+  "description": "Wrapper around GSAP that allows for staggered and scroll-based animation.",
+  "properties": [
+    {
+      "id": "animate-delay",
+      "name": "delay",
+      "type": "number",
+      "description": "Delay before animation starts.",
+      "defaultValue": "0",
+      "tags": []
+    },
+    {
+      "id": "animate-display",
+      "name": "display",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'block'",
+      "tags": []
+    },
+    {
+      "id": "animate-duration",
+      "name": "duration",
+      "type": "number",
+      "description": "Animation duration.",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "animate-ease",
+      "name": "ease",
+      "type": "string",
+      "description": "Ease being used. Accepts all common GSAP options.",
+      "defaultValue": "'power1.out'",
+      "tags": []
+    },
+    {
+      "id": "animate-once",
+      "name": "once",
+      "type": "boolean",
+      "description": "Determines if animation should only play once. (if viewport is true)",
+      "tags": []
+    },
+    {
+      "id": "animate-opacity",
+      "name": "opacity",
+      "type": "number",
+      "description": "Opacity level the animation starts from.",
+      "defaultValue": "0",
+      "tags": []
+    },
+    {
+      "id": "animate-stagger",
+      "name": "stagger",
+      "type": "number",
+      "description": "Amount of time elements should be staggered by.",
+      "defaultValue": "0.15",
+      "tags": []
+    },
+    {
+      "id": "animate-target",
+      "name": "target",
+      "type": "string",
+      "description": "The target element that should be animated inside the component.",
+      "defaultValue": "'*'",
+      "tags": []
+    },
+    {
+      "id": "animate-viewport",
+      "name": "viewport",
+      "type": "boolean",
+      "description": "Starts animation when target is in the viewport.",
+      "tags": []
+    },
+    {
+      "id": "animate-viewportMarginBottom",
+      "name": "viewportMarginBottom",
+      "type": "string",
+      "description": "Adjust the root margin of the animation start.",
+      "tags": []
+    },
+    {
+      "id": "animate-viewportMarginLeft",
+      "name": "viewportMarginLeft",
+      "type": "string",
+      "description": "Adjust the root margin of the animation start.",
+      "tags": []
+    },
+    {
+      "id": "animate-viewportMarginRight",
+      "name": "viewportMarginRight",
+      "type": "string",
+      "description": "Adjust the root margin of the animation start.",
+      "tags": []
+    },
+    {
+      "id": "animate-viewportMarginTop",
+      "name": "viewportMarginTop",
+      "type": "string",
+      "description": "Adjust the root margin of the animation start.",
+      "tags": []
+    },
+    {
+      "id": "animate-x",
+      "name": "x",
+      "type": "number",
+      "description": "X position the animation starts from.",
+      "defaultValue": "0",
+      "tags": []
+    },
+    {
+      "id": "animate-y",
+      "name": "y",
+      "type": "number",
+      "description": "Y position the animation starts from.",
+      "defaultValue": "0",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [
+    {
+      "name": "play",
+      "description": "Plays animation.",
+      "signature": "play(from?: number, suppressEvents?: boolean) => Promise<void>"
+    },
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    },
+    {
+      "name": "restart",
+      "description": "Restarts animation.",
+      "signature": "restart(includeDelay?: boolean, suppressEvents?: boolean) => Promise<void>"
+    }
+  ],
+  "slots": []
+}

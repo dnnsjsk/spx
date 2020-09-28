@@ -85,6 +85,10 @@ export class SpxSlideshow {
         animationPlayState: 'running',
         display: 'flex',
 
+        img: {
+          maxWidth: '100%'
+        },
+
         '& > div + div': {
           marginLeft: setVar(tag, 'gap', this.gap)
         }

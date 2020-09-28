@@ -1,0 +1,67 @@
+{
+  "name": "spx-typewriter",
+  "description": "Animates text like it is being written on a typewriter.",
+  "properties": [
+    {
+      "id": "typewriter-autoStart",
+      "name": "autoStart",
+      "type": "boolean",
+      "description": "Automatically starts writing.",
+      "defaultValue": "true",
+      "tags": []
+    },
+    {
+      "id": "typewriter-delay",
+      "name": "delay",
+      "type": "any",
+      "description": "Writing delay in ms. Also accepts 'natural' value.",
+      "defaultValue": "'natural'",
+      "tags": []
+    },
+    {
+      "id": "typewriter-deleteSpeed",
+      "name": "deleteSpeed",
+      "type": "any",
+      "description": "Delete delay in ms. Also accepts 'natural' value.",
+      "defaultValue": "'natural'",
+      "tags": []
+    },
+    {
+      "id": "typewriter-display",
+      "name": "display",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'block'",
+      "tags": []
+    },
+    {
+      "id": "typewriter-loop",
+      "name": "loop",
+      "type": "boolean",
+      "description": "Loops the animation.",
+      "tags": []
+    },
+    {
+      "id": "typewriter-text",
+      "name": "text",
+      "type": "string",
+      "description": "Text that should be written.",
+      "defaultValue": "'I\\'m a typewriter'",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [
+    {
+      "name": "play",
+      "description": "Start animation.",
+      "signature": "play() => Promise<void>"
+    },
+    {
+      "name": "stop",
+      "description": "Stop animation.",
+      "signature": "stop() => Promise<void>"
+    }
+  ],
+  "slots": []
+}

@@ -1,0 +1,124 @@
+{
+  "name": "spx-mockup",
+  "description": "Display device mockups around your content.",
+  "properties": [
+    {
+      "id": "mockup-colorGalaxyS8",
+      "name": "colorGalaxyS8",
+      "type": "string",
+      "description": "Samsung S8 color.",
+      "tags": [
+        {
+          "text": "'black', 'blue'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "mockup-colorGooglePixel",
+      "name": "colorGooglePixel",
+      "type": "string",
+      "description": "Google Pixel color.",
+      "tags": [
+        {
+          "text": "'silver', 'black', 'blue'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "mockup-colorIpadPro",
+      "name": "colorIpadPro",
+      "type": "string",
+      "description": "iPad Pro color.",
+      "tags": [
+        {
+          "text": "'silver', 'gold', 'rosegold', 'spacegray'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "mockup-colorIphone8",
+      "name": "colorIphone8",
+      "type": "string",
+      "description": "iPhone 8 color.",
+      "tags": [
+        {
+          "text": "'silver', 'gold', 'spacegray'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "mockup-colorMacbook",
+      "name": "colorMacbook",
+      "type": "string",
+      "description": "MacBook color.",
+      "tags": [
+        {
+          "text": "'silver', 'gold', 'rosegold', 'spacegray'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "mockup-colorMacbookPro",
+      "name": "colorMacbookPro",
+      "type": "string",
+      "description": "MacBook Pro color.",
+      "tags": [
+        {
+          "text": "'silver', 'spacegray',",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "mockup-display",
+      "name": "display",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'block'",
+      "tags": []
+    },
+    {
+      "id": "mockup-imagePosition",
+      "name": "imagePosition",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'50% 50%'",
+      "tags": []
+    },
+    {
+      "id": "mockup-src",
+      "name": "src",
+      "type": "string",
+      "description": "Image src if no inner slot is used.",
+      "defaultValue": "'https://picsum.photos/400/1200'",
+      "tags": []
+    },
+    {
+      "id": "mockup-type",
+      "name": "type",
+      "type": "string",
+      "description": "Device type.",
+      "defaultValue": "'iphone-8'",
+      "tags": [
+        {
+          "text": "'iphone-8', 'iphone-x', 'google-pixel-2-xl', 'google-pixel', 'galaxy-s8', 'ipad-pro', 'surface-pro', 'surface-book', 'macbook', 'macbook-pro', 'surface-studio', 'imac-pro', 'apple-watch'",
+          "name": "choice"
+        }
+      ]
+    }
+  ],
+  "events": [],
+  "methods": [
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    }
+  ],
+  "slots": []
+}

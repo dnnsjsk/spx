@@ -1,0 +1,59 @@
+{
+  "name": "spx-section-button",
+  "description": "",
+  "properties": [
+    {
+      "id": "section-button-href",
+      "name": "href",
+      "type": "string",
+      "description": "Link href.",
+      "tags": []
+    },
+    {
+      "id": "section-button-reverseColor",
+      "name": "reverseColor",
+      "type": "boolean",
+      "description": "Reverse text color.",
+      "tags": []
+    },
+    {
+      "id": "section-button-target",
+      "name": "target",
+      "type": "string",
+      "description": "Target.",
+      "tags": []
+    },
+    {
+      "id": "section-button-transitionDuration",
+      "name": "transitionDuration",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-transition-duration)'",
+      "tags": []
+    },
+    {
+      "id": "section-button-transitionTimingFunction",
+      "name": "transitionTimingFunction",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-transition-timing-function)'",
+      "tags": []
+    },
+    {
+      "id": "section-button-type",
+      "name": "type",
+      "type": "string",
+      "description": "Button type.",
+      "defaultValue": "'primary'",
+      "tags": [
+        {
+          "text": "'primary', 'secondary'",
+          "name": "choice"
+        }
+      ]
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

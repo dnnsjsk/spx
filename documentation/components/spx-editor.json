@@ -1,0 +1,16 @@
+{
+  "name": "spx-editor",
+  "description": "",
+  "properties": [
+    {
+      "id": "editor-location",
+      "name": "location",
+      "type": "string",
+      "description": "",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

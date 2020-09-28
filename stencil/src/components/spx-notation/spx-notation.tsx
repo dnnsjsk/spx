@@ -49,21 +49,28 @@ export class SpxNotation {
      * @choice 'underline', 'box', 'circle', 'highlight', 'strike-through', 'crossed-off', 'bracket'
      */
 
-    @Prop({ reflect: true }) type: 'underline' | 'box' | 'circle' | 'highlight' | 'strike-through' | 'crossed-off' | 'bracket'
+    @Prop({ reflect: true }) type: string = 'underline'
 
     componentDidLoad () {
       globalComponentDidLoad(this.el)
-    }
 
-    componentDidRender () {
-      this.annotate()
+      if (this.el.querySelector('span').innerHTML.length !== 0) {
+        this.annotate()
+      }
     }
 
     private annotate () {
-      this.annotation = annotate(this.el.querySelector('*'), {
+      this.annotation = annotate(this.el.querySelector('span > *'), {
         animate: this.animation,
         animationDuration: this.animationDuration,
-        type: this.type ? this.type : 'box',
+        type:
+            this.type === 'underline' ? 'underline'
+              : this.type === 'box' ? 'box'
+                : this.type === 'circle' ? 'circle'
+                  : this.type === 'highlight' ? 'highlight'
+                    : this.type === 'strike-through' ? 'strike-through'
+                      : this.type === 'crossed-off' ? 'crossed-off'
+                        : 'bracket',
         color: this.color,
         strokeWidth: this.strokeWidth,
         multiline: this.multiline,
@@ -83,7 +90,7 @@ export class SpxNotation {
 
     @Method()
     async hide () {
-      this.annotation.show()
+      this.annotation.hide()
     }
 
     /** Remove the annotation. */
@@ -95,8 +102,8 @@ export class SpxNotation {
 
     @Method()
     async reload () {
-      this.annotation.hide()
-      this.annotation.show()
+      this.annotation.remove()
+      this.annotate()
     }
 
     render () {

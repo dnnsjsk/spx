@@ -22,6 +22,10 @@ module.exports = {
           to: path.resolve(__dirname, '../../../../../releases/spx-release/includes')
         },
         {
+          from: path.resolve(__dirname, 'documentation'),
+          to: path.resolve(__dirname, '../../../../../releases/spx-release/documentation')
+        },
+        {
           from: path.resolve(__dirname, 'spx.php'),
           to: path.resolve(__dirname, '../../../../../releases/spx-release')
         },
@@ -36,10 +40,12 @@ module.exports = {
       cleanOnceBeforeBuildPatterns: [
         path.resolve(__dirname, '../../../../../releases/spx-release/assets/*'),
         path.resolve(__dirname, '../../../../../releases/spx-release/includes/*'),
+        path.resolve(__dirname, '../../../../../releases/spx-release/documentation/*'),
         path.resolve(__dirname, '../../../../../releases/spx-release/readme.txt'),
         path.resolve(__dirname, '../../../../../releases/spx-release/spx.php')],
       cleanAfterEveryBuildPatterns: [
         path.resolve(__dirname, '../../../../../releases/spx-release/assets/js/components/host.config.json'),
+        path.resolve(__dirname, '../../../../../releases/spx-release/assets/js/components/index.html'),
         path.resolve(__dirname, '../../../../../releases/spx-release/assets/js/spxWebpack.js'),
         path.resolve(__dirname, '../../../../../releases/spx-release/assets/.DS_STORE'),
         path.resolve(__dirname, '../../../../../releases/spx-release/.DS_STORE')

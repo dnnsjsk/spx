@@ -39,7 +39,7 @@ export class SpxAnimate {
 
     /** Opacity level the animation starts from. */
 
-    @Prop() opacity: number = 1
+    @Prop() opacity: number = 0
 
     /** Amount of time elements should be staggered by. */
 
@@ -135,6 +135,20 @@ export class SpxAnimate {
     @Method()
     async reload () {
       this.componentDidLoad()
+    }
+
+    /** Plays animation. */
+
+    @Method()
+    async play (from = 0, suppressEvents = true) {
+      this.tl.play(from, suppressEvents)
+    }
+
+    /** Restarts animation. */
+
+    @Method()
+    async restart (includeDelay = false, suppressEvents = true) {
+      this.tl.restart(includeDelay, suppressEvents)
     }
 
     render () {

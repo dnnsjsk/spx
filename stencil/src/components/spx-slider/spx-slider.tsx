@@ -65,7 +65,9 @@ export class SpxScrollspy {
 
     @Prop({ reflect: true }) loop: boolean = false
 
-    @Prop({ reflect: true }) maxHeight: string = 'none'
+    @Prop({ reflect: true }) maxHeight: string = '100%'
+
+    @Prop({ reflect: true }) maxWidth: string = '100%'
 
     @Prop({ reflect: true }) navigation: boolean
 
@@ -93,10 +95,10 @@ export class SpxScrollspy {
 
     /**
      * Pagination type.
-     * @choice 'bullets', 'tabs'
+     * @choice 'bullets', 'tabs', 'none'
      */
 
-    @Prop({ reflect: true }) pagination: string
+    @Prop({ reflect: true }) pagination: string = 'bullets'
 
     @Prop({ reflect: true }) paginationBulletsBackground: string = 'var(--spx-color-gray-300)'
 
@@ -112,7 +114,7 @@ export class SpxScrollspy {
 
     /** Amount of dynamic bullets. */
 
-    @Prop({ reflect: true }) paginationBulletsDynamicAmount: number
+    @Prop({ reflect: true }) paginationBulletsDynamicAmount: number = 5
 
     /**
      * Size of the bullets.
@@ -126,7 +128,7 @@ export class SpxScrollspy {
      * @CSS
      */
 
-    @Prop({ reflect: true }) paginationBulletsSpaceBetween: string = '5px'
+    @Prop({ reflect: true }) paginationBulletsSpaceBetween: string = '4px'
 
     @Prop({ reflect: true }) paginationTabsMaxWidth: string = '320px'
 
@@ -215,8 +217,6 @@ export class SpxScrollspy {
         },
         breakpoints: createBPs()
       })
-
-      console.log(this.mySwiper.params)
 
       /** Create tabs and set appropriate event listeners. */
 
@@ -362,7 +362,9 @@ export class SpxScrollspy {
 
     @Method()
     async reload () {
-      this.mySwiper.update()
+      console.log('hi')
+      this.mySwiper.destroy()
+      this.componentDidLoad()
     }
 
     render () {
@@ -370,6 +372,8 @@ export class SpxScrollspy {
 
       const styleHost = css({
         display: 'block',
+        maxHeight: setVar(tag, 'max-height', this.maxHeight),
+        maxWidth: setVar(tag, 'max-width', this.maxWidth),
 
         '--swiper-navigation-size': setVar(tag, 'navigation-size', this.navigationSize),
         '--swiper-navigation-color': setVar(tag, 'navigation-color', this.navigationColor),
@@ -394,7 +398,7 @@ export class SpxScrollspy {
           width: setVar(tag, 'pagination-bullets-size', this.paginationBulletsSize),
           height: setVar(tag, 'pagination-bullets-size', this.paginationBulletsSize),
           background: setVar(tag, 'pagination-bullets-background', this.paginationBulletsBackground),
-          margin: '0 ' + setVar(tag, 'pagination-bullets-margin', this.paginationBulletsSpaceBetween) + '',
+          margin: '0 ' + setVar(tag, 'pagination-bullets-space-between', this.paginationBulletsSpaceBetween) + ' !important',
 
           '&.swiper-pagination-bullet-active': {
             background: setVar(tag, 'pagination-bullets-background-active', this.paginationBulletsBackgroundActive)

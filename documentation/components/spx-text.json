@@ -1,0 +1,121 @@
+{
+  "name": "spx-text",
+  "description": "This component styles text coming from a markdown file or a rich-text editor appropriately.\nIt will eventually be 100% compatible with the Gutenberg editor as well.",
+  "properties": [
+    {
+      "id": "text-contentFontSizeMultiplier",
+      "name": "contentFontSizeMultiplier",
+      "type": "number",
+      "description": "",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "text-headingColor",
+      "name": "headingColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-black)'",
+      "tags": []
+    },
+    {
+      "id": "text-headingFontFamily",
+      "name": "headingFontFamily",
+      "type": "string",
+      "description": "",
+      "defaultValue": "state.fontFamilyPrimary",
+      "tags": []
+    },
+    {
+      "id": "text-headingFontWeight",
+      "name": "headingFontWeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'500'",
+      "tags": []
+    },
+    {
+      "id": "text-headingLetterSpacing",
+      "name": "headingLetterSpacing",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0'",
+      "tags": []
+    },
+    {
+      "id": "text-headingLineHeight",
+      "name": "headingLineHeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'1.5'",
+      "tags": []
+    },
+    {
+      "id": "text-headingTextTransform",
+      "name": "headingTextTransform",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'default'",
+      "tags": []
+    },
+    {
+      "id": "text-maxWidth",
+      "name": "maxWidth",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'clamp(700px, 40vw, 1200px)'",
+      "tags": []
+    },
+    {
+      "id": "text-textColor",
+      "name": "textColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-700)'",
+      "tags": []
+    },
+    {
+      "id": "text-textFontFamily",
+      "name": "textFontFamily",
+      "type": "string",
+      "description": "",
+      "defaultValue": "state.fontFamilySecondary",
+      "tags": []
+    },
+    {
+      "id": "text-textFontWeight",
+      "name": "textFontWeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'400'",
+      "tags": []
+    },
+    {
+      "id": "text-textLetterSpacing",
+      "name": "textLetterSpacing",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0'",
+      "tags": []
+    },
+    {
+      "id": "text-textLineHeight",
+      "name": "textLineHeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'1.5'",
+      "tags": []
+    },
+    {
+      "id": "text-textTextTransform",
+      "name": "textTextTransform",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'default'",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

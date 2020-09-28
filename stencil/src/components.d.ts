@@ -68,7 +68,15 @@ export namespace Components {
           * Opacity level the animation starts from.
          */
         "opacity": number;
+        /**
+          * Plays animation.
+         */
+        "play": (from?: number, suppressEvents?: boolean) => Promise<void>;
         "reload": () => Promise<void>;
+        /**
+          * Restarts animation.
+         */
+        "restart": (includeDelay?: boolean, suppressEvents?: boolean) => Promise<void>;
         /**
           * Amount of time elements should be staggered by.
          */
@@ -297,6 +305,10 @@ export namespace Components {
           * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
          */
         "position": string;
+        /**
+          * CSS property position of button.
+         */
+        "positionCss": 'fixed' | 'absolute' | 'relative' | 'static';
         "reload": () => Promise<void>;
         "test": boolean;
         /**
@@ -321,6 +333,9 @@ export namespace Components {
          */
         "type": string;
         "zIndex": number;
+    }
+    interface SpxEditor {
+        "location": string;
     }
     interface SpxGroup {
         "display": string;
@@ -445,7 +460,7 @@ export namespace Components {
         "src": string;
         /**
           * Device type.
-          * @choice 'iphone-x', 'iphone-8', 'google-pixel-2-xl', 'google-pixel', 'galaxy-s8', 'ipad-pro', 'surface-pro', 'surface-book', 'macbook', 'macbook-pro', 'surface-studio', 'imac-pro', 'apple-watch'
+          * @choice 'iphone-8', 'iphone-x', 'google-pixel-2-xl', 'google-pixel', 'galaxy-s8', 'ipad-pro', 'surface-pro', 'surface-book', 'macbook', 'macbook-pro', 'surface-studio', 'imac-pro', 'apple-watch'
          */
         "type": string;
     }
@@ -583,7 +598,7 @@ export namespace Components {
           * Type of notation.
           * @choice 'underline', 'box', 'circle', 'highlight', 'strike-through', 'crossed-off', 'bracket'
          */
-        "type": 'underline' | 'box' | 'circle' | 'highlight' | 'strike-through' | 'crossed-off' | 'bracket';
+        "type": string;
     }
     interface SpxOffset {
         "display": string;
@@ -626,6 +641,14 @@ export namespace Components {
         "uniqueId": boolean;
     }
     interface SpxPageSingle {
+        "authorColor": string;
+        "authorFontFamily": string;
+        "authorFontSizeMultiplier": number;
+        "authorFontWeight": string;
+        "authorLetterSpacing": string;
+        "authorLineHeight": string;
+        "authorMarginTop": string;
+        "authorTextTransform": string;
         "contentMarginTop": string;
         "contentMaxWidth": string;
         /**
@@ -640,6 +663,8 @@ export namespace Components {
         "dateLineHeight": string;
         "dateMarginTop": string;
         "dateTextTransform": string;
+        "headerBorderBottom": string;
+        "headerPaddingBottom": string;
         /**
           * Display image.
          */
@@ -817,6 +842,10 @@ export namespace Components {
          */
         "gap": string;
         /**
+          * Hides the media column.
+         */
+        "hideMedia": boolean;
+        /**
           * Gap between images.
           * @CSS
          */
@@ -931,6 +960,7 @@ export namespace Components {
          */
         "loop": boolean;
         "maxHeight": string;
+        "maxWidth": string;
         "navigation": boolean;
         "navigationBackground": string;
         "navigationBorderRadius": string;
@@ -948,7 +978,7 @@ export namespace Components {
         "navigationSize": string;
         /**
           * Pagination type.
-          * @choice 'bullets', 'tabs'
+          * @choice 'bullets', 'tabs', 'none'
          */
         "pagination": string;
         "paginationBulletsBackground": string;
@@ -1045,16 +1075,15 @@ export namespace Components {
           * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
          */
         "position": string;
+        /**
+          * CSS property position of button.
+         */
+        "positionCss": 'fixed' | 'absolute' | 'relative' | 'static';
         "reload": () => Promise<void>;
         /**
           * Reverses the close button if "closable" prop is true.
          */
         "reverse": boolean;
-        /**
-          * Defined component size.
-          * @choice 'sm', 'md', 'lg'
-         */
-        "size": string;
         /**
           * Text inside snackbar.
          */
@@ -1100,7 +1129,7 @@ export namespace Components {
         /**
           * Start animation.
          */
-        "start": () => Promise<void>;
+        "play": () => Promise<void>;
         /**
           * Stop animation.
          */
@@ -1153,6 +1182,12 @@ declare global {
     var HTMLSpxEditButtonElement: {
         prototype: HTMLSpxEditButtonElement;
         new (): HTMLSpxEditButtonElement;
+    };
+    interface HTMLSpxEditorElement extends Components.SpxEditor, HTMLStencilElement {
+    }
+    var HTMLSpxEditorElement: {
+        prototype: HTMLSpxEditorElement;
+        new (): HTMLSpxEditorElement;
     };
     interface HTMLSpxGroupElement extends Components.SpxGroup, HTMLStencilElement {
     }
@@ -1318,6 +1353,7 @@ declare global {
         "spx-container": HTMLSpxContainerElement;
         "spx-edit": HTMLSpxEditElement;
         "spx-edit-button": HTMLSpxEditButtonElement;
+        "spx-editor": HTMLSpxEditorElement;
         "spx-group": HTMLSpxGroupElement;
         "spx-icon": HTMLSpxIconElement;
         "spx-iframe": HTMLSpxIframeElement;
@@ -1642,6 +1678,10 @@ declare namespace LocalJSX {
           * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
          */
         "position"?: string;
+        /**
+          * CSS property position of button.
+         */
+        "positionCss"?: 'fixed' | 'absolute' | 'relative' | 'static';
         "test"?: boolean;
         /**
           * Discard button text.
@@ -1665,6 +1705,9 @@ declare namespace LocalJSX {
          */
         "type"?: string;
         "zIndex"?: number;
+    }
+    interface SpxEditor {
+        "location"?: string;
     }
     interface SpxGroup {
         "display"?: string;
@@ -1780,7 +1823,7 @@ declare namespace LocalJSX {
         "src"?: string;
         /**
           * Device type.
-          * @choice 'iphone-x', 'iphone-8', 'google-pixel-2-xl', 'google-pixel', 'galaxy-s8', 'ipad-pro', 'surface-pro', 'surface-book', 'macbook', 'macbook-pro', 'surface-studio', 'imac-pro', 'apple-watch'
+          * @choice 'iphone-8', 'iphone-x', 'google-pixel-2-xl', 'google-pixel', 'galaxy-s8', 'ipad-pro', 'surface-pro', 'surface-book', 'macbook', 'macbook-pro', 'surface-studio', 'imac-pro', 'apple-watch'
          */
         "type"?: string;
     }
@@ -1908,7 +1951,7 @@ declare namespace LocalJSX {
           * Type of notation.
           * @choice 'underline', 'box', 'circle', 'highlight', 'strike-through', 'crossed-off', 'bracket'
          */
-        "type"?: 'underline' | 'box' | 'circle' | 'highlight' | 'strike-through' | 'crossed-off' | 'bracket';
+        "type"?: string;
     }
     interface SpxOffset {
         "display"?: string;
@@ -1950,6 +1993,14 @@ declare namespace LocalJSX {
         "uniqueId"?: boolean;
     }
     interface SpxPageSingle {
+        "authorColor"?: string;
+        "authorFontFamily"?: string;
+        "authorFontSizeMultiplier"?: number;
+        "authorFontWeight"?: string;
+        "authorLetterSpacing"?: string;
+        "authorLineHeight"?: string;
+        "authorMarginTop"?: string;
+        "authorTextTransform"?: string;
         "contentMarginTop"?: string;
         "contentMaxWidth"?: string;
         /**
@@ -1964,6 +2015,8 @@ declare namespace LocalJSX {
         "dateLineHeight"?: string;
         "dateMarginTop"?: string;
         "dateTextTransform"?: string;
+        "headerBorderBottom"?: string;
+        "headerPaddingBottom"?: string;
         /**
           * Display image.
          */
@@ -2141,6 +2194,10 @@ declare namespace LocalJSX {
          */
         "gap"?: string;
         /**
+          * Hides the media column.
+         */
+        "hideMedia"?: boolean;
+        /**
           * Gap between images.
           * @CSS
          */
@@ -2254,6 +2311,7 @@ declare namespace LocalJSX {
          */
         "loop"?: boolean;
         "maxHeight"?: string;
+        "maxWidth"?: string;
         "navigation"?: boolean;
         "navigationBackground"?: string;
         "navigationBorderRadius"?: string;
@@ -2271,7 +2329,7 @@ declare namespace LocalJSX {
         "navigationSize"?: string;
         /**
           * Pagination type.
-          * @choice 'bullets', 'tabs'
+          * @choice 'bullets', 'tabs', 'none'
          */
         "pagination"?: string;
         "paginationBulletsBackground"?: string;
@@ -2368,14 +2426,13 @@ declare namespace LocalJSX {
          */
         "position"?: string;
         /**
+          * CSS property position of button.
+         */
+        "positionCss"?: 'fixed' | 'absolute' | 'relative' | 'static';
+        /**
           * Reverses the close button if "closable" prop is true.
          */
         "reverse"?: boolean;
-        /**
-          * Defined component size.
-          * @choice 'sm', 'md', 'lg'
-         */
-        "size"?: string;
         /**
           * Text inside snackbar.
          */
@@ -2431,6 +2488,7 @@ declare namespace LocalJSX {
         "spx-container": SpxContainer;
         "spx-edit": SpxEdit;
         "spx-edit-button": SpxEditButton;
+        "spx-editor": SpxEditor;
         "spx-group": SpxGroup;
         "spx-icon": SpxIcon;
         "spx-iframe": SpxIframe;
@@ -2470,6 +2528,7 @@ declare module "@stencil/core" {
             "spx-container": LocalJSX.SpxContainer & JSXBase.HTMLAttributes<HTMLSpxContainerElement>;
             "spx-edit": LocalJSX.SpxEdit & JSXBase.HTMLAttributes<HTMLSpxEditElement>;
             "spx-edit-button": LocalJSX.SpxEditButton & JSXBase.HTMLAttributes<HTMLSpxEditButtonElement>;
+            "spx-editor": LocalJSX.SpxEditor & JSXBase.HTMLAttributes<HTMLSpxEditorElement>;
             "spx-group": LocalJSX.SpxGroup & JSXBase.HTMLAttributes<HTMLSpxGroupElement>;
             "spx-icon": LocalJSX.SpxIcon & JSXBase.HTMLAttributes<HTMLSpxIconElement>;
             "spx-iframe": LocalJSX.SpxIframe & JSXBase.HTMLAttributes<HTMLSpxIframeElement>;

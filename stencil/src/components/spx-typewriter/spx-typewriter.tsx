@@ -40,7 +40,7 @@ export class SpxTypewriter {
 
     /** Text that should be written. */
 
-    @Prop({ reflect: true }) text: string = "I'm a typewriter"
+    @Prop({ reflect: true }) text: string = 'I\'m a typewriter'
 
     componentDidLoad () {
       globalComponentDidLoad(this.el)
@@ -48,7 +48,13 @@ export class SpxTypewriter {
       const el = this.el.querySelector('h1, h2, h3, h4, h5, h6, p, span') || this.el
 
       this.typewriter = new Typewriter(el, {
-        strings: this.text,
+        strings: this.text[0] === '['
+          ? this.text
+            .replaceAll('[\'', '')
+            .replaceAll('\']', '')
+            .replaceAll(' \'', '')
+            .split('\',')
+          : this.text,
         delay: this.delay,
         deleteSpeed: this.deleteSpeed,
         loop: this.loop,
@@ -62,7 +68,7 @@ export class SpxTypewriter {
     /** Start animation. */
 
     @Method()
-    async start () {
+    async play () {
       this.typewriter.typeString(this.text)
       this.typewriter.start()
     }

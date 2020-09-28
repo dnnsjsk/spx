@@ -1,0 +1,339 @@
+{
+  "name": "spx-navigation",
+  "description": "Render a complete WordPress menu with nested submenus and automatic positioning.",
+  "properties": [
+    {
+      "id": "navigation-childBorder",
+      "name": "childBorder",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'1px solid var(--spx-color-gray-200)'",
+      "tags": []
+    },
+    {
+      "id": "navigation-childBorderRadius",
+      "name": "childBorderRadius",
+      "type": "string",
+      "description": "Child menu border-radius.",
+      "defaultValue": "'var(--spx-border-radius)'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "navigation-childBoxShadow",
+      "name": "childBoxShadow",
+      "type": "string",
+      "description": "Child menu box-shadow.",
+      "defaultValue": "'0 3px 10px 0 rgba(0,0,0,0.05)'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "navigation-childChildGap",
+      "name": "childChildGap",
+      "type": "string",
+      "description": "Gap between nested child menus.",
+      "defaultValue": "'0.8em'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "navigation-childGap",
+      "name": "childGap",
+      "type": "string",
+      "description": "Gap between top level menu items and child menus.",
+      "defaultValue": "'0.5em'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "navigation-childIcon",
+      "name": "childIcon",
+      "type": "string",
+      "description": "Indicator icon. Accepts any Font Awesome icon class.",
+      "tags": []
+    },
+    {
+      "id": "navigation-childIndicatorGap",
+      "name": "childIndicatorGap",
+      "type": "string",
+      "description": "Gap between child menu indicator and text.",
+      "defaultValue": "'0.2em'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "navigation-childItemBackground",
+      "name": "childItemBackground",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'#ffffff'",
+      "tags": []
+    },
+    {
+      "id": "navigation-childItemBackgroundHover",
+      "name": "childItemBackgroundHover",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-100)'",
+      "tags": []
+    },
+    {
+      "id": "navigation-childItemColor",
+      "name": "childItemColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-700)'",
+      "tags": []
+    },
+    {
+      "id": "navigation-childItemColorHover",
+      "name": "childItemColorHover",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-900)'",
+      "tags": []
+    },
+    {
+      "id": "navigation-childItemPadding",
+      "name": "childItemPadding",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0.6em 0.8em'",
+      "tags": []
+    },
+    {
+      "id": "navigation-childPlacement",
+      "name": "childPlacement",
+      "type": "string",
+      "description": "Child menu placement.",
+      "defaultValue": "'start'",
+      "tags": [
+        {
+          "name": "CSS"
+        },
+        {
+          "text": "'start', 'end'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "navigation-fontSize",
+      "name": "fontSize",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-font-size)'",
+      "tags": []
+    },
+    {
+      "id": "navigation-itemTransitionDuration",
+      "name": "itemTransitionDuration",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-transition-duration)'",
+      "tags": []
+    },
+    {
+      "id": "navigation-itemTransitionTimingFunction",
+      "name": "itemTransitionTimingFunction",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-transition-timing-function)'",
+      "tags": []
+    },
+    {
+      "id": "navigation-itemUnderline",
+      "name": "itemUnderline",
+      "type": "boolean",
+      "description": "Underlines all links.",
+      "tags": []
+    },
+    {
+      "id": "navigation-itemUnderlineHover",
+      "name": "itemUnderlineHover",
+      "type": "boolean",
+      "description": "Underlines all links on hover.",
+      "tags": []
+    },
+    {
+      "id": "navigation-menu",
+      "name": "menu",
+      "type": "string",
+      "description": "Renders a WordPress menu.",
+      "tags": [
+        {
+          "text": "&lt;?php spx\\get::navigation(\"myMenu\") ?>",
+          "name": "helper"
+        }
+      ]
+    },
+    {
+      "id": "navigation-mobile",
+      "name": "mobile",
+      "type": "number",
+      "description": "Mobile breakpoint.",
+      "defaultValue": "'768'",
+      "tags": []
+    },
+    {
+      "id": "navigation-mobileIcon",
+      "name": "mobileIcon",
+      "type": "string",
+      "description": "Mobile button icon. Accepts any Font Awesome icon class.",
+      "tags": []
+    },
+    {
+      "id": "navigation-mobileItemBackground",
+      "name": "mobileItemBackground",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'#ffffff'",
+      "tags": []
+    },
+    {
+      "id": "navigation-mobileItemBackgroundHover",
+      "name": "mobileItemBackgroundHover",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-100)'",
+      "tags": []
+    },
+    {
+      "id": "navigation-mobileItemColor",
+      "name": "mobileItemColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-800)'",
+      "tags": []
+    },
+    {
+      "id": "navigation-mobileItemColorHover",
+      "name": "mobileItemColorHover",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-900)'",
+      "tags": []
+    },
+    {
+      "id": "navigation-mobileItemNestedMarginLeft",
+      "name": "mobileItemNestedMarginLeft",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0.8em'",
+      "tags": []
+    },
+    {
+      "id": "navigation-mobileItemPadding",
+      "name": "mobileItemPadding",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0.6em'",
+      "tags": []
+    },
+    {
+      "id": "navigation-mobilePlacement",
+      "name": "mobilePlacement",
+      "type": "string",
+      "description": "Mobile placement.",
+      "defaultValue": "'start'",
+      "tags": [
+        {
+          "name": "CSS"
+        },
+        {
+          "text": "'start', 'end'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "navigation-parentItemBackground",
+      "name": "parentItemBackground",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'#ffffff'",
+      "tags": []
+    },
+    {
+      "id": "navigation-parentItemBackgroundHover",
+      "name": "parentItemBackgroundHover",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-100)'",
+      "tags": []
+    },
+    {
+      "id": "navigation-parentItemColor",
+      "name": "parentItemColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-800)'",
+      "tags": []
+    },
+    {
+      "id": "navigation-parentItemColorHover",
+      "name": "parentItemColorHover",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-900)'",
+      "tags": []
+    },
+    {
+      "id": "navigation-parentItemGap",
+      "name": "parentItemGap",
+      "type": "string",
+      "description": "Gap between parent menu items.",
+      "defaultValue": "'0.4em'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "navigation-parentItemPadding",
+      "name": "parentItemPadding",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0.6em'",
+      "tags": []
+    },
+    {
+      "id": "navigation-vertical",
+      "name": "vertical",
+      "type": "boolean",
+      "description": "Renders menu vertically.",
+      "tags": []
+    }
+  ],
+  "events": [
+    {
+      "name": "spxNavigationDidLoad",
+      "description": "Fires when component has loaded."
+    }
+  ],
+  "methods": [
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    }
+  ],
+  "slots": []
+}

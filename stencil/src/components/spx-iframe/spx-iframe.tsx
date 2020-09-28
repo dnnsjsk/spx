@@ -29,7 +29,7 @@ export class SpxIframe {
 
     /** Source for the iframe. */
 
-    @Prop() src: string
+    @Prop() src: string = 'https://spx.dev'
 
     @Listen('resize', { target: 'window' })
     onResize () {

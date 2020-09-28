@@ -59,15 +59,44 @@ class init {
 		add_filter( 'script_loader_tag', function ( $tag, $handle, $source ) {
 
 			if ( 'spx-module' === $handle ) {
-				$tag = '<script type="module" src="' . $source . '"></script>';
+				$tag = '<script type="module" id="spx-js-nomodule" src="' . $source . '"></script>';
 			}
 
 			if ( 'spx-nomodule' === $handle ) {
-				$tag = '<script type="nomodule" src="' . $source . '"></script>';
+				$tag = '<script type="nomodule" id="spx-js-module" src="' . $source . '"></script>';
 			}
 
 			return $tag;
 		}, 10, 3 );
+
+	}
+
+	/**
+	 * Initialise CSS without theme.
+	 *
+	 * @since 2.04
+	 */
+
+	public static function css() {
+
+		add_action( 'wp_head', function () {
+
+			echo '
+				<style id="spx-css">
+				' . file_get_contents( SPX_DIR . '/assets/css/spx.css' ) . '
+				</style>';
+
+		} );
+
+		add_action( 'wp_footer', function () {
+
+			echo '
+				<script 
+				id="spx-footer">
+				' . file_get_contents( SPX_DIR . '/assets/js/footer.js' ) . '
+				</script>';
+
+		} );
 
 	}
 

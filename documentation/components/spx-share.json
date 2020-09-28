@@ -1,0 +1,105 @@
+{
+  "name": "spx-share",
+  "description": "Social share buttons. Currently includes Facebook, Twitter, Whatsapp and E-Mail.",
+  "properties": [
+    {
+      "id": "share-fontSize",
+      "name": "fontSize",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-font-size)'",
+      "tags": []
+    },
+    {
+      "id": "share-itemBackground",
+      "name": "itemBackground",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "share-itemBorderRadius",
+      "name": "itemBorderRadius",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-border-radius)'",
+      "tags": []
+    },
+    {
+      "id": "share-itemColor",
+      "name": "itemColor",
+      "type": "string",
+      "description": "Gap between buttons.",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "share-itemGap",
+      "name": "itemGap",
+      "type": "string",
+      "description": "Gap between buttons.",
+      "defaultValue": "'0.5em'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "share-itemPadding",
+      "name": "itemPadding",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0.5em'",
+      "tags": []
+    },
+    {
+      "id": "share-itemSize",
+      "name": "itemSize",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'1em'",
+      "tags": []
+    },
+    {
+      "id": "share-target",
+      "name": "target",
+      "type": "string",
+      "description": "Button href target.",
+      "defaultValue": "'_blank'",
+      "tags": []
+    },
+    {
+      "id": "share-theme",
+      "name": "theme",
+      "type": "string",
+      "description": "Button theme.",
+      "defaultValue": "'default'",
+      "tags": [
+        {
+          "text": "'default', 'outline', 'minimal'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "share-vertical",
+      "name": "vertical",
+      "type": "boolean",
+      "description": "Render buttons vertically.",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    }
+  ],
+  "slots": []
+}

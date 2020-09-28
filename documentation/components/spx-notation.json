@@ -1,0 +1,99 @@
+{
+  "name": "spx-notation",
+  "description": "Annotate letters, words or whole sentences.",
+  "properties": [
+    {
+      "id": "notation-animation",
+      "name": "animation",
+      "type": "boolean",
+      "description": "Turn animation on or off when animation.",
+      "defaultValue": "true",
+      "tags": []
+    },
+    {
+      "id": "notation-animationDuration",
+      "name": "animationDuration",
+      "type": "number",
+      "description": "Animation duration.",
+      "defaultValue": "800",
+      "tags": []
+    },
+    {
+      "id": "notation-color",
+      "name": "color",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-secondary-100)'",
+      "tags": []
+    },
+    {
+      "id": "notation-display",
+      "name": "display",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'inline-block'",
+      "tags": []
+    },
+    {
+      "id": "notation-iterations",
+      "name": "iterations",
+      "type": "number",
+      "description": "Number of iterations.",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "notation-multiline",
+      "name": "multiline",
+      "type": "boolean",
+      "description": "Annotate multiline text.",
+      "defaultValue": "true",
+      "tags": []
+    },
+    {
+      "id": "notation-strokeWidth",
+      "name": "strokeWidth",
+      "type": "number",
+      "description": "Stroke width.",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "notation-type",
+      "name": "type",
+      "type": "string",
+      "description": "Type of notation.",
+      "defaultValue": "'underline'",
+      "tags": [
+        {
+          "text": "'underline', 'box', 'circle', 'highlight', 'strike-through', 'crossed-off', 'bracket'",
+          "name": "choice"
+        }
+      ]
+    }
+  ],
+  "events": [],
+  "methods": [
+    {
+      "name": "clear",
+      "description": "Remove the annotation.",
+      "signature": "clear() => Promise<void>"
+    },
+    {
+      "name": "hide",
+      "description": "Hides the annotation. (non animated)",
+      "signature": "hide() => Promise<void>"
+    },
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    },
+    {
+      "name": "show",
+      "description": "Draws the annotation.",
+      "signature": "show() => Promise<void>"
+    }
+  ],
+  "slots": []
+}

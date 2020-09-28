@@ -1,0 +1,309 @@
+{
+  "name": "spx-page-single",
+  "description": "Render a single post layout.",
+  "properties": [
+    {
+      "id": "page-single-authorColor",
+      "name": "authorColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-800)'",
+      "tags": []
+    },
+    {
+      "id": "page-single-authorFontFamily",
+      "name": "authorFontFamily",
+      "type": "string",
+      "description": "",
+      "defaultValue": "state.fontFamilyPrimary",
+      "tags": []
+    },
+    {
+      "id": "page-single-authorFontSizeMultiplier",
+      "name": "authorFontSizeMultiplier",
+      "type": "number",
+      "description": "",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "page-single-authorFontWeight",
+      "name": "authorFontWeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'500'",
+      "tags": []
+    },
+    {
+      "id": "page-single-authorLetterSpacing",
+      "name": "authorLetterSpacing",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0'",
+      "tags": []
+    },
+    {
+      "id": "page-single-authorLineHeight",
+      "name": "authorLineHeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'1.25'",
+      "tags": []
+    },
+    {
+      "id": "page-single-authorMarginTop",
+      "name": "authorMarginTop",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-space-lg)'",
+      "tags": []
+    },
+    {
+      "id": "page-single-authorTextTransform",
+      "name": "authorTextTransform",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'uppercase'",
+      "tags": []
+    },
+    {
+      "id": "page-single-contentMarginTop",
+      "name": "contentMarginTop",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-space-xl)'",
+      "tags": []
+    },
+    {
+      "id": "page-single-contentMaxWidth",
+      "name": "contentMaxWidth",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'700px'",
+      "tags": []
+    },
+    {
+      "id": "page-single-date",
+      "name": "date",
+      "type": "boolean",
+      "description": "Display date.",
+      "defaultValue": "true",
+      "tags": []
+    },
+    {
+      "id": "page-single-dateColor",
+      "name": "dateColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-600)'",
+      "tags": []
+    },
+    {
+      "id": "page-single-dateFontFamily",
+      "name": "dateFontFamily",
+      "type": "string",
+      "description": "",
+      "defaultValue": "state.fontFamilyPrimary",
+      "tags": []
+    },
+    {
+      "id": "page-single-dateFontSizeMultiplier",
+      "name": "dateFontSizeMultiplier",
+      "type": "number",
+      "description": "",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "page-single-dateFontWeight",
+      "name": "dateFontWeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'500'",
+      "tags": []
+    },
+    {
+      "id": "page-single-dateLetterSpacing",
+      "name": "dateLetterSpacing",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0'",
+      "tags": []
+    },
+    {
+      "id": "page-single-dateLineHeight",
+      "name": "dateLineHeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'1.25'",
+      "tags": []
+    },
+    {
+      "id": "page-single-dateMarginTop",
+      "name": "dateMarginTop",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-space-sm)'",
+      "tags": []
+    },
+    {
+      "id": "page-single-dateTextTransform",
+      "name": "dateTextTransform",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'default'",
+      "tags": []
+    },
+    {
+      "id": "page-single-headerBorderBottom",
+      "name": "headerBorderBottom",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'1px solid var(--spx-color-gray-100)'",
+      "tags": []
+    },
+    {
+      "id": "page-single-headerPaddingBottom",
+      "name": "headerPaddingBottom",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-space-xl)'",
+      "tags": []
+    },
+    {
+      "id": "page-single-image",
+      "name": "image",
+      "type": "boolean",
+      "description": "Display image.",
+      "defaultValue": "true",
+      "tags": []
+    },
+    {
+      "id": "page-single-imageBorderRadius",
+      "name": "imageBorderRadius",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-border-radius)'",
+      "tags": []
+    },
+    {
+      "id": "page-single-imageHeight",
+      "name": "imageHeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'clamp(200px, 50vh, 600px)'",
+      "tags": []
+    },
+    {
+      "id": "page-single-imageObjectPosition",
+      "name": "imageObjectPosition",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'50% 50%'",
+      "tags": []
+    },
+    {
+      "id": "page-single-imageSpaceY",
+      "name": "imageSpaceY",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-space-md)'",
+      "tags": []
+    },
+    {
+      "id": "page-single-mobile",
+      "name": "mobile",
+      "type": "number",
+      "description": "Mobile breakpoint.",
+      "defaultValue": "'768'",
+      "tags": []
+    },
+    {
+      "id": "page-single-post",
+      "name": "post",
+      "type": "string",
+      "description": "Gets a WordPress post to render.",
+      "tags": [
+        {
+          "text": "&lt;?php spx\\get::post() ?>",
+          "name": "helper"
+        }
+      ]
+    },
+    {
+      "id": "page-single-spaceX",
+      "name": "spaceX",
+      "type": "string",
+      "description": "Space to edge of the viewport.",
+      "defaultValue": "'var(--spx-container-space-x-sm)'",
+      "tags": []
+    },
+    {
+      "id": "page-single-titleColor",
+      "name": "titleColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-800)'",
+      "tags": []
+    },
+    {
+      "id": "page-single-titleFontFamily",
+      "name": "titleFontFamily",
+      "type": "string",
+      "description": "",
+      "defaultValue": "state.fontFamilyPrimary",
+      "tags": []
+    },
+    {
+      "id": "page-single-titleFontSizeMultiplier",
+      "name": "titleFontSizeMultiplier",
+      "type": "number",
+      "description": "",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "page-single-titleFontWeight",
+      "name": "titleFontWeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'500'",
+      "tags": []
+    },
+    {
+      "id": "page-single-titleLetterSpacing",
+      "name": "titleLetterSpacing",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0'",
+      "tags": []
+    },
+    {
+      "id": "page-single-titleLineHeight",
+      "name": "titleLineHeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'1.25'",
+      "tags": []
+    },
+    {
+      "id": "page-single-titleMarginTop",
+      "name": "titleMarginTop",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-space-md)'",
+      "tags": []
+    },
+    {
+      "id": "page-single-titleTextTransform",
+      "name": "titleTextTransform",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'default'",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

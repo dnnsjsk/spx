@@ -90,27 +90,23 @@ export class SpxEditButton {
 
     @Prop({ reflect: true }) position: string = 'bottom-right'
 
-    /**
-     * Discard button text.
-     */
+    /** CSS property position of button. */
+
+    @Prop({ reflect: true }) positionCss: 'fixed' | 'absolute' | 'relative' | 'static' = 'fixed'
+
+    /** Discard button text. */
 
     @Prop({ reflect: true }) textDiscard: string = 'Discard'
 
-    /**
-     * Edit button text.
-     */
+    /** Edit button text. */
 
     @Prop({ reflect: true }) textEdit: string = 'Edit site'
 
-    /**
-     * Save button text.
-     */
+    /** Save button text. */
 
     @Prop({ reflect: true }) textSave: string = 'Save'
 
-    /**
-     * Success message.
-     */
+    /** Success message. */
 
     @Prop({ reflect: true }) textSuccess: string = 'Save was successful'
 
@@ -258,7 +254,7 @@ export class SpxEditButton {
         fontSize: setVar(tag, 'font-size', this.fontSize),
         display: 'grid',
         gridGap: setVar(tag, 'gap', this.gap),
-        position: 'fixed',
+        position: this.positionCss,
         zIndex: this.zIndex
       })
 

@@ -1,0 +1,30 @@
+{
+  "name": "spx-lightbox",
+  "description": "Overlay a gallery of images on top of the current page.",
+  "properties": [
+    {
+      "id": "lightbox-display",
+      "name": "display",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'block'",
+      "tags": []
+    },
+    {
+      "id": "lightbox-effect",
+      "name": "effect",
+      "type": "string",
+      "description": "",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    }
+  ],
+  "slots": []
+}

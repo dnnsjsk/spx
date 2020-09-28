@@ -15,6 +15,30 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 2.04 =
+* New: add IDs to script tags.
+* New: add .json documentation to plugin files.
+* Animate: add 'play' and 'restart' method.
+* Animate: set default opacity value to 0.
+* Container: add title max-width prop.
+* Edit Button: add position CSS prop.
+* Iframe: added default src.
+* Image Comparison: added default images.
+* Notation: fix loop.
+* Page Single Post: add author.
+* Section Button: always align text center.
+* Section Text Media: fix button alignment.
+* Slider: add default dynamic pagination bullet default.
+* Slider: fix bullets space between.
+* Slider: remove console logs.
+* Snackbar: fix left padding when reverse property is set without closeable.
+* Snackbar: make default position bottom-right.
+* Snackbar: make position property reactive.
+* Snackbar: remove size property.
+* Snackbar: render text into span instead of div.
+* Snackbar: add position CSS prop.
+* Typewriter: fix everything and add possibility to write multiple words/sentences. -> ['phrase1', 'phrase2']
+
 = 2.03 =
 * Edit Button: fix ajax handler.
 

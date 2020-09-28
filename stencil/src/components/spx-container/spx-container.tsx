@@ -9,7 +9,6 @@ import { setFontSize } from '../../utils/setSize'
 import state from '../../stores/container'
 import { offsetHeader } from '../../utils/offsetHeader'
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
-import 'alpinejs'
 
 const tag = 'spx-container'
 
@@ -177,7 +176,7 @@ export class SpxContainer {
 
     @Prop({ reflect: true }) titleLineHeight: string = '1.25'
 
-    @Prop({ reflect: true }) titleMaxWidth: string
+    @Prop({ reflect: true }) titleMaxWidth: string = 'max-content'
 
     @Prop({ reflect: true }) titleTextTransform: string = 'default'
 
@@ -333,7 +332,7 @@ export class SpxContainer {
             'h1:not(.spx), h1 span:not(.spx), h2:not(.spx), h2 span:not(.spx)': {
               ...c.text(tag, 'title', this.titleColor, '32px', '5vw', '80px', this.titleFontSizeMultiplier, this.titleFontWeight, this.titleLetterSpacing, this.titleLineHeight, this.titleTextTransform),
               display: 'inline-block',
-              maxWidth: 'max-content',
+              maxWidth: setVar(tag, 'title-max-width', this.titleMaxWidth),
               fontFamily: setVar(tag, 'title-font-family', state.fontFamilyPrimary)
             },
 
@@ -370,7 +369,7 @@ export class SpxContainer {
               }
             }
           }
-        },
+        }
       }
 
       /** Merge objects to avoid emotion error. */

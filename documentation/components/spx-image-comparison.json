@@ -1,0 +1,55 @@
+{
+  "name": "spx-image-comparison",
+  "description": "Compare two images visually using a slider. Handy for showing subtle (or not so subtle) before/after differences.",
+  "properties": [
+    {
+      "id": "image-comparison-color",
+      "name": "color",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'#ffffff'",
+      "tags": []
+    },
+    {
+      "id": "image-comparison-iconColor",
+      "name": "iconColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-500)'",
+      "tags": []
+    },
+    {
+      "id": "image-comparison-srcAfter",
+      "name": "srcAfter",
+      "type": "string",
+      "description": "Image URL of the before image.",
+      "defaultValue": "'https://source.unsplash.com/random/1200x300'",
+      "tags": []
+    },
+    {
+      "id": "image-comparison-srcBefore",
+      "name": "srcBefore",
+      "type": "string",
+      "description": "Image URL of the after image.",
+      "defaultValue": "'https://source.unsplash.com/random/1201x300'",
+      "tags": []
+    },
+    {
+      "id": "image-comparison-start",
+      "name": "start",
+      "type": "number",
+      "description": "Opening state in pixels.",
+      "defaultValue": "150",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    }
+  ],
+  "slots": []
+}

@@ -1,0 +1,119 @@
+{
+  "name": "spx-accordion",
+  "description": "Accordions are the classic method to show and hide elements on your website.",
+  "properties": [
+    {
+      "id": "accordion-contentColor",
+      "name": "contentColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-900)'",
+      "tags": []
+    },
+    {
+      "id": "accordion-contentText",
+      "name": "contentText",
+      "type": "string",
+      "description": "Content text.",
+      "defaultValue": "'Default Content Text'",
+      "tags": []
+    },
+    {
+      "id": "accordion-contentTextTag",
+      "name": "contentTextTag",
+      "type": "string",
+      "description": "Content text tag.",
+      "defaultValue": "'span'",
+      "tags": []
+    },
+    {
+      "id": "accordion-fontSize",
+      "name": "fontSize",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-font-size)'",
+      "tags": []
+    },
+    {
+      "id": "accordion-gap",
+      "name": "gap",
+      "type": "string",
+      "description": "Space between header and content.",
+      "defaultValue": "'0.4em'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "accordion-headerColor",
+      "name": "headerColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-900)'",
+      "tags": []
+    },
+    {
+      "id": "accordion-headerGap",
+      "name": "headerGap",
+      "type": "string",
+      "description": "Gap between header text and icon.",
+      "defaultValue": "'0.4em'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "accordion-headerText",
+      "name": "headerText",
+      "type": "string",
+      "description": "Header text.",
+      "defaultValue": "'Default Header Text'",
+      "tags": []
+    },
+    {
+      "id": "accordion-headerTextTag",
+      "name": "headerTextTag",
+      "type": "string",
+      "description": "Header text tag.",
+      "defaultValue": "'span'",
+      "tags": []
+    },
+    {
+      "id": "accordion-indicatorIcon",
+      "name": "indicatorIcon",
+      "type": "string",
+      "description": "Icon class. Accepts any Font Awesome icon class.",
+      "tags": []
+    },
+    {
+      "id": "accordion-indicatorIconTransform",
+      "name": "indicatorIconTransform",
+      "type": "string",
+      "description": "Indicator icon transform.",
+      "defaultValue": "'rotate(90deg)'",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    }
+  ],
+  "slots": [
+    {
+      "name": "content",
+      "description": "Content."
+    },
+    {
+      "name": "header",
+      "description": "Header."
+    }
+  ]
+}

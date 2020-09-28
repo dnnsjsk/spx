@@ -1,0 +1,83 @@
+{
+  "name": "spx-masonry",
+  "description": "Arrange images in a masonry layout.",
+  "properties": [
+    {
+      "id": "masonry-bpColumns",
+      "name": "bpColumns",
+      "type": "string",
+      "description": "Columns for different screen sizes. Example value: 1000:3;600:2 - this will switch to a three column layout when the screen size is under 1000px and to a two column layout under 600px.",
+      "tags": []
+    },
+    {
+      "id": "masonry-columns",
+      "name": "columns",
+      "type": "number",
+      "description": "Number of columns.",
+      "defaultValue": "4",
+      "tags": []
+    },
+    {
+      "id": "masonry-gap",
+      "name": "gap",
+      "type": "string",
+      "description": "Gap between images.",
+      "defaultValue": "'10px'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "masonry-imageSize",
+      "name": "imageSize",
+      "type": "string",
+      "description": "WordPress media size when using the helper function..",
+      "tags": []
+    },
+    {
+      "id": "masonry-images",
+      "name": "images",
+      "type": "string",
+      "description": "Gets images from an ACF or Metabox field.",
+      "tags": [
+        {
+          "text": "&lt;?php spx\\get::gallery($fieldName, $type) ?>",
+          "name": "helper"
+        }
+      ]
+    },
+    {
+      "id": "masonry-imagesSrc",
+      "name": "imagesSrc",
+      "type": "string",
+      "description": "Gets images from an ACF or Metabox field.",
+      "tags": [
+        {
+          "text": "'acf', 'mb",
+          "name": "choice"
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "spxMasonryDidLoad",
+      "description": ""
+    }
+  ],
+  "methods": [
+    {
+      "name": "recalc",
+      "description": "Recalculate grid.",
+      "signature": "recalc() => Promise<void>"
+    },
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    }
+  ],
+  "slots": []
+}

@@ -14,7 +14,7 @@
 | `duration`             | `duration`               | Animation duration.                                                  | `number`  | `1`            |
 | `ease`                 | `ease`                   | Ease being used. Accepts all common GSAP options.                    | `string`  | `'power1.out'` |
 | `once`                 | `once`                   | Determines if animation should only play once. (if viewport is true) | `boolean` | `undefined`    |
-| `opacity`              | `opacity`                | Opacity level the animation starts from.                             | `number`  | `1`            |
+| `opacity`              | `opacity`                | Opacity level the animation starts from.                             | `number`  | `0`            |
 | `stagger`              | `stagger`                | Amount of time elements should be staggered by.                      | `number`  | `0.15`         |
 | `target`               | `target`                 | The target element that should be animated inside the component.     | `string`  | `'*'`          |
 | `viewport`             | `viewport`               | Starts animation when target is in the viewport.                     | `boolean` | `undefined`    |
@@ -28,9 +28,29 @@
 
 ## Methods
 
+### `play(from?: number, suppressEvents?: boolean) => Promise<void>`
+
+Plays animation.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `reload() => Promise<void>`
 
 
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
+### `restart(includeDelay?: boolean, suppressEvents?: boolean) => Promise<void>`
+
+Restarts animation.
 
 #### Returns
 

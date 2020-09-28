@@ -38,6 +38,10 @@ export class SpxOffset {
       this.onResize()
     }
 
+    componentDidUpdate () {
+      this.onResize()
+    }
+
     @Method()
     async reload () {
       this.componentDidLoad()

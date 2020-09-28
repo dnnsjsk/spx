@@ -1,0 +1,31 @@
+{
+  "name": "spx-iframe",
+  "description": "A wrapper around a standard iframe element, which scales proportionally to its parent.\nGreat for showing desktop versions of a website in a small section.",
+  "properties": [
+    {
+      "id": "iframe-size",
+      "name": "size",
+      "type": "string",
+      "description": "Screen size of the site shown inside the iframe.",
+      "defaultValue": "'1440px'",
+      "tags": []
+    },
+    {
+      "id": "iframe-src",
+      "name": "src",
+      "type": "string",
+      "description": "Source for the iframe.",
+      "defaultValue": "'https://spx.dev'",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    }
+  ],
+  "slots": []
+}

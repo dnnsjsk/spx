@@ -1,0 +1,229 @@
+{
+  "name": "spx-edit-button",
+  "description": "Let your clients edit text on their site using this handy component.\nUpdates are being sent via AJAX, making this a solution that works completely on the front-end without reloading.\nTo enable front-end editing, just add the spx-edit-button component to a page. After that, you have to mark all elements that you want to be editable on the site.\nThis is being done by adding the data-spx-edit attribute to existing text elements.",
+  "properties": [
+    {
+      "id": "edit-button-background",
+      "name": "background",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-900)'",
+      "tags": []
+    },
+    {
+      "id": "edit-button-backgroundDiscard",
+      "name": "backgroundDiscard",
+      "type": "string",
+      "description": "Discard button background.",
+      "defaultValue": "'var(--spx-color-gray-600)'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "edit-button-border",
+      "name": "border",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'none'",
+      "tags": []
+    },
+    {
+      "id": "edit-button-borderRadius",
+      "name": "borderRadius",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-border-radius)'",
+      "tags": []
+    },
+    {
+      "id": "edit-button-color",
+      "name": "color",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'#ffffff'",
+      "tags": []
+    },
+    {
+      "id": "edit-button-colorDiscard",
+      "name": "colorDiscard",
+      "type": "string",
+      "description": "Discard button color.",
+      "defaultValue": "'#ffffff'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "edit-button-distanceX",
+      "name": "distanceX",
+      "type": "string",
+      "description": "Distance to the edge of the viewport on the x-axis.",
+      "defaultValue": "'1em'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "edit-button-distanceY",
+      "name": "distanceY",
+      "type": "string",
+      "description": "Distance to the edge of the viewport on the y-axis.",
+      "defaultValue": "'1em'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "edit-button-editId",
+      "name": "editId",
+      "type": "string",
+      "description": "Corresponding ID for editable fields. This property is needed when multiple edit-button components are used on the page. Simply apply a \"data-spx-edit-id\" attribute with the same value to editable elements.",
+      "tags": []
+    },
+    {
+      "id": "edit-button-fontFamily",
+      "name": "fontFamily",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-font-family)'",
+      "tags": []
+    },
+    {
+      "id": "edit-button-fontSize",
+      "name": "fontSize",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-font-size)'",
+      "tags": []
+    },
+    {
+      "id": "edit-button-gap",
+      "name": "gap",
+      "type": "string",
+      "description": "Gap between the buttons.",
+      "defaultValue": "'0.4em'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "edit-button-padding",
+      "name": "padding",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0.8em 1.2em'",
+      "tags": []
+    },
+    {
+      "id": "edit-button-position",
+      "name": "position",
+      "type": "string",
+      "description": "Component position in page.",
+      "defaultValue": "'bottom-right'",
+      "tags": [
+        {
+          "text": "'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "edit-button-positionCss",
+      "name": "positionCss",
+      "type": "\"absolute\" | \"fixed\" | \"relative\" | \"static\"",
+      "description": "CSS property position of button.",
+      "defaultValue": "'fixed'",
+      "tags": []
+    },
+    {
+      "id": "edit-button-test",
+      "name": "test",
+      "type": "boolean",
+      "description": "",
+      "defaultValue": "false",
+      "tags": []
+    },
+    {
+      "id": "edit-button-textDiscard",
+      "name": "textDiscard",
+      "type": "string",
+      "description": "Discard button text.",
+      "defaultValue": "'Discard'",
+      "tags": []
+    },
+    {
+      "id": "edit-button-textEdit",
+      "name": "textEdit",
+      "type": "string",
+      "description": "Edit button text.",
+      "defaultValue": "'Edit site'",
+      "tags": []
+    },
+    {
+      "id": "edit-button-textSave",
+      "name": "textSave",
+      "type": "string",
+      "description": "Save button text.",
+      "defaultValue": "'Save'",
+      "tags": []
+    },
+    {
+      "id": "edit-button-textSuccess",
+      "name": "textSuccess",
+      "type": "string",
+      "description": "Success message.",
+      "defaultValue": "'Save was successful'",
+      "tags": []
+    },
+    {
+      "id": "edit-button-type",
+      "name": "type",
+      "type": "string",
+      "description": "Type of data being sent.",
+      "defaultValue": "'option'",
+      "tags": [
+        {
+          "text": "'option', 'acf'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "edit-button-zIndex",
+      "name": "zIndex",
+      "type": "number",
+      "description": "",
+      "defaultValue": "99",
+      "tags": []
+    }
+  ],
+  "events": [
+    {
+      "name": "spxEditButtonDiscard",
+      "description": "Fires after pressing the discard button."
+    },
+    {
+      "name": "spxEditButtonSave",
+      "description": "Fires after pressing the save button."
+    }
+  ],
+  "methods": [
+    {
+      "name": "reload",
+      "description": "",
+      "signature": "reload() => Promise<void>"
+    }
+  ],
+  "slots": []
+}

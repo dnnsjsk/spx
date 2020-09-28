@@ -1,0 +1,95 @@
+{
+  "name": "spx-section-header",
+  "description": "The introductory element of every website.",
+  "properties": [
+    {
+      "id": "section-header-backdropFilter",
+      "name": "backdropFilter",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'blur(10px)'",
+      "tags": []
+    },
+    {
+      "id": "section-header-background",
+      "name": "background",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'rgba(255,255,255,0.85)'",
+      "tags": []
+    },
+    {
+      "id": "section-header-backgroundScroll",
+      "name": "backgroundScroll",
+      "type": "number",
+      "description": "Turns on background after scroll.",
+      "tags": []
+    },
+    {
+      "id": "section-header-borderBottom",
+      "name": "borderBottom",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "section-header-logoLink",
+      "name": "logoLink",
+      "type": "string",
+      "description": "URL the logo links to.",
+      "tags": []
+    },
+    {
+      "id": "section-header-logoMaxHeight",
+      "name": "logoMaxHeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'50px'",
+      "tags": []
+    },
+    {
+      "id": "section-header-logoSrc",
+      "name": "logoSrc",
+      "type": "string",
+      "description": "Logo src.",
+      "tags": []
+    },
+    {
+      "id": "section-header-logoSrcMobile",
+      "name": "logoSrcMobile",
+      "type": "string",
+      "description": "Logo mobile src.",
+      "tags": []
+    },
+    {
+      "id": "section-header-position",
+      "name": "position",
+      "type": "\"fixed\" | \"static\"",
+      "description": "Component positioning.",
+      "tags": []
+    },
+    {
+      "id": "section-header-spaceX",
+      "name": "spaceX",
+      "type": "string",
+      "description": "Distance to the edge of the viewport on the y-axis.",
+      "defaultValue": "'var(--spx-space-md)'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "section-header-zIndex",
+      "name": "zIndex",
+      "type": "number",
+      "description": "",
+      "defaultValue": "100",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

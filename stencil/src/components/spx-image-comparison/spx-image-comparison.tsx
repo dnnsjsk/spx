@@ -29,11 +29,11 @@ export class SpxImageComparison {
 
     /** Image URL of the before image. */
 
-    @Prop({ reflect: true }) srcAfter: string
+    @Prop({ reflect: true }) srcAfter: string = 'https://source.unsplash.com/random/1200x300'
 
     /** Image URL of the after image. */
 
-    @Prop({ reflect: true }) srcBefore: string
+    @Prop({ reflect: true }) srcBefore: string = 'https://source.unsplash.com/random/1201x300'
 
     @Listen('resize', { target: 'window' })
     onResize () {

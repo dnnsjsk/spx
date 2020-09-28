@@ -1,0 +1,25 @@
+{
+  "name": "spx-loader",
+  "description": "",
+  "properties": [
+    {
+      "id": "loader-color",
+      "name": "color",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'#ffffff'",
+      "tags": []
+    },
+    {
+      "id": "loader-speed",
+      "name": "speed",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'1.5s'",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

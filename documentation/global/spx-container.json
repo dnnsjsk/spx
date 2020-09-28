@@ -1,0 +1,427 @@
+{
+  "name": "spx-container",
+  "description": "The container element is a special component, as it isn't outputting any visible markup.\nRather, it's purpose is to provide global styles for section and page components.\nIt does not affect single components and won't ever will.",
+  "properties": [
+    {
+      "id": "container-bpMobile",
+      "name": "bpMobile",
+      "type": "number",
+      "description": "Mobile breakpoint width.",
+      "defaultValue": "s.bpMobileWidth",
+      "tags": []
+    },
+    {
+      "id": "container-buttonBorderRadius",
+      "name": "buttonBorderRadius",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-border-radius)'",
+      "tags": []
+    },
+    {
+      "id": "container-buttonFontSizeMultiplier",
+      "name": "buttonFontSizeMultiplier",
+      "type": "number",
+      "description": "",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "container-buttonFontWeight",
+      "name": "buttonFontWeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'bold'",
+      "tags": []
+    },
+    {
+      "id": "container-buttonMarginTop",
+      "name": "buttonMarginTop",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-space-lg)'",
+      "tags": []
+    },
+    {
+      "id": "container-buttonMarginX",
+      "name": "buttonMarginX",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-space-sm)'",
+      "tags": []
+    },
+    {
+      "id": "container-buttonReverseColor",
+      "name": "buttonReverseColor",
+      "type": "string",
+      "description": "Reverse color of buttons.",
+      "defaultValue": "s.buttonReverseColor",
+      "tags": [
+        {
+          "text": "'all', 'primary', 'secondary'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "container-buttonTextTransform",
+      "name": "buttonTextTransform",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'uppercase'",
+      "tags": []
+    },
+    {
+      "id": "container-colorPrimary",
+      "name": "colorPrimary",
+      "type": "string",
+      "description": "Primary color which will be used for sections and pages.",
+      "defaultValue": "s.colorPrimary",
+      "tags": [
+        {
+          "text": "'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "container-colorSecondary",
+      "name": "colorSecondary",
+      "type": "string",
+      "description": "Secondary color which will be used for sections and pages.",
+      "defaultValue": "s.colorSecondary",
+      "tags": [
+        {
+          "text": "'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "container-fontFamilyPrimary",
+      "name": "fontFamilyPrimary",
+      "type": "string",
+      "description": "Primary font-family.",
+      "defaultValue": "s.fontFamilyPrimary",
+      "tags": []
+    },
+    {
+      "id": "container-fontFamilySecondary",
+      "name": "fontFamilySecondary",
+      "type": "string",
+      "description": "Secondary font-family.",
+      "defaultValue": "s.fontFamilySecondary",
+      "tags": []
+    },
+    {
+      "id": "container-imageMaxWidth",
+      "name": "imageMaxWidth",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'none'",
+      "tags": []
+    },
+    {
+      "id": "container-maxWidth",
+      "name": "maxWidth",
+      "type": "string",
+      "description": "Section max-width on mobile.",
+      "defaultValue": "'500px'",
+      "tags": []
+    },
+    {
+      "id": "container-offsetHeader",
+      "name": "offsetHeader",
+      "type": "boolean",
+      "description": "Offsets first section to the height of the header.",
+      "tags": []
+    },
+    {
+      "id": "container-preTitleBackground",
+      "name": "preTitleBackground",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'none'",
+      "tags": []
+    },
+    {
+      "id": "container-preTitleBorderRadius",
+      "name": "preTitleBorderRadius",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'none'",
+      "tags": []
+    },
+    {
+      "id": "container-preTitleColor",
+      "name": "preTitleColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-black)'",
+      "tags": []
+    },
+    {
+      "id": "container-preTitleFontSizeMultiplier",
+      "name": "preTitleFontSizeMultiplier",
+      "type": "number",
+      "description": "",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "container-preTitleFontWeight",
+      "name": "preTitleFontWeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'400'",
+      "tags": []
+    },
+    {
+      "id": "container-preTitleLetterSpacing",
+      "name": "preTitleLetterSpacing",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0'",
+      "tags": []
+    },
+    {
+      "id": "container-preTitleLineHeight",
+      "name": "preTitleLineHeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'1.6'",
+      "tags": []
+    },
+    {
+      "id": "container-preTitleMarginBottom",
+      "name": "preTitleMarginBottom",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-space-md)'",
+      "tags": []
+    },
+    {
+      "id": "container-preTitlePadding",
+      "name": "preTitlePadding",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0'",
+      "tags": []
+    },
+    {
+      "id": "container-preTitleTextTransform",
+      "name": "preTitleTextTransform",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'default'",
+      "tags": []
+    },
+    {
+      "id": "container-spaceX",
+      "name": "spaceX",
+      "type": "string",
+      "description": "Space between content and outer edge of the viewport.",
+      "defaultValue": "s.spaceX",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "container-spaceXSm",
+      "name": "spaceXSm",
+      "type": "string",
+      "description": "Space between content and outer edge of the viewport.",
+      "defaultValue": "s.spaceXSm",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "container-spaceY",
+      "name": "spaceY",
+      "type": "string",
+      "description": "Space between the sections.",
+      "defaultValue": "'var(--spx-space-3xl)'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "container-spacing",
+      "name": "spacing",
+      "type": "string",
+      "description": "Space base for space-scale.",
+      "defaultValue": "'clamp(0.8em, 1vw, 1em)'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "container-tabsMarginBetween",
+      "name": "tabsMarginBetween",
+      "type": "string",
+      "description": "Margin between tab items.",
+      "defaultValue": "'var(--spx-space-sm)'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "container-tabsMarginFirst",
+      "name": "tabsMarginFirst",
+      "type": "string",
+      "description": "Top margin for first tab item.",
+      "defaultValue": "'var(--spx-space-md)'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "container-tabsOpacity",
+      "name": "tabsOpacity",
+      "type": "number",
+      "description": "Tabs opacity.",
+      "defaultValue": "0.5",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "container-textColor",
+      "name": "textColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-600)'",
+      "tags": []
+    },
+    {
+      "id": "container-textFontSizeMultiplier",
+      "name": "textFontSizeMultiplier",
+      "type": "number",
+      "description": "",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "container-textFontWeight",
+      "name": "textFontWeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'400'",
+      "tags": []
+    },
+    {
+      "id": "container-textLetterSpacing",
+      "name": "textLetterSpacing",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0'",
+      "tags": []
+    },
+    {
+      "id": "container-textLineHeight",
+      "name": "textLineHeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'1.6'",
+      "tags": []
+    },
+    {
+      "id": "container-textMarginTop",
+      "name": "textMarginTop",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-space-sm)'",
+      "tags": []
+    },
+    {
+      "id": "container-textMaxWidth",
+      "name": "textMaxWidth",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'800px'",
+      "tags": []
+    },
+    {
+      "id": "container-textTransform",
+      "name": "textTransform",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'default'",
+      "tags": []
+    },
+    {
+      "id": "container-titleColor",
+      "name": "titleColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-black)'",
+      "tags": []
+    },
+    {
+      "id": "container-titleFontSizeMultiplier",
+      "name": "titleFontSizeMultiplier",
+      "type": "number",
+      "description": "",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "container-titleFontWeight",
+      "name": "titleFontWeight",
+      "type": "number",
+      "description": "",
+      "defaultValue": "500",
+      "tags": []
+    },
+    {
+      "id": "container-titleLetterSpacing",
+      "name": "titleLetterSpacing",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0'",
+      "tags": []
+    },
+    {
+      "id": "container-titleLineHeight",
+      "name": "titleLineHeight",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'1.25'",
+      "tags": []
+    },
+    {
+      "id": "container-titleMaxWidth",
+      "name": "titleMaxWidth",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'max-content'",
+      "tags": []
+    },
+    {
+      "id": "container-titleTextTransform",
+      "name": "titleTextTransform",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'default'",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

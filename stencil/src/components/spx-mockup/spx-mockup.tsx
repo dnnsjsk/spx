@@ -18,7 +18,6 @@ const tag = 'spx-mockup'
 export class SpxMockup {
     @Element() el: HTMLSpxMockupElement
 
-    @State() color: string
     @State() height: string
     @State() innerElId
     @State() mockup
@@ -75,20 +74,18 @@ export class SpxMockup {
 
     /** Image src if no inner slot is used. */
 
-    @Prop({ reflect: true }) src: string
+    @Prop({ reflect: true }) src: string = 'https://picsum.photos/400/1200'
 
     /**
      * Device type.
-     * @choice 'iphone-x', 'iphone-8', 'google-pixel-2-xl', 'google-pixel', 'galaxy-s8', 'ipad-pro', 'surface-pro', 'surface-book', 'macbook', 'macbook-pro', 'surface-studio', 'imac-pro', 'apple-watch'
+     * @choice 'iphone-8', 'iphone-x', 'google-pixel-2-xl', 'google-pixel', 'galaxy-s8', 'ipad-pro', 'surface-pro', 'surface-book', 'macbook', 'macbook-pro', 'surface-studio', 'imac-pro', 'apple-watch'
      */
 
     @Prop({ reflect: true }) type: string = 'iphone-8'
 
     @Listen('resize', { target: 'window' })
     onResize () {
-      if (this.type !== 'browser') {
-        this.handleResize()
-      }
+      this.handleResize()
     }
 
     componentDidLoad () {
@@ -102,12 +99,10 @@ export class SpxMockup {
       /** Resize and wait for iFrame to load before showing content. */
 
       this.handleResize()
-      this.updateColors()
     }
 
     componentDidUpdate () {
       this.handleResize()
-      this.updateColors()
     }
 
     /** Resize function to keep src element in proportion. */
@@ -119,16 +114,20 @@ export class SpxMockup {
       this.parent.style.height = this.parentHeight / 1 * ratio + 'px'
     }
 
-    private updateColors () {
-      this.color = this.colorIphone8 || this.colorGooglePixel || this.colorGalaxyS8 || this.colorIpadPro || this.colorMacbookPro || this.colorMacbook || this.color
-    }
-
     @Method()
     async reload () {
       this.componentDidLoad()
     }
 
     render () {
+      const color =
+            this.type === 'galaxy-s8' ? this.colorGalaxyS8
+              : this.type === 'google-pixel' ? this.colorGooglePixel
+                : this.type === 'ipad-pro' ? this.colorIpadPro
+                  : this.type === 'iphone-8' ? this.colorIphone8
+                    : this.type === 'macbook' ? this.colorMacbook
+                      : this.type === 'macbook-pro' && this.colorMacbookPro
+
       /** Device style. */
 
       const styleHost = css({
@@ -150,7 +149,7 @@ export class SpxMockup {
 
         <div class="spx-mockup-wrap">
           <div
-            class={'spx-mockup spx-mockup-' + this.type + ' ' + (this.color ? 'spx-mockup-' + this.color + '' : '')}>
+            class={'spx-mockup spx-mockup-' + this.type + ' ' + 'spx-mockup-' + color + ''}>
             <div class="spx-mockup-frame">
               <div class="spx-mockup-content">
                 {this.src ? <img class={styleImg} src={this.src}/> : <slot/>}

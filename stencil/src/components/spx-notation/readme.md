@@ -7,16 +7,16 @@
 
 ## Properties
 
-| Property            | Attribute            | Description                              | Type                                                                                                | Default                            |
-| ------------------- | -------------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| `animation`         | `animation`          | Turn animation on or off when animation. | `boolean`                                                                                           | `true`                             |
-| `animationDuration` | `animation-duration` | Animation duration.                      | `number`                                                                                            | `800`                              |
-| `color`             | `color`              |                                          | `string`                                                                                            | `'var(--spx-color-secondary-100)'` |
-| `display`           | `display`            |                                          | `string`                                                                                            | `'inline-block'`                   |
-| `iterations`        | `iterations`         | Number of iterations.                    | `number`                                                                                            | `1`                                |
-| `multiline`         | `multiline`          | Annotate multiline text.                 | `boolean`                                                                                           | `true`                             |
-| `strokeWidth`       | `stroke-width`       | Stroke width.                            | `number`                                                                                            | `1`                                |
-| `type`              | `type`               | Type of notation.                        | `"box" \| "bracket" \| "circle" \| "crossed-off" \| "highlight" \| "strike-through" \| "underline"` | `undefined`                        |
+| Property            | Attribute            | Description                              | Type      | Default                            |
+| ------------------- | -------------------- | ---------------------------------------- | --------- | ---------------------------------- |
+| `animation`         | `animation`          | Turn animation on or off when animation. | `boolean` | `true`                             |
+| `animationDuration` | `animation-duration` | Animation duration.                      | `number`  | `800`                              |
+| `color`             | `color`              |                                          | `string`  | `'var(--spx-color-secondary-100)'` |
+| `display`           | `display`            |                                          | `string`  | `'inline-block'`                   |
+| `iterations`        | `iterations`         | Number of iterations.                    | `number`  | `1`                                |
+| `multiline`         | `multiline`          | Annotate multiline text.                 | `boolean` | `true`                             |
+| `strokeWidth`       | `stroke-width`       | Stroke width.                            | `number`  | `1`                                |
+| `type`              | `type`               | Type of notation.                        | `string`  | `'underline'`                      |
 
 
 ## Methods

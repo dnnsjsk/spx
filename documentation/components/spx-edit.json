@@ -1,0 +1,86 @@
+{
+  "name": "spx-edit",
+  "description": "",
+  "properties": [
+    {
+      "id": "edit-display",
+      "name": "display",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'inline'",
+      "tags": []
+    },
+    {
+      "id": "edit-editable",
+      "name": "editable",
+      "type": "boolean",
+      "description": "Watch editable state.",
+      "tags": []
+    },
+    {
+      "id": "edit-name",
+      "name": "name",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "edit-outline",
+      "name": "outline",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'2px solid red'",
+      "tags": []
+    },
+    {
+      "id": "edit-outlineFocus",
+      "name": "outlineFocus",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'blue'",
+      "tags": []
+    },
+    {
+      "id": "edit-placeholder",
+      "name": "placeholder",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'Enter some text here.'",
+      "tags": []
+    },
+    {
+      "id": "edit-placeholderColor",
+      "name": "placeholderColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'inherit'",
+      "tags": []
+    },
+    {
+      "id": "edit-placeholderOpacity",
+      "name": "placeholderOpacity",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'0.7'",
+      "tags": []
+    },
+    {
+      "id": "edit-styling",
+      "name": "styling",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "edit-type",
+      "name": "type",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'acf'",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

@@ -54,7 +54,7 @@
 | `titleFontWeight`            | `title-font-weight`              |                                                            | `number`  | `500`                         |
 | `titleLetterSpacing`         | `title-letter-spacing`           |                                                            | `string`  | `'0'`                         |
 | `titleLineHeight`            | `title-line-height`              |                                                            | `string`  | `'1.25'`                      |
-| `titleMaxWidth`              | `title-max-width`                |                                                            | `string`  | `undefined`                   |
+| `titleMaxWidth`              | `title-max-width`                |                                                            | `string`  | `'max-content'`               |
 | `titleTextTransform`         | `title-text-transform`           |                                                            | `string`  | `'default'`                   |
 
 
