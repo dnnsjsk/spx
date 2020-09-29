@@ -28,22 +28,13 @@ class init {
 			);
 
 			wp_enqueue_script(
-				'spx-module',
+				'spx',
 				plugins_url( '../assets/js/components/build/spx.esm.js', dirname( __FILE__ ) ),
 				array(),
 				filemtime( SPX_DIR . '/assets/js/components/build/spx.esm.js' ),
 				FALSE );
 
-			wp_enqueue_script(
-				'spx-nomodule',
-				plugins_url( '../assets/js/components/build/spx.js', dirname( __FILE__ ) ),
-				array(),
-				filemtime( SPX_DIR . '/assets/js/components/build/spx.js' ),
-				FALSE );
-
-			wp_localize_script( 'spx-module', 'spx', $localizeArray );
-
-			wp_localize_script( 'spx-nomodule', 'spx', $localizeArray );
+			wp_localize_script( 'spx', 'spx', $localizeArray );
 
 		} );
 	}
@@ -58,12 +49,8 @@ class init {
 
 		add_filter( 'script_loader_tag', function ( $tag, $handle, $source ) {
 
-			if ( 'spx-module' === $handle ) {
-				$tag = '<script type="module" id="spx-js-nomodule" src="' . $source . '"></script>';
-			}
-
-			if ( 'spx-nomodule' === $handle ) {
-				$tag = '<script type="nomodule" id="spx-js-module" src="' . $source . '"></script>';
+			if ( 'spx' === $handle ) {
+				$tag = '<script type="module" id="spx-js" src="' . $source . '"></script>';
 			}
 
 			return $tag;
@@ -134,6 +121,17 @@ class init {
 
 		} );
 
+	}
+
+	/**
+	 * Construct.
+	 *
+	 * @since 2.05
+	 */
+
+	public function __construct() {
+		self::enqueueScripts();
+		self::addScriptTags();
 	}
 
 }

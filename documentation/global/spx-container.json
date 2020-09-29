@@ -7,7 +7,7 @@
       "name": "bpMobile",
       "type": "number",
       "description": "Mobile breakpoint width.",
-      "defaultValue": "s.bpMobileWidth",
+      "defaultValue": "c.bpMobileWidth",
       "tags": []
     },
     {
@@ -15,7 +15,7 @@
       "name": "buttonBorderRadius",
       "type": "string",
       "description": "",
-      "defaultValue": "'var(--spx-border-radius)'",
+      "defaultValue": "s.borderRadius",
       "tags": []
     },
     {
@@ -55,7 +55,7 @@
       "name": "buttonReverseColor",
       "type": "string",
       "description": "Reverse color of buttons.",
-      "defaultValue": "s.buttonReverseColor",
+      "defaultValue": "c.buttonReverseColor",
       "tags": [
         {
           "text": "'all', 'primary', 'secondary'",
@@ -76,7 +76,7 @@
       "name": "colorPrimary",
       "type": "string",
       "description": "Primary color which will be used for sections and pages.",
-      "defaultValue": "s.colorPrimary",
+      "defaultValue": "c.colorPrimary",
       "tags": [
         {
           "text": "'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'",
@@ -89,7 +89,7 @@
       "name": "colorSecondary",
       "type": "string",
       "description": "Secondary color which will be used for sections and pages.",
-      "defaultValue": "s.colorSecondary",
+      "defaultValue": "c.colorSecondary",
       "tags": [
         {
           "text": "'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'",
@@ -102,7 +102,7 @@
       "name": "fontFamilyPrimary",
       "type": "string",
       "description": "Primary font-family.",
-      "defaultValue": "s.fontFamilyPrimary",
+      "defaultValue": "c.fontFamilyPrimary",
       "tags": []
     },
     {
@@ -110,7 +110,7 @@
       "name": "fontFamilySecondary",
       "type": "string",
       "description": "Secondary font-family.",
-      "defaultValue": "s.fontFamilySecondary",
+      "defaultValue": "c.fontFamilySecondary",
       "tags": []
     },
     {
@@ -221,7 +221,7 @@
       "name": "spaceX",
       "type": "string",
       "description": "Space between content and outer edge of the viewport.",
-      "defaultValue": "s.spaceX",
+      "defaultValue": "c.spaceX",
       "tags": [
         {
           "name": "CSS"
@@ -233,7 +233,7 @@
       "name": "spaceXSm",
       "type": "string",
       "description": "Space between content and outer edge of the viewport.",
-      "defaultValue": "s.spaceXSm",
+      "defaultValue": "c.spaceXSm",
       "tags": [
         {
           "name": "CSS"

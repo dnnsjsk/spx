@@ -5,6 +5,7 @@ import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
 import { startCase, kebabCase, some, filter } from 'lodash-es'
 import tippy from 'tippy.js'
 import Clipboard from 'clipboard'
+import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 
 import * as s from '../../constants/style'
 import * as accordion from '../../../../documentation/components/spx-accordion.json'
@@ -47,14 +48,29 @@ export class SpxEditor {
     @State() query
     @State() mobile
     @State() headerHeight
+    @State() fullscreen: boolean = false
 
     @Prop({ reflect: true }) location: string
 
     @Listen('resize', { target: 'window' })
     onResize () {
-      this.mobile = window.innerWidth < 1024
+      if (window.innerWidth < 1024) {
+        this.fullscreen = false
+        clearAllBodyScrollLocks()
+        this.mobile = true
+      } else {
+        this.mobile = false
+      }
       if (document.querySelector('spx-section-header')) {
         this.headerHeight = document.querySelector('spx-section-header').offsetHeight
+      }
+    }
+
+    @Listen('keydown', { target: 'document' })
+    onKeyDown (e) {
+      if (e.key === 'Escape' && this.fullscreen) {
+        this.fullscreen = false
+        clearAllBodyScrollLocks()
       }
     }
 
@@ -634,6 +650,16 @@ export class SpxEditor {
       document.body.appendChild(snackbar)
     }
 
+    private goFullscreen = () => {
+      if (this.fullscreen === false) {
+        this.fullscreen = true
+        disableBodyScroll(this.el)
+      } else {
+        this.fullscreen = false
+        clearAllBodyScrollLocks()
+      }
+    }
+
     render () {
       /** Host styles. */
 
@@ -641,12 +667,20 @@ export class SpxEditor {
         display: this.mobile ? 'flex' : 'grid',
         justifyContent: this.mobile && 'center',
         alignItems: this.mobile && 'center',
-        height: !this.mobile ? 'calc(100vh - ' + this.headerHeight + 'px)' : '100px',
+        background: '#ffffff',
+        height:
+            !this.mobile && !this.fullscreen ? 'calc(100vh - ' + this.headerHeight + 'px)'
+              : !this.mobile && this.fullscreen ? '100vh' : '100px',
+        width: this.fullscreen ? '100vw' : '100%',
         minHeight: !this.mobile && '500px',
         padding: this.mobile && '4vw',
-        width: '100%',
-        borderRadius: s.borderRadius,
-        border: '1px solid var(--spx-color-gray-200)',
+        position: this.fullscreen && !this.mobile ? 'fixed' : 'relative',
+        top: this.fullscreen && !this.mobile && '0',
+        left: this.fullscreen && !this.mobile && '0',
+        borderRadius: !this.fullscreen && s.borderRadius,
+        border: !this.fullscreen && '1px solid var(--spx-color-gray-200)',
+        zIndex: this.fullscreen && 99999,
+        overflow: 'hidden',
         gridTemplateColumns: '1fr 300px',
         gridTemplateRows: 'auto 1fr',
         gridTemplateAreas:
@@ -705,7 +739,11 @@ export class SpxEditor {
         'spx-image-comparison': {
           maxWidth: '1000px',
           maxHeight: '400px',
-          borderRadius: s.borderRadius
+          borderRadius: s.borderRadius,
+
+          img: {
+            width: 'unset !important'
+          }
         },
 
         'spx-masonry': {
@@ -801,6 +839,14 @@ export class SpxEditor {
         }
       })
 
+      const styleFullscreen = css({
+        position: 'absolute',
+        left: '0',
+        bottom: '0',
+        borderTopRightRadius: s.borderRadius,
+        borderBottomLeftRadius: s.borderRadius
+      })
+
       return <Host class={styleHost}>
 
         {/** Header. */}
@@ -846,6 +892,10 @@ export class SpxEditor {
 
           </div>
         </div>
+
+        <button onClick={this.goFullscreen}
+          class={styleFullscreen}>{this.fullscreen ? 'Exit Fullscreen' : 'Go Fullscreen'}</button>
+
         <p class="mobile">The playground only works on devices larger than 1024px.</p>
       </Host>
     }

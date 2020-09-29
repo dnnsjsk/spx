@@ -68,7 +68,7 @@ export class SpxPageSingle {
 
     @Prop({ reflect: true }) headerPaddingBottom: string = 'var(--spx-space-xl)'
 
-    @Prop({ reflect: true }) headerBorderBottom: string = '1px solid var(--spx-color-gray-100)'
+    @Prop({ reflect: true }) headerBorderBottom: string = '1px solid var(--spx-color-gray-200)'
 
     /** Display image. */
 
@@ -166,7 +166,7 @@ export class SpxPageSingle {
           objectFit: 'cover',
           objectPosition: setVar(tag, 'image-object-position', this.imageObjectPosition),
           maxWidth: '100%',
-          height: setVar(tag, 'height', this.imageHeight),
+          height: setVar(tag, 'image-height', this.imageHeight),
           borderRadius: setVar(tag, 'image-border-radius', this.imageBorderRadius)
         }
       })

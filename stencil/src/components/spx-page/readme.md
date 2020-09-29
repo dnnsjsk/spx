@@ -28,7 +28,7 @@
 | `dateLineHeight`           | `date-line-height`            |                                  | `string`  | `'1.25'`                                |
 | `dateMarginTop`            | `date-margin-top`             |                                  | `string`  | `'var(--spx-space-sm)'`                 |
 | `dateTextTransform`        | `date-text-transform`         |                                  | `string`  | `'default'`                             |
-| `headerBorderBottom`       | `header-border-bottom`        |                                  | `string`  | `'1px solid var(--spx-color-gray-100)'` |
+| `headerBorderBottom`       | `header-border-bottom`        |                                  | `string`  | `'1px solid var(--spx-color-gray-200)'` |
 | `headerPaddingBottom`      | `header-padding-bottom`       |                                  | `string`  | `'var(--spx-space-xl)'`                 |
 | `image`                    | `image`                       | Display image.                   | `boolean` | `true`                                  |
 | `imageBorderRadius`        | `image-border-radius`         |                                  | `string`  | `c.borderRadius`                        |

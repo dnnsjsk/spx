@@ -17,7 +17,7 @@ const tag = 'spx-navigation'
 })
 
 export class SpxNavigation {
-    @Element() el: HTMLSpxNavigationElement
+    @Element() el?: HTMLSpxNavigationElement
 
     @State() menuArray: Array<string>
     @State() mobileBP: boolean
@@ -164,9 +164,9 @@ export class SpxNavigation {
 
     /** Init popper on mouse/touch enter. */
 
-    @Listen('ontouchstart', { target: this.el })
-    @Listen('mouseenter', { target: this.el })
-    @Listen('focusin', { target: this.el })
+    @Listen('ontouchstart')
+    @Listen('mouseenter')
+    @Listen('focusin')
     onClick () {
       if (this.mobileBP) {
         this.initPopperMobile()

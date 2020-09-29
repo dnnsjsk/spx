@@ -24,21 +24,21 @@ export class SpxSectionFooter {
      * @CSS
      */
 
-    @Prop({ reflect: true }) columnSizeMin: string = '200px'
+    @Prop({ reflect: true }) columnSizeMin: string = '0'
 
     /**
      * Maximum column size.
      * @CSS
      */
 
-    @Prop({ reflect: true }) columnSizeMax: string = '1fr'
+    @Prop({ reflect: true }) columnSizeMax: string = 'auto'
 
     /**
      * Gap between columns.
      * @CSS
      */
 
-    @Prop({ reflect: true }) gap: string = 'var(--spx-space-md)'
+    @Prop({ reflect: true }) gap: string = 'var(--spx-space-lg)'
 
     @Prop({ reflect: true }) imageMaxHeight: string = '40px'
 
@@ -85,17 +85,43 @@ export class SpxSectionFooter {
       const styleHost = css({
         marginTop: 'auto',
 
+        'div > h3, & > h3': {
+          marginTop: state.bpMobile && 'var(--spx-space-lg)',
+          marginBottom: 'var(--spx-space-md)'
+        },
+
+        '&:before': {
+          display: 'block',
+          content: '" "',
+          height: setVar(tag, 'space-before', this.spaceBefore)
+        }
+      })
+
+      /** Outer styles. */
+
+      const styleOuter = css({
+        display: 'block',
+        width: '100%',
+        background: 'var(--spx-color-gray-900)'
+      })
+
+      /** Inner styles. */
+
+      const styleInner = css({
+        display: 'grid',
+        gridAutoFlow: state.bpMobile ? 'row' : 'column',
+        gridAutoColumns: 'minmax(' + setVar(tag, 'column-size-min', this.columnSizeMin) + ', ' + setVar(tag, 'column-size-max', this.columnSizeMax) + ')',
+        gap: setVar(tag, 'gap', this.gap),
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        padding: '' + setVar(tag, 'padding', this.spaceY) + ' 0',
+
         h3: {
           color: '#ffffff',
           textTransform: 'uppercase',
           fontWeight: 600,
           fontSize: 'clamp(18px, 1.6vw, 28px)',
           fontFamily: state.fontFamilyPrimary
-        },
-
-        'div > h3, & > h3': {
-          marginTop: state.bpMobile && 'var(--spx-space-lg)',
-          marginBottom: 'var(--spx-space-md)'
         },
 
         a: {
@@ -125,37 +151,16 @@ export class SpxSectionFooter {
 
         img: {
           width: 'auto !important',
-          maxHeight: setVar(tag, 'image-max-height', this.imageMaxHeight)
+          maxWidth: '100%'
         },
 
-        '&:before': {
-          display: 'block',
-          content: '" "',
-          height: setVar(tag, 'space-before', this.spaceBefore)
+        'img:not(.spx-e)': {
+          maxHeight: setVar(tag, 'image-max-height', this.imageMaxHeight)
         }
       })
 
-      /** Outer styles. */
-
-      const styleOuter = css({
-        display: 'block',
-        width: '100%',
-        background: 'var(--spx-color-gray-900)'
-      })
-
-      /** Inner styles. */
-
-      const styleInner = css({
-        display: 'grid',
-        gridAutoFlow: state.bpMobile ? 'row' : 'column',
-        gridAutoColumns: 'minmax(' + setVar(tag, 'column-size-min', this.columnSizeMin) + ', ' + setVar(tag, 'column-size-max', this.columnSizeMax) + ')',
-        gap: setVar(tag, 'gap', this.gap),
-        marginLeft: 'auto',
-        marginRight: 'auto',
-        padding: '' + setVar(tag, 'padding', this.spaceY) + ' 0'
-      })
-
       return <Host class={styleHost}>
+        <slot name="before-footer"/>
         <div class={styleOuter}>
           <div class={styleInner}>
             <slot/>

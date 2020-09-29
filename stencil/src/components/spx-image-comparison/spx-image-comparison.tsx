@@ -147,7 +147,7 @@ export class SpxImageComparison {
       })
 
       const styleImage = css({
-        height: '100%'
+        height: '100%',
       })
 
       const styleImageAfter = css({

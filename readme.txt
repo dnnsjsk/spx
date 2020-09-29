@@ -15,7 +15,16 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
-= 2.04 =
+= 2.0.5 =
+* Enhancement: remove IE11 support.
+* Enhancement: only enqueue module version of spx.
+* Enhancement: add bundle version.
+* Enhancement: don't load container scripts when container is not on page.
+* StencilJS: update to 2.0.3.
+* Section Footer: Add 'before-footer' slot.
+* Page Single: Fix image-height prop.
+
+= 2.0.4 =
 * New: add IDs to script tags.
 * New: add .json documentation to plugin files.
 * Animate: add 'play' and 'restart' method.
@@ -39,16 +48,16 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Snackbar: add position CSS prop.
 * Typewriter: fix everything and add possibility to write multiple words/sentences. -> ['phrase1', 'phrase2']
 
-= 2.03 =
+= 2.0.3 =
 * Edit Button: fix ajax handler.
 
-= 2.02 =
+= 2.0.2 =
 * Fix: capability for admin menu item.
 * Fix: don't load footer script when section system isn't used.
 * Fix: author name.
 * Fix: remove unnecessary files from build folder.
 
-= 2.01 =
+= 2.0.1 =
 * Fix: version number in WP plugin menu.
 
 = 2.0 =
@@ -86,15 +95,15 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Typewriter: remove "inner" prop. Component now automatically recognizes inner elements.
 * Typewriter: replace endless loop for inner elements with Mutation Observer.
 
-= 1.42 =
+= 1.4.2 =
 * Fix: license activating/deactivating.
 * Fix: build directory filling up after every release.
 * Fix: remove composer. (again)
 
-= 1.41 =
+= 1.4.1 =
 * Image Comparison: fix slider on touch devices.
 
-= 1.40 =
+= 1.4.0 =
 * New: introduce global transition CSS variables.
 * Class Toggle: fix generated class array.
 * Edit Button: remove dot from success message.
@@ -106,7 +115,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Navigation: add transitions for item hover and child opacity.
 * Fix: remove composer.
 
-= 1.39 =
+= 1.3.9 =
 * New: Image Comparison component. (Main & Oxygen)
 * Lightbox: make icons uniform.
 * Lightbox: fix hover states.
@@ -115,18 +124,18 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Navigation: make mobile button focusable.
 * Navigation: give mobile button aria role="button".
 
-= 1.38 =
+= 1.3.8 =
 * Fix: bump "Tested up to" version to 5.4.2.
 
-= 1.37 =
+= 1.3.7 =
 * Lightbox: make body not scrollable when open.
 * Lightbox: avoid scroll to top when opening on mobile.
 
-= 1.36 =
+= 1.3.6 =
 * Navigation: only create one nav tag.
 * Edit Button: position new defaults to bottom-right again.
 
-= 1.35 =
+= 1.3.5 =
 * New: Lightbox component.
 * Masonry: fix generated CSS when being nested inside Lightbox.
 * Scrollspy: add DidLoad event.
@@ -134,21 +143,21 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Navigation: fix sub sub menus not positioning correctly when navigation is fixed.
 * Enhance: add CSS variable to all components that can have a different display property.
 
-= 1.34 =
+= 1.3.4 =
 * Oxygen: fix Typewriter JS error.
 * Oxygen: fix possible Animate bottleneck on front-end.
 
-= 1.33 =
+= 1.3.3 =
 * Oxygen: Fix typo in editor subheading.
 
-= 1.32 =
+= 1.3.2 =
 * New: Typewriter component.
 * Scrollspy: Don't force url-change to be true.
 
-= 1.31 =
+= 1.3.1 =
 * Snackbar: make height even when component is closeable.
 
-= 1.30 =
+= 1.3.0 =
 * Oxygen: disabled editor CSS generation.
 * Oxygen: organized components more logically.
 * Oxygen: add snackbar element.
@@ -156,25 +165,25 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Animate: swap button lists for checkboxes.
 * Snackbar: give snackbar close button the following aria attribute: role="button".
 
-= 1.29 =
+= 1.2.9 =
 * Edit Button: add JS events and edit-id capabilities.
 
-= 1.28 =
+= 1.2.8 =
 * Edit Button: added wp_options support.
 
-= 1.27 =
+= 1.2.7 =
 * Animate: add easing options in Oxygen.
 
-= 1.26 =
+= 1.2.6 =
 * Animate: fix animation in Oxygen editor.
 
-= 1.25 =
+= 1.2.5 =
 * Navigation: fix sub menu positioning.
 
-= 1.24 =
+= 1.2.4 =
 * Navigation: add options for mobile items. (padding, color, color-hover, background & background-hover)
 
-= 1.23 =
+= 1.2.3 =
 * NEW: Native Oxygen integration. (animate, class-toggle, mockup & offset component)
 * New: Offset component.
 * Navigation: add loaded event.
@@ -187,10 +196,10 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Enhanced: spx now has it's own page in the admin.
 * Enhanced: alignments on admin page.
 
-= 1.22 =
+= 1.2.2 =
 * Navigation: fix font-size inheritance.
 
-= 1.21 =
+= 1.2.1 =
 * New: new color scale CSS variable for all colour attributes
 * New: unified gallery helper function.
 * Enhanced: all components (where applicable) have a font-size attribute with variable set in place now.
@@ -201,75 +210,75 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Navigation: add default mobile breakpoint. (768)
 * Share: added custom colour options.
 
-= 1.20 =
+= 1.2.0 =
 * New: Snackbar component.
 * Edit button: Adapted new positioning properties from Snackbar component.
 * Edit button: Fixed font inheritance.
 * StencilJS: Update to 1.14.0.
 
-= 1.19 =
+= 1.1.9 =
 * New: Share component.
 
-= 1.18 =
+= 1.1.8 =
 * Navigation: simplified child and mobile placement. (always defaults to bottom)
 * Navigation: fixed CSS variable for distance between mobile menu button and menu.
 
-= 1.17 =
+= 1.1.7 =
 * New: Scrollspy component.
 * Navigation: fixed position calculation when tabbing through links.
 * Navigation: vertical now renders correctly.
 * Navigation: added child-item-margin-left attribute for mobile and vertical mode.
 * StencilJS: Update to 1.13.0.
 
-= 1.16 =
+= 1.1.6 =
 * Optimized queries of Masonry PHP helper component.
 
-= 1.15 =
+= 1.1.5 =
 * New: Metabox helper for Masonry component.
 * New: child menu positioning props for Navigation component.
 * New: positioning props for Edit Button component.
 
-= 1.14 =
+= 1.1.4 =
 * Fix: readme file.
 
-= 1.13 =
+= 1.1.3 =
 * Fix: test-mode for Edit Button component.
 
-= 1.12 =
+= 1.1.2 =
 * Fix: file versioning to prevent JS errors after updates.
 
-= 1.11 =
+= 1.1.1 =
 * New: iframe component.
 
-= 1.10 =
+= 1.1.0 =
 * Fix: plugin header.
 
-= 1.09 =
+= 1.0.9 =
 * Pre-release bug fix.
 
-= 1.08 =
+= 1.0.8 =
 * Bug fixes.
 
-= 1.07 =
+= 1.0.7 =
 * Fix: Navigation.
 
-= 1.06 =
+= 1.0.6 =
 * Add other readme tags so WP validator is happy.
 
-= 1.05 =
+= 1.0.5 =
 * Add GPL license.
 
-= 1.04 =
+= 1.0.4 =
 * Change description.
 
-= 1.03 =
+= 1.0.3 =
 * Fixed some minor pre-launch issues.
 
-= 1.02 =
+= 1.0.2 =
 * Add tested up to version to readme.
 
-= 1.01 =
+= 1.0.1 =
 * Change folder structure and set up automatic updates.
 
-= 1.00 =
+= 1.0 =
 * Initial release.

@@ -9,18 +9,18 @@
 
 | Property                     | Attribute                        | Description                                                | Type      | Default                       |
 | ---------------------------- | -------------------------------- | ---------------------------------------------------------- | --------- | ----------------------------- |
-| `bpMobile`                   | `bp-mobile`                      | Mobile breakpoint width.                                   | `number`  | `s.bpMobileWidth`             |
-| `buttonBorderRadius`         | `button-border-radius`           |                                                            | `string`  | `c.borderRadius`              |
+| `bpMobile`                   | `bp-mobile`                      | Mobile breakpoint width.                                   | `number`  | `c.bpMobileWidth`             |
+| `buttonBorderRadius`         | `button-border-radius`           |                                                            | `string`  | `s.borderRadius`              |
 | `buttonFontSizeMultiplier`   | `button-font-size-multiplier`    |                                                            | `number`  | `1`                           |
 | `buttonFontWeight`           | `button-font-weight`             |                                                            | `string`  | `'bold'`                      |
 | `buttonMarginTop`            | `button-margin-top`              |                                                            | `string`  | `'var(--spx-space-lg)'`       |
 | `buttonMarginX`              | `button-margin-x`                |                                                            | `string`  | `'var(--spx-space-sm)'`       |
-| `buttonReverseColor`         | `button-reverse-color`           | Reverse color of buttons.                                  | `string`  | `s.buttonReverseColor`        |
+| `buttonReverseColor`         | `button-reverse-color`           | Reverse color of buttons.                                  | `string`  | `c.buttonReverseColor`        |
 | `buttonTextTransform`        | `button-text-transform`          |                                                            | `string`  | `'uppercase'`                 |
-| `colorPrimary`               | `color-primary`                  | Primary color which will be used for sections and pages.   | `string`  | `s.colorPrimary`              |
-| `colorSecondary`             | `color-secondary`                | Secondary color which will be used for sections and pages. | `string`  | `s.colorSecondary`            |
-| `fontFamilyPrimary`          | `font-family-primary`            | Primary font-family.                                       | `string`  | `s.fontFamilyPrimary`         |
-| `fontFamilySecondary`        | `font-family-secondary`          | Secondary font-family.                                     | `string`  | `s.fontFamilySecondary`       |
+| `colorPrimary`               | `color-primary`                  | Primary color which will be used for sections and pages.   | `string`  | `c.colorPrimary`              |
+| `colorSecondary`             | `color-secondary`                | Secondary color which will be used for sections and pages. | `string`  | `c.colorSecondary`            |
+| `fontFamilyPrimary`          | `font-family-primary`            | Primary font-family.                                       | `string`  | `c.fontFamilyPrimary`         |
+| `fontFamilySecondary`        | `font-family-secondary`          | Secondary font-family.                                     | `string`  | `c.fontFamilySecondary`       |
 | `imageMaxWidth`              | `image-max-width`                |                                                            | `string`  | `'none'`                      |
 | `maxWidth`                   | `max-width`                      | Section max-width on mobile.                               | `string`  | `'500px'`                     |
 | `offsetHeader`               | `offset-header`                  | Offsets first section to the height of the header.         | `boolean` | `undefined`                   |
@@ -34,8 +34,8 @@
 | `preTitleMarginBottom`       | `pre-title-margin-bottom`        |                                                            | `string`  | `'var(--spx-space-md)'`       |
 | `preTitlePadding`            | `pre-title-padding`              |                                                            | `string`  | `'0'`                         |
 | `preTitleTextTransform`      | `pre-title-text-transform`       |                                                            | `string`  | `'default'`                   |
-| `spaceX`                     | `space-x`                        | Space between content and outer edge of the viewport.      | `string`  | `s.spaceX`                    |
-| `spaceXSm`                   | `space-x-sm`                     | Space between content and outer edge of the viewport.      | `string`  | `s.spaceXSm`                  |
+| `spaceX`                     | `space-x`                        | Space between content and outer edge of the viewport.      | `string`  | `c.spaceX`                    |
+| `spaceXSm`                   | `space-x-sm`                     | Space between content and outer edge of the viewport.      | `string`  | `c.spaceXSm`                  |
 | `spaceY`                     | `space-y`                        | Space between the sections.                                | `string`  | `'var(--spx-space-3xl)'`      |
 | `spacing`                    | `spacing`                        | Space base for space-scale.                                | `string`  | `'clamp(0.8em, 1vw, 1em)'`    |
 | `tabsMarginBetween`          | `tabs-margin-between`            | Margin between tab items.                                  | `string`  | `'var(--spx-space-sm)'`       |

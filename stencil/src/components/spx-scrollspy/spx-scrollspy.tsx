@@ -10,7 +10,6 @@ const tag = 'spx-scrollspy'
 
 /**
  * Automatically add CSS classes to navigation items and content elements depending on the scroll position.
- * You can see it in action on the left of this page! (on desktop)
  */
 
 @Component({

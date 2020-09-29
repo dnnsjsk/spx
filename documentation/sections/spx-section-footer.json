@@ -7,7 +7,7 @@
       "name": "columnSizeMax",
       "type": "string",
       "description": "Maximum column size.",
-      "defaultValue": "'1fr'",
+      "defaultValue": "'auto'",
       "tags": [
         {
           "name": "CSS"
@@ -19,7 +19,7 @@
       "name": "columnSizeMin",
       "type": "string",
       "description": "Minimum column size.",
-      "defaultValue": "'200px'",
+      "defaultValue": "'0'",
       "tags": [
         {
           "name": "CSS"
@@ -31,7 +31,7 @@
       "name": "gap",
       "type": "string",
       "description": "Gap between columns.",
-      "defaultValue": "'var(--spx-space-md)'",
+      "defaultValue": "'var(--spx-space-lg)'",
       "tags": [
         {
           "name": "CSS"

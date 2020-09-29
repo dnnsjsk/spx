@@ -1,6 +1,6 @@
 {
   "name": "spx-scrollspy",
-  "description": "Automatically add CSS classes to navigation items and content elements depending on the scroll position.\nYou can see it in action on the left of this page! (on desktop)",
+  "description": "Automatically add CSS classes to navigation items and content elements depending on the scroll position.",
   "properties": [
     {
       "id": "scrollspy-contentClass",

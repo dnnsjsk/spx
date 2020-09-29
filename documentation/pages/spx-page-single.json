@@ -159,7 +159,7 @@
       "name": "headerBorderBottom",
       "type": "string",
       "description": "",
-      "defaultValue": "'1px solid var(--spx-color-gray-100)'",
+      "defaultValue": "'1px solid var(--spx-color-gray-200)'",
       "tags": []
     },
     {

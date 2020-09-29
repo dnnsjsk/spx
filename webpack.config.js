@@ -47,6 +47,7 @@ module.exports = {
         path.resolve(__dirname, '../../../../../releases/spx-release/assets/js/components/host.config.json'),
         path.resolve(__dirname, '../../../../../releases/spx-release/assets/js/components/index.html'),
         path.resolve(__dirname, '../../../../../releases/spx-release/assets/js/spxWebpack.js'),
+        path.resolve(__dirname, '../../../../../releases/spx-release/assets/js/.DS_STORE'),
         path.resolve(__dirname, '../../../../../releases/spx-release/assets/.DS_STORE'),
         path.resolve(__dirname, '../../../../../releases/spx-release/.DS_STORE')
       ],

@@ -116,6 +116,11 @@ export const config: Config = {
       empty: true
     },
     {
+      type: 'dist-custom-elements-bundle',
+      dir: '../assets/js/bundle',
+      empty: true
+    },
+    {
       type: 'docs-custom',
       generator: generateCustomElementsJSON
     }

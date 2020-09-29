@@ -4,6 +4,7 @@ body {
     --spx-container-text-letter-spacing: -0.025em;
     --spx-container-text-max-width: 500px;
     --spx-container-title-letter-spacing: -0.05em;
+    --spx-page-single-image-height: clamp(200px, 50vh, 600px);
     --spx-slider-pagination-tabs-max-width: 100%;
     --spx-space-unit: 0.7em;
 }
@@ -44,5 +45,6 @@ body {
 @media (min-width: 1860px) {
     body {
         --spx-container-title-font-size-multiplier: 1;
+        --spx-page-single-image-height: clamp(600px, 50vh, 800px);
     }
 }

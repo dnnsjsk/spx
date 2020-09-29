@@ -5,7 +5,7 @@
  * Plugin URI: https://spx.dev
  * Description: An ever growing collection of flexible web components to supercharge your workflow.
  * Author: Dennis Josek
- * Version: 2.04
+ * Version: 2.0.5
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
@@ -59,5 +59,4 @@ include plugin_dir_path( __FILE__ ) . 'includes/admin/spx-updater.php';
  * @since 1.0
  */
 
-init::enqueueScripts();
-init::addScriptTags();
+new init();

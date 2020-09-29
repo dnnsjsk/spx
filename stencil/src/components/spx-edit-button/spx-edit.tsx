@@ -35,6 +35,7 @@ export class SpxEdit {
     /** Watch editable state. */
 
     @Prop({ reflect: true }) editable: boolean
+
     @Watch('editable')
     watchEditable () {
       if (this.editable) {
@@ -46,7 +47,7 @@ export class SpxEdit {
 
     /** Prevent enter key. */
 
-    @Listen('keydown', { target: this.el })
+    @Listen('keydown')
     onClickEnter (evt) {
       if (evt.keyCode === 13) {
         evt.preventDefault()
@@ -70,7 +71,7 @@ export class SpxEdit {
 
     /** Sets the new body string correctly on key press. */
 
-    @Listen('keyup', { target: this.el })
+    @Listen('keyup')
     onClickKeyup () {
       this.el.setAttribute('body-string', '&' + this.name + '=' + this.el.innerText)
     }
