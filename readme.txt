@@ -15,7 +15,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
-= 2.1.0 =
+= 2.2.0 =
 * Enhancement: change versioning to follow semver standard.
 
 = 2.0.5 =
