@@ -10,13 +10,16 @@ if ( ! class_exists( 'spxOxyEl' ) ) {
 
 	class spxOxyEl extends OxyEl {
 
-		function init() {
-			$this->enableNesting();
+		function name() {
+			return 'spx Element';
 		}
 
+		function tag() {
+			return array( 'default' => 'div' );
+		}
 
-		function name() {
-			return __( 'spx Element' );
+		function init() {
+			$this->enableNesting();
 		}
 
 		function render( $options, $defaults, $content ) {
@@ -27,24 +30,25 @@ if ( ! class_exists( 'spxOxyEl' ) ) {
 			$output = '<spx-' . $tag . ' class="oxy-inner-content" ' . $attributes . '>';
 
 			if ( $content ) {
-
 				$output .= do_shortcode( $content );
-
 			}
 
-			$output .= '</spx-' . $tag . '>';
+			$output .= ' </spx-' . $tag . '> ';
 
 			echo $output;
+		}
 
+		function class_names() {
+			return array();
 		}
 
 		function controls() {
+
 			$this->addOptionControl(
 				array(
 					'type' => 'dropdown',
 					'name' => 'Component',
 					'slug' => 'spxElement',
-					'css'  => FALSE,
 				)
 			)->setValue( array(
 					'accordion'        => 'Accordion',
@@ -72,15 +76,26 @@ if ( ! class_exists( 'spxOxyEl' ) ) {
 
 			$this->addOptionControl(
 				array(
-					'type' => 'textarea',
-					'name' => 'Attributes',
-					'slug' => 'spxAttributes',
-					'css'  => FALSE,
+					"type"   => 'textarea',
+					"name"   => __( 'Attributes' ),
+					"slug"   => 'spxAttributes',
+					"base64" => TRUE
 				)
 			);
+
 		}
 
 	}
+
+	add_filter( "oxy_base64_encode_options",
+		function ( $items ) {
+			$items = array_merge( $items, array(
+				'oxy-spx-element_spxAttributes',
+			) );
+
+			return $items;
+		}
+	);
 
 	new spxOxyEl();
 

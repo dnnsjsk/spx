@@ -3,6 +3,7 @@ import { removeClasses } from '../utils/removeClasses'
 import * as s from '../constants/container'
 import { setColor } from '../utils/setColor'
 import { css } from 'emotion'
+import { watchMobile } from '../utils/watchMobile'
 
 /**
  * State.
@@ -84,26 +85,10 @@ onChange('buttonReverseColor', value => {
  * BP Mobile.
  */
 
-const setMobile = () => {
-  if (window.innerWidth < state.bpMobileWidth) {
-    state.bpMobile = true
-    document.body.classList.add('spx-mobile')
-  } else {
-    state.bpMobile = false
-    document.body.classList.remove('spx-mobile')
-  }
-}
-
-setMobile()
-
 onChange('bpMobileWidth', value => {
   state.bpMobileWidth = value
 
-  setMobile()
-})
-
-window.addEventListener('resize', function () {
-  setMobile()
+  watchMobile()
 })
 
 /**

@@ -183,12 +183,6 @@ export class SpxNavigation {
       this.mobileBP = window.innerWidth < this.mobile
     }
 
-    connectedCallback () {
-      /** Check if is mobile view. */
-
-      this.onResize()
-    }
-
     componentWillLoad () {
       /** If menu prop is set. */
 
@@ -197,6 +191,10 @@ export class SpxNavigation {
 
     componentDidLoad () {
       globalComponentDidLoad(this.el)
+
+      /** Check if is mobile view. */
+
+      this.onResize()
 
       /** Sort menu items. */
 

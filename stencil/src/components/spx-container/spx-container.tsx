@@ -9,6 +9,7 @@ import { setFontSize } from '../../utils/setSize'
 import state from '../../stores/container'
 import { offsetHeader } from '../../utils/offsetHeader'
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
+import { watchMobile } from '../../utils/watchMobile'
 
 const tag = 'spx-container'
 
@@ -221,6 +222,8 @@ export class SpxContainer {
       if (this.offsetHeader) {
         offsetHeader(this.el.querySelector(':scope spx-section-header + *'), 'spx-section-header')
       }
+
+      watchMobile()
     }
 
     connectedCallback () {
@@ -237,6 +240,8 @@ export class SpxContainer {
 
     componentDidLoad () {
       globalComponentDidLoad(this.el)
+
+      watchMobile()
 
       /** Apply margin if more than one button. */
 

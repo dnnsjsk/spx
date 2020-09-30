@@ -15,6 +15,12 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 2.0.8 =
+* Oxygen: fix attributes text field.
+* Container: fix mobile listener.
+* Navigation: fix mobile listener.
+* Lightbox: fix image being wrapped multiple times.
+
 = 2.0.7 =
 * Animate: fix Oxygen editor bug.
 * Animate: add 'reverse' prop.
