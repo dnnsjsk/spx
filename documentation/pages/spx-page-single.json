@@ -83,6 +83,14 @@
       "tags": []
     },
     {
+      "id": "page-single-contentSpaceX",
+      "name": "contentSpaceX",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-container-space-x)'",
+      "tags": []
+    },
+    {
       "id": "page-single-date",
       "name": "date",
       "type": "boolean",
@@ -203,6 +211,14 @@
       "tags": []
     },
     {
+      "id": "page-single-imageSpaceX",
+      "name": "imageSpaceX",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-container-space-x-sm)'",
+      "tags": []
+    },
+    {
       "id": "page-single-imageSpaceY",
       "name": "imageSpaceY",
       "type": "string",
@@ -231,18 +247,10 @@
       ]
     },
     {
-      "id": "page-single-spaceX",
-      "name": "spaceX",
-      "type": "string",
-      "description": "Space to edge of the viewport.",
-      "defaultValue": "'var(--spx-container-space-x-sm)'",
-      "tags": []
-    },
-    {
       "id": "page-single-titleColor",
       "name": "titleColor",
       "type": "string",
-      "description": "",
+      "description": "Space to edge of the viewport.",
       "defaultValue": "'var(--spx-color-800)'",
       "tags": []
     },

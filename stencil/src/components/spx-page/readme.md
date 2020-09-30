@@ -19,6 +19,7 @@
 | `authorTextTransform`      | `author-text-transform`       |                                  | `string`  | `'uppercase'`                           |
 | `contentMarginTop`         | `content-margin-top`          |                                  | `string`  | `'var(--spx-space-xl)'`                 |
 | `contentMaxWidth`          | `content-max-width`           |                                  | `string`  | `'700px'`                               |
+| `contentSpaceX`            | `content-space-x`             |                                  | `string`  | `'var(--spx-container-space-x)'`        |
 | `date`                     | `date`                        | Display date.                    | `boolean` | `true`                                  |
 | `dateColor`                | `date-color`                  |                                  | `string`  | `'var(--spx-color-gray-600)'`           |
 | `dateFontFamily`           | `date-font-family`            |                                  | `string`  | `state.fontFamilyPrimary`               |
@@ -34,11 +35,11 @@
 | `imageBorderRadius`        | `image-border-radius`         |                                  | `string`  | `c.borderRadius`                        |
 | `imageHeight`              | `image-height`                |                                  | `string`  | `'clamp(200px, 50vh, 600px)'`           |
 | `imageObjectPosition`      | `image-object-position`       |                                  | `string`  | `'50% 50%'`                             |
+| `imageSpaceX`              | `image-space-x`               |                                  | `string`  | `'var(--spx-container-space-x-sm)'`     |
 | `imageSpaceY`              | `image-space-y`               |                                  | `string`  | `'var(--spx-space-md)'`                 |
 | `mobile`                   | `mobile`                      | Mobile breakpoint.               | `number`  | `c.mobileBpWidth`                       |
 | `post`                     | `post`                        | Gets a WordPress post to render. | `string`  | `undefined`                             |
-| `spaceX`                   | `space-x`                     | Space to edge of the viewport.   | `string`  | `'var(--spx-container-space-x-sm)'`     |
-| `titleColor`               | `title-color`                 |                                  | `string`  | `'var(--spx-color-800)'`                |
+| `titleColor`               | `title-color`                 | Space to edge of the viewport.   | `string`  | `'var(--spx-color-800)'`                |
 | `titleFontFamily`          | `title-font-family`           |                                  | `string`  | `state.fontFamilyPrimary`               |
 | `titleFontSizeMultiplier`  | `title-font-size-multiplier`  |                                  | `number`  | `1`                                     |
 | `titleFontWeight`          | `title-font-weight`           |                                  | `string`  | `'500'`                                 |

@@ -50,6 +50,20 @@
       "tags": []
     },
     {
+      "id": "animate-repeat",
+      "name": "repeat",
+      "type": "number",
+      "description": "Repeats the animation. -1 to repeat indefinitely.",
+      "tags": []
+    },
+    {
+      "id": "animate-reverse",
+      "name": "reverse",
+      "type": "boolean",
+      "description": "Reverses the animation.",
+      "tags": []
+    },
+    {
       "id": "animate-stagger",
       "name": "stagger",
       "type": "number",
@@ -114,6 +128,13 @@
       "type": "number",
       "description": "Y position the animation starts from.",
       "defaultValue": "0",
+      "tags": []
+    },
+    {
+      "id": "animate-yoyo",
+      "name": "yoyo",
+      "type": "boolean",
+      "description": "Causes the animation to go back and forth, alternating backward and forward on each repeat.",
       "tags": []
     }
   ],

@@ -74,9 +74,17 @@ export namespace Components {
         "play": (from?: number, suppressEvents?: boolean) => Promise<void>;
         "reload": () => Promise<void>;
         /**
+          * Repeats the animation. -1 to repeat indefinitely.
+         */
+        "repeat": number;
+        /**
           * Restarts animation.
          */
         "restart": (includeDelay?: boolean, suppressEvents?: boolean) => Promise<void>;
+        /**
+          * Reverses the animation.
+         */
+        "reverse": boolean;
         /**
           * Amount of time elements should be staggered by.
          */
@@ -113,6 +121,10 @@ export namespace Components {
           * Y position the animation starts from.
          */
         "y": number;
+        /**
+          * Causes the animation to go back and forth, alternating backward and forward on each repeat.
+         */
+        "yoyo": boolean;
     }
     interface SpxClassToggle {
         "display": string;
@@ -651,6 +663,7 @@ export namespace Components {
         "authorTextTransform": string;
         "contentMarginTop": string;
         "contentMaxWidth": string;
+        "contentSpaceX": string;
         /**
           * Display date.
          */
@@ -672,6 +685,7 @@ export namespace Components {
         "imageBorderRadius": string;
         "imageHeight": string;
         "imageObjectPosition": string;
+        "imageSpaceX": string;
         "imageSpaceY": string;
         /**
           * Mobile breakpoint.
@@ -685,7 +699,6 @@ export namespace Components {
         /**
           * Space to edge of the viewport.
          */
-        "spaceX": string;
         "titleColor": string;
         "titleFontFamily": string;
         "titleFontSizeMultiplier": number;
@@ -1445,6 +1458,14 @@ declare namespace LocalJSX {
          */
         "opacity"?: number;
         /**
+          * Repeats the animation. -1 to repeat indefinitely.
+         */
+        "repeat"?: number;
+        /**
+          * Reverses the animation.
+         */
+        "reverse"?: boolean;
+        /**
           * Amount of time elements should be staggered by.
          */
         "stagger"?: number;
@@ -1480,6 +1501,10 @@ declare namespace LocalJSX {
           * Y position the animation starts from.
          */
         "y"?: number;
+        /**
+          * Causes the animation to go back and forth, alternating backward and forward on each repeat.
+         */
+        "yoyo"?: boolean;
     }
     interface SpxClassToggle {
         "display"?: string;
@@ -2003,6 +2028,7 @@ declare namespace LocalJSX {
         "authorTextTransform"?: string;
         "contentMarginTop"?: string;
         "contentMaxWidth"?: string;
+        "contentSpaceX"?: string;
         /**
           * Display date.
          */
@@ -2024,6 +2050,7 @@ declare namespace LocalJSX {
         "imageBorderRadius"?: string;
         "imageHeight"?: string;
         "imageObjectPosition"?: string;
+        "imageSpaceX"?: string;
         "imageSpaceY"?: string;
         /**
           * Mobile breakpoint.
@@ -2037,7 +2064,6 @@ declare namespace LocalJSX {
         /**
           * Space to edge of the viewport.
          */
-        "spaceX"?: string;
         "titleColor"?: string;
         "titleFontFamily"?: string;
         "titleFontSizeMultiplier"?: number;

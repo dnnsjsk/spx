@@ -41,6 +41,14 @@ export class SpxAnimate {
 
     @Prop() opacity: number = 0
 
+    /** Repeats the animation. -1 to repeat indefinitely. */
+
+    @Prop() repeat: number
+
+    /** Reverses the animation. */
+
+    @Prop() reverse: boolean
+
     /** Amount of time elements should be staggered by. */
 
     @Prop() stagger: number = 0.15
@@ -77,59 +85,79 @@ export class SpxAnimate {
 
     @Prop() y: number = 0
 
+    /** Causes the animation to go back and forth, alternating backward and forward on each repeat. */
+
+    @Prop() yoyo: boolean
+
     @Prop({ reflect: true }) display: string = 'block'
 
     componentDidLoad () {
       globalComponentDidLoad(this.el)
 
-      this.elements = this.el.querySelectorAll(this.target)
+      const init = () => {
+        this.elements = this.el.querySelectorAll(this.target)
 
-      this.tl = gsap.timeline({
-        defaults: {
-          ease: this.ease
-        },
-        paused: true
-      })
-
-      this.tl.from([].slice.call(this.elements), {
-        duration: this.duration,
-        opacity: this.opacity,
-        x: this.x,
-        y: this.y,
-        delay: this.delay,
-        stagger: this.stagger
-      })
-
-      /** Play immediately when not in viewport. */
-
-      if (!this.viewport) {
-        this.tl.play()
-      }
-
-      /** Check viewport before playing. */
-
-      if (this.viewport) {
-        const options = {
-          rootMargin: '' +
-                            '' + (this.viewportMarginTop || '0px') + ' ' +
-                            '' + (this.viewportMarginRight || '0px') + ' ' +
-                            '' + (this.viewportMarginBottom || '0px') + ' ' +
-                            '' + (this.viewportMarginLeft || '0px') + ''
-        }
-
-        const intersectionObserver = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              this.tl.play()
-            } else {
-              if (!this.once) {
-                this.tl.reverse()
-              }
-            }
+        if ((this.elements === undefined || this.elements.length === 0) && document.body.classList.contains('oxygen-builder-body')) {
+          setTimeout(init, 100)
+        } else {
+          this.tl = gsap.timeline({
+            defaults: {
+              ease: this.ease
+            },
+            paused: true
           })
-        }, options)
-        intersectionObserver.observe(this.el)
+
+          const options = {
+            duration: this.duration,
+            opacity: this.opacity,
+            x: this.x,
+            y: this.y,
+            delay: this.delay,
+            stagger: this.stagger,
+            repeat: this.repeat,
+            yoyo: this.yoyo
+          }
+
+          if (this.reverse) {
+            this.tl.to(this.elements, options)
+          } else {
+            this.tl.from(this.elements, options)
+          }
+
+          /** Play immediately when not in viewport. */
+
+          if (!this.viewport) {
+            this.tl.play()
+          }
+
+          /** Check viewport before playing. */
+
+          if (this.viewport) {
+            const options = {
+              rootMargin: '' +
+                        '' + (this.viewportMarginTop || '0px') + ' ' +
+                        '' + (this.viewportMarginRight || '0px') + ' ' +
+                        '' + (this.viewportMarginBottom || '0px') + ' ' +
+                        '' + (this.viewportMarginLeft || '0px') + ''
+            }
+
+            const intersectionObserver = new IntersectionObserver((entries) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  this.tl.play()
+                } else {
+                  if (!this.once) {
+                    this.tl.reverse()
+                  }
+                }
+              })
+            }, options)
+            intersectionObserver.observe(this.el)
+          }
+        }
       }
+
+      init()
     }
 
     @Method()

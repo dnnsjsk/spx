@@ -15,6 +15,12 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 2.0.6 =
+* Animate: fix Oxygen editor bug.
+* Animate: add 'reverse' prop.
+* Animate: add 'repeat' prop.
+* Animate: add 'yoyo' prop.
+
 = 2.0.5 =
 * Enhancement: remove IE11 support.
 * Enhancement: only enqueue module version of spx.

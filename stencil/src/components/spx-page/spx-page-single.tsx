@@ -46,6 +46,8 @@ export class SpxPageSingle {
 
     @Prop({ reflect: true }) contentMaxWidth: string = '700px'
 
+    @Prop({ reflect: true }) contentSpaceX: string = 'var(--spx-container-space-x)'
+
     /** Display date. */
 
     @Prop({ reflect: true }) date: boolean = true;
@@ -80,6 +82,8 @@ export class SpxPageSingle {
 
     @Prop({ reflect: true }) imageObjectPosition: string = '50% 50%'
 
+    @Prop({ reflect: true }) imageSpaceX: string = 'var(--spx-container-space-x-sm)'
+
     @Prop({ reflect: true }) imageSpaceY: string = 'var(--spx-space-md)'
 
     /** Mobile breakpoint. */
@@ -94,8 +98,6 @@ export class SpxPageSingle {
     @Prop({ reflect: true }) post: string
 
     /** Space to edge of the viewport. */
-
-    @Prop({ reflect: true }) spaceX: string = 'var(--spx-container-space-x-sm)'
 
     @Prop({ reflect: true }) titleColor: string = 'var(--spx-color-800)'
 
@@ -149,17 +151,17 @@ export class SpxPageSingle {
       const styleHost = css({
         fontSize: c.fontSize,
         display: 'block',
-        padding: '0 ' + setVar(tag, 'space-x', this.spaceX) + ''
       })
 
       const styleOuter = css({
         display: 'block',
-        gridGap: '40px'
+        gridGap: '40px',
+          padding: '0 ' + setVar(tag, 'content-space-x', this.contentSpaceX) + ''
       })
 
       const styleImage = css({
         maxWidth: '100%',
-        padding: '' + setVar(tag, 'image-space-y', this.imageSpaceY) + '0',
+        padding: '' + setVar(tag, 'image-space-y', this.imageSpaceY) + ' ' + setVar(tag, 'image-space-x', this.imageSpaceX) +'',
 
         img: {
           width: '100%',

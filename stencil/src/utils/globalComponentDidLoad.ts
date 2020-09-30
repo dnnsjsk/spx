@@ -9,7 +9,8 @@ export const globalComponentDidLoad = (el) => {
 
   /** Reload component when new child element has been loaded. */
 
-  if (el.tagName !== 'SPX-TYPEWRITER') {
+  if (el.tagName !== 'SPX-TYPEWRITER' &&
+  el.tagName !== 'SPX-ANIMATE') {
     const config = { childList: true }
     const callback = function (mutationsList) {
       mutationsList.forEach(() => {
