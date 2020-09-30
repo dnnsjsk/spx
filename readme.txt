@@ -15,7 +15,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
-= 2.0.6 =
+= 2.0.7 =
 * Animate: fix Oxygen editor bug.
 * Animate: add 'reverse' prop.
 * Animate: add 'repeat' prop.
