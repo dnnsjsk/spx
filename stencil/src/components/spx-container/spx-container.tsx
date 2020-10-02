@@ -64,6 +64,8 @@ export class SpxContainer {
 
     @Prop({ reflect: true }) colorSecondary: string = c.colorSecondary
 
+    @Prop({ reflect: true }) focusColor: string = 'var(--spx-color-secondary-A400)'
+
     /** Primary font-family. */
 
     @Prop({ reflect: true }) fontFamilyPrimary: string = c.fontFamilyPrimary
@@ -230,8 +232,8 @@ export class SpxContainer {
       state.bpMaxWidth = this.maxWidth || c.maxWidth
       state.bpMobileWidth = this.bpMobile || c.bpMobileWidth
       state.buttonReverseColor = this.buttonReverseColor || c.buttonReverseColor
-      state.colorPrimary = this.colorPrimary
-      state.colorSecondary = this.colorSecondary
+      state.colorPrimary = this.colorPrimary || 'teal'
+      state.colorSecondary = this.colorSecondary || 'pink'
       state.fontFamilyPrimary = this.fontFamilyPrimary || c.fontFamilyPrimary
       state.fontFamilySecondary = this.fontFamilySecondary || c.fontFamilySecondary
       state.spaceX = this.spaceX || c.spaceX
@@ -396,10 +398,27 @@ export class SpxContainer {
           }
         },
 
-        /** spx styles. */
+        /** Text styles. */
 
         'div[data-spx-styles]': {
           ...styleText
+        },
+
+        /** Focus styles. */
+
+        'a, button, input, select, [data-spx-slider-tab-index], [role="button"]': {
+          '&:focus': {
+            outline: 'none !important',
+            boxShadow: 'none'
+          },
+
+          '&:focus-visible:not([spx-focus-border])': {
+            boxShadow: '0 0 0 2px ' + setVar(tag, 'focus-color', this.focusColor) + ''
+          },
+
+          '&[spx-focus-border]:focus-visible': {
+            borderColor: setVar(tag, 'focus-color', this.focusColor) + '!important'
+          }
         }
       }
 

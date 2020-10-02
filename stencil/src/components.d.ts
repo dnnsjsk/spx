@@ -16,6 +16,8 @@ export namespace Components {
           * Content text tag.
          */
         "contentTextTag": string;
+        "contentTransitionDuration": string;
+        "contentTransitionTimingFunction": string;
         "fontSize": string;
         /**
           * Space between header and content.
@@ -182,6 +184,7 @@ export namespace Components {
           * @choice 'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'
          */
         "colorSecondary": string;
+        "focusColor": string;
         /**
           * Primary font-family.
          */
@@ -347,6 +350,7 @@ export namespace Components {
         "zIndex": number;
     }
     interface SpxEditor {
+        "fullscreen": boolean;
         "location": string;
     }
     interface SpxGroup {
@@ -1406,6 +1410,8 @@ declare namespace LocalJSX {
           * Content text tag.
          */
         "contentTextTag"?: string;
+        "contentTransitionDuration"?: string;
+        "contentTransitionTimingFunction"?: string;
         "fontSize"?: string;
         /**
           * Space between header and content.
@@ -1560,6 +1566,7 @@ declare namespace LocalJSX {
           * @choice 'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'
          */
         "colorSecondary"?: string;
+        "focusColor"?: string;
         /**
           * Primary font-family.
          */
@@ -1732,6 +1739,7 @@ declare namespace LocalJSX {
         "zIndex"?: number;
     }
     interface SpxEditor {
+        "fullscreen"?: boolean;
         "location"?: string;
     }
     interface SpxGroup {

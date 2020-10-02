@@ -48,7 +48,8 @@ export class SpxEditor {
     @State() query
     @State() mobile
     @State() headerHeight
-    @State() fullscreen: boolean = false
+
+    @Prop({ reflect: true }) fullscreen: boolean = false
 
     @Prop({ reflect: true }) location: string
 
@@ -537,6 +538,7 @@ export class SpxEditor {
           'slider-max-height',
           'slider-max-width',
           'slider-paginationTabsMaxWidth',
+          'slider-bpTabs',
           'snackbar-fixed',
           'snackbar-positionCss',
           'typewriter-autoStart',

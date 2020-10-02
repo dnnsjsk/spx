@@ -1,6 +1,6 @@
 {
   "name": "spx",
-  "version": "2.0.5",
+  "version": "2.1.0",
   "description": "Stencil Component Starter",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -31,7 +31,6 @@
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
     "alpinejs": "^2.7.0",
-    "animejs": "^3.2.0",
     "body-scroll-lock": "^3.1.3",
     "clipboard": "^2.0.6",
     "emotion": "^10.0.27",

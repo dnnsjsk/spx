@@ -3,6 +3,14 @@
   "description": "",
   "properties": [
     {
+      "id": "editor-fullscreen",
+      "name": "fullscreen",
+      "type": "boolean",
+      "description": "",
+      "defaultValue": "false",
+      "tags": []
+    },
+    {
       "id": "editor-location",
       "name": "location",
       "type": "string",

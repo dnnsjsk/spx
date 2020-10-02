@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import { Component, Element, h, Host, Method, Prop, State } from '@stencil/core'
+import { Component, Element, h, Host, Method, Prop, State, Listen } from '@stencil/core'
 import { css } from 'emotion'
 import * as c from '../../constants/style'
 import { setVar } from '../../utils/setVar'
@@ -19,10 +19,12 @@ const tag = 'spx-accordion'
 
 export class SpxAccordion {
     @Element() el: HTMLSpxAccordionElement
+    private content: HTMLElement
 
     @State() contentCustom: boolean
     @State() headerCustom: boolean
     @State() open: boolean = false
+    @State() headerHeight
 
     @Prop({ reflect: true }) contentColor: string = 'var(--spx-color-gray-900)'
 
@@ -33,6 +35,10 @@ export class SpxAccordion {
     /** Content text tag. */
 
     @Prop({ reflect: true }) contentTextTag: string = 'span'
+
+    @Prop({ reflect: true }) contentTransitionDuration: string = c.transitionDuration
+
+    @Prop({ reflect: true }) contentTransitionTimingFunction: string = c.transitionTimingFunction
 
     @Prop({ reflect: true }) fontSize: string = c.fontSize
 
@@ -66,7 +72,14 @@ export class SpxAccordion {
 
     /** Indicator icon transform. */
 
-    @Prop({ reflect: true }) indicatorIconTransform: string = 'rotate(90deg)'
+    @Prop({ reflect: true }) indicatorIconTransform: string = 'rotate(180deg)'
+
+    @Listen('keydown')
+    onKeydown (e) {
+      if (e.keyCode === 13) {
+        this.clickHeader()
+      }
+    }
 
     componentDidLoad () {
       globalComponentDidLoad(this.el)
@@ -82,7 +95,13 @@ export class SpxAccordion {
     /** Toggle content. */
 
     private clickHeader = () => {
-      this.open = !this.open
+      if (this.open === true) {
+        this.content.style.maxHeight = null
+        this.open = false
+      } else {
+        this.content.style.maxHeight = this.content.scrollHeight + 'px'
+        this.open = true
+      }
     }
 
     @Method()
@@ -96,9 +115,8 @@ export class SpxAccordion {
       const styleHost = css({
         fontFamily: c.fontFamily,
         fontSize: setVar(tag, 'font-size', this.fontSize),
-        display: 'grid',
-        gridAutoFlow: 'row',
-        gridRowGap: setVar(tag, 'gap', this.gap)
+        display: 'flex',
+        flexDirection: 'column'
       })
 
       /** Header styles. */
@@ -122,9 +140,19 @@ export class SpxAccordion {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        transformOrigin: 'center',
+        transformOrigin: 'center center',
         transform: this.open && setVar(tag, 'indicator-icon-transform', this.indicatorIconTransform),
         color: setVar(tag, 'header-color', this.headerColor)
+      })
+
+      const styleContent = css({
+        marginTop: this.open ? setVar(tag, 'gap', this.gap) : 0,
+        maxHeight: '0',
+        overflow: 'hidden',
+        transitionProperty: 'max-height, margin-top',
+        willChange: 'max-height, margin-top',
+        transitionDuration: setVar(tag, 'transition-duration', this.contentTransitionDuration),
+        transitionTimingFunction: setVar(tag, 'transition-timing-function', this.contentTransitionTimingFunction)
       })
 
       /** Create custom variables for Header/Content. */
@@ -153,6 +181,9 @@ export class SpxAccordion {
         {/** Header. */}
 
         <div
+          tabindex="0"
+          role="button"
+          aria-pressed={this.open ? 'true' : 'false'}
           onClick={this.clickHeader}
           class={styleHeader}>
 
@@ -171,9 +202,8 @@ export class SpxAccordion {
 
         {/** Content. */}
 
-        <div class={css({
-          display: this.open ? 'block' : 'none'
-        })}>
+        <div class={styleContent}
+          ref={(el) => this.content = el as HTMLElement}>
           {textReturn(!this.contentCustom, this.contentTextTag, this.contentText, 'content', this.contentColor)}
         </div>
       </Host>

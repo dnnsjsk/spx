@@ -194,17 +194,15 @@ export class SpxScrollspy {
       /** Create swiper. */
 
       this.mySwiper = new Swiper(this.container, {
-        direction: this.direction === 'horizontal' ? 'horizontal' : 'vertical',
-        slidesPerView: this.slidesPerView,
-        spaceBetween: this.spaceBetween,
-        centeredSlides: this.centeredSlides,
-        loop: this.loop,
-        speed: this.speed,
+        autoHeight: this.autoheight,
         autoplay: this.autoplay && {
           delay: this.autoplayDelay,
           disableOnInteraction: this.autoplayDisableOnInteraction
         },
-        autoHeight: this.autoheight,
+        breakpoints: createBPs(),
+        centeredSlides: this.centeredSlides,
+        direction: this.direction === 'horizontal' ? 'horizontal' : 'vertical',
+        loop: this.loop,
         navigation: {
           prevEl: this.prev,
           nextEl: this.next
@@ -212,10 +210,13 @@ export class SpxScrollspy {
         pagination: this.pagination === 'bullets' && {
           el: this.paginationBullets,
           type: 'bullets',
+          clickable: this.paginationBulletsClickable,
           dynamicBullets: this.paginationBulletsDynamic,
           dynamicMainBullets: this.paginationBulletsDynamicAmount
         },
-        breakpoints: createBPs()
+        slidesPerView: this.slidesPerView,
+        spaceBetween: this.spaceBetween,
+        speed: this.speed
       })
 
       /** Create tabs and set appropriate event listeners. */
@@ -253,6 +254,7 @@ export class SpxScrollspy {
         /** Outer wrap. */
 
         const slide = document.createElement('div')
+        slide.setAttribute('tabindex', '0')
         slide.classList.add(css({
           padding: 'var(--spx-space-md) var(--spx-space-md) var(--spx-space-lg) var(--spx-space-md)',
           display: 'grid',
@@ -302,15 +304,29 @@ export class SpxScrollspy {
           }
         }))
 
+        slide.setAttribute('role', 'button')
+
         /** Set according slide index. */
 
         slide.setAttribute('data-spx-slider-tab-index', indexInner)
 
+        const tabClick = () => {
+          this.mySwiper.slideToLoop(parseInt(indexInner), this.speed)
+          this.reloadTabsActive(indexInner)
+        }
+
         /** Click listener. */
 
         slide.addEventListener('click', () => {
-          this.mySwiper.slideToLoop(parseInt(indexInner), this.speed)
-          this.reloadTabsActive(indexInner)
+          tabClick()
+        })
+
+        /** Enter listener. */
+
+        slide.addEventListener('keydown', (e) => {
+          if (e.keyCode === 13) {
+            tabClick()
+          }
         })
 
         /** Set active to first slide. */
@@ -362,8 +378,14 @@ export class SpxScrollspy {
 
     @Method()
     async reload () {
-      console.log('hi')
       this.mySwiper.destroy()
+
+      const bullets = this.el.querySelector('.swiper-pagination-bullets-dynamic')
+
+      if (bullets) {
+        bullets.classList.remove('swiper-pagination-bullets-dynamic')
+      }
+
       this.componentDidLoad()
     }
 
@@ -374,6 +396,11 @@ export class SpxScrollspy {
         display: 'block',
         maxHeight: setVar(tag, 'max-height', this.maxHeight),
         maxWidth: setVar(tag, 'max-width', this.maxWidth),
+
+        '.swiper-container': {
+          maxHeight: setVar(tag, 'max-height', this.maxHeight),
+          maxWidth: setVar(tag, 'max-width', this.maxWidth)
+        },
 
         '--swiper-navigation-size': setVar(tag, 'navigation-size', this.navigationSize),
         '--swiper-navigation-color': setVar(tag, 'navigation-color', this.navigationColor),
@@ -394,11 +421,12 @@ export class SpxScrollspy {
         },
 
         '.swiper-pagination-bullet': {
+          position: 'static',
           opacity: '1',
           width: setVar(tag, 'pagination-bullets-size', this.paginationBulletsSize),
           height: setVar(tag, 'pagination-bullets-size', this.paginationBulletsSize),
           background: setVar(tag, 'pagination-bullets-background', this.paginationBulletsBackground),
-          margin: '0 ' + setVar(tag, 'pagination-bullets-space-between', this.paginationBulletsSpaceBetween) + ' !important',
+          margin: '0 !important',
 
           '&.swiper-pagination-bullet-active': {
             background: setVar(tag, 'pagination-bullets-background-active', this.paginationBulletsBackgroundActive)
@@ -434,6 +462,22 @@ export class SpxScrollspy {
         gridGap: 'var(--spx-space-md)'
       })
 
+      /** Bullet styles. */
+
+      const stylePaginationBullets = css({
+        display: 'grid',
+        gridAutoFlow: this.direction === 'horizontal' ? 'column' : 'row',
+        gridAutoRows: this.direction === 'vertical' && 'max-content',
+        gridAutoColumns: this.direction === 'horizontal' && 'max-content',
+        height: this.direction === 'horizontal' ? setVar(tag, 'pagination-bullets-size', this.paginationBulletsSize) + ' !important' : 'auto' + ' !important',
+        width: this.direction === 'vertical' ? setVar(tag, 'pagination-bullets-size', this.paginationBulletsSize) + ' !important' : '100%' + ' !important',
+        maxWidth: 'max-content !important',
+        left: this.direction === 'horizontal' && '50% !important',
+        top: this.direction === 'vertical' && '50% !important',
+        transform: this.direction === 'horizontal' ? 'translateX(-50%) !important' : 'translateY(-50%) !important',
+        gridGap: setVar(tag, 'pagination-bullets-space-between', this.paginationBulletsSpaceBetween)
+      })
+
       return <Host class={styleHost}>
 
         {this.pagination === 'tabs' &&
@@ -453,11 +497,11 @@ export class SpxScrollspy {
           </div>
 
           {this.pagination === 'bullets' &&
-            <div class="swiper-pagination" ref={(el) => this.paginationBullets = el as HTMLElement}/>}
+                <div class={stylePaginationBullets + ' ' + 'swiper-pagination'} ref={(el) => this.paginationBullets = el as HTMLElement}/>}
 
           {this.navigation &&
-            [<div ref={(el) => this.prev = el as HTMLElement} class="swiper-button-prev"/>,
-              <div ref={(el) => this.next = el as HTMLElement} class="swiper-button-next"/>]}
+                [<div ref={(el) => this.prev = el as HTMLElement} class="swiper-button-prev"/>,
+                  <div ref={(el) => this.next = el as HTMLElement} class="swiper-button-next"/>]}
 
         </div>
 

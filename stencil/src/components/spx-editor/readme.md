@@ -7,9 +7,10 @@
 
 ## Properties
 
-| Property   | Attribute  | Description | Type     | Default     |
-| ---------- | ---------- | ----------- | -------- | ----------- |
-| `location` | `location` |             | `string` | `undefined` |
+| Property     | Attribute    | Description | Type      | Default     |
+| ------------ | ------------ | ----------- | --------- | ----------- |
+| `fullscreen` | `fullscreen` |             | `boolean` | `false`     |
+| `location`   | `location`   |             | `string`  | `undefined` |
 
 
 ## Dependencies

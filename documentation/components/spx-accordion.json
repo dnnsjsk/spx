@@ -27,6 +27,22 @@
       "tags": []
     },
     {
+      "id": "accordion-contentTransitionDuration",
+      "name": "contentTransitionDuration",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-transition-duration)'",
+      "tags": []
+    },
+    {
+      "id": "accordion-contentTransitionTimingFunction",
+      "name": "contentTransitionTimingFunction",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-transition-timing-function)'",
+      "tags": []
+    },
+    {
       "id": "accordion-fontSize",
       "name": "fontSize",
       "type": "string",
@@ -94,7 +110,7 @@
       "name": "indicatorIconTransform",
       "type": "string",
       "description": "Indicator icon transform.",
-      "defaultValue": "'rotate(90deg)'",
+      "defaultValue": "'rotate(180deg)'",
       "tags": []
     }
   ],

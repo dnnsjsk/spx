@@ -15,6 +15,22 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 2.1.0 =
+* Accordion: change default icon rotation to 180 degrees.
+* Accordion: add tab-index attribute to header.
+* Accordion: add role="button" and aria-pressed attributes.
+* Accordion: add animation.
+* Accordion: open content by pressing 'enter'.
+* Container: add focus-within styles.
+* Slider: add tab-index attribute to tabs.
+* Slider: add role="button" attribute to tabs.
+* Slider: navigate through tabs by pressing 'enter'.
+* Slider: fix space between pagination bullets.
+* Slider: fix vertical direction.
+* Slider: fix clickable prop.
+* Slider: fix dynamic bullets.
+* Resize observer: only create when 'bp-' attribute is applied.
+
 = 2.0.9 =
 * Oxygen: fix attributes text field.
 * Container: fix mobile listener.
