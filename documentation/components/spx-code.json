@@ -37,7 +37,12 @@
       "type": "string",
       "description": "Determines the programming language.",
       "defaultValue": "'markup'",
-      "tags": []
+      "tags": [
+        {
+          "text": "'css'",
+          "name": "editor"
+        }
+      ]
     }
   ],
   "events": [],

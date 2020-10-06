@@ -1,6 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import { Component, Element, h, Host, Method, Prop, State } from '@stencil/core'
-import Swiper, { Autoplay, Navigation, Pagination, A11y } from 'swiper'
+import Swiper, { Autoplay, Navigation, Pagination, A11y, Thumbs } from 'swiper'
 import { css, keyframes } from 'emotion'
 import { setVar } from '../../utils/setVar'
 import * as c from '../../constants/style'
@@ -28,6 +28,7 @@ export class SpxScrollspy {
     private paginationBullets: HTMLElement
 
     @State() mySwiper
+    @State() mySwiperGallery
     @State() swiperBreakpoints
 
     /** Automatically adjusts height of slider. */
@@ -61,11 +62,46 @@ export class SpxScrollspy {
 
     @Prop({ reflect: true }) direction: string = 'horizontal'
 
+    /**
+     * Image object-fit.
+     * @choice 'fill', 'contain', 'cover', 'scale-down', 'none'
+     */
+
+    @Prop({ reflect: true }) imageObjectFit: string = 'cover'
+
+    /** Creates a gallery from images. */
+
+    // @Prop({ reflect: true }) gallery: boolean = false
+
+    // @Prop({ reflect: true }) galleryMaxHeight: string = '200px'
+
+    /** Amount of gallery slides shown at once. */
+
+    // @Prop({ reflect: true }) gallerySlidesPerView: number = 3.5
+
+    /** Space between gallery slides. */
+
+    // @Prop({ reflect: true }) gallerySpaceBetween: number = 8
+
+    /** Space between gallery slides. */
+
+    // @Prop({ reflect: true }) gallerySpaceTop: string = 'var(--spx-space-xs)'
+
     /** Loops all slides infinitely. */
 
     @Prop({ reflect: true }) loop: boolean = false
 
+    /**
+     * Max height.
+     * @editor '500px'
+     */
+
     @Prop({ reflect: true }) maxHeight: string = '100%'
+
+    /**
+     * Max width.
+     * @editor '500px'
+     */
 
     @Prop({ reflect: true }) maxWidth: string = '100%'
 
@@ -140,11 +176,27 @@ export class SpxScrollspy {
 
     @Prop({ reflect: true }) prevNextFilter: string
 
+    /** Screen reader message for first slide. */
+
+    @Prop({ reflect: true }) slideMessageFirst: string = 'This is the first slide'
+
+    /** Screen reader message for last slide. */
+
+    @Prop({ reflect: true }) slideMessageLast: string = 'This is the last slide'
+
+    /** Screen reader message for next slide. */
+
+    @Prop({ reflect: true }) slideMessageNext: string = 'Next slide'
+
+    /** Screen reader message for previous slide. */
+
+    @Prop({ reflect: true }) slideMessagePrevious: string = 'Previous slide'
+
     /** Amount of slides shown at once. */
 
     @Prop({ reflect: true }) slidesPerView: number = 1
 
-    /** Space between the slides. */
+    /** Space between slides. */
 
     @Prop({ reflect: true }) spaceBetween: number = 0
 
@@ -153,17 +205,43 @@ export class SpxScrollspy {
     @Prop({ reflect: true }) speed: number = 1000
 
     componentWillUpdate () {
-      this.mySwiper.destroy()
-      this.componentDidLoad()
+      this.reload()
     }
 
     componentDidLoad () {
-      /** Add swiper class. */
+      /** Add swiper class and duplicate slides for gallery. */
 
       this.el.querySelectorAll('.swiper-wrapper > *').forEach((item, index) => {
         item.classList.add('swiper-slide')
         item.setAttribute('data-spx-slider-index', String(index))
       })
+
+      /*
+
+      if (this.gallery === true) {
+        const thumbs = this.el.querySelectorAll('.swiper-gallery')
+        if (thumbs) {
+          thumbs.forEach(item => {
+            item.remove()
+          })
+        }
+        const container = document.createElement('div')
+        container.classList.add('swiper-container')
+        container.classList.add('swiper-gallery')
+        const wrapper = document.createElement('div')
+        wrapper.classList.add('swiper-wrapper')
+        container.setAttribute('slot', 'gallery')
+
+        container.appendChild(wrapper)
+        this.el.appendChild(container)
+
+        this.el.querySelectorAll('.swiper-slide').forEach(item => {
+          const clone = item.cloneNode(true)
+          wrapper.appendChild(clone)
+        })
+      }
+
+         */
 
       /** Create breakpoint values. */
 
@@ -189,11 +267,29 @@ export class SpxScrollspy {
 
       /** Use modules so autoplay works in build mode. */
 
-      Swiper.use([Autoplay, Navigation, Pagination, A11y])
+      Swiper.use([Autoplay, Navigation, Pagination, A11y, Thumbs])
+
+      /*
+
+      if (this.gallery === true) {
+        this.mySwiperGallery = new Swiper(this.el.querySelector('.swiper-gallery') as HTMLElement, {
+          slidesPerView: this.gallerySlidesPerView,
+          spaceBetween: this.gallerySpaceBetween,
+          freeMode: true
+        })
+      }
+
+      */
 
       /** Create swiper. */
 
       this.mySwiper = new Swiper(this.container, {
+        a11y: {
+          firstSlideMessage: this.slideMessageFirst,
+          lastSlideMessage: this.slideMessageLast,
+          nextSlideMessage: this.slideMessageNext,
+          prevSlideMessage: this.slideMessagePrevious
+        },
         autoHeight: this.autoheight,
         autoplay: this.autoplay && {
           delay: this.autoplayDelay,
@@ -207,6 +303,9 @@ export class SpxScrollspy {
           prevEl: this.prev,
           nextEl: this.next
         },
+        observer: true,
+        observeParents: true,
+        observeSlideChildren: true,
         pagination: this.pagination === 'bullets' && {
           el: this.paginationBullets,
           type: 'bullets',
@@ -217,6 +316,16 @@ export class SpxScrollspy {
         slidesPerView: this.slidesPerView,
         spaceBetween: this.spaceBetween,
         speed: this.speed
+        /*
+        thumbs: this.gallery === true && {
+          swiper: this.mySwiperGallery,
+          autoScrollOffset: 1
+        }
+        */
+      })
+
+      this.mySwiper.on('observerUpdate', () => {
+        this.mySwiper.update()
       })
 
       /** Create tabs and set appropriate event listeners. */
@@ -378,6 +487,12 @@ export class SpxScrollspy {
 
     @Method()
     async reload () {
+      /*
+      if (this.el.querySelector('.swiper-gallery')) {
+        this.el.querySelector('.swiper-gallery').remove()
+        this.mySwiperGallery.destroy()
+      }
+      */
       this.mySwiper.destroy()
 
       const bullets = this.el.querySelector('.swiper-pagination-bullets-dynamic')
@@ -394,13 +509,21 @@ export class SpxScrollspy {
 
       const styleHost = css({
         display: 'block',
+        width: '100%',
         maxHeight: setVar(tag, 'max-height', this.maxHeight),
         maxWidth: setVar(tag, 'max-width', this.maxWidth),
 
-        '.swiper-container': {
+        '.swiper-container:not(.swiper-gallery)': {
           maxHeight: setVar(tag, 'max-height', this.maxHeight),
           maxWidth: setVar(tag, 'max-width', this.maxWidth)
         },
+
+        /*
+        '.swiper-gallery': {
+          marginTop: setVar(tag, 'gallery-space-top', this.gallerySpaceTop),
+          maxHeight: setVar(tag, 'gallery-max-height', this.galleryMaxHeight)
+        },
+        */
 
         '--swiper-navigation-size': setVar(tag, 'navigation-size', this.navigationSize),
         '--swiper-navigation-color': setVar(tag, 'navigation-color', this.navigationColor),
@@ -440,7 +563,7 @@ export class SpxScrollspy {
         img: {
           width: '100%',
           height: 'auto',
-          objectFit: 'contain'
+          objectFit: setVar(tag, 'image-object-fit', this.imageObjectFit) as 'fill' | 'contain' | 'cover' | 'scale-down'
         }
       })
 
@@ -478,6 +601,12 @@ export class SpxScrollspy {
         gridGap: setVar(tag, 'pagination-bullets-space-between', this.paginationBulletsSpaceBetween)
       })
 
+      /** Bullet styles. */
+
+      const styleNavigation = css({
+        display: this.navigation ? 'block' : 'none'
+      })
+
       return <Host class={styleHost}>
 
         {this.pagination === 'tabs' &&
@@ -499,12 +628,13 @@ export class SpxScrollspy {
           {this.pagination === 'bullets' &&
                 <div class={stylePaginationBullets + ' ' + 'swiper-pagination'} ref={(el) => this.paginationBullets = el as HTMLElement}/>}
 
-          {this.navigation &&
-                [<div ref={(el) => this.prev = el as HTMLElement} class="swiper-button-prev"/>,
-                  <div ref={(el) => this.next = el as HTMLElement} class="swiper-button-next"/>]}
+          <div class={styleNavigation}>
+            <div ref={(el) => this.prev = el as HTMLElement} class="swiper-button-prev"/>
+            <div ref={(el) => this.next = el as HTMLElement} class="swiper-button-next"/>
+          </div>
 
         </div>
-
+        <slot name="gallery"/>
       </Host>
     }
 }

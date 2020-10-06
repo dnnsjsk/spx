@@ -63,6 +63,19 @@
       ]
     },
     {
+      "id": "slider-imageObjectFit",
+      "name": "imageObjectFit",
+      "type": "string",
+      "description": "Image object-fit.",
+      "defaultValue": "'cover'",
+      "tags": [
+        {
+          "text": "'fill', 'contain', 'cover', 'scale-down', 'none'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
       "id": "slider-loop",
       "name": "loop",
       "type": "boolean",
@@ -74,17 +87,27 @@
       "id": "slider-maxHeight",
       "name": "maxHeight",
       "type": "string",
-      "description": "",
+      "description": "Max height.",
       "defaultValue": "'100%'",
-      "tags": []
+      "tags": [
+        {
+          "text": "'500px'",
+          "name": "editor"
+        }
+      ]
     },
     {
       "id": "slider-maxWidth",
       "name": "maxWidth",
       "type": "string",
-      "description": "",
+      "description": "Max width.",
       "defaultValue": "'100%'",
-      "tags": []
+      "tags": [
+        {
+          "text": "'500px'",
+          "name": "editor"
+        }
+      ]
     },
     {
       "id": "slider-navigation",
@@ -256,6 +279,38 @@
       "tags": []
     },
     {
+      "id": "slider-slideMessageFirst",
+      "name": "slideMessageFirst",
+      "type": "string",
+      "description": "Screen reader message for first slide.",
+      "defaultValue": "'This is the first slide'",
+      "tags": []
+    },
+    {
+      "id": "slider-slideMessageLast",
+      "name": "slideMessageLast",
+      "type": "string",
+      "description": "Screen reader message for last slide.",
+      "defaultValue": "'This is the last slide'",
+      "tags": []
+    },
+    {
+      "id": "slider-slideMessageNext",
+      "name": "slideMessageNext",
+      "type": "string",
+      "description": "Screen reader message for next slide.",
+      "defaultValue": "'Next slide'",
+      "tags": []
+    },
+    {
+      "id": "slider-slideMessagePrevious",
+      "name": "slideMessagePrevious",
+      "type": "string",
+      "description": "Screen reader message for previous slide.",
+      "defaultValue": "'Previous slide'",
+      "tags": []
+    },
+    {
       "id": "slider-slidesPerView",
       "name": "slidesPerView",
       "type": "number",
@@ -267,7 +322,7 @@
       "id": "slider-spaceBetween",
       "name": "spaceBetween",
       "type": "number",
-      "description": "Space between the slides.",
+      "description": "Space between slides.",
       "defaultValue": "0",
       "tags": []
     },

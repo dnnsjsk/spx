@@ -69,9 +69,7 @@ export class SpxText {
         },
 
         h1: {
-          fontSize: setFontSize(tag, 'heading', '26px', '5vw', '48px', this.contentFontSizeMultiplier),
-          textDecoration: 'underline',
-          textDecorationColor: 'var(--spx-color-primary-A700)'
+          fontSize: setFontSize(tag, 'heading', '26px', '5vw', '48px', this.contentFontSizeMultiplier)
         },
 
         h2: {

@@ -12,7 +12,7 @@ const tag = 'spx-page-docs'
 
 /**
  * Renders a documentation page similar to the one you are currently seeing here.
- * Every h1 tag becomes a navigation entry, while navigation headings get created by applying
+ * Every heading tag becomes a navigation entry, while navigation headings get created by applying
  * the "data-spx-docs-heading" attribute to the first h1 of a new section.
  */
 
@@ -31,7 +31,7 @@ export class SpxPageDocs {
 
     @Prop({ reflect: true }) contentHeadingFontFamily: string = state.fontFamilyPrimary
 
-    @Prop({ reflect: true }) navigationBackground: string
+    @Prop({ reflect: true }) navigationBackground: string = 'var(--spx-color-gray-050)'
 
     @Prop({ reflect: true }) navigationFontFamily: string = state.fontFamilyPrimary
 
@@ -40,6 +40,8 @@ export class SpxPageDocs {
     @Prop({ reflect: true }) navigationLinkFontSizeMultiplier: number = 1
 
     @Prop({ reflect: true }) navigationGap: string = 'var(--spx-space-2xs)'
+
+    @Prop({ reflect: true }) navigationHeadingTag: string = 'h1'
 
     @Prop({ reflect: true }) navigationLinkColor: string = 'var(--spx-color-800)'
 
@@ -66,6 +68,13 @@ export class SpxPageDocs {
     @Prop({ reflect: true }) offsetMarginTop: string = 'var(--spx-space-md)'
 
     @Prop({ reflect: true }) uniqueId: boolean
+
+    /**
+     * Space from the last content element to the end of the component.
+     * @CSS
+     */
+
+    @Prop({ reflect: true }) spaceBottom: string = 'var(--spx-space-3xl)'
 
     /**
      * Distance to the edge of the viewport on the x-axis.
@@ -104,8 +113,8 @@ export class SpxPageDocs {
     private createNavigation () {
       /** Create links. */
 
-      this.content.querySelectorAll('h1').forEach((item, index) => {
-        const link = item.innerHTML.replace(/ /g, '-').toLowerCase()
+      this.content.querySelectorAll(this.navigationHeadingTag + ':not([data-spx-docs-no-navigation])').forEach((item, index) => {
+        const link = item.innerHTML.replace(/[^A-Z0-9]/ig, '-').replace(/--/g, '-').toLowerCase()
         const id = this.uniqueId ? link + '-' + index : link
         const a = document.createElement('a')
         item.setAttribute('data-spx-docs-index', String(index))
@@ -119,7 +128,7 @@ export class SpxPageDocs {
 
       /** Create headings. */
 
-      this.content.querySelectorAll('h1[data-spx-docs-heading]').forEach(item => {
+      this.content.querySelectorAll(this.navigationHeadingTag + '[data-spx-docs-heading]:not([data-spx-docs-no-navigation])').forEach(item => {
         const index = item.getAttribute('data-spx-docs-index')
         const span = document.createElement('span')
         const el = this.navigation.querySelector('[data-spx-docs-index="' + index + '"]').parentElement
@@ -215,6 +224,10 @@ export class SpxPageDocs {
 
         img: {
           maxWidth: '100%'
+        },
+
+        '&:last-child': {
+          marginBottom: setVar(tag, 'space-bottom', this.spaceBottom)
         }
       }
 

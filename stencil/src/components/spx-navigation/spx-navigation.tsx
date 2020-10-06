@@ -187,14 +187,14 @@ export class SpxNavigation {
       /** If menu prop is set. */
 
       this.imagesChanged(this.menu)
-    }
-
-    componentDidLoad () {
-      globalComponentDidLoad(this.el)
 
       /** Check if is mobile view. */
 
       this.onResize()
+    }
+
+    componentDidLoad () {
+      globalComponentDidLoad(this.el)
 
       /** Sort menu items. */
 

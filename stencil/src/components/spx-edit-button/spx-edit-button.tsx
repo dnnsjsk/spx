@@ -10,9 +10,6 @@ const tag = 'spx-edit-button'
 
 /**
  * Let your clients edit text on their site using this handy component.
- * Updates are being sent via AJAX, making this a solution that works completely on the front-end without reloading.
- * To enable front-end editing, just add the spx-edit-button component to a page. After that, you have to mark all elements that you want to be editable on the site.
- * This is being done by adding the data-spx-edit attribute to existing text elements.
  */
 
 @Component({

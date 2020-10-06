@@ -56,7 +56,7 @@ export class SpxSectionHeader {
 
     @Prop({ reflect: true }) spaceX: string = 'var(--spx-space-md)'
 
-    @Prop({ reflect: true }) zIndex: number = 100
+    @Prop({ reflect: true }) zIndex: number = 102
 
     @Listen('scroll', { target: 'window' })
     onScroll () {

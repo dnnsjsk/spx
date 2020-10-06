@@ -32,6 +32,7 @@ export class SpxSnackbar {
     /** Adds option to close snackbar after its creation. */
 
     @Prop({ reflect: true }) closeable: boolean
+
     @Prop({ reflect: true }) color: string = '#ffffff'
 
     /**
@@ -52,6 +53,11 @@ export class SpxSnackbar {
 
     @Prop({ reflect: true }) fixed: boolean
     @Prop({ reflect: true }) fontSize: string = '18px'
+
+    /** Unique identifier for snackbar instance. */
+
+    @Prop({ reflect: true }) identifier: string = 'primary'
+
     @Prop({ reflect: true }) padding: string = '1em'
 
     /**
@@ -69,19 +75,70 @@ export class SpxSnackbar {
 
     @Prop({ reflect: true }) reverse: boolean
 
+    /** Space between snackbars. */
+
+    @Prop({ reflect: true }) spaceBetween: string = 'var(--spx-space-xs)'
+
+    /** Element where snackbars should be created in. */
+
+    @Prop({ reflect: true }) target: string = 'body'
+
     /** Text inside snackbar. */
 
     @Prop({ reflect: true }) text: string = "Hello, I'm a snackbar."
 
-    @Prop({ reflect: true }) zIndex: number = 99
+    @Prop({ reflect: true }) zIndex: number = 103
 
+    @State() containerClass;
+
+    @Watch('zIndex')
+    @Watch('spaceBetween')
     @Watch('position')
     positionChanged () {
       this.createPositionArray()
+      document.querySelector('[data-spx-id="' + this.identifier + '"]').className = ''
+      document.querySelector('[data-spx-id="' + this.identifier + '"]').classList.add(
+        css({
+          ...position('snackbar', this.positionArray, this.distanceX, this.distanceY),
+          position: this.positionCss,
+          display: 'flex',
+          flexDirection: 'column',
+          zIndex: this.zIndex,
+
+          'spx-snackbar + spx-snackbar': {
+            marginTop: setVar(tag, 'space-Y', this.spaceBetween)
+          }
+        }))
     }
 
     componentWillLoad () {
       this.createPositionArray()
+
+      /** Load into container. */
+
+      if (!document.querySelector('[data-spx-id="' + this.identifier + '"]')) {
+        const div = document.createElement('div')
+        this.containerClass = {
+
+        }
+        div.classList.add(css({
+          ...position('snackbar', this.positionArray, this.distanceX, this.distanceY),
+          position: this.positionCss,
+          display: 'flex',
+          flexDirection: 'column',
+          zIndex: this.zIndex,
+
+          'spx-snackbar + spx-snackbar': {
+            marginTop: setVar(tag, 'space-Y', this.spaceBetween)
+          }
+        }))
+        div.setAttribute('data-spx-id', this.identifier)
+        div.appendChild(this.el)
+        const target = document.querySelector(this.target)
+        target.appendChild(div)
+      } else {
+        document.querySelector('[data-spx-id="' + this.identifier + '"]').appendChild(this.el)
+      }
     }
 
     componentDidLoad () {
@@ -97,7 +154,7 @@ export class SpxSnackbar {
       /** Remove snackbar from dom after 5 seconds. */
 
       if (!this.fixed) {
-        setTimeout(removeItem, 5000)
+        setTimeout(removeItem, parseInt(this.animationDuration.replace('ms', '')))
       }
     }
 
@@ -106,8 +163,13 @@ export class SpxSnackbar {
     }
 
     private removeItem = () => {
-      const el = this.el
-      el.remove()
+      const container = document.querySelector('#spx-snackbar-container')
+      if (container) {
+        container.remove()
+      } else {
+        const el = this.el
+        el.remove()
+      }
     }
 
     @Method()
@@ -141,8 +203,6 @@ export class SpxSnackbar {
       /** Host styles. */
 
       const styleHost = css({
-        ...position('snackbar', this.positionArray, this.distanceX, this.distanceY),
-        position: this.positionCss,
         display: 'flex',
         flexDirection: !this.reverse ? 'row-reverse' : 'row',
         alignItems: 'center',
@@ -151,7 +211,6 @@ export class SpxSnackbar {
         paddingRight: (this.reverse || !this.closeable) && setVar(tag, 'padding', this.padding),
         paddingBottom: setVar(tag, 'padding', this.padding),
         paddingLeft: this.closeable && this.reverse ? 0 : setVar(tag, 'padding', this.padding),
-        zIndex: this.zIndex,
         opacity: 0,
         color: setVar(tag, 'color', this.color),
         background: setVar(tag, 'background', this.background),

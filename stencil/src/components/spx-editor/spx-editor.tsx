@@ -42,12 +42,14 @@ export class SpxEditor {
     private controls: HTMLElement
     private export: HTMLElement
 
+    @State() comp
     @State() ar
     @State() current
     @State() queryObj
     @State() query
     @State() mobile
     @State() headerHeight
+    @State() adjustedValues
 
     @Prop({ reflect: true }) fullscreen: boolean = false
 
@@ -172,15 +174,15 @@ export class SpxEditor {
         ...controls
       }
 
-      history.pushState({}, null, this.location + '?' + new URLSearchParams(searchQuery).toString())
+      history.pushState({}, null, this.location + '?' + encodeURIComponent(new URLSearchParams(searchQuery).toString()))
     }
 
     private createQueryObject () {
-      const URL = location.search.substring(1)
+      const URL = decodeURIComponent(location.search.substring(1))
 
       this.query = true
       this.queryObj =
-            JSON.parse('{"' + decodeURI(URL)
+            JSON.parse('{"' + URL
               .replace(/"/g, '\\"')
               .replace(/&/g, '","')
               .replace(/=/g, '":"') + '"}')
@@ -224,16 +226,31 @@ export class SpxEditor {
       })
     }
 
+    private setDefault = (attr, value) => {
+      const create = () => {
+        if (this.controls.querySelector('[data-attr="' + attr + '"]')) {
+          const input = this.controls.querySelector('[data-attr="' + attr + '"]') as HTMLInputElement
+          input.value = value
+          this.comp.setAttribute(attr, value)
+        } else {
+          setTimeout(create, 0)
+        }
+      }
+      create()
+    }
+
     private createComponent (component) {
+      this.adjustedValues = {}
+
       /** Create component. */
 
-      const el = document.createElement('spx-' + component)
+      this.comp = document.createElement('spx-' + component)
       this.component.innerHTML = ''
 
       /** Animate. */
 
       if (component === 'animate') {
-        el.innerHTML = '<h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>' +
+        this.comp.innerHTML = '<h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>' +
                 '<h1>Sed vel ante nec urna iaculis faucibus.</h1>' +
                 '<h1>Nam bibendum, erat vel ultricies finibus, justo risus elementum dui, at egestas diam justo nec turpis.</h1>' +
                 '<h1>Sed imperdiet neque lorem, eget semper ante vehicula ac.</h1>' +
@@ -248,7 +265,7 @@ export class SpxEditor {
       /** Class Toggle. */
 
       if (component === 'class-toggle') {
-        el.innerHTML = '<spx-section-button class="editor">' +
+        this.comp.innerHTML = '<spx-section-button class="editor">' +
                 'Click me!' +
                 '<style>spx-section-button.editor a{color:white!important}spx-section-button.editor a.spx-class-toggle--active{background:#F50057 !important}</style>' +
                 '</spx-section-button>'
@@ -257,8 +274,8 @@ export class SpxEditor {
       /** Code. */
 
       if (component === 'code') {
-        el.setAttribute('type', 'css')
-        el.innerHTML = '' +
+        this.comp.setAttribute('type', 'css')
+        this.comp.innerHTML = '' +
                 'my-card {\n' +
                 '&nbsp;&nbsp;background: white;\n' +
                 '&nbsp;&nbsp;padding: 1em;\n' +
@@ -267,8 +284,8 @@ export class SpxEditor {
       }
 
       if (component === 'edit-button') {
-        el.setAttribute('position-css', 'absolute')
-        el.setAttribute('test', '')
+        this.comp.setAttribute('position-css', 'absolute')
+        this.comp.setAttribute('test', '')
         const h1 = document.createElement('h1')
         h1.setAttribute('data-spx-edit', 'test')
         h1.innerHTML = 'Edit me!'
@@ -276,13 +293,13 @@ export class SpxEditor {
       }
 
       if (component === 'group') {
-        el.innerHTML = '<spx-accordion/>' +
+        this.comp.innerHTML = '<spx-accordion/>' +
                 '<spx-accordion/>' +
                 '<spx-accordion/>'
       }
 
       if (component === 'masonry') {
-        el.innerHTML = '<img src="https://picsum.photos/400/300"/>' +
+        this.comp.innerHTML = '<img src="https://picsum.photos/400/300"/>' +
                 '<img src="https://picsum.photos/230/500"/>' +
                 '<img src="https://picsum.photos/420/300"/>' +
                 '<img src="https://picsum.photos/550/450"/>' +
@@ -313,8 +330,8 @@ export class SpxEditor {
       }
 
       if (component === 'notation') {
-        el.innerHTML = '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
-        el.classList.add(css({
+        this.comp.innerHTML = '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>'
+        this.comp.classList.add(css({
           maxWidth: '500px'
         }))
       }
@@ -345,20 +362,25 @@ export class SpxEditor {
         header2.classList.add(style)
         header2.innerHTML = '.header2'
 
-        el.setAttribute('target', '.header1')
-        el.innerHTML = '<p>Adjusting my distance to an element height</p>'
+        this.setDefault('target', '.header1')
+        this.comp.innerHTML = '<p>Adjusting my distance to an element height</p>'
 
         this.component.appendChild(header1)
         this.component.appendChild(header2)
       }
 
       if (component === 'slider') {
-        el.setAttribute('max-height', '500px')
-        el.setAttribute('max-width', '500px')
+        this.comp.setAttribute('max-height', '500px')
+        this.comp.setAttribute('max-width', '500px')
       }
 
       if (component === 'slider' || component === 'slideshow') {
-        el.innerHTML = '<img src="https://picsum.photos/500/500"/>' +
+        this.comp.classList.add(css({
+          img: {
+            borderRadius: s.borderRadius
+          }
+        }))
+        this.comp.innerHTML = '<img src="https://picsum.photos/500/500"/>' +
                 '<img src="https://picsum.photos/500/500"/>' +
                 '<img src="https://picsum.photos/502/500"/>' +
                 '<img src="https://picsum.photos/503/500"/>' +
@@ -375,11 +397,13 @@ export class SpxEditor {
       }
 
       if (component === 'snackbar') {
-        el.setAttribute('fixed', '')
-        el.setAttribute('position-css', 'absolute')
+        this.comp.setAttribute('target', '#components')
+        this.comp.setAttribute('identifier', 'components')
+        this.comp.setAttribute('fixed', '')
+        this.comp.setAttribute('position-css', 'absolute')
       }
 
-      this.component.appendChild(el)
+      this.component.appendChild(this.comp)
     }
 
     private createComponentControl () {
@@ -482,7 +506,7 @@ export class SpxEditor {
           }
 
           // @ts-ignore
-          this.component.querySelector(':scope > ' + this.ar[this.current]['name'] + '')
+          this.component.querySelector(':scope ' + this.ar[this.current]['name'] + '')
             .setAttribute(this.current === 'group' ? 'g-' + attr : attr, event.target.value)
         }
         onSlider()
@@ -494,14 +518,14 @@ export class SpxEditor {
       const onChange = (event, attr, type) => {
         if (type === 'boolean') {
           if (event.target.checked === true) {
-            this.component.querySelector(':scope > ' + this.ar[this.current]['name'] + '')
+            this.component.querySelector(':scope ' + this.ar[this.current]['name'] + '')
               .setAttribute(attr, '')
           } else {
-            this.component.querySelector(':scope > ' + this.ar[this.current]['name'] + '')
+            this.component.querySelector(':scope ' + this.ar[this.current]['name'] + '')
               .removeAttribute(attr)
           }
         } else {
-          this.component.querySelector(':scope > ' + this.ar[this.current]['name'] + '')
+          this.component.querySelector(':scope ' + this.ar[this.current]['name'] + '')
             .setAttribute(this.current === 'group' ? 'g-' + attr : attr, event.target.value)
         }
         onSlider()
@@ -515,7 +539,9 @@ export class SpxEditor {
       /** Render props. */
 
       return Object.values(this.ar[component]['properties']).map((object) => {
-        const defaultValue = object['id'] === 'offset-target' ? '.header1' : object['defaultValue']
+        const attribute = kebabCase(object['name'])
+
+        const defaultValue = some(object['tags'], { name: 'editor' }) === true ? filter(object['tags'], { name: 'editor' })[0]['text'] : object['defaultValue']
 
         const noControl = [
           '' + this.current + '-display',
@@ -616,16 +642,16 @@ export class SpxEditor {
                     id={object['id']}
                     value={defaultValue}
                     data-default={defaultValue}
-                    data-attr={kebabCase(object['name'])}/>,
+                    data-attr={attribute}/>,
                   object['type'] === 'boolean' &&
                                     <label htmlFor={object['id']}>{object['name']}</label>]
                   : <select
                     /* eslint-disable-next-line react/jsx-no-bind */
-                    onChange={(event) => onChange(event, kebabCase(object['name']), object['type'])}
+                    onChange={(event) => onChange(event, attribute, object['type'])}
                     name={object['id']}
                     id={object['id']}
                     data-default={defaultValue}
-                    data-attr={kebabCase(object['name'])}>
+                    data-attr={attribute}>
                     {
                       /** Render select with choices. */
                       filter(object['tags'], { name: 'choice' })[0]['text'].replaceAll(',', '').replaceAll('\'', '').split(' ').map((item) => {
@@ -671,8 +697,8 @@ export class SpxEditor {
         alignItems: this.mobile && 'center',
         background: '#ffffff',
         height:
-            !this.mobile && !this.fullscreen ? 'calc(100vh - ' + this.headerHeight + 'px)'
-              : !this.mobile && this.fullscreen ? '100vh' : '100px',
+                !this.mobile && !this.fullscreen ? 'calc(100vh - ' + this.headerHeight + 'px)'
+                  : !this.mobile && this.fullscreen ? '100vh' : '100px',
         width: this.fullscreen ? '100vw' : '100%',
         minHeight: !this.mobile && '500px',
         padding: this.mobile && '4vw',
@@ -681,7 +707,7 @@ export class SpxEditor {
         left: this.fullscreen && !this.mobile && '0',
         borderRadius: !this.fullscreen && s.borderRadius,
         border: !this.fullscreen && '1px solid var(--spx-color-gray-200)',
-        zIndex: this.fullscreen && 99999,
+        zIndex: this.fullscreen && 102,
         overflow: 'hidden',
         gridTemplateColumns: '1fr 300px',
         gridTemplateRows: 'auto 1fr',
@@ -745,6 +771,12 @@ export class SpxEditor {
 
           img: {
             width: 'unset !important'
+          }
+        },
+
+        'spx-slider': {
+          'img + img': {
+            marginTop: '0 !important'
           }
         },
 
@@ -860,7 +892,8 @@ export class SpxEditor {
 
         {/** Component. */}
 
-        <div ref={(el) => this.component = el as HTMLElement}
+        <div id="components"
+          ref={(el) => this.component = el as HTMLElement}
           class={styleComponent}/>
 
         {/** Export. */}
@@ -869,7 +902,8 @@ export class SpxEditor {
           <spx-section-button
             ref={(el) => this.export = el as HTMLElement}
             onClick={this.exportCode}
-            type="secondary">Export</spx-section-button>
+            type="secondary">Export
+          </spx-section-button>
         </div>
 
         {/** Sidebar. */}

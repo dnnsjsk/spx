@@ -4,6 +4,7 @@ import { css } from 'emotion'
 import * as c from '../../constants/style'
 import { setVar } from '../../utils/setVar'
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
+import { tagSelector } from '../../utils/tagSelector'
 
 const tag = 'spx-accordion'
 
@@ -128,6 +129,10 @@ export class SpxAccordion {
         gridColumnGap: setVar(tag, 'header-gap', this.headerGap),
         cursor: 'pointer',
 
+        'h1, h2, h3, h4, h5, h6, p, span': {
+          color: setVar(tag, 'header-color', this.headerColor)
+        },
+
         '*:not([slot])': {
           margin: '0'
         }
@@ -152,28 +157,12 @@ export class SpxAccordion {
         transitionProperty: 'max-height, margin-top',
         willChange: 'max-height, margin-top',
         transitionDuration: setVar(tag, 'transition-duration', this.contentTransitionDuration),
-        transitionTimingFunction: setVar(tag, 'transition-timing-function', this.contentTransitionTimingFunction)
+        transitionTimingFunction: setVar(tag, 'transition-timing-function', this.contentTransitionTimingFunction),
+
+        'h1, h2, h3, h4, h5, h6, p, span': {
+          color: setVar(tag, 'content-color', this.contentColor)
+        }
       })
-
-      /** Create custom variables for Header/Content. */
-
-      const styleText = (tag, part) => css({
-        color: 'var(--spx-accordion-' + tag + '-color, ' + part + ')'
-      })
-
-      /** Renders inner element for header/content. */
-
-      const textReturn = (condition, tag, text, slot, part) => {
-        return condition
-          ? (tag === 'h1' ? <h1 class={styleText(tag, part)}>{text}</h1>
-            : tag === 'h2' ? <h2 class={styleText(tag, part)}>{text}</h2>
-              : tag === 'h3' ? <h3 class={styleText(tag, part)}>{text}</h3>
-                : tag === 'h4' ? <h4 class={styleText(tag, part)}>{text}</h4>
-                  : tag === 'h5' ? <h5 class={styleText(tag, part)}>{text}</h5>
-                    : tag === 'h6' ? <h6 class={styleText(tag, part)}>{text}</h6>
-                      : tag === 'p' ? <p class={styleText(tag, part)}>{text}</p>
-                        : <span class={styleText(tag, part)}>{text}</span>) : <slot name={slot}/>
-      }
 
       return <Host
         class={styleHost}>
@@ -197,14 +186,14 @@ export class SpxAccordion {
                     : <spx-icon type="caret"/>}
 
                 </div>}
-          {textReturn(!this.headerCustom, this.headerTextTag, this.headerText, 'header', this.headerColor)}
+          {tagSelector(!this.headerCustom, this.headerTextTag, this.headerText, 'header')}
         </div>
 
         {/** Content. */}
 
         <div class={styleContent}
           ref={(el) => this.content = el as HTMLElement}>
-          {textReturn(!this.contentCustom, this.contentTextTag, this.contentText, 'content', this.contentColor)}
+          {tagSelector(!this.contentCustom, this.contentTextTag, this.contentText, 'content')}
         </div>
       </Host>
     }

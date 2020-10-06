@@ -16,9 +16,10 @@
 | `bpTabs`                             | `bp-tabs`                               | Starts navigating to the next slide when page is loaded. | `string`  | `undefined`                       |
 | `centeredSlides`                     | `centered-slides`                       | Centers slides in viewport.                              | `boolean` | `false`                           |
 | `direction`                          | `direction`                             | Slider direction.                                        | `string`  | `'horizontal'`                    |
+| `imageObjectFit`                     | `image-object-fit`                      | Image object-fit.                                        | `string`  | `'cover'`                         |
 | `loop`                               | `loop`                                  | Loops all slides infinitely.                             | `boolean` | `false`                           |
-| `maxHeight`                          | `max-height`                            |                                                          | `string`  | `'100%'`                          |
-| `maxWidth`                           | `max-width`                             |                                                          | `string`  | `'100%'`                          |
+| `maxHeight`                          | `max-height`                            | Max height.                                              | `string`  | `'100%'`                          |
+| `maxWidth`                           | `max-width`                             | Max width.                                               | `string`  | `'100%'`                          |
 | `navigation`                         | `navigation`                            |                                                          | `boolean` | `undefined`                       |
 | `navigationBackground`               | `navigation-background`                 |                                                          | `string`  | `'rgba(0,0,0,0.7)'`               |
 | `navigationBorderRadius`             | `navigation-border-radius`              |                                                          | `string`  | `c.borderRadius`                  |
@@ -38,8 +39,12 @@
 | `paginationTransitionDuration`       | `pagination-transition-duration`        |                                                          | `string`  | `c.transitionDuration`            |
 | `paginationTransitionTimingFunction` | `pagination-transition-timing-function` |                                                          | `string`  | `c.transitionTimingFunction`      |
 | `prevNextFilter`                     | `prev-next-filter`                      | Filter property for the previous and next elements.      | `string`  | `undefined`                       |
+| `slideMessageFirst`                  | `slide-message-first`                   | Screen reader message for first slide.                   | `string`  | `'This is the first slide'`       |
+| `slideMessageLast`                   | `slide-message-last`                    | Screen reader message for last slide.                    | `string`  | `'This is the last slide'`        |
+| `slideMessageNext`                   | `slide-message-next`                    | Screen reader message for next slide.                    | `string`  | `'Next slide'`                    |
+| `slideMessagePrevious`               | `slide-message-previous`                | Screen reader message for previous slide.                | `string`  | `'Previous slide'`                |
 | `slidesPerView`                      | `slides-per-view`                       | Amount of slides shown at once.                          | `number`  | `1`                               |
-| `spaceBetween`                       | `space-between`                         | Space between the slides.                                | `number`  | `0`                               |
+| `spaceBetween`                       | `space-between`                         | Space between slides.                                    | `number`  | `0`                               |
 | `speed`                              | `speed`                                 | Sliding speed.                                           | `number`  | `1000`                            |
 
 

@@ -85,7 +85,7 @@
       "name": "zIndex",
       "type": "number",
       "description": "",
-      "defaultValue": "100",
+      "defaultValue": "102",
       "tags": []
     }
   ],

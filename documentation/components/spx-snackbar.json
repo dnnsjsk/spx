@@ -96,6 +96,14 @@
       "tags": []
     },
     {
+      "id": "snackbar-identifier",
+      "name": "identifier",
+      "type": "string",
+      "description": "Unique identifier for snackbar instance.",
+      "defaultValue": "'primary'",
+      "tags": []
+    },
+    {
       "id": "snackbar-padding",
       "name": "padding",
       "type": "string",
@@ -132,6 +140,22 @@
       "tags": []
     },
     {
+      "id": "snackbar-spaceBetween",
+      "name": "spaceBetween",
+      "type": "string",
+      "description": "Space between snackbars.",
+      "defaultValue": "'var(--spx-space-xs)'",
+      "tags": []
+    },
+    {
+      "id": "snackbar-target",
+      "name": "target",
+      "type": "string",
+      "description": "Element where snackbars should be created in.",
+      "defaultValue": "'body'",
+      "tags": []
+    },
+    {
       "id": "snackbar-text",
       "name": "text",
       "type": "string",
@@ -144,7 +168,7 @@
       "name": "zIndex",
       "type": "number",
       "description": "",
-      "defaultValue": "99",
+      "defaultValue": "103",
       "tags": []
     }
   ],

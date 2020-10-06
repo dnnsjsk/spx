@@ -4,6 +4,11 @@ import { sass } from '@stencil/sass'
 // eslint-disable-next-line no-unused-vars
 import { JsonDocs } from '@stencil/core/internal'
 import { promises as fs } from 'fs'
+/*
+import linaria from 'linaria/rollup'
+import path from 'path'
+import css from 'rollup-plugin-css-only'
+ */
 
 /** Generate custom documentation. */
 
@@ -128,6 +133,16 @@ export const config: Config = {
   plugins: [
     sass()
   ],
+  /*
+  rollupPlugins: {
+    after: [
+      linaria(),
+      css({
+        output: '../assets/css/spx.css'
+      })
+    ]
+  },
+   */
   devServer: {
     openBrowser: false
   }

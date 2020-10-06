@@ -37,7 +37,10 @@ export class SpxCode {
 
     @Prop({ reflect: true }) theme: string = 'default'
 
-    /** Determines the programming language. */
+    /**
+     * Determines the programming language.
+     * @editor 'css'
+     */
 
     @Prop({ reflect: true }) type: string = 'markup'
 
@@ -68,8 +71,17 @@ export class SpxCode {
           borderRadius: setVar(tag, 'border-radius', this.borderRadius)
         },
 
+        pre: {
+          display: 'flex',
+
+          '&:after': {
+            display: 'block',
+            content: '" "',
+            width: setVar(tag, 'padding', this.padding)
+          }
+        },
+
         code: {
-          display: 'block',
           padding: setVar(tag, 'padding', this.padding)
         }
       })

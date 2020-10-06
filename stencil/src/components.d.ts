@@ -155,6 +155,7 @@ export namespace Components {
         "theme": string;
         /**
           * Determines the programming language.
+          * @editor 'css'
          */
         "type": string;
     }
@@ -631,6 +632,7 @@ export namespace Components {
         "navigationFontFamily": string;
         "navigationFontSizeMultiplier": number;
         "navigationGap": string;
+        "navigationHeadingTag": string;
         "navigationLinkColor": string;
         "navigationLinkColorActive": string;
         "navigationLinkFontSizeMultiplier": number;
@@ -644,6 +646,11 @@ export namespace Components {
         "navigationTitleLineHeight": string;
         "navigationTitleTextTransform": string;
         "offsetMarginTop": string;
+        /**
+          * Space from the last content element to the end of the component.
+          * @CSS
+         */
+        "spaceBottom": string;
         /**
           * Distance to the edge of the viewport on the x-axis.
           * @CSS
@@ -973,10 +980,23 @@ export namespace Components {
          */
         "direction": string;
         /**
+          * Image object-fit.
+          * @choice 'fill', 'contain', 'cover', 'scale-down', 'none'
+         */
+        "imageObjectFit": string;
+        /**
           * Loops all slides infinitely.
          */
         "loop": boolean;
+        /**
+          * Max height.
+          * @editor '500px'
+         */
         "maxHeight": string;
+        /**
+          * Max width.
+          * @editor '500px'
+         */
         "maxWidth": string;
         "navigation": boolean;
         "navigationBackground": string;
@@ -1031,11 +1051,27 @@ export namespace Components {
         "prevNextFilter": string;
         "reload": () => Promise<void>;
         /**
+          * Screen reader message for first slide.
+         */
+        "slideMessageFirst": string;
+        /**
+          * Screen reader message for last slide.
+         */
+        "slideMessageLast": string;
+        /**
+          * Screen reader message for next slide.
+         */
+        "slideMessageNext": string;
+        /**
+          * Screen reader message for previous slide.
+         */
+        "slideMessagePrevious": string;
+        /**
           * Amount of slides shown at once.
          */
         "slidesPerView": number;
         /**
-          * Space between the slides.
+          * Space between slides.
          */
         "spaceBetween": number;
         /**
@@ -1086,6 +1122,10 @@ export namespace Components {
          */
         "fixed": boolean;
         "fontSize": string;
+        /**
+          * Unique identifier for snackbar instance.
+         */
+        "identifier": string;
         "padding": string;
         /**
           * Component position in page.
@@ -1101,6 +1141,14 @@ export namespace Components {
           * Reverses the close button if "closable" prop is true.
          */
         "reverse": boolean;
+        /**
+          * Space between snackbars.
+         */
+        "spaceBetween": string;
+        /**
+          * Element where snackbars should be created in.
+         */
+        "target": string;
         /**
           * Text inside snackbar.
          */
@@ -1537,6 +1585,7 @@ declare namespace LocalJSX {
         "theme"?: string;
         /**
           * Determines the programming language.
+          * @editor 'css'
          */
         "type"?: string;
     }
@@ -2000,6 +2049,7 @@ declare namespace LocalJSX {
         "navigationFontFamily"?: string;
         "navigationFontSizeMultiplier"?: number;
         "navigationGap"?: string;
+        "navigationHeadingTag"?: string;
         "navigationLinkColor"?: string;
         "navigationLinkColorActive"?: string;
         "navigationLinkFontSizeMultiplier"?: number;
@@ -2013,6 +2063,11 @@ declare namespace LocalJSX {
         "navigationTitleLineHeight"?: string;
         "navigationTitleTextTransform"?: string;
         "offsetMarginTop"?: string;
+        /**
+          * Space from the last content element to the end of the component.
+          * @CSS
+         */
+        "spaceBottom"?: string;
         /**
           * Distance to the edge of the viewport on the x-axis.
           * @CSS
@@ -2341,10 +2396,23 @@ declare namespace LocalJSX {
          */
         "direction"?: string;
         /**
+          * Image object-fit.
+          * @choice 'fill', 'contain', 'cover', 'scale-down', 'none'
+         */
+        "imageObjectFit"?: string;
+        /**
           * Loops all slides infinitely.
          */
         "loop"?: boolean;
+        /**
+          * Max height.
+          * @editor '500px'
+         */
         "maxHeight"?: string;
+        /**
+          * Max width.
+          * @editor '500px'
+         */
         "maxWidth"?: string;
         "navigation"?: boolean;
         "navigationBackground"?: string;
@@ -2398,11 +2466,27 @@ declare namespace LocalJSX {
          */
         "prevNextFilter"?: string;
         /**
+          * Screen reader message for first slide.
+         */
+        "slideMessageFirst"?: string;
+        /**
+          * Screen reader message for last slide.
+         */
+        "slideMessageLast"?: string;
+        /**
+          * Screen reader message for next slide.
+         */
+        "slideMessageNext"?: string;
+        /**
+          * Screen reader message for previous slide.
+         */
+        "slideMessagePrevious"?: string;
+        /**
           * Amount of slides shown at once.
          */
         "slidesPerView"?: number;
         /**
-          * Space between the slides.
+          * Space between slides.
          */
         "spaceBetween"?: number;
         /**
@@ -2453,6 +2537,10 @@ declare namespace LocalJSX {
          */
         "fixed"?: boolean;
         "fontSize"?: string;
+        /**
+          * Unique identifier for snackbar instance.
+         */
+        "identifier"?: string;
         "padding"?: string;
         /**
           * Component position in page.
@@ -2467,6 +2555,14 @@ declare namespace LocalJSX {
           * Reverses the close button if "closable" prop is true.
          */
         "reverse"?: boolean;
+        /**
+          * Space between snackbars.
+         */
+        "spaceBetween"?: string;
+        /**
+          * Element where snackbars should be created in.
+         */
+        "target"?: string;
         /**
           * Text inside snackbar.
          */

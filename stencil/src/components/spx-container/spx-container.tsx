@@ -322,14 +322,14 @@ export class SpxContainer {
         },
 
         '& > *[background]:not(spx-section-header)': {
-          marginTop: setVar(tag, 'padding-between', this.spaceY),
+          marginTop: 'calc(' + setVar(tag, 'padding-between', this.spaceY) + '/2)',
 
           '& + [background]': {
             marginTop: 0
           },
 
-          '& + *:not([background])': {
-            marginTop: setVar(tag, 'padding-between', this.spaceY)
+          '& + *:not([background]):not([no-margin-top])': {
+            marginTop: 'calc(' + setVar(tag, 'padding-between', this.spaceY) + '/2)'
           }
         },
 

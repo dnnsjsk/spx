@@ -15,6 +15,25 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 2.1.1 (unreleased) =
+* Code: set correct right spacing if content is overflowing.
+* Enhancement: remove footer.js.
+* Navigation: fix desktop menu flashing on mobile.
+* Page Docs: add bottom space option.
+* Page Docs: add default navigation background color.
+* Page Docs: add possibility to disable heading from creating navigation entry.
+* Page Docs: add prop to create navigation from different heading level.
+* Page Docs: remove special characters from id generation.
+* Section Text Media: add no-margin-top prop.
+* Slider: add props for screen reader navigation messages.
+* Slider: fix navigation not working in edge cases.
+* Slider: general fixes.
+* Snackbar: add identifier prop.
+* Snackbar: add spaceY prop.
+* Snackbar: add target prop.
+* Snackbar: automatically stack snackbars if multiple are called in a short timespan.
+* Snackbar: remove DOM element after animation delay.
+
 = 2.1.0 =
 * Accordion: change default icon rotation to 180 degrees.
 * Accordion: add tab-index attribute to header.
