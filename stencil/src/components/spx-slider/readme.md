@@ -16,6 +16,7 @@
 | `bpTabs`                             | `bp-tabs`                               | Starts navigating to the next slide when page is loaded. | `string`  | `undefined`                       |
 | `centeredSlides`                     | `centered-slides`                       | Centers slides in viewport.                              | `boolean` | `false`                           |
 | `direction`                          | `direction`                             | Slider direction.                                        | `string`  | `'horizontal'`                    |
+| `effect`                             | `effect`                                | Slider effect.                                           | `string`  | `'slide'`                         |
 | `imageObjectFit`                     | `image-object-fit`                      | Image object-fit.                                        | `string`  | `'cover'`                         |
 | `loop`                               | `loop`                                  | Loops all slides infinitely.                             | `boolean` | `false`                           |
 | `maxHeight`                          | `max-height`                            | Max height.                                              | `string`  | `'100%'`                          |
@@ -25,7 +26,10 @@
 | `navigationBorderRadius`             | `navigation-border-radius`              |                                                          | `string`  | `c.borderRadius`                  |
 | `navigationColor`                    | `navigation-color`                      |                                                          | `string`  | `'#ffffff'`                       |
 | `navigationDistanceX`                | `navigation-distance-x`                 | Navigation distance.                                     | `string`  | `'12px'`                          |
-| `navigationPadding`                  | `navigation-padding`                    |                                                          | `string`  | `'16px 20px'`                     |
+| `navigationIconNext`                 | `navigation-icon-next`                  | Navigation icon type.                                    | `string`  | `'arrow-forward'`                 |
+| `navigationIconPrev`                 | `navigation-icon-prev`                  | Navigation icon type.                                    | `string`  | `'arrow-back'`                    |
+| `navigationIconType`                 | `navigation-icon-type`                  | Navigation icon type.                                    | `string`  | `'ionicons'`                      |
+| `navigationPadding`                  | `navigation-padding`                    |                                                          | `string`  | `'12px'`                          |
 | `navigationSize`                     | `navigation-size`                       | Navigation size.                                         | `string`  | `'20px'`                          |
 | `pagination`                         | `pagination`                            | Pagination type.                                         | `string`  | `'bullets'`                       |
 | `paginationBulletsBackground`        | `pagination-bullets-background`         |                                                          | `string`  | `'var(--spx-color-gray-300)'`     |
@@ -60,6 +64,20 @@ Type: `Promise<void>`
 
 
 
+
+## Dependencies
+
+### Depends on
+
+- [spx-icon](../spx-icon)
+
+### Graph
+```mermaid
+graph TD;
+  spx-slider --> spx-icon
+  spx-icon --> ion-icon
+  style spx-slider fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

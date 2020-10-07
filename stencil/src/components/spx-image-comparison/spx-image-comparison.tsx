@@ -25,7 +25,7 @@ export class SpxImageComparison {
 
     @Prop({ reflect: true }) color: string = '#ffffff'
 
-    @Prop({ reflect: true }) iconColor: string = 'var(--spx-color-gray-500)'
+    @Prop({ reflect: true }) iconColor: string = 'var(--spx-color-gray-900)'
 
     /** Image URL of the before image. */
 
@@ -147,7 +147,7 @@ export class SpxImageComparison {
       })
 
       const styleImage = css({
-        height: '100%',
+        height: '100%'
       })
 
       const styleImageAfter = css({
@@ -202,9 +202,8 @@ export class SpxImageComparison {
         justifyContent: 'center',
         alignItems: 'center',
 
-        svg: {
-          height: '60%',
-          color: setVar(tag, 'icon-color', this.iconColor)
+        'spx-icon': {
+          transform: 'rotate(45deg)',
         }
       })
 
@@ -245,11 +244,7 @@ export class SpxImageComparison {
               class={styleScroller}>
 
               <div class={styleThumb}>
-                <svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 512 512">
-                  <path fill="currentColor"
-                    d="M347.404 142.86c-4.753 4.753-4.675 12.484.173 17.14l73.203 70H91.22l73.203-70c4.849-4.656 4.927-12.387.173-17.14l-19.626-19.626c-4.686-4.686-12.284-4.686-16.971 0L3.515 247.515c-4.686 4.686-4.686 12.284 0 16.971L128 388.766c4.686 4.686 12.284 4.686 16.971 0l19.626-19.626c4.753-4.753 4.675-12.484-.173-17.14L91.22 282h329.56l-73.203 70c-4.849 4.656-4.927 12.387-.173 17.14l19.626 19.626c4.686 4.686 12.284 4.686 16.971 0l124.485-124.281c4.686-4.686 4.686-12.284 0-16.971L384 123.234c-4.686-4.686-12.284-4.686-16.971 0l-19.625 19.626z"/>
-                </svg>
+                <spx-icon icon="resize" size="32px" color={this.iconColor}/>
               </div>
 
             </div>]}

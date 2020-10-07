@@ -3,9 +3,10 @@ import { Component, Element, h, Host, Prop } from '@stencil/core'
 import { css } from 'emotion'
 import { setVar } from '../../utils/setVar'
 import { setFontSize } from '../../utils/setSize'
-import * as c from '../../constants/style'
+import * as s from '../../constants/style'
 import { merge } from 'lodash-es'
 import state from '../../stores/container'
+import { wrap } from '../../utils/wrap'
 
 const tag = 'spx-text'
 
@@ -49,6 +50,13 @@ export class SpxText {
 
     @Prop({ reflect: true }) textTextTransform: string = 'default'
 
+    componentDidLoad () {
+      const img = this.el.querySelectorAll('img, video')
+      img.forEach(item => {
+        wrap(item, document.createElement('figure'))
+      })
+    }
+
     render () {
       const styleHost = css(merge({
         display: 'block',
@@ -81,7 +89,7 @@ export class SpxText {
         },
 
         'p, ul, ol': {
-          ...c.text(tag, 'text', this.textColor, '16px', '1.4vw', '24px', this.contentFontSizeMultiplier, this.textFontWeight, this.textLetterSpacing, this.textLineHeight, this.textTextTransform),
+          ...s.text(tag, 'text', this.textColor, '16px', '1.4vw', '24px', this.contentFontSizeMultiplier, this.textFontWeight, this.textLetterSpacing, this.textLineHeight, this.textTextTransform),
           fontFamily: setVar(tag, 'text-font-family', this.textFontFamily),
 
           a: {
@@ -103,6 +111,23 @@ export class SpxText {
         ol: {
           listStyleType: 'lower-roman',
           listStylePosition: 'inside'
+        },
+
+        figure: {
+          borderRadius: s.borderRadius,
+          background: 'var(--spx-color-gray-100)',
+          padding: 'var(--spx-space-lg)',
+
+          img: {
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            maxHeight: '400px',
+            objectFit: 'contain'
+          }
+        },
+
+        'img, video': {
+          maxWidth: '100%'
         }
       }, {}))
 

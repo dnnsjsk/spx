@@ -10,8 +10,9 @@ const tag = 'spx-accordion'
 
 /**
  * Accordions are the classic method to show and hide elements on your website.
- * @slot header - Header.
  * @slot content - Content.
+ * @slot header - Header.
+ * @slot icon - Icon.
  */
 
 @Component({
@@ -67,9 +68,13 @@ export class SpxAccordion {
 
     @Prop({ reflect: true }) headerTextTag: string = 'span'
 
-    /** Icon class. Accepts any Font Awesome icon class. */
+    /** Indicator icon. */
 
-    @Prop({ reflect: true }) indicatorIcon: string
+    @Prop({ reflect: true }) indicatorIcon: string = 'arrow-down'
+
+    /** Indicator icon type. */
+
+    @Prop({ reflect: true }) indicatorIconType: string = 'ionicons'
 
     /** Indicator icon transform. */
 
@@ -88,6 +93,7 @@ export class SpxAccordion {
       if (this.el.querySelector('[slot="header"]')) {
         this.headerCustom = true
       }
+
       if (this.el.querySelector('[slot="content"]')) {
         this.contentCustom = true
       }
@@ -181,9 +187,8 @@ export class SpxAccordion {
           {!this.headerCustom &&
                 <div class={styleHeaderCustom}>
 
-                  {this.indicatorIcon
-                    ? <i class={this.indicatorIcon}/>
-                    : <spx-icon type="caret"/>}
+                  {this.indicatorIcon && this.indicatorIconType &&
+                    <spx-icon icon={this.indicatorIcon} type={this.indicatorIconType}/>}
 
                 </div>}
           {tagSelector(!this.headerCustom, this.headerTextTag, this.headerText, 'header')}

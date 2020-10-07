@@ -66,6 +66,8 @@ Type: `Promise<void>`
 graph TD;
   spx-edit-button --> spx-snackbar
   spx-edit-button --> spx-loader
+  spx-snackbar --> spx-icon
+  spx-icon --> ion-icon
   style spx-edit-button fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

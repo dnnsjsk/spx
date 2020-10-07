@@ -62,7 +62,16 @@
       "id": "navigation-childIcon",
       "name": "childIcon",
       "type": "string",
-      "description": "Indicator icon. Accepts any Font Awesome icon class.",
+      "description": "Indicator icon..",
+      "defaultValue": "'arrow-down'",
+      "tags": []
+    },
+    {
+      "id": "navigation-childIconType",
+      "name": "childIconType",
+      "type": "string",
+      "description": "Indicator icon type.",
+      "defaultValue": "'ionicons'",
       "tags": []
     },
     {
@@ -195,7 +204,15 @@
       "id": "navigation-mobileIcon",
       "name": "mobileIcon",
       "type": "string",
-      "description": "Mobile button icon. Accepts any Font Awesome icon class.",
+      "description": "Mobile button icon.",
+      "tags": []
+    },
+    {
+      "id": "navigation-mobileIconType",
+      "name": "mobileIconType",
+      "type": "string",
+      "description": "Mobile button icon type.",
+      "defaultValue": "'ionicons'",
       "tags": []
     },
     {

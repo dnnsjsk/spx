@@ -6,7 +6,7 @@ import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
 
 /**
  * A wrapper around a standard iframe element, which scales proportionally to its parent.
- * Great for showing desktop versions of a website in a small section.
+ * Great for showing desktop versions of a website on smaller screens or viewports.
  */
 
 @Component({

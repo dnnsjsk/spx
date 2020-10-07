@@ -15,7 +15,7 @@
       "name": "iconColor",
       "type": "string",
       "description": "",
-      "defaultValue": "'var(--spx-color-gray-500)'",
+      "defaultValue": "'var(--spx-color-gray-900)'",
       "tags": []
     },
     {

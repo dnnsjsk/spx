@@ -34,6 +34,20 @@ Type: `Promise<void>`
 
 
 
+## Dependencies
+
+### Depends on
+
+- [spx-icon](../spx-icon)
+
+### Graph
+```mermaid
+graph TD;
+  spx-share --> spx-icon
+  spx-icon --> ion-icon
+  style spx-share fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

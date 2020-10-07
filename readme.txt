@@ -15,26 +15,52 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
-= 2.1.1 (unreleased) =
-* Code: set correct right spacing if content is overflowing.
+= 2.1.2 =
+* New: Icon component.
+* Enhancement: set Ionicons (https://ionicons.com/) as default icon set throughout components.
+* Accordion: add 'child-icon-type' attribute.
+* Accordion: change default icon.
+* Image Comparison: change default icon.
+* Lightbox: add 'height' attribute.
+* Lightbox: add 'width' attribute.
+* Lightbox: change default icons.
+* Navigation: add 'child-icon-type' attribute.
+* Navigation: add 'mobile-icon-type' attribute.
+* Navigation: change default icon.
+* Navigation: set correct icon position for nested child items.
+* Section Footer: add 'after' slot.
+* Section Footer: add 'display' attribute.
+* Share: change default icons.
+* Slider: add 'effect' attribute.
+* Slider: add 'navigation-icon-next' attribute.
+* Slider: add 'navigation-icon-prev' attribute.
+* Slider: add 'navigation-icon-type' attribute.
+* Slider: change default navigation icons.
+* Slider: fix 'navigation-padding' attribute.
+* Slider: remove unnecessary styles from component.
+* Snackbar: change default icon.
+
+= 2.1.1 =
 * Enhancement: remove footer.js.
+* Code: set correct right spacing if content is overflowing.
 * Navigation: fix desktop menu flashing on mobile.
 * Page Docs: add bottom space option.
 * Page Docs: add default navigation background color.
 * Page Docs: add possibility to disable heading from creating navigation entry.
-* Page Docs: add prop to create navigation from different heading level.
+* Page Docs: add attribute to create navigation from different heading level.
 * Page Docs: remove special characters from id generation.
-* Section Text Media: add no-margin-top prop.
-* Slider: add props for screen reader navigation messages.
+* Section Text Media: add no-margin-top attribute.
+* Slider: add attributes for screen reader navigation messages.
 * Slider: fix navigation not working in edge cases.
 * Slider: general fixes.
-* Snackbar: add identifier prop.
-* Snackbar: add spaceY prop.
-* Snackbar: add target prop.
+* Snackbar: add identifier attribute.
+* Snackbar: add spaceY attribute.
+* Snackbar: add target attribute.
 * Snackbar: automatically stack snackbars if multiple are called in a short timespan.
 * Snackbar: remove DOM element after animation delay.
 
 = 2.1.0 =
+* Resize observer: only create when 'bp-' attribute is applied.
 * Accordion: change default icon rotation to 180 degrees.
 * Accordion: add tab-index attribute to header.
 * Accordion: add role="button" and aria-pressed attributes.
@@ -46,9 +72,8 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Slider: navigate through tabs by pressing 'enter'.
 * Slider: fix space between pagination bullets.
 * Slider: fix vertical direction.
-* Slider: fix clickable prop.
+* Slider: fix clickable attribute.
 * Slider: fix dynamic bullets.
-* Resize observer: only create when 'bp-' attribute is applied.
 
 = 2.0.9 =
 * Oxygen: fix attributes text field.
@@ -58,9 +83,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 = 2.0.7 =
 * Animate: fix Oxygen editor bug.
-* Animate: add 'reverse' prop.
-* Animate: add 'repeat' prop.
-* Animate: add 'yoyo' prop.
+* Animate: add 'reverse' attribute.
+* Animate: add 'repeat' attribute.
+* Animate: add 'yoyo' attribute.
 
 = 2.0.5 =
 * Enhancement: remove IE11 support.
@@ -69,15 +94,15 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Enhancement: don't load container scripts when container is not on page.
 * StencilJS: update to 2.0.3.
 * Section Footer: Add 'before-footer' slot.
-* Page Single: Fix image-height prop.
+* Page Single: Fix image-height attribute.
 
 = 2.0.4 =
 * New: add IDs to script tags.
 * New: add .json documentation to plugin files.
 * Animate: add 'play' and 'restart' method.
 * Animate: set default opacity value to 0.
-* Container: add title max-width prop.
-* Edit Button: add position CSS prop.
+* Container: add title max-width attribute.
+* Edit Button: add position CSS attribute.
 * Iframe: added default src.
 * Image Comparison: added default images.
 * Notation: fix loop.
@@ -87,12 +112,12 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Slider: add default dynamic pagination bullet default.
 * Slider: fix bullets space between.
 * Slider: remove console logs.
-* Snackbar: fix left padding when reverse property is set without closeable.
+* Snackbar: fix left padding when reverse attribute is set without closeable.
 * Snackbar: make default position bottom-right.
-* Snackbar: make position property reactive.
-* Snackbar: remove size property.
+* Snackbar: make position attribute reactive.
+* Snackbar: remove size attribute.
 * Snackbar: render text into span instead of div.
-* Snackbar: add position CSS prop.
+* Snackbar: add position CSS attribute.
 * Typewriter: fix everything and add possibility to write multiple words/sentences. -> ['phrase1', 'phrase2']
 
 = 2.0.3 =
@@ -116,7 +141,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * New: Code component.
 * New: Slideshow component.
 * New: Text component.
-* New: responsive settings can be now applied using the "bp-" attribute.
+* New: responsive settings can be now applied using the 'bp-' attribute.
 * New: elements can now have a custom font-size variable where applicable. (overwrites the global variable)
 * New: elements can now have a custom border-radius variable where applicable. (overwrites the global variable)
 * New: elements can now have a custom transition-delay variable where applicable. (overwrites the global variable)
@@ -127,19 +152,19 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Fix: gray color scale is now always applied to the body element as CSS variables.
 * Fix: remove unnecessary classes from some components. The Attribute/CSS vars API should now the main way of styling elements.
 * Fix: remove possibility for components to have no styling.
-* Fix: moved spx admin menu to "Tools".
+* Fix: moved spx admin menu to 'Tools'.
 * Removed: getAcfGallery and getMbGallery have been removed, use getGallery instead.
-* Accordion: add icon rotation property.
+* Accordion: add icon rotation attribute.
 * Animate: replace endless loop for inner elements with Mutation Observer.
 * Edit Button: fixed a bug that wouldn't save fields if they contained special characters.
-* Group: additional target prop can be used to only apply settings to certain elements.
+* Group: additional target attribute can be used to only apply settings to certain elements.
 * Image Comparison: apply user-select: none to prevent selecting of images.
-* Navigation: added border-radius prop.
-* Navigation: added box-shadow prop.
+* Navigation: added border-radius attribute.
+* Navigation: added box-shadow attribute.
 * Navigation: adjusted default design.
-* Share: background-color prop has been renamed to background.
+* Share: background-color attribute has been renamed to background.
 * Typewriter: fix cursor animation.
-* Typewriter: remove "inner" prop. Component now automatically recognizes inner elements.
+* Typewriter: remove 'inner' attribute. Component now automatically recognizes inner elements.
 * Typewriter: replace endless loop for inner elements with Mutation Observer.
 
 = 1.4.2 =
@@ -155,10 +180,10 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Class Toggle: fix generated class array.
 * Edit Button: remove dot from success message.
 * Edit Button: fix position array generation.
-* Group: make all properties reflect to changes.
-* Image Comparison: make start prop reflect to changes.
+* Group: make all attributes reflect to changes.
+* Image Comparison: make start attribute reflect to changes.
 * Lightbox: fix arrow displaying if only one item in gallery.
-* Masonry: make columns prop reflect to changes.
+* Masonry: make columns attribute reflect to changes.
 * Navigation: add transitions for item hover and child opacity.
 * Fix: remove composer.
 
@@ -172,7 +197,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Navigation: give mobile button aria role="button".
 
 = 1.3.8 =
-* Fix: bump "Tested up to" version to 5.4.2.
+* Fix: bump 'Tested up to' version to 5.4.2.
 
 = 1.3.7 =
 * Lightbox: make body not scrollable when open.
@@ -188,7 +213,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Scrollspy: add DidLoad event.
 * Navigation: fix desktop menu flashing in when on mobile.
 * Navigation: fix sub sub menus not positioning correctly when navigation is fixed.
-* Enhance: add CSS variable to all components that can have a different display property.
+* Enhance: add CSS variable to all components that can have a different display attribute.
 
 = 1.3.4 =
 * Oxygen: fix Typewriter JS error.
@@ -253,13 +278,13 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Enhanced: all font-sizes and paddings/margins are now in em.
 * Accordion: add color attributes for header and content.
 * Navigation: fix mobile menu link styles.
-* Navigation: change wrapper tag to <nav>.
+* Navigation: change wrapper tag to nav.
 * Navigation: add default mobile breakpoint. (768)
 * Share: added custom colour options.
 
 = 1.2.0 =
 * New: Snackbar component.
-* Edit button: Adapted new positioning properties from Snackbar component.
+* Edit button: Adapted new positioning attributes from Snackbar component.
 * Edit button: Fixed font inheritance.
 * StencilJS: Update to 1.14.0.
 
@@ -282,8 +307,8 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 = 1.1.5 =
 * New: Metabox helper for Masonry component.
-* New: child menu positioning props for Navigation component.
-* New: positioning props for Edit Button component.
+* New: child menu positioning attributes for Navigation component.
+* New: positioning attributes for Edit Button component.
 
 = 1.1.4 =
 * Fix: readme file.

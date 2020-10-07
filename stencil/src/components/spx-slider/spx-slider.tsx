@@ -63,6 +63,13 @@ export class SpxScrollspy {
     @Prop({ reflect: true }) direction: string = 'horizontal'
 
     /**
+     * Slider effect.
+     * @choice 'slide', 'effect'
+     */
+
+    @Prop({ reflect: true }) effect: string = 'slide'
+
+    /**
      * Image object-fit.
      * @choice 'fill', 'contain', 'cover', 'scale-down', 'none'
      */
@@ -120,7 +127,19 @@ export class SpxScrollspy {
 
     @Prop({ reflect: true }) navigationDistanceX: string = '12px'
 
-    @Prop({ reflect: true }) navigationPadding: string = '16px 20px'
+    /** Navigation icon type. */
+
+    @Prop({ reflect: true }) navigationIconNext: string = 'arrow-forward'
+
+    /** Navigation icon type. */
+
+    @Prop({ reflect: true }) navigationIconPrev: string = 'arrow-back'
+
+    /** Navigation icon type. */
+
+    @Prop({ reflect: true }) navigationIconType: string = 'ionicons'
+
+    @Prop({ reflect: true }) navigationPadding: string = '12px'
 
     /**
      * Navigation size.
@@ -298,6 +317,7 @@ export class SpxScrollspy {
         breakpoints: createBPs(),
         centeredSlides: this.centeredSlides,
         direction: this.direction === 'horizontal' ? 'horizontal' : 'vertical',
+        effect: this.effect as 'slide' | 'fade',
         loop: this.loop,
         navigation: {
           prevEl: this.prev,
@@ -525,22 +545,8 @@ export class SpxScrollspy {
         },
         */
 
-        '--swiper-navigation-size': setVar(tag, 'navigation-size', this.navigationSize),
-        '--swiper-navigation-color': setVar(tag, 'navigation-color', this.navigationColor),
-
-        '.swiper-button-prev': {
-          left: setVar(tag, 'navigation-distance', this.navigationDistanceX)
-        },
-
-        '.swiper-button-next': {
-          right: setVar(tag, 'navigation-distance', this.navigationDistanceX)
-        },
-
         '.swiper-button-next, .swiper-button-prev': {
-          background: setVar(tag, 'navigation-background', this.navigationBackground),
-          height: 'calc(' + this.navigationSize + ' * 2)',
-          width: 'calc(' + this.navigationSize + ' * 2)',
-          borderRadius: setVar(tag, 'navigation-border-radius', this.navigationBorderRadius)
+
         },
 
         '.swiper-pagination-bullet': {
@@ -601,10 +607,45 @@ export class SpxScrollspy {
         gridGap: setVar(tag, 'pagination-bullets-space-between', this.paginationBulletsSpaceBetween)
       })
 
-      /** Bullet styles. */
+      /** Navigation. */
 
       const styleNavigation = css({
-        display: this.navigation ? 'block' : 'none'
+        display: this.navigation ? 'flex' : 'none',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        height: '100%',
+        width: '100%',
+        zIndex: 'inherit',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+
+        '& > div': {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          background: setVar(tag, 'navigation-background', this.navigationBackground),
+          borderRadius: setVar(tag, 'navigation-border-radius', this.navigationBorderRadius),
+          padding: setVar(tag, 'navigation-padding', this.navigationPadding),
+          cursor: 'pointer',
+
+          '&[aria-disabled="true"]': {
+            opacity: 0,
+            pointerEvents: 'none'
+          }
+        }
+      })
+
+      /** Navigation prev. */
+
+      const styleNavigationPrev = css({
+        marginLeft: setVar(tag, 'navigation-distance', this.navigationDistanceX)
+      })
+
+      /** Navigation prev. */
+
+      const styleNavigationNext = css({
+        marginRight: setVar(tag, 'navigation-distance', this.navigationDistanceX)
       })
 
       return <Host class={styleHost}>
@@ -629,8 +670,19 @@ export class SpxScrollspy {
                 <div class={stylePaginationBullets + ' ' + 'swiper-pagination'} ref={(el) => this.paginationBullets = el as HTMLElement}/>}
 
           <div class={styleNavigation}>
-            <div ref={(el) => this.prev = el as HTMLElement} class="swiper-button-prev"/>
-            <div ref={(el) => this.next = el as HTMLElement} class="swiper-button-next"/>
+            <div ref={(el) => this.prev = el as HTMLElement} class={styleNavigationPrev}>
+              <spx-icon type={this.navigationIconType}
+                icon={this.navigationIconPrev}
+                color={setVar(tag, 'navigation-color', this.navigationColor)}
+                size={setVar(tag, 'navigation-size', this.navigationSize)}
+              />
+            </div>
+            <div ref={(el) => this.next = el as HTMLElement} class={styleNavigationNext}>
+              <spx-icon type={this.navigationIconType}
+                icon={this.navigationIconNext}
+                color={setVar(tag, 'navigation-color', this.navigationColor)}
+                size={setVar(tag, 'navigation-size', this.navigationSize)}/>
+            </div>
           </div>
 
         </div>

@@ -34,6 +34,13 @@ export class SpxSectionFooter {
     @Prop({ reflect: true }) columnSizeMax: string = 'auto'
 
     /**
+     * Display.
+     * @choice 'grid', 'flex'
+     */
+
+    @Prop({ reflect: true }) display: string = 'grid'
+
+    /**
      * Gap between columns.
      * @CSS
      */
@@ -108,10 +115,13 @@ export class SpxSectionFooter {
       /** Inner styles. */
 
       const styleInner = css({
-        display: 'grid',
-        gridAutoFlow: state.bpMobile ? 'row' : 'column',
-        gridAutoColumns: 'minmax(' + setVar(tag, 'column-size-min', this.columnSizeMin) + ', ' + setVar(tag, 'column-size-max', this.columnSizeMax) + ')',
-        gap: setVar(tag, 'gap', this.gap),
+        display: this.display,
+        flexDirection: (this.display === 'flex') && state.bpMobile ? 'column' : 'row',
+        justifyContent: this.display === 'flex' && 'space-between',
+        flexWrap: 'wrap',
+        gridAutoFlow: this.display === 'grid' && state.bpMobile && 'row',
+        gridTemplateColumns: (this.display === 'grid') && state.bpMobile ? '1fr' : 'repeat(auto-fit, minmax(' + setVar(tag, 'column-size-min', this.columnSizeMin) + ', ' + setVar(tag, 'column-size-max', this.columnSizeMax) + '))',
+        gap: this.display === 'grid' && setVar(tag, 'gap', this.gap),
         marginLeft: 'auto',
         marginRight: 'auto',
         padding: '' + setVar(tag, 'padding', this.spaceY) + ' 0',
@@ -136,6 +146,10 @@ export class SpxSectionFooter {
 
           '&:hover': {
             textDecoration: 'underline'
+          },
+
+          '& + h3': {
+            marginTop: 'var(--spx-space-lg)'
           }
         },
 
@@ -160,12 +174,13 @@ export class SpxSectionFooter {
       })
 
       return <Host class={styleHost}>
-        <slot name="before-footer"/>
+        <slot name="before"/>
         <div class={styleOuter}>
           <div class={styleInner}>
             <slot/>
           </div>
         </div>
+        <slot name="after"/>
       </Host>
     }
 }

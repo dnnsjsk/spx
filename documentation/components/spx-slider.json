@@ -63,6 +63,19 @@
       ]
     },
     {
+      "id": "slider-effect",
+      "name": "effect",
+      "type": "string",
+      "description": "Slider effect.",
+      "defaultValue": "'slide'",
+      "tags": [
+        {
+          "text": "'slide', 'effect'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
       "id": "slider-imageObjectFit",
       "name": "imageObjectFit",
       "type": "string",
@@ -153,11 +166,35 @@
       ]
     },
     {
+      "id": "slider-navigationIconNext",
+      "name": "navigationIconNext",
+      "type": "string",
+      "description": "Navigation icon type.",
+      "defaultValue": "'arrow-forward'",
+      "tags": []
+    },
+    {
+      "id": "slider-navigationIconPrev",
+      "name": "navigationIconPrev",
+      "type": "string",
+      "description": "Navigation icon type.",
+      "defaultValue": "'arrow-back'",
+      "tags": []
+    },
+    {
+      "id": "slider-navigationIconType",
+      "name": "navigationIconType",
+      "type": "string",
+      "description": "Navigation icon type.",
+      "defaultValue": "'ionicons'",
+      "tags": []
+    },
+    {
       "id": "slider-navigationPadding",
       "name": "navigationPadding",
       "type": "string",
       "description": "",
-      "defaultValue": "'16px 20px'",
+      "defaultValue": "'12px'",
       "tags": []
     },
     {

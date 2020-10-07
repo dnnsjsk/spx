@@ -7,10 +7,12 @@
 
 ## Properties
 
-| Property | Attribute | Description | Type     | Default     |
-| -------- | --------- | ----------- | -------- | ----------- |
-| `icon`   | `icon`    |             | `string` | `undefined` |
-| `type`   | `type`    |             | `string` | `'fa'`      |
+| Property | Attribute | Description | Type     | Default      |
+| -------- | --------- | ----------- | -------- | ------------ |
+| `color`  | `color`   |             | `string` | `'inherit'`  |
+| `icon`   | `icon`    | Icon code.  | `string` | `undefined`  |
+| `size`   | `size`    | Icon size.  | `string` | `'20px'`     |
+| `type`   | `type`    | Icon type.  | `string` | `'ionicons'` |
 
 
 ## Dependencies
@@ -18,13 +20,26 @@
 ### Used by
 
  - [spx-accordion](../spx-accordion)
+ - [spx-image-comparison](../spx-image-comparison)
  - [spx-navigation](../spx-navigation)
+ - [spx-share](../spx-share)
+ - [spx-slider](../spx-slider)
+ - [spx-snackbar](../spx-snackbar)
+
+### Depends on
+
+- ion-icon
 
 ### Graph
 ```mermaid
 graph TD;
+  spx-icon --> ion-icon
   spx-accordion --> spx-icon
+  spx-image-comparison --> spx-icon
   spx-navigation --> spx-icon
+  spx-share --> spx-icon
+  spx-slider --> spx-icon
+  spx-snackbar --> spx-icon
   style spx-icon fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

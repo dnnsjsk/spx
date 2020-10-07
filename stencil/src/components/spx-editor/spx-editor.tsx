@@ -16,7 +16,7 @@ import * as editButton from '../../../../documentation/components/spx-edit-butto
 import * as group from '../../../../documentation/components/spx-group.json'
 import * as iframe from '../../../../documentation/components/spx-iframe.json'
 import * as imageComparison from '../../../../documentation/components/spx-image-comparison.json'
-// import * as lightbox from '../../../../documentation/components/spx-lightbox.json'
+import * as lightbox from '../../../../documentation/components/spx-lightbox.json'
 import * as masonry from '../../../../documentation/components/spx-masonry.json'
 import * as mockup from '../../../../documentation/components/spx-mockup.json'
 // import * as navigation from '../../../../documentation/components/spx-navigation.json'
@@ -103,7 +103,7 @@ export class SpxEditor {
         group: group,
         iframe: iframe,
         'image-comparison': imageComparison,
-        // lightbox: lightbox,
+        lightbox: lightbox,
         masonry: masonry,
         mockup: mockup,
         // navigation: navigation,
@@ -242,6 +242,35 @@ export class SpxEditor {
     private createComponent (component) {
       this.adjustedValues = {}
 
+      /** Images. */
+
+      const img = '<img src="/wp-content/themes/spx-child/assets/images/playground/andre-benz-RRshxnCn8Lk-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/beasty--HxIhfS_dUk-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/domenico-loia-BkEF69vp3Ck-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/erol-ahmed-FTy5VSGIfiQ-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/ian-dooley-aaAllJ6bmac-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/jason-briscoe--T0La6F_WrE-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/jing-xi-lau-3ccEU_8ddog-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/leo-manjarrez--vygi0Cvz_c-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/michele-tardivo-UyiDcG_AXXs-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/mike-yukhtenko-Dv2n1Tv_WcI-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/mike-yukhtenko-NB9XC3h_jWo-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/nichlas-andersen-ZFXrgzHu1KU-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/niti-k-Ie430IZPF90-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/ryan-spencer-WJDR8_QxVR8-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/s-o-c-i-a-l-c-u-t-9b2KOWOP0OY-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/scott-webb-TYso4-CK-as-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/simone-hutsch-0_x2PkKmx1Q-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/simone-hutsch-0aFrSMJ3i-g-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/simone-hutsch-8FUD82rlJxs-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/simone-hutsch-93J0T3YU6io-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/simone-hutsch-GnHUOyPV0WI-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/simone-hutsch-Gruxs0ZQw7E-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/simone-hutsch-Km8L8QoJIq8-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/simone-hutsch-MO2tsiJ5Bek-unsplash.jpg"/>' +
+            '<img src="/wp-content/themes/spx-child/assets/images/playground/zdenek-klein-mQAaKT4SuU4-unsplash.jpg"/>' +
+            ''
+
       /** Create component. */
 
       this.comp = document.createElement('spx-' + component)
@@ -298,35 +327,8 @@ export class SpxEditor {
                 '<spx-accordion/>'
       }
 
-      if (component === 'masonry') {
-        this.comp.innerHTML = '<img src="https://picsum.photos/400/300"/>' +
-                '<img src="https://picsum.photos/230/500"/>' +
-                '<img src="https://picsum.photos/420/300"/>' +
-                '<img src="https://picsum.photos/550/450"/>' +
-                '<img src="https://picsum.photos/240/300"/>' +
-                '<img src="https://picsum.photos/960/300"/>' +
-                '<img src="https://picsum.photos/600/800"/>' +
-                '<img src="https://picsum.photos/560/500"/>' +
-                '<img src="https://picsum.photos/1200/600"/>' +
-                '<img src="https://picsum.photos/480/900"/>' +
-                '<img src="https://picsum.photos/270/340"/>' +
-                '<img src="https://picsum.photos/300/370"/>' +
-                '<img src="https://picsum.photos/750/350"/>' +
-                '<img src="https://picsum.photos/200/300"/>' +
-                '<img src="https://picsum.photos/230/600"/>' +
-                '<img src="https://picsum.photos/420/300"/>' +
-                '<img src="https://picsum.photos/550/450"/>' +
-                '<img src="https://picsum.photos/240/300"/>' +
-                '<img src="https://picsum.photos/960/300"/>' +
-                '<img src="https://picsum.photos/600/800"/>' +
-                '<img src="https://picsum.photos/560/900"/>' +
-                '<img src="https://picsum.photos/1200/600"/>' +
-                '<img src="https://picsum.photos/480/900"/>' +
-                '<img src="https://picsum.photos/270/340"/>' +
-                '<img src="https://picsum.photos/300/370"/>' +
-                '<img src="https://picsum.photos/750/350"/>' +
-                '<img src="https://picsum.photos/200/300"/>' +
-                ''
+      if (component === 'masonry' || component === 'lightbox') {
+        this.comp.innerHTML = img
       }
 
       if (component === 'notation') {
@@ -380,20 +382,7 @@ export class SpxEditor {
             borderRadius: s.borderRadius
           }
         }))
-        this.comp.innerHTML = '<img src="https://picsum.photos/500/500"/>' +
-                '<img src="https://picsum.photos/500/500"/>' +
-                '<img src="https://picsum.photos/502/500"/>' +
-                '<img src="https://picsum.photos/503/500"/>' +
-                '<img src="https://picsum.photos/504/500"/>' +
-                '<img src="https://picsum.photos/505/500"/>' +
-                '<img src="https://picsum.photos/506/500"/>' +
-                '<img src="https://picsum.photos/507/500"/>' +
-                '<img src="https://picsum.photos/508/500"/>' +
-                '<img src="https://picsum.photos/509/500"/>' +
-                '<img src="https://picsum.photos/510/500"/>' +
-                '<img src="https://picsum.photos/511/500"/>' +
-                '<img src="https://picsum.photos/512/500"/>' +
-                '<img src="https://picsum.photos/513/500"/>'
+        this.comp.innerHTML = img
       }
 
       if (component === 'snackbar') {

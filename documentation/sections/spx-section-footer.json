@@ -27,6 +27,19 @@
       ]
     },
     {
+      "id": "section-footer-display",
+      "name": "display",
+      "type": "string",
+      "description": "Display.",
+      "defaultValue": "'grid'",
+      "tags": [
+        {
+          "text": "'grid', 'flex'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
       "id": "section-footer-gap",
       "name": "gap",
       "type": "string",

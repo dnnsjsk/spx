@@ -52,9 +52,13 @@ export class SpxNavigation {
 
     @Prop({ reflect: true }) childGap: string = '0.5em'
 
-    /** Indicator icon. Accepts any Font Awesome icon class. */
+    /** Indicator icon.. */
 
-    @Prop({ reflect: true }) childIcon: string
+    @Prop({ reflect: true }) childIcon: string = 'arrow-down'
+
+    /** Indicator icon type. */
+
+    @Prop({ reflect: true }) childIconType: string = 'ionicons'
 
     /**
      * Gap between child menu indicator and text.
@@ -106,9 +110,13 @@ export class SpxNavigation {
 
     @Prop({ reflect: true }) mobile: number = c.mobileBpWidth
 
-    /** Mobile button icon. Accepts any Font Awesome icon class. */
+    /** Mobile button icon. */
 
     @Prop({ reflect: true }) mobileIcon: string
+
+    /** Mobile button icon type. */
+
+    @Prop({ reflect: true }) mobileIconType: string = 'ionicons'
 
     @Prop({ reflect: true }) mobileItemBackground: string = '#ffffff'
 
@@ -239,17 +247,8 @@ export class SpxNavigation {
               <a href={object['url'] === '#' ? '#0' : object['url']}>
                 {object['title']}
 
-                {(objectChild && (!this.mobileBP && !this.vertical) && !this.childIcon)
-
-                /** Render caret if has any children. */
-
-                  ? <spx-icon type="caret"/>
-
-                  : (objectChild && (!this.mobileBP && !this.vertical) && this.childIcon)
-
-                    ? <i class={this.childIcon}/>
-
-                    : null}
+                {objectChild && !this.mobileBP && !this.vertical && this.childIcon &&
+                            <spx-icon type={this.childIconType} icon={this.childIcon}/>}
               </a>
 
               {objectChild && !mobile &&
@@ -418,6 +417,8 @@ export class SpxNavigation {
             marginTop: this.vertical && setVar(tag, 'parent-item-gap', this.parentItemGap),
 
             a: {
+              display: 'flex',
+              justifyContent: 'space-between',
               width: '100%',
               whiteSpace: 'nowrap',
               color: !this.mobileBP && setVar(tag, 'child-item-color', this.childItemColor),
@@ -559,7 +560,7 @@ export class SpxNavigation {
                   /** Render mobile menu. */
 
                   <div tabindex="0" role="button" class='spx-navigation__mobile-button'>
-                    {this.mobileIcon && <i class={this.mobileIcon}/>}
+                    {this.mobileIcon && <spx-icon type={this.mobileIconType} icon={this.mobileIcon}/>}
                     <span>Menu</span>
                     {this.renderMenu(this.menuArray, 'parent', true)}
                   </div>]}

@@ -1,21 +1,42 @@
 {
   "name": "spx-icon",
-  "description": "",
+  "description": "Wrapper component for different kinds of icon sets. Currently comes included with Ionicons.",
   "properties": [
+    {
+      "id": "icon-color",
+      "name": "color",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'inherit'",
+      "tags": []
+    },
     {
       "id": "icon-icon",
       "name": "icon",
       "type": "string",
-      "description": "",
+      "description": "Icon code.",
+      "tags": []
+    },
+    {
+      "id": "icon-size",
+      "name": "size",
+      "type": "string",
+      "description": "Icon size.",
+      "defaultValue": "'20px'",
       "tags": []
     },
     {
       "id": "icon-type",
       "name": "type",
       "type": "string",
-      "description": "",
-      "defaultValue": "'fa'",
-      "tags": []
+      "description": "Icon type.",
+      "defaultValue": "'ionicons'",
+      "tags": [
+        {
+          "text": "'ionicons', 'caret'",
+          "name": "choice"
+        }
+      ]
     }
   ],
   "events": [],

@@ -39,13 +39,17 @@ export namespace Components {
          */
         "headerTextTag": string;
         /**
-          * Icon class. Accepts any Font Awesome icon class.
+          * Indicator icon.
          */
         "indicatorIcon": string;
         /**
           * Indicator icon transform.
          */
         "indicatorIconTransform": string;
+        /**
+          * Indicator icon type.
+         */
+        "indicatorIconType": string;
         "reload": () => Promise<void>;
     }
     interface SpxAnimate {
@@ -363,7 +367,19 @@ export namespace Components {
         "target": string;
     }
     interface SpxIcon {
+        "color": string;
+        /**
+          * Icon code.
+         */
         "icon": string;
+        /**
+          * Icon size.
+         */
+        "size": string;
+        /**
+          * Icon type.
+          * @choice 'ionicons', 'caret'
+         */
         "type": string;
     }
     interface SpxIframe {
@@ -396,8 +412,10 @@ export namespace Components {
     }
     interface SpxLightbox {
         "display": string;
-        "effect": string;
+        "height": string;
+        "overlayColor": string;
         "reload": () => Promise<void>;
+        "width": string;
     }
     interface SpxLoader {
         "color": string;
@@ -504,9 +522,13 @@ export namespace Components {
          */
         "childGap": string;
         /**
-          * Indicator icon. Accepts any Font Awesome icon class.
+          * Indicator icon..
          */
         "childIcon": string;
+        /**
+          * Indicator icon type.
+         */
+        "childIconType": string;
         /**
           * Gap between child menu indicator and text.
           * @CSS
@@ -544,9 +566,13 @@ export namespace Components {
          */
         "mobile": number;
         /**
-          * Mobile button icon. Accepts any Font Awesome icon class.
+          * Mobile button icon.
          */
         "mobileIcon": string;
+        /**
+          * Mobile button icon type.
+         */
+        "mobileIconType": string;
         "mobileItemBackground": string;
         "mobileItemBackgroundHover": string;
         "mobileItemColor": string;
@@ -795,6 +821,11 @@ export namespace Components {
          */
         "columnSizeMin": string;
         /**
+          * Display.
+          * @choice 'grid', 'flex'
+         */
+        "display": string;
+        /**
           * Gap between columns.
           * @CSS
          */
@@ -980,6 +1011,11 @@ export namespace Components {
          */
         "direction": string;
         /**
+          * Slider effect.
+          * @choice 'slide', 'effect'
+         */
+        "effect": string;
+        /**
           * Image object-fit.
           * @choice 'fill', 'contain', 'cover', 'scale-down', 'none'
          */
@@ -1007,6 +1043,18 @@ export namespace Components {
           * @CSS
          */
         "navigationDistanceX": string;
+        /**
+          * Navigation icon type.
+         */
+        "navigationIconNext": string;
+        /**
+          * Navigation icon type.
+         */
+        "navigationIconPrev": string;
+        /**
+          * Navigation icon type.
+         */
+        "navigationIconType": string;
         "navigationPadding": string;
         /**
           * Navigation size.
@@ -1481,13 +1529,17 @@ declare namespace LocalJSX {
          */
         "headerTextTag"?: string;
         /**
-          * Icon class. Accepts any Font Awesome icon class.
+          * Indicator icon.
          */
         "indicatorIcon"?: string;
         /**
           * Indicator icon transform.
          */
         "indicatorIconTransform"?: string;
+        /**
+          * Indicator icon type.
+         */
+        "indicatorIconType"?: string;
     }
     interface SpxAnimate {
         /**
@@ -1799,7 +1851,19 @@ declare namespace LocalJSX {
         "target"?: string;
     }
     interface SpxIcon {
+        "color"?: string;
+        /**
+          * Icon code.
+         */
         "icon"?: string;
+        /**
+          * Icon size.
+         */
+        "size"?: string;
+        /**
+          * Icon type.
+          * @choice 'ionicons', 'caret'
+         */
         "type"?: string;
     }
     interface SpxIframe {
@@ -1830,7 +1894,9 @@ declare namespace LocalJSX {
     }
     interface SpxLightbox {
         "display"?: string;
-        "effect"?: string;
+        "height"?: string;
+        "overlayColor"?: string;
+        "width"?: string;
     }
     interface SpxLoader {
         "color"?: string;
@@ -1932,9 +1998,13 @@ declare namespace LocalJSX {
          */
         "childGap"?: string;
         /**
-          * Indicator icon. Accepts any Font Awesome icon class.
+          * Indicator icon..
          */
         "childIcon"?: string;
+        /**
+          * Indicator icon type.
+         */
+        "childIconType"?: string;
         /**
           * Gap between child menu indicator and text.
           * @CSS
@@ -1972,9 +2042,13 @@ declare namespace LocalJSX {
          */
         "mobile"?: number;
         /**
-          * Mobile button icon. Accepts any Font Awesome icon class.
+          * Mobile button icon.
          */
         "mobileIcon"?: string;
+        /**
+          * Mobile button icon type.
+         */
+        "mobileIconType"?: string;
         "mobileItemBackground"?: string;
         "mobileItemBackgroundHover"?: string;
         "mobileItemColor"?: string;
@@ -2212,6 +2286,11 @@ declare namespace LocalJSX {
          */
         "columnSizeMin"?: string;
         /**
+          * Display.
+          * @choice 'grid', 'flex'
+         */
+        "display"?: string;
+        /**
           * Gap between columns.
           * @CSS
          */
@@ -2396,6 +2475,11 @@ declare namespace LocalJSX {
          */
         "direction"?: string;
         /**
+          * Slider effect.
+          * @choice 'slide', 'effect'
+         */
+        "effect"?: string;
+        /**
           * Image object-fit.
           * @choice 'fill', 'contain', 'cover', 'scale-down', 'none'
          */
@@ -2423,6 +2507,18 @@ declare namespace LocalJSX {
           * @CSS
          */
         "navigationDistanceX"?: string;
+        /**
+          * Navigation icon type.
+         */
+        "navigationIconNext"?: string;
+        /**
+          * Navigation icon type.
+         */
+        "navigationIconPrev"?: string;
+        /**
+          * Navigation icon type.
+         */
+        "navigationIconType"?: string;
         "navigationPadding"?: string;
         /**
           * Navigation size.

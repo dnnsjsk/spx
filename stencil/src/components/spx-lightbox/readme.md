@@ -7,10 +7,12 @@
 
 ## Properties
 
-| Property  | Attribute | Description | Type     | Default     |
-| --------- | --------- | ----------- | -------- | ----------- |
-| `display` | `display` |             | `string` | `'block'`   |
-| `effect`  | `effect`  |             | `string` | `undefined` |
+| Property       | Attribute       | Description | Type     | Default                 |
+| -------------- | --------------- | ----------- | -------- | ----------------------- |
+| `display`      | `display`       |             | `string` | `'block'`               |
+| `height`       | `height`        |             | `string` | `'auto'`                |
+| `overlayColor` | `overlay-color` |             | `string` | `'rgba(0, 0, 0, 0.92)'` |
+| `width`        | `width`         |             | `string` | `'100%'`                |
 
 
 ## Methods

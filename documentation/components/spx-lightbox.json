@@ -11,10 +11,27 @@
       "tags": []
     },
     {
-      "id": "lightbox-effect",
-      "name": "effect",
+      "id": "lightbox-height",
+      "name": "height",
       "type": "string",
       "description": "",
+      "defaultValue": "'auto'",
+      "tags": []
+    },
+    {
+      "id": "lightbox-overlayColor",
+      "name": "overlayColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'rgba(0, 0, 0, 0.92)'",
+      "tags": []
+    },
+    {
+      "id": "lightbox-width",
+      "name": "width",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'100%'",
       "tags": []
     }
   ],

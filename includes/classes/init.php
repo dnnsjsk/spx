@@ -75,16 +75,6 @@ class init {
 
 		} );
 
-		add_action( 'wp_footer', function () {
-
-			echo '
-				<script 
-				id="spx-footer">
-				' . file_get_contents( SPX_DIR . '/assets/js/footer.js' ) . '
-				</script>';
-
-		} );
-
 	}
 
 	/**
