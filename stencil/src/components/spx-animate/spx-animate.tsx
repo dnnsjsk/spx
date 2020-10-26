@@ -1,194 +1,220 @@
-// eslint-disable-next-line no-unused-vars
-import { Component, Host, h, Prop, Element, State, Method } from '@stencil/core'
-import { css } from 'emotion'
-import { gsap } from 'gsap'
-import { setVar } from '../../utils/setVar'
-import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
+import {
+  Component,
+  Host,
+  // eslint-disable-next-line no-unused-vars
+  h,
+  Prop,
+  Element,
+  State,
+  Method,
+} from '@stencil/core';
+import { css } from 'emotion';
+import { gsap } from 'gsap';
+import { setVar } from '../../utils/setVar';
+import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 
-const tag = 'spx-animate'
+const tag = 'spx-animate';
 
 /**
  * Wrapper around GSAP that allows for staggered and scroll-based animation.
  */
 
 @Component({
-  tag: 'spx-animate'
+  tag: 'spx-animate',
 })
-
 export class SpxAnimate {
-    @Element() el: HTMLSpxAnimateElement;
+  // eslint-disable-next-line no-undef
+  @Element() el: HTMLSpxAnimateElement;
 
-    @State() elements
-    @State() tl
+  @State() elements;
+  @State() tl;
 
-    /** Delay before animation starts. */
+  /** Delay before animation starts. */
 
-    @Prop() delay: number = 0
+  @Prop() delay: number = 0;
 
-    /** Animation duration. */
+  /** Animation duration. */
 
-    @Prop() duration: number = 1
+  @Prop() duration: number = 1;
 
-    /** Ease being used. Accepts all common GSAP options. */
+  /** Ease being used. Accepts all common GSAP options. */
 
-    @Prop() ease: string = 'power1.out'
+  @Prop() ease: string = 'power1.out';
 
-    /** Determines if animation should only play once. (if viewport is true) */
+  /** Determines if animation should only play once. (if viewport is true) */
 
-    @Prop() once: boolean
+  @Prop() once: boolean;
 
-    /** Opacity level the animation starts from. */
+  /** Opacity level the animation starts from. */
 
-    @Prop() opacity: number = 0
+  @Prop() opacity: number = 0;
 
-    /** Repeats the animation. -1 to repeat indefinitely. */
+  /** Repeats the animation. -1 to repeat indefinitely. */
 
-    @Prop() repeat: number
+  @Prop() repeat: number;
 
-    /** Reverses the animation. */
+  /** Time to wait between repetitions. */
 
-    @Prop() reverse: boolean
+  @Prop() repeatDelay: number;
 
-    /** Amount of time elements should be staggered by. */
+  /** Reverses the animation. */
 
-    @Prop() stagger: number = 0.15
+  @Prop() reverse: boolean;
 
-    /** The target element that should be animated inside the component. */
+  /** Amount of time elements should be staggered by. */
 
-    @Prop() target: string = '*'
+  @Prop() stagger: number = 0.15;
 
-    /** Starts animation when target is in the viewport. */
+  /** The target element that should be animated inside the component. */
 
-    @Prop() viewport: boolean
+  @Prop() target: string = '*';
 
-    /** Adjust the root margin of the animation start. */
+  /** Starts animation when target is in the viewport. */
 
-    @Prop() viewportMarginBottom: string
+  @Prop() viewport: boolean;
 
-    /** Adjust the root margin of the animation start. */
+  /** Adjust the root margin of the animation start. */
 
-    @Prop() viewportMarginLeft: string
+  @Prop() viewportMarginBottom: string;
 
-    /** Adjust the root margin of the animation start. */
+  /** Adjust the root margin of the animation start. */
 
-    @Prop() viewportMarginRight: string
+  @Prop() viewportMarginLeft: string;
 
-    /** Adjust the root margin of the animation start. */
+  /** Adjust the root margin of the animation start. */
 
-    @Prop() viewportMarginTop: string
+  @Prop() viewportMarginRight: string;
 
-    /** X position the animation starts from. */
+  /** Adjust the root margin of the animation start. */
 
-    @Prop() x: number = 0
+  @Prop() viewportMarginTop: string;
 
-    /** Y position the animation starts from. */
+  /** X position the animation starts from. */
 
-    @Prop() y: number = 0
+  @Prop() x: number = 0;
 
-    /** Causes the animation to go back and forth, alternating backward and forward on each repeat. */
+  /** Y position the animation starts from. */
 
-    @Prop() yoyo: boolean
+  @Prop() y: number = 0;
 
-    @Prop({ reflect: true }) display: string = 'block'
+  /** Causes the animation to go back and forth, alternating backward and forward on each repeat. */
 
-    componentDidLoad () {
-      globalComponentDidLoad(this.el)
+  @Prop() yoyo: boolean;
 
-      const init = () => {
-        this.elements = this.el.querySelectorAll(this.target)
+  @Prop({ reflect: true }) display: string = 'block';
 
-        if ((this.elements === undefined || this.elements.length === 0) && document.body.classList.contains('oxygen-builder-body')) {
-          setTimeout(init, 100)
+  componentDidLoad() {
+    globalComponentDidLoad(this.el);
+
+    const init = () => {
+      this.elements = this.el.querySelectorAll(this.target);
+
+      if (
+        (this.elements === undefined || this.elements.length === 0) &&
+        document.body.classList.contains('oxygen-builder-body')
+      ) {
+        setTimeout(init, 100);
+      } else {
+        this.tl = gsap.timeline({
+          defaults: {
+            ease: this.ease,
+          },
+          paused: true,
+        });
+
+        const options = {
+          duration: this.duration,
+          opacity: this.opacity,
+          x: this.x,
+          y: this.y,
+          delay: this.delay,
+          stagger: this.stagger,
+          repeat: this.repeat,
+          repeatDelay: this.repeatDelay,
+          yoyo: this.yoyo,
+        };
+
+        if (this.reverse) {
+          this.tl.to(this.elements, options);
         } else {
-          this.tl = gsap.timeline({
-            defaults: {
-              ease: this.ease
-            },
-            paused: true
-          })
+          this.tl.from(this.elements, options);
+        }
 
+        /** Play immediately when not in viewport. */
+
+        if (!this.viewport) {
+          this.tl.play();
+        }
+
+        /** Check viewport before playing. */
+
+        if (this.viewport) {
           const options = {
-            duration: this.duration,
-            opacity: this.opacity,
-            x: this.x,
-            y: this.y,
-            delay: this.delay,
-            stagger: this.stagger,
-            repeat: this.repeat,
-            yoyo: this.yoyo
-          }
+            rootMargin:
+              '' +
+              '' +
+              (this.viewportMarginTop || '0px') +
+              ' ' +
+              '' +
+              (this.viewportMarginRight || '0px') +
+              ' ' +
+              '' +
+              (this.viewportMarginBottom || '0px') +
+              ' ' +
+              '' +
+              (this.viewportMarginLeft || '0px') +
+              '',
+          };
 
-          if (this.reverse) {
-            this.tl.to(this.elements, options)
-          } else {
-            this.tl.from(this.elements, options)
-          }
-
-          /** Play immediately when not in viewport. */
-
-          if (!this.viewport) {
-            this.tl.play()
-          }
-
-          /** Check viewport before playing. */
-
-          if (this.viewport) {
-            const options = {
-              rootMargin: '' +
-                        '' + (this.viewportMarginTop || '0px') + ' ' +
-                        '' + (this.viewportMarginRight || '0px') + ' ' +
-                        '' + (this.viewportMarginBottom || '0px') + ' ' +
-                        '' + (this.viewportMarginLeft || '0px') + ''
-            }
-
-            const intersectionObserver = new IntersectionObserver((entries) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  this.tl.play()
-                } else {
-                  if (!this.once) {
-                    this.tl.reverse()
-                  }
+          const intersectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                this.tl.play();
+              } else {
+                if (!this.once) {
+                  this.tl.reverse();
                 }
-              })
-            }, options)
-            intersectionObserver.observe(this.el)
-          }
+              }
+            });
+          }, options);
+          intersectionObserver.observe(this.el);
         }
       }
+    };
 
-      init()
-    }
+    init();
+  }
 
-    @Method()
-    async reload () {
-      this.componentDidLoad()
-    }
+  @Method()
+  async reload() {
+    this.componentDidLoad();
+  }
 
-    /** Plays animation. */
+  /** Plays animation. */
 
-    @Method()
-    async play (from = 0, suppressEvents = true) {
-      this.tl.play(from, suppressEvents)
-    }
+  @Method()
+  async play(from = 0, suppressEvents = true) {
+    this.tl.play(from, suppressEvents);
+  }
 
-    /** Restarts animation. */
+  /** Restarts animation. */
 
-    @Method()
-    async restart (includeDelay = false, suppressEvents = true) {
-      this.tl.restart(includeDelay, suppressEvents)
-    }
+  @Method()
+  async restart(includeDelay = false, suppressEvents = true) {
+    this.tl.restart(includeDelay, suppressEvents);
+  }
 
-    render () {
-      /** Host styles. */
+  render() {
+    /** Host styles. */
 
-      const styleHost = css({
-        display: setVar(tag, 'display', this.display)
-      })
+    const styleHost = css({
+      display: setVar(tag, 'display', this.display),
+    });
 
-      return <Host
-        class={styleHost}>
-        <slot/>
+    return (
+      <Host class={styleHost}>
+        <slot />
       </Host>
-    }
+    );
+  }
 }

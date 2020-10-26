@@ -7,12 +7,14 @@
 
 ## Properties
 
-| Property       | Attribute       | Description                          | Type     | Default                 |
-| -------------- | --------------- | ------------------------------------ | -------- | ----------------------- |
-| `borderRadius` | `border-radius` |                                      | `string` | `c.borderRadius`        |
-| `padding`      | `padding`       |                                      | `string` | `'var(--spx-space-lg)'` |
-| `theme`        | `theme`         | Colour theme.                        | `string` | `'default'`             |
-| `type`         | `type`          | Determines the programming language. | `string` | `'markup'`              |
+| Property       | Attribute       | Description                          | Type     | Default                       |
+| -------------- | --------------- | ------------------------------------ | -------- | ----------------------------- |
+| `background`   | `background`    |                                      | `string` | `'var(--spx-color-gray-900)'` |
+| `borderRadius` | `border-radius` |                                      | `string` | `c.borderRadius`              |
+| `fontSize`     | `font-size`     |                                      | `string` | `'clamp(12px, 1.6vw, 16px)'`  |
+| `padding`      | `padding`       |                                      | `string` | `'var(--spx-space-lg)'`       |
+| `theme`        | `theme`         | Colour theme.                        | `string` | `'default'`                   |
+| `type`         | `type`          | Determines the programming language. | `string` | `'markup'`                    |
 
 
 ## Methods

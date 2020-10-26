@@ -37,9 +37,4 @@ spx-code {
     overflow: auto;
   }
 
-  :not(pre) > code[class*="language-"],
-  pre[class*="language-"] {
-    background: var(--spx-color-gray-900);
-  }
-
 }

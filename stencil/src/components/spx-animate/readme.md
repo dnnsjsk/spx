@@ -16,6 +16,7 @@
 | `once`                 | `once`                   | Determines if animation should only play once. (if viewport is true)                        | `boolean` | `undefined`    |
 | `opacity`              | `opacity`                | Opacity level the animation starts from.                                                    | `number`  | `0`            |
 | `repeat`               | `repeat`                 | Repeats the animation. -1 to repeat indefinitely.                                           | `number`  | `undefined`    |
+| `repeatDelay`          | `repeat-delay`           | Time to wait between repetitions.                                                           | `number`  | `undefined`    |
 | `reverse`              | `reverse`                | Reverses the animation.                                                                     | `boolean` | `undefined`    |
 | `stagger`              | `stagger`                | Amount of time elements should be staggered by.                                             | `number`  | `0.15`         |
 | `target`               | `target`                 | The target element that should be animated inside the component.                            | `string`  | `'*'`          |

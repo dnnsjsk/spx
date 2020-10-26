@@ -26,7 +26,7 @@ export const palette = {
     A100: { color: '#FF8A80', text: '#000000' },
     A200: { color: '#FF5252', text: '#ffffff' },
     A400: { color: '#FF1744', text: '#ffffff' },
-    A700: { color: '#D50000', text: '#ffffff' }
+    A700: { color: '#D50000', text: '#ffffff' },
   },
   pink: {
     41: { color: '#fefcfd', text: '#000000' },
@@ -51,7 +51,7 @@ export const palette = {
     A100: { color: '#FF80AB', text: '#000000' },
     A200: { color: '#FF4081', text: '#ffffff' },
     A400: { color: '#F50057', text: '#ffffff' },
-    A700: { color: '#C51162', text: '#ffffff' }
+    A700: { color: '#C51162', text: '#ffffff' },
   },
   purple: {
     41: { color: '#fdfcfe', text: '#000000' },
@@ -76,7 +76,7 @@ export const palette = {
     A100: { color: '#EA80FC', text: '#000000' },
     A200: { color: '#E040FB', text: '#ffffff' },
     A400: { color: '#D500F9', text: '#ffffff' },
-    A700: { color: '#AA00FF', text: '#ffffff' }
+    A700: { color: '#AA00FF', text: '#ffffff' },
   },
   'deep purple': {
     41: { color: '#fdfcfe', text: '#000000' },
@@ -101,7 +101,7 @@ export const palette = {
     A100: { color: '#B388FF', text: '#000000' },
     A200: { color: '#7C4DFF', text: '#ffffff' },
     A400: { color: '#651FFF', text: '#ffffff' },
-    A700: { color: '#6200EA', text: '#ffffff' }
+    A700: { color: '#6200EA', text: '#ffffff' },
   },
   indigo: {
     41: { color: '#fcfcfe', text: '#000000' },
@@ -126,7 +126,7 @@ export const palette = {
     A100: { color: '#8C9EFF', text: '#000000' },
     A200: { color: '#536DFE', text: '#ffffff' },
     A400: { color: '#3D5AFE', text: '#ffffff' },
-    A700: { color: '#304FFE', text: '#ffffff' }
+    A700: { color: '#304FFE', text: '#ffffff' },
   },
   blue: {
     41: { color: '#fcfdfe', text: '#000000' },
@@ -151,7 +151,7 @@ export const palette = {
     A100: { color: '#82B1FF', text: '#000000' },
     A200: { color: '#448AFF', text: '#ffffff' },
     A400: { color: '#2979FF', text: '#ffffff' },
-    A700: { color: '#2962FF', text: '#ffffff' }
+    A700: { color: '#2962FF', text: '#ffffff' },
   },
   'light blue': {
     41: { color: '#fcfefe', text: '#000000' },
@@ -176,7 +176,7 @@ export const palette = {
     A100: { color: '#80D8FF', text: '#000000' },
     A200: { color: '#40C4FF', text: '#000000' },
     A400: { color: '#00B0FF', text: '#000000' },
-    A700: { color: '#0091EA', text: '#ffffff' }
+    A700: { color: '#0091EA', text: '#ffffff' },
   },
   cyan: {
     41: { color: '#fcfefe', text: '#000000' },
@@ -201,7 +201,7 @@ export const palette = {
     A100: { color: '#84FFFF', text: '#000000' },
     A200: { color: '#18FFFF', text: '#000000' },
     A400: { color: '#00E5FF', text: '#000000' },
-    A700: { color: '#00B8D4', text: '#000000' }
+    A700: { color: '#00B8D4', text: '#000000' },
   },
   teal: {
     41: { color: '#fbfdfd', text: '#000000' },
@@ -226,7 +226,7 @@ export const palette = {
     A100: { color: '#A7FFEB', text: '#000000' },
     A200: { color: '#64FFDA', text: '#000000' },
     A400: { color: '#1DE9B6', text: '#000000' },
-    A700: { color: '#00BFA5', text: '#000000' }
+    A700: { color: '#00BFA5', text: '#000000' },
   },
   green: {
     41: { color: '#fcfefc', text: '#000000' },
@@ -251,7 +251,7 @@ export const palette = {
     A100: { color: '#B9F6CA', text: '#000000' },
     A200: { color: '#69F0AE', text: '#000000' },
     A400: { color: '#00E676', text: '#000000' },
-    A700: { color: '#00C853', text: '#000000' }
+    A700: { color: '#00C853', text: '#000000' },
   },
   'light green': {
     41: { color: '#fdfefc', text: '#000000' },
@@ -276,7 +276,7 @@ export const palette = {
     A100: { color: '#CCFF90', text: '#000000' },
     A200: { color: '#B2FF59', text: '#000000' },
     A400: { color: '#76FF03', text: '#000000' },
-    A700: { color: '#64DD17', text: '#000000' }
+    A700: { color: '#64DD17', text: '#000000' },
   },
   lime: {
     41: { color: '#fefefc', text: '#000000' },
@@ -301,7 +301,7 @@ export const palette = {
     A100: { color: '#F4FF81', text: '#000000' },
     A200: { color: '#EEFF41', text: '#000000' },
     A400: { color: '#C6FF00', text: '#000000' },
-    A700: { color: '#AEEA00', text: '#000000' }
+    A700: { color: '#AEEA00', text: '#000000' },
   },
   yellow: {
     41: { color: '#fffefc', text: '#000000' },
@@ -326,7 +326,7 @@ export const palette = {
     A100: { color: '#FFFF8D', text: '#000000' },
     A200: { color: '#FFFF00', text: '#000000' },
     A400: { color: '#FFEA00', text: '#000000' },
-    A700: { color: '#FFD600', text: '#000000' }
+    A700: { color: '#FFD600', text: '#000000' },
   },
   amber: {
     41: { color: '#fffefc', text: '#000000' },
@@ -351,7 +351,7 @@ export const palette = {
     A100: { color: '#FFE57F', text: '#000000' },
     A200: { color: '#FFD740', text: '#000000' },
     A400: { color: '#FFC400', text: '#000000' },
-    A700: { color: '#FFAB00', text: '#000000' }
+    A700: { color: '#FFAB00', text: '#000000' },
   },
   orange: {
     41: { color: '#fffdfb', text: '#000000' },
@@ -376,7 +376,7 @@ export const palette = {
     A100: { color: '#FFD180', text: '#000000' },
     A200: { color: '#FFAB40', text: '#000000' },
     A400: { color: '#FF9100', text: '#000000' },
-    A700: { color: '#FF6D00', text: '#000000' }
+    A700: { color: '#FF6D00', text: '#000000' },
   },
   'deep orange': {
     41: { color: '#fefcfc', text: '#000000' },
@@ -401,7 +401,7 @@ export const palette = {
     A100: { color: '#FF9E80', text: '#000000' },
     A200: { color: '#FF6E40', text: '#000000' },
     A400: { color: '#FF3D00', text: '#ffffff' },
-    A700: { color: '#DD2C00', text: '#ffffff' }
+    A700: { color: '#DD2C00', text: '#ffffff' },
   },
   brown: {
     41: { color: '#fdfdfc', text: '#000000' },
@@ -426,7 +426,7 @@ export const palette = {
     A100: { color: '#A1887F', text: '#ffffff' },
     A200: { color: '#6D4C41', text: '#ffffff' },
     A400: { color: '#4E342E', text: '#ffffff' },
-    A700: { color: '#3E2723', text: '#ffffff' }
+    A700: { color: '#3E2723', text: '#ffffff' },
   },
   grey: {
     50: { color: '#FAFAFA', text: '#000000' },
@@ -442,7 +442,7 @@ export const palette = {
     A100: { color: '#E0E0E0', text: '#ffffff' },
     A200: { color: '#757575', text: '#ffffff' },
     A400: { color: '#424242', text: '#ffffff' },
-    A700: { color: '#212121', text: '#ffffff' }
+    A700: { color: '#212121', text: '#ffffff' },
   },
   'blue grey': {
     41: { color: '#fdfdfd', text: '#000000' },
@@ -467,6 +467,6 @@ export const palette = {
     A100: { color: '#90A4AE', text: '#ffffff' },
     A200: { color: '#546E7A', text: '#ffffff' },
     A400: { color: '#37474F', text: '#ffffff' },
-    A700: { color: '#263238', text: '#ffffff' }
-  }
-}
+    A700: { color: '#263238', text: '#ffffff' },
+  },
+};

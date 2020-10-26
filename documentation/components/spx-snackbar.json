@@ -119,7 +119,7 @@
       "defaultValue": "'bottom-right'",
       "tags": [
         {
-          "text": "'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'",
+          "text": "'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center\", 'top-right'",
           "name": "choice"
         }
       ]

@@ -4,8 +4,8 @@
  * Plugin Name: spx
  * Plugin URI: https://spx.dev
  * Description: An ever growing collection of flexible web components to supercharge your workflow.
- * Author: Dennis Josek
- * Version: 2.12
+ * Author: Fabrikat
+ * Version: 2.13
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
@@ -60,3 +60,49 @@ include plugin_dir_path( __FILE__ ) . 'includes/admin/spx-updater.php';
  */
 
 new init();
+
+/*
+
+add_action( 'wp_loaded', function () {
+
+	if ( ! isset( $_GET['oxygen_iframe'] ) ) {
+
+		add_action( 'template_redirect', 'spx_buffer_start', 0 );
+
+		function spx_buffer_start() {
+			add_action( 'shutdown', 'spx_buffer_stop', PHP_INT_MAX );
+			ob_start( 'spx_modify_content' );
+		}
+
+		function spx_buffer_stop() {
+			ob_end_flush();
+		}
+
+		function spx_modify_content( $content ) {
+			$dom                  = new DOMDocument();
+			$dom->validateOnParse = TRUE;
+			$dom->loadHTML( $content );
+			$xp = new DOMXPath( $dom );
+
+			$array = [];
+
+			foreach ( $xp->query( "//*[contains(local-name(),'spx')]" ) as $node ) {
+				array_push( $array, $dom->saveXML( $node ), "\n" );
+			}
+
+			if ( count( $array ) >= 1 ) {
+				return $content;
+			} else {
+				$spxModule = $xp->query( "//script[@id='spx-js']" )->item( 0 );
+				$spxExtra  = $xp->query( "//script[@id='spx-js-extra']" )->item( 0 );
+				$spxModule->parentNode->removeChild( $spxModule );
+				$spxExtra->parentNode->removeChild( $spxExtra );
+
+				return $dom->saveHTML();
+			}
+		}
+	}
+
+} );
+
+*/

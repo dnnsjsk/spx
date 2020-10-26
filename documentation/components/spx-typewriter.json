@@ -46,7 +46,7 @@
       "name": "text",
       "type": "string",
       "description": "Text that should be written.",
-      "defaultValue": "'I\\'m a typewriter'",
+      "defaultValue": "\"I'm a typewriter\"",
       "tags": []
     }
   ],

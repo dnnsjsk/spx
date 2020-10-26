@@ -1,9 +1,9 @@
-import { createStore } from '@stencil/store'
-import { removeClasses } from '../utils/removeClasses'
-import * as s from '../constants/container'
-import { setColor } from '../utils/setColor'
-import { css } from 'emotion'
-import { watchMobile } from '../utils/watchMobile'
+import { createStore } from '@stencil/store';
+import { removeClasses } from '../utils/removeClasses';
+import * as s from '../constants/container';
+import { setColor } from '../utils/setColor';
+import { css } from 'emotion';
+import { watchMobile } from '../utils/watchMobile';
 
 /**
  * State.
@@ -19,24 +19,24 @@ const { state, onChange } = createStore({
   fontFamilyPrimary: s.fontFamilyPrimary,
   fontFamilySecondary: s.fontFamilySecondary,
   spaceX: s.spaceX,
-  spaceXsm: s.spaceXSm
-})
+  spaceXsm: s.spaceXSm,
+});
 
 /**
  * Color.
  */
 
-onChange('colorPrimary', value => {
-  removeClasses(document.body, 'color-palette')
-  setColor(value, 'primary')
-  setColor(state.colorSecondary, 'secondary')
-})
+onChange('colorPrimary', (value) => {
+  removeClasses(document.body, 'color-palette');
+  setColor(value, 'primary');
+  setColor(state.colorSecondary, 'secondary');
+});
 
-onChange('colorSecondary', value => {
-  removeClasses(document.body, 'color')
-  setColor(value, 'secondary')
-  setColor(state.colorPrimary, 'primary')
-})
+onChange('colorSecondary', (value) => {
+  removeClasses(document.body, 'color');
+  setColor(value, 'secondary');
+  setColor(state.colorPrimary, 'primary');
+});
 
 /**
  * Font.
@@ -46,53 +46,57 @@ const setFont = (primary, secondary) => {
   const styles = css({
     '--spx-container-font-family-primary': primary,
     '--spx-container-font-family-secondary': secondary,
-    label: 'font'
-  })
-  document.body.classList.add(styles)
-}
+    label: 'font',
+  });
+  document.body.classList.add(styles);
+};
 
-onChange('fontFamilyPrimary', value => {
-  removeClasses(document.body, 'font')
-  setFont(value, state.fontFamilySecondary)
-})
+onChange('fontFamilyPrimary', (value) => {
+  removeClasses(document.body, 'font');
+  setFont(value, state.fontFamilySecondary);
+});
 
-onChange('fontFamilySecondary', value => {
-  removeClasses(document.body, 'font')
-  setFont(state.fontFamilyPrimary, value)
-})
+onChange('fontFamilySecondary', (value) => {
+  removeClasses(document.body, 'font');
+  setFont(state.fontFamilyPrimary, value);
+});
 
 /**
  * Buttons.
  */
 
-onChange('buttonReverseColor', value => {
-  document.querySelectorAll('spx-section-button:not([reverse-color])').forEach(item => {
-    item.removeAttribute('reverse-color')
-  })
+onChange('buttonReverseColor', (value) => {
+  document
+    .querySelectorAll('spx-section-button:not([reverse-color])')
+    .forEach((item) => {
+      item.removeAttribute('reverse-color');
+    });
 
   if (value === 'all') {
-    document.querySelectorAll('spx-section-button').forEach(item => {
-      item.setAttribute('reverse-color', '')
-    })
+    document.querySelectorAll('spx-section-button').forEach((item) => {
+      item.setAttribute('reverse-color', '');
+    });
   } else {
-    document.querySelectorAll('spx-section-button[type="' + value + '"]').forEach(item => {
-      item.setAttribute('reverse-color', '')
-    })
+    document
+      .querySelectorAll('spx-section-button[type="' + value + '"]')
+      .forEach((item) => {
+        item.setAttribute('reverse-color', '');
+      });
   }
-})
+});
 
 /**
  * BP Mobile.
  */
 
-onChange('bpMobileWidth', value => {
-  state.bpMobileWidth = value
+onChange('bpMobileWidth', (value) => {
+  state.bpMobileWidth = value;
 
-  watchMobile()
-})
+  watchMobile();
+});
 
 /**
  * Export.
  */
 
-export default state
+export default state;

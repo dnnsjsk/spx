@@ -1,0 +1,1 @@
+const o=(o,t)=>{const s=document.querySelector(t).getBoundingClientRect().height+"px";document.documentElement.style.setProperty("--spx-offset",s),o.parentElement.classList.contains("oxy-offset")?o.parentElement.style.marginTop=s:o.style.marginTop=s};export{o}

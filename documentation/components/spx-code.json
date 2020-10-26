@@ -3,11 +3,27 @@
   "description": "Highlight a block of code similar to a code editor.",
   "properties": [
     {
+      "id": "code-background",
+      "name": "background",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-900)'",
+      "tags": []
+    },
+    {
       "id": "code-borderRadius",
       "name": "borderRadius",
       "type": "string",
       "description": "",
       "defaultValue": "'var(--spx-border-radius)'",
+      "tags": []
+    },
+    {
+      "id": "code-fontSize",
+      "name": "fontSize",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'clamp(12px, 1.6vw, 16px)'",
       "tags": []
     },
     {
@@ -39,7 +55,7 @@
       "defaultValue": "'markup'",
       "tags": [
         {
-          "text": "'css'",
+          "text": "'markup', 'css', 'php'",
           "name": "editor"
         }
       ]

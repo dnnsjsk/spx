@@ -55,7 +55,7 @@
       "description": "Gets images from an ACF or Metabox field.",
       "tags": [
         {
-          "text": "'acf', 'mb",
+          "text": "'acf', 'mb'",
           "name": "choice"
         }
       ]

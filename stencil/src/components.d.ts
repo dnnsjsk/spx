@@ -84,6 +84,10 @@ export namespace Components {
          */
         "repeat": number;
         /**
+          * Time to wait between repetitions.
+         */
+        "repeatDelay": number;
+        /**
           * Restarts animation.
          */
         "restart": (includeDelay?: boolean, suppressEvents?: boolean) => Promise<void>;
@@ -149,7 +153,9 @@ export namespace Components {
         "toggle": string;
     }
     interface SpxCode {
+        "background": string;
         "borderRadius": string;
+        "fontSize": string;
         "padding": string;
         "reload": () => Promise<void>;
         /**
@@ -159,7 +165,7 @@ export namespace Components {
         "theme": string;
         /**
           * Determines the programming language.
-          * @editor 'css'
+          * @editor 'markup', 'css', 'php'
          */
         "type": string;
     }
@@ -328,7 +334,10 @@ export namespace Components {
         /**
           * CSS property position of button.
          */
-        "positionCss": 'fixed' | 'absolute' | 'relative' | 'static';
+        "positionCss": | 'fixed'
+    | 'absolute'
+    | 'relative'
+    | 'static';
         "reload": () => Promise<void>;
         "test": boolean;
         /**
@@ -446,7 +455,7 @@ export namespace Components {
         "images": string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @choice 'acf', 'mb
+          * @choice 'acf', 'mb'
          */
         "imagesSrc": string;
         /**
@@ -483,7 +492,7 @@ export namespace Components {
         "colorMacbook": string;
         /**
           * MacBook Pro color.
-          * @choice 'silver', 'spacegray',
+          * @choice 'silver', 'spacegray'
          */
         "colorMacbookPro": string;
         "display": string;
@@ -870,6 +879,11 @@ export namespace Components {
          */
         "logoSrcMobile": string;
         /**
+          * Where the navigation should be aligned to.
+          * @choice 'center', 'right'
+         */
+        "navigationAlign": string;
+        /**
           * Component positioning.
          */
         "position": 'fixed' | 'static';
@@ -959,12 +973,19 @@ export namespace Components {
          */
         "itemColor": string;
         /**
+          * Filter hover.
+          * @CSS
+         */
+        "itemFilterHover": string;
+        /**
           * Gap between buttons.
           * @CSS
          */
         "itemGap": string;
         "itemPadding": string;
         "itemSize": string;
+        "itemTransitionDuration": string;
+        "itemTransitionTimingFunction": string;
         "reload": () => Promise<void>;
         /**
           * Button href target.
@@ -1020,6 +1041,20 @@ export namespace Components {
           * @choice 'fill', 'contain', 'cover', 'scale-down', 'none'
          */
         "imageObjectFit": string;
+        /**
+          * WordPress media size when using the helper function..
+         */
+        "imageSize": string;
+        /**
+          * Gets images from an ACF or Metabox field.
+          * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+         */
+        "images": string;
+        /**
+          * Gets images from an ACF or Metabox field.
+          * @choice 'acf', 'mb'
+         */
+        "imagesSrc": string;
         /**
           * Loops all slides infinitely.
          */
@@ -1177,13 +1212,16 @@ export namespace Components {
         "padding": string;
         /**
           * Component position in page.
-          * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
+          * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center", 'top-right'
          */
         "position": string;
         /**
           * CSS property position of button.
          */
-        "positionCss": 'fixed' | 'absolute' | 'relative' | 'static';
+        "positionCss": | 'fixed'
+    | 'absolute'
+    | 'relative'
+    | 'static';
         "reload": () => Promise<void>;
         /**
           * Reverses the close button if "closable" prop is true.
@@ -1206,6 +1244,9 @@ export namespace Components {
     interface SpxSnackbarToggle {
     }
     interface SpxText {
+        /**
+          * Only works if text-type is set to 'multiply'.
+         */
         "contentFontSizeMultiplier": number;
         "headingColor": string;
         "headingFontFamily": string;
@@ -1213,13 +1254,27 @@ export namespace Components {
         "headingLetterSpacing": string;
         "headingLineHeight": string;
         "headingTextTransform": string;
+        "linkUnderlineColor": string;
+        /**
+          * Parse markdown.
+         */
+        "markdown": boolean;
         "maxWidth": string;
         "textColor": string;
         "textFontFamily": string;
         "textFontWeight": string;
         "textLetterSpacing": string;
         "textLineHeight": string;
+        /**
+          * Maximum viewport width when text-type is set to linear.
+         */
+        "textMaxW": number;
+        /**
+          * Minimum viewport width when text-type is set to linear.
+         */
+        "textMinW": number;
         "textTextTransform": string;
+        "textType": string;
     }
     interface SpxTypewriter {
         /**
@@ -1568,6 +1623,10 @@ declare namespace LocalJSX {
          */
         "repeat"?: number;
         /**
+          * Time to wait between repetitions.
+         */
+        "repeatDelay"?: number;
+        /**
           * Reverses the animation.
          */
         "reverse"?: boolean;
@@ -1628,7 +1687,9 @@ declare namespace LocalJSX {
         "toggle"?: string;
     }
     interface SpxCode {
+        "background"?: string;
         "borderRadius"?: string;
+        "fontSize"?: string;
         "padding"?: string;
         /**
           * Colour theme.
@@ -1637,7 +1698,7 @@ declare namespace LocalJSX {
         "theme"?: string;
         /**
           * Determines the programming language.
-          * @editor 'css'
+          * @editor 'markup', 'css', 'php'
          */
         "type"?: string;
     }
@@ -1814,7 +1875,10 @@ declare namespace LocalJSX {
         /**
           * CSS property position of button.
          */
-        "positionCss"?: 'fixed' | 'absolute' | 'relative' | 'static';
+        "positionCss"?: | 'fixed'
+    | 'absolute'
+    | 'relative'
+    | 'static';
         "test"?: boolean;
         /**
           * Discard button text.
@@ -1927,7 +1991,7 @@ declare namespace LocalJSX {
         "images"?: string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @choice 'acf', 'mb
+          * @choice 'acf', 'mb'
          */
         "imagesSrc"?: string;
         "onSpxMasonryDidLoad"?: (event: CustomEvent<any>) => void;
@@ -1960,7 +2024,7 @@ declare namespace LocalJSX {
         "colorMacbook"?: string;
         /**
           * MacBook Pro color.
-          * @choice 'silver', 'spacegray',
+          * @choice 'silver', 'spacegray'
          */
         "colorMacbookPro"?: string;
         "display"?: string;
@@ -2137,6 +2201,7 @@ declare namespace LocalJSX {
         "navigationTitleLineHeight"?: string;
         "navigationTitleTextTransform"?: string;
         "offsetMarginTop"?: string;
+        "onSpxPageDocsDidLoad"?: (event: CustomEvent<any>) => void;
         /**
           * Space from the last content element to the end of the component.
           * @CSS
@@ -2335,6 +2400,11 @@ declare namespace LocalJSX {
          */
         "logoSrcMobile"?: string;
         /**
+          * Where the navigation should be aligned to.
+          * @choice 'center', 'right'
+         */
+        "navigationAlign"?: string;
+        /**
           * Component positioning.
          */
         "position"?: 'fixed' | 'static';
@@ -2424,12 +2494,19 @@ declare namespace LocalJSX {
          */
         "itemColor"?: string;
         /**
+          * Filter hover.
+          * @CSS
+         */
+        "itemFilterHover"?: string;
+        /**
           * Gap between buttons.
           * @CSS
          */
         "itemGap"?: string;
         "itemPadding"?: string;
         "itemSize"?: string;
+        "itemTransitionDuration"?: string;
+        "itemTransitionTimingFunction"?: string;
         /**
           * Button href target.
          */
@@ -2484,6 +2561,20 @@ declare namespace LocalJSX {
           * @choice 'fill', 'contain', 'cover', 'scale-down', 'none'
          */
         "imageObjectFit"?: string;
+        /**
+          * WordPress media size when using the helper function..
+         */
+        "imageSize"?: string;
+        /**
+          * Gets images from an ACF or Metabox field.
+          * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+         */
+        "images"?: string;
+        /**
+          * Gets images from an ACF or Metabox field.
+          * @choice 'acf', 'mb'
+         */
+        "imagesSrc"?: string;
         /**
           * Loops all slides infinitely.
          */
@@ -2640,13 +2731,16 @@ declare namespace LocalJSX {
         "padding"?: string;
         /**
           * Component position in page.
-          * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
+          * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center", 'top-right'
          */
         "position"?: string;
         /**
           * CSS property position of button.
          */
-        "positionCss"?: 'fixed' | 'absolute' | 'relative' | 'static';
+        "positionCss"?: | 'fixed'
+    | 'absolute'
+    | 'relative'
+    | 'static';
         /**
           * Reverses the close button if "closable" prop is true.
          */
@@ -2668,6 +2762,9 @@ declare namespace LocalJSX {
     interface SpxSnackbarToggle {
     }
     interface SpxText {
+        /**
+          * Only works if text-type is set to 'multiply'.
+         */
         "contentFontSizeMultiplier"?: number;
         "headingColor"?: string;
         "headingFontFamily"?: string;
@@ -2675,13 +2772,27 @@ declare namespace LocalJSX {
         "headingLetterSpacing"?: string;
         "headingLineHeight"?: string;
         "headingTextTransform"?: string;
+        "linkUnderlineColor"?: string;
+        /**
+          * Parse markdown.
+         */
+        "markdown"?: boolean;
         "maxWidth"?: string;
         "textColor"?: string;
         "textFontFamily"?: string;
         "textFontWeight"?: string;
         "textLetterSpacing"?: string;
         "textLineHeight"?: string;
+        /**
+          * Maximum viewport width when text-type is set to linear.
+         */
+        "textMaxW"?: number;
+        /**
+          * Minimum viewport width when text-type is set to linear.
+         */
+        "textMinW"?: number;
         "textTextTransform"?: string;
+        "textType"?: string;
     }
     interface SpxTypewriter {
         /**

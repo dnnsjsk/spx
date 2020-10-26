@@ -1,4 +1,4 @@
-import state from '../stores/container'
+import state from '../stores/container';
 
 /**
  * BP Mobile.
@@ -6,10 +6,10 @@ import state from '../stores/container'
 
 export const watchMobile = () => {
   if (window.innerWidth < state.bpMobileWidth) {
-    state.bpMobile = true
-    document.body.classList.add('spx-mobile')
+    state.bpMobile = true;
+    document.body.classList.add('spx-mobile');
   } else {
-    state.bpMobile = false
-    document.body.classList.remove('spx-mobile')
+    state.bpMobile = false;
+    document.body.classList.remove('spx-mobile');
   }
-}
+};

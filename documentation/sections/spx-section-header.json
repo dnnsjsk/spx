@@ -62,6 +62,19 @@
       "tags": []
     },
     {
+      "id": "section-header-navigationAlign",
+      "name": "navigationAlign",
+      "type": "string",
+      "description": "Where the navigation should be aligned to.",
+      "defaultValue": "'center'",
+      "tags": [
+        {
+          "text": "'center', 'right'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
       "id": "section-header-position",
       "name": "position",
       "type": "\"fixed\" | \"static\"",

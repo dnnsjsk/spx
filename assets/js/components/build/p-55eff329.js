@@ -1,0 +1,1 @@
+const r=(r,a)=>{r.classList.remove.apply(r.classList,Array.from(r.classList).filter(r=>r.endsWith(a)))};export{r}

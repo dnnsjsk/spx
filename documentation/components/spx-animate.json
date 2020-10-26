@@ -57,6 +57,13 @@
       "tags": []
     },
     {
+      "id": "animate-repeatDelay",
+      "name": "repeatDelay",
+      "type": "number",
+      "description": "Time to wait between repetitions.",
+      "tags": []
+    },
+    {
       "id": "animate-reverse",
       "name": "reverse",
       "type": "boolean",

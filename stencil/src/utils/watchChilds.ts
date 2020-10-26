@@ -3,19 +3,19 @@
  */
 
 export const watchChilds = (el) => {
-  const targetNode = el
+  const targetNode = el;
 
-  const config = { childList: true }
+  const config = { childList: true };
 
   const callback = (mutationsList) => {
     for (const mutation of mutationsList) {
       if (mutation.type === 'childList') {
-        el.restart()
+        el.restart();
       }
     }
-  }
+  };
 
-  const observer = new MutationObserver(callback)
+  const observer = new MutationObserver(callback);
 
-  observer.observe(targetNode, config)
-}
+  observer.observe(targetNode, config);
+};

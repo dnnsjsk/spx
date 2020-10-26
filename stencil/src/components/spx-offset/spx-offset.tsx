@@ -1,11 +1,19 @@
-// eslint-disable-next-line no-unused-vars
-import { Component, Element, h, Host, Listen, Method, Prop } from '@stencil/core'
-import { css } from 'emotion'
-import { setVar } from '../../utils/setVar'
-import { offsetHeader } from '../../utils/offsetHeader'
-import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
+import {
+  Component,
+  Element,
+  // eslint-disable-next-line no-unused-vars
+  h,
+  Host,
+  Listen,
+  Method,
+  Prop,
+} from '@stencil/core';
+import { css } from 'emotion';
+import { setVar } from '../../utils/setVar';
+import { offsetHeader } from '../../utils/offsetHeader';
+import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 
-const tag = 'spx-offset'
+const tag = 'spx-offset';
 
 /**
  * The component offsets itself to the height of a specified element.
@@ -14,48 +22,50 @@ const tag = 'spx-offset'
  */
 
 @Component({
-  tag: 'spx-offset'
+  tag: 'spx-offset',
 })
-
 export class SpxOffset {
-    @Element() el: HTMLSpxOffsetElement
+  // eslint-disable-next-line no-undef
+  @Element() el: HTMLSpxOffsetElement;
 
-    @Prop({ reflect: true }) display: string = 'block'
+  @Prop({ reflect: true }) display: string = 'block';
 
-    /** Target element. */
+  /** Target element. */
 
-    @Prop({ reflect: true }) target: string = 'header'
+  @Prop({ reflect: true }) target: string = 'header';
 
-    /** Listen to window resize. */
+  /** Listen to window resize. */
 
-    @Listen('resize', { target: 'window' })
-    onResize () {
-      offsetHeader(this.el, this.target)
-    }
+  @Listen('resize', { target: 'window' })
+  onResize() {
+    offsetHeader(this.el, this.target);
+  }
 
-    componentDidLoad () {
-      globalComponentDidLoad(this.el)
-      this.onResize()
-    }
+  componentDidLoad() {
+    globalComponentDidLoad(this.el);
+    this.onResize();
+  }
 
-    componentDidUpdate () {
-      this.onResize()
-    }
+  componentDidUpdate() {
+    this.onResize();
+  }
 
-    @Method()
-    async reload () {
-      this.componentDidLoad()
-    }
+  @Method()
+  async reload() {
+    this.componentDidLoad();
+  }
 
-    render () {
-      /** Host styles. */
+  render() {
+    /** Host styles. */
 
-      const styleHost = css({
-        display: setVar(tag, 'display', this.display)
-      })
+    const styleHost = css({
+      display: setVar(tag, 'display', this.display),
+    });
 
-      return <Host class={styleHost}>
-        <slot/>
+    return (
+      <Host class={styleHost}>
+        <slot />
       </Host>
-    }
+    );
+  }
 }

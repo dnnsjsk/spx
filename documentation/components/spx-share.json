@@ -37,6 +37,18 @@
       ]
     },
     {
+      "id": "share-itemFilterHover",
+      "name": "itemFilterHover",
+      "type": "string",
+      "description": "Filter hover.",
+      "defaultValue": "'brightness(110%) saturate(120%)'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
       "id": "share-itemGap",
       "name": "itemGap",
       "type": "string",
@@ -62,6 +74,22 @@
       "type": "string",
       "description": "",
       "defaultValue": "'1em'",
+      "tags": []
+    },
+    {
+      "id": "share-itemTransitionDuration",
+      "name": "itemTransitionDuration",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-transition-duration)'",
+      "tags": []
+    },
+    {
+      "id": "share-itemTransitionTimingFunction",
+      "name": "itemTransitionTimingFunction",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-transition-timing-function)'",
       "tags": []
     },
     {

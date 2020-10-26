@@ -6,7 +6,7 @@
       "id": "text-contentFontSizeMultiplier",
       "name": "contentFontSizeMultiplier",
       "type": "number",
-      "description": "",
+      "description": "Only works if text-type is set to 'multiply'.",
       "defaultValue": "1",
       "tags": []
     },
@@ -59,6 +59,22 @@
       "tags": []
     },
     {
+      "id": "text-linkUnderlineColor",
+      "name": "linkUnderlineColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-primary-A700)'",
+      "tags": []
+    },
+    {
+      "id": "text-markdown",
+      "name": "markdown",
+      "type": "boolean",
+      "description": "Parse markdown.",
+      "defaultValue": "false",
+      "tags": []
+    },
+    {
       "id": "text-maxWidth",
       "name": "maxWidth",
       "type": "string",
@@ -107,11 +123,35 @@
       "tags": []
     },
     {
+      "id": "text-textMaxW",
+      "name": "textMaxW",
+      "type": "number",
+      "description": "Maximum viewport width when text-type is set to linear.",
+      "defaultValue": "2560",
+      "tags": []
+    },
+    {
+      "id": "text-textMinW",
+      "name": "textMinW",
+      "type": "number",
+      "description": "Minimum viewport width when text-type is set to linear.",
+      "defaultValue": "320",
+      "tags": []
+    },
+    {
       "id": "text-textTextTransform",
       "name": "textTextTransform",
       "type": "string",
       "description": "",
       "defaultValue": "'default'",
+      "tags": []
+    },
+    {
+      "id": "text-textType",
+      "name": "textType",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'linear'",
       "tags": []
     }
   ],

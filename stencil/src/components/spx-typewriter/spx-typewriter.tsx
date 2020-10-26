@@ -1,11 +1,19 @@
-// eslint-disable-next-line no-unused-vars
-import { Component, Element, h, Host, Prop, State, Method } from '@stencil/core'
-import Typewriter from 'typewriter-effect/dist/core'
-import { css } from 'emotion'
-import { setVar } from '../../utils/setVar'
-import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad'
+import {
+  Component,
+  Element,
+  // eslint-disable-next-line no-unused-vars
+  h,
+  Host,
+  Prop,
+  State,
+  Method,
+} from '@stencil/core';
+import Typewriter from 'typewriter-effect/dist/core';
+import { css } from 'emotion';
+import { setVar } from '../../utils/setVar';
+import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 
-const tag = 'spx-typewriter'
+const tag = 'spx-typewriter';
 
 /**
  * Animates text like it is being written on a typewriter.
@@ -13,81 +21,82 @@ const tag = 'spx-typewriter'
 
 @Component({
   tag: 'spx-typewriter',
-  styleUrl: 'spx-typewriter.css'
+  styleUrl: 'spx-typewriter.css',
 })
-
 export class SpxTypewriter {
-    @Element() el: HTMLSpxTypewriterElement
+  // eslint-disable-next-line no-undef
+  @Element() el: HTMLSpxTypewriterElement;
 
-    @State() typewriter
+  @State() typewriter;
 
-    /** Automatically starts writing. */
+  /** Automatically starts writing. */
 
-    @Prop({ reflect: true }) autoStart: boolean = true
+  @Prop({ reflect: true }) autoStart: boolean = true;
 
-    /** Writing delay in ms. Also accepts 'natural' value. */
+  /** Writing delay in ms. Also accepts 'natural' value. */
 
-    @Prop({ reflect: true }) delay: any = 'natural'
+  @Prop({ reflect: true }) delay: any = 'natural';
 
-    /** Delete delay in ms. Also accepts 'natural' value. */
+  /** Delete delay in ms. Also accepts 'natural' value. */
 
-    @Prop({ reflect: true }) deleteSpeed: any = 'natural'
-    @Prop({ reflect: true }) display: string = 'block'
+  @Prop({ reflect: true }) deleteSpeed: any = 'natural';
+  @Prop({ reflect: true }) display: string = 'block';
 
-    /** Loops the animation. */
+  /** Loops the animation. */
 
-    @Prop({ reflect: true }) loop: boolean
+  @Prop({ reflect: true }) loop: boolean;
 
-    /** Text that should be written. */
+  /** Text that should be written. */
 
-    @Prop({ reflect: true }) text: string = 'I\'m a typewriter'
+  @Prop({ reflect: true }) text: string = "I'm a typewriter";
 
-    componentDidLoad () {
-      globalComponentDidLoad(this.el)
+  componentDidLoad() {
+    globalComponentDidLoad(this.el);
 
-      const el = this.el.querySelector('h1, h2, h3, h4, h5, h6, p, span') || this.el
+    const el =
+      this.el.querySelector('h1, h2, h3, h4, h5, h6, p, span') || this.el;
 
-      this.typewriter = new Typewriter(el, {
-        strings: this.text[0] === '['
+    this.typewriter = new Typewriter(el, {
+      strings:
+        this.text[0] === '['
           ? this.text
-            .replaceAll('[\'', '')
-            .replaceAll('\']', '')
-            .replaceAll(' \'', '')
-            .split('\',')
+              .replaceAll("['", '')
+              .replaceAll("']", '')
+              .replaceAll(" '", '')
+              .split("',")
           : this.text,
-        delay: this.delay,
-        deleteSpeed: this.deleteSpeed,
-        loop: this.loop,
-        autoStart: this.autoStart,
-        wrapperClassName: 'spx-typewriter__wrapper',
-        cursorClassName: 'spx-typewriter__cursor',
-        skipAddStyles: true
-      })
-    }
+      delay: this.delay,
+      deleteSpeed: this.deleteSpeed,
+      loop: this.loop,
+      autoStart: this.autoStart,
+      wrapperClassName: 'spx-typewriter__wrapper',
+      cursorClassName: 'spx-typewriter__cursor',
+      skipAddStyles: true,
+    });
+  }
 
-    /** Start animation. */
+  /** Start animation. */
 
-    @Method()
-    async play () {
-      this.typewriter.typeString(this.text)
-      this.typewriter.start()
-    }
+  @Method()
+  async play() {
+    this.typewriter.typeString(this.text);
+    this.typewriter.start();
+  }
 
-    /** Stop animation. */
+  /** Stop animation. */
 
-    @Method()
-    async stop () {
-      this.typewriter.stop()
-    }
+  @Method()
+  async stop() {
+    this.typewriter.stop();
+  }
 
-    render () {
-      /** Host styles. */
+  render() {
+    /** Host styles. */
 
-      const styleHost = css({
-        display: setVar(tag, 'display', this.display)
-      })
+    const styleHost = css({
+      display: setVar(tag, 'display', this.display),
+    });
 
-      return <Host class={styleHost}>
-      </Host>
-    }
+    return <Host class={styleHost} />;
+  }
 }

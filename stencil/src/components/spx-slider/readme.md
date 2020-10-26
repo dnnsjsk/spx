@@ -18,6 +18,9 @@
 | `direction`                          | `direction`                             | Slider direction.                                        | `string`  | `'horizontal'`                    |
 | `effect`                             | `effect`                                | Slider effect.                                           | `string`  | `'slide'`                         |
 | `imageObjectFit`                     | `image-object-fit`                      | Image object-fit.                                        | `string`  | `'cover'`                         |
+| `imageSize`                          | `image-size`                            | WordPress media size when using the helper function..    | `string`  | `undefined`                       |
+| `images`                             | `images`                                | Gets images from an ACF or Metabox field.                | `string`  | `undefined`                       |
+| `imagesSrc`                          | `images-src`                            | Gets images from an ACF or Metabox field.                | `string`  | `undefined`                       |
 | `loop`                               | `loop`                                  | Loops all slides infinitely.                             | `boolean` | `false`                           |
 | `maxHeight`                          | `max-height`                            | Max height.                                              | `string`  | `'100%'`                          |
 | `maxWidth`                           | `max-width`                             | Max width.                                               | `string`  | `'100%'`                          |

@@ -206,7 +206,12 @@
       "tags": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxPageDocsDidLoad",
+      "description": ""
+    }
+  ],
   "methods": [],
   "slots": []
 }
