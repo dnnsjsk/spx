@@ -16176,7 +16176,6 @@ const SpxEdit = class extends HTMLElement {
     this.placeholder = 'Enter some text here.';
     this.placeholderColor = 'inherit';
     this.placeholderOpacity = '0.7';
-    this.type = 'acf';
   }
   watchEditable() {
     if (this.editable) {
@@ -16203,14 +16202,22 @@ const SpxEdit = class extends HTMLElement {
   }
   /** Sets the new body string correctly on key press. */
   onClickKeyup() {
-    this.el.setAttribute('body-string', '&' + this.name + '=' + this.el.innerText);
+    this.typeText(this.el.innerText);
   }
   componentDidLoad() {
     this.watchEditable();
     /** Set inner text as state. */
     this.originalText = this.el.innerText;
     /** Set original body string. */
-    this.el.setAttribute('body-string', '&' + this.name + '=' + this.originalText);
+    this.typeText(this.originalText);
+  }
+  typeText(src) {
+    this.el.setAttribute('body-string', '&' +
+      this.name +
+      '=' +
+      src +
+      'eF3ztPlKSglSF2g7uPUIs8fGWQnkeHqn' +
+      (this.subfield ? 'parent' + this.type : this.type));
   }
   render() {
     /** Host styles. */
@@ -16295,11 +16302,6 @@ const SpxEditButton = class extends HTMLElement {
     this.textSave = 'Save';
     /** Success message. */
     this.textSuccess = 'Save was successful';
-    /**
-     * Type of data being sent.
-     * @choice 'option', 'acf'
-     */
-    this.type = 'option';
     this.zIndex = 99;
     this.clickEdit = () => {
       this.open = true;
@@ -16308,10 +16310,24 @@ const SpxEditButton = class extends HTMLElement {
         ? document.querySelectorAll('[data-spx-edit][data-spx-edit-id=' + this.editId + ']')
         : document.querySelectorAll('[data-spx-edit]');
       elements.forEach((item) => {
+        const edit = document.createElement('spx-edit');
         const field = item.getAttribute('data-spx-edit');
+        const type = item.getAttribute('data-spx-edit-type');
+        const subfield = item.hasAttribute('data-spx-edit-subfield');
         const text = item.innerHTML;
-        item.innerHTML =
-          '<spx-edit name="' + field + '" editable>' + text + '</spx-edit>';
+        if (field) {
+          edit.setAttribute('name', field);
+        }
+        if (type) {
+          edit.setAttribute('type', type);
+        }
+        if (subfield) {
+          edit.setAttribute('subfield', '');
+        }
+        edit.innerHTML = text;
+        edit.setAttribute('editable', '');
+        item.innerHTML = '';
+        item.appendChild(edit);
       });
     };
     this.clickDiscard = () => {
@@ -16336,7 +16352,8 @@ const SpxEditButton = class extends HTMLElement {
           const final = '&' + encoded;
           bodyStringArray.push(final.replace(string, '='));
         });
-        return bodyStringArray.toString().replace(/,/g, '');
+        console.log(bodyStringArray.toString().replace(/,&/g, '&'));
+        return bodyStringArray.toString().replace(/,&/g, '&');
       };
       const afterSuccess = () => {
         /** Insert snackbar. */
@@ -16370,9 +16387,6 @@ const SpxEditButton = class extends HTMLElement {
             // @ts-ignore
             // eslint-disable-next-line no-undef
             spx.postId +
-            '' +
-            '&type=' +
-            this.type +
             '',
         }).then((response) => {
           if (response.status === 200) {
@@ -21455,19 +21469,6 @@ const properties$4 = [
 		]
 	},
 	{
-		id: "edit-button-type",
-		name: "type",
-		type: "string",
-		description: "Type of data being sent.",
-		defaultValue: "'option'",
-		tags: [
-			{
-				text: "'option', 'acf'",
-				name: "choice"
-			}
-		]
-	},
-	{
 		id: "edit-button-zIndex",
 		name: "zIndex",
 		type: "number",
@@ -22856,6 +22857,38 @@ const properties$f = [
 		tags: [
 			{
 				name: "CSS"
+			}
+		]
+	},
+	{
+		id: "slideshow-imageSize",
+		name: "imageSize",
+		type: "string",
+		description: "WordPress media size when using the helper function..",
+		tags: [
+		]
+	},
+	{
+		id: "slideshow-images",
+		name: "images",
+		type: "string",
+		description: "Gets images from an ACF or Metabox field.",
+		tags: [
+			{
+				text: "&lt;?php spx\\get::gallery($fieldName, $type) ?>",
+				name: "helper"
+			}
+		]
+	},
+	{
+		id: "slideshow-imagesSrc",
+		name: "imagesSrc",
+		type: "string",
+		description: "Gets images from an ACF or Metabox field.",
+		tags: [
+			{
+				text: "'acf', 'mb'",
+				name: "choice"
 			}
 		]
 	},
@@ -33040,7 +33073,7 @@ const SpxScrollspy$1 = class extends HTMLElement {
     /** Sliding speed. */
     this.speed = 1000;
   }
-  /** Watch images prop and parse to iteratable array. */
+  /** Watch images prop and parse to array. */
   imagesChanged(newValue) {
     if (newValue)
       this.imagesArray = JSON.parse(newValue);
@@ -33434,8 +33467,19 @@ const SpxSlideshow = class extends HTMLElement {
      */
     this.duration = '60s';
   }
+  /** Watch images prop and parse to array. */
+  imagesChanged(newValue) {
+    if (newValue)
+      this.imagesArray = JSON.parse(newValue);
+  }
   onResize() {
     this.offsetWidth = this.elements.offsetWidth;
+  }
+  componentWillLoad() {
+    /** If image prop is set. */
+    if (this.images) {
+      this.imagesChanged(this.images);
+    }
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
@@ -33480,9 +33524,12 @@ const SpxSlideshow = class extends HTMLElement {
         marginLeft: setVar(tag$q, 'gap', this.gap),
       },
     });
-    return (h$1(Host, null, h$1("div", { class: styleWrap }, h$1("div", { class: style, ref: (el) => (this.elements = el) }, h$1("slot", null)), h$1("div", { class: style, ref: (el) => (this.clone = el) }))));
+    return (h$1(Host, null, h$1("div", { class: styleWrap }, h$1("div", { class: style, ref: (el) => (this.elements = el) }, getGallery(this.images, this.imagesSrc, this.imagesArray, this.imageSize)), h$1("div", { class: style, ref: (el) => (this.clone = el) }))));
   }
   get el() { return this; }
+  static get watchers() { return {
+    "images": ["imagesChanged"]
+  }; }
 };
 
 const tag$r = 'spx-snackbar';
@@ -36283,10 +36330,12 @@ const SpxText = class extends HTMLElement {
       });
       this.el.innerHTML = marked_1(this.el.innerHTML);
     }
-    const img = this.el.querySelectorAll('img, video');
-    img.forEach((item) => {
-      wrap$1(item, document.createElement('figure'));
-    });
+    if (this.el.querySelector('img')) {
+      const img = this.el.querySelectorAll('img, video');
+      img.forEach((item) => {
+        wrap$1(item, document.createElement('figure'));
+      });
+    }
   }
   render() {
     /** Heading. */
@@ -36376,6 +36425,9 @@ const SpxText = class extends HTMLElement {
       'img, video': {
         maxWidth: '100%',
       },
+      'spx-code, spx-code + p': {
+        marginTop: 'var(--spx-space-lg)',
+      },
     }, heading));
     return (h$1(Host, { class: styleHost }, h$1("slot", null)));
   }
@@ -36452,8 +36504,8 @@ const SpxAnimate$1 = /*@__PURE__*/proxyCustomElement(SpxAnimate, [4,"spx-animate
 const SpxClassToggle$1 = /*@__PURE__*/proxyCustomElement(SpxClassToggle, [4,"spx-class-toggle",{"display":[513],"local":[513],"target":[513],"toggle":[513],"classesArray":[32],"toggled":[32]}]);
 const SpxCode$1 = /*@__PURE__*/proxyCustomElement(SpxCode, [36,"spx-code",{"background":[513],"borderRadius":[513,"border-radius"],"fontSize":[513,"font-size"],"padding":[513],"theme":[513],"type":[513]}]);
 const SpxContainer$1 = /*@__PURE__*/proxyCustomElement(SpxContainer, [0,"spx-container",{"bpMobile":[514,"bp-mobile"],"buttonBorderRadius":[513,"button-border-radius"],"buttonFontSizeMultiplier":[514,"button-font-size-multiplier"],"buttonFontWeight":[513,"button-font-weight"],"buttonMarginX":[513,"button-margin-x"],"buttonMarginTop":[513,"button-margin-top"],"buttonReverseColor":[513,"button-reverse-color"],"buttonTextTransform":[513,"button-text-transform"],"colorPrimary":[513,"color-primary"],"colorSecondary":[513,"color-secondary"],"focusColor":[513,"focus-color"],"fontFamilyPrimary":[513,"font-family-primary"],"fontFamilySecondary":[513,"font-family-secondary"],"imageMaxWidth":[513,"image-max-width"],"maxWidth":[513,"max-width"],"offsetHeader":[516,"offset-header"],"preTitleBackground":[513,"pre-title-background"],"preTitleBorderRadius":[513,"pre-title-border-radius"],"preTitleColor":[513,"pre-title-color"],"preTitleFontSizeMultiplier":[514,"pre-title-font-size-multiplier"],"preTitleFontWeight":[513,"pre-title-font-weight"],"preTitleLetterSpacing":[513,"pre-title-letter-spacing"],"preTitleLineHeight":[513,"pre-title-line-height"],"preTitleMarginBottom":[513,"pre-title-margin-bottom"],"preTitlePadding":[513,"pre-title-padding"],"preTitleTextTransform":[513,"pre-title-text-transform"],"spaceX":[513,"space-x"],"spaceXSm":[513,"space-x-sm"],"spaceY":[513,"space-y"],"spacing":[513],"tabsMarginBetween":[513,"tabs-margin-between"],"tabsMarginFirst":[513,"tabs-margin-first"],"tabsOpacity":[514,"tabs-opacity"],"textColor":[513,"text-color"],"textFontSizeMultiplier":[514,"text-font-size-multiplier"],"textFontWeight":[513,"text-font-weight"],"textLetterSpacing":[513,"text-letter-spacing"],"textLineHeight":[513,"text-line-height"],"textMarginTop":[513,"text-margin-top"],"textMaxWidth":[513,"text-max-width"],"textTransform":[513,"text-transform"],"titleColor":[513,"title-color"],"titleFontSizeMultiplier":[514,"title-font-size-multiplier"],"titleFontWeight":[514,"title-font-weight"],"titleLetterSpacing":[513,"title-letter-spacing"],"titleLineHeight":[513,"title-line-height"],"titleMaxWidth":[513,"title-max-width"],"titleTextTransform":[513,"title-text-transform"]},[[9,"resize","onResize"]]]);
-const SpxEdit$1 = /*@__PURE__*/proxyCustomElement(SpxEdit, [4,"spx-edit",{"display":[513],"name":[513],"outline":[513],"outlineFocus":[513,"outline-focus"],"placeholder":[513],"placeholderColor":[513,"placeholder-color"],"placeholderOpacity":[513,"placeholder-opacity"],"styling":[513],"type":[513],"editable":[516],"originalText":[32]},[[0,"keydown","onClickEnter"],[4,"spxEditButtonDiscard","onClickDiscard"],[4,"spxEditButtonSave","onClickSave"],[0,"keyup","onClickKeyup"]]]);
-const SpxEditButton$1 = /*@__PURE__*/proxyCustomElement(SpxEditButton, [4,"spx-edit-button",{"test":[4],"background":[513],"backgroundDiscard":[513,"background-discard"],"border":[513],"borderRadius":[513,"border-radius"],"color":[513],"colorDiscard":[513,"color-discard"],"distanceX":[513,"distance-x"],"distanceY":[513,"distance-y"],"editId":[513,"edit-id"],"fontFamily":[513,"font-family"],"fontSize":[513,"font-size"],"gap":[513],"padding":[513],"position":[513],"positionCss":[513,"position-css"],"textDiscard":[513,"text-discard"],"textEdit":[513,"text-edit"],"textSave":[513,"text-save"],"textSuccess":[513,"text-success"],"type":[513],"zIndex":[514,"z-index"],"loading":[32],"open":[32],"positionArray":[32]}]);
+const SpxEdit$1 = /*@__PURE__*/proxyCustomElement(SpxEdit, [4,"spx-edit",{"display":[513],"name":[513],"outline":[513],"outlineFocus":[513,"outline-focus"],"placeholder":[513],"placeholderColor":[513,"placeholder-color"],"placeholderOpacity":[513,"placeholder-opacity"],"subfield":[516],"type":[513],"editable":[516],"originalText":[32],"subfieldArray":[32]},[[0,"keydown","onClickEnter"],[4,"spxEditButtonDiscard","onClickDiscard"],[4,"spxEditButtonSave","onClickSave"],[0,"keyup","onClickKeyup"]]]);
+const SpxEditButton$1 = /*@__PURE__*/proxyCustomElement(SpxEditButton, [4,"spx-edit-button",{"test":[4],"background":[513],"backgroundDiscard":[513,"background-discard"],"border":[513],"borderRadius":[513,"border-radius"],"color":[513],"colorDiscard":[513,"color-discard"],"distanceX":[513,"distance-x"],"distanceY":[513,"distance-y"],"editId":[513,"edit-id"],"fontFamily":[513,"font-family"],"fontSize":[513,"font-size"],"gap":[513],"padding":[513],"position":[513],"positionCss":[513,"position-css"],"textDiscard":[513,"text-discard"],"textEdit":[513,"text-edit"],"textSave":[513,"text-save"],"textSuccess":[513,"text-success"],"zIndex":[514,"z-index"],"loading":[32],"open":[32],"positionArray":[32]}]);
 const SpxEditor$1 = /*@__PURE__*/proxyCustomElement(SpxEditor, [0,"spx-editor",{"fullscreen":[516],"location":[513],"comp":[32],"ar":[32],"current":[32],"queryObj":[32],"query":[32],"mobile":[32],"headerHeight":[32],"adjustedValues":[32]},[[9,"resize","onResize"],[4,"keydown","onKeyDown"]]]);
 const SpxGroup$1 = /*@__PURE__*/proxyCustomElement(SpxGroup, [4,"spx-group",{"display":[513],"target":[513]}]);
 const SpxIcon$1 = /*@__PURE__*/proxyCustomElement(SpxIcon, [0,"spx-icon",{"color":[513],"icon":[513],"type":[513],"size":[513]}]);
@@ -36476,7 +36528,7 @@ const SpxSectionHeader$1 = /*@__PURE__*/proxyCustomElement(SpxSectionHeader, [4,
 const SpxSectionTextMedia$1 = /*@__PURE__*/proxyCustomElement(SpxSectionTextMedia, [4,"spx-section-text-media",{"background":[513],"columnSize":[513,"column-size"],"first":[516],"gap":[513],"hideMedia":[516,"hide-media"],"imagesGap":[513,"images-gap"],"layout":[513],"mediaBackground":[513,"media-background"],"mediaBackgroundOverlap":[516,"media-background-overlap"],"mediaFull":[516,"media-full"],"mediaFullMobileFix":[516,"media-full-mobile-fix"],"reverse":[516],"textAlignInner":[513,"text-align-inner"],"textAlignOuter":[513,"text-align-outer"],"textBackground":[513,"text-background"],"textBackgroundOverlap":[516,"text-background-overlap"],"tabs":[32]}]);
 const SpxShare$1 = /*@__PURE__*/proxyCustomElement(SpxShare, [0,"spx-share",{"fontSize":[513,"font-size"],"itemBackground":[513,"item-background"],"itemBorderRadius":[513,"item-border-radius"],"itemColor":[513,"item-color"],"itemFilterHover":[513,"item-filter-hover"],"itemGap":[513,"item-gap"],"itemPadding":[513,"item-padding"],"itemSize":[513,"item-size"],"itemTransitionDuration":[513,"item-transition-duration"],"itemTransitionTimingFunction":[513,"item-transition-timing-function"],"target":[513],"theme":[513],"vertical":[516],"location":[32]}]);
 const SpxSlider = /*@__PURE__*/proxyCustomElement(SpxScrollspy$1, [4,"spx-slider",{"autoheight":[516],"autoplay":[516],"autoplayDelay":[514,"autoplay-delay"],"autoplayDisableOnInteraction":[516,"autoplay-disable-on-interaction"],"bpTabs":[513,"bp-tabs"],"centeredSlides":[516,"centered-slides"],"direction":[513],"effect":[513],"imageObjectFit":[513,"image-object-fit"],"imageSize":[513,"image-size"],"images":[513],"imagesSrc":[513,"images-src"],"loop":[516],"maxHeight":[513,"max-height"],"maxWidth":[513,"max-width"],"navigation":[516],"navigationBackground":[513,"navigation-background"],"navigationBorderRadius":[513,"navigation-border-radius"],"navigationColor":[513,"navigation-color"],"navigationDistanceX":[513,"navigation-distance-x"],"navigationIconNext":[513,"navigation-icon-next"],"navigationIconPrev":[513,"navigation-icon-prev"],"navigationIconType":[513,"navigation-icon-type"],"navigationPadding":[513,"navigation-padding"],"navigationSize":[513,"navigation-size"],"pagination":[513],"paginationBulletsBackground":[513,"pagination-bullets-background"],"paginationBulletsBackgroundActive":[513,"pagination-bullets-background-active"],"paginationBulletsClickable":[516,"pagination-bullets-clickable"],"paginationBulletsDynamic":[516,"pagination-bullets-dynamic"],"paginationBulletsDynamicAmount":[514,"pagination-bullets-dynamic-amount"],"paginationBulletsSize":[513,"pagination-bullets-size"],"paginationBulletsSpaceBetween":[513,"pagination-bullets-space-between"],"paginationTabsMaxWidth":[513,"pagination-tabs-max-width"],"paginationTransitionDuration":[513,"pagination-transition-duration"],"paginationTransitionTimingFunction":[513,"pagination-transition-timing-function"],"prevNextFilter":[513,"prev-next-filter"],"slideMessageFirst":[513,"slide-message-first"],"slideMessageLast":[513,"slide-message-last"],"slideMessageNext":[513,"slide-message-next"],"slideMessagePrevious":[513,"slide-message-previous"],"slidesPerView":[514,"slides-per-view"],"spaceBetween":[514,"space-between"],"speed":[514],"imagesArray":[32],"mySwiper":[32],"mySwiperGallery":[32],"swiperBreakpoints":[32]}]);
-const SpxSlideshow$1 = /*@__PURE__*/proxyCustomElement(SpxSlideshow, [4,"spx-slideshow",{"gap":[513],"maxWidth":[513,"max-width"],"duration":[513],"offsetWidth":[32]},[[9,"resize","onResize"]]]);
+const SpxSlideshow$1 = /*@__PURE__*/proxyCustomElement(SpxSlideshow, [4,"spx-slideshow",{"gap":[513],"imageSize":[513,"image-size"],"images":[513],"imagesSrc":[513,"images-src"],"maxWidth":[513,"max-width"],"duration":[513],"imagesArray":[32],"offsetWidth":[32]},[[9,"resize","onResize"]]]);
 const SpxSnackbar$1 = /*@__PURE__*/proxyCustomElement(SpxSnackbar, [4,"spx-snackbar",{"animationDelay":[513,"animation-delay"],"animationDuration":[513,"animation-duration"],"background":[513],"border":[513],"borderRadius":[513,"border-radius"],"closeable":[516],"color":[513],"distanceX":[513,"distance-x"],"distanceY":[513,"distance-y"],"fixed":[516],"fontSize":[513,"font-size"],"identifier":[513],"padding":[513],"position":[513],"positionCss":[513,"position-css"],"reverse":[516],"spaceBetween":[513,"space-between"],"target":[513],"text":[513],"zIndex":[514,"z-index"],"positionArray":[32],"containerClass":[32]}]);
 const SpxSnackbarToggle$1 = /*@__PURE__*/proxyCustomElement(SpxSnackbarToggle, [4,"spx-snackbar-toggle"]);
 const SpxText$1 = /*@__PURE__*/proxyCustomElement(SpxText, [4,"spx-text",{"contentFontSizeMultiplier":[514,"content-font-size-multiplier"],"headingColor":[513,"heading-color"],"headingFontFamily":[513,"heading-font-family"],"headingFontWeight":[513,"heading-font-weight"],"headingLetterSpacing":[513,"heading-letter-spacing"],"headingLineHeight":[513,"heading-line-height"],"headingTextTransform":[513,"heading-text-transform"],"linkUnderlineColor":[513,"link-underline-color"],"markdown":[516],"maxWidth":[513,"max-width"],"textColor":[513,"text-color"],"textFontFamily":[513,"text-font-family"],"textFontWeight":[513,"text-font-weight"],"textLetterSpacing":[513,"text-letter-spacing"],"textLineHeight":[513,"text-line-height"],"textMinW":[514,"text-min-w"],"textMaxW":[514,"text-max-w"],"textTextTransform":[513,"text-text-transform"],"textType":[513,"text-type"]}]);

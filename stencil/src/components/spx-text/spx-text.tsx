@@ -79,10 +79,12 @@ export class SpxText {
       this.el.innerHTML = marked(this.el.innerHTML);
     }
 
-    const img = this.el.querySelectorAll('img, video');
-    img.forEach((item) => {
-      wrap(item, document.createElement('figure'));
-    });
+    if (this.el.querySelector('img')) {
+      const img = this.el.querySelectorAll('img, video');
+      img.forEach((item) => {
+        wrap(item, document.createElement('figure'));
+      });
+    }
   }
 
   render() {
@@ -268,6 +270,10 @@ export class SpxText {
 
           'img, video': {
             maxWidth: '100%',
+          },
+
+          'spx-code, spx-code + p': {
+            marginTop: 'var(--spx-space-lg)',
           },
         },
         heading

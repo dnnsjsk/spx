@@ -65,9 +65,9 @@
       "tags": []
     },
     {
-      "id": "edit-styling",
-      "name": "styling",
-      "type": "string",
+      "id": "edit-subfield",
+      "name": "subfield",
+      "type": "boolean",
       "description": "",
       "tags": []
     },
@@ -76,7 +76,6 @@
       "name": "type",
       "type": "string",
       "description": "",
-      "defaultValue": "'acf'",
       "tags": []
     }
   ],

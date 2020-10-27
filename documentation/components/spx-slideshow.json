@@ -27,6 +27,37 @@
       ]
     },
     {
+      "id": "slideshow-imageSize",
+      "name": "imageSize",
+      "type": "string",
+      "description": "WordPress media size when using the helper function..",
+      "tags": []
+    },
+    {
+      "id": "slideshow-images",
+      "name": "images",
+      "type": "string",
+      "description": "Gets images from an ACF or Metabox field.",
+      "tags": [
+        {
+          "text": "&lt;?php spx\\get::gallery($fieldName, $type) ?>",
+          "name": "helper"
+        }
+      ]
+    },
+    {
+      "id": "slideshow-imagesSrc",
+      "name": "imagesSrc",
+      "type": "string",
+      "description": "Gets images from an ACF or Metabox field.",
+      "tags": [
+        {
+          "text": "'acf', 'mb'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
       "id": "slideshow-maxWidth",
       "name": "maxWidth",
       "type": "string",

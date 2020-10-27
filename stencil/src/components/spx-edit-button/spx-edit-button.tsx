@@ -123,13 +123,6 @@ export class SpxEditButton {
 
   @Prop({ reflect: true }) textSuccess: string = 'Save was successful';
 
-  /**
-   * Type of data being sent.
-   * @choice 'option', 'acf'
-   */
-
-  @Prop({ reflect: true }) type: string = 'option';
-
   @Prop({ reflect: true }) zIndex: number = 99;
 
   @Watch('position')
@@ -142,7 +135,7 @@ export class SpxEditButton {
    */
 
   // prettier-ignore
-  @Event({ eventName: "spxEditButtonDiscard" }) spxEditButtonDiscard: EventEmitter;
+  @Event({eventName: "spxEditButtonDiscard"}) spxEditButtonDiscard: EventEmitter;
 
   /**
    * Fires after pressing the save button.
@@ -174,10 +167,24 @@ export class SpxEditButton {
       : document.querySelectorAll('[data-spx-edit]');
 
     elements.forEach((item) => {
+      const edit = document.createElement('spx-edit');
       const field = item.getAttribute('data-spx-edit');
+      const type = item.getAttribute('data-spx-edit-type');
+      const subfield = item.hasAttribute('data-spx-edit-subfield');
       const text = item.innerHTML;
-      item.innerHTML =
-        '<spx-edit name="' + field + '" editable>' + text + '</spx-edit>';
+      if (field) {
+        edit.setAttribute('name', field);
+      }
+      if (type) {
+        edit.setAttribute('type', type);
+      }
+      if (subfield) {
+        edit.setAttribute('subfield', '');
+      }
+      edit.innerHTML = text;
+      edit.setAttribute('editable', '');
+      item.innerHTML = '';
+      item.appendChild(edit);
     });
   };
 
@@ -210,7 +217,9 @@ export class SpxEditButton {
         bodyStringArray.push(final.replace(string, '='));
       });
 
-      return bodyStringArray.toString().replace(/,/g, '');
+      console.log(bodyStringArray.toString().replace(/,&/g, '&'));
+
+      return bodyStringArray.toString().replace(/,&/g, '&');
     };
 
     const afterSuccess = () => {
@@ -254,16 +263,12 @@ export class SpxEditButton {
           // @ts-ignore
           // eslint-disable-next-line no-undef
           spx.postId +
-          '' +
-          '&type=' +
-          this.type +
           '',
       }).then((response) => {
         if (response.status === 200) {
           afterSuccess();
         } else if (response.status === 500) {
           /** Remove loader on fail. */
-
           this.loading = false;
         }
       });

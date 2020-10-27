@@ -286,7 +286,7 @@ export namespace Components {
         "placeholder": string;
         "placeholderColor": string;
         "placeholderOpacity": string;
-        "styling": string;
+        "subfield": boolean;
         "type": string;
     }
     interface SpxEditButton {
@@ -356,11 +356,6 @@ export namespace Components {
           * Success message.
          */
         "textSuccess": string;
-        /**
-          * Type of data being sent.
-          * @choice 'option', 'acf'
-         */
-        "type": string;
         "zIndex": number;
     }
     interface SpxEditor {
@@ -1174,6 +1169,20 @@ export namespace Components {
          */
         "gap": string;
         /**
+          * WordPress media size when using the helper function..
+         */
+        "imageSize": string;
+        /**
+          * Gets images from an ACF or Metabox field.
+          * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+         */
+        "images": string;
+        /**
+          * Gets images from an ACF or Metabox field.
+          * @choice 'acf', 'mb'
+         */
+        "imagesSrc": string;
+        /**
           * Max width of inner elements.
           * @CSS
          */
@@ -1819,7 +1828,7 @@ declare namespace LocalJSX {
         "placeholder"?: string;
         "placeholderColor"?: string;
         "placeholderOpacity"?: string;
-        "styling"?: string;
+        "subfield"?: boolean;
         "type"?: string;
     }
     interface SpxEditButton {
@@ -1896,11 +1905,6 @@ declare namespace LocalJSX {
           * Success message.
          */
         "textSuccess"?: string;
-        /**
-          * Type of data being sent.
-          * @choice 'option', 'acf'
-         */
-        "type"?: string;
         "zIndex"?: number;
     }
     interface SpxEditor {
@@ -2692,6 +2696,20 @@ declare namespace LocalJSX {
           * @CSS
          */
         "gap"?: string;
+        /**
+          * WordPress media size when using the helper function..
+         */
+        "imageSize"?: string;
+        /**
+          * Gets images from an ACF or Metabox field.
+          * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+         */
+        "images"?: string;
+        /**
+          * Gets images from an ACF or Metabox field.
+          * @choice 'acf', 'mb'
+         */
+        "imagesSrc"?: string;
         /**
           * Max width of inner elements.
           * @CSS

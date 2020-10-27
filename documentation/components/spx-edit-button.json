@@ -187,19 +187,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-type",
-      "name": "type",
-      "type": "string",
-      "description": "Type of data being sent.",
-      "defaultValue": "'option'",
-      "tags": [
-        {
-          "text": "'option', 'acf'",
-          "name": "choice"
-        }
-      ]
-    },
-    {
       "id": "edit-button-zIndex",
       "name": "zIndex",
       "type": "number",

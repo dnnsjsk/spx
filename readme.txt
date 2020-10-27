@@ -15,6 +15,16 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 2.2.0 =
+* Edit Button: added possibility to change various different types of content (ACF, options etc.) with one button.
+* Edit Button: added possibility to edit normal and nested repeater fields.
+* Edit Button: removed 'type' attribute.
+* Edit Button: removed 'id' attribute.
+* Slideshow: add 'images' attribute.
+* Slideshow: add 'images-size' attribute.
+* Slideshow: add 'images-src' attribute.
+* Slideshow: add support for helper function to be used to populate component with images.
+
 = 2.1.3 =
 * Animate: add 'repeat-delay' attribute.
 * Change plugin author name.

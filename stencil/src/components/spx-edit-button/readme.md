@@ -29,7 +29,6 @@
 | `textEdit`          | `text-edit`          | Edit button text.                                                                                                                                                                                              | `string`                                          | `'Edit site'`                 |
 | `textSave`          | `text-save`          | Save button text.                                                                                                                                                                                              | `string`                                          | `'Save'`                      |
 | `textSuccess`       | `text-success`       | Success message.                                                                                                                                                                                               | `string`                                          | `'Save was successful'`       |
-| `type`              | `type`               | Type of data being sent.                                                                                                                                                                                       | `string`                                          | `'option'`                    |
 | `zIndex`            | `z-index`            |                                                                                                                                                                                                                | `number`                                          | `99`                          |
 
 
@@ -58,12 +57,14 @@ Type: `Promise<void>`
 
 ### Depends on
 
+- [spx-edit](.)
 - [spx-snackbar](../spx-snackbar)
 - [spx-loader](../spx-loader)
 
 ### Graph
 ```mermaid
 graph TD;
+  spx-edit-button --> spx-edit
   spx-edit-button --> spx-snackbar
   spx-edit-button --> spx-loader
   spx-snackbar --> spx-icon

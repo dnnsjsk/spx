@@ -7,10 +7,12 @@ import {
   State,
   Listen,
   Element,
+  Watch,
 } from '@stencil/core';
 import { css, keyframes } from 'emotion';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
+import { getGallery } from '../../utils/getGallery';
 
 const tag = 'spx-slideshow';
 
@@ -27,6 +29,7 @@ export class SpxSlideshow {
   private clone: HTMLElement;
   private elements: HTMLElement;
 
+  @State() imagesArray: Array<string>;
   @State() offsetWidth;
 
   /**
@@ -35,6 +38,26 @@ export class SpxSlideshow {
    */
 
   @Prop({ reflect: true }) gap: string = 'var(--spx-space-lg)';
+
+  /**
+   * WordPress media size when using the helper function..
+   */
+
+  @Prop({ reflect: true }) imageSize: string;
+
+  /**
+   * Gets images from an ACF or Metabox field.
+   * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+   */
+
+  @Prop({ reflect: true }) images: string;
+
+  /**
+   * Gets images from an ACF or Metabox field.
+   * @choice 'acf', 'mb'
+   */
+
+  @Prop({ reflect: true }) imagesSrc: string;
 
   /**
    * Max width of inner elements.
@@ -50,9 +73,24 @@ export class SpxSlideshow {
 
   @Prop({ reflect: true }) duration: string = '60s';
 
+  /** Watch images prop and parse to array. */
+
+  @Watch('images')
+  imagesChanged(newValue: string) {
+    if (newValue) this.imagesArray = JSON.parse(newValue);
+  }
+
   @Listen('resize', { target: 'window' })
   onResize() {
     this.offsetWidth = this.elements.offsetWidth;
+  }
+
+  componentWillLoad() {
+    /** If image prop is set. */
+
+    if (this.images) {
+      this.imagesChanged(this.images);
+    }
   }
 
   componentDidLoad() {
@@ -111,7 +149,12 @@ export class SpxSlideshow {
       <Host>
         <div class={styleWrap}>
           <div class={style} ref={(el) => (this.elements = el as HTMLElement)}>
-            <slot />
+            {getGallery(
+              this.images,
+              this.imagesSrc,
+              this.imagesArray,
+              this.imageSize
+            )}
           </div>
           <div class={style} ref={(el) => (this.clone = el as HTMLElement)} />
         </div>

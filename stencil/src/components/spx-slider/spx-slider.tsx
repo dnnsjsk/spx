@@ -259,7 +259,7 @@ export class SpxScrollspy {
 
   @Prop({ reflect: true }) speed: number = 1000;
 
-  /** Watch images prop and parse to iteratable array. */
+  /** Watch images prop and parse to array. */
 
   @Watch('images')
   imagesChanged(newValue: string) {

@@ -12,30 +12,29 @@ function spxEditButtonAjaxHandler() {
 		/** Get post ID. */
 
 		$post_id = $_POST['post_id'];
-		$type    = $_POST['type'];
 
-		if ( $type === 'acf' ) {
+		foreach ( $_POST as $key => $value ) {
 
-			/** For each loop. */
-
-			foreach ( $_POST as $key => $value ) {
-
-				/** Update ACF field. */
-
-				update_field( $key, htmlspecialchars( $value, ENT_QUOTES, 'UTF-8' ), $post_id );
+			if ( strpos( $value, 'eF3ztPlKSglSF2g7uPUIs8fGWQnkeHqnacf' ) !== FALSE ) {
+				update_field( $key,
+					htmlspecialchars( str_replace( 'eF3ztPlKSglSF2g7uPUIs8fGWQnkeHqnacf', '', $value ), ENT_QUOTES, 'UTF-8' ), $post_id );
 			}
 
-		} else {
-
-			/** For each loop. */
-
-			foreach ( $_POST as $key => $value ) {
-
-				/** Update option. */
-
-				update_option( $key, htmlspecialchars( $value, ENT_QUOTES, 'UTF-8' ) );
+			if ( strpos( $value, 'eF3ztPlKSglSF2g7uPUIs8fGWQnkeHqnoption' ) !== FALSE ) {
+				update_option( $key,
+					htmlspecialchars( str_replace( 'eF3ztPlKSglSF2g7uPUIs8fGWQnkeHqnoption', '', $value ), ENT_QUOTES, 'UTF-8' ) );
 			}
 
+			if ( strpos( $value, 'eF3ztPlKSglSF2g7uPUIs8fGWQnkeHqnparentacf' ) !== FALSE ) {
+
+				$string = str_replace( ',_', ",", $key );
+				$array  = explode( ',', $string );
+
+				echo json_encode( $array );
+
+				update_sub_field( $array,
+					htmlspecialchars( str_replace( 'eF3ztPlKSglSF2g7uPUIs8fGWQnkeHqnparentacf', '', $value ), ENT_QUOTES, 'UTF-8' ), $post_id );
+			}
 		}
 
 		/** Create hook. */

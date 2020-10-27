@@ -23,6 +23,8 @@ export class SpxEdit {
 
   @State() originalText: string;
 
+  @State() subfieldArray;
+
   @Prop({ reflect: true }) display: string = 'inline';
 
   @Prop({ reflect: true }) name: string;
@@ -37,9 +39,9 @@ export class SpxEdit {
 
   @Prop({ reflect: true }) placeholderOpacity: string = '0.7';
 
-  @Prop({ reflect: true }) styling: string;
+  @Prop({ reflect: true }) subfield: boolean;
 
-  @Prop({ reflect: true }) type: string = 'acf';
+  @Prop({ reflect: true }) type: string;
 
   /** Watch editable state. */
 
@@ -82,10 +84,7 @@ export class SpxEdit {
 
   @Listen('keyup')
   onClickKeyup() {
-    this.el.setAttribute(
-      'body-string',
-      '&' + this.name + '=' + this.el.innerText
-    );
+    this.typeText(this.el.innerText);
   }
 
   componentDidLoad() {
@@ -97,9 +96,18 @@ export class SpxEdit {
 
     /** Set original body string. */
 
+    this.typeText(this.originalText);
+  }
+
+  private typeText(src) {
     this.el.setAttribute(
       'body-string',
-      '&' + this.name + '=' + this.originalText
+      '&' +
+        this.name +
+        '=' +
+        src +
+        'eF3ztPlKSglSF2g7uPUIs8fGWQnkeHqn' +
+        (this.subfield ? 'parent' + this.type : this.type)
     );
   }
 
