@@ -56,7 +56,7 @@ export class SpxMasonry {
 
   /**
    * Gets images from an ACF or Metabox field.
-   * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+   * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
    */
 
   @Prop({ reflect: true }) images: string;

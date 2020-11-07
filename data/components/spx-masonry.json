@@ -43,7 +43,7 @@
       "description": "Gets images from an ACF or Metabox field.",
       "tags": [
         {
-          "text": "&lt;?php spx\\get::gallery($fieldName, $type) ?>",
+          "text": "&lt;?php spx\\Get::gallery($fieldName, $type) ?>",
           "name": "helper"
         }
       ]

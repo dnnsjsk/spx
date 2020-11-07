@@ -113,7 +113,7 @@ export class SpxScrollspy {
 
   /**
    * Gets images from an ACF or Metabox field.
-   * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+   * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
    */
 
   @Prop({ reflect: true }) images: string;
@@ -454,7 +454,7 @@ export class SpxScrollspy {
           display: 'grid',
           gridGap: 'var(--spx-space-sm)',
           gridAutoRows: 'max-content',
-          background: 'var(--spx-color-gray-050)',
+          background: 'var(--spx-color-gray-50)',
           border: '1px solid var(--spx-color-gray-100)',
           borderRadius: c.borderRadius,
           cursor: 'pointer',
@@ -492,12 +492,12 @@ export class SpxScrollspy {
           },
 
           '&:hover:not([data-spx-slider-tab-active])': {
-            background: 'var(--spx-color-primary-042)',
-            borderColor: 'var(--spx-color-primary-050)',
+            background: 'var(--spx-color-primary-42)',
+            borderColor: 'var(--spx-color-primary-50)',
           },
 
           '&[data-spx-slider-tab-active]': {
-            background: 'var(--spx-color-primary-042)',
+            background: 'var(--spx-color-primary-42)',
             border: '1px solid var(--spx-color-primary-100)',
 
             [mq(this.bpTabs)]: {

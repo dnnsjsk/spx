@@ -40,7 +40,7 @@ export class SpxText {
 
   @Prop({ reflect: true }) headingTextTransform: string = 'default';
 
-  @Prop({ reflect: true }) linkUnderlineColor: string =
+  @Prop({ reflect: true }) linkDecorationColor: string =
     'var(--spx-color-primary-A700)';
 
   /** Parse markdown. */
@@ -235,8 +235,8 @@ export class SpxText {
               textDecoration: 'underline',
               textDecorationColor: setVar(
                 tag,
-                'link-underline-color',
-                this.linkUnderlineColor
+                'link-decoration-color',
+                this.linkDecorationColor
               ),
             },
           },

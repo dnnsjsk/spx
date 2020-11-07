@@ -8,7 +8,7 @@
 
 namespace spx;
 
-class get {
+class Get {
 
 	/**
 	 * Gallery function.

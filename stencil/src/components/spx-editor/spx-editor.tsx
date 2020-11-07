@@ -16,26 +16,26 @@ import Clipboard from 'clipboard';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 
 import * as s from '../../constants/style';
-import * as accordion from '../../../../documentation/components/spx-accordion.json';
-import * as animate from '../../../../documentation/components/spx-animate.json';
-import * as classToggle from '../../../../documentation/components/spx-class-toggle.json';
-import * as code from '../../../../documentation/components/spx-code.json';
-import * as editButton from '../../../../documentation/components/spx-edit-button.json';
-import * as group from '../../../../documentation/components/spx-group.json';
-import * as iframe from '../../../../documentation/components/spx-iframe.json';
-import * as imageComparison from '../../../../documentation/components/spx-image-comparison.json';
-import * as lightbox from '../../../../documentation/components/spx-lightbox.json';
-import * as masonry from '../../../../documentation/components/spx-masonry.json';
-import * as mockup from '../../../../documentation/components/spx-mockup.json';
-// import * as navigation from '../../../../documentation/components/spx-navigation.json'
-import * as notation from '../../../../documentation/components/spx-notation.json';
-import * as offset from '../../../../documentation/components/spx-offset.json';
-// import * as scrollspy from '../../../../documentation/components/spx-scrollspy.json'
-import * as share from '../../../../documentation/components/spx-share.json';
-import * as slider from '../../../../documentation/components/spx-slider.json';
-import * as slideshow from '../../../../documentation/components/spx-slideshow.json';
-import * as snackbar from '../../../../documentation/components/spx-snackbar.json';
-import * as typewriter from '../../../../documentation/components/spx-typewriter.json';
+import * as accordion from '../../../../data/components/spx-accordion.json';
+import * as animate from '../../../../data/components/spx-animate.json';
+import * as classToggle from '../../../../data/components/spx-class-toggle.json';
+import * as code from '../../../../data/components/spx-code.json';
+import * as editButton from '../../../../data/components/spx-edit-button.json';
+import * as group from '../../../../data/components/spx-group.json';
+import * as iframe from '../../../../data/components/spx-iframe.json';
+import * as imageComparison from '../../../../data/components/spx-image-comparison.json';
+import * as lightbox from '../../../../data/components/spx-lightbox.json';
+import * as masonry from '../../../../data/components/spx-masonry.json';
+import * as mockup from '../../../../data/components/spx-mockup.json';
+// import * as navigation from '../../../../data/components/spx-navigation.json'
+import * as notation from '../../../../data/components/spx-notation.json';
+import * as offset from '../../../../data/components/spx-offset.json';
+// import * as scrollspy from '../../../../data/components/spx-scrollspy.json'
+import * as share from '../../../../data/components/spx-share.json';
+import * as slider from '../../../../data/components/spx-slider.json';
+import * as slideshow from '../../../../data/components/spx-slideshow.json';
+import * as snackbar from '../../../../data/components/spx-snackbar.json';
+import * as typewriter from '../../../../data/components/spx-typewriter.json';
 import { titleCase } from '../../utils/titleCase';
 
 @Component({
@@ -857,7 +857,7 @@ export class SpxEditor {
       flexDirection: 'column',
       alignItems: 'center',
       padding: this.current === 'iframe' ? '2vw 8vw' : '4vw',
-      background: 'var(--spx-color-gray-050)',
+      background: 'var(--spx-color-gray-50)',
 
       'spx-image-comparison': {
         maxWidth: '1000px',

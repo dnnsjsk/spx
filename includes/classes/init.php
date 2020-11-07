@@ -8,7 +8,27 @@
 
 namespace spx;
 
-class init {
+class Init {
+
+	public function script() {
+
+		global $post;
+
+		$localizeArray = array(
+			'ajax'   => admin_url( 'admin-ajax.php' ),
+			'postId' => $post->ID,
+		);
+
+		wp_enqueue_script(
+			'spx',
+			plugins_url( '../assets/js/components/build/spx.esm.js', dirname( __FILE__ ) ),
+			array(),
+			filemtime( SPX_DIR . '/assets/js/components/build/spx.esm.js' ),
+			FALSE );
+
+		wp_localize_script( 'spx', 'spx', $localizeArray );
+
+	}
 
 	/**
 	 * Enqueue scripts.
@@ -16,27 +36,10 @@ class init {
 	 * @since 1.0
 	 */
 
-	public static function enqueueScripts() {
+	private function enqueueScripts() {
 
-		add_action( 'wp_enqueue_scripts', function () {
-
-			global $post;
-
-			$localizeArray = array(
-				'ajax'   => admin_url( 'admin-ajax.php' ),
-				'postId' => $post->ID,
-			);
-
-			wp_enqueue_script(
-				'spx',
-				plugins_url( '../assets/js/components/build/spx.esm.js', dirname( __FILE__ ) ),
-				array(),
-				filemtime( SPX_DIR . '/assets/js/components/build/spx.esm.js' ),
-				FALSE );
-
-			wp_localize_script( 'spx', 'spx', $localizeArray );
-
-		} );
+		add_action( 'wp_enqueue_scripts', array( $this, 'script' ) );
+		add_action( 'enqueue_block_editor_assets', array( &$this, 'script' ) );
 	}
 
 	/**
@@ -45,7 +48,7 @@ class init {
 	 * @since 1.0
 	 */
 
-	public static function addScriptTags() {
+	public function addScriptTags() {
 
 		add_filter( 'script_loader_tag', function ( $tag, $handle, $source ) {
 

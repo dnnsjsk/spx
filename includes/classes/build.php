@@ -12,7 +12,7 @@
 
 namespace spx;
 
-class build {
+class Build {
 
 	public static function navTree( array &$elements, $parentId = 0 ) {
 		$branch = array();

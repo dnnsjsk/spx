@@ -72,6 +72,8 @@ export class SpxSectionHeader {
 
   @Prop({ reflect: true }) spaceX: string = 'var(--spx-space-md)';
 
+  @Prop({ reflect: true }) wrapper: boolean;
+
   @Prop({ reflect: true }) zIndex: number = 102;
 
   @Listen('scroll', { target: 'window' })
@@ -155,22 +157,24 @@ export class SpxSectionHeader {
     });
 
     return (
-      <Host class={styleHost}>
-        <div>
-          <a href={this.logoLink} class={styleLogo}>
-            {state.bpMobile ? (
-              <img class={styleImg} src={this.logoSrcMobile} alt="logo" />
-            ) : (
-              <img class={styleImg} src={this.logoSrc} alt="logo" />
-            )}
-          </a>
-        </div>
-        <div class={styleNavigation}>
-          <slot name="navigation" />
-        </div>
-        <div class={styleButtons}>
-          <slot name="buttons" />
-        </div>
+      <Host class={!this.wrapper && styleHost}>
+        {!this.wrapper && [
+          <div>
+            <a href={this.logoLink} class={styleLogo}>
+              {state.bpMobile && this.logoSrcMobile ? (
+                <img class={styleImg} src={this.logoSrcMobile} alt="logo" />
+              ) : (
+                <img class={styleImg} src={this.logoSrc} alt="logo" />
+              )}
+            </a>
+          </div>,
+          <div class={styleNavigation}>
+            <slot name="navigation" />
+          </div>,
+          <div class={styleButtons}>
+            <slot name="buttons" />
+          </div>,
+        ]}
         <slot />
       </Host>
     );

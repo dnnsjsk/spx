@@ -27,11 +27,8 @@ module.exports = {
         ),
       },
       {
-        from: path.resolve(__dirname, "documentation"),
-        to: path.resolve(
-          __dirname,
-          "../../../../../releases/spx-release/documentation"
-        ),
+        from: path.resolve(__dirname, "data"),
+        to: path.resolve(__dirname, "../../../../../releases/spx-release/data"),
       },
       {
         from: path.resolve(__dirname, "spx.php"),
@@ -50,10 +47,7 @@ module.exports = {
           __dirname,
           "../../../../../releases/spx-release/includes/*"
         ),
-        path.resolve(
-          __dirname,
-          "../../../../../releases/spx-release/documentation/*"
-        ),
+        path.resolve(__dirname, "../../../../../releases/spx-release/data/*"),
         path.resolve(
           __dirname,
           "../../../../../releases/spx-release/readme.txt"

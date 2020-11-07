@@ -32,6 +32,10 @@ export class SpxCode {
 
   @Prop({ reflect: true }) fontSize: string = 'clamp(12px, 1.6vw, 16px)';
 
+  @Prop({ reflect: true }) height: string;
+
+  @Prop({ reflect: true }) overflow: string = 'auto';
+
   @Prop({ reflect: true }) padding: string = 'var(--spx-space-lg)';
 
   /**
@@ -81,8 +85,10 @@ export class SpxCode {
       },
 
       pre: {
+        overflow: setVar(tag, 'overflow', this.overflow),
         background: setVar(tag, 'background', this.background),
         padding: setVar(tag, 'padding', this.padding),
+        height: setVar(tag, 'height', this.height),
       },
     });
 

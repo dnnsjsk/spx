@@ -187,7 +187,7 @@
       "description": "Renders a WordPress menu.",
       "tags": [
         {
-          "text": "&lt;?php spx\\get::navigation(\"myMenu\") ?>",
+          "text": "&lt;?php spx\\Get::navigation(\"myMenu\") ?>",
           "name": "helper"
         }
       ]

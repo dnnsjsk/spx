@@ -23,7 +23,7 @@
       "name": "navigationBackground",
       "type": "string",
       "description": "",
-      "defaultValue": "'var(--spx-color-gray-050)'",
+      "defaultValue": "'var(--spx-color-gray-50)'",
       "tags": []
     },
     {
@@ -115,6 +115,14 @@
       "tags": []
     },
     {
+      "id": "page-docs-navigationPadding",
+      "name": "navigationPadding",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-space-xl)' + ' ' + state.spaceXsm",
+      "tags": []
+    },
+    {
       "id": "page-docs-navigationTitleColor",
       "name": "navigationTitleColor",
       "type": "string",
@@ -152,6 +160,14 @@
       "type": "string",
       "description": "",
       "defaultValue": "'uppercase'",
+      "tags": []
+    },
+    {
+      "id": "page-docs-navigationTop",
+      "name": "navigationTop",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-offset)'",
       "tags": []
     },
     {

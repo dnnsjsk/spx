@@ -43,7 +43,7 @@ export class SpxPageDocs {
     state.fontFamilyPrimary;
 
   @Prop({ reflect: true }) navigationBackground: string =
-    'var(--spx-color-gray-050)';
+    'var(--spx-color-gray-50)';
 
   @Prop({ reflect: true }) navigationFontFamily: string =
     state.fontFamilyPrimary;
@@ -69,6 +69,9 @@ export class SpxPageDocs {
 
   @Prop({ reflect: true }) navigationLinkTextTransform: string = 'default';
 
+  @Prop({ reflect: true }) navigationPadding: string =
+    'var(--spx-space-xl)' + ' ' + state.spaceXsm;
+
   @Prop({ reflect: true }) navigationTitleColor: string =
     'var(--spx-color-gray-600)';
 
@@ -79,6 +82,8 @@ export class SpxPageDocs {
   @Prop({ reflect: true }) navigationTitleLineHeight: string = '1.25';
 
   @Prop({ reflect: true }) navigationTitleTextTransform: string = 'uppercase';
+
+  @Prop({ reflect: true }) navigationTop: string = 'var(--spx-offset)';
 
   @Prop({ reflect: true }) offsetMarginTop: string = 'var(--spx-space-md)';
 
@@ -197,11 +202,10 @@ export class SpxPageDocs {
 
     const styleNavigation = {
       position: 'sticky',
-      top: 'var(--spx-offset)',
+      top: setVar(tag, 'navigation-top', this.navigationTop),
       gridAutoRows: 'max-content',
-      height: 'calc(100vh - var(--spx-offset))',
-      padding:
-        '' + setVar(tag, 'space-y', this.spaceY) + ' ' + state.spaceXsm + '',
+      height: 'calc(100vh - ' + this.navigationTop + ')',
+      padding: setVar(tag, 'navigation-padding', this.navigationPadding),
       overflowY: 'auto',
 
       ul: {
@@ -290,12 +294,15 @@ export class SpxPageDocs {
     /** Content. */
 
     const styleContent = {
-      padding:
+      padding: setVar(
+        tag,
+        'content-padding',
         '' +
-        setVar(tag, 'space-y', this.spaceY) +
-        ' ' +
-        setVar(tag, 'x', this.spaceX) +
-        '',
+          setVar(tag, 'space-y', this.spaceY) +
+          ' ' +
+          setVar(tag, 'space-x', this.spaceX) +
+          ''
+      ),
 
       h1: {
         '&[id]:before': {

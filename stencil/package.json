@@ -1,6 +1,6 @@
 {
   "name": "spx",
-  "version": "2.1.3",
+  "version": "2.2.1",
   "description": "The web component based page-builder for developers.",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

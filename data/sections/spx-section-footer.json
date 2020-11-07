@@ -3,48 +3,18 @@
   "description": "Footer component for sections.",
   "properties": [
     {
-      "id": "section-footer-columnSizeMax",
-      "name": "columnSizeMax",
+      "id": "section-footer-background",
+      "name": "background",
       "type": "string",
-      "description": "Maximum column size.",
-      "defaultValue": "'auto'",
-      "tags": [
-        {
-          "name": "CSS"
-        }
-      ]
-    },
-    {
-      "id": "section-footer-columnSizeMin",
-      "name": "columnSizeMin",
-      "type": "string",
-      "description": "Minimum column size.",
-      "defaultValue": "'0'",
-      "tags": [
-        {
-          "name": "CSS"
-        }
-      ]
-    },
-    {
-      "id": "section-footer-display",
-      "name": "display",
-      "type": "string",
-      "description": "Display.",
-      "defaultValue": "'grid'",
-      "tags": [
-        {
-          "text": "'grid', 'flex'",
-          "name": "choice"
-        }
-      ]
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-900)'",
+      "tags": []
     },
     {
       "id": "section-footer-gap",
       "name": "gap",
       "type": "string",
       "description": "Gap between columns.",
-      "defaultValue": "'var(--spx-space-lg)'",
       "tags": [
         {
           "name": "CSS"
@@ -57,6 +27,21 @@
       "type": "string",
       "description": "",
       "defaultValue": "'40px'",
+      "tags": []
+    },
+    {
+      "id": "section-footer-justifyContent",
+      "name": "justifyContent",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'space-between'",
+      "tags": []
+    },
+    {
+      "id": "section-footer-maxWidth",
+      "name": "maxWidth",
+      "type": "string",
+      "description": "",
       "tags": []
     },
     {
@@ -84,25 +69,20 @@
       ]
     },
     {
+      "id": "section-footer-textColor",
+      "name": "textColor",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'var(--spx-color-gray-600)'",
+      "tags": []
+    },
+    {
       "id": "section-footer-textMaxWidth",
       "name": "textMaxWidth",
       "type": "string",
       "description": "",
       "defaultValue": "'370px'",
       "tags": []
-    },
-    {
-      "id": "section-footer-theme",
-      "name": "theme",
-      "type": "string",
-      "description": "Footer theme.",
-      "defaultValue": "'dark'",
-      "tags": [
-        {
-          "text": "'dark', 'light'",
-          "name": "choice"
-        }
-      ]
     }
   ],
   "events": [],

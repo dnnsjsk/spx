@@ -14,10 +14,7 @@ export const setColor = (color, type) => {
 
   const createCSSVars = (color) => {
     Object.entries(color).forEach(([key, value]) => {
-      const array = [
-        '--spx-color-' + type + '-' + (key.length === 2 ? '0' + key : key) + '',
-        value['color'],
-      ];
+      const array = ['--spx-color-' + type + '-' + key + '', value['color']];
       styles.push(array);
     });
   };

@@ -19,35 +19,20 @@ export class SpxSectionFooter {
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxSectionFooterElement;
 
-  /**
-   * Minimum column size.
-   * @CSS
-   */
-
-  @Prop({ reflect: true }) columnSizeMin: string = '0';
-
-  /**
-   * Maximum column size.
-   * @CSS
-   */
-
-  @Prop({ reflect: true }) columnSizeMax: string = 'auto';
-
-  /**
-   * Display.
-   * @choice 'grid', 'flex'
-   */
-
-  @Prop({ reflect: true }) display: string = 'grid';
+  @Prop({ reflect: true }) background: string = 'var(--spx-color-gray-900)';
 
   /**
    * Gap between columns.
    * @CSS
    */
 
-  @Prop({ reflect: true }) gap: string = 'var(--spx-space-lg)';
+  @Prop({ reflect: true }) gap: string;
 
   @Prop({ reflect: true }) imageMaxHeight: string = '40px';
+
+  @Prop({ reflect: true }) justifyContent: string = 'space-between';
+
+  @Prop({ reflect: true }) maxWidth: string;
 
   /**
    * Space before the footer.
@@ -63,14 +48,9 @@ export class SpxSectionFooter {
 
   @Prop({ reflect: true }) spaceY: string = 'var(--spx-space-3xl)';
 
+  @Prop({ reflect: true }) textColor: string = 'var(--spx-color-gray-600)';
+
   @Prop({ reflect: true }) textMaxWidth: string = '370px';
-
-  /**
-   * Footer theme.
-   * @choice 'dark', 'light'
-   */
-
-  @Prop({ reflect: true }) theme: string = 'dark';
 
   componentDidLoad() {
     globalComponentDidLoad(this.el);
@@ -81,7 +61,7 @@ export class SpxSectionFooter {
     /** Text styles. */
 
     const styleText = {
-      color: 'var(--spx-color-gray-600)',
+      color: setVar(tag, 'text-color', this.textColor),
       fontSize: 'clamp(16px, 1.2vw, 20px)',
       lineHeight: '1.6',
       maxWidth: setVar(tag, 'text-max-width', this.textMaxWidth),
@@ -109,30 +89,24 @@ export class SpxSectionFooter {
     const styleOuter = css({
       display: 'block',
       width: '100%',
-      background: 'var(--spx-color-gray-900)',
+      background: setVar(tag, 'background', this.background),
     });
 
     /** Inner styles. */
 
     const styleInner = css({
-      display: this.display,
-      flexDirection:
-        this.display === 'flex' && state.bpMobile ? 'column' : 'row',
-      justifyContent: this.display === 'flex' && 'space-between',
+      display: 'flex',
+      flexDirection: state.bpMobile ? 'column' : 'row',
+      justifyContent: setVar(tag, 'justify-content', this.justifyContent),
       flexWrap: 'wrap',
-      gridAutoFlow: this.display === 'grid' && state.bpMobile && 'row',
-      gridTemplateColumns:
-        this.display === 'grid' && state.bpMobile
-          ? '1fr'
-          : 'repeat(auto-fit, minmax(' +
-            setVar(tag, 'column-size-min', this.columnSizeMin) +
-            ', ' +
-            setVar(tag, 'column-size-max', this.columnSizeMax) +
-            '))',
-      gap: this.display === 'grid' && setVar(tag, 'gap', this.gap),
       marginLeft: 'auto',
       marginRight: 'auto',
       padding: '' + setVar(tag, 'padding', this.spaceY) + ' 0',
+      maxWidth: setVar(tag, 'max-width', this.maxWidth),
+
+      '& > div + div:not(.spx-e)': {
+        marginLeft: !state.bpMobile && setVar(tag, 'gap', this.gap),
+      },
 
       h3: {
         color: '#ffffff',

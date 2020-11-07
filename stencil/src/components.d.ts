@@ -156,6 +156,8 @@ export namespace Components {
         "background": string;
         "borderRadius": string;
         "fontSize": string;
+        "height": string;
+        "overflow": string;
         "padding": string;
         "reload": () => Promise<void>;
         /**
@@ -195,6 +197,10 @@ export namespace Components {
           * @choice 'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'
          */
         "colorSecondary": string;
+        /**
+          * Disable color generation.
+         */
+        "disableColors": boolean;
         "focusColor": string;
         /**
           * Primary font-family.
@@ -445,7 +451,7 @@ export namespace Components {
         "imageSize": string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+          * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
          */
         "images": string;
         /**
@@ -562,7 +568,7 @@ export namespace Components {
         "itemUnderlineHover": boolean;
         /**
           * Renders a WordPress menu.
-          * @helper &lt;?php spx\get::navigation("myMenu") ?>
+          * @helper &lt;?php spx\Get::navigation("myMenu") ?>
          */
         "menu": string;
         /**
@@ -670,11 +676,13 @@ export namespace Components {
         "navigationLinkLetterSpacing": string;
         "navigationLinkLineHeight": string;
         "navigationLinkTextTransform": string;
+        "navigationPadding": string;
         "navigationTitleColor": string;
         "navigationTitleFontWeight": string;
         "navigationTitleLetterSpacing": string;
         "navigationTitleLineHeight": string;
         "navigationTitleTextTransform": string;
+        "navigationTop": string;
         "offsetMarginTop": string;
         /**
           * Space from the last content element to the end of the component.
@@ -734,7 +742,7 @@ export namespace Components {
         "mobile": number;
         /**
           * Gets a WordPress post to render.
-          * @helper &lt;?php spx\get::post() ?>
+          * @helper &lt;?php spx\Get::post($postId, $dateFormat, $imageSize) ?>
          */
         "post": string;
         /**
@@ -814,27 +822,15 @@ export namespace Components {
         "titleTextTransform": string;
     }
     interface SpxSectionFooter {
-        /**
-          * Maximum column size.
-          * @CSS
-         */
-        "columnSizeMax": string;
-        /**
-          * Minimum column size.
-          * @CSS
-         */
-        "columnSizeMin": string;
-        /**
-          * Display.
-          * @choice 'grid', 'flex'
-         */
-        "display": string;
+        "background": string;
         /**
           * Gap between columns.
           * @CSS
          */
         "gap": string;
         "imageMaxHeight": string;
+        "justifyContent": string;
+        "maxWidth": string;
         /**
           * Space before the footer.
           * @CSS
@@ -845,12 +841,8 @@ export namespace Components {
           * @CSS
          */
         "spaceY": string;
+        "textColor": string;
         "textMaxWidth": string;
-        /**
-          * Footer theme.
-          * @choice 'dark', 'light'
-         */
-        "theme": string;
     }
     interface SpxSectionHeader {
         "backdropFilter": string;
@@ -887,6 +879,7 @@ export namespace Components {
           * @CSS
          */
         "spaceX": string;
+        "wrapper": boolean;
         "zIndex": number;
     }
     interface SpxSectionTextMedia {
@@ -1042,7 +1035,7 @@ export namespace Components {
         "imageSize": string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+          * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
          */
         "images": string;
         /**
@@ -1263,7 +1256,7 @@ export namespace Components {
         "headingLetterSpacing": string;
         "headingLineHeight": string;
         "headingTextTransform": string;
-        "linkUnderlineColor": string;
+        "linkDecorationColor": string;
         /**
           * Parse markdown.
          */
@@ -1699,6 +1692,8 @@ declare namespace LocalJSX {
         "background"?: string;
         "borderRadius"?: string;
         "fontSize"?: string;
+        "height"?: string;
+        "overflow"?: string;
         "padding"?: string;
         /**
           * Colour theme.
@@ -1737,6 +1732,10 @@ declare namespace LocalJSX {
           * @choice 'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'
          */
         "colorSecondary"?: string;
+        /**
+          * Disable color generation.
+         */
+        "disableColors"?: boolean;
         "focusColor"?: string;
         /**
           * Primary font-family.
@@ -1990,7 +1989,7 @@ declare namespace LocalJSX {
         "imageSize"?: string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+          * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
          */
         "images"?: string;
         /**
@@ -2102,7 +2101,7 @@ declare namespace LocalJSX {
         "itemUnderlineHover"?: boolean;
         /**
           * Renders a WordPress menu.
-          * @helper &lt;?php spx\get::navigation("myMenu") ?>
+          * @helper &lt;?php spx\Get::navigation("myMenu") ?>
          */
         "menu"?: string;
         /**
@@ -2199,11 +2198,13 @@ declare namespace LocalJSX {
         "navigationLinkLetterSpacing"?: string;
         "navigationLinkLineHeight"?: string;
         "navigationLinkTextTransform"?: string;
+        "navigationPadding"?: string;
         "navigationTitleColor"?: string;
         "navigationTitleFontWeight"?: string;
         "navigationTitleLetterSpacing"?: string;
         "navigationTitleLineHeight"?: string;
         "navigationTitleTextTransform"?: string;
+        "navigationTop"?: string;
         "offsetMarginTop"?: string;
         "onSpxPageDocsDidLoad"?: (event: CustomEvent<any>) => void;
         /**
@@ -2264,7 +2265,7 @@ declare namespace LocalJSX {
         "mobile"?: number;
         /**
           * Gets a WordPress post to render.
-          * @helper &lt;?php spx\get::post() ?>
+          * @helper &lt;?php spx\Get::post($postId, $dateFormat, $imageSize) ?>
          */
         "post"?: string;
         /**
@@ -2344,27 +2345,15 @@ declare namespace LocalJSX {
         "titleTextTransform"?: string;
     }
     interface SpxSectionFooter {
-        /**
-          * Maximum column size.
-          * @CSS
-         */
-        "columnSizeMax"?: string;
-        /**
-          * Minimum column size.
-          * @CSS
-         */
-        "columnSizeMin"?: string;
-        /**
-          * Display.
-          * @choice 'grid', 'flex'
-         */
-        "display"?: string;
+        "background"?: string;
         /**
           * Gap between columns.
           * @CSS
          */
         "gap"?: string;
         "imageMaxHeight"?: string;
+        "justifyContent"?: string;
+        "maxWidth"?: string;
         /**
           * Space before the footer.
           * @CSS
@@ -2375,12 +2364,8 @@ declare namespace LocalJSX {
           * @CSS
          */
         "spaceY"?: string;
+        "textColor"?: string;
         "textMaxWidth"?: string;
-        /**
-          * Footer theme.
-          * @choice 'dark', 'light'
-         */
-        "theme"?: string;
     }
     interface SpxSectionHeader {
         "backdropFilter"?: string;
@@ -2417,6 +2402,7 @@ declare namespace LocalJSX {
           * @CSS
          */
         "spaceX"?: string;
+        "wrapper"?: boolean;
         "zIndex"?: number;
     }
     interface SpxSectionTextMedia {
@@ -2571,7 +2557,7 @@ declare namespace LocalJSX {
         "imageSize"?: string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+          * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
          */
         "images"?: string;
         /**
@@ -2790,7 +2776,7 @@ declare namespace LocalJSX {
         "headingLetterSpacing"?: string;
         "headingLineHeight"?: string;
         "headingTextTransform"?: string;
-        "linkUnderlineColor"?: string;
+        "linkDecorationColor"?: string;
         /**
           * Parse markdown.
          */

@@ -428,7 +428,7 @@ export const palette = {
     A400: { color: '#4E342E', text: '#ffffff' },
     A700: { color: '#3E2723', text: '#ffffff' },
   },
-  grey: {
+  gray: {
     50: { color: '#FAFAFA', text: '#000000' },
     100: { color: '#F5F5F5', text: '#000000' },
     200: { color: '#EEEEEE', text: '#000000' },
@@ -444,7 +444,7 @@ export const palette = {
     A400: { color: '#424242', text: '#ffffff' },
     A700: { color: '#212121', text: '#ffffff' },
   },
-  'blue grey': {
+  'blue gray': {
     41: { color: '#fdfdfd', text: '#000000' },
     42: { color: '#fbfbfc', text: '#000000' },
     43: { color: '#f9fafa', text: '#000000' },

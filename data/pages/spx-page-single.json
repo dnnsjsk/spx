@@ -241,7 +241,7 @@
       "description": "Gets a WordPress post to render.",
       "tags": [
         {
-          "text": "&lt;?php spx\\get::post() ?>",
+          "text": "&lt;?php spx\\Get::post($postId, $dateFormat, $imageSize) ?>",
           "name": "helper"
         }
       ]

@@ -95,7 +95,7 @@ export class SpxPageSingle {
 
   /**
    * Gets a WordPress post to render.
-   * @helper &lt;?php spx\get::post() ?>
+   * @helper &lt;?php spx\Get::post($postId, $dateFormat, $imageSize) ?>
    */
 
   @Prop({ reflect: true }) post: string;

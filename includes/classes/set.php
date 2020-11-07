@@ -8,7 +8,7 @@
 
 namespace spx;
 
-class set {
+class Set {
 
 	/**
 	 * Color.

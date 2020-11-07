@@ -1,6 +1,6 @@
 <?php
 
-use spx\get;
+use spx\Get;
 
 /**
  * Get gallery.
@@ -12,7 +12,7 @@ use spx\get;
  */
 
 function spxGetGallery( $field, $type ) {
-	get::gallery( $field, $type );
+	Get::gallery( $field, $type );
 }
 
 /**
@@ -25,7 +25,7 @@ function spxGetGallery( $field, $type ) {
 
 
 function spxGetNavigation( $name ) {
-	get::navigation( $name );
+	Get::navigation( $name );
 }
 
 /**
@@ -39,5 +39,5 @@ function spxGetNavigation( $name ) {
  */
 
 function spxGetPost( $id = NULL, $dateFormat = NULL, $size = NULL ) {
-	get::post( $id, $dateFormat, $size );
+	Get::post( $id, $dateFormat, $size );
 }

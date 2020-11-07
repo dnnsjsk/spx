@@ -8,7 +8,7 @@
 
 namespace spx;
 
-class prepare {
+class Prepare {
 
 	public static function JSON( $data ) {
 

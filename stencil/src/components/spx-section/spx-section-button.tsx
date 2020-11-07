@@ -56,7 +56,7 @@ export class SpxSectionButton {
     const style =
       this.type === 'primary'
         ? 'var(--spx-color-primary-A700)'
-        : 'var(--spx-color-primary-045)';
+        : 'var(--spx-color-primary-45)';
 
     /** Get the hue. */
 

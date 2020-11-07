@@ -15004,9 +15004,9 @@ Prism.hooks.add('before-sanity-check', function (env) {
 }());
 });
 
-const spxCodeDefaultCss = "spx-code code[class*=language-],spx-code pre[class*=language-]{color:#a9b7c6;direction:ltr;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}spx-code code[class*=language-] *,spx-code pre[class*=language-] *{font-family:Consolas, Monaco, \"Andale Mono\", monospace !important}spx-code pre[class*=language-]::-moz-selection,spx-code pre[class*=language-] ::-moz-selection,spx-code code[class*=language-]::-moz-selection,spx-code code[class*=language-] ::-moz-selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code pre[class*=language-]::selection,spx-code pre[class*=language-] ::selection,spx-code code[class*=language-]::selection,spx-code code[class*=language-] ::selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code pre[class*=language-]{overflow:auto}spx-code .token.comment,spx-code .token.prolog,spx-code .token.cdata{color:#808080}spx-code .token.delimiter,spx-code .token.boolean,spx-code .token.keyword,spx-code .token.selector,spx-code .token.important,spx-code .token.atrule{color:#cc7832}spx-code .token.operator,spx-code .token.punctuation,spx-code .token.attr-name{color:#a9b7c6}spx-code .token.tag,spx-code .token.tag .punctuation,spx-code .token.doctype,spx-code .token.builtin{color:#e8bf6a}spx-code .token.entity,spx-code .token.number,spx-code .token.symbol{color:#6897bb}spx-code .token.property,spx-code .token.constant,spx-code .token.variable{color:#9876aa}spx-code .token.string,spx-code .token.char{color:#6a8759}spx-code .token.attr-value,spx-code .token.attr-value .punctuation{color:#a5c261}spx-code .token.attr-value .punctuation:first-child{color:#a9b7c6}spx-code .token.url{color:#287bde;text-decoration:underline}spx-code .token.function{color:#ffc66d}spx-code .token.regex{background:#364135}spx-code .token.bold{font-weight:bold}spx-code .token.italic{font-style:italic}spx-code .token.inserted{background:#294436}spx-code .token.deleted{background:#484a4a}spx-code code.language-css .token.property,spx-code code.language-css .token.property+.token.punctuation{color:#a9b7c6}spx-code code.language-css .token.id{color:#ffc66d}spx-code code.language-css .token.selector>.token.class,spx-code code.language-css .token.selector>.token.attribute,spx-code code.language-css .token.selector>.token.pseudo-class,spx-code code.language-css .token.selector>.token.pseudo-element{color:#ffc66d}";
+const spxCodeDefaultCss = "spx-code code[class*=language-],spx-code pre[class*=language-]{color:#a9b7c6;direction:ltr;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}spx-code code[class*=language-] *,spx-code pre[class*=language-] *{font-family:Consolas, Monaco, \"Andale Mono\", monospace !important}spx-code pre[class*=language-]::-moz-selection,spx-code pre[class*=language-] ::-moz-selection,spx-code code[class*=language-]::-moz-selection,spx-code code[class*=language-] ::-moz-selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code pre[class*=language-]::selection,spx-code pre[class*=language-] ::selection,spx-code code[class*=language-]::selection,spx-code code[class*=language-] ::selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code .token.comment,spx-code .token.prolog,spx-code .token.cdata{color:#808080}spx-code .token.delimiter,spx-code .token.boolean,spx-code .token.keyword,spx-code .token.selector,spx-code .token.important,spx-code .token.atrule{color:#cc7832}spx-code .token.operator,spx-code .token.punctuation,spx-code .token.attr-name{color:#a9b7c6}spx-code .token.tag,spx-code .token.tag .punctuation,spx-code .token.doctype,spx-code .token.builtin{color:#e8bf6a}spx-code .token.entity,spx-code .token.number,spx-code .token.symbol{color:#6897bb}spx-code .token.property,spx-code .token.constant,spx-code .token.variable{color:#9876aa}spx-code .token.string,spx-code .token.char{color:#6a8759}spx-code .token.attr-value,spx-code .token.attr-value .punctuation{color:#a5c261}spx-code .token.attr-value .punctuation:first-child{color:#a9b7c6}spx-code .token.url{color:#287bde;text-decoration:underline}spx-code .token.function{color:#ffc66d}spx-code .token.regex{background:#364135}spx-code .token.bold{font-weight:bold}spx-code .token.italic{font-style:italic}spx-code .token.inserted{background:#294436}spx-code .token.deleted{background:#484a4a}spx-code code.language-css .token.property,spx-code code.language-css .token.property+.token.punctuation{color:#a9b7c6}spx-code code.language-css .token.id{color:#ffc66d}spx-code code.language-css .token.selector>.token.class,spx-code code.language-css .token.selector>.token.attribute,spx-code code.language-css .token.selector>.token.pseudo-class,spx-code code.language-css .token.selector>.token.pseudo-element{color:#ffc66d}";
 
-const spxCodeDraculaCss = "spx-code code[class*=language-],spx-code pre[class*=language-]{color:#a9b7c6;direction:ltr;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}spx-code code[class*=language-] *,spx-code pre[class*=language-] *{font-family:Consolas, Monaco, \"Andale Mono\", monospace !important}spx-code pre[class*=language-]::-moz-selection,spx-code pre[class*=language-] ::-moz-selection,spx-code code[class*=language-]::-moz-selection,spx-code code[class*=language-] ::-moz-selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code pre[class*=language-]::selection,spx-code pre[class*=language-] ::selection,spx-code code[class*=language-]::selection,spx-code code[class*=language-] ::selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code pre[class*=language-]{overflow:auto}spx-code .language-css{color:#BD93F9}spx-code .token{color:#FF79C6}spx-code .language-css .token{color:#FF79C6}spx-code .token.script{color:#F8F8F2}spx-code .token.bold{font-weight:bold}spx-code .token.italic{font-style:italic}spx-code .token.atrule,spx-code .token.attr-name,spx-code .token.attr-value{color:#50FA7B}spx-code .language-css .token.atrule{color:#BD93F9}spx-code .language-html .token.attr-value,spx-code .language-markup .token.attr-value{color:#F1FA8C}spx-code .token.boolean{color:#BD93F9}spx-code .token.builtin,spx-code .token.class-name{color:#8BE9FD}spx-code .token.comment{color:#6272A4}spx-code .token.constant{color:#BD93F9}spx-code .language-javascript .token.constant{color:#FFB86C;font-style:italic}spx-code .token.entity{color:#FF79C6}spx-code .language-css .token.entity{color:#50FA7B}spx-code .language-html .token.entity.named-entity{color:#BD93F9}spx-code .language-html .token.entity:not(.named-entity){color:#FF79C6}spx-code .language-markup .token.entity.named-entity{color:#BD93F9}spx-code .language-markup .token.entity:not(.named-entity){color:#FF79C6}spx-code .token.function{color:#50FA7B}spx-code .language-css .token.function{color:#8BE9FD}spx-code .token.important,spx-code .token.keyword{color:#FF79C6}spx-code .token.prolog{color:#F8F8F2}spx-code .token.property{color:#FFB86C}spx-code .language-css .token.property{color:#8BE9FD}spx-code .token.punctuation{color:#FF79C6}spx-code .language-css .token.punctuation{color:#FFB86C}spx-code .language-html .token.punctuation,spx-code .language-markup .token.punctuation{color:#F8F8F2}spx-code .token.selector{color:#FF79C6}spx-code .language-css .token.selector{color:#50FA7B}spx-code .token.regex{color:#FF5555}spx-code .language-css .token.rule:not(.atrule){color:#F8F8F2}spx-code .token.string{color:#F1FA8C}spx-code .token.tag{color:#FF79C6}spx-code .token.url{color:#8BE9FD}spx-code .language-css .token.url{color:#FFB86C}spx-code .token.variable{color:#6272A4}spx-code .token.number{color:#bd93f9}spx-code .token.operator{color:#8be9fd}spx-code .token.char{color:#ff879d}spx-code .token.symbol{color:#ffb86c}spx-code .token.deleted{color:#e2777a}spx-code .token.namespace{color:#e2777a}";
+const spxCodeDraculaCss = "spx-code code[class*=language-],spx-code pre[class*=language-]{color:#a9b7c6;direction:ltr;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}spx-code code[class*=language-] *,spx-code pre[class*=language-] *{font-family:Consolas, Monaco, \"Andale Mono\", monospace !important}spx-code pre[class*=language-]::-moz-selection,spx-code pre[class*=language-] ::-moz-selection,spx-code code[class*=language-]::-moz-selection,spx-code code[class*=language-] ::-moz-selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code pre[class*=language-]::selection,spx-code pre[class*=language-] ::selection,spx-code code[class*=language-]::selection,spx-code code[class*=language-] ::selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code .language-css{color:#BD93F9}spx-code .token{color:#FF79C6}spx-code .language-css .token{color:#FF79C6}spx-code .token.script{color:#F8F8F2}spx-code .token.bold{font-weight:bold}spx-code .token.italic{font-style:italic}spx-code .token.atrule,spx-code .token.attr-name,spx-code .token.attr-value{color:#50FA7B}spx-code .language-css .token.atrule{color:#BD93F9}spx-code .language-html .token.attr-value,spx-code .language-markup .token.attr-value{color:#F1FA8C}spx-code .token.boolean{color:#BD93F9}spx-code .token.builtin,spx-code .token.class-name{color:#8BE9FD}spx-code .token.comment{color:#6272A4}spx-code .token.constant{color:#BD93F9}spx-code .language-javascript .token.constant{color:#FFB86C;font-style:italic}spx-code .token.entity{color:#FF79C6}spx-code .language-css .token.entity{color:#50FA7B}spx-code .language-html .token.entity.named-entity{color:#BD93F9}spx-code .language-html .token.entity:not(.named-entity){color:#FF79C6}spx-code .language-markup .token.entity.named-entity{color:#BD93F9}spx-code .language-markup .token.entity:not(.named-entity){color:#FF79C6}spx-code .token.function{color:#50FA7B}spx-code .language-css .token.function{color:#8BE9FD}spx-code .token.important,spx-code .token.keyword{color:#FF79C6}spx-code .token.prolog{color:#F8F8F2}spx-code .token.property{color:#FFB86C}spx-code .language-css .token.property{color:#8BE9FD}spx-code .token.punctuation{color:#FF79C6}spx-code .language-css .token.punctuation{color:#FFB86C}spx-code .language-html .token.punctuation,spx-code .language-markup .token.punctuation{color:#F8F8F2}spx-code .token.selector{color:#FF79C6}spx-code .language-css .token.selector{color:#50FA7B}spx-code .token.regex{color:#FF5555}spx-code .language-css .token.rule:not(.atrule){color:#F8F8F2}spx-code .token.string{color:#F1FA8C}spx-code .token.tag{color:#FF79C6}spx-code .token.url{color:#8BE9FD}spx-code .language-css .token.url{color:#FFB86C}spx-code .token.variable{color:#6272A4}spx-code .token.number{color:#bd93f9}spx-code .token.operator{color:#8be9fd}spx-code .token.char{color:#ff879d}spx-code .token.symbol{color:#ffb86c}spx-code .token.deleted{color:#e2777a}spx-code .token.namespace{color:#e2777a}";
 
 const tag$3 = 'spx-code';
 const SpxCode = class extends HTMLElement {
@@ -15016,6 +15016,7 @@ const SpxCode = class extends HTMLElement {
     this.background = 'var(--spx-color-gray-900)';
     this.borderRadius = borderRadius;
     this.fontSize = 'clamp(12px, 1.6vw, 16px)';
+    this.overflow = 'auto';
     this.padding = 'var(--spx-space-lg)';
     /**
      * Colour theme.
@@ -15053,8 +15054,10 @@ const SpxCode = class extends HTMLElement {
         borderRadius: setVar(tag$3, 'border-radius', this.borderRadius),
       },
       pre: {
+        overflow: setVar(tag$3, 'overflow', this.overflow),
         background: setVar(tag$3, 'background', this.background),
         padding: setVar(tag$3, 'padding', this.padding),
+        height: setVar(tag$3, 'height', this.height),
       },
     });
     return (h$1(Host, { class: styleHost }, h$1("pre", null, h$1("code", { class: 'language-' + this.type }, h$1("slot", null)))));
@@ -15082,6 +15085,16 @@ const containerStyles = css({
   '--spx-container-space-x-sm': 'var(--spx-container-token-space-x-sm, 2vw)',
   '--spx-container-font-family-primary': 'var(--spx-container-token-font-family-primary, helvetica, segoe, arial, sans-serif)',
   '--spx-container-font-family-secondary': 'var(--spx-container-token-font-family-secondary, helvetica, segoe, arial, sans-serif)',
+  '--spx-color-gray-50': '#FAFAFA',
+  '--spx-color-gray-100': '#F5F5F5',
+  '--spx-color-gray-200': '#EEEEEE',
+  '--spx-color-gray-300': '#E0E0E0',
+  '--spx-color-gray-400': '#BDBDBD',
+  '--spx-color-gray-500': '#9E9E9E',
+  '--spx-color-gray-600': '#757575',
+  '--spx-color-gray-700': '#616161',
+  '--spx-color-gray-800': '#424242',
+  '--spx-color-gray-900': '#212121',
 });
 document.body.classList.add(containerStyles);
 /** Space scale. */
@@ -15709,7 +15722,7 @@ const palette = {
     A400: { color: '#4E342E', text: '#ffffff' },
     A700: { color: '#3E2723', text: '#ffffff' },
   },
-  grey: {
+  gray: {
     50: { color: '#FAFAFA', text: '#000000' },
     100: { color: '#F5F5F5', text: '#000000' },
     200: { color: '#EEEEEE', text: '#000000' },
@@ -15725,7 +15738,7 @@ const palette = {
     A400: { color: '#424242', text: '#ffffff' },
     A700: { color: '#212121', text: '#ffffff' },
   },
-  'blue grey': {
+  'blue gray': {
     41: { color: '#fdfdfd', text: '#000000' },
     42: { color: '#fbfbfc', text: '#000000' },
     43: { color: '#f9fafa', text: '#000000' },
@@ -15760,10 +15773,7 @@ const setColor = (color, type) => {
   /** Iterate through styles and push into array. */
   const createCSSVars = (color) => {
     Object.entries(color).forEach(([key, value]) => {
-      const array = [
-        '--spx-color-' + type + '-' + (key.length === 2 ? '0' + key : key) + '',
-        value['color'],
-      ];
+      const array = ['--spx-color-' + type + '-' + key + '', value['color']];
       styles.push(array);
     });
   };
@@ -16026,8 +16036,10 @@ const SpxContainer = class extends HTMLElement {
     state.bpMaxWidth = this.maxWidth || maxWidth;
     state.bpMobileWidth = this.bpMobile || bpMobileWidth;
     state.buttonReverseColor = this.buttonReverseColor || buttonReverseColor;
-    state.colorPrimary = this.colorPrimary || 'teal';
-    state.colorSecondary = this.colorSecondary || 'pink';
+    if (!this.disableColors) {
+      state.colorPrimary = this.colorPrimary || 'teal';
+      state.colorSecondary = this.colorSecondary || 'pink';
+    }
     state.fontFamilyPrimary = this.fontFamilyPrimary || fontFamilyPrimary;
     state.fontFamilySecondary =
       this.fontFamilySecondary || fontFamilySecondary;
@@ -16060,7 +16072,9 @@ const SpxContainer = class extends HTMLElement {
       'p:not(.spx), [data-spx-tabs-header]:not(.spx)': Object.assign(Object.assign({}, text(tag$4, 'text', this.textColor, '18px', '2vw', '32px', this.textFontSizeMultiplier, this.textFontWeight, this.textLetterSpacing, this.textLineHeight, this.textTransform)), { background: 'none', maxWidth: setVar(tag$4, 'text-max-width', this.textMaxWidth), marginTop: setVar(tag$4, 'text-margin-top', this.textMarginTop), fontFamily: setVar(tag$4, 'text-font-family', state.fontFamilySecondary) }),
     };
     /** Style base. */
-    const styleBase = Object.assign(Object.assign({}, spaceScale(setVar('spx', 'space-unit', this.spacing))), { display: 'flex', flexDirection: 'column', height: this.el.querySelector('spx-page-docs') && '100vh', '& > spx-section-text-media, & > spx-section-footer > div:not([data-spx-no-styles]) > div': {
+    const styleBase = Object.assign(Object.assign({}, spaceScale(setVar('spx', 'space-unit', this.spacing))), { display: 'flex', flexDirection: 'column',
+      // height: this.el.querySelector('spx-page-docs') && '100vh',
+      '& > spx-section-text-media, & > spx-section-footer > div:not([data-spx-no-styles]) > div': {
         paddingTop: setVar(tag$4, 'space-y', this.spaceY),
         paddingBottom: setVar(tag$4, 'space-y', this.spaceY),
       }, '& > spx-section-text-media:not([full]):not([media-full]) > div, & > spx-section-footer > div:not([data-spx-no-styles]) > div': {
@@ -16069,12 +16083,12 @@ const SpxContainer = class extends HTMLElement {
         marginLeft: state.bpMobile && 'auto',
         marginRight: state.bpMobile && 'auto',
       }, '& > spx-section-text-media:not([full]):not([media-full]), & > spx-section-footer > div:not([data-spx-no-styles])': {
-        paddingLeft: setVar(tag$4, 'space-x', this.spaceX),
-        paddingRight: setVar(tag$4, 'space-x', this.spaceX),
+        paddingLeft: this.spaceX,
+        paddingRight: this.spaceX,
       }, '& > spx-section-text-media[media-full-mobile-fix] > div': {
-        paddingLeft: state.bpMobile && setVar(tag$4, 'space-x', this.spaceX),
-        paddingRight: state.bpMobile && setVar(tag$4, 'space-x', this.spaceX),
-      }, '& > *[background]:not(spx-section-header)': {
+        paddingLeft: state.bpMobile && this.spaceX,
+        paddingRight: state.bpMobile && this.spaceX,
+      }, '& > *[background]:not(spx-section-header):not(spx-section-footer)': {
         marginTop: 'calc(' + setVar(tag$4, 'padding-between', this.spaceY) + '/2)',
         '& + [background]': {
           marginTop: 0,
@@ -21201,6 +21215,23 @@ const properties$3 = [
 		]
 	},
 	{
+		id: "code-height",
+		name: "height",
+		type: "string",
+		description: "",
+		tags: [
+		]
+	},
+	{
+		id: "code-overflow",
+		name: "overflow",
+		type: "string",
+		description: "",
+		defaultValue: "'auto'",
+		tags: [
+		]
+	},
+	{
 		id: "code-padding",
 		name: "padding",
 		type: "string",
@@ -21820,7 +21851,7 @@ const properties$9 = [
 		description: "Gets images from an ACF or Metabox field.",
 		tags: [
 			{
-				text: "&lt;?php spx\\get::gallery($fieldName, $type) ?>",
+				text: "&lt;?php spx\\Get::gallery($fieldName, $type) ?>",
 				name: "helper"
 			}
 		]
@@ -22476,7 +22507,7 @@ const properties$e = [
 		description: "Gets images from an ACF or Metabox field.",
 		tags: [
 			{
-				text: "&lt;?php spx\\get::gallery($fieldName, $type) ?>",
+				text: "&lt;?php spx\\Get::gallery($fieldName, $type) ?>",
 				name: "helper"
 			}
 		]
@@ -23865,7 +23896,7 @@ const SpxEditor = class extends HTMLElement {
       flexDirection: 'column',
       alignItems: 'center',
       padding: this.current === 'iframe' ? '2vw 8vw' : '4vw',
-      background: 'var(--spx-color-gray-050)',
+      background: 'var(--spx-color-gray-50)',
       'spx-image-comparison': {
         maxWidth: '1000px',
         maxHeight: '400px',
@@ -25188,7 +25219,7 @@ const SpxPageDocs = class extends HTMLElement {
     this.spxPageDocsDidLoad = createEvent(this, "spxPageDocsDidLoad", 7);
     this.bpMobile = 1024;
     this.contentHeadingFontFamily = state.fontFamilyPrimary;
-    this.navigationBackground = 'var(--spx-color-gray-050)';
+    this.navigationBackground = 'var(--spx-color-gray-50)';
     this.navigationFontFamily = state.fontFamilyPrimary;
     this.navigationFontSizeMultiplier = 1;
     this.navigationLinkFontSizeMultiplier = 1;
@@ -25200,11 +25231,13 @@ const SpxPageDocs = class extends HTMLElement {
     this.navigationLinkLetterSpacing = '0';
     this.navigationLinkLineHeight = '1.25';
     this.navigationLinkTextTransform = 'default';
+    this.navigationPadding = 'var(--spx-space-xl)' + ' ' + state.spaceXsm;
     this.navigationTitleColor = 'var(--spx-color-gray-600)';
     this.navigationTitleFontWeight = '500';
     this.navigationTitleLetterSpacing = '0';
     this.navigationTitleLineHeight = '1.25';
     this.navigationTitleTextTransform = 'uppercase';
+    this.navigationTop = 'var(--spx-offset)';
     this.offsetMarginTop = 'var(--spx-space-md)';
     /**
      * Space from the last content element to the end of the component.
@@ -25286,10 +25319,10 @@ const SpxPageDocs = class extends HTMLElement {
     /** Navigation. */
     const styleNavigation = {
       position: 'sticky',
-      top: 'var(--spx-offset)',
+      top: setVar(tag$g, 'navigation-top', this.navigationTop),
       gridAutoRows: 'max-content',
-      height: 'calc(100vh - var(--spx-offset))',
-      padding: '' + setVar(tag$g, 'space-y', this.spaceY) + ' ' + state.spaceXsm + '',
+      height: 'calc(100vh - ' + this.navigationTop + ')',
+      padding: setVar(tag$g, 'navigation-padding', this.navigationPadding),
       overflowY: 'auto',
       ul: {
         display: 'grid',
@@ -25314,11 +25347,11 @@ const SpxPageDocs = class extends HTMLElement {
     const styleNavigationMerge = css(merge$1(styleNavigation, {}));
     /** Content. */
     const styleContent = {
-      padding: '' +
+      padding: setVar(tag$g, 'content-padding', '' +
         setVar(tag$g, 'space-y', this.spaceY) +
         ' ' +
-        setVar(tag$g, 'x', this.spaceX) +
-        '',
+        setVar(tag$g, 'space-x', this.spaceX) +
+        ''),
       h1: {
         '&[id]:before': {
           display: 'block',
@@ -26094,7 +26127,7 @@ const SpxSectionButton = class extends HTMLElement {
     /** Apply color depending if primary or secondary. */
     const style = this.type === 'primary'
       ? 'var(--spx-color-primary-A700)'
-      : 'var(--spx-color-primary-045)';
+      : 'var(--spx-color-primary-45)';
     /** Get the hue. */
     const styleHue = style
       .substring(style.lastIndexOf('-'))
@@ -26212,27 +26245,9 @@ const SpxSectionFooter = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
-    /**
-     * Minimum column size.
-     * @CSS
-     */
-    this.columnSizeMin = '0';
-    /**
-     * Maximum column size.
-     * @CSS
-     */
-    this.columnSizeMax = 'auto';
-    /**
-     * Display.
-     * @choice 'grid', 'flex'
-     */
-    this.display = 'grid';
-    /**
-     * Gap between columns.
-     * @CSS
-     */
-    this.gap = 'var(--spx-space-lg)';
+    this.background = 'var(--spx-color-gray-900)';
     this.imageMaxHeight = '40px';
+    this.justifyContent = 'space-between';
     /**
      * Space before the footer.
      * @CSS
@@ -26243,12 +26258,8 @@ const SpxSectionFooter = class extends HTMLElement {
      * @CSS
      */
     this.spaceY = 'var(--spx-space-3xl)';
+    this.textColor = 'var(--spx-color-gray-600)';
     this.textMaxWidth = '370px';
-    /**
-     * Footer theme.
-     * @choice 'dark', 'light'
-     */
-    this.theme = 'dark';
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
@@ -26257,7 +26268,7 @@ const SpxSectionFooter = class extends HTMLElement {
   render() {
     /** Text styles. */
     const styleText = {
-      color: 'var(--spx-color-gray-600)',
+      color: setVar(tag$l, 'text-color', this.textColor),
       fontSize: 'clamp(16px, 1.2vw, 20px)',
       lineHeight: '1.6',
       maxWidth: setVar(tag$l, 'text-max-width', this.textMaxWidth),
@@ -26279,26 +26290,21 @@ const SpxSectionFooter = class extends HTMLElement {
     const styleOuter = css({
       display: 'block',
       width: '100%',
-      background: 'var(--spx-color-gray-900)',
+      background: setVar(tag$l, 'background', this.background),
     });
     /** Inner styles. */
     const styleInner = css({
-      display: this.display,
-      flexDirection: this.display === 'flex' && state.bpMobile ? 'column' : 'row',
-      justifyContent: this.display === 'flex' && 'space-between',
+      display: 'flex',
+      flexDirection: state.bpMobile ? 'column' : 'row',
+      justifyContent: setVar(tag$l, 'justify-content', this.justifyContent),
       flexWrap: 'wrap',
-      gridAutoFlow: this.display === 'grid' && state.bpMobile && 'row',
-      gridTemplateColumns: this.display === 'grid' && state.bpMobile
-        ? '1fr'
-        : 'repeat(auto-fit, minmax(' +
-          setVar(tag$l, 'column-size-min', this.columnSizeMin) +
-          ', ' +
-          setVar(tag$l, 'column-size-max', this.columnSizeMax) +
-          '))',
-      gap: this.display === 'grid' && setVar(tag$l, 'gap', this.gap),
       marginLeft: 'auto',
       marginRight: 'auto',
       padding: '' + setVar(tag$l, 'padding', this.spaceY) + ' 0',
+      maxWidth: setVar(tag$l, 'max-width', this.maxWidth),
+      '& > div + div:not(.spx-e)': {
+        marginLeft: !state.bpMobile && setVar(tag$l, 'gap', this.gap),
+      },
       h3: {
         color: '#ffffff',
         textTransform: 'uppercase',
@@ -26404,7 +26410,11 @@ const SpxSectionHeader = class extends HTMLElement {
       display: 'block',
       maxWidth: 'max-content',
     });
-    return (h$1(Host, { class: styleHost }, h$1("div", null, h$1("a", { href: this.logoLink, class: styleLogo }, state.bpMobile ? (h$1("img", { class: styleImg, src: this.logoSrcMobile, alt: "logo" })) : (h$1("img", { class: styleImg, src: this.logoSrc, alt: "logo" })))), h$1("div", { class: styleNavigation }, h$1("slot", { name: "navigation" })), h$1("div", { class: styleButtons }, h$1("slot", { name: "buttons" })), h$1("slot", null)));
+    return (h$1(Host, { class: !this.wrapper && styleHost }, !this.wrapper && [
+      h$1("div", null, h$1("a", { href: this.logoLink, class: styleLogo }, state.bpMobile && this.logoSrcMobile ? (h$1("img", { class: styleImg, src: this.logoSrcMobile, alt: "logo" })) : (h$1("img", { class: styleImg, src: this.logoSrc, alt: "logo" })))),
+      h$1("div", { class: styleNavigation }, h$1("slot", { name: "navigation" })),
+      h$1("div", { class: styleButtons }, h$1("slot", { name: "buttons" })),
+    ], h$1("slot", null)));
   }
   get el() { return this; }
 };
@@ -33224,7 +33234,7 @@ const SpxScrollspy$1 = class extends HTMLElement {
         display: 'grid',
         gridGap: 'var(--spx-space-sm)',
         gridAutoRows: 'max-content',
-        background: 'var(--spx-color-gray-050)',
+        background: 'var(--spx-color-gray-50)',
         border: '1px solid var(--spx-color-gray-100)',
         borderRadius: borderRadius,
         cursor: 'pointer',
@@ -33251,11 +33261,11 @@ const SpxScrollspy$1 = class extends HTMLElement {
           display: 'none',
         },
         '&:hover:not([data-spx-slider-tab-active])': {
-          background: 'var(--spx-color-primary-042)',
-          borderColor: 'var(--spx-color-primary-050)',
+          background: 'var(--spx-color-primary-42)',
+          borderColor: 'var(--spx-color-primary-50)',
         },
         '&[data-spx-slider-tab-active]': {
-          background: 'var(--spx-color-primary-042)',
+          background: 'var(--spx-color-primary-42)',
           border: '1px solid var(--spx-color-primary-100)',
           [mq(this.bpTabs)]: {
             display: 'grid',
@@ -36307,7 +36317,7 @@ const SpxText = class extends HTMLElement {
     this.headingLetterSpacing = '0';
     this.headingLineHeight = '1.5';
     this.headingTextTransform = 'default';
-    this.linkUnderlineColor = 'var(--spx-color-primary-A700)';
+    this.linkDecorationColor = 'var(--spx-color-primary-A700)';
     /** Parse markdown. */
     this.markdown = false;
     this.maxWidth = 'clamp(700px, 40vw, 1200px)';
@@ -36398,7 +36408,7 @@ const SpxText = class extends HTMLElement {
       'p, ul, ol': Object.assign(Object.assign({}, text$1), { a: {
           color: 'inherit',
           textDecoration: 'underline',
-          textDecorationColor: setVar(tag$s, 'link-underline-color', this.linkUnderlineColor),
+          textDecorationColor: setVar(tag$s, 'link-decoration-color', this.linkDecorationColor),
         } }),
       'ul, ol': {
         marginLeft: '1em',
@@ -36502,8 +36512,8 @@ const IonIcon = /*@__PURE__*/proxyCustomElement(Icon, [1,"ion-icon",{"mode":[102
 const SpxAccordion$1 = /*@__PURE__*/proxyCustomElement(SpxAccordion, [4,"spx-accordion",{"contentColor":[513,"content-color"],"contentText":[513,"content-text"],"contentTextTag":[513,"content-text-tag"],"contentTransitionDuration":[513,"content-transition-duration"],"contentTransitionTimingFunction":[513,"content-transition-timing-function"],"fontSize":[513,"font-size"],"gap":[513],"headerColor":[513,"header-color"],"headerGap":[513,"header-gap"],"headerText":[513,"header-text"],"headerTextTag":[513,"header-text-tag"],"indicatorIcon":[513,"indicator-icon"],"indicatorIconType":[513,"indicator-icon-type"],"indicatorIconTransform":[513,"indicator-icon-transform"],"contentCustom":[32],"headerCustom":[32],"open":[32],"headerHeight":[32]},[[0,"keydown","onKeydown"]]]);
 const SpxAnimate$1 = /*@__PURE__*/proxyCustomElement(SpxAnimate, [4,"spx-animate",{"delay":[2],"duration":[2],"ease":[1],"once":[4],"opacity":[2],"repeat":[2],"repeatDelay":[2,"repeat-delay"],"reverse":[4],"stagger":[2],"target":[1],"viewport":[4],"viewportMarginBottom":[1,"viewport-margin-bottom"],"viewportMarginLeft":[1,"viewport-margin-left"],"viewportMarginRight":[1,"viewport-margin-right"],"viewportMarginTop":[1,"viewport-margin-top"],"x":[2],"y":[2],"yoyo":[4],"display":[513],"elements":[32],"tl":[32]}]);
 const SpxClassToggle$1 = /*@__PURE__*/proxyCustomElement(SpxClassToggle, [4,"spx-class-toggle",{"display":[513],"local":[513],"target":[513],"toggle":[513],"classesArray":[32],"toggled":[32]}]);
-const SpxCode$1 = /*@__PURE__*/proxyCustomElement(SpxCode, [36,"spx-code",{"background":[513],"borderRadius":[513,"border-radius"],"fontSize":[513,"font-size"],"padding":[513],"theme":[513],"type":[513]}]);
-const SpxContainer$1 = /*@__PURE__*/proxyCustomElement(SpxContainer, [0,"spx-container",{"bpMobile":[514,"bp-mobile"],"buttonBorderRadius":[513,"button-border-radius"],"buttonFontSizeMultiplier":[514,"button-font-size-multiplier"],"buttonFontWeight":[513,"button-font-weight"],"buttonMarginX":[513,"button-margin-x"],"buttonMarginTop":[513,"button-margin-top"],"buttonReverseColor":[513,"button-reverse-color"],"buttonTextTransform":[513,"button-text-transform"],"colorPrimary":[513,"color-primary"],"colorSecondary":[513,"color-secondary"],"focusColor":[513,"focus-color"],"fontFamilyPrimary":[513,"font-family-primary"],"fontFamilySecondary":[513,"font-family-secondary"],"imageMaxWidth":[513,"image-max-width"],"maxWidth":[513,"max-width"],"offsetHeader":[516,"offset-header"],"preTitleBackground":[513,"pre-title-background"],"preTitleBorderRadius":[513,"pre-title-border-radius"],"preTitleColor":[513,"pre-title-color"],"preTitleFontSizeMultiplier":[514,"pre-title-font-size-multiplier"],"preTitleFontWeight":[513,"pre-title-font-weight"],"preTitleLetterSpacing":[513,"pre-title-letter-spacing"],"preTitleLineHeight":[513,"pre-title-line-height"],"preTitleMarginBottom":[513,"pre-title-margin-bottom"],"preTitlePadding":[513,"pre-title-padding"],"preTitleTextTransform":[513,"pre-title-text-transform"],"spaceX":[513,"space-x"],"spaceXSm":[513,"space-x-sm"],"spaceY":[513,"space-y"],"spacing":[513],"tabsMarginBetween":[513,"tabs-margin-between"],"tabsMarginFirst":[513,"tabs-margin-first"],"tabsOpacity":[514,"tabs-opacity"],"textColor":[513,"text-color"],"textFontSizeMultiplier":[514,"text-font-size-multiplier"],"textFontWeight":[513,"text-font-weight"],"textLetterSpacing":[513,"text-letter-spacing"],"textLineHeight":[513,"text-line-height"],"textMarginTop":[513,"text-margin-top"],"textMaxWidth":[513,"text-max-width"],"textTransform":[513,"text-transform"],"titleColor":[513,"title-color"],"titleFontSizeMultiplier":[514,"title-font-size-multiplier"],"titleFontWeight":[514,"title-font-weight"],"titleLetterSpacing":[513,"title-letter-spacing"],"titleLineHeight":[513,"title-line-height"],"titleMaxWidth":[513,"title-max-width"],"titleTextTransform":[513,"title-text-transform"]},[[9,"resize","onResize"]]]);
+const SpxCode$1 = /*@__PURE__*/proxyCustomElement(SpxCode, [36,"spx-code",{"background":[513],"borderRadius":[513,"border-radius"],"fontSize":[513,"font-size"],"height":[513],"overflow":[513],"padding":[513],"theme":[513],"type":[513]}]);
+const SpxContainer$1 = /*@__PURE__*/proxyCustomElement(SpxContainer, [0,"spx-container",{"bpMobile":[514,"bp-mobile"],"buttonBorderRadius":[513,"button-border-radius"],"buttonFontSizeMultiplier":[514,"button-font-size-multiplier"],"buttonFontWeight":[513,"button-font-weight"],"buttonMarginX":[513,"button-margin-x"],"buttonMarginTop":[513,"button-margin-top"],"buttonReverseColor":[513,"button-reverse-color"],"buttonTextTransform":[513,"button-text-transform"],"colorPrimary":[513,"color-primary"],"colorSecondary":[513,"color-secondary"],"disableColors":[516,"disable-colors"],"focusColor":[513,"focus-color"],"fontFamilyPrimary":[513,"font-family-primary"],"fontFamilySecondary":[513,"font-family-secondary"],"imageMaxWidth":[513,"image-max-width"],"maxWidth":[513,"max-width"],"offsetHeader":[516,"offset-header"],"preTitleBackground":[513,"pre-title-background"],"preTitleBorderRadius":[513,"pre-title-border-radius"],"preTitleColor":[513,"pre-title-color"],"preTitleFontSizeMultiplier":[514,"pre-title-font-size-multiplier"],"preTitleFontWeight":[513,"pre-title-font-weight"],"preTitleLetterSpacing":[513,"pre-title-letter-spacing"],"preTitleLineHeight":[513,"pre-title-line-height"],"preTitleMarginBottom":[513,"pre-title-margin-bottom"],"preTitlePadding":[513,"pre-title-padding"],"preTitleTextTransform":[513,"pre-title-text-transform"],"spaceX":[513,"space-x"],"spaceXSm":[513,"space-x-sm"],"spaceY":[513,"space-y"],"spacing":[513],"tabsMarginBetween":[513,"tabs-margin-between"],"tabsMarginFirst":[513,"tabs-margin-first"],"tabsOpacity":[514,"tabs-opacity"],"textColor":[513,"text-color"],"textFontSizeMultiplier":[514,"text-font-size-multiplier"],"textFontWeight":[513,"text-font-weight"],"textLetterSpacing":[513,"text-letter-spacing"],"textLineHeight":[513,"text-line-height"],"textMarginTop":[513,"text-margin-top"],"textMaxWidth":[513,"text-max-width"],"textTransform":[513,"text-transform"],"titleColor":[513,"title-color"],"titleFontSizeMultiplier":[514,"title-font-size-multiplier"],"titleFontWeight":[514,"title-font-weight"],"titleLetterSpacing":[513,"title-letter-spacing"],"titleLineHeight":[513,"title-line-height"],"titleMaxWidth":[513,"title-max-width"],"titleTextTransform":[513,"title-text-transform"]},[[9,"resize","onResize"]]]);
 const SpxEdit$1 = /*@__PURE__*/proxyCustomElement(SpxEdit, [4,"spx-edit",{"display":[513],"name":[513],"outline":[513],"outlineFocus":[513,"outline-focus"],"placeholder":[513],"placeholderColor":[513,"placeholder-color"],"placeholderOpacity":[513,"placeholder-opacity"],"subfield":[516],"type":[513],"editable":[516],"originalText":[32],"subfieldArray":[32]},[[0,"keydown","onClickEnter"],[4,"spxEditButtonDiscard","onClickDiscard"],[4,"spxEditButtonSave","onClickSave"],[0,"keyup","onClickKeyup"]]]);
 const SpxEditButton$1 = /*@__PURE__*/proxyCustomElement(SpxEditButton, [4,"spx-edit-button",{"test":[4],"background":[513],"backgroundDiscard":[513,"background-discard"],"border":[513],"borderRadius":[513,"border-radius"],"color":[513],"colorDiscard":[513,"color-discard"],"distanceX":[513,"distance-x"],"distanceY":[513,"distance-y"],"editId":[513,"edit-id"],"fontFamily":[513,"font-family"],"fontSize":[513,"font-size"],"gap":[513],"padding":[513],"position":[513],"positionCss":[513,"position-css"],"textDiscard":[513,"text-discard"],"textEdit":[513,"text-edit"],"textSave":[513,"text-save"],"textSuccess":[513,"text-success"],"zIndex":[514,"z-index"],"loading":[32],"open":[32],"positionArray":[32]}]);
 const SpxEditor$1 = /*@__PURE__*/proxyCustomElement(SpxEditor, [0,"spx-editor",{"fullscreen":[516],"location":[513],"comp":[32],"ar":[32],"current":[32],"queryObj":[32],"query":[32],"mobile":[32],"headerHeight":[32],"adjustedValues":[32]},[[9,"resize","onResize"],[4,"keydown","onKeyDown"]]]);
@@ -36518,20 +36528,20 @@ const SpxMockup$1 = /*@__PURE__*/proxyCustomElement(SpxMockup, [4,"spx-mockup",{
 const SpxNavigation$1 = /*@__PURE__*/proxyCustomElement(SpxNavigation, [0,"spx-navigation",{"childBorder":[513,"child-border"],"childBorderRadius":[513,"child-border-radius"],"childBoxShadow":[513,"child-box-shadow"],"childChildGap":[513,"child-child-gap"],"childGap":[513,"child-gap"],"childIcon":[513,"child-icon"],"childIconType":[513,"child-icon-type"],"childIndicatorGap":[513,"child-indicator-gap"],"childItemBackground":[513,"child-item-background"],"childItemBackgroundHover":[513,"child-item-background-hover"],"childItemColor":[513,"child-item-color"],"childItemColorHover":[513,"child-item-color-hover"],"childItemPadding":[513,"child-item-padding"],"childPlacement":[513,"child-placement"],"fontSize":[513,"font-size"],"itemTransitionDuration":[513,"item-transition-duration"],"itemTransitionTimingFunction":[513,"item-transition-timing-function"],"itemUnderline":[516,"item-underline"],"itemUnderlineHover":[516,"item-underline-hover"],"menu":[513],"mobile":[514],"mobileIcon":[513,"mobile-icon"],"mobileIconType":[513,"mobile-icon-type"],"mobileItemBackground":[513,"mobile-item-background"],"mobileItemBackgroundHover":[513,"mobile-item-background-hover"],"mobileItemColor":[513,"mobile-item-color"],"mobileItemColorHover":[513,"mobile-item-color-hover"],"mobileItemNestedMarginLeft":[513,"mobile-item-nested-margin-left"],"mobileItemPadding":[513,"mobile-item-padding"],"mobilePlacement":[513,"mobile-placement"],"parentItemBackground":[513,"parent-item-background"],"parentItemBackgroundHover":[513,"parent-item-background-hover"],"parentItemColor":[513,"parent-item-color"],"parentItemColorHover":[513,"parent-item-color-hover"],"parentItemGap":[513,"parent-item-gap"],"parentItemPadding":[513,"parent-item-padding"],"vertical":[516],"menuArray":[32],"mobileBP":[32]},[[0,"ontouchstart","onClick"],[1,"mouseenter","onClick"],[0,"focusin","onClick"],[9,"resize","onResize"]]]);
 const SpxNotation$1 = /*@__PURE__*/proxyCustomElement(SpxNotation, [4,"spx-notation",{"animation":[516],"animationDuration":[514,"animation-duration"],"color":[513],"display":[513],"iterations":[514],"multiline":[516],"strokeWidth":[514,"stroke-width"],"type":[513],"annotation":[32]}]);
 const SpxOffset$1 = /*@__PURE__*/proxyCustomElement(SpxOffset, [4,"spx-offset",{"display":[513],"target":[513]},[[9,"resize","onResize"]]]);
-const SpxPageDocs$1 = /*@__PURE__*/proxyCustomElement(SpxPageDocs, [4,"spx-page-docs",{"bpMobile":[514,"bp-mobile"],"contentHeadingFontFamily":[513,"content-heading-font-family"],"navigationBackground":[513,"navigation-background"],"navigationFontFamily":[513,"navigation-font-family"],"navigationFontSizeMultiplier":[514,"navigation-font-size-multiplier"],"navigationLinkFontSizeMultiplier":[514,"navigation-link-font-size-multiplier"],"navigationGap":[513,"navigation-gap"],"navigationHeadingTag":[513,"navigation-heading-tag"],"navigationLinkColor":[513,"navigation-link-color"],"navigationLinkColorActive":[513,"navigation-link-color-active"],"navigationLinkFontWeight":[513,"navigation-link-font-weight"],"navigationLinkLetterSpacing":[513,"navigation-link-letter-spacing"],"navigationLinkLineHeight":[513,"navigation-link-line-height"],"navigationLinkTextTransform":[513,"navigation-link-text-transform"],"navigationTitleColor":[513,"navigation-title-color"],"navigationTitleFontWeight":[513,"navigation-title-font-weight"],"navigationTitleLetterSpacing":[513,"navigation-title-letter-spacing"],"navigationTitleLineHeight":[513,"navigation-title-line-height"],"navigationTitleTextTransform":[513,"navigation-title-text-transform"],"offsetMarginTop":[513,"offset-margin-top"],"uniqueId":[516,"unique-id"],"spaceBottom":[513,"space-bottom"],"spaceX":[513,"space-x"],"spaceY":[513,"space-y"],"mobile":[32]},[[9,"resize","onResize"]]]);
+const SpxPageDocs$1 = /*@__PURE__*/proxyCustomElement(SpxPageDocs, [4,"spx-page-docs",{"bpMobile":[514,"bp-mobile"],"contentHeadingFontFamily":[513,"content-heading-font-family"],"navigationBackground":[513,"navigation-background"],"navigationFontFamily":[513,"navigation-font-family"],"navigationFontSizeMultiplier":[514,"navigation-font-size-multiplier"],"navigationLinkFontSizeMultiplier":[514,"navigation-link-font-size-multiplier"],"navigationGap":[513,"navigation-gap"],"navigationHeadingTag":[513,"navigation-heading-tag"],"navigationLinkColor":[513,"navigation-link-color"],"navigationLinkColorActive":[513,"navigation-link-color-active"],"navigationLinkFontWeight":[513,"navigation-link-font-weight"],"navigationLinkLetterSpacing":[513,"navigation-link-letter-spacing"],"navigationLinkLineHeight":[513,"navigation-link-line-height"],"navigationLinkTextTransform":[513,"navigation-link-text-transform"],"navigationPadding":[513,"navigation-padding"],"navigationTitleColor":[513,"navigation-title-color"],"navigationTitleFontWeight":[513,"navigation-title-font-weight"],"navigationTitleLetterSpacing":[513,"navigation-title-letter-spacing"],"navigationTitleLineHeight":[513,"navigation-title-line-height"],"navigationTitleTextTransform":[513,"navigation-title-text-transform"],"navigationTop":[513,"navigation-top"],"offsetMarginTop":[513,"offset-margin-top"],"uniqueId":[516,"unique-id"],"spaceBottom":[513,"space-bottom"],"spaceX":[513,"space-x"],"spaceY":[513,"space-y"],"mobile":[32]},[[9,"resize","onResize"]]]);
 const SpxPageSingle$1 = /*@__PURE__*/proxyCustomElement(SpxPageSingle, [4,"spx-page-single",{"authorColor":[513,"author-color"],"authorFontFamily":[513,"author-font-family"],"authorFontSizeMultiplier":[514,"author-font-size-multiplier"],"authorFontWeight":[513,"author-font-weight"],"authorLetterSpacing":[513,"author-letter-spacing"],"authorLineHeight":[513,"author-line-height"],"authorMarginTop":[513,"author-margin-top"],"authorTextTransform":[513,"author-text-transform"],"contentMarginTop":[513,"content-margin-top"],"contentMaxWidth":[513,"content-max-width"],"contentSpaceX":[513,"content-space-x"],"date":[516],"dateColor":[513,"date-color"],"dateFontFamily":[513,"date-font-family"],"dateFontSizeMultiplier":[514,"date-font-size-multiplier"],"dateFontWeight":[513,"date-font-weight"],"dateLetterSpacing":[513,"date-letter-spacing"],"dateLineHeight":[513,"date-line-height"],"dateMarginTop":[513,"date-margin-top"],"dateTextTransform":[513,"date-text-transform"],"headerPaddingBottom":[513,"header-padding-bottom"],"headerBorderBottom":[513,"header-border-bottom"],"image":[516],"imageBorderRadius":[513,"image-border-radius"],"imageHeight":[513,"image-height"],"imageObjectPosition":[513,"image-object-position"],"imageSpaceX":[513,"image-space-x"],"imageSpaceY":[513,"image-space-y"],"mobile":[514],"post":[513],"titleColor":[513,"title-color"],"titleFontFamily":[513,"title-font-family"],"titleFontSizeMultiplier":[514,"title-font-size-multiplier"],"titleFontWeight":[513,"title-font-weight"],"titleLetterSpacing":[513,"title-letter-spacing"],"titleLineHeight":[513,"title-line-height"],"titleMarginTop":[513,"title-margin-top"],"titleTextTransform":[513,"title-text-transform"],"content":[32],"mobileBP":[32],"postArray":[32],"postContent":[32]}]);
 const SpxScrollspy$2 = /*@__PURE__*/proxyCustomElement(SpxScrollspy, [0,"spx-scrollspy",{"contentClass":[513,"content-class"],"display":[513],"navClass":[513,"nav-class"],"offset":[520],"target":[513],"urlChange":[516,"url-change"],"myGumshoe":[32]},[[4,"gumshoeActivate","onLinkChange"]]]);
 const SpxSectionButton$1 = /*@__PURE__*/proxyCustomElement(SpxSectionButton, [4,"spx-section-button",{"href":[513],"reverseColor":[516,"reverse-color"],"target":[513],"transitionDuration":[513,"transition-duration"],"transitionTimingFunction":[513,"transition-timing-function"],"type":[513]}]);
 const SpxSectionCard$1 = /*@__PURE__*/proxyCustomElement(SpxSectionCard, [4,"spx-section-card",{"boxShadow":[513,"box-shadow"],"padding":[513],"textColor":[513,"text-color"],"textFontSizeMultiplier":[514,"text-font-size-multiplier"],"textFontWeight":[513,"text-font-weight"],"textLetterSpacing":[513,"text-letter-spacing"],"textLineHeight":[513,"text-line-height"],"textMarginTop":[513,"text-margin-top"],"textMaxWidth":[513,"text-max-width"],"textTransform":[513,"text-transform"],"titleColor":[513,"title-color"],"titleFontSizeMultiplier":[514,"title-font-size-multiplier"],"titleFontWeight":[513,"title-font-weight"],"titleLetterSpacing":[513,"title-letter-spacing"],"titleLineHeight":[513,"title-line-height"],"titleMaxWidth":[513,"title-max-width"],"titleTextTransform":[513,"title-text-transform"]}]);
-const SpxSectionFooter$1 = /*@__PURE__*/proxyCustomElement(SpxSectionFooter, [4,"spx-section-footer",{"columnSizeMin":[513,"column-size-min"],"columnSizeMax":[513,"column-size-max"],"display":[513],"gap":[513],"imageMaxHeight":[513,"image-max-height"],"spaceBefore":[513,"space-before"],"spaceY":[513,"space-y"],"textMaxWidth":[513,"text-max-width"],"theme":[513]}]);
-const SpxSectionHeader$1 = /*@__PURE__*/proxyCustomElement(SpxSectionHeader, [4,"spx-section-header",{"backdropFilter":[513,"backdrop-filter"],"background":[513],"backgroundScroll":[514,"background-scroll"],"borderBottom":[513,"border-bottom"],"logoLink":[513,"logo-link"],"logoMaxHeight":[513,"logo-max-height"],"logoSrc":[513,"logo-src"],"logoSrcMobile":[513,"logo-src-mobile"],"navigationAlign":[513,"navigation-align"],"position":[513],"spaceX":[513,"space-x"],"zIndex":[514,"z-index"],"bgScroll":[32]},[[9,"scroll","onScroll"]]]);
+const SpxSectionFooter$1 = /*@__PURE__*/proxyCustomElement(SpxSectionFooter, [4,"spx-section-footer",{"background":[513],"gap":[513],"imageMaxHeight":[513,"image-max-height"],"justifyContent":[513,"justify-content"],"maxWidth":[513,"max-width"],"spaceBefore":[513,"space-before"],"spaceY":[513,"space-y"],"textColor":[513,"text-color"],"textMaxWidth":[513,"text-max-width"]}]);
+const SpxSectionHeader$1 = /*@__PURE__*/proxyCustomElement(SpxSectionHeader, [4,"spx-section-header",{"backdropFilter":[513,"backdrop-filter"],"background":[513],"backgroundScroll":[514,"background-scroll"],"borderBottom":[513,"border-bottom"],"logoLink":[513,"logo-link"],"logoMaxHeight":[513,"logo-max-height"],"logoSrc":[513,"logo-src"],"logoSrcMobile":[513,"logo-src-mobile"],"navigationAlign":[513,"navigation-align"],"position":[513],"spaceX":[513,"space-x"],"wrapper":[516],"zIndex":[514,"z-index"],"bgScroll":[32]},[[9,"scroll","onScroll"]]]);
 const SpxSectionTextMedia$1 = /*@__PURE__*/proxyCustomElement(SpxSectionTextMedia, [4,"spx-section-text-media",{"background":[513],"columnSize":[513,"column-size"],"first":[516],"gap":[513],"hideMedia":[516,"hide-media"],"imagesGap":[513,"images-gap"],"layout":[513],"mediaBackground":[513,"media-background"],"mediaBackgroundOverlap":[516,"media-background-overlap"],"mediaFull":[516,"media-full"],"mediaFullMobileFix":[516,"media-full-mobile-fix"],"reverse":[516],"textAlignInner":[513,"text-align-inner"],"textAlignOuter":[513,"text-align-outer"],"textBackground":[513,"text-background"],"textBackgroundOverlap":[516,"text-background-overlap"],"tabs":[32]}]);
 const SpxShare$1 = /*@__PURE__*/proxyCustomElement(SpxShare, [0,"spx-share",{"fontSize":[513,"font-size"],"itemBackground":[513,"item-background"],"itemBorderRadius":[513,"item-border-radius"],"itemColor":[513,"item-color"],"itemFilterHover":[513,"item-filter-hover"],"itemGap":[513,"item-gap"],"itemPadding":[513,"item-padding"],"itemSize":[513,"item-size"],"itemTransitionDuration":[513,"item-transition-duration"],"itemTransitionTimingFunction":[513,"item-transition-timing-function"],"target":[513],"theme":[513],"vertical":[516],"location":[32]}]);
 const SpxSlider = /*@__PURE__*/proxyCustomElement(SpxScrollspy$1, [4,"spx-slider",{"autoheight":[516],"autoplay":[516],"autoplayDelay":[514,"autoplay-delay"],"autoplayDisableOnInteraction":[516,"autoplay-disable-on-interaction"],"bpTabs":[513,"bp-tabs"],"centeredSlides":[516,"centered-slides"],"direction":[513],"effect":[513],"imageObjectFit":[513,"image-object-fit"],"imageSize":[513,"image-size"],"images":[513],"imagesSrc":[513,"images-src"],"loop":[516],"maxHeight":[513,"max-height"],"maxWidth":[513,"max-width"],"navigation":[516],"navigationBackground":[513,"navigation-background"],"navigationBorderRadius":[513,"navigation-border-radius"],"navigationColor":[513,"navigation-color"],"navigationDistanceX":[513,"navigation-distance-x"],"navigationIconNext":[513,"navigation-icon-next"],"navigationIconPrev":[513,"navigation-icon-prev"],"navigationIconType":[513,"navigation-icon-type"],"navigationPadding":[513,"navigation-padding"],"navigationSize":[513,"navigation-size"],"pagination":[513],"paginationBulletsBackground":[513,"pagination-bullets-background"],"paginationBulletsBackgroundActive":[513,"pagination-bullets-background-active"],"paginationBulletsClickable":[516,"pagination-bullets-clickable"],"paginationBulletsDynamic":[516,"pagination-bullets-dynamic"],"paginationBulletsDynamicAmount":[514,"pagination-bullets-dynamic-amount"],"paginationBulletsSize":[513,"pagination-bullets-size"],"paginationBulletsSpaceBetween":[513,"pagination-bullets-space-between"],"paginationTabsMaxWidth":[513,"pagination-tabs-max-width"],"paginationTransitionDuration":[513,"pagination-transition-duration"],"paginationTransitionTimingFunction":[513,"pagination-transition-timing-function"],"prevNextFilter":[513,"prev-next-filter"],"slideMessageFirst":[513,"slide-message-first"],"slideMessageLast":[513,"slide-message-last"],"slideMessageNext":[513,"slide-message-next"],"slideMessagePrevious":[513,"slide-message-previous"],"slidesPerView":[514,"slides-per-view"],"spaceBetween":[514,"space-between"],"speed":[514],"imagesArray":[32],"mySwiper":[32],"mySwiperGallery":[32],"swiperBreakpoints":[32]}]);
 const SpxSlideshow$1 = /*@__PURE__*/proxyCustomElement(SpxSlideshow, [4,"spx-slideshow",{"gap":[513],"imageSize":[513,"image-size"],"images":[513],"imagesSrc":[513,"images-src"],"maxWidth":[513,"max-width"],"duration":[513],"imagesArray":[32],"offsetWidth":[32]},[[9,"resize","onResize"]]]);
 const SpxSnackbar$1 = /*@__PURE__*/proxyCustomElement(SpxSnackbar, [4,"spx-snackbar",{"animationDelay":[513,"animation-delay"],"animationDuration":[513,"animation-duration"],"background":[513],"border":[513],"borderRadius":[513,"border-radius"],"closeable":[516],"color":[513],"distanceX":[513,"distance-x"],"distanceY":[513,"distance-y"],"fixed":[516],"fontSize":[513,"font-size"],"identifier":[513],"padding":[513],"position":[513],"positionCss":[513,"position-css"],"reverse":[516],"spaceBetween":[513,"space-between"],"target":[513],"text":[513],"zIndex":[514,"z-index"],"positionArray":[32],"containerClass":[32]}]);
 const SpxSnackbarToggle$1 = /*@__PURE__*/proxyCustomElement(SpxSnackbarToggle, [4,"spx-snackbar-toggle"]);
-const SpxText$1 = /*@__PURE__*/proxyCustomElement(SpxText, [4,"spx-text",{"contentFontSizeMultiplier":[514,"content-font-size-multiplier"],"headingColor":[513,"heading-color"],"headingFontFamily":[513,"heading-font-family"],"headingFontWeight":[513,"heading-font-weight"],"headingLetterSpacing":[513,"heading-letter-spacing"],"headingLineHeight":[513,"heading-line-height"],"headingTextTransform":[513,"heading-text-transform"],"linkUnderlineColor":[513,"link-underline-color"],"markdown":[516],"maxWidth":[513,"max-width"],"textColor":[513,"text-color"],"textFontFamily":[513,"text-font-family"],"textFontWeight":[513,"text-font-weight"],"textLetterSpacing":[513,"text-letter-spacing"],"textLineHeight":[513,"text-line-height"],"textMinW":[514,"text-min-w"],"textMaxW":[514,"text-max-w"],"textTextTransform":[513,"text-text-transform"],"textType":[513,"text-type"]}]);
+const SpxText$1 = /*@__PURE__*/proxyCustomElement(SpxText, [4,"spx-text",{"contentFontSizeMultiplier":[514,"content-font-size-multiplier"],"headingColor":[513,"heading-color"],"headingFontFamily":[513,"heading-font-family"],"headingFontWeight":[513,"heading-font-weight"],"headingLetterSpacing":[513,"heading-letter-spacing"],"headingLineHeight":[513,"heading-line-height"],"headingTextTransform":[513,"heading-text-transform"],"linkDecorationColor":[513,"link-decoration-color"],"markdown":[516],"maxWidth":[513,"max-width"],"textColor":[513,"text-color"],"textFontFamily":[513,"text-font-family"],"textFontWeight":[513,"text-font-weight"],"textLetterSpacing":[513,"text-letter-spacing"],"textLineHeight":[513,"text-line-height"],"textMinW":[514,"text-min-w"],"textMaxW":[514,"text-max-w"],"textTextTransform":[513,"text-text-transform"],"textType":[513,"text-type"]}]);
 const SpxTypewriter$1 = /*@__PURE__*/proxyCustomElement(SpxTypewriter, [0,"spx-typewriter",{"autoStart":[516,"auto-start"],"delay":[520],"deleteSpeed":[520,"delete-speed"],"display":[513],"loop":[516],"text":[513],"typewriter":[32]}]);
 const defineCustomElements = (opts) => {
   if (typeof customElements !== 'undefined') {

@@ -94,6 +94,13 @@
       ]
     },
     {
+      "id": "section-header-wrapper",
+      "name": "wrapper",
+      "type": "boolean",
+      "description": "",
+      "tags": []
+    },
+    {
       "id": "section-header-zIndex",
       "name": "zIndex",
       "type": "number",

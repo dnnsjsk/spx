@@ -15,6 +15,27 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 2.2.1 =
+* Code: add 'height' attribute.
+* Code: add 'overflow' attribute.
+* Container: add 'disable-colors' attribute.
+* Container: load gray scale when container is on page.
+* Container: remove '0' from two two digit color variables.
+* Enhancement: change 'documentation' folder to 'data'.
+* Enhancement: enqueue spx to Gutenberg.
+* Fix: refactor updater.
+* Fix: wrong redirect when license was wrong.
+* Page Docs: add 'navigation-padding' attribute.
+* Page Docs: add 'navigation-top' attribute.
+* Page Docs: remove 'height' attribute.
+* Section Footer: add 'background' attribute.
+* Section Footer: add 'justify-content' attribute.
+* Section Footer: add 'max-width' attribute.
+* Section Footer: add gap value to inner divs.
+* Section Footer: remove 'display' attribute in favour of 'flex'.
+* Section Footer: remove 'theme' attribute in favour for separate attributes.
+* Section Header: don't show mobile logo if none is set.
+
 = 2.2.0 =
 * Edit Button: added possibility to change various different types of content (ACF, options etc.) with one button.
 * Edit Button: added possibility to edit normal and nested repeater fields.

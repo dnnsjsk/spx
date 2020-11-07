@@ -59,8 +59,8 @@
       "tags": []
     },
     {
-      "id": "text-linkUnderlineColor",
-      "name": "linkUnderlineColor",
+      "id": "text-linkDecorationColor",
+      "name": "linkDecorationColor",
       "type": "string",
       "description": "",
       "defaultValue": "'var(--spx-color-primary-A700)'",

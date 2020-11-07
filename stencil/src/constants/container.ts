@@ -21,6 +21,16 @@ const containerStyles = css({
     'var(--spx-container-token-font-family-primary, helvetica, segoe, arial, sans-serif)',
   '--spx-container-font-family-secondary':
     'var(--spx-container-token-font-family-secondary, helvetica, segoe, arial, sans-serif)',
+  '--spx-color-gray-50': '#FAFAFA',
+  '--spx-color-gray-100': '#F5F5F5',
+  '--spx-color-gray-200': '#EEEEEE',
+  '--spx-color-gray-300': '#E0E0E0',
+  '--spx-color-gray-400': '#BDBDBD',
+  '--spx-color-gray-500': '#9E9E9E',
+  '--spx-color-gray-600': '#757575',
+  '--spx-color-gray-700': '#616161',
+  '--spx-color-gray-800': '#424242',
+  '--spx-color-gray-900': '#212121',
 });
 
 document.body.classList.add(containerStyles);

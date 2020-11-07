@@ -72,6 +72,10 @@ export class SpxContainer {
 
   @Prop({ reflect: true }) colorSecondary: string = c.colorSecondary;
 
+  /** Disable color generation. */
+
+  @Prop({ reflect: true }) disableColors: boolean;
+
   @Prop({ reflect: true }) focusColor: string =
     'var(--spx-color-secondary-A400)';
 
@@ -244,8 +248,10 @@ export class SpxContainer {
     state.bpMaxWidth = this.maxWidth || c.maxWidth;
     state.bpMobileWidth = this.bpMobile || c.bpMobileWidth;
     state.buttonReverseColor = this.buttonReverseColor || c.buttonReverseColor;
-    state.colorPrimary = this.colorPrimary || 'teal';
-    state.colorSecondary = this.colorSecondary || 'pink';
+    if (!this.disableColors) {
+      state.colorPrimary = this.colorPrimary || 'teal';
+      state.colorSecondary = this.colorSecondary || 'pink';
+    }
     state.fontFamilyPrimary = this.fontFamilyPrimary || c.fontFamilyPrimary;
     state.fontFamilySecondary =
       this.fontFamilySecondary || c.fontFamilySecondary;
@@ -365,7 +371,7 @@ export class SpxContainer {
       ...c.spaceScale(setVar('spx', 'space-unit', this.spacing)),
       display: 'flex',
       flexDirection: 'column',
-      height: this.el.querySelector('spx-page-docs') && '100vh',
+      // height: this.el.querySelector('spx-page-docs') && '100vh',
 
       '& > spx-section-text-media, & > spx-section-footer > div:not([data-spx-no-styles]) > div': {
         paddingTop: setVar(tag, 'space-y', this.spaceY),
@@ -380,16 +386,16 @@ export class SpxContainer {
       },
 
       '& > spx-section-text-media:not([full]):not([media-full]), & > spx-section-footer > div:not([data-spx-no-styles])': {
-        paddingLeft: setVar(tag, 'space-x', this.spaceX),
-        paddingRight: setVar(tag, 'space-x', this.spaceX),
+        paddingLeft: this.spaceX,
+        paddingRight: this.spaceX,
       },
 
       '& > spx-section-text-media[media-full-mobile-fix] > div': {
-        paddingLeft: state.bpMobile && setVar(tag, 'space-x', this.spaceX),
-        paddingRight: state.bpMobile && setVar(tag, 'space-x', this.spaceX),
+        paddingLeft: state.bpMobile && this.spaceX,
+        paddingRight: state.bpMobile && this.spaceX,
       },
 
-      '& > *[background]:not(spx-section-header)': {
+      '& > *[background]:not(spx-section-header):not(spx-section-footer)': {
         marginTop:
           'calc(' + setVar(tag, 'padding-between', this.spaceY) + '/2)',
 

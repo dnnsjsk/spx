@@ -16,7 +16,7 @@
 | `headingLetterSpacing`      | `heading-letter-spacing`       |                                                         | `string`  | `'0'`                             |
 | `headingLineHeight`         | `heading-line-height`          |                                                         | `string`  | `'1.5'`                           |
 | `headingTextTransform`      | `heading-text-transform`       |                                                         | `string`  | `'default'`                       |
-| `linkUnderlineColor`        | `link-underline-color`         |                                                         | `string`  | `'var(--spx-color-primary-A700)'` |
+| `linkDecorationColor`       | `link-decoration-color`        |                                                         | `string`  | `'var(--spx-color-primary-A700)'` |
 | `markdown`                  | `markdown`                     | Parse markdown.                                         | `boolean` | `false`                           |
 | `maxWidth`                  | `max-width`                    |                                                         | `string`  | `'clamp(700px, 40vw, 1200px)'`    |
 | `textColor`                 | `text-color`                   |                                                         | `string`  | `'var(--spx-color-gray-700)'`     |

@@ -5,7 +5,7 @@
  * Plugin URI: https://spx.dev
  * Description: An ever growing collection of flexible web components to supercharge your workflow.
  * Author: Fabrikat
- * Version: 2.20
+ * Version: 2.21
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
@@ -15,7 +15,7 @@ define( 'SPX_DIR', __DIR__ );
 define( 'SPX_STORE_URL', 'http://spx.dev' );
 define( 'SPX_ITEM_ID', 75 );
 define( 'SPX_ITEM_NAME', 'spx' );
-define( 'SPX_LICENSE_PAGE', 'spx-license' );
+define( 'SPX_LICENSE_PAGE', 'spx_license' );
 
 use spx\init;
 
@@ -51,7 +51,13 @@ if ( class_exists( 'OxyEl' ) ) {
 
 }
 
-include plugin_dir_path( __FILE__ ) . 'includes/admin/spx-updater.php';
+if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
+	include( plugin_dir_path( __FILE__ ) . 'includes/admin/edd-sl-updater.php' );
+}
+
+require_once plugin_dir_path( __FILE__ ) . 'includes/admin/spx-updater.php';
+
+spxPlugin::init( 'spx_', SPX_ITEM_NAME, SPX_STORE_URL, SPX_ITEM_ID, SPX_LICENSE_PAGE, SPX );
 
 /**
  * Init spx.

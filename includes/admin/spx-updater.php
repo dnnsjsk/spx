@@ -1,340 +1,404 @@
 <?php
 
-/**
- * Init EDD updater.
- *
- * @since 1.0
- */
+class spxPlugin {
 
-if( !class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-	// load our custom updater
-	include( plugin_dir_path( __FILE__ ) . '/edd-sl-updater.php' );
-}
+	static $prefix = '';
+	static $name = '';
+	static $store_url = '';
+	static $item_id = NULL;
+	static $license_page = '';
+	static $file = '';
 
-/**
- * Plugin updater.
- *
- * @since 1.0
- */
+	static function init( $prefix, $name, $store_url, $item_id, $license_page, $file ) {
 
-function spxPluginUpdater() {
+		self::$prefix       = $prefix;
+		self::$name         = $name;
+		self::$store_url    = $store_url;
+		self::$item_id      = $item_id;
+		self::$license_page = $license_page;
+		self::$file         = $file;
 
-	$license_key = trim( get_option( 'spx_license_key' ) );
+		add_action( 'admin_init', array( __CLASS__, 'updater' ), 0 );
+		add_action( 'admin_menu', array( __CLASS__, 'menu' ), 11 );
+		add_action( 'admin_init', array( __CLASS__, 'option' ) );
+		add_action( 'admin_init', array( __CLASS__, 'activate' ) );
+		add_action( 'admin_init', array( __CLASS__, 'deactivate' ) );
+		add_action( 'admin_notices', array( __CLASS__, 'notice' ) );
 
-	$plugin_data = get_plugin_data( SPX );
-    $plugin_version = $plugin_data['Version'];
-
-	new EDD_SL_Plugin_Updater( SPX_STORE_URL, SPX,
-		array(
-			'version' => $plugin_version,
-			'license' => $license_key,
-			'item_id' => SPX_ITEM_ID,
-			'author'  => 'Harmoni',
-			'url'     => home_url(),
-			'beta'    => FALSE,
-		)
-	);
-
-}
-add_action( 'admin_init', 'spxPluginUpdater', 0 );
-
-
-/**
- * Add admin page.
- *
- * @since 1.0
- */
-
-function spxLicenseMenu() {
-	add_submenu_page( 'tools.php', 'spx', 'spx', 'administrator', SPX_LICENSE_PAGE, 'spxLicensePage' );
-}
-
-add_action('admin_menu', 'spxLicenseMenu');
-
-function spxLicensePage() {
-	$license = get_option( 'spx_license_key' );
-	$status  = get_option( 'spx_license_status' );
-	?>
-	<div class="wrap">
-		<h2><?php _e('spx License Options'); ?></h2>
-		<form method="post" action="options.php">
-
-			<?php settings_fields('spx_license'); ?>
-
-			<table class="form-table">
-				<tbody>
-					<tr valign="top">
-						<th scope="row" valign="top">
-							<?php _e('License Key'); ?>
-						</th>
-						<td style="display: flex; align-items: center;">
-							<input id="spx_license_key" name="spx_license_key" type="text" class="regular-text" value="<?php esc_attr_e( $license ); ?>" />
-							<label style="margin-left: 20px;" class="description" for="spx_license_key"><?php _e('Enter your license key'); ?></label>
-						</td>
-					</tr>
-					<?php if( FALSE !== $license ) { ?>
-						<tr valign="top">
-							<th scope="row" valign="top">
-								<?php _e('Activate License'); ?>
-							</th>
-							<td style="display: flex; align-items: center;">
-								<?php if( $status !== FALSE && $status == 'valid' ) { ?>
-									<span style="color:green; margin-right: 20px;"><?php _e('active'); ?></span>
-									<?php wp_nonce_field( 'spx_nonce', 'spx_nonce' ); ?>
-									<input type="submit" class="button-secondary" name="spx_license_deactivate" value="<?php _e('Deactivate License'); ?>"/>
-								<?php } else {
-									wp_nonce_field( 'spx_nonce', 'spx_nonce' ); ?>
-									<input type="submit" class="button-secondary" name="spx_license_activate" value="<?php _e('Activate License'); ?>"/>
-								<?php } ?>
-							</td>
-						</tr>
-					<?php } ?>
-				</tbody>
-			</table>
-			<?php submit_button(); ?>
-
-		</form>
-	<?php
-}
-
-/**
- * Register option.
- *
- * @since 1.0
- */
-
-function spxRegisterOption() {
-	register_setting('spx_license', 'spx_license_key', 'spxSanitizeLicense' );
-}
-add_action('admin_init', 'spxRegisterOption');
-
-function spxSanitizeLicense( $new ) {
-	$old = get_option( 'spx_license_key' );
-	if( $old && $old != $new ) {
-		delete_option( 'spx_license_status' );
 	}
-	return $new;
-}
 
-/**
- * Activate license.
- *
- * @since 1.0
- */
+	/**
+	 * Plugin updater.
+	 *
+	 * @since 1.0
+	 */
 
-function spxActivateLicense() {
+	static function updater() {
 
-	// listen for our activate button to be clicked
-	if( isset( $_POST['spx_license_activate'] ) ) {
-        ob_start();
-		// run a quick security check
-	 	if( ! check_admin_referer( 'spx_nonce', 'spx_nonce' ) )
-			{return;}
+		$license_key = trim( get_option( self::$prefix . 'license_key' ) );
 
-	 	// retrieve the license from the database
-		// $license = trim( get_option( 'spx_license_key' ) );
-	 	$license = $_POST['spx_license_key'] ? sanitize_text_field($_POST['spx_license_key']) : FALSE;
+		$plugin_data    = get_plugin_data( self::$file );
+		$plugin_version = $plugin_data['Version'];
 
-	 	update_option( 'spx_license_key', $license );
-
-		// data to send in our API request
-		$api_params = array(
-			'edd_action' => 'activate_license',
-			'license'    => $license,
-			'item_name'  => urlencode( SPX_ITEM_NAME ), // the name of our product in EDD
-			'url'        => home_url()
+		new EDD_SL_Plugin_Updater( self::$store_url, self::$file,
+			array(
+				'version' => $plugin_version,
+				'license' => $license_key,
+				'item_id' => self::$item_id,
+				'author'  => 'Fabrikat',
+				'url'     => home_url(),
+				'beta'    => FALSE,
+			)
 		);
 
-		// Call the custom API.
-		$response = wp_remote_post( SPX_STORE_URL, array( 'timeout' => 15, 'sslverify' => FALSE, 'body' => $api_params ) );
+	}
 
-		// make sure the response came back okay
-		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+	/**
+	 * License menu.
+	 *
+	 * @since 1.0
+	 */
 
-			if ( is_wp_error( $response ) ) {
-				$message = $response->get_error_message();
-			} else {
-				$message = __( 'An error occurred, please try again.' );
+	static function menu() {
+		add_submenu_page(
+			'tools.php',
+			self::$name,
+			self::$name,
+			'manage_options',
+			self::$license_page,
+			array(
+				__CLASS__,
+				'page'
+			) );
+	}
+
+	/**
+	 * License page.
+	 *
+	 * @since 1.0
+	 */
+
+	static function page() {
+		$license = get_option( self::$prefix . 'license_key' );
+		$status  = get_option( self::$prefix . 'license_status' );
+		?>
+        <div class="wrap">
+        <h2><?php _e( self::$name . ' License Options' ); ?></h2>
+        <form method="post" action="options.php">
+
+			<?php settings_fields( self::$prefix . 'license' ); ?>
+
+            <table class="form-table">
+                <tbody>
+                <tr valign="top">
+                    <th scope="row" valign="top">
+						<?php _e( 'License Key' ); ?>
+                    </th>
+                    <td style="display: flex; align-items: center;">
+                        <input id="<?php echo self::$prefix . 'license_key'; ?>"
+                               name="<?php echo self::$prefix . 'license_key'; ?>" type="text"
+                               class="regular-text"
+                               value="<?php esc_attr_e( $license ); ?>"/>
+                        <label style="margin-left: 20px;" class="description"
+                               for="<?php echo self::$prefix . 'license_key'; ?>">
+							<?php _e( 'Enter your license key' ); ?>
+                        </label>
+                    </td>
+                </tr>
+				<?php if ( FALSE !== $license ) { ?>
+                    <tr valign="top">
+                        <th scope="row" valign="top">
+							<?php _e( 'Activate License' ); ?>
+                        </th>
+                        <td style="display: flex; align-items: center;">
+							<?php if ( $status !== FALSE && $status == 'valid' ) { ?>
+                                <span style="color:green; margin-right: 20px;"><?php _e( 'active' ); ?></span>
+								<?php wp_nonce_field( self::$prefix . 'nonce', self::$prefix . 'nonce' ); ?>
+                                <input type="submit" class="button-secondary"
+                                       name="<?php echo self::$prefix; ?>license_deactivate"
+                                       value="<?php _e( 'Deactivate License' ); ?>"/>
+							<?php } else {
+								wp_nonce_field( self::$prefix . 'nonce', self::$prefix . 'nonce' ); ?>
+                                <input type="submit" class="button-secondary"
+                                       name="<?php echo self::$prefix; ?>license_activate"
+                                       value="<?php _e( 'Activate License' ); ?>"/>
+							<?php } ?>
+                        </td>
+                    </tr>
+				<?php } ?>
+                </tbody>
+            </table>
+			<?php submit_button(); ?>
+
+        </form>
+		<?php
+	}
+
+	/**
+	 * License option.
+	 *
+	 * @since 1.0
+	 */
+
+	static function option() {
+		register_setting( self::$prefix . 'license', self::$prefix . 'license_key', array( __CLASS__, 'sanitize' ) );
+	}
+
+	/**
+	 * Sanitize license.
+	 *
+	 * @since 1.0
+	 */
+
+	function sanitize( $new ) {
+		$old = get_option( self::$prefix . 'license_key' );
+		if ( $old && $old != $new ) {
+			delete_option( self::$prefix . 'license_status' );
+		}
+
+		return $new;
+	}
+
+	/**
+	 * Activate license.
+	 *
+	 * @since 1.0
+	 */
+
+	static function activate() {
+
+		// listen for our activate button to be clicked
+		if ( isset( $_POST[ self::$prefix . 'license_activate' ] ) ) {
+			ob_start();
+			// run a quick security check
+			if ( ! check_admin_referer( self::$prefix . 'nonce', self::$prefix . 'nonce' ) ) {
+				return;
 			}
 
-		} else {
+			// retrieve the license from the database
+			// $license = trim( get_option( 'spx_license_key' ) );
+			$license = $_POST[ self::$prefix . 'license_key' ] ? sanitize_text_field( $_POST[ self::$prefix . 'license_key' ] ) : FALSE;
 
-			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
+			update_option( self::$prefix . 'license_key', $license );
 
-			if ( FALSE === $license_data->success ) {
+			// data to send in our API request
+			$api_params = array(
+				'edd_action' => 'activate_license',
+				'license'    => $license,
+				'item_name'  => urlencode( self::$name ), // the name of our product in EDD
+				'url'        => home_url()
+			);
 
-				switch( $license_data->error ) {
+			// Call the custom API.
+			$response = wp_remote_post( self::$store_url, array(
+				'timeout'   => 15,
+				'sslverify' => FALSE,
+				'body'      => $api_params
+			) );
 
-					case 'expired' :
+			// make sure the response came back okay
+			if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
 
-						$message = sprintf(
-							__( 'Your license key expired on %s.' ),
-							date_i18n( get_option( 'date_format' ), strtotime( $license_data->expires, current_time( 'timestamp' ) ) )
-						);
-						break;
+				if ( is_wp_error( $response ) ) {
+					$message = $response->get_error_message();
+				} else {
+					$message = __( 'An error occurred, please try again.' );
+				}
 
-					case 'disabled' :
-					case 'revoked' :
+			} else {
 
-						$message = __( 'Your license key has been disabled.' );
-						break;
+				$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
-					case 'missing' :
+				if ( FALSE === $license_data->success ) {
 
-						$message = __( 'Invalid license.' );
-						break;
+					switch ( $license_data->error ) {
 
-					case 'invalid' :
-					case 'site_inactive' :
+						case 'expired' :
 
-						$message = __( 'Your license is not active for this URL.' );
-						break;
+							$message = sprintf(
+								__( 'Your license key expired on %s.' ),
+								date_i18n( get_option( 'date_format' ), strtotime( $license_data->expires, current_time( 'timestamp' ) ) )
+							);
+							break;
 
-					case 'item_name_mismatch' :
+						case 'disabled' :
+						case 'revoked' :
 
-						$message = sprintf( __( 'This appears to be an invalid license key for %s.' ), SPX_ITEM_NAME );
-						break;
+							$message = __( 'Your license key has been disabled.' );
+							break;
 
-					case 'no_activations_left':
+						case 'missing' :
 
-						$message = __( 'Your license key has reached its activation limit.' );
-						break;
+							$message = __( 'Invalid license.' );
+							break;
 
-					default :
+						case 'invalid' :
+						case 'site_inactive' :
 
-						$message = __( 'An error occurred, please try again.' );
-						break;
+							$message = __( 'Your license is not active for this URL.' );
+							break;
+
+						case 'item_name_mismatch' :
+
+							$message = sprintf( __( 'This appears to be an invalid license key for %s.' ), self::$name );
+							break;
+
+						case 'no_activations_left':
+
+							$message = __( 'Your license key has reached its activation limit.' );
+							break;
+
+						default :
+
+							$message = __( 'An error occurred, please try again.' );
+							break;
+					}
+
 				}
 
 			}
 
-		}
+			// Check if anything passed on a message constituting a failure
+			if ( ! empty( $message ) ) {
+				$base_url = admin_url( 'tools.php?page=' . self::$license_page );
+				$redirect = add_query_arg( array(
+					'sl_activation' => 'false',
+					'message'       => urlencode( $message )
+				), $base_url );
 
-		// Check if anything passed on a message constituting a failure
-		if ( ! empty( $message ) ) {
-			$base_url = admin_url( 'plugins.php?page=' . SPX_LICENSE_PAGE );
-			$redirect = add_query_arg( array( 'sl_activation' => 'false', 'message' => urlencode( $message ) ), $base_url );
+				wp_redirect( $redirect );
+				exit();
+			}
 
-			wp_redirect( $redirect );
+			// $license_data->license will be either "valid" or "invalid"
+			update_option( self::$prefix . 'license_status', $license_data->license );
+			wp_redirect( admin_url( 'tools.php?page=' . self::$license_page ) );
 			exit();
 		}
-
-		// $license_data->license will be either "valid" or "invalid"
-		update_option( 'spx_license_status', $license_data->license );
-		wp_redirect( admin_url( 'plugins.php?page=' . SPX_LICENSE_PAGE ) );
-		exit();
 	}
-}
-add_action('admin_init', 'spxActivateLicense');
 
+	/**
+	 * Deactivate license.
+	 *
+	 * @since 1.0
+	 */
 
-/**
- * Deactivate license.
- *
- * @since 1.0
- */
+	function deactivate() {
 
-function spxDeactivateLicense() {
+		// listen for our activate button to be clicked
+		if ( isset( $_POST[ self::$prefix . 'license_deactivate' ] ) ) {
+			ob_start();
+			// run a quick security check
+			if ( ! check_admin_referer( self::$prefix . 'nonce', self::$prefix . 'nonce' ) ) {
+				return;
+			} // get out if we didn't click the Activate button
 
-	// listen for our activate button to be clicked
-	if( isset( $_POST['spx_license_deactivate'] ) ) {
-        ob_start();
-		// run a quick security check
-	 	if( ! check_admin_referer( 'spx_nonce', 'spx_nonce' ) )
-			{return;} // get out if we didn't click the Activate button
+			// retrieve the license from the database
+			$license = trim( get_option( self::$prefix . 'license_key' ) );
+			$license = $_POST[ self::$prefix . 'license_key' ] && strlen( $_POST[ self::$prefix . 'license_key' ] ) > 8 ? sanitize_text_field( $_POST[ self::$prefix . 'license_key' ] ) : $license;
 
-		// retrieve the license from the database
-		$license = trim( get_option( 'spx_license_key' ) );
-        $license = $_POST['spxlicense_key'] && strlen($_POST['spx_license_key']) > 8 ? sanitize_text_field($_POST['spx_license_key']) : $license;
+			// data to send in our API request
+			$api_params = array(
+				'edd_action' => 'deactivate_license',
+				'license'    => $license,
+				'item_id'    => self::$item_id,
+				'item_name'  => urlencode( self::$name ), // the name of our product in EDD
+				'url'        => home_url()
+			);
 
-		// data to send in our API request
+			// Call the custom API.
+			$response = wp_remote_post( self::$store_url, array(
+				'timeout'   => 15,
+				'sslverify' => FALSE,
+				'body'      => $api_params
+			) );
+
+			// make sure the response came back okay
+			if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
+
+				if ( is_wp_error( $response ) ) {
+					$message = $response->get_error_message();
+				} else {
+					$message = __( 'An error occurred, please try again.' );
+				}
+
+				$base_url = admin_url( 'tools.php?page=' . self::$license_page );
+				$redirect = add_query_arg( array(
+					'sl_activation' => 'false',
+					'message'       => urlencode( $message )
+				), $base_url );
+
+				wp_redirect( $redirect );
+				exit();
+			}
+
+			// decode the license data
+			// $license_data = json_decode( wp_remote_retrieve_body( $response ) );
+
+			// $license_data->license will be either "deactivated" or "failed"
+			// if( $license_data->license == 'deactivated' ) {
+			//	delete_option( 'spx_license_status' );
+			// }
+
+			delete_option( self::$prefix . 'license_status' );
+			delete_option( self::$prefix . 'license_key' );
+
+			wp_redirect( admin_url( 'tools.php?page=' . self::$license_page ) );
+			exit();
+
+		}
+	}
+
+	/**
+	 * Check license.
+	 *
+	 * @since 1.0
+	 */
+
+	static function check() {
+
+		global $wp_version;
+
+		$license = trim( get_option( self::$prefix . 'license_key' ) );
+
 		$api_params = array(
-			'edd_action' => 'deactivate_license',
+			'edd_action' => 'check_license',
 			'license'    => $license,
-			'item_name'  => urlencode( SPX_ITEM_NAME ), // the name of our product in EDD
+			'item_name'  => urlencode( self::$name ),
 			'url'        => home_url()
 		);
 
 		// Call the custom API.
-		$response = wp_remote_post( SPX_STORE_URL, array( 'timeout' => 15, 'sslverify' => FALSE, 'body' => $api_params ) );
+		$response = wp_remote_post( self::$store_url, array(
+			'timeout'   => 15,
+			'sslverify' => FALSE,
+			'body'      => $api_params
+		) );
 
-		// make sure the response came back okay
-		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) ) {
-
-			if ( is_wp_error( $response ) ) {
-				$message = $response->get_error_message();
-			} else {
-				$message = __( 'An error occurred, please try again.' );
-			}
-
-			$base_url = admin_url( 'plugins.php?page=' . SPX_LICENSE_PAGE );
-			$redirect = add_query_arg( array( 'sl_activation' => 'false', 'message' => urlencode( $message ) ), $base_url );
-
-			wp_redirect( $redirect );
-			exit();
+		if ( is_wp_error( $response ) ) {
+			return FALSE;
 		}
 
-		// decode the license data
-		// $license_data = json_decode( wp_remote_retrieve_body( $response ) );
+		$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
-		// $license_data->license will be either "deactivated" or "failed"
-		// if( $license_data->license == 'deactivated' ) {
-		//	delete_option( 'spx_license_status' );
-		// }
-
-		delete_option( 'spx_license_status' );
-		delete_option( 'spx_license_key' );
-
-		wp_redirect( admin_url( 'plugins.php?page=' . SPX_LICENSE_PAGE ) );
-		exit();
-
+		if ( $license_data->license == 'valid' ) {
+			echo 'valid';
+			exit;
+			// this license is still valid
+		} else {
+			echo 'invalid';
+			exit;
+			// this license is no longer valid
+		}
 	}
-}
-add_action('admin_init', 'spxDeactivateLicense');
 
-/**
- * Check license.
- *
- * @since 1.0
- */
+	/**
+	 * Notice.
+	 *
+	 * @since 1.0
+	 */
 
-function spxCheckLicense() {
-
-	global $wp_version;
-
-	$license = trim( get_option( 'spx_license_key' ) );
-
-	$api_params = array(
-		'edd_action' => 'check_license',
-		'license' => $license,
-		'item_name' => urlencode( SPX_ITEM_NAME ),
-		'url'       => home_url()
-	);
-
-	// Call the custom API.
-	$response = wp_remote_post( SPX_STORE_URL, array( 'timeout' => 15, 'sslverify' => FALSE, 'body' => $api_params ) );
-
-	if ( is_wp_error( $response ) )
-		{return FALSE;}
-
-	$license_data = json_decode( wp_remote_retrieve_body( $response ) );
-
-	if( $license_data->license == 'valid' ) {
-		echo 'valid'; exit;
-		// this license is still valid
-	} else {
-		echo 'invalid'; exit;
-		// this license is no longer valid
-	}
-}
-
-/**
- * Admin notices.
- *
- * @since 1.0
- */
-
-function spxAdminNotices() {
+	static function notice() {
 	if ( isset( $_GET['sl_activation'] ) && ! empty( $_GET['message'] ) ) {
 
 		switch( $_GET['sl_activation'] ) {
@@ -360,7 +424,8 @@ function spxAdminNotices() {
 
 				break;
 
-		}
-	}
+		    }
+	    }
+    }
+
 }
-add_action( 'admin_notices', 'spxAdminNotices' );

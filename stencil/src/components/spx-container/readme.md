@@ -19,6 +19,7 @@
 | `buttonTextTransform`        | `button-text-transform`          |                                                            | `string`  | `'uppercase'`                       |
 | `colorPrimary`               | `color-primary`                  | Primary color which will be used for sections and pages.   | `string`  | `c.colorPrimary`                    |
 | `colorSecondary`             | `color-secondary`                | Secondary color which will be used for sections and pages. | `string`  | `c.colorSecondary`                  |
+| `disableColors`              | `disable-colors`                 | Disable color generation.                                  | `boolean` | `undefined`                         |
 | `focusColor`                 | `focus-color`                    |                                                            | `string`  | `'var(--spx-color-secondary-A400)'` |
 | `fontFamilyPrimary`          | `font-family-primary`            | Primary font-family.                                       | `string`  | `c.fontFamilyPrimary`               |
 | `fontFamilySecondary`        | `font-family-secondary`          | Secondary font-family.                                     | `string`  | `c.fontFamilySecondary`             |

@@ -27,6 +27,21 @@
       "tags": []
     },
     {
+      "id": "code-height",
+      "name": "height",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "code-overflow",
+      "name": "overflow",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'auto'",
+      "tags": []
+    },
+    {
       "id": "code-padding",
       "name": "padding",
       "type": "string",
