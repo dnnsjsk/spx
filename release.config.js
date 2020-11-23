@@ -11,34 +11,39 @@ module.exports = {
     path: path.resolve(__dirname, "assets/js"),
   },
   plugins: [
-    new CopyPlugin([
-      {
-        from: path.resolve(__dirname, "assets"),
-        to: path.resolve(
-          __dirname,
-          "../../../../../releases/spx-release/assets"
-        ),
-      },
-      {
-        from: path.resolve(__dirname, "includes"),
-        to: path.resolve(
-          __dirname,
-          "../../../../../releases/spx-release/includes"
-        ),
-      },
-      {
-        from: path.resolve(__dirname, "data"),
-        to: path.resolve(__dirname, "../../../../../releases/spx-release/data"),
-      },
-      {
-        from: path.resolve(__dirname, "spx.php"),
-        to: path.resolve(__dirname, "../../../../../releases/spx-release"),
-      },
-      {
-        from: path.resolve(__dirname, "readme.txt"),
-        to: path.resolve(__dirname, "../../../../../releases/spx-release"),
-      },
-    ]),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(__dirname, "assets"),
+          to: path.resolve(
+            __dirname,
+            "../../../../../releases/spx-release/assets"
+          ),
+        },
+        {
+          from: path.resolve(__dirname, "includes"),
+          to: path.resolve(
+            __dirname,
+            "../../../../../releases/spx-release/includes"
+          ),
+        },
+        {
+          from: path.resolve(__dirname, "data"),
+          to: path.resolve(
+            __dirname,
+            "../../../../../releases/spx-release/data"
+          ),
+        },
+        {
+          from: path.resolve(__dirname, "spx.php"),
+          to: path.resolve(__dirname, "../../../../../releases/spx-release"),
+        },
+        {
+          from: path.resolve(__dirname, "readme.txt"),
+          to: path.resolve(__dirname, "../../../../../releases/spx-release"),
+        },
+      ],
+    }),
     new CleanWebpackPlugin({
       dry: false,
       cleanOnceBeforeBuildPatterns: [

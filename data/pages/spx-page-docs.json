@@ -59,6 +59,13 @@
       "tags": []
     },
     {
+      "id": "page-docs-navigationHeightAdjust",
+      "name": "navigationHeightAdjust",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
       "id": "page-docs-navigationLinkColor",
       "name": "navigationLinkColor",
       "type": "string",

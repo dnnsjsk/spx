@@ -43,9 +43,17 @@ export class SpxScrollspy {
 
   @Prop({ reflect: true }) navClass: string = 'spx-scrollspy__nav--active';
 
-  /** Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated.. */
+  /** Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated. */
 
   @Prop({ reflect: true }) offset: any = 0;
+
+  /** Automatically scroll to the active element */
+
+  @Prop({ reflect: true }) scrolling: boolean;
+
+  /** Scrolling offset from the top. */
+
+  @Prop({ reflect: true }) scrollingOffset: number = 50;
 
   /** Target element. Can take any querySelector value. (id, class, tag etc.) */
 
@@ -59,11 +67,23 @@ export class SpxScrollspy {
 
   @Listen('gumshoeActivate', { target: 'document' })
   onLinkChange(event) {
-    history.replaceState(null, null, event.detail.link.getAttribute('href'));
+    if (this.urlChange === true) {
+      history.replaceState(null, null, event.detail.link.getAttribute('href'));
+    }
+
+    if (this.scrolling === true) {
+      this.el.scroll({
+        top:
+          this.el.querySelector(
+            'a[href="' + event.detail.link.getAttribute('href') + '"]'
+          )['offsetTop'] - this.scrollingOffset,
+        behavior: 'smooth',
+      });
+    }
   }
 
   // prettier-ignore
-  @Event({ eventName: "spxScrollspyDidLoad" }) spxScrollspyDidLoad: EventEmitter;
+  @Event({eventName: "spxScrollspyDidLoad"}) spxScrollspyDidLoad: EventEmitter;
 
   componentDidLoad() {
     globalComponentDidLoad(this.el);
@@ -73,10 +93,7 @@ export class SpxScrollspy {
       reflow: true,
       navClass: this.navClass,
       contentClass: this.contentClass,
-
-      /** Only activate events when URL should be changed. */
-
-      events: this.urlChange,
+      events: true,
 
       offset: () => {
         /** Check if prop is a number otherwise look for querySelector. */

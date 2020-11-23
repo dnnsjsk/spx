@@ -199,6 +199,10 @@ export class SpxText {
             marginTop: 'var(--spx-space-md)',
           },
 
+          '& > * + h1': {
+            marginTop: 'var(--spx-space-lg)',
+          },
+
           'h1, h2, h3, h4, h5, h6': {
             color: setVar(tag, 'heading-color', this.headingColor),
             fontFamily: setVar(

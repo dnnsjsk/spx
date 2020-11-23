@@ -15,8 +15,17 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 2.2.3 =
+* Code: add 'display' attribute.
+* Enhancement: new updater.
+* Fix: change admin page slug back to 'spx-license'.
+* Page Docs: add 'navigation-height-adjust' attribute.
+* Page Docs: automatically scroll navigation.
+* Scrollspy: add 'scrolling' attribute to automatically scroll to active link.
+* Scrollspy: add 'scrolling-offset' attribute.
+
 = 2.2.2 =
-* Fix: Make tested up to version 5.5.3
+* Fix: Make 'Tested up to version' 5.5.3
 
 = 2.2.1 =
 * Code: add 'height' attribute.
@@ -27,7 +36,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Enhancement: change 'documentation' folder to 'data'.
 * Enhancement: enqueue spx to Gutenberg.
 * Fix: refactor updater.
-* Fix: wrong redirect when license was wrong.
+* Fix: fix redirect when license was wrong.
 * Page Docs: add 'navigation-padding' attribute.
 * Page Docs: add 'navigation-top' attribute.
 * Page Docs: remove 'height' attribute.

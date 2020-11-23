@@ -15015,6 +15015,7 @@ const SpxCode = class extends HTMLElement {
     this.__registerHost();
     this.background = 'var(--spx-color-gray-900)';
     this.borderRadius = borderRadius;
+    this.display = 'block';
     this.fontSize = 'clamp(12px, 1.6vw, 16px)';
     this.overflow = 'auto';
     this.padding = 'var(--spx-space-lg)';
@@ -15045,8 +15046,9 @@ const SpxCode = class extends HTMLElement {
   render() {
     /** Host styles. */
     const styleHost = css({
-      display: 'block',
+      display: setVar(tag$3, 'display', this.display),
       fontSize: setVar(tag$3, 'font-size', this.fontSize),
+      borderRadius: setVar(tag$3, 'border-radius', this.borderRadius),
       '*': {
         fontSize: setVar(tag$3, 'font-size', this.fontSize),
       },
@@ -21206,6 +21208,15 @@ const properties$3 = [
 		]
 	},
 	{
+		id: "code-display",
+		name: "display",
+		type: "string",
+		description: "",
+		defaultValue: "'block'",
+		tags: [
+		]
+	},
+	{
 		id: "code-fontSize",
 		name: "fontSize",
 		type: "string",
@@ -21219,6 +21230,14 @@ const properties$3 = [
 		name: "height",
 		type: "string",
 		description: "",
+		tags: [
+		]
+	},
+	{
+		id: "code-hideScrollbar",
+		name: "hideScrollbar",
+		type: "boolean",
+		description: "Hide scrollbar.",
 		tags: [
 		]
 	},
@@ -23593,6 +23612,7 @@ const SpxEditor = class extends HTMLElement {
     if (component === 'slider' || component === 'slideshow') {
       this.comp.classList.add(css({
         img: {
+          margin: '0 !important',
           borderRadius: borderRadius,
         },
       }));
@@ -25328,7 +25348,7 @@ const SpxPageDocs = class extends HTMLElement {
         display: 'grid',
         gridGap: setVar(tag$g, 'navigation-gap', this.navigationGap),
       },
-      a: Object.assign(Object.assign({}, text(tag$g, 'navigation', this.navigationLinkColor, '16px', '16px', '16px', this.navigationFontSizeMultiplier, this.navigationLinkFontWeight, this.navigationLinkLetterSpacing, this.navigationLinkLineHeight, this.navigationLinkTextTransform)), { fontFamily: setVar(tag$g, 'navigation-font-family', this.navigationFontFamily), width: 'max-content', transitionProperty: 'color', transitionDuration: setVar(tag$g, 'navigation-transition-duration', transitionDuration), itemTransitionTimingFunction: setVar(tag$g, 'navigation-transition-timing-function', transitionTimingFunction) }),
+      a: Object.assign(Object.assign({}, text(tag$g, 'navigation-link', this.navigationLinkColor, '16px', '16px', '16px', this.navigationFontSizeMultiplier, this.navigationLinkFontWeight, this.navigationLinkLetterSpacing, this.navigationLinkLineHeight, this.navigationLinkTextTransform)), { fontFamily: setVar(tag$g, 'navigation-font-family', this.navigationFontFamily), width: 'max-content', transitionProperty: 'color', transitionDuration: setVar(tag$g, 'navigation-transition-duration', transitionDuration), itemTransitionTimingFunction: setVar(tag$g, 'navigation-transition-timing-function', transitionTimingFunction) }),
       li: {
         '&:last-of-type': {
           marginBottom: this.spaceY,
@@ -25337,7 +25357,7 @@ const SpxPageDocs = class extends HTMLElement {
           color: setVar(tag$g, 'navigation-link-color-active', this.navigationLinkColorActive),
         },
       },
-      span: Object.assign(Object.assign({}, text(tag$g, 'navigation', this.navigationTitleColor, '14px', '14px', '14px', this.navigationFontSizeMultiplier, this.navigationTitleFontWeight, this.navigationTitleLetterSpacing, this.navigationTitleLineHeight, this.navigationTitleTextTransform)), { fontFamily: setVar(tag$g, 'navigation-font-family', this.navigationFontFamily) }),
+      span: Object.assign(Object.assign({}, text(tag$g, 'navigation-title', this.navigationTitleColor, '14px', '14px', '14px', this.navigationFontSizeMultiplier, this.navigationTitleFontWeight, this.navigationTitleLetterSpacing, this.navigationTitleLineHeight, this.navigationTitleTextTransform)), { fontFamily: setVar(tag$g, 'navigation-font-family', this.navigationFontFamily) }),
       'li + span': {
         display: 'block',
         marginTop: 'var(--spx-space-lg)',
@@ -25373,7 +25393,7 @@ const SpxPageDocs = class extends HTMLElement {
     };
     /** Merge content objects to avoid emotion error. */
     const styleContentMerge = css(merge$1(styleContent, {}));
-    return (h$1(Host, { class: styleHost }, h$1("div", { class: styleNavigationWrap }, h$1("spx-scrollspy", { display: "grid", "url-change": true, offset: "100", class: styleNavigationMerge }, h$1("ul", { ref: (el) => (this.navigation = el) }))), h$1("div", { ref: (el) => (this.content = el), class: styleContentMerge }, h$1("slot", null))));
+    return (h$1(Host, { class: styleHost }, h$1("div", { class: styleNavigationWrap }, h$1("spx-scrollspy", { display: "grid", "url-change": true, offset: "100", scrolling: true, class: styleNavigationMerge }, h$1("ul", { ref: (el) => (this.navigation = el) }))), h$1("div", { ref: (el) => (this.content = el), class: styleContentMerge }, h$1("slot", null))));
   }
   get el() { return this; }
 };
@@ -26018,8 +26038,10 @@ const SpxScrollspy = class extends HTMLElement {
     this.display = 'block';
     /** Applied class to active navigation element. */
     this.navClass = 'spx-scrollspy__nav--active';
-    /** Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated.. */
+    /** Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated. */
     this.offset = 0;
+    /** Scrolling offset from the top. */
+    this.scrollingOffset = 50;
     /** Target element. Can take any querySelector value. (id, class, tag etc.) */
     this.target = 'a';
     /** Appends the currently active link to the end of the URL. */
@@ -26027,7 +26049,15 @@ const SpxScrollspy = class extends HTMLElement {
   }
   /** Replace state of URL bar . */
   onLinkChange(event) {
-    history.replaceState(null, null, event.detail.link.getAttribute('href'));
+    if (this.urlChange === true) {
+      history.replaceState(null, null, event.detail.link.getAttribute('href'));
+    }
+    if (this.scrolling === true) {
+      this.el.scroll({
+        top: this.el.querySelector('a[href="' + event.detail.link.getAttribute('href') + '"]')['offsetTop'] - this.scrollingOffset,
+        behavior: 'smooth',
+      });
+    }
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
@@ -26036,8 +26066,7 @@ const SpxScrollspy = class extends HTMLElement {
       reflow: true,
       navClass: this.navClass,
       contentClass: this.contentClass,
-      /** Only activate events when URL should be changed. */
-      events: this.urlChange,
+      events: true,
       offset: () => {
         /** Check if prop is a number otherwise look for querySelector. */
         return offset$3(this.offset);
@@ -36397,6 +36426,9 @@ const SpxText = class extends HTMLElement {
       '& > * + *': {
         marginTop: 'var(--spx-space-md)',
       },
+      '& > * + h1': {
+        marginTop: 'var(--spx-space-lg)',
+      },
       'h1, h2, h3, h4, h5, h6': {
         color: setVar(tag$s, 'heading-color', this.headingColor),
         fontFamily: setVar(tag$s, 'heading-font-family', this.headingFontFamily),
@@ -36512,7 +36544,7 @@ const IonIcon = /*@__PURE__*/proxyCustomElement(Icon, [1,"ion-icon",{"mode":[102
 const SpxAccordion$1 = /*@__PURE__*/proxyCustomElement(SpxAccordion, [4,"spx-accordion",{"contentColor":[513,"content-color"],"contentText":[513,"content-text"],"contentTextTag":[513,"content-text-tag"],"contentTransitionDuration":[513,"content-transition-duration"],"contentTransitionTimingFunction":[513,"content-transition-timing-function"],"fontSize":[513,"font-size"],"gap":[513],"headerColor":[513,"header-color"],"headerGap":[513,"header-gap"],"headerText":[513,"header-text"],"headerTextTag":[513,"header-text-tag"],"indicatorIcon":[513,"indicator-icon"],"indicatorIconType":[513,"indicator-icon-type"],"indicatorIconTransform":[513,"indicator-icon-transform"],"contentCustom":[32],"headerCustom":[32],"open":[32],"headerHeight":[32]},[[0,"keydown","onKeydown"]]]);
 const SpxAnimate$1 = /*@__PURE__*/proxyCustomElement(SpxAnimate, [4,"spx-animate",{"delay":[2],"duration":[2],"ease":[1],"once":[4],"opacity":[2],"repeat":[2],"repeatDelay":[2,"repeat-delay"],"reverse":[4],"stagger":[2],"target":[1],"viewport":[4],"viewportMarginBottom":[1,"viewport-margin-bottom"],"viewportMarginLeft":[1,"viewport-margin-left"],"viewportMarginRight":[1,"viewport-margin-right"],"viewportMarginTop":[1,"viewport-margin-top"],"x":[2],"y":[2],"yoyo":[4],"display":[513],"elements":[32],"tl":[32]}]);
 const SpxClassToggle$1 = /*@__PURE__*/proxyCustomElement(SpxClassToggle, [4,"spx-class-toggle",{"display":[513],"local":[513],"target":[513],"toggle":[513],"classesArray":[32],"toggled":[32]}]);
-const SpxCode$1 = /*@__PURE__*/proxyCustomElement(SpxCode, [36,"spx-code",{"background":[513],"borderRadius":[513,"border-radius"],"fontSize":[513,"font-size"],"height":[513],"overflow":[513],"padding":[513],"theme":[513],"type":[513]}]);
+const SpxCode$1 = /*@__PURE__*/proxyCustomElement(SpxCode, [36,"spx-code",{"background":[513],"borderRadius":[513,"border-radius"],"display":[513],"fontSize":[513,"font-size"],"height":[513],"hideScrollbar":[516,"hide-scrollbar"],"overflow":[513],"padding":[513],"theme":[513],"type":[513]}]);
 const SpxContainer$1 = /*@__PURE__*/proxyCustomElement(SpxContainer, [0,"spx-container",{"bpMobile":[514,"bp-mobile"],"buttonBorderRadius":[513,"button-border-radius"],"buttonFontSizeMultiplier":[514,"button-font-size-multiplier"],"buttonFontWeight":[513,"button-font-weight"],"buttonMarginX":[513,"button-margin-x"],"buttonMarginTop":[513,"button-margin-top"],"buttonReverseColor":[513,"button-reverse-color"],"buttonTextTransform":[513,"button-text-transform"],"colorPrimary":[513,"color-primary"],"colorSecondary":[513,"color-secondary"],"disableColors":[516,"disable-colors"],"focusColor":[513,"focus-color"],"fontFamilyPrimary":[513,"font-family-primary"],"fontFamilySecondary":[513,"font-family-secondary"],"imageMaxWidth":[513,"image-max-width"],"maxWidth":[513,"max-width"],"offsetHeader":[516,"offset-header"],"preTitleBackground":[513,"pre-title-background"],"preTitleBorderRadius":[513,"pre-title-border-radius"],"preTitleColor":[513,"pre-title-color"],"preTitleFontSizeMultiplier":[514,"pre-title-font-size-multiplier"],"preTitleFontWeight":[513,"pre-title-font-weight"],"preTitleLetterSpacing":[513,"pre-title-letter-spacing"],"preTitleLineHeight":[513,"pre-title-line-height"],"preTitleMarginBottom":[513,"pre-title-margin-bottom"],"preTitlePadding":[513,"pre-title-padding"],"preTitleTextTransform":[513,"pre-title-text-transform"],"spaceX":[513,"space-x"],"spaceXSm":[513,"space-x-sm"],"spaceY":[513,"space-y"],"spacing":[513],"tabsMarginBetween":[513,"tabs-margin-between"],"tabsMarginFirst":[513,"tabs-margin-first"],"tabsOpacity":[514,"tabs-opacity"],"textColor":[513,"text-color"],"textFontSizeMultiplier":[514,"text-font-size-multiplier"],"textFontWeight":[513,"text-font-weight"],"textLetterSpacing":[513,"text-letter-spacing"],"textLineHeight":[513,"text-line-height"],"textMarginTop":[513,"text-margin-top"],"textMaxWidth":[513,"text-max-width"],"textTransform":[513,"text-transform"],"titleColor":[513,"title-color"],"titleFontSizeMultiplier":[514,"title-font-size-multiplier"],"titleFontWeight":[514,"title-font-weight"],"titleLetterSpacing":[513,"title-letter-spacing"],"titleLineHeight":[513,"title-line-height"],"titleMaxWidth":[513,"title-max-width"],"titleTextTransform":[513,"title-text-transform"]},[[9,"resize","onResize"]]]);
 const SpxEdit$1 = /*@__PURE__*/proxyCustomElement(SpxEdit, [4,"spx-edit",{"display":[513],"name":[513],"outline":[513],"outlineFocus":[513,"outline-focus"],"placeholder":[513],"placeholderColor":[513,"placeholder-color"],"placeholderOpacity":[513,"placeholder-opacity"],"subfield":[516],"type":[513],"editable":[516],"originalText":[32],"subfieldArray":[32]},[[0,"keydown","onClickEnter"],[4,"spxEditButtonDiscard","onClickDiscard"],[4,"spxEditButtonSave","onClickSave"],[0,"keyup","onClickKeyup"]]]);
 const SpxEditButton$1 = /*@__PURE__*/proxyCustomElement(SpxEditButton, [4,"spx-edit-button",{"test":[4],"background":[513],"backgroundDiscard":[513,"background-discard"],"border":[513],"borderRadius":[513,"border-radius"],"color":[513],"colorDiscard":[513,"color-discard"],"distanceX":[513,"distance-x"],"distanceY":[513,"distance-y"],"editId":[513,"edit-id"],"fontFamily":[513,"font-family"],"fontSize":[513,"font-size"],"gap":[513],"padding":[513],"position":[513],"positionCss":[513,"position-css"],"textDiscard":[513,"text-discard"],"textEdit":[513,"text-edit"],"textSave":[513,"text-save"],"textSuccess":[513,"text-success"],"zIndex":[514,"z-index"],"loading":[32],"open":[32],"positionArray":[32]}]);
@@ -36528,9 +36560,9 @@ const SpxMockup$1 = /*@__PURE__*/proxyCustomElement(SpxMockup, [4,"spx-mockup",{
 const SpxNavigation$1 = /*@__PURE__*/proxyCustomElement(SpxNavigation, [0,"spx-navigation",{"childBorder":[513,"child-border"],"childBorderRadius":[513,"child-border-radius"],"childBoxShadow":[513,"child-box-shadow"],"childChildGap":[513,"child-child-gap"],"childGap":[513,"child-gap"],"childIcon":[513,"child-icon"],"childIconType":[513,"child-icon-type"],"childIndicatorGap":[513,"child-indicator-gap"],"childItemBackground":[513,"child-item-background"],"childItemBackgroundHover":[513,"child-item-background-hover"],"childItemColor":[513,"child-item-color"],"childItemColorHover":[513,"child-item-color-hover"],"childItemPadding":[513,"child-item-padding"],"childPlacement":[513,"child-placement"],"fontSize":[513,"font-size"],"itemTransitionDuration":[513,"item-transition-duration"],"itemTransitionTimingFunction":[513,"item-transition-timing-function"],"itemUnderline":[516,"item-underline"],"itemUnderlineHover":[516,"item-underline-hover"],"menu":[513],"mobile":[514],"mobileIcon":[513,"mobile-icon"],"mobileIconType":[513,"mobile-icon-type"],"mobileItemBackground":[513,"mobile-item-background"],"mobileItemBackgroundHover":[513,"mobile-item-background-hover"],"mobileItemColor":[513,"mobile-item-color"],"mobileItemColorHover":[513,"mobile-item-color-hover"],"mobileItemNestedMarginLeft":[513,"mobile-item-nested-margin-left"],"mobileItemPadding":[513,"mobile-item-padding"],"mobilePlacement":[513,"mobile-placement"],"parentItemBackground":[513,"parent-item-background"],"parentItemBackgroundHover":[513,"parent-item-background-hover"],"parentItemColor":[513,"parent-item-color"],"parentItemColorHover":[513,"parent-item-color-hover"],"parentItemGap":[513,"parent-item-gap"],"parentItemPadding":[513,"parent-item-padding"],"vertical":[516],"menuArray":[32],"mobileBP":[32]},[[0,"ontouchstart","onClick"],[1,"mouseenter","onClick"],[0,"focusin","onClick"],[9,"resize","onResize"]]]);
 const SpxNotation$1 = /*@__PURE__*/proxyCustomElement(SpxNotation, [4,"spx-notation",{"animation":[516],"animationDuration":[514,"animation-duration"],"color":[513],"display":[513],"iterations":[514],"multiline":[516],"strokeWidth":[514,"stroke-width"],"type":[513],"annotation":[32]}]);
 const SpxOffset$1 = /*@__PURE__*/proxyCustomElement(SpxOffset, [4,"spx-offset",{"display":[513],"target":[513]},[[9,"resize","onResize"]]]);
-const SpxPageDocs$1 = /*@__PURE__*/proxyCustomElement(SpxPageDocs, [4,"spx-page-docs",{"bpMobile":[514,"bp-mobile"],"contentHeadingFontFamily":[513,"content-heading-font-family"],"navigationBackground":[513,"navigation-background"],"navigationFontFamily":[513,"navigation-font-family"],"navigationFontSizeMultiplier":[514,"navigation-font-size-multiplier"],"navigationLinkFontSizeMultiplier":[514,"navigation-link-font-size-multiplier"],"navigationGap":[513,"navigation-gap"],"navigationHeadingTag":[513,"navigation-heading-tag"],"navigationLinkColor":[513,"navigation-link-color"],"navigationLinkColorActive":[513,"navigation-link-color-active"],"navigationLinkFontWeight":[513,"navigation-link-font-weight"],"navigationLinkLetterSpacing":[513,"navigation-link-letter-spacing"],"navigationLinkLineHeight":[513,"navigation-link-line-height"],"navigationLinkTextTransform":[513,"navigation-link-text-transform"],"navigationPadding":[513,"navigation-padding"],"navigationTitleColor":[513,"navigation-title-color"],"navigationTitleFontWeight":[513,"navigation-title-font-weight"],"navigationTitleLetterSpacing":[513,"navigation-title-letter-spacing"],"navigationTitleLineHeight":[513,"navigation-title-line-height"],"navigationTitleTextTransform":[513,"navigation-title-text-transform"],"navigationTop":[513,"navigation-top"],"offsetMarginTop":[513,"offset-margin-top"],"uniqueId":[516,"unique-id"],"spaceBottom":[513,"space-bottom"],"spaceX":[513,"space-x"],"spaceY":[513,"space-y"],"mobile":[32]},[[9,"resize","onResize"]]]);
+const SpxPageDocs$1 = /*@__PURE__*/proxyCustomElement(SpxPageDocs, [4,"spx-page-docs",{"bpMobile":[514,"bp-mobile"],"contentHeadingFontFamily":[513,"content-heading-font-family"],"navigationBackground":[513,"navigation-background"],"navigationFontFamily":[513,"navigation-font-family"],"navigationFontSizeMultiplier":[514,"navigation-font-size-multiplier"],"navigationLinkFontSizeMultiplier":[514,"navigation-link-font-size-multiplier"],"navigationGap":[513,"navigation-gap"],"navigationHeadingTag":[513,"navigation-heading-tag"],"navigationHeightAdjust":[513,"navigation-height-adjust"],"navigationLinkColor":[513,"navigation-link-color"],"navigationLinkColorActive":[513,"navigation-link-color-active"],"navigationLinkFontWeight":[513,"navigation-link-font-weight"],"navigationLinkLetterSpacing":[513,"navigation-link-letter-spacing"],"navigationLinkLineHeight":[513,"navigation-link-line-height"],"navigationLinkTextTransform":[513,"navigation-link-text-transform"],"navigationPadding":[513,"navigation-padding"],"navigationTitleColor":[513,"navigation-title-color"],"navigationTitleFontWeight":[513,"navigation-title-font-weight"],"navigationTitleLetterSpacing":[513,"navigation-title-letter-spacing"],"navigationTitleLineHeight":[513,"navigation-title-line-height"],"navigationTitleTextTransform":[513,"navigation-title-text-transform"],"navigationTop":[513,"navigation-top"],"offsetMarginTop":[513,"offset-margin-top"],"uniqueId":[516,"unique-id"],"spaceBottom":[513,"space-bottom"],"spaceX":[513,"space-x"],"spaceY":[513,"space-y"],"mobile":[32]},[[9,"resize","onResize"]]]);
 const SpxPageSingle$1 = /*@__PURE__*/proxyCustomElement(SpxPageSingle, [4,"spx-page-single",{"authorColor":[513,"author-color"],"authorFontFamily":[513,"author-font-family"],"authorFontSizeMultiplier":[514,"author-font-size-multiplier"],"authorFontWeight":[513,"author-font-weight"],"authorLetterSpacing":[513,"author-letter-spacing"],"authorLineHeight":[513,"author-line-height"],"authorMarginTop":[513,"author-margin-top"],"authorTextTransform":[513,"author-text-transform"],"contentMarginTop":[513,"content-margin-top"],"contentMaxWidth":[513,"content-max-width"],"contentSpaceX":[513,"content-space-x"],"date":[516],"dateColor":[513,"date-color"],"dateFontFamily":[513,"date-font-family"],"dateFontSizeMultiplier":[514,"date-font-size-multiplier"],"dateFontWeight":[513,"date-font-weight"],"dateLetterSpacing":[513,"date-letter-spacing"],"dateLineHeight":[513,"date-line-height"],"dateMarginTop":[513,"date-margin-top"],"dateTextTransform":[513,"date-text-transform"],"headerPaddingBottom":[513,"header-padding-bottom"],"headerBorderBottom":[513,"header-border-bottom"],"image":[516],"imageBorderRadius":[513,"image-border-radius"],"imageHeight":[513,"image-height"],"imageObjectPosition":[513,"image-object-position"],"imageSpaceX":[513,"image-space-x"],"imageSpaceY":[513,"image-space-y"],"mobile":[514],"post":[513],"titleColor":[513,"title-color"],"titleFontFamily":[513,"title-font-family"],"titleFontSizeMultiplier":[514,"title-font-size-multiplier"],"titleFontWeight":[513,"title-font-weight"],"titleLetterSpacing":[513,"title-letter-spacing"],"titleLineHeight":[513,"title-line-height"],"titleMarginTop":[513,"title-margin-top"],"titleTextTransform":[513,"title-text-transform"],"content":[32],"mobileBP":[32],"postArray":[32],"postContent":[32]}]);
-const SpxScrollspy$2 = /*@__PURE__*/proxyCustomElement(SpxScrollspy, [0,"spx-scrollspy",{"contentClass":[513,"content-class"],"display":[513],"navClass":[513,"nav-class"],"offset":[520],"target":[513],"urlChange":[516,"url-change"],"myGumshoe":[32]},[[4,"gumshoeActivate","onLinkChange"]]]);
+const SpxScrollspy$2 = /*@__PURE__*/proxyCustomElement(SpxScrollspy, [0,"spx-scrollspy",{"contentClass":[513,"content-class"],"display":[513],"navClass":[513,"nav-class"],"offset":[520],"scrolling":[516],"scrollingOffset":[514,"scrolling-offset"],"target":[513],"urlChange":[516,"url-change"],"myGumshoe":[32]},[[4,"gumshoeActivate","onLinkChange"]]]);
 const SpxSectionButton$1 = /*@__PURE__*/proxyCustomElement(SpxSectionButton, [4,"spx-section-button",{"href":[513],"reverseColor":[516,"reverse-color"],"target":[513],"transitionDuration":[513,"transition-duration"],"transitionTimingFunction":[513,"transition-timing-function"],"type":[513]}]);
 const SpxSectionCard$1 = /*@__PURE__*/proxyCustomElement(SpxSectionCard, [4,"spx-section-card",{"boxShadow":[513,"box-shadow"],"padding":[513],"textColor":[513,"text-color"],"textFontSizeMultiplier":[514,"text-font-size-multiplier"],"textFontWeight":[513,"text-font-weight"],"textLetterSpacing":[513,"text-letter-spacing"],"textLineHeight":[513,"text-line-height"],"textMarginTop":[513,"text-margin-top"],"textMaxWidth":[513,"text-max-width"],"textTransform":[513,"text-transform"],"titleColor":[513,"title-color"],"titleFontSizeMultiplier":[514,"title-font-size-multiplier"],"titleFontWeight":[513,"title-font-weight"],"titleLetterSpacing":[513,"title-letter-spacing"],"titleLineHeight":[513,"title-line-height"],"titleMaxWidth":[513,"title-max-width"],"titleTextTransform":[513,"title-text-transform"]}]);
 const SpxSectionFooter$1 = /*@__PURE__*/proxyCustomElement(SpxSectionFooter, [4,"spx-section-footer",{"background":[513],"gap":[513],"imageMaxHeight":[513,"image-max-height"],"justifyContent":[513,"justify-content"],"maxWidth":[513,"max-width"],"spaceBefore":[513,"space-before"],"spaceY":[513,"space-y"],"textColor":[513,"text-color"],"textMaxWidth":[513,"text-max-width"]}]);

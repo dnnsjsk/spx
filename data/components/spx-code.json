@@ -19,6 +19,14 @@
       "tags": []
     },
     {
+      "id": "code-display",
+      "name": "display",
+      "type": "string",
+      "description": "",
+      "defaultValue": "'block'",
+      "tags": []
+    },
+    {
       "id": "code-fontSize",
       "name": "fontSize",
       "type": "string",
@@ -31,6 +39,13 @@
       "name": "height",
       "type": "string",
       "description": "",
+      "tags": []
+    },
+    {
+      "id": "code-hideScrollbar",
+      "name": "hideScrollbar",
+      "type": "boolean",
+      "description": "Hide scrollbar.",
       "tags": []
     },
     {

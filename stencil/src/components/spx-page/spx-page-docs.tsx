@@ -56,6 +56,8 @@ export class SpxPageDocs {
 
   @Prop({ reflect: true }) navigationHeadingTag: string = 'h1';
 
+  @Prop({ reflect: true }) navigationHeightAdjust: string;
+
   @Prop({ reflect: true }) navigationLinkColor: string = 'var(--spx-color-800)';
 
   @Prop({ reflect: true }) navigationLinkColorActive: string =
@@ -216,7 +218,7 @@ export class SpxPageDocs {
       a: {
         ...c.text(
           tag,
-          'navigation',
+          'navigation-link',
           this.navigationLinkColor,
           '16px',
           '16px',
@@ -263,7 +265,7 @@ export class SpxPageDocs {
       span: {
         ...c.text(
           tag,
-          'navigation',
+          'navigation-title',
           this.navigationTitleColor,
           '14px',
           '14px',
@@ -339,6 +341,7 @@ export class SpxPageDocs {
             display="grid"
             url-change={true}
             offset="100"
+            scrolling={true}
             class={styleNavigationMerge}
           >
             <ul ref={(el) => (this.navigation = el as HTMLElement)} />

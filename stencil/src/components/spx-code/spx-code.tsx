@@ -30,9 +30,15 @@ export class SpxCode {
 
   @Prop({ reflect: true }) borderRadius: string = c.borderRadius;
 
+  @Prop({ reflect: true }) display: string = 'block';
+
   @Prop({ reflect: true }) fontSize: string = 'clamp(12px, 1.6vw, 16px)';
 
   @Prop({ reflect: true }) height: string;
+
+  /** Hide scrollbar. */
+
+  @Prop({ reflect: true }) hideScrollbar: boolean;
 
   @Prop({ reflect: true }) overflow: string = 'auto';
 
@@ -73,8 +79,9 @@ export class SpxCode {
     /** Host styles. */
 
     const styleHost = css({
-      display: 'block',
+      display: setVar(tag, 'display', this.display),
       fontSize: setVar(tag, 'font-size', this.fontSize),
+      borderRadius: setVar(tag, 'border-radius', this.borderRadius),
 
       '*': {
         fontSize: setVar(tag, 'font-size', this.fontSize),

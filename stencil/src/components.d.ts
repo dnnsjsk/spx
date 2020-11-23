@@ -155,8 +155,13 @@ export namespace Components {
     interface SpxCode {
         "background": string;
         "borderRadius": string;
+        "display": string;
         "fontSize": string;
         "height": string;
+        /**
+          * Hide scrollbar.
+         */
+        "hideScrollbar": boolean;
         "overflow": string;
         "padding": string;
         "reload": () => Promise<void>;
@@ -669,6 +674,7 @@ export namespace Components {
         "navigationFontSizeMultiplier": number;
         "navigationGap": string;
         "navigationHeadingTag": string;
+        "navigationHeightAdjust": string;
         "navigationLinkColor": string;
         "navigationLinkColorActive": string;
         "navigationLinkFontSizeMultiplier": number;
@@ -768,10 +774,18 @@ export namespace Components {
          */
         "navClass": string;
         /**
-          * Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated..
+          * Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated.
          */
         "offset": any;
         "reload": () => Promise<void>;
+        /**
+          * Automatically scroll to the active element
+         */
+        "scrolling": boolean;
+        /**
+          * Scrolling offset from the top.
+         */
+        "scrollingOffset": number;
         /**
           * Target element. Can take any querySelector value. (id, class, tag etc.)
          */
@@ -1691,8 +1705,13 @@ declare namespace LocalJSX {
     interface SpxCode {
         "background"?: string;
         "borderRadius"?: string;
+        "display"?: string;
         "fontSize"?: string;
         "height"?: string;
+        /**
+          * Hide scrollbar.
+         */
+        "hideScrollbar"?: boolean;
         "overflow"?: string;
         "padding"?: string;
         /**
@@ -2191,6 +2210,7 @@ declare namespace LocalJSX {
         "navigationFontSizeMultiplier"?: number;
         "navigationGap"?: string;
         "navigationHeadingTag"?: string;
+        "navigationHeightAdjust"?: string;
         "navigationLinkColor"?: string;
         "navigationLinkColorActive"?: string;
         "navigationLinkFontSizeMultiplier"?: number;
@@ -2291,10 +2311,18 @@ declare namespace LocalJSX {
          */
         "navClass"?: string;
         /**
-          * Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated..
+          * Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated.
          */
         "offset"?: any;
         "onSpxScrollspyDidLoad"?: (event: CustomEvent<any>) => void;
+        /**
+          * Automatically scroll to the active element
+         */
+        "scrolling"?: boolean;
+        /**
+          * Scrolling offset from the top.
+         */
+        "scrollingOffset"?: number;
         /**
           * Target element. Can take any querySelector value. (id, class, tag etc.)
          */

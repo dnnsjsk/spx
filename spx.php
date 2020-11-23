@@ -5,19 +5,19 @@
  * Plugin URI: https://spx.dev
  * Description: An ever growing collection of flexible web components to supercharge your workflow.
  * Author: Fabrikat
- * Version: 2.22
+ * Version: 2.23
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
 
+use spx\init;
+
 define( 'SPX', __FILE__ );
 define( 'SPX_DIR', __DIR__ );
-define( 'SPX_STORE_URL', 'http://spx.dev' );
+define( 'SPX_STORE_URL', 'https://spx.dev' );
 define( 'SPX_ITEM_ID', 75 );
 define( 'SPX_ITEM_NAME', 'spx' );
-define( 'SPX_LICENSE_PAGE', 'spx_license' );
-
-use spx\init;
+define( 'SPX_LICENSE_PAGE', 'spx-license' );
 
 /**
  * Exit if accessed directly.
@@ -65,7 +65,7 @@ spxPlugin::init( 'spx_', SPX_ITEM_NAME, SPX_STORE_URL, SPX_ITEM_ID, SPX_LICENSE_
  * @since 1.0
  */
 
-new init();
+new Init();
 
 /*
 

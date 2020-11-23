@@ -419,6 +419,7 @@ export class SpxEditor {
       this.comp.classList.add(
         css({
           img: {
+            margin: '0 !important',
             borderRadius: s.borderRadius,
           },
         })

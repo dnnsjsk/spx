@@ -30,8 +30,23 @@
       "id": "scrollspy-offset",
       "name": "offset",
       "type": "any",
-      "description": "Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated..",
+      "description": "Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated.",
       "defaultValue": "0",
+      "tags": []
+    },
+    {
+      "id": "scrollspy-scrolling",
+      "name": "scrolling",
+      "type": "boolean",
+      "description": "Automatically scroll to the active element",
+      "tags": []
+    },
+    {
+      "id": "scrollspy-scrollingOffset",
+      "name": "scrollingOffset",
+      "type": "number",
+      "description": "Scrolling offset from the top.",
+      "defaultValue": "50",
       "tags": []
     },
     {
