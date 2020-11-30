@@ -15,8 +15,11 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 2.2.6 =
+* Fix: insecure .zip warning in Account page.
+
 = 2.2.5 =
-* Fix missing file error.
+* Fix: missing file error.
 
 = 2.2.3 =
 * Code: add 'display' attribute.
