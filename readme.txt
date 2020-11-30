@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 2.2.7 =
+* Fix: updater.
+
 = 2.2.6 =
 * Fix: insecure .zip warning in Account page.
 

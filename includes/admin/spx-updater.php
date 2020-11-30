@@ -421,9 +421,6 @@ class spxPlugin {
 				</div>
 				<?php
 				break;
-
-				break;
-
 		    }
 	    }
     }
