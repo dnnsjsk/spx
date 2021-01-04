@@ -3,10 +3,22 @@
   "description": "Continuously playing slideshow.",
   "properties": [
     {
+      "id": "slideshow-display",
+      "name": "display",
+      "attribute": "display",
+      "type": "string",
+      "description": "",
+      "default": "'block'",
+      "defaultValue": "'block'",
+      "tags": []
+    },
+    {
       "id": "slideshow-duration",
       "name": "duration",
+      "attribute": "duration",
       "type": "string",
       "description": "Duration of slideshow to complete one cycle.",
+      "default": "'60s'",
       "defaultValue": "'60s'",
       "tags": [
         {
@@ -17,9 +29,11 @@
     {
       "id": "slideshow-gap",
       "name": "gap",
+      "attribute": "gap",
       "type": "string",
       "description": "Gap between inner elements.",
-      "defaultValue": "'var(--spx-space-lg)'",
+      "default": "'1em'",
+      "defaultValue": "'1em'",
       "tags": [
         {
           "name": "CSS"
@@ -29,6 +43,7 @@
     {
       "id": "slideshow-imageSize",
       "name": "imageSize",
+      "attribute": "image-size",
       "type": "string",
       "description": "WordPress media size when using the helper function..",
       "tags": []
@@ -36,6 +51,7 @@
     {
       "id": "slideshow-images",
       "name": "images",
+      "attribute": "images",
       "type": "string",
       "description": "Gets images from an ACF or Metabox field.",
       "tags": [
@@ -48,6 +64,7 @@
     {
       "id": "slideshow-imagesSrc",
       "name": "imagesSrc",
+      "attribute": "images-src",
       "type": "string",
       "description": "Gets images from an ACF or Metabox field.",
       "tags": [
@@ -60,9 +77,23 @@
     {
       "id": "slideshow-maxWidth",
       "name": "maxWidth",
+      "attribute": "max-width",
       "type": "string",
       "description": "Max width of inner elements.",
+      "default": "'350px'",
       "defaultValue": "'350px'",
+      "tags": [
+        {
+          "name": "CSS"
+        }
+      ]
+    },
+    {
+      "id": "slideshow-overflow",
+      "name": "overflow",
+      "attribute": "overflow",
+      "type": "string",
+      "description": "If not set with this attribute, overflow should be set on the parent element.",
       "tags": [
         {
           "name": "CSS"
@@ -70,7 +101,12 @@
       ]
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxSlideshowDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [],
   "slots": []
 }

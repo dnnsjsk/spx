@@ -13,6 +13,13 @@
 | `speed`  | `speed`   |             | `string` | `'1.5s'`    |
 
 
+## Events
+
+| Event              | Description                       | Type               |
+| ------------------ | --------------------------------- | ------------------ |
+| `spxLoaderDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+
+
 ## Dependencies
 
 ### Used by

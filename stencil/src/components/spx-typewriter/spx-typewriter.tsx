@@ -7,9 +7,11 @@ import {
   Prop,
   State,
   Method,
+  Event,
+  EventEmitter,
 } from '@stencil/core';
 import Typewriter from 'typewriter-effect/dist/core';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 
@@ -50,11 +52,21 @@ export class SpxTypewriter {
 
   @Prop({ reflect: true }) text: string = "I'm a typewriter";
 
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxTypewriterDidLoad' })
+  spxTypewriterDidLoad: EventEmitter;
+
   componentDidLoad() {
     globalComponentDidLoad(this.el);
 
+    /** Define elements. */
+
     const el =
       this.el.querySelector('h1, h2, h3, h4, h5, h6, p, span') || this.el;
+
+    /** Init Typewriter. */
 
     this.typewriter = new Typewriter(el, {
       strings:
@@ -73,6 +85,8 @@ export class SpxTypewriter {
       cursorClassName: 'spx-typewriter__cursor',
       skipAddStyles: true,
     });
+
+    this.spxTypewriterDidLoad.emit({ target: 'document' });
   }
 
   /** Start animation. */

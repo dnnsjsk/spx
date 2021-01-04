@@ -3,26 +3,27 @@
 /**
  * Init class.
  *
- * @since 1.0
+ * @date    28/07/2020
+ * @since   1.0.0
  */
 
 namespace spx;
 
 class Init {
 
-	public function script() {
+	function script() {
 
 		global $post;
 
-		$localizeArray = array(
+		$localizeArray = [
 			'ajax'   => admin_url( 'admin-ajax.php' ),
 			'postId' => $post->ID,
-		);
+		];
 
 		wp_enqueue_script(
 			'spx',
 			plugins_url( '../assets/js/components/build/spx.esm.js', dirname( __FILE__ ) ),
-			array(),
+			[],
 			filemtime( SPX_DIR . '/assets/js/components/build/spx.esm.js' ),
 			FALSE );
 
@@ -33,22 +34,24 @@ class Init {
 	/**
 	 * Enqueue scripts.
 	 *
-	 * @since 1.0
+	 * @date    28/07/2020
+	 * @since   1.0.0
 	 */
 
 	private function enqueueScripts() {
 
-		add_action( 'wp_enqueue_scripts', array( $this, 'script' ) );
-		add_action( 'enqueue_block_editor_assets', array( &$this, 'script' ) );
+		add_action( 'wp_enqueue_scripts', [ $this, 'script' ] );
+		add_action( 'enqueue_block_editor_assets', [ &$this, 'script' ] );
 	}
 
 	/**
 	 * Add correct script tags.
 	 *
-	 * @since 1.0
+	 * @date    28/07/2020
+	 * @since   1.0.0
 	 */
 
-	public function addScriptTags() {
+	private function addScriptTags() {
 
 		add_filter( 'script_loader_tag', function ( $tag, $handle, $source ) {
 
@@ -64,7 +67,8 @@ class Init {
 	/**
 	 * Initialise CSS without theme.
 	 *
-	 * @since 2.04
+	 * @date    22/09/2020
+	 * @since   2.0.4
 	 */
 
 	public static function css() {
@@ -78,28 +82,11 @@ class Init {
 
 		} );
 
-	}
-
-	/**
-	 * Initialise theme.
-	 *
-	 * @param $name
-	 *
-	 * @since 2.0
-	 */
-
-	public static function theme( $name ) {
-
-		add_action( 'wp_head', function () use ( &$name ) {
+		add_action( 'admin_head', function () {
 
 			echo '
-				<style id="spx-style">
+				<style id="spx-css">
 				' . file_get_contents( SPX_DIR . '/assets/css/spx.css' ) . '
-				</style>';
-
-			echo '
-				<style id="spx-theme-' . $name . '">
-				' . file_get_contents( SPX_DIR . '/assets/css/themes/' . $name . '.css' ) . '
 				</style>';
 
 		} );
@@ -107,14 +94,85 @@ class Init {
 	}
 
 	/**
+	 * Create shortcodes.
+	 *
+	 * @date    06/12/2020
+	 * @since   3.0.0
+	 */
+
+	public static function shortcodes() {
+
+		$path  = SPX_DIR . '/data/components/';
+		$files = array_slice( scandir( $path ), 2 );
+
+		$element_array = [ 'spx-navigation', 'spx-group', 'spx-scrollspy', 'spx-snackbar' ];
+
+		foreach ( $files as $file ) {
+
+			$name = basename( $file, '.json' );
+
+			if ( pathinfo( $file )['extension'] === 'json' ) {
+
+				if ( ! in_array( $name, $element_array ) ) {
+
+					add_shortcode( $name, function ( $atts, $content = NULL ) use ( &$path, $file, $name ) {
+
+						// Get object from .json.
+
+						$object = json_decode( file_get_contents( $path . '/' . $file ), TRUE );
+						$array  = [];
+
+						// Add attributes with default value to array.
+
+						foreach ( $object['properties'] as $prop ) {
+							if ( $prop['type'] === 'boolean' && ! $prop['defaultValue'] ) {
+							} else {
+								$array[ $prop['attribute'] ] = trim( $prop['defaultValue'], '\'"' );
+							}
+						}
+
+						// Move array to shortcode attributes.
+
+						$a = shortcode_atts( $array, $atts );
+
+						// Setup output.
+
+						$output = '';
+
+						$output .= '<' . $name . ' ';
+						foreach ( $a as $key => $value ) {
+							$output .= $key . '="' . $value . '" ';
+						}
+						$output .= '>';
+						if ( $content != NULL ) {
+							$output .= $content;
+						}
+						$output .= '</' . $name . '>';
+
+						return $output;
+
+					} );
+
+				}
+
+			}
+
+		}
+
+	}
+
+	/**
 	 * Construct.
 	 *
-	 * @since 2.05
+	 * @date    22/09/2020
+	 * @since   2.0.5
 	 */
 
 	public function __construct() {
 		self::enqueueScripts();
 		self::addScriptTags();
+		self::css();
+		self::shortcodes();
 	}
 
 }

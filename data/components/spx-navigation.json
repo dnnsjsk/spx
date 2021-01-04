@@ -5,16 +5,20 @@
     {
       "id": "navigation-childBorder",
       "name": "childBorder",
+      "attribute": "child-border",
       "type": "string",
       "description": "",
+      "default": "'1px solid var(--spx-color-gray-200)'",
       "defaultValue": "'1px solid var(--spx-color-gray-200)'",
       "tags": []
     },
     {
       "id": "navigation-childBorderRadius",
       "name": "childBorderRadius",
+      "attribute": "child-border-radius",
       "type": "string",
       "description": "Child menu border-radius.",
+      "default": "s.borderRadius",
       "defaultValue": "'var(--spx-border-radius)'",
       "tags": [
         {
@@ -25,8 +29,10 @@
     {
       "id": "navigation-childBoxShadow",
       "name": "childBoxShadow",
+      "attribute": "child-box-shadow",
       "type": "string",
       "description": "Child menu box-shadow.",
+      "default": "'0 3px 10px 0 rgba(0,0,0,0.05)'",
       "defaultValue": "'0 3px 10px 0 rgba(0,0,0,0.05)'",
       "tags": [
         {
@@ -37,8 +43,10 @@
     {
       "id": "navigation-childChildGap",
       "name": "childChildGap",
+      "attribute": "child-child-gap",
       "type": "string",
       "description": "Gap between nested child menus.",
+      "default": "'0.8em'",
       "defaultValue": "'0.8em'",
       "tags": [
         {
@@ -49,8 +57,10 @@
     {
       "id": "navigation-childGap",
       "name": "childGap",
+      "attribute": "child-gap",
       "type": "string",
       "description": "Gap between top level menu items and child menus.",
+      "default": "'0.5em'",
       "defaultValue": "'0.5em'",
       "tags": [
         {
@@ -61,24 +71,30 @@
     {
       "id": "navigation-childIcon",
       "name": "childIcon",
+      "attribute": "child-icon",
       "type": "string",
       "description": "Indicator icon..",
+      "default": "'arrow-down'",
       "defaultValue": "'arrow-down'",
       "tags": []
     },
     {
       "id": "navigation-childIconType",
       "name": "childIconType",
+      "attribute": "child-icon-type",
       "type": "string",
       "description": "Indicator icon type.",
+      "default": "'ionicons'",
       "defaultValue": "'ionicons'",
       "tags": []
     },
     {
       "id": "navigation-childIndicatorGap",
       "name": "childIndicatorGap",
+      "attribute": "child-indicator-gap",
       "type": "string",
       "description": "Gap between child menu indicator and text.",
+      "default": "'0.2em'",
       "defaultValue": "'0.2em'",
       "tags": [
         {
@@ -89,48 +105,60 @@
     {
       "id": "navigation-childItemBackground",
       "name": "childItemBackground",
+      "attribute": "child-item-background",
       "type": "string",
       "description": "",
+      "default": "'#ffffff'",
       "defaultValue": "'#ffffff'",
       "tags": []
     },
     {
       "id": "navigation-childItemBackgroundHover",
       "name": "childItemBackgroundHover",
+      "attribute": "child-item-background-hover",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-100)'",
       "defaultValue": "'var(--spx-color-gray-100)'",
       "tags": []
     },
     {
       "id": "navigation-childItemColor",
       "name": "childItemColor",
+      "attribute": "child-item-color",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-700)'",
       "defaultValue": "'var(--spx-color-gray-700)'",
       "tags": []
     },
     {
       "id": "navigation-childItemColorHover",
       "name": "childItemColorHover",
+      "attribute": "child-item-color-hover",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-900)'",
       "defaultValue": "'var(--spx-color-gray-900)'",
       "tags": []
     },
     {
       "id": "navigation-childItemPadding",
       "name": "childItemPadding",
+      "attribute": "child-item-padding",
       "type": "string",
       "description": "",
+      "default": "'0.6em 0.8em'",
       "defaultValue": "'0.6em 0.8em'",
       "tags": []
     },
     {
       "id": "navigation-childPlacement",
       "name": "childPlacement",
+      "attribute": "child-placement",
       "type": "string",
       "description": "Child menu placement.",
+      "default": "'start'",
       "defaultValue": "'start'",
       "tags": [
         {
@@ -145,30 +173,37 @@
     {
       "id": "navigation-fontSize",
       "name": "fontSize",
+      "attribute": "font-size",
       "type": "string",
       "description": "",
-      "defaultValue": "'var(--spx-font-size)'",
+      "default": "'clamp(18px, 1.6vw, 20px)'",
+      "defaultValue": "'clamp(18px, 1.6vw, 20px)'",
       "tags": []
     },
     {
       "id": "navigation-itemTransitionDuration",
       "name": "itemTransitionDuration",
+      "attribute": "item-transition-duration",
       "type": "string",
       "description": "",
+      "default": "s.transitionDuration",
       "defaultValue": "'var(--spx-transition-duration)'",
       "tags": []
     },
     {
       "id": "navigation-itemTransitionTimingFunction",
       "name": "itemTransitionTimingFunction",
+      "attribute": "item-transition-timing-function",
       "type": "string",
       "description": "",
+      "default": "s.transitionTimingFunction",
       "defaultValue": "'var(--spx-transition-timing-function)'",
       "tags": []
     },
     {
       "id": "navigation-itemUnderline",
       "name": "itemUnderline",
+      "attribute": "item-underline",
       "type": "boolean",
       "description": "Underlines all links.",
       "tags": []
@@ -176,6 +211,7 @@
     {
       "id": "navigation-itemUnderlineHover",
       "name": "itemUnderlineHover",
+      "attribute": "item-underline-hover",
       "type": "boolean",
       "description": "Underlines all links on hover.",
       "tags": []
@@ -183,6 +219,7 @@
     {
       "id": "navigation-menu",
       "name": "menu",
+      "attribute": "menu",
       "type": "string",
       "description": "Renders a WordPress menu.",
       "tags": [
@@ -195,14 +232,17 @@
     {
       "id": "navigation-mobile",
       "name": "mobile",
+      "attribute": "mobile",
       "type": "number",
       "description": "Mobile breakpoint.",
-      "defaultValue": "'768'",
+      "default": "s.bpMobileWidth",
+      "defaultValue": 768,
       "tags": []
     },
     {
       "id": "navigation-mobileIcon",
       "name": "mobileIcon",
+      "attribute": "mobile-icon",
       "type": "string",
       "description": "Mobile button icon.",
       "tags": []
@@ -210,64 +250,80 @@
     {
       "id": "navigation-mobileIconType",
       "name": "mobileIconType",
+      "attribute": "mobile-icon-type",
       "type": "string",
       "description": "Mobile button icon type.",
+      "default": "'ionicons'",
       "defaultValue": "'ionicons'",
       "tags": []
     },
     {
       "id": "navigation-mobileItemBackground",
       "name": "mobileItemBackground",
+      "attribute": "mobile-item-background",
       "type": "string",
       "description": "",
+      "default": "'#ffffff'",
       "defaultValue": "'#ffffff'",
       "tags": []
     },
     {
       "id": "navigation-mobileItemBackgroundHover",
       "name": "mobileItemBackgroundHover",
+      "attribute": "mobile-item-background-hover",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-100)'",
       "defaultValue": "'var(--spx-color-gray-100)'",
       "tags": []
     },
     {
       "id": "navigation-mobileItemColor",
       "name": "mobileItemColor",
+      "attribute": "mobile-item-color",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-800)'",
       "defaultValue": "'var(--spx-color-gray-800)'",
       "tags": []
     },
     {
       "id": "navigation-mobileItemColorHover",
       "name": "mobileItemColorHover",
+      "attribute": "mobile-item-color-hover",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-900)'",
       "defaultValue": "'var(--spx-color-gray-900)'",
       "tags": []
     },
     {
       "id": "navigation-mobileItemNestedMarginLeft",
       "name": "mobileItemNestedMarginLeft",
+      "attribute": "mobile-item-nested-margin-left",
       "type": "string",
       "description": "",
+      "default": "'0.8em'",
       "defaultValue": "'0.8em'",
       "tags": []
     },
     {
       "id": "navigation-mobileItemPadding",
       "name": "mobileItemPadding",
+      "attribute": "mobile-item-padding",
       "type": "string",
       "description": "",
+      "default": "'0.6em'",
       "defaultValue": "'0.6em'",
       "tags": []
     },
     {
       "id": "navigation-mobilePlacement",
       "name": "mobilePlacement",
+      "attribute": "mobile-placement",
       "type": "string",
       "description": "Mobile placement.",
+      "default": "'start'",
       "defaultValue": "'start'",
       "tags": [
         {
@@ -282,40 +338,50 @@
     {
       "id": "navigation-parentItemBackground",
       "name": "parentItemBackground",
+      "attribute": "parent-item-background",
       "type": "string",
       "description": "",
+      "default": "'#ffffff'",
       "defaultValue": "'#ffffff'",
       "tags": []
     },
     {
       "id": "navigation-parentItemBackgroundHover",
       "name": "parentItemBackgroundHover",
+      "attribute": "parent-item-background-hover",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-100)'",
       "defaultValue": "'var(--spx-color-gray-100)'",
       "tags": []
     },
     {
       "id": "navigation-parentItemColor",
       "name": "parentItemColor",
+      "attribute": "parent-item-color",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-800)'",
       "defaultValue": "'var(--spx-color-gray-800)'",
       "tags": []
     },
     {
       "id": "navigation-parentItemColorHover",
       "name": "parentItemColorHover",
+      "attribute": "parent-item-color-hover",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-900)'",
       "defaultValue": "'var(--spx-color-gray-900)'",
       "tags": []
     },
     {
       "id": "navigation-parentItemGap",
       "name": "parentItemGap",
+      "attribute": "parent-item-gap",
       "type": "string",
       "description": "Gap between parent menu items.",
+      "default": "'0.4em'",
       "defaultValue": "'0.4em'",
       "tags": [
         {
@@ -326,14 +392,17 @@
     {
       "id": "navigation-parentItemPadding",
       "name": "parentItemPadding",
+      "attribute": "parent-item-padding",
       "type": "string",
       "description": "",
+      "default": "'0.6em'",
       "defaultValue": "'0.6em'",
       "tags": []
     },
     {
       "id": "navigation-vertical",
       "name": "vertical",
+      "attribute": "vertical",
       "type": "boolean",
       "description": "Renders menu vertically.",
       "tags": []
@@ -342,7 +411,7 @@
   "events": [
     {
       "name": "spxNavigationDidLoad",
-      "description": "Fires when component has loaded."
+      "description": "Fires after component has loaded."
     }
   ],
   "methods": [

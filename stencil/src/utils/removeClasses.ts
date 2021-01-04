@@ -1,5 +1,5 @@
 /**
- * Pass attributes to nested components.
+ * Remove classes that end with prefix.
  */
 
 export const removeClasses = (el, string) => {

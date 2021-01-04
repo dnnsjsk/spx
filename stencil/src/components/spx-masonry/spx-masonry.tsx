@@ -11,7 +11,7 @@ import {
   Event,
   EventEmitter,
 } from '@stencil/core';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import Macy from 'macy';
 import { wrap } from '../../utils/wrap';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
@@ -68,6 +68,12 @@ export class SpxMasonry {
 
   @Prop({ reflect: true }) imagesSrc: string;
 
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxMasonryDidLoad' })
+  spxMasonryDidLoad: EventEmitter;
+
   /** Watch images prop and parse to iteratable array. */
 
   @Watch('images')
@@ -75,15 +81,13 @@ export class SpxMasonry {
     if (newValue) this.imagesArray = JSON.parse(newValue);
   }
 
-  /** Watch columns. */
+  /** Watch columns and restart Macy. */
 
   @Watch('columns')
   columnsChanged() {
     this.macyState.remove();
     this.initMacy();
   }
-
-  @Event({ eventName: 'spxMasonryDidLoad' }) spxMasonryDidLoad: EventEmitter;
 
   componentWillLoad() {
     /** If image prop is set. */
@@ -132,17 +136,7 @@ export class SpxMasonry {
     this.macyState.remove();
   }
 
-  /** Recalculate grid. */
-
-  @Method()
-  async recalc() {
-    this.macyState.recalculate();
-  }
-
-  @Method()
-  async reload() {
-    this.macyState.reInit();
-  }
+  /** Init Macy. */
 
   private initMacy() {
     this.macyState = Macy({
@@ -157,6 +151,18 @@ export class SpxMasonry {
             9999: this.columns ? this.columns : 4,
           },
     });
+  }
+
+  /** Recalculate grid. */
+
+  @Method()
+  async recalc() {
+    this.macyState.recalculate();
+  }
+
+  @Method()
+  async reload() {
+    this.macyState.reInit();
   }
 
   render() {
@@ -177,13 +183,15 @@ export class SpxMasonry {
           this.gap +
           ') / 2)',
         boxSizing: 'border-box',
-      },
 
-      /** Force 100% width for elements. */
+        '*': {
+          width: '100%',
+          maxWidth: '100%',
+        },
 
-      'div > div *': {
-        width: '100%',
-        maxWidth: '100%',
+        img: {
+          verticalAlign: 'top',
+        },
       },
     });
 

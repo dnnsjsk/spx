@@ -15,6 +15,13 @@
 | `toggle`  | `toggle`  | List of classes that should be toggled.                                                                                             | `string` | `'spx-class-toggle--active'` |
 
 
+## Events
+
+| Event                   | Description                       | Type               |
+| ----------------------- | --------------------------------- | ------------------ |
+| `spxClassToggleDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+
+
 ## Methods
 
 ### `reload() => Promise<void>`

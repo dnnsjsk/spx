@@ -5,22 +5,27 @@
     {
       "id": "section-header-backdropFilter",
       "name": "backdropFilter",
+      "attribute": "backdrop-filter",
       "type": "string",
       "description": "",
+      "default": "'blur(10px)'",
       "defaultValue": "'blur(10px)'",
       "tags": []
     },
     {
       "id": "section-header-background",
       "name": "background",
+      "attribute": "background",
       "type": "string",
       "description": "",
+      "default": "'rgba(255,255,255,0.85)'",
       "defaultValue": "'rgba(255,255,255,0.85)'",
       "tags": []
     },
     {
       "id": "section-header-backgroundScroll",
       "name": "backgroundScroll",
+      "attribute": "background-scroll",
       "type": "number",
       "description": "Turns on background after scroll.",
       "tags": []
@@ -28,6 +33,7 @@
     {
       "id": "section-header-borderBottom",
       "name": "borderBottom",
+      "attribute": "border-bottom",
       "type": "string",
       "description": "",
       "tags": []
@@ -35,6 +41,7 @@
     {
       "id": "section-header-logoLink",
       "name": "logoLink",
+      "attribute": "logo-link",
       "type": "string",
       "description": "URL the logo links to.",
       "tags": []
@@ -42,14 +49,17 @@
     {
       "id": "section-header-logoMaxHeight",
       "name": "logoMaxHeight",
+      "attribute": "logo-max-height",
       "type": "string",
       "description": "",
+      "default": "'50px'",
       "defaultValue": "'50px'",
       "tags": []
     },
     {
       "id": "section-header-logoSrc",
       "name": "logoSrc",
+      "attribute": "logo-src",
       "type": "string",
       "description": "Logo src.",
       "tags": []
@@ -57,6 +67,7 @@
     {
       "id": "section-header-logoSrcMobile",
       "name": "logoSrcMobile",
+      "attribute": "logo-src-mobile",
       "type": "string",
       "description": "Logo mobile src.",
       "tags": []
@@ -64,8 +75,10 @@
     {
       "id": "section-header-navigationAlign",
       "name": "navigationAlign",
+      "attribute": "navigation-align",
       "type": "string",
       "description": "Where the navigation should be aligned to.",
+      "default": "'center'",
       "defaultValue": "'center'",
       "tags": [
         {
@@ -75,27 +88,37 @@
       ]
     },
     {
+      "id": "section-header-paddingYMax",
+      "name": "paddingYMax",
+      "attribute": "padding-y-max",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "section-header-paddingYMin",
+      "name": "paddingYMin",
+      "attribute": "padding-y-min",
+      "type": "number",
+      "description": "",
+      "default": "0.8",
+      "defaultValue": "0.8",
+      "tags": []
+    },
+    {
       "id": "section-header-position",
       "name": "position",
+      "attribute": "position",
       "type": "\"fixed\" | \"static\"",
       "description": "Component positioning.",
       "tags": []
     },
     {
-      "id": "section-header-spaceX",
-      "name": "spaceX",
-      "type": "string",
-      "description": "Distance to the edge of the viewport on the y-axis.",
-      "defaultValue": "'var(--spx-space-md)'",
-      "tags": [
-        {
-          "name": "CSS"
-        }
-      ]
-    },
-    {
       "id": "section-header-wrapper",
       "name": "wrapper",
+      "attribute": "wrapper",
       "type": "boolean",
       "description": "",
       "tags": []
@@ -103,13 +126,20 @@
     {
       "id": "section-header-zIndex",
       "name": "zIndex",
+      "attribute": "z-index",
       "type": "number",
       "description": "",
+      "default": "102",
       "defaultValue": "102",
       "tags": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxSectionHeaderDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [],
   "slots": []
 }

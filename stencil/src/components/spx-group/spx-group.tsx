@@ -1,7 +1,16 @@
 // eslint-disable-next-line no-unused-vars
-import { Component, Element, h, Host, Method, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Method,
+  Prop,
+} from '@stencil/core';
 import { startsWith } from 'lodash-es';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 
@@ -10,8 +19,6 @@ const tag = 'spx-group';
 /**
  * Pass attributes to all inner (spx) child elements.
  * All attributes that start with g-* will be passed on to child elements.
- * For example, to change all icons for a group of accordions, the data attribute would look like that:
- * g-icon-indicator='far fa-arrow-down'
  */
 
 @Component({
@@ -26,6 +33,12 @@ export class SpxGroup {
   /** Specifies a target element. */
 
   @Prop({ reflect: true }) target: string;
+
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxGroupDidLoad' })
+  spxGroupDidLoad: EventEmitter;
 
   componentDidLoad() {
     globalComponentDidLoad(this.el);
@@ -43,6 +56,8 @@ export class SpxGroup {
     observer.observe(this.el, {
       attributes: true,
     });
+
+    this.spxGroupDidLoad.emit({ target: 'document' });
   }
 
   private forwardAttributes() {
@@ -65,7 +80,7 @@ export class SpxGroup {
     /** Loop matches. */
 
     for (
-      var att, i = 0, atts = this.el.attributes, n = atts.length;
+      let att, i = 0, atts = this.el.attributes, n = atts.length;
       i < n;
       i++
     ) {

@@ -7,8 +7,10 @@ import {
   Element,
   Method,
   State,
+  Event,
+  EventEmitter,
 } from '@stencil/core';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
 import { annotate } from 'rough-notation';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
@@ -59,12 +61,20 @@ export class SpxNotation {
 
   @Prop({ reflect: true }) type: string = 'underline';
 
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxNotationDidLoad' })
+  spxNotationDidLoad: EventEmitter;
+
   componentDidLoad() {
     globalComponentDidLoad(this.el);
 
     if (this.el.querySelector('span').innerHTML.length !== 0) {
       this.annotate();
     }
+
+    this.spxNotationDidLoad.emit({ target: 'document' });
   }
 
   private annotate() {
@@ -93,11 +103,11 @@ export class SpxNotation {
     this.annotation.show();
   }
 
-  /** Draws the annotation. */
+  /** Remove the annotation. */
 
   @Method()
-  async show() {
-    this.annotation.show();
+  async clear() {
+    this.annotation.remove();
   }
 
   /** Hides the annotation. (non animated) */
@@ -107,17 +117,17 @@ export class SpxNotation {
     this.annotation.hide();
   }
 
-  /** Remove the annotation. */
-
-  @Method()
-  async clear() {
-    this.annotation.remove();
-  }
-
   @Method()
   async reload() {
     this.annotation.remove();
     this.annotate();
+  }
+
+  /** Draws the annotation. */
+
+  @Method()
+  async show() {
+    this.annotation.show();
   }
 
   render() {

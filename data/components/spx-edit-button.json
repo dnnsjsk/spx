@@ -5,16 +5,20 @@
     {
       "id": "edit-button-background",
       "name": "background",
+      "attribute": "background",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-900)'",
       "defaultValue": "'var(--spx-color-gray-900)'",
       "tags": []
     },
     {
       "id": "edit-button-backgroundDiscard",
       "name": "backgroundDiscard",
+      "attribute": "background-discard",
       "type": "string",
       "description": "Discard button background.",
+      "default": "'var(--spx-color-gray-600)'",
       "defaultValue": "'var(--spx-color-gray-600)'",
       "tags": [
         {
@@ -25,32 +29,40 @@
     {
       "id": "edit-button-border",
       "name": "border",
+      "attribute": "border",
       "type": "string",
       "description": "",
+      "default": "'none'",
       "defaultValue": "'none'",
       "tags": []
     },
     {
       "id": "edit-button-borderRadius",
       "name": "borderRadius",
+      "attribute": "border-radius",
       "type": "string",
       "description": "",
+      "default": "s.borderRadius",
       "defaultValue": "'var(--spx-border-radius)'",
       "tags": []
     },
     {
       "id": "edit-button-color",
       "name": "color",
+      "attribute": "color",
       "type": "string",
       "description": "",
+      "default": "'#ffffff'",
       "defaultValue": "'#ffffff'",
       "tags": []
     },
     {
       "id": "edit-button-colorDiscard",
       "name": "colorDiscard",
+      "attribute": "color-discard",
       "type": "string",
       "description": "Discard button color.",
+      "default": "'#ffffff'",
       "defaultValue": "'#ffffff'",
       "tags": [
         {
@@ -61,8 +73,10 @@
     {
       "id": "edit-button-distanceX",
       "name": "distanceX",
+      "attribute": "distance-x",
       "type": "string",
       "description": "Distance to the edge of the viewport on the x-axis.",
+      "default": "'1em'",
       "defaultValue": "'1em'",
       "tags": [
         {
@@ -73,8 +87,10 @@
     {
       "id": "edit-button-distanceY",
       "name": "distanceY",
+      "attribute": "distance-y",
       "type": "string",
       "description": "Distance to the edge of the viewport on the y-axis.",
+      "default": "'1em'",
       "defaultValue": "'1em'",
       "tags": [
         {
@@ -85,6 +101,7 @@
     {
       "id": "edit-button-editId",
       "name": "editId",
+      "attribute": "edit-id",
       "type": "string",
       "description": "Corresponding ID for editable fields. This property is needed when multiple edit-button components are used on the page. Simply apply a \"data-spx-edit-id\" attribute with the same value to editable elements.",
       "tags": []
@@ -92,24 +109,30 @@
     {
       "id": "edit-button-fontFamily",
       "name": "fontFamily",
+      "attribute": "font-family",
       "type": "string",
       "description": "",
+      "default": "s.fontFamily",
       "defaultValue": "'var(--spx-font-family)'",
       "tags": []
     },
     {
       "id": "edit-button-fontSize",
       "name": "fontSize",
+      "attribute": "font-size",
       "type": "string",
       "description": "",
+      "default": "s.fontSize",
       "defaultValue": "'var(--spx-font-size)'",
       "tags": []
     },
     {
       "id": "edit-button-gap",
       "name": "gap",
+      "attribute": "gap",
       "type": "string",
       "description": "Gap between the buttons.",
+      "default": "'0.4em'",
       "defaultValue": "'0.4em'",
       "tags": [
         {
@@ -120,16 +143,20 @@
     {
       "id": "edit-button-padding",
       "name": "padding",
+      "attribute": "padding",
       "type": "string",
       "description": "",
+      "default": "'0.8em 1.2em'",
       "defaultValue": "'0.8em 1.2em'",
       "tags": []
     },
     {
       "id": "edit-button-position",
       "name": "position",
+      "attribute": "position",
       "type": "string",
       "description": "Component position in page.",
+      "default": "'bottom-right'",
       "defaultValue": "'bottom-right'",
       "tags": [
         {
@@ -141,61 +168,84 @@
     {
       "id": "edit-button-positionCss",
       "name": "positionCss",
+      "attribute": "position-css",
       "type": "\"absolute\" | \"fixed\" | \"relative\" | \"static\"",
       "description": "CSS property position of button.",
+      "default": "'fixed'",
       "defaultValue": "'fixed'",
-      "tags": []
+      "tags": [
+        {
+          "text": "'absolute'",
+          "name": "editor"
+        }
+      ]
     },
     {
       "id": "edit-button-test",
       "name": "test",
+      "attribute": "test",
       "type": "boolean",
       "description": "",
+      "default": "false",
       "defaultValue": "false",
       "tags": []
     },
     {
       "id": "edit-button-textDiscard",
       "name": "textDiscard",
+      "attribute": "text-discard",
       "type": "string",
       "description": "Discard button text.",
+      "default": "'Discard'",
       "defaultValue": "'Discard'",
       "tags": []
     },
     {
       "id": "edit-button-textEdit",
       "name": "textEdit",
+      "attribute": "text-edit",
       "type": "string",
       "description": "Edit button text.",
+      "default": "'Edit site'",
       "defaultValue": "'Edit site'",
       "tags": []
     },
     {
       "id": "edit-button-textSave",
       "name": "textSave",
+      "attribute": "text-save",
       "type": "string",
       "description": "Save button text.",
+      "default": "'Save'",
       "defaultValue": "'Save'",
       "tags": []
     },
     {
       "id": "edit-button-textSuccess",
       "name": "textSuccess",
+      "attribute": "text-success",
       "type": "string",
       "description": "Success message.",
+      "default": "'Save was successful'",
       "defaultValue": "'Save was successful'",
       "tags": []
     },
     {
       "id": "edit-button-zIndex",
       "name": "zIndex",
+      "attribute": "z-index",
       "type": "number",
       "description": "",
+      "default": "99",
       "defaultValue": "99",
       "tags": []
     }
   ],
   "events": [
+    {
+      "name": "spxEditButtonDidLoad",
+      "description": "Fires after component has loaded."
+    },
     {
       "name": "spxEditButtonDiscard",
       "description": "Fires after pressing the discard button."

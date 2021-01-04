@@ -1,10 +1,12 @@
 import { setVar } from '../utils/setVar';
-import { setFontSize } from '../utils/setSize';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
+import { setClamp } from '../utils/setClamp';
 
-/** Global defaults. */
+/**
+ * Global defaults.
+ */
 
-export const mobileBpWidth = 768;
+export const bpMobileWidth = 768;
 export const fontFamily = 'var(--spx-font-family)';
 export const fontSize = 'var(--spx-font-size)';
 export const borderRadius = 'var(--spx-border-radius)';
@@ -12,7 +14,27 @@ export const transitionDuration = 'var(--spx-transition-duration)';
 export const transitionDuration2 = 'var(--spx-transition-duration-2)';
 export const transitionTimingFunction = 'var(--spx-transition-timing-function)';
 
-/** Positioning properties. */
+/**
+ * Global styles.
+ */
+
+const globalStyles = css({
+  '--spx-font-family':
+    'var(--spx-token-font-family, helvetica, segoe, arial, sans-serif)',
+  '--spx-font-size': 'var(--spx-token-font-size, 16px)',
+  '--spx-border-radius': 'var(--spx-token-border-radius, 0.375rem)',
+  '--spx-transition-duration': 'var(--spx-token-transition-duration, 150ms)',
+  '--spx-transition-duration-2':
+    'var(--spx-token-transition-duration-2, 500ms)',
+  '--spx-transition-timing-function':
+    'var(--spx-token-transition-timing-function, cubic-bezier(0.4, 0, 0.2, 1))',
+});
+
+document.body.classList.add(globalStyles);
+
+/**
+ * Positioning properties.
+ */
 
 export const position = (component, array, distanceX, distanceY) => ({
   top:
@@ -34,16 +56,16 @@ export const position = (component, array, distanceX, distanceY) => ({
   transform: array[1] === 'center' && 'translate(-50%, 0)',
 });
 
-/** Text settings. */
+/**
+ * Text constants.
+ */
 
 export const text = (
   tag,
   type,
   color,
   min,
-  val,
   max,
-  multiplier,
   weight,
   letterSpacing,
   lineHeight,
@@ -51,7 +73,7 @@ export const text = (
   global = false
 ) => ({
   color: setVar(tag, '' + type + '-color', color, global),
-  fontSize: setFontSize(tag, type, min, val, max, multiplier, global),
+  fontSize: setClamp(tag, type + '-font-size', min, max),
   fontWeight: setVar(tag, '' + type + '-font-weight', weight, global),
   letterSpacing: setVar(
     tag,
@@ -62,19 +84,3 @@ export const text = (
   lineHeight: setVar(tag, '' + type + '-line-height', lineHeight, global),
   textTransform: setVar(tag, '' + type + '-text-transform', transform, global),
 });
-
-/** Global styles. */
-
-const globalStyles = css({
-  '--spx-font-family':
-    'var(--spx-token-font-family, helvetica, segoe, arial, sans-serif)',
-  '--spx-font-size': 'var(--spx-token-font-size, 16px)',
-  '--spx-border-radius': 'var(--spx-token-border-radius, 0.5em)',
-  '--spx-transition-duration': 'var(--spx-token-transition-duration, 150ms)',
-  '--spx-transition-duration-2':
-    'var(--spx-token-transition-duration-2, 500ms)',
-  '--spx-transition-timing-function':
-    'var(--spx-token-transition-timing-function, cubic-bezier(0.4, 0, 0.2, 1))',
-});
-
-document.body.classList.add(globalStyles);

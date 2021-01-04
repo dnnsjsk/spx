@@ -10,7 +10,7 @@ export const offsetHeader = (el, target) => {
 
   /** Set root. */
 
-  document.documentElement.style.setProperty('--spx-offset', value);
+  document.body.style.setProperty('--spx-offset', value);
 
   /** Apply values as top property and variable. */
 

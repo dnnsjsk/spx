@@ -1,12 +1,21 @@
 // eslint-disable-next-line no-unused-vars
-import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { css } from 'emotion';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+} from '@stencil/core';
+import { css } from '@emotion/css';
 import state from '../../stores/container';
-import { palette } from '../../constants/palettes';
 import { setVar } from '../../utils/setVar';
-import * as c from '../../constants/style';
+import * as s from '../../constants/style';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 import { setSectionVar } from '../../utils/setSectionVar';
+import { palette } from '../../constants/palette';
+import { setClamp } from '../../utils/setClamp';
 
 /**
  * Button component for sections.
@@ -21,22 +30,30 @@ export class SpxSectionButton {
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxSectionButtonElement;
 
+  /** Icon. */
+
+  @Prop({ reflect: true }) icon: string;
+
+  @Prop({ reflect: true }) iconGapMin: number = 0.4;
+
+  @Prop({ reflect: true }) iconGapMax: number = 1;
+
   /** Link href. */
 
   @Prop({ reflect: true }) href: string;
 
-  /** Reverse text color. */
+  /** Link href. */
 
-  @Prop({ reflect: true }) reverseColor: boolean;
+  @Prop({ reflect: true }) reverse: boolean;
 
   /** Target. */
 
   @Prop({ reflect: true }) target: string;
 
-  @Prop({ reflect: true }) transitionDuration: string = c.transitionDuration;
+  @Prop({ reflect: true }) transitionDuration: string = s.transitionDuration;
 
   @Prop({ reflect: true }) transitionTimingFunction: string =
-    c.transitionTimingFunction;
+    s.transitionTimingFunction;
 
   /**
    * Button type.
@@ -45,57 +62,49 @@ export class SpxSectionButton {
 
   @Prop({ reflect: true }) type: string = 'primary';
 
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxSectionButtonDidLoad' })
+  spxSectionButtonDidLoad: EventEmitter;
+
   componentDidLoad() {
     globalComponentDidLoad(this.el);
     setSectionVar(this.el);
+
+    this.spxSectionButtonDidLoad.emit({ target: 'document' });
   }
 
   private applyColors(type) {
-    /** Apply color depending if primary or secondary. */
-
-    const style =
-      this.type === 'primary'
-        ? 'var(--spx-color-primary-A700)'
-        : 'var(--spx-color-primary-45)';
-
-    /** Get the hue. */
-
-    const styleHue = style
-      .substring(style.lastIndexOf('-'))
-      .slice(1, -1)
-      .replace(/^0+/, '');
-    const color = palette[state.colorPrimary][styleHue]['text'];
-
-    /** Apply background, color or hover. */
+    /** Background. */
 
     if (type === 'background') {
-      return this.type === 'translucent'
-        ? color === '#ffffff'
-          ? 'rgba(0,0,0,0.2)'
-          : 'rgba(255,255,255,0.2)'
-        : style;
+      if (this.type === 'primary') {
+        return palette[state.colorPrimary][state.buttonBackgroundPrimary];
+      } else if (this.type === 'secondary') {
+        return palette[state.colorPrimary][state.buttonBackgroundSecondary];
+      }
     }
 
+    /** Color. */
+
     if (type === 'color') {
-      if (this.reverseColor) {
-        if (color === '#000000') {
-          return '#ffffff';
-        } else if (color === '#ffffff') {
-          return '#000000';
-        }
-      } else {
-        return palette[state.colorPrimary][styleHue]['text'];
+      if (this.type === 'primary') {
+        return palette[state.colorPrimary][state.buttonColorPrimary];
+      } else if (this.type === 'secondary') {
+        return palette[state.colorPrimary][state.buttonColorSecondary];
       }
     }
 
     if (type === 'background-hover') {
-      return this.type === 'primary'
-        ? palette[state.colorPrimary]['600']['color']
-        : this.type === 'translucent'
-        ? color === '#ffffff'
-          ? 'rgba(0,0,0,0.3)'
-          : 'rgba(255,255,255,0.3)'
-        : palette[state.colorPrimary]['50']['color'];
+      if (this.type === 'primary') {
+        return palette[state.colorPrimary][state.buttonBackgroundPrimary + 100];
+      } else if (this.type === 'secondary') {
+        return palette[state.colorPrimary][
+          state.buttonBackgroundSecondary +
+            (state.buttonBackgroundSecondary === 50 ? 50 : 100)
+        ];
+      }
     }
   }
 
@@ -135,9 +144,22 @@ export class SpxSectionButton {
       },
     });
 
+    /** Icon styles. */
+
+    const styleIcon = css({
+      marginRight:
+        !this.reverse && setClamp(tag, 'gap', this.iconGapMin, this.iconGapMax),
+      marginLeft:
+        this.reverse && setClamp(tag, 'gap', this.iconGapMin, this.iconGapMax),
+    });
+
     return (
       <Host>
         <a class={styleHost} href={this.href} target={this.target}>
+          {/** Icon. */}
+          {this.icon && <spx-icon class={styleIcon} icon={this.icon} />}
+
+          {/** Text. */}
           <slot />
         </a>
       </Host>

@@ -30,6 +30,13 @@
 | `yoyo`                 | `yoyo`                   | Causes the animation to go back and forth, alternating backward and forward on each repeat. | `boolean` | `undefined`    |
 
 
+## Events
+
+| Event               | Description                       | Type               |
+| ------------------- | --------------------------------- | ------------------ |
+| `spxAnimateDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+
+
 ## Methods
 
 ### `play(from?: number, suppressEvents?: boolean) => Promise<void>`

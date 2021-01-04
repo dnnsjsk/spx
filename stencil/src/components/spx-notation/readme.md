@@ -19,6 +19,13 @@
 | `type`              | `type`               | Type of notation.                        | `string`  | `'underline'`                      |
 
 
+## Events
+
+| Event                | Description                       | Type               |
+| -------------------- | --------------------------------- | ------------------ |
+| `spxNotationDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+
+
 ## Methods
 
 ### `clear() => Promise<void>`

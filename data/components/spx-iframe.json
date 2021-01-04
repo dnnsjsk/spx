@@ -3,23 +3,113 @@
   "description": "A wrapper around a standard iframe element, which scales proportionally to its parent.\nGreat for showing desktop versions of a website on smaller screens or viewports.",
   "properties": [
     {
+      "id": "iframe-display",
+      "name": "display",
+      "attribute": "display",
+      "type": "string",
+      "description": "",
+      "default": "'block'",
+      "defaultValue": "'block'",
+      "tags": []
+    },
+    {
+      "id": "iframe-documentBorder",
+      "name": "documentBorder",
+      "attribute": "document-border",
+      "type": "string",
+      "description": "",
+      "default": "'none'",
+      "defaultValue": "'none'",
+      "tags": []
+    },
+    {
+      "id": "iframe-documentBorderRadius",
+      "name": "documentBorderRadius",
+      "attribute": "document-border-radius",
+      "type": "string",
+      "description": "",
+      "default": "'none'",
+      "defaultValue": "'none'",
+      "tags": []
+    },
+    {
+      "id": "iframe-documentHeight",
+      "name": "documentHeight",
+      "attribute": "document-height",
+      "type": "string",
+      "description": "",
+      "default": "'auto'",
+      "defaultValue": "'auto'",
+      "tags": []
+    },
+    {
+      "id": "iframe-documentWidth",
+      "name": "documentWidth",
+      "attribute": "document-width",
+      "type": "string",
+      "description": "",
+      "default": "'100%'",
+      "defaultValue": "'100%'",
+      "tags": []
+    },
+    {
+      "id": "iframe-fit",
+      "name": "fit",
+      "attribute": "fit",
+      "type": "boolean",
+      "description": "Automatically resize iframe to fit content.",
+      "tags": []
+    },
+    {
+      "id": "iframe-lazy",
+      "name": "lazy",
+      "attribute": "lazy",
+      "type": "boolean",
+      "description": "Lazy load content.",
+      "tags": []
+    },
+    {
       "id": "iframe-size",
       "name": "size",
+      "attribute": "size",
       "type": "string",
       "description": "Screen size of the site shown inside the iframe.",
+      "default": "'1440px'",
       "defaultValue": "'1440px'",
       "tags": []
     },
     {
       "id": "iframe-src",
       "name": "src",
+      "attribute": "src",
       "type": "string",
       "description": "Source for the iframe.",
+      "default": "'https://spx.dev'",
       "defaultValue": "'https://spx.dev'",
       "tags": []
+    },
+    {
+      "id": "iframe-type",
+      "name": "type",
+      "attribute": "type",
+      "type": "string",
+      "description": "Screen size of the site shown inside the iframe.",
+      "default": "'resize'",
+      "defaultValue": "'resize'",
+      "tags": [
+        {
+          "text": "'resize', 'document', 'type'",
+          "name": "choice"
+        }
+      ]
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxIFrameDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [
     {
       "name": "reload",

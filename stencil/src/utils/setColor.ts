@@ -1,5 +1,5 @@
-import { palette } from '../constants/palettes';
-import { css } from 'emotion';
+import { palette } from '../constants/palette';
+import { css } from '@emotion/css';
 import state from '../stores/container';
 import { fromPairs } from 'lodash-es';
 
@@ -14,7 +14,7 @@ export const setColor = (color, type) => {
 
   const createCSSVars = (color) => {
     Object.entries(color).forEach(([key, value]) => {
-      const array = ['--spx-color-' + type + '-' + key + '', value['color']];
+      const array = ['--spx-color-' + type + '-' + key + '', value];
       styles.push(array);
     });
   };
@@ -39,8 +39,14 @@ export const setColor = (color, type) => {
   if (!palette[color]) {
     if (type === 'primary') {
       state.colorPrimary = 'teal';
-    } else {
+    }
+
+    if (type === 'secondary') {
       state.colorSecondary = 'pink';
+    }
+
+    if (type === 'gray') {
+      state.colorGray = 'gray';
     }
   }
 };

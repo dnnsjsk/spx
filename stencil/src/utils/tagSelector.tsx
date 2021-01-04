@@ -2,7 +2,7 @@
 import { h } from '@stencil/core';
 
 /**
- *  Tag selector.
+ * Tag selector.
  */
 
 export const tagSelector = (condition, tag, text, slot, style = null) => {

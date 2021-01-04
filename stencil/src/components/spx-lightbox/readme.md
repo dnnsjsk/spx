@@ -15,6 +15,13 @@
 | `width`        | `width`         |             | `string` | `'100%'`                |
 
 
+## Events
+
+| Event                | Description                       | Type               |
+| -------------------- | --------------------------------- | ------------------ |
+| `spxLightboxDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+
+
 ## Methods
 
 ### `reload() => Promise<void>`

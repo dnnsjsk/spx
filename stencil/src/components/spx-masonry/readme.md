@@ -19,9 +19,9 @@
 
 ## Events
 
-| Event               | Description | Type               |
-| ------------------- | ----------- | ------------------ |
-| `spxMasonryDidLoad` |             | `CustomEvent<any>` |
+| Event               | Description                       | Type               |
+| ------------------- | --------------------------------- | ------------------ |
+| `spxMasonryDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
 
 
 ## Methods

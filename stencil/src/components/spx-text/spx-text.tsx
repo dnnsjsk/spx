@@ -1,8 +1,15 @@
 // eslint-disable-next-line no-unused-vars
-import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { css } from 'emotion';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+} from '@stencil/core';
+import { css } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
-import { setFontSize } from '../../utils/setSize';
 import * as s from '../../constants/style';
 import { merge } from 'lodash-es';
 import state from '../../stores/container';
@@ -24,9 +31,29 @@ export class SpxText {
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxTextElement;
 
-  /** Only works if text-type is set to 'multiply'. */
+  // prettier-ignore
+  @Prop({ reflect: true, attribute: 'h1-font-size-min' }) h1FontSizeMin: number = 1.6;
 
-  @Prop({ reflect: true }) contentFontSizeMultiplier: number = 1;
+  // prettier-ignore
+  @Prop({ reflect: true, attribute: 'h1-font-size-max' }) h1FontSizeMax: number = 3.2;
+
+  // prettier-ignore
+  @Prop({ reflect: true, attribute: 'h2-font-size-min' }) h2FontSizeMin: number = 1.4;
+
+  // prettier-ignore
+  @Prop({ reflect: true, attribute: 'h2-font-size-max' }) h2FontSizeMax: number = 2.2;
+
+  // prettier-ignore
+  @Prop({ reflect: true, attribute: 'h3-font-size-min' }) h3FontSizeMin: number = 1.2;
+
+  // prettier-ignore
+  @Prop({ reflect: true, attribute: 'h3-font-size-max' }) h3FontSizeMax: number = 1.8;
+
+  // prettier-ignore
+  @Prop({ reflect: true, attribute: 'h4-font-size-min' }) h4FontSizeMin: number = 1;
+
+  // prettier-ignore
+  @Prop({ reflect: true, attribute: 'h4-font-size-max' }) h4FontSizeMax: number = 1.6;
 
   @Prop({ reflect: true }) headingColor: string = 'var(--spx-color-black)';
 
@@ -41,17 +68,37 @@ export class SpxText {
   @Prop({ reflect: true }) headingTextTransform: string = 'default';
 
   @Prop({ reflect: true }) linkDecorationColor: string =
-    'var(--spx-color-primary-A700)';
+    'var(--spx-color-primary-600)';
 
   /** Parse markdown. */
 
   @Prop({ reflect: true }) markdown: boolean = false;
 
-  @Prop({ reflect: true }) maxWidth: string = 'clamp(700px, 40vw, 1200px)';
+  @Prop({ reflect: true }) maxWidth: string = '768px';
+
+  @Prop({ reflect: true }) paddingFigureMin: number = 0.9;
+
+  @Prop({ reflect: true }) paddingFigureMax: number = 3;
+
+  @Prop({ reflect: true }) spaceBeforeH1Min: number = 4;
+
+  @Prop({ reflect: true }) spaceBeforeH1Max: number = 8;
+
+  @Prop({ reflect: true }) spaceBetweenMin: number = 0.9;
+
+  @Prop({ reflect: true }) spaceBetweenMax: number = 2;
+
+  @Prop({ reflect: true }) spaceBetweenPMin: number = 0.9;
+
+  @Prop({ reflect: true }) spaceBetweenPMax: number = 1.5;
 
   @Prop({ reflect: true }) textColor: string = 'var(--spx-color-gray-700)';
 
   @Prop({ reflect: true }) textFontFamily: string = state.fontFamilySecondary;
+
+  @Prop({ reflect: true }) textFontSizeMin: number = 1;
+
+  @Prop({ reflect: true }) textFontSizeMax: number = 1.4;
 
   @Prop({ reflect: true }) textFontWeight: string = '400';
 
@@ -59,25 +106,25 @@ export class SpxText {
 
   @Prop({ reflect: true }) textLineHeight: string = '1.5';
 
-  /** Minimum viewport width when text-type is set to linear. */
-
-  @Prop({ reflect: true }) textMinW: number = 320;
-
-  /** Maximum viewport width when text-type is set to linear. */
-
-  @Prop({ reflect: true }) textMaxW: number = 2560;
-
   @Prop({ reflect: true }) textTextTransform: string = 'default';
 
-  @Prop({ reflect: true }) textType: string = 'linear';
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxTextDidLoad' })
+  spxTextDidLoad: EventEmitter;
 
   componentDidLoad() {
-    if (this.markdown === true) {
+    /** Parse Markdown. */
+
+    if (this.markdown) {
       marked.setOptions({
         gfm: true,
       });
       this.el.innerHTML = marked(this.el.innerHTML);
     }
+
+    /** Wrap images. */
 
     if (this.el.querySelector('img')) {
       const img = this.el.querySelectorAll('img, video');
@@ -85,99 +132,57 @@ export class SpxText {
         wrap(item, document.createElement('figure'));
       });
     }
+
+    this.spxTextDidLoad.emit({ target: 'document' });
   }
 
   render() {
-    /** Heading. */
+    /** Heading styles. */
 
-    const headingMultiply = {
+    const styleHeading = {
       h1: {
-        fontSize: setFontSize(
+        fontSize: setClamp(
           tag,
-          'heading',
-          '30px',
-          '5vw',
-          '48px',
-          this.contentFontSizeMultiplier
+          'h1-font-size',
+          this.h1FontSizeMin,
+          this.h1FontSizeMax
         ),
       },
-
       h2: {
-        fontSize: setFontSize(
+        fontSize: setClamp(
           tag,
-          'heading',
-          '24px',
-          '2.4vw',
-          '36px',
-          this.contentFontSizeMultiplier
+          'h2-font-size',
+          this.h2FontSizeMin,
+          this.h2FontSizeMax
         ),
       },
-
       h3: {
-        fontSize: setFontSize(
+        fontSize: setClamp(
           tag,
-          'heading',
-          '20px',
-          '1.6vw',
-          '28px',
-          this.contentFontSizeMultiplier
+          'h3-font-size',
+          this.h3FontSizeMin,
+          this.h3FontSizeMax
         ),
       },
-
       h4: {
-        fontSize: setFontSize(
+        fontSize: setClamp(
           tag,
-          'heading',
-          '18px',
-          '1.2vw',
-          '24px',
-          this.contentFontSizeMultiplier
+          'h4-font-size',
+          this.h4FontSizeMin,
+          this.h4FontSizeMax
         ),
       },
     };
 
-    const headingLinear = {
-      h1: {
-        fontSize: setClamp(this.textMinW, this.textMaxW, 2, 4),
-      },
+    /** Text styles. */
 
-      h2: {
-        fontSize: setClamp(this.textMinW, this.textMaxW, 1.6, 2.8),
-      },
-
-      h3: {
-        fontSize: setClamp(this.textMinW, this.textMaxW, 1.2, 1.8),
-      },
-
-      h4: {
-        fontSize: setClamp(this.textMinW, this.textMaxW, 1, 1.6),
-      },
-    };
-
-    const heading =
-      this.textType === 'linear' ? headingLinear : headingMultiply;
-
-    /** Text. */
-
-    const textMultiply = {
-      ...s.text(
+    const styleText = {
+      fontSize: setClamp(
         tag,
-        'text',
-        this.textColor,
-        '16px',
-        '1.4vw',
-        '24px',
-        this.contentFontSizeMultiplier,
-        this.textFontWeight,
-        this.textLetterSpacing,
-        this.textLineHeight,
-        this.textTextTransform
+        'text-font-size',
+        this.textFontSizeMin,
+        this.textFontSizeMax
       ),
-      fontFamily: setVar(tag, 'text-font-family', this.textFontFamily),
-    };
-
-    const textLinear = {
-      fontSize: setClamp(this.textMinW, this.textMaxW, 0.9, 1.6),
       color: setVar(tag, 'text-color', this.textColor),
       fontFamily: setVar(tag, 'text-font-family', this.textFontFamily),
       fontWeight: setVar(tag, 'text-font-weight', this.textFontWeight),
@@ -186,7 +191,7 @@ export class SpxText {
       textTransform: setVar(tag, 'text-text-transform', this.textTextTransform),
     };
 
-    const text = this.textType === 'linear' ? textLinear : textMultiply;
+    /** Host styles. */
 
     const styleHost = css(
       merge(
@@ -196,11 +201,30 @@ export class SpxText {
           margin: '0 auto',
 
           '& > * + *': {
-            marginTop: 'var(--spx-space-md)',
+            marginTop: setClamp(
+              tag,
+              'space-between',
+              this.spaceBetweenMin,
+              this.spaceBetweenMax
+            ),
+          },
+
+          '& > p + p, & > ul + p, & > p + ul': {
+            marginTop: setClamp(
+              tag,
+              'space-between-p',
+              this.spaceBetweenPMin,
+              this.spaceBetweenPMax
+            ),
           },
 
           '& > * + h1': {
-            marginTop: 'var(--spx-space-lg)',
+            marginTop: setClamp(
+              tag,
+              'h1-space',
+              this.spaceBeforeH1Min,
+              this.spaceBeforeH1Max
+            ),
           },
 
           'h1, h2, h3, h4, h5, h6': {
@@ -233,7 +257,7 @@ export class SpxText {
           },
 
           'p, ul, ol': {
-            ...text,
+            ...styleText,
             a: {
               color: 'inherit',
               textDecoration: 'underline',
@@ -262,7 +286,12 @@ export class SpxText {
           figure: {
             borderRadius: s.borderRadius,
             background: 'var(--spx-color-gray-100)',
-            padding: 'var(--spx-space-lg)',
+            padding: setClamp(
+              tag,
+              'figure-padding',
+              this.paddingFigureMin,
+              this.paddingFigureMax
+            ),
 
             img: {
               marginLeft: 'auto',
@@ -275,12 +304,8 @@ export class SpxText {
           'img, video': {
             maxWidth: '100%',
           },
-
-          'spx-code, spx-code + p': {
-            marginTop: 'var(--spx-space-lg)',
-          },
         },
-        heading
+        styleHeading
       )
     );
 

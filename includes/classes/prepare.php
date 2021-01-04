@@ -3,7 +3,8 @@
 /**
  * Prepare JSON for correct parsing in DOM elements.
  *
- * @since 1.0
+ * @date    28/07/2020
+ * @since   1.0.0
  */
 
 namespace spx;

@@ -1,1 +1,0 @@
-import{s as e}from"./p-e1defc51.js";const s=async()=>{e(e=>e.theme||e.getAttribute("theme")||"default")};export{s as g}

@@ -5,6 +5,7 @@
     {
       "id": "masonry-bpColumns",
       "name": "bpColumns",
+      "attribute": "bp-columns",
       "type": "string",
       "description": "Columns for different screen sizes. Example value: 1000:3;600:2 - this will switch to a three column layout when the screen size is under 1000px and to a two column layout under 600px.",
       "tags": []
@@ -12,16 +13,20 @@
     {
       "id": "masonry-columns",
       "name": "columns",
+      "attribute": "columns",
       "type": "number",
       "description": "Number of columns.",
+      "default": "4",
       "defaultValue": "4",
       "tags": []
     },
     {
       "id": "masonry-gap",
       "name": "gap",
+      "attribute": "gap",
       "type": "string",
       "description": "Gap between images.",
+      "default": "'10px'",
       "defaultValue": "'10px'",
       "tags": [
         {
@@ -32,6 +37,7 @@
     {
       "id": "masonry-imageSize",
       "name": "imageSize",
+      "attribute": "image-size",
       "type": "string",
       "description": "WordPress media size when using the helper function..",
       "tags": []
@@ -39,6 +45,7 @@
     {
       "id": "masonry-images",
       "name": "images",
+      "attribute": "images",
       "type": "string",
       "description": "Gets images from an ACF or Metabox field.",
       "tags": [
@@ -51,6 +58,7 @@
     {
       "id": "masonry-imagesSrc",
       "name": "imagesSrc",
+      "attribute": "images-src",
       "type": "string",
       "description": "Gets images from an ACF or Metabox field.",
       "tags": [
@@ -64,7 +72,7 @@
   "events": [
     {
       "name": "spxMasonryDidLoad",
-      "description": ""
+      "description": "Fires after component has loaded."
     }
   ],
   "methods": [

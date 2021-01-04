@@ -1,6 +1,14 @@
 // eslint-disable-next-line no-unused-vars
-import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { css } from 'emotion';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+} from '@stencil/core';
+import { css } from '@emotion/css';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 import 'ionicons/dist/ionicons.js';
 import { setVar } from '../../utils/setVar';
@@ -33,17 +41,25 @@ export class SpxIcon {
 
   /** Icon size. */
 
-  @Prop({ reflect: true }) size: string = '20px';
+  @Prop({ reflect: true }) size: string = '1em';
+
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxIconDidLoad' })
+  spxIconDidLoad: EventEmitter;
 
   componentDidLoad() {
     globalComponentDidLoad(this.el);
+
+    this.spxIconDidLoad.emit({ target: 'document' });
   }
 
   render() {
     /** Host styles. */
 
     const styleHost = css({
-      display: 'flex',
+      display: 'inline-flex',
       alignItems: 'center',
       justifyContent: 'center',
     });

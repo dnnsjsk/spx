@@ -1,6 +1,8 @@
 import {
   Component,
   Element,
+  Event,
+  EventEmitter,
   // eslint-disable-next-line no-unused-vars
   h,
   Host,
@@ -9,7 +11,7 @@ import {
   Prop,
   State,
 } from '@stencil/core';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 
@@ -40,44 +42,44 @@ export class SpxMockup {
    * @choice 'black', 'blue'
    */
 
-  @Prop({ reflect: true }) colorGalaxyS8: string;
+  @Prop({ reflect: true }) colorGalaxyS8: string = 'black';
 
   /**
    * Google Pixel color.
    * @choice 'silver', 'black', 'blue'
    */
 
-  @Prop({ reflect: true }) colorGooglePixel: string;
+  @Prop({ reflect: true }) colorGooglePixel: string = 'silver';
 
   /**
    * iPad Pro color.
    * @choice 'silver', 'gold', 'rosegold', 'spacegray'
    */
 
-  @Prop({ reflect: true }) colorIpadPro: string;
+  @Prop({ reflect: true }) colorIpadPro: string = 'silver';
 
   /**
    * iPhone 8 color.
    * @choice 'silver', 'gold', 'spacegray'
    */
 
-  @Prop({ reflect: true }) colorIphone8: string;
+  @Prop({ reflect: true }) colorIphone8: string = 'silver';
 
   /**
    * MacBook color.
    * @choice 'silver', 'gold', 'rosegold', 'spacegray'
    */
 
-  @Prop({ reflect: true }) colorMacbook: string;
+  @Prop({ reflect: true }) colorMacbook: string = 'silver';
 
   /**
    * MacBook Pro color.
    * @choice 'silver', 'spacegray'
    */
 
-  @Prop({ reflect: true }) colorMacbookPro: string;
+  @Prop({ reflect: true }) colorMacbookPro: string = 'silver';
 
-  @Prop({ reflect: true }) display: string = 'block';
+  @Prop({ reflect: true }) display: string = 'inline-block';
 
   @Prop({ reflect: true }) imagePosition: string = '50% 50%';
 
@@ -92,6 +94,12 @@ export class SpxMockup {
 
   @Prop({ reflect: true }) type: string = 'iphone-8';
 
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxMockupDidLoad' })
+  spxMockupDidLoad: EventEmitter;
+
   @Listen('resize', { target: 'window' })
   onResize() {
     this.handleResize();
@@ -105,9 +113,11 @@ export class SpxMockup {
     this.mockup = this.el.querySelector('.spx-mockup');
     this.parent = this.el.querySelector('.spx-mockup-wrap');
 
-    /** Resize and wait for iFrame to load before showing content. */
+    /** Resize mockup. */
 
     this.handleResize();
+
+    this.spxMockupDidLoad.emit({ target: 'document' });
   }
 
   componentDidUpdate() {
@@ -129,6 +139,8 @@ export class SpxMockup {
   }
 
   render() {
+    /** Set the correct color. */
+
     const color =
       this.type === 'galaxy-s8'
         ? this.colorGalaxyS8
@@ -140,16 +152,19 @@ export class SpxMockup {
         ? this.colorIphone8
         : this.type === 'macbook'
         ? this.colorMacbook
-        : this.type === 'macbook-pro' && this.colorMacbookPro;
+        : this.type === 'macbook-pro'
+        ? this.colorMacbookPro
+        : null;
 
-    /** Device style. */
+    /** Hist styles. */
 
     const styleHost = css({
+      position: 'relative',
       display: setVar(tag, 'display', this.display),
       maxWidth: '100%',
     });
 
-    /** Image style. */
+    /** Image styles. */
 
     const styleImg = css({
       width: '100%',
@@ -166,8 +181,7 @@ export class SpxMockup {
               'spx-mockup spx-mockup-' +
               this.type +
               ' ' +
-              'spx-mockup-' +
-              color +
+              (color !== null && 'spx-mockup-' + color) +
               ''
             }
           >

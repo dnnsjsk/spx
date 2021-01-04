@@ -9,8 +9,10 @@ import {
   Watch,
   Listen,
   Method,
+  Event,
+  EventEmitter,
 } from '@stencil/core';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 
@@ -34,6 +36,8 @@ export class SpxImageComparison {
   @State() width: number;
 
   @Prop({ reflect: true }) color: string = '#ffffff';
+
+  @Prop({ reflect: true }) height: string = '100%';
 
   @Prop({ reflect: true }) iconColor: string = 'var(--spx-color-gray-900)';
 
@@ -63,9 +67,15 @@ export class SpxImageComparison {
     /** Show image in start. */
 
     const transform = Math.max(0, Math.min(x, this.container.offsetWidth));
-    this.imageAfter.style.width = transform + 'px';
+    this.imageAfter.style.width = transform + 2 + 'px';
     this.scroller.style.left = transform - 25 + 'px';
   }
+
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxImageComparisonDidLoad' })
+  spxImageComparisonDidLoad: EventEmitter;
 
   componentDidLoad() {
     globalComponentDidLoad(this.el);
@@ -128,7 +138,11 @@ export class SpxImageComparison {
     document.body.addEventListener('touchmove', (e) => {
       this.mover(e);
     });
+
+    this.spxImageComparisonDidLoad.emit({ target: 'document' });
   }
+
+  /** Thumb mover function. */
 
   private mover(e) {
     if (!this.active) return;
@@ -143,9 +157,21 @@ export class SpxImageComparison {
   }
 
   render() {
+    /** Host styles. */
+
+    const styleHost = css({
+      display: 'block',
+      position: 'relative',
+      height: setVar(tag, 'height', this.height),
+      width: '100%',
+      overflow: 'hidden',
+    });
+
+    /** Container styles. */
+
     const styleContainer = css({
       width: '100%',
-      height: '100%',
+      height: setVar(tag, 'height', this.height),
       backgroundRepeat: 'no-repeat',
       backgroundColor: 'white',
       backgroundSize: 'cover',
@@ -158,13 +184,19 @@ export class SpxImageComparison {
       userSelect: 'none',
     });
 
+    /** Image styles. */
+
     const styleImage = css({
       height: '100%',
     });
 
+    /** Image after styles. */
+
     const styleImageAfter = css({
       width: '125px',
     });
+
+    /** Scroller styles. */
 
     const styleScroller = css({
       width: '50px',
@@ -207,6 +239,8 @@ export class SpxImageComparison {
       },
     });
 
+    /** Thumb styles. */
+
     const styleThumb = css({
       height: '100%',
       width: '100%',
@@ -220,15 +254,7 @@ export class SpxImageComparison {
     });
 
     return (
-      <Host
-        class={css({
-          display: 'block',
-          position: 'relative',
-          height: '100%',
-          width: '100%',
-          overflow: 'hidden',
-        })}
-      >
+      <Host class={styleHost}>
         {this.srcBefore &&
           this.srcAfter /** Before. */ && [
             <div

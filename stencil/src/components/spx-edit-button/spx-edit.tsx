@@ -9,7 +9,7 @@ import {
   Watch,
   Listen,
 } from '@stencil/core';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
 
 const tag = 'spx-edit';
@@ -59,9 +59,9 @@ export class SpxEdit {
   /** Prevent enter key. */
 
   @Listen('keydown')
-  onClickEnter(evt) {
-    if (evt.keyCode === 13) {
-      evt.preventDefault();
+  onClickEnter(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
     }
   }
 
@@ -100,6 +100,11 @@ export class SpxEdit {
   }
 
   private typeText(src) {
+    /**
+     * Update body string with a special identifier.
+     * Is used to distinguish between content types in the AJAX call.
+     */
+
     this.el.setAttribute(
       'body-string',
       '&' +

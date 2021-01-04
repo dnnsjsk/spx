@@ -13,6 +13,13 @@
 | `target`  | `target`  | Target element. | `string` | `'header'` |
 
 
+## Events
+
+| Event              | Description                       | Type               |
+| ------------------ | --------------------------------- | ------------------ |
+| `spxOffsetDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+
+
 ## Methods
 
 ### `reload() => Promise<void>`

@@ -5,14 +5,17 @@
     {
       "id": "icon-color",
       "name": "color",
+      "attribute": "color",
       "type": "string",
       "description": "",
+      "default": "'inherit'",
       "defaultValue": "'inherit'",
       "tags": []
     },
     {
       "id": "icon-icon",
       "name": "icon",
+      "attribute": "icon",
       "type": "string",
       "description": "Icon code.",
       "tags": []
@@ -20,16 +23,20 @@
     {
       "id": "icon-size",
       "name": "size",
+      "attribute": "size",
       "type": "string",
       "description": "Icon size.",
-      "defaultValue": "'20px'",
+      "default": "'1em'",
+      "defaultValue": "'1em'",
       "tags": []
     },
     {
       "id": "icon-type",
       "name": "type",
+      "attribute": "type",
       "type": "string",
       "description": "Icon type.",
+      "default": "'ionicons'",
       "defaultValue": "'ionicons'",
       "tags": [
         {
@@ -39,7 +46,12 @@
       ]
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxIconDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [],
   "slots": []
 }

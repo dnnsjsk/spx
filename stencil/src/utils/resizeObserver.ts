@@ -1,8 +1,12 @@
 import { startsWith, fromPairs, pickBy, merge } from 'lodash-es';
 import ResizeObserver from 'resize-observer-polyfill';
 
+/**
+ *  Set up a resize observer.
+ */
+
 export const resizeObserver = (el) => {
-  for (var att, i = 0, atts = el.attributes, n = atts.length; i < n; i++) {
+  for (let att, i = 0, atts = el.attributes, n = atts.length; i < n; i++) {
     att = atts[i];
 
     if (
@@ -97,6 +101,7 @@ export const resizeObserver = (el) => {
           entries.forEach(() => {
             if (window.matchMedia('(max-width: ' + min + 'px)').matches) {
               Object.entries(obj).forEach((k) => {
+                // eslint-disable-next-line no-empty
                 if (k[0] === 'class') {
                 } else {
                   el.setAttribute(k[0], String(k[1]));

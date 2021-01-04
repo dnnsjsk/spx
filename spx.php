@@ -5,7 +5,7 @@
  * Plugin URI: https://spx.dev
  * Description: An ever growing collection of flexible web components to supercharge your workflow.
  * Author: Fabrikat
- * Version: 2.28
+ * Version: 3.0.0
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
@@ -22,7 +22,8 @@ define( 'SPX_LICENSE_PAGE', 'spx-license' );
 /**
  * Exit if accessed directly.
  *
- * @since 1.0
+ * @date    15/07/2020
+ * @since   1.0.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -32,23 +33,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Require files.
  *
- * @since 1.0
+ * @date    15/07/2020
+ * @since   1.0.0
  */
 
-require_once plugin_dir_path( __FILE__ ) . 'includes/classes/init.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/build.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/prepare.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/get.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/set.php';
+require_once plugin_dir_path( __FILE__ ) . 'includes/classes/init.php';
 
 require_once plugin_dir_path( __FILE__ ) . 'includes/functions/edit-ajax-handler.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/functions/get.php';
 
 if ( class_exists( 'OxyEl' ) ) {
-
-	require_once plugin_dir_path( __FILE__ ) . 'includes/oxygen/spx-oxygen.php';
 	require_once plugin_dir_path( __FILE__ ) . 'includes/oxygen/element.php';
-
 }
 
 if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
@@ -62,7 +61,8 @@ spxPlugin::init( 'spx_', SPX_ITEM_NAME, SPX_STORE_URL, SPX_ITEM_ID, SPX_LICENSE_
 /**
  * Init spx.
  *
- * @since 1.0
+ * @date    15/07/2020
+ * @since   1.0.0
  */
 
 new Init();

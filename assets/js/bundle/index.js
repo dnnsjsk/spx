@@ -2,7 +2,10 @@ import { setMode, getAssetPath, attachShadow, Build, h as h$1, Host, getRenderin
 export { setAssetPath } from '@stencil/core/internal/client';
 
 const appGlobalScript = async () => {
-  /** Theme switcher. */
+  /**
+   * Theme switcher.
+   * Only used for code component currently.
+   */
   setMode((elm) => {
     return elm.theme || elm.getAttribute('theme') || 'default';
   });
@@ -95,26 +98,24 @@ const isStr = (val) => typeof val === 'string';
 const toLower = (val) => val.toLowerCase();
 
 const validateContent = (svgContent) => {
-    if (svgContent && typeof document !== 'undefined') {
-        const div = document.createElement('div');
-        div.innerHTML = svgContent;
-        // setup this way to ensure it works on our buddy IE
-        for (let i = div.childNodes.length - 1; i >= 0; i--) {
-            if (div.childNodes[i].nodeName.toLowerCase() !== 'svg') {
-                div.removeChild(div.childNodes[i]);
-            }
+    const div = document.createElement('div');
+    div.innerHTML = svgContent;
+    // setup this way to ensure it works on our buddy IE
+    for (let i = div.childNodes.length - 1; i >= 0; i--) {
+        if (div.childNodes[i].nodeName.toLowerCase() !== 'svg') {
+            div.removeChild(div.childNodes[i]);
         }
-        // must only have 1 root element
-        const svgElm = div.firstElementChild;
-        if (svgElm && svgElm.nodeName.toLowerCase() === 'svg') {
-            const svgClass = svgElm.getAttribute('class') || '';
-            svgElm.setAttribute('class', (svgClass + ' s-ion-icon').trim());
-            // root element must be an svg
-            // lets double check we've got valid elements
-            // do not allow scripts
-            if (isValid(svgElm)) {
-                return div.innerHTML;
-            }
+    }
+    // must only have 1 root element
+    const svgElm = div.firstElementChild;
+    if (svgElm && svgElm.nodeName.toLowerCase() === 'svg') {
+        const svgClass = svgElm.getAttribute('class') || '';
+        svgElm.setAttribute('class', (svgClass + ' s-ion-icon').trim());
+        // root element must be an svg
+        // lets double check we've got valid elements
+        // do not allow scripts
+        if (isValid(svgElm)) {
+            return div.innerHTML;
         }
     }
     return '';
@@ -141,16 +142,19 @@ const isValid = (elm) => {
 
 const ioniconContent = new Map();
 const requests = new Map();
-const getSvgContent = (url) => {
+const getSvgContent = (url, sanitize) => {
     // see if we already have a request for this url
     let req = requests.get(url);
     if (!req) {
-        if (typeof fetch !== 'undefined') {
+        if (typeof fetch !== 'undefined' && typeof document !== 'undefined') {
             // we don't already have a request
-            req = fetch(url).then(rsp => {
+            req = fetch(url).then((rsp) => {
                 if (rsp.ok) {
-                    return rsp.text().then(svgContent => {
-                        ioniconContent.set(url, validateContent(svgContent));
+                    return rsp.text().then((svgContent) => {
+                        if (svgContent && sanitize !== false) {
+                            svgContent = validateContent(svgContent);
+                        }
+                        ioniconContent.set(url, svgContent || '');
                     });
                 }
                 ioniconContent.set(url, '');
@@ -184,6 +188,13 @@ const Icon = class extends HTMLElement {
      * Default, `false`.
      */
     this.lazy = false;
+    /**
+     * When set to `false`, SVG content that is HTTP fetched will not be checked
+     * if the response SVG content has any `<script>` elements, or any attributes
+     * that start with `on`, such as `onclick`.
+     * @default true
+     */
+    this.sanitize = true;
   }
   connectedCallback() {
     // purposely do not return the promise here because loading
@@ -202,13 +213,13 @@ const Icon = class extends HTMLElement {
   }
   waitUntilVisible(el, rootMargin, cb) {
     if (Build.isBrowser && this.lazy && typeof window !== 'undefined' && window.IntersectionObserver) {
-      const io = this.io = new window.IntersectionObserver((data) => {
+      const io = (this.io = new window.IntersectionObserver((data) => {
         if (data[0].isIntersecting) {
           io.disconnect();
           this.io = undefined;
           cb();
         }
-      }, { rootMargin });
+      }, { rootMargin }));
       io.observe(el);
     }
     else {
@@ -227,7 +238,7 @@ const Icon = class extends HTMLElement {
         }
         else {
           // async if it hasn't been loaded
-          getSvgContent(url).then(() => this.svgContent = ioniconContent.get(url));
+          getSvgContent(url, this.sanitize).then(() => (this.svgContent = ioniconContent.get(url)));
         }
       }
     }
@@ -242,10 +253,11 @@ const Icon = class extends HTMLElement {
   }
   render() {
     const mode = this.mode || 'md';
-    const flipRtl = this.flipRtl || (this.ariaLabel && (this.ariaLabel.indexOf('arrow') > -1 || this.ariaLabel.indexOf('chevron') > -1) && this.flipRtl !== false);
-    return (h$1(Host, { role: "img", class: Object.assign(Object.assign({ [mode]: true }, createColorClasses(this.color)), { [`icon-${this.size}`]: !!this.size, 'flip-rtl': !!flipRtl && this.el.ownerDocument.dir === 'rtl' }) }, ((Build.isBrowser && this.svgContent)
-      ? h$1("div", { class: "icon-inner", innerHTML: this.svgContent })
-      : h$1("div", { class: "icon-inner" }))));
+    const flipRtl = this.flipRtl ||
+      (this.ariaLabel &&
+        (this.ariaLabel.indexOf('arrow') > -1 || this.ariaLabel.indexOf('chevron') > -1) &&
+        this.flipRtl !== false);
+    return (h$1(Host, { role: "img", class: Object.assign(Object.assign({ [mode]: true }, createColorClasses(this.color)), { [`icon-${this.size}`]: !!this.size, 'flip-rtl': !!flipRtl && this.el.ownerDocument.dir === 'rtl' }) }, Build.isBrowser && this.svgContent ? (h$1("div", { class: "icon-inner", innerHTML: this.svgContent })) : (h$1("div", { class: "icon-inner" }))));
   }
   static get assetsDirs() { return ["svg"]; }
   get el() { return this; }
@@ -258,10 +270,12 @@ const Icon = class extends HTMLElement {
 };
 const getIonMode = () => (Build.isBrowser && typeof document !== 'undefined' && document.documentElement.getAttribute('mode')) || 'md';
 const createColorClasses = (color) => {
-  return (color) ? {
-    'ion-color': true,
-    [`ion-color-${color}`]: true
-  } : null;
+  return color
+    ? {
+      'ion-color': true,
+      [`ion-color-${color}`]: true,
+    }
+    : null;
 };
 
 /*
@@ -313,13 +327,28 @@ function createStyleElement(options) {
   }
 
   tag.appendChild(document.createTextNode(''));
+  tag.setAttribute('data-s', '');
   return tag;
 }
 
-var StyleSheet =
-/*#__PURE__*/
-function () {
+var StyleSheet = /*#__PURE__*/function () {
   function StyleSheet(options) {
+    var _this = this;
+
+    this._insertTag = function (tag) {
+      var before;
+
+      if (_this.tags.length === 0) {
+        before = _this.prepend ? _this.container.firstChild : _this.before;
+      } else {
+        before = _this.tags[_this.tags.length - 1].nextSibling;
+      }
+
+      _this.container.insertBefore(tag, before);
+
+      _this.tags.push(tag);
+    };
+
     this.isSpeedy = options.speedy === undefined ? "production" === 'production' : options.speedy;
     this.tags = [];
     this.ctr = 0;
@@ -327,28 +356,22 @@ function () {
 
     this.key = options.key;
     this.container = options.container;
+    this.prepend = options.prepend;
     this.before = null;
   }
 
   var _proto = StyleSheet.prototype;
+
+  _proto.hydrate = function hydrate(nodes) {
+    nodes.forEach(this._insertTag);
+  };
 
   _proto.insert = function insert(rule) {
     // the max length is how many rules we have per style tag, it's 65000 in speedy mode
     // it's 1 in dev because we insert source maps that map a single rule to a location
     // and you can only have one source map per style tag
     if (this.ctr % (this.isSpeedy ? 65000 : 1) === 0) {
-      var _tag = createStyleElement(this);
-
-      var before;
-
-      if (this.tags.length === 0) {
-        before = this.before;
-      } else {
-        before = this.tags[this.tags.length - 1].nextSibling;
-      }
-
-      this.container.insertBefore(_tag, before);
-      this.tags.push(_tag);
+      this._insertTag(createStyleElement(this));
     }
 
     var tag = this.tags[this.tags.length - 1];
@@ -357,23 +380,9 @@ function () {
       var sheet = sheetForTag(tag);
 
       try {
-        // this is a really hot path
-        // we check the second character first because having "i"
-        // as the second character will happen less often than
-        // having "@" as the first character
-        var isImportRule = rule.charCodeAt(1) === 105 && rule.charCodeAt(0) === 64; // this is the ultrafast version, works across browsers
+        // this is the ultrafast version, works across browsers
         // the big drawback is that the css won't be editable in devtools
-
-        sheet.insertRule(rule, // we need to insert @import rules before anything else
-        // otherwise there will be an error
-        // technically this means that the @import rules will
-        // _usually_(not always since there could be multiple style tags)
-        // be the first ones in prod and generally later in dev
-        // this shouldn't really matter in the real world though
-        // @import is generally only used for font faces from google fonts and etc.
-        // so while this could be technically correct then it would be slower and larger
-        // for a tiny bit of correctness that won't matter in the real world
-        isImportRule ? 0 : sheet.cssRules.length);
+        sheet.insertRule(rule, sheet.cssRules.length);
       } catch (e) {
       }
     } else {
@@ -395,741 +404,179 @@ function () {
   return StyleSheet;
 }();
 
-function stylis_min (W) {
-  function M(d, c, e, h, a) {
-    for (var m = 0, b = 0, v = 0, n = 0, q, g, x = 0, K = 0, k, u = k = q = 0, l = 0, r = 0, I = 0, t = 0, B = e.length, J = B - 1, y, f = '', p = '', F = '', G = '', C; l < B;) {
-      g = e.charCodeAt(l);
-      l === J && 0 !== b + n + v + m && (0 !== b && (g = 47 === b ? 10 : 47), n = v = m = 0, B++, J++);
-
-      if (0 === b + n + v + m) {
-        if (l === J && (0 < r && (f = f.replace(N, '')), 0 < f.trim().length)) {
-          switch (g) {
-            case 32:
-            case 9:
-            case 59:
-            case 13:
-            case 10:
-              break;
-
-            default:
-              f += e.charAt(l);
-          }
-
-          g = 59;
-        }
-
-        switch (g) {
-          case 123:
-            f = f.trim();
-            q = f.charCodeAt(0);
-            k = 1;
-
-            for (t = ++l; l < B;) {
-              switch (g = e.charCodeAt(l)) {
-                case 123:
-                  k++;
-                  break;
-
-                case 125:
-                  k--;
-                  break;
-
-                case 47:
-                  switch (g = e.charCodeAt(l + 1)) {
-                    case 42:
-                    case 47:
-                      a: {
-                        for (u = l + 1; u < J; ++u) {
-                          switch (e.charCodeAt(u)) {
-                            case 47:
-                              if (42 === g && 42 === e.charCodeAt(u - 1) && l + 2 !== u) {
-                                l = u + 1;
-                                break a;
-                              }
-
-                              break;
-
-                            case 10:
-                              if (47 === g) {
-                                l = u + 1;
-                                break a;
-                              }
-
-                          }
-                        }
-
-                        l = u;
-                      }
-
-                  }
-
-                  break;
-
-                case 91:
-                  g++;
-
-                case 40:
-                  g++;
-
-                case 34:
-                case 39:
-                  for (; l++ < J && e.charCodeAt(l) !== g;) {
-                  }
-
-              }
-
-              if (0 === k) break;
-              l++;
-            }
-
-            k = e.substring(t, l);
-            0 === q && (q = (f = f.replace(ca, '').trim()).charCodeAt(0));
-
-            switch (q) {
-              case 64:
-                0 < r && (f = f.replace(N, ''));
-                g = f.charCodeAt(1);
-
-                switch (g) {
-                  case 100:
-                  case 109:
-                  case 115:
-                  case 45:
-                    r = c;
-                    break;
-
-                  default:
-                    r = O;
-                }
-
-                k = M(c, r, k, g, a + 1);
-                t = k.length;
-                0 < A && (r = X(O, f, I), C = H(3, k, r, c, D, z, t, g, a, h), f = r.join(''), void 0 !== C && 0 === (t = (k = C.trim()).length) && (g = 0, k = ''));
-                if (0 < t) switch (g) {
-                  case 115:
-                    f = f.replace(da, ea);
-
-                  case 100:
-                  case 109:
-                  case 45:
-                    k = f + '{' + k + '}';
-                    break;
-
-                  case 107:
-                    f = f.replace(fa, '$1 $2');
-                    k = f + '{' + k + '}';
-                    k = 1 === w || 2 === w && L('@' + k, 3) ? '@-webkit-' + k + '@' + k : '@' + k;
-                    break;
-
-                  default:
-                    k = f + k, 112 === h && (k = (p += k, ''));
-                } else k = '';
-                break;
-
-              default:
-                k = M(c, X(c, f, I), k, h, a + 1);
-            }
-
-            F += k;
-            k = I = r = u = q = 0;
-            f = '';
-            g = e.charCodeAt(++l);
-            break;
-
-          case 125:
-          case 59:
-            f = (0 < r ? f.replace(N, '') : f).trim();
-            if (1 < (t = f.length)) switch (0 === u && (q = f.charCodeAt(0), 45 === q || 96 < q && 123 > q) && (t = (f = f.replace(' ', ':')).length), 0 < A && void 0 !== (C = H(1, f, c, d, D, z, p.length, h, a, h)) && 0 === (t = (f = C.trim()).length) && (f = '\x00\x00'), q = f.charCodeAt(0), g = f.charCodeAt(1), q) {
-              case 0:
-                break;
-
-              case 64:
-                if (105 === g || 99 === g) {
-                  G += f + e.charAt(l);
-                  break;
-                }
-
-              default:
-                58 !== f.charCodeAt(t - 1) && (p += P(f, q, g, f.charCodeAt(2)));
-            }
-            I = r = u = q = 0;
-            f = '';
-            g = e.charCodeAt(++l);
-        }
-      }
-
-      switch (g) {
-        case 13:
-        case 10:
-          47 === b ? b = 0 : 0 === 1 + q && 107 !== h && 0 < f.length && (r = 1, f += '\x00');
-          0 < A * Y && H(0, f, c, d, D, z, p.length, h, a, h);
-          z = 1;
-          D++;
-          break;
-
-        case 59:
-        case 125:
-          if (0 === b + n + v + m) {
-            z++;
-            break;
-          }
-
-        default:
-          z++;
-          y = e.charAt(l);
-
-          switch (g) {
-            case 9:
-            case 32:
-              if (0 === n + m + b) switch (x) {
-                case 44:
-                case 58:
-                case 9:
-                case 32:
-                  y = '';
-                  break;
-
-                default:
-                  32 !== g && (y = ' ');
-              }
-              break;
-
-            case 0:
-              y = '\\0';
-              break;
-
-            case 12:
-              y = '\\f';
-              break;
-
-            case 11:
-              y = '\\v';
-              break;
-
-            case 38:
-              0 === n + b + m && (r = I = 1, y = '\f' + y);
-              break;
-
-            case 108:
-              if (0 === n + b + m + E && 0 < u) switch (l - u) {
-                case 2:
-                  112 === x && 58 === e.charCodeAt(l - 3) && (E = x);
-
-                case 8:
-                  111 === K && (E = K);
-              }
-              break;
-
-            case 58:
-              0 === n + b + m && (u = l);
-              break;
-
-            case 44:
-              0 === b + v + n + m && (r = 1, y += '\r');
-              break;
-
-            case 34:
-            case 39:
-              0 === b && (n = n === g ? 0 : 0 === n ? g : n);
-              break;
-
-            case 91:
-              0 === n + b + v && m++;
-              break;
-
-            case 93:
-              0 === n + b + v && m--;
-              break;
-
-            case 41:
-              0 === n + b + m && v--;
-              break;
-
-            case 40:
-              if (0 === n + b + m) {
-                if (0 === q) switch (2 * x + 3 * K) {
-                  case 533:
-                    break;
-
-                  default:
-                    q = 1;
-                }
-                v++;
-              }
-
-              break;
-
-            case 64:
-              0 === b + v + n + m + u + k && (k = 1);
-              break;
-
-            case 42:
-            case 47:
-              if (!(0 < n + m + v)) switch (b) {
-                case 0:
-                  switch (2 * g + 3 * e.charCodeAt(l + 1)) {
-                    case 235:
-                      b = 47;
-                      break;
-
-                    case 220:
-                      t = l, b = 42;
-                  }
-
-                  break;
-
-                case 42:
-                  47 === g && 42 === x && t + 2 !== l && (33 === e.charCodeAt(t + 2) && (p += e.substring(t, l + 1)), y = '', b = 0);
-              }
-          }
-
-          0 === b && (f += y);
-      }
-
-      K = x;
-      x = g;
-      l++;
-    }
-
-    t = p.length;
-
-    if (0 < t) {
-      r = c;
-      if (0 < A && (C = H(2, p, r, d, D, z, t, h, a, h), void 0 !== C && 0 === (p = C).length)) return G + p + F;
-      p = r.join(',') + '{' + p + '}';
-
-      if (0 !== w * E) {
-        2 !== w || L(p, 2) || (E = 0);
-
-        switch (E) {
-          case 111:
-            p = p.replace(ha, ':-moz-$1') + p;
-            break;
-
-          case 112:
-            p = p.replace(Q, '::-webkit-input-$1') + p.replace(Q, '::-moz-$1') + p.replace(Q, ':-ms-input-$1') + p;
-        }
-
-        E = 0;
-      }
-    }
-
-    return G + p + F;
-  }
-
-  function X(d, c, e) {
-    var h = c.trim().split(ia);
-    c = h;
-    var a = h.length,
-        m = d.length;
-
-    switch (m) {
+var e="-ms-";var r="-moz-";var a="-webkit-";var c="comm";var n="rule";var t="decl";var i="@import";var p="@keyframes";var k=Math.abs;var d=String.fromCharCode;function m(e,r){return (((r<<2^z(e,0))<<2^z(e,1))<<2^z(e,2))<<2^z(e,3)}function g(e){return e.trim()}function x(e,r){return (e=r.exec(e))?e[0]:e}function y(e,r,a){return e.replace(r,a)}function j(e,r){return e.indexOf(r)}function z(e,r){return e.charCodeAt(r)|0}function C(e,r,a){return e.slice(r,a)}function A(e){return e.length}function M(e){return e.length}function O(e,r){return r.push(e),e}function S(e,r){return e.map(r).join("")}var q=1;var B=1;var D=0;var E=0;var F=0;var G="";function H(e,r,a,c,n,t,s){return {value:e,root:r,parent:a,type:c,props:n,children:t,line:q,column:B,length:s,return:""}}function I(e,r,a){return H(e,r.root,r.parent,a,r.props,r.children,0)}function J(){return F}function K(){F=E<D?z(G,E++):0;if(B++,F===10)B=1,q++;return F}function L(){return z(G,E)}function N(){return E}function P(e,r){return C(G,e,r)}function Q(e){switch(e){case 0:case 9:case 10:case 13:case 32:return 5;case 33:case 43:case 44:case 47:case 62:case 64:case 126:case 59:case 123:case 125:return 4;case 58:return 3;case 34:case 39:case 40:case 91:return 2;case 41:case 93:return 1}return 0}function R(e){return q=B=1,D=A(G=e),E=0,[]}function T(e){return G="",e}function U(e){return g(P(E-1,Y(e===91?e+2:e===40?e+1:e)))}function W(e){while(F=L())if(F<33)K();else break;return Q(e)>2||Q(F)>3?"":" "}function Y(e){while(K())switch(F){case e:return E;case 34:case 39:return Y(e===34||e===39?e:F);case 40:if(e===41)Y(e);break;case 92:K();break}return E}function Z(e,r){while(K())if(e+F===47+10)break;else if(e+F===42+42&&L()===47)break;return "/*"+P(r,E-1)+"*"+d(e===47?e:K())}function _(e){while(!Q(L()))K();return P(e,E)}function ee(e){return T(re("",null,null,null,[""],e=R(e),0,[0],e))}function re(e,r,a,c,n,t,s,u,i){var f=0;var o=0;var l=s;var v=0;var h=0;var p=0;var w=1;var b=1;var $=1;var k=0;var m="";var g=n;var x=t;var j=c;var z=m;while(b)switch(p=k,k=K()){case 34:case 39:case 91:case 40:z+=U(k);break;case 9:case 10:case 13:case 32:z+=W(p);break;case 47:switch(L()){case 42:case 47:O(ce(Z(K(),N()),r,a),i);break;default:z+="/";}break;case 123*w:u[f++]=A(z)*$;case 125*w:case 59:case 0:switch(k){case 0:case 125:b=0;case 59+o:if(h>0)O(h>32?ne(z+";",c,a,l-1):ne(y(z," ","")+";",c,a,l-2),i);break;case 59:z+=";";default:O(j=ae(z,r,a,f,o,n,u,m,g=[],x=[],l),t);if(k===123)if(o===0)re(z,r,j,j,g,t,l,u,x);else switch(v){case 100:case 109:case 115:re(e,j,j,c&&O(ae(e,j,j,0,0,n,u,m,n,g=[],l),x),n,x,l,u,c?g:x);break;default:re(z,j,j,j,[""],x,l,u,x);}}f=o=h=0,w=$=1,m=z="",l=s;break;case 58:l=1+A(z),h=p;default:switch(z+=d(k),k*w){case 38:$=o>0?1:(z+="\f",-1);break;case 44:u[f++]=(A(z)-1)*$,$=1;break;case 64:if(L()===45)z+=U(K());v=L(),o=A(m=z+=_(N())),k++;break;case 45:if(p===45&&A(z)==2)w=0;}}return t}function ae(e,r,a,c,t,s,u,i,f,o,l){var v=t-1;var h=t===0?s:[""];var p=M(h);for(var w=0,b=0,$=0;w<c;++w)for(var d=0,m=C(e,v+1,v=k(b=u[w])),x=e;d<p;++d)if(x=g(b>0?h[d]+" "+m:y(m,/&\f/g,h[d])))f[$++]=x;return H(e,r,a,t===0?n:i,f,o,l)}function ce(e,r,a){return H(e,r,a,c,d(J()),C(e,2,-2),0)}function ne(e,r,a,c){return H(e,r,a,t,C(e,0,c),C(e,c+1,-1),c)}function te(c,n){switch(m(c,n)){case 5737:case 4201:case 3177:case 3433:case 1641:case 4457:case 2921:case 5572:case 6356:case 5844:case 3191:case 6645:case 3005:case 6391:case 5879:case 5623:case 6135:case 4599:case 4855:case 4215:case 6389:case 5109:case 5365:case 5621:case 3829:return a+c+c;case 5349:case 4246:case 4810:case 6968:case 2756:return a+c+r+c+e+c+c;case 6828:case 4268:return a+c+e+c+c;case 6165:return a+c+e+"flex-"+c+c;case 5187:return a+c+y(c,/(\w+).+(:[^]+)/,a+"box-$1$2"+e+"flex-$1$2")+c;case 5443:return a+c+e+"flex-item-"+y(c,/flex-|-self/,"")+c;case 4675:return a+c+e+"flex-line-pack"+y(c,/align-content|flex-|-self/,"")+c;case 5548:return a+c+e+y(c,"shrink","negative")+c;case 5292:return a+c+e+y(c,"basis","preferred-size")+c;case 6060:return a+"box-"+y(c,"-grow","")+a+c+e+y(c,"grow","positive")+c;case 4554:return a+y(c,/([^-])(transform)/g,"$1"+a+"$2")+c;case 6187:return y(y(y(c,/(zoom-|grab)/,a+"$1"),/(image-set)/,a+"$1"),c,"")+c;case 5495:case 3959:return y(c,/(image-set\([^]*)/,a+"$1"+"$`$1");case 4968:return y(y(c,/(.+:)(flex-)?(.*)/,a+"box-pack:$3"+e+"flex-pack:$3"),/s.+-b[^;]+/,"justify")+a+c+c;case 4095:case 3583:case 4068:case 2532:return y(c,/(.+)-inline(.+)/,a+"$1$2")+c;case 8116:case 7059:case 5753:case 5535:case 5445:case 5701:case 4933:case 4677:case 5533:case 5789:case 5021:case 4765:if(A(c)-1-n>6)switch(z(c,n+1)){case 102:n=z(c,n+3);case 109:return y(c,/(.+:)(.+)-([^]+)/,"$1"+a+"$2-$3"+"$1"+r+(n==108?"$3":"$2-$3"))+c;case 115:return ~j(c,"stretch")?te(y(c,"stretch","fill-available"),n)+c:c}break;case 4949:if(z(c,n+1)!==115)break;case 6444:switch(z(c,A(c)-3-(~j(c,"!important")&&10))){case 107:case 111:return y(c,c,a+c)+c;case 101:return y(c,/(.+:)([^;!]+)(;|!.+)?/,"$1"+a+(z(c,14)===45?"inline-":"")+"box$3"+"$1"+a+"$2$3"+"$1"+e+"$2box$3")+c}break;case 5936:switch(z(c,n+11)){case 114:return a+c+e+y(c,/[svh]\w+-[tblr]{2}/,"tb")+c;case 108:return a+c+e+y(c,/[svh]\w+-[tblr]{2}/,"tb-rl")+c;case 45:return a+c+e+y(c,/[svh]\w+-[tblr]{2}/,"lr")+c}return a+c+e+c+c}return c}function se(e,r){var a="";var c=M(e);for(var n=0;n<c;n++)a+=r(e[n],n,e,r)||"";return a}function ue(e,r,a,s){switch(e.type){case i:case t:return e.return=e.return||e.value;case c:return "";case n:e.value=e.props.join(",");}return A(a=se(e.children,s))?e.return=e.value+"{"+a+"}":""}function ie(e){var r=M(e);return function(a,c,n,t){var s="";for(var u=0;u<r;u++)s+=e[u](a,c,n,t)||"";return s}}function fe(e){return function(r){if(!r.root)if(r=r.return)e(r);}}function oe(c,s,u,i){if(!c.return)switch(c.type){case t:c.return=te(c.value,c.length);break;case p:return se([I(y(c.value,"@","@"+a),c,"")],i);case n:if(c.length)return S(c.props,(function(n){switch(x(n,/(::plac\w+|:read-\w+)/)){case":read-only":case":read-write":return se([I(y(n,/:(read-\w+)/,":"+r+"$1"),c,"")],i);case"::placeholder":return se([I(y(n,/:(plac\w+)/,":"+a+"input-$1"),c,""),I(y(n,/:(plac\w+)/,":"+r+"$1"),c,""),I(y(n,/:(plac\w+)/,e+"input-$1"),c,"")],i)}return ""}))}}
+
+function memoize(fn) {
+  var cache = {};
+  return function (arg) {
+    if (cache[arg] === undefined) cache[arg] = fn(arg);
+    return cache[arg];
+  };
+}
+
+var toRules = function toRules(parsed, points) {
+  // pretend we've started with a comma
+  var index = -1;
+  var character = 44;
+
+  do {
+    switch (Q(character)) {
       case 0:
-      case 1:
-        var b = 0;
-
-        for (d = 0 === m ? '' : d[0] + ' '; b < a; ++b) {
-          c[b] = Z(d, c[b], e).trim();
+        // &\f
+        if (character === 38 && L() === 12) {
+          // this is not 100% correct, we don't account for literal sequences here - like for example quoted strings
+          // stylis inserts \f after & to know when & where it should replace this sequence with the context selector
+          // and when it should just concatenate the outer and inner selectors
+          // it's very unlikely for this sequence to actually appear in a different context, so we just leverage this fact here
+          points[index] = 1;
         }
 
+        parsed[index] += _(E - 1);
         break;
 
-      default:
-        var v = b = 0;
-
-        for (c = []; b < a; ++b) {
-          for (var n = 0; n < m; ++n) {
-            c[v++] = Z(d[n] + ' ', h[b], e).trim();
-          }
-        }
-
-    }
-
-    return c;
-  }
-
-  function Z(d, c, e) {
-    var h = c.charCodeAt(0);
-    33 > h && (h = (c = c.trim()).charCodeAt(0));
-
-    switch (h) {
-      case 38:
-        return c.replace(F, '$1' + d.trim());
-
-      case 58:
-        return d.trim() + c.replace(F, '$1' + d.trim());
-
-      default:
-        if (0 < 1 * e && 0 < c.indexOf('\f')) return c.replace(F, (58 === d.charCodeAt(0) ? '' : '$1') + d.trim());
-    }
-
-    return d + c;
-  }
-
-  function P(d, c, e, h) {
-    var a = d + ';',
-        m = 2 * c + 3 * e + 4 * h;
-
-    if (944 === m) {
-      d = a.indexOf(':', 9) + 1;
-      var b = a.substring(d, a.length - 1).trim();
-      b = a.substring(0, d).trim() + b + ';';
-      return 1 === w || 2 === w && L(b, 1) ? '-webkit-' + b + b : b;
-    }
-
-    if (0 === w || 2 === w && !L(a, 1)) return a;
-
-    switch (m) {
-      case 1015:
-        return 97 === a.charCodeAt(10) ? '-webkit-' + a + a : a;
-
-      case 951:
-        return 116 === a.charCodeAt(3) ? '-webkit-' + a + a : a;
-
-      case 963:
-        return 110 === a.charCodeAt(5) ? '-webkit-' + a + a : a;
-
-      case 1009:
-        if (100 !== a.charCodeAt(4)) break;
-
-      case 969:
-      case 942:
-        return '-webkit-' + a + a;
-
-      case 978:
-        return '-webkit-' + a + '-moz-' + a + a;
-
-      case 1019:
-      case 983:
-        return '-webkit-' + a + '-moz-' + a + '-ms-' + a + a;
-
-      case 883:
-        if (45 === a.charCodeAt(8)) return '-webkit-' + a + a;
-        if (0 < a.indexOf('image-set(', 11)) return a.replace(ja, '$1-webkit-$2') + a;
+      case 2:
+        parsed[index] += U(character);
         break;
 
-      case 932:
-        if (45 === a.charCodeAt(4)) switch (a.charCodeAt(5)) {
-          case 103:
-            return '-webkit-box-' + a.replace('-grow', '') + '-webkit-' + a + '-ms-' + a.replace('grow', 'positive') + a;
-
-          case 115:
-            return '-webkit-' + a + '-ms-' + a.replace('shrink', 'negative') + a;
-
-          case 98:
-            return '-webkit-' + a + '-ms-' + a.replace('basis', 'preferred-size') + a;
-        }
-        return '-webkit-' + a + '-ms-' + a + a;
-
-      case 964:
-        return '-webkit-' + a + '-ms-flex-' + a + a;
-
-      case 1023:
-        if (99 !== a.charCodeAt(8)) break;
-        b = a.substring(a.indexOf(':', 15)).replace('flex-', '').replace('space-between', 'justify');
-        return '-webkit-box-pack' + b + '-webkit-' + a + '-ms-flex-pack' + b + a;
-
-      case 1005:
-        return ka.test(a) ? a.replace(aa, ':-webkit-') + a.replace(aa, ':-moz-') + a : a;
-
-      case 1e3:
-        b = a.substring(13).trim();
-        c = b.indexOf('-') + 1;
-
-        switch (b.charCodeAt(0) + b.charCodeAt(c)) {
-          case 226:
-            b = a.replace(G, 'tb');
-            break;
-
-          case 232:
-            b = a.replace(G, 'tb-rl');
-            break;
-
-          case 220:
-            b = a.replace(G, 'lr');
-            break;
-
-          default:
-            return a;
-        }
-
-        return '-webkit-' + a + '-ms-' + b + a;
-
-      case 1017:
-        if (-1 === a.indexOf('sticky', 9)) break;
-
-      case 975:
-        c = (a = d).length - 10;
-        b = (33 === a.charCodeAt(c) ? a.substring(0, c) : a).substring(d.indexOf(':', 7) + 1).trim();
-
-        switch (m = b.charCodeAt(0) + (b.charCodeAt(7) | 0)) {
-          case 203:
-            if (111 > b.charCodeAt(8)) break;
-
-          case 115:
-            a = a.replace(b, '-webkit-' + b) + ';' + a;
-            break;
-
-          case 207:
-          case 102:
-            a = a.replace(b, '-webkit-' + (102 < m ? 'inline-' : '') + 'box') + ';' + a.replace(b, '-webkit-' + b) + ';' + a.replace(b, '-ms-' + b + 'box') + ';' + a;
-        }
-
-        return a + ';';
-
-      case 938:
-        if (45 === a.charCodeAt(5)) switch (a.charCodeAt(6)) {
-          case 105:
-            return b = a.replace('-items', ''), '-webkit-' + a + '-webkit-box-' + b + '-ms-flex-' + b + a;
-
-          case 115:
-            return '-webkit-' + a + '-ms-flex-item-' + a.replace(ba, '') + a;
-
-          default:
-            return '-webkit-' + a + '-ms-flex-line-pack' + a.replace('align-content', '').replace(ba, '') + a;
-        }
-        break;
-
-      case 973:
-      case 989:
-        if (45 !== a.charCodeAt(3) || 122 === a.charCodeAt(4)) break;
-
-      case 931:
-      case 953:
-        if (!0 === la.test(d)) return 115 === (b = d.substring(d.indexOf(':') + 1)).charCodeAt(0) ? P(d.replace('stretch', 'fill-available'), c, e, h).replace(':fill-available', ':stretch') : a.replace(b, '-webkit-' + b) + a.replace(b, '-moz-' + b.replace('fill-', '')) + a;
-        break;
-
-      case 962:
-        if (a = '-webkit-' + a + (102 === a.charCodeAt(5) ? '-ms-' + a : '') + a, 211 === e + h && 105 === a.charCodeAt(13) && 0 < a.indexOf('transform', 10)) return a.substring(0, a.indexOf(';', 27) + 1).replace(ma, '$1-webkit-$2') + a;
-    }
-
-    return a;
-  }
-
-  function L(d, c) {
-    var e = d.indexOf(1 === c ? ':' : '{'),
-        h = d.substring(0, 3 !== c ? e : 10);
-    e = d.substring(e + 1, d.length - 1);
-    return R(2 !== c ? h : h.replace(na, '$1'), e, c);
-  }
-
-  function ea(d, c) {
-    var e = P(c, c.charCodeAt(0), c.charCodeAt(1), c.charCodeAt(2));
-    return e !== c + ';' ? e.replace(oa, ' or ($1)').substring(4) : '(' + c + ')';
-  }
-
-  function H(d, c, e, h, a, m, b, v, n, q) {
-    for (var g = 0, x = c, w; g < A; ++g) {
-      switch (w = S[g].call(B, d, x, e, h, a, m, b, v, n, q)) {
-        case void 0:
-        case !1:
-        case !0:
-        case null:
+      case 4:
+        // comma
+        if (character === 44) {
+          // colon
+          parsed[++index] = L() === 58 ? '&\f' : '';
+          points[index] = parsed[index].length;
           break;
+        }
 
-        default:
-          x = w;
-      }
-    }
-
-    if (x !== c) return x;
-  }
-
-  function T(d) {
-    switch (d) {
-      case void 0:
-      case null:
-        A = S.length = 0;
-        break;
+      // fallthrough
 
       default:
-        if ('function' === typeof d) S[A++] = d;else if ('object' === typeof d) for (var c = 0, e = d.length; c < e; ++c) {
-          T(d[c]);
-        } else Y = !!d | 0;
+        parsed[index] += d(character);
     }
+  } while (character = K());
 
-    return T;
-  }
-
-  function U(d) {
-    d = d.prefix;
-    void 0 !== d && (R = null, d ? 'function' !== typeof d ? w = 1 : (w = 2, R = d) : w = 0);
-    return U;
-  }
-
-  function B(d, c) {
-    var e = d;
-    33 > e.charCodeAt(0) && (e = e.trim());
-    V = e;
-    e = [V];
-
-    if (0 < A) {
-      var h = H(-1, c, e, e, D, z, 0, 0, 0, 0);
-      void 0 !== h && 'string' === typeof h && (c = h);
-    }
-
-    var a = M(O, e, c, 0, 0);
-    0 < A && (h = H(-2, a, e, e, D, z, a.length, 0, 0, 0), void 0 !== h && (a = h));
-    V = '';
-    E = 0;
-    z = D = 1;
-    return a;
-  }
-
-  var ca = /^\0+/g,
-      N = /[\0\r\f]/g,
-      aa = /: */g,
-      ka = /zoo|gra/,
-      ma = /([,: ])(transform)/g,
-      ia = /,\r+?/g,
-      F = /([\t\r\n ])*\f?&/g,
-      fa = /@(k\w+)\s*(\S*)\s*/,
-      Q = /::(place)/g,
-      ha = /:(read-only)/g,
-      G = /[svh]\w+-[tblr]{2}/,
-      da = /\(\s*(.*)\s*\)/g,
-      oa = /([\s\S]*?);/g,
-      ba = /-self|flex-/g,
-      na = /[^]*?(:[rp][el]a[\w-]+)[^]*/,
-      la = /stretch|:\s*\w+\-(?:conte|avail)/,
-      ja = /([^-])(image-set\()/,
-      z = 1,
-      D = 1,
-      E = 0,
-      w = 1,
-      O = [],
-      S = [],
-      A = 0,
-      R = null,
-      Y = 0,
-      V = '';
-  B.use = T;
-  B.set = U;
-  void 0 !== W && U(W);
-  return B;
-}
-
-// https://github.com/thysultan/stylis.js/tree/master/plugins/rule-sheet
-// inlined to avoid umd wrapper and peerDep warnings/installing stylis
-// since we use stylis after closure compiler
-var delimiter = '/*|*/';
-var needle = delimiter + '}';
-
-function toSheet(block) {
-  if (block) {
-    Sheet.current.insert(block + '}');
-  }
-}
-
-var Sheet = {
-  current: null
+  return parsed;
 };
-var ruleSheet = function ruleSheet(context, content, selectors, parents, line, column, length, ns, depth, at) {
-  switch (context) {
-    // property
-    case 1:
-      {
-        switch (content.charCodeAt(0)) {
-          case 64:
-            {
-              // @import
-              Sheet.current.insert(content + ';');
-              return '';
-            }
-          // charcode for l
 
-          case 108:
-            {
-              // charcode for b
-              // this ignores label
-              if (content.charCodeAt(2) === 98) {
-                return '';
-              }
-            }
-        }
+var getRules = function getRules(value, points) {
+  return T(toRules(R(value), points));
+}; // WeakSet would be more appropriate, but only WeakMap is supported in IE11
 
-        break;
-      }
-    // selector
 
-    case 2:
-      {
-        if (ns === 0) return content + delimiter;
-        break;
-      }
-    // at-rule
+var fixedElements = /* #__PURE__ */new WeakMap();
+var compat = function compat(element) {
+  if (element.type !== 'rule' || !element.parent || // .length indicates if this rule contains pseudo or not
+  !element.length) {
+    return;
+  }
 
-    case 3:
-      {
-        switch (ns) {
-          // @font-face, @page
-          case 102:
-          case 112:
-            {
-              Sheet.current.insert(selectors[0] + content);
-              return '';
-            }
+  var value = element.value,
+      parent = element.parent;
+  var isImplicitRule = element.column === parent.column && element.line === parent.line;
 
-          default:
-            {
-              return content + (at === 0 ? delimiter : '');
-            }
-        }
-      }
+  while (parent.type !== 'rule') {
+    parent = parent.parent;
+  } // short-circuit for the simplest case
 
-    case -2:
-      {
-        content.split(needle).forEach(toSheet);
-      }
+
+  if (element.props.length === 1 && value.charCodeAt(0) !== 58
+  /* colon */
+  && !fixedElements.get(parent)) {
+    return;
+  } // if this is an implicitly inserted rule (the one eagerly inserted at the each new nested level)
+  // then the props has already been manipulated beforehand as they that array is shared between it and its "rule parent"
+
+
+  if (isImplicitRule) {
+    return;
+  }
+
+  fixedElements.set(element, true);
+  var points = [];
+  var rules = getRules(value, points);
+  var parentRules = parent.props;
+
+  for (var i = 0, k = 0; i < rules.length; i++) {
+    for (var j = 0; j < parentRules.length; j++, k++) {
+      element.props[k] = points[i] ? rules[i].replace(/&\f/g, parentRules[j]) : parentRules[j] + " " + rules[i];
+    }
   }
 };
+var removeLabel = function removeLabel(element) {
+  if (element.type === 'decl') {
+    var value = element.value;
+
+    if ( // charcode for l
+    value.charCodeAt(0) === 108 && // charcode for b
+    value.charCodeAt(2) === 98) {
+      // this ignores label
+      element["return"] = '';
+      element.value = '';
+    }
+  }
+};
+
+var defaultStylisPlugins = [oe];
 
 var createCache = function createCache(options) {
-  if (options === undefined) options = {};
-  var key = options.key || 'css';
-  var stylisOptions;
+  var key = options.key;
 
-  if (options.prefix !== undefined) {
-    stylisOptions = {
-      prefix: options.prefix
-    };
+  if ( key === 'css') {
+    var ssrStyles = document.querySelectorAll("style[data-emotion]:not([data-s])"); // get SSRed styles out of the way of React's hydration
+    // document.head is a safe place to move them to
+
+    Array.prototype.forEach.call(ssrStyles, function (node) {
+      document.head.appendChild(node);
+      node.setAttribute('data-s', '');
+    });
   }
 
-  var stylis = new stylis_min(stylisOptions);
+  var stylisPlugins = options.stylisPlugins || defaultStylisPlugins;
 
   var inserted = {}; // $FlowFixMe
 
   var container;
+  var nodesToHydrate = [];
 
   {
     container = options.container || document.head;
-    var nodes = document.querySelectorAll("style[data-emotion-" + key + "]");
-    Array.prototype.forEach.call(nodes, function (node) {
-      var attrib = node.getAttribute("data-emotion-" + key); // $FlowFixMe
+    Array.prototype.forEach.call(document.querySelectorAll("style[data-emotion]"), function (node) {
+      var attrib = node.getAttribute("data-emotion").split(' ');
 
-      attrib.split(' ').forEach(function (id) {
-        inserted[id] = true;
-      });
+      if (attrib[0] !== key) {
+        return;
+      } // $FlowFixMe
 
-      if (node.parentNode !== container) {
-        container.appendChild(node);
+
+      for (var i = 1; i < attrib.length; i++) {
+        inserted[attrib[i]] = true;
       }
+
+      nodesToHydrate.push(node);
     });
   }
 
   var _insert;
 
+  var omnipresentPlugins = [compat, removeLabel];
+
   {
-    stylis.use(options.stylisPlugins)(ruleSheet);
+    var currentSheet;
+    var finalizingPlugins = [ue,  fe(function (rule) {
+      currentSheet.insert(rule);
+    })];
+    var serializer = ie(omnipresentPlugins.concat(stylisPlugins, finalizingPlugins));
+
+    var stylis = function stylis(styles) {
+      return se(ee(styles), serializer);
+    };
 
     _insert = function insert(selector, serialized, sheet, shouldCache) {
-      var name = serialized.name;
-      Sheet.current = sheet;
+      currentSheet = sheet;
 
-      stylis(selector, serialized.styles);
+      stylis(selector ? selector + "{" + serialized.styles + "}" : serialized.styles);
 
       if (shouldCache) {
-        cache.inserted[name] = true;
+        cache.inserted[serialized.name] = true;
       }
     };
   }
@@ -1140,13 +587,15 @@ var createCache = function createCache(options) {
       key: key,
       container: container,
       nonce: options.nonce,
-      speedy: options.speedy
+      speedy: options.speedy,
+      prepend: options.prepend
     }),
     nonce: options.nonce,
     inserted: inserted,
     registered: {},
     insert: _insert
   };
+  cache.sheet.hydrate(nodesToHydrate);
   return cache;
 };
 
@@ -1253,14 +702,6 @@ var unitlessKeys = {
   strokeWidth: 1
 };
 
-function memoize(fn) {
-  var cache = {};
-  return function (arg) {
-    if (cache[arg] === undefined) cache[arg] = fn(arg);
-    return cache[arg];
-  };
-}
-
 var hyphenateRegex = /[A-Z]|^ms/g;
 var animationRegex = /_EMO_([^_]+?)_([^]*?)_EMO_/g;
 
@@ -1272,7 +713,7 @@ var isProcessableValue = function isProcessableValue(value) {
   return value != null && typeof value !== 'boolean';
 };
 
-var processStyleName = memoize(function (styleName) {
+var processStyleName = /* #__PURE__ */memoize(function (styleName) {
   return isCustomProperty(styleName) ? styleName : styleName.replace(hyphenateRegex, '-$&').toLowerCase();
 });
 
@@ -1301,7 +742,7 @@ var processStyleValue = function processStyleValue(key, value) {
   return value;
 };
 
-function handleInterpolation(mergedProps, registered, interpolation, couldBeSelectorInterpolation) {
+function handleInterpolation(mergedProps, registered, interpolation) {
   if (interpolation == null) {
     return '';
   }
@@ -1358,7 +799,7 @@ function handleInterpolation(mergedProps, registered, interpolation, couldBeSele
           var previousCursor = cursor;
           var result = interpolation(mergedProps);
           cursor = previousCursor;
-          return handleInterpolation(mergedProps, registered, result, couldBeSelectorInterpolation);
+          return handleInterpolation(mergedProps, registered, result);
         }
 
         break;
@@ -1371,8 +812,7 @@ function handleInterpolation(mergedProps, registered, interpolation, couldBeSele
   }
 
   var cached = registered[interpolation];
-
-  return cached !== undefined && !couldBeSelectorInterpolation ? cached : interpolation;
+  return cached !== undefined ? cached : interpolation;
 }
 
 function createStringFromObject(mergedProps, registered, obj) {
@@ -1380,7 +820,7 @@ function createStringFromObject(mergedProps, registered, obj) {
 
   if (Array.isArray(obj)) {
     for (var i = 0; i < obj.length; i++) {
-      string += handleInterpolation(mergedProps, registered, obj[i], false);
+      string += handleInterpolation(mergedProps, registered, obj[i]) + ";";
     }
   } else {
     for (var _key in obj) {
@@ -1394,7 +834,7 @@ function createStringFromObject(mergedProps, registered, obj) {
         }
       } else {
         if (_key === 'NO_COMPONENT_SELECTOR' && "production" !== 'production') {
-          throw new Error('Component selectors can only be used in conjunction with babel-plugin-emotion.');
+          throw new Error('Component selectors can only be used in conjunction with @emotion/babel-plugin.');
         }
 
         if (Array.isArray(value) && typeof value[0] === 'string' && (registered == null || registered[value[0]] === undefined)) {
@@ -1404,7 +844,7 @@ function createStringFromObject(mergedProps, registered, obj) {
             }
           }
         } else {
-          var interpolated = handleInterpolation(mergedProps, registered, value, false);
+          var interpolated = handleInterpolation(mergedProps, registered, value);
 
           switch (_key) {
             case 'animation':
@@ -1445,7 +885,7 @@ var serializeStyles = function serializeStyles(args, registered, mergedProps) {
 
   if (strings == null || strings.raw === undefined) {
     stringMode = false;
-    styles += handleInterpolation(mergedProps, registered, strings, false);
+    styles += handleInterpolation(mergedProps, registered, strings);
   } else {
 
     styles += strings[0];
@@ -1453,7 +893,7 @@ var serializeStyles = function serializeStyles(args, registered, mergedProps) {
 
 
   for (var i = 1; i < args.length; i++) {
-    styles += handleInterpolation(mergedProps, registered, args[i], styles.charCodeAt(styles.length - 1) === 46);
+    styles += handleInterpolation(mergedProps, registered, args[i]);
 
     if (stringMode) {
 
@@ -1485,7 +925,7 @@ function getRegisteredStyles(registered, registeredStyles, classNames) {
   var rawClassName = '';
   classNames.split(' ').forEach(function (className) {
     if (registered[className] !== undefined) {
-      registeredStyles.push(registered[className]);
+      registeredStyles.push(registered[className] + ";");
     } else {
       rawClassName += className + " ";
     }
@@ -1512,7 +952,7 @@ var insertStyles = function insertStyles(cache, serialized, isStringTag) {
     var current = serialized;
 
     do {
-      var maybeStyles = cache.insert("." + className, current, cache.sheet, true);
+      var maybeStyles = cache.insert(serialized === current ? "." + className : '', current, cache.sheet, true);
 
       current = current.next;
     } while (current !== undefined);
@@ -1655,7 +1095,9 @@ var classnames = function classnames(args) {
   return cls;
 };
 
-var _createEmotion = createEmotion(),
+var _createEmotion = createEmotion({
+  key: 'css'
+}),
     keyframes = _createEmotion.keyframes,
     css = _createEmotion.css;
 
@@ -1663,78 +1105,494 @@ var _createEmotion = createEmotion(),
  * Set CSS property for components.
  */
 const setVar = (tag, property, value, global = false) => {
-  if (global === true) {
+  if (global) {
     document.body.classList.add(css `
-      --${tag}-${property}: var(--${tag}-token-${property},${value})
+      --${tag}-${property}: var(--${tag}-token-${property},${value});
     `);
   }
   return 'var(--' + tag + '-' + property + ', ' + value + ')';
 };
 
-/**
- * Set a clamp property size with multipliers.
- */
-const setSize = (min, val, max, multiplier) => {
-  return ('clamp(calc(' +
-    min +
-    ' * ' +
-    multiplier +
-    '), calc(' +
-    val +
-    ' * ' +
-    multiplier +
-    '), calc(' +
-    max +
-    ' * ' +
-    multiplier +
-    '))');
+const appendToMap = (map, propName, value) => {
+    const items = map.get(propName);
+    if (!items) {
+        map.set(propName, [value]);
+    }
+    else if (!items.includes(value)) {
+        items.push(value);
+    }
 };
-const setFontSize = (tag, type, min, val, max, multiplier, global = false) => {
-  return setVar(tag, '' + type + '-font-size', setSize(min, val, max, setVar(tag, '' + type + '-font-size-multiplier', setVar(tag, 'font-size-multiplier', multiplier))), global);
+const debounce = (fn, ms) => {
+    let timeoutId;
+    return (...args) => {
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+        timeoutId = setTimeout(() => {
+            timeoutId = 0;
+            fn(...args);
+        }, ms);
+    };
 };
 
-/** Global defaults. */
-const mobileBpWidth = 768;
-const fontFamily = 'var(--spx-font-family)';
-const fontSize = 'var(--spx-font-size)';
-const borderRadius = 'var(--spx-border-radius)';
-const transitionDuration = 'var(--spx-transition-duration)';
-const transitionTimingFunction = 'var(--spx-transition-timing-function)';
-/** Positioning properties. */
-const position = (component, array, distanceX, distanceY) => ({
-  top: array[0] === 'top' &&
-    'var(--spx-' + component + '-distance-y, ' + distanceY + ')',
-  right: array[1] === 'right'
-    ? 'var(--spx-' + component + '-distance-x, ' + distanceX + ')'
-    : null,
-  bottom: array[0] === 'bottom' &&
-    'var(--spx-' + component + '-distance-y, ' + distanceY + ')',
-  left: array[1] === 'center'
-    ? '50%'
-    : array[1] === 'left'
-      ? 'var(--spx-' + component + '-distance-x, ' + distanceX + ')'
-      : null,
-  transform: array[1] === 'center' && 'translate(-50%, 0)',
+/**
+ * Check if a possible element isConnected.
+ * The property might not be there, so we check for it.
+ *
+ * We want it to return true if isConnected is not a property,
+ * otherwise we would remove these elements and would not update.
+ *
+ * Better leak in Edge than to be useless.
+ */
+const isConnected = (maybeElement) => !('isConnected' in maybeElement) || maybeElement.isConnected;
+const cleanupElements = debounce((map) => {
+    for (let key of map.keys()) {
+        map.set(key, map.get(key).filter(isConnected));
+    }
+}, 2000);
+const stencilSubscription = ({ on }) => {
+    const elmsToUpdate = new Map();
+    if (typeof getRenderingRef === 'function') {
+        // If we are not in a stencil project, we do nothing.
+        // This function is not really exported by @stencil/core.
+        on('dispose', () => {
+            elmsToUpdate.clear();
+        });
+        on('get', (propName) => {
+            const elm = getRenderingRef();
+            if (elm) {
+                appendToMap(elmsToUpdate, propName, elm);
+            }
+        });
+        on('set', (propName) => {
+            const elements = elmsToUpdate.get(propName);
+            if (elements) {
+                elmsToUpdate.set(propName, elements.filter(forceUpdate));
+            }
+            cleanupElements(elmsToUpdate);
+        });
+        on('reset', () => {
+            elmsToUpdate.forEach((elms) => elms.forEach(forceUpdate));
+            cleanupElements(elmsToUpdate);
+        });
+    }
+};
+
+const createObservableMap = (defaultState, shouldUpdate = (a, b) => a !== b) => {
+    let states = new Map(Object.entries(defaultState !== null && defaultState !== void 0 ? defaultState : {}));
+    const handlers = {
+        dispose: [],
+        get: [],
+        set: [],
+        reset: [],
+    };
+    const reset = () => {
+        states = new Map(Object.entries(defaultState !== null && defaultState !== void 0 ? defaultState : {}));
+        handlers.reset.forEach((cb) => cb());
+    };
+    const dispose = () => {
+        // Call first dispose as resetting the state would
+        // cause less updates ;)
+        handlers.dispose.forEach((cb) => cb());
+        reset();
+    };
+    const get = (propName) => {
+        handlers.get.forEach((cb) => cb(propName));
+        return states.get(propName);
+    };
+    const set = (propName, value) => {
+        const oldValue = states.get(propName);
+        if (shouldUpdate(value, oldValue, propName)) {
+            states.set(propName, value);
+            handlers.set.forEach((cb) => cb(propName, value, oldValue));
+        }
+    };
+    const state = (typeof Proxy === 'undefined'
+        ? {}
+        : new Proxy(defaultState, {
+            get(_, propName) {
+                return get(propName);
+            },
+            ownKeys(_) {
+                return Array.from(states.keys());
+            },
+            getOwnPropertyDescriptor() {
+                return {
+                    enumerable: true,
+                    configurable: true,
+                };
+            },
+            has(_, propName) {
+                return states.has(propName);
+            },
+            set(_, propName, value) {
+                set(propName, value);
+                return true;
+            },
+        }));
+    const on = (eventName, callback) => {
+        handlers[eventName].push(callback);
+        return () => {
+            removeFromArray(handlers[eventName], callback);
+        };
+    };
+    const onChange = (propName, cb) => {
+        const unSet = on('set', (key, newValue) => {
+            if (key === propName) {
+                cb(newValue);
+            }
+        });
+        const unReset = on('reset', () => cb(defaultState[propName]));
+        return () => {
+            unSet();
+            unReset();
+        };
+    };
+    const use = (...subscriptions) => subscriptions.forEach((subscription) => {
+        if (subscription.set) {
+            on('set', subscription.set);
+        }
+        if (subscription.get) {
+            on('get', subscription.get);
+        }
+        if (subscription.reset) {
+            on('reset', subscription.reset);
+        }
+    });
+    return {
+        state,
+        get,
+        set,
+        on,
+        onChange,
+        use,
+        dispose,
+        reset,
+    };
+};
+const removeFromArray = (array, item) => {
+    const index = array.indexOf(item);
+    if (index >= 0) {
+        array[index] = array[array.length - 1];
+        array.length--;
+    }
+};
+
+const createStore = (defaultState, shouldUpdate) => {
+    const map = createObservableMap(defaultState, shouldUpdate);
+    stencilSubscription(map);
+    return map;
+};
+
+/**
+ * Remove classes that end with prefix.
+ */
+const removeClasses = (el, string) => {
+  el.classList.remove.apply(el.classList, 
+  // @ts-ignore
+  Array.from(el.classList).filter((v) => v.endsWith(string)));
+};
+
+/**
+ * Section defaults.
+ */
+const bpMobileWidth = 1024;
+const buttonBackgroundPrimary = 500;
+const buttonBackgroundSecondary = 100;
+const buttonColorPrimary = 50;
+const buttonColorSecondary = 700;
+const colorGray = 'blue-gray';
+const colorPrimary = 'teal';
+const colorSecondary = 'pink';
+const fontFamilyPrimary = 'var(--spx-container-font-family-primary)';
+const fontFamilySecondary = 'var(--spx-container-font-family-secondary)';
+const linearBase = 16;
+const linearMaxW = 1440;
+const linearMinW = 320;
+const maxWidth = '1440px';
+const maxWidthMobile = '500px';
+const paddingX = 'var(--spx-container-padding-x)';
+const paddingXSm = 'var(--spx-container-padding-x-sm)';
+/**
+ * Container defaults.
+ */
+const containerStyles = css({
+  '--spx-container-padding-x': 'var(--spx-container-token-padding-x, 8vw)',
+  '--spx-container-padding-x-sm': 'var(--spx-container-token-padding-x-sm, 2vw)',
+  '--spx-container-font-family-primary': 'var(--spx-container-token-font-family-primary, helvetica, segoe, arial, sans-serif)',
+  '--spx-container-font-family-secondary': 'var(--spx-container-token-font-family-secondary, helvetica, segoe, arial, sans-serif)',
 });
-/** Text settings. */
-const text = (tag, type, color, min, val, max, multiplier, weight, letterSpacing, lineHeight, transform, global = false) => ({
-  color: setVar(tag, '' + type + '-color', color, global),
-  fontSize: setFontSize(tag, type, min, val, max, multiplier, global),
-  fontWeight: setVar(tag, '' + type + '-font-weight', weight, global),
-  letterSpacing: setVar(tag, '' + type + '-letter-spacing', letterSpacing, global),
-  lineHeight: setVar(tag, '' + type + '-line-height', lineHeight, global),
-  textTransform: setVar(tag, '' + type + '-text-transform', transform, global),
-});
-/** Global styles. */
-const globalStyles = css({
-  '--spx-font-family': 'var(--spx-token-font-family, helvetica, segoe, arial, sans-serif)',
-  '--spx-font-size': 'var(--spx-token-font-size, 16px)',
-  '--spx-border-radius': 'var(--spx-token-border-radius, 0.5em)',
-  '--spx-transition-duration': 'var(--spx-token-transition-duration, 150ms)',
-  '--spx-transition-duration-2': 'var(--spx-token-transition-duration-2, 500ms)',
-  '--spx-transition-timing-function': 'var(--spx-token-transition-timing-function, cubic-bezier(0.4, 0, 0.2, 1))',
-});
-document.body.classList.add(globalStyles);
+document.body.classList.add(containerStyles);
+
+/**
+ * Tailwind colour palettes.
+ */
+const palette = {
+  rose: {
+    50: '#fff1f2',
+    100: '#ffe4e6',
+    200: '#fecdd3',
+    300: '#fda4af',
+    400: '#fb7185',
+    500: '#f43f5e',
+    600: '#e11d48',
+    700: '#be123c',
+    800: '#9f1239',
+    900: '#881337',
+  },
+  pink: {
+    50: '#fdf2f8',
+    100: '#fce7f3',
+    200: '#fbcfe8',
+    300: '#f9a8d4',
+    400: '#f472b6',
+    500: '#ec4899',
+    600: '#db2777',
+    700: '#be185d',
+    800: '#9d174d',
+    900: '#831843',
+  },
+  fuchsia: {
+    50: '#fdf4ff',
+    100: '#fae8ff',
+    200: '#f5d0fe',
+    300: '#f0abfc',
+    400: '#e879f9',
+    500: '#d946ef',
+    600: '#c026d3',
+    700: '#a21caf',
+    800: '#86198f',
+    900: '#701a75',
+  },
+  purple: {
+    50: '#faf5ff',
+    100: '#f3e8ff',
+    200: '#e9d5ff',
+    300: '#d8b4fe',
+    400: '#c084fc',
+    500: '#a855f7',
+    600: '#9333ea',
+    700: '#7e22ce',
+    800: '#6b21a8',
+    900: '#581c87',
+  },
+  violet: {
+    50: '#f5f3ff',
+    100: '#ede9fe',
+    200: '#ddd6fe',
+    300: '#c4b5fd',
+    400: '#a78bfa',
+    500: '#8b5cf6',
+    600: '#7c3aed',
+    700: '#6d28d9',
+    800: '#5b21b6',
+    900: '#4c1d95',
+  },
+  indigo: {
+    50: '#eef2ff',
+    100: '#e0e7ff',
+    200: '#c7d2fe',
+    300: '#a5b4fc',
+    400: '#818cf8',
+    500: '#6366f1',
+    600: '#4f46e5',
+    700: '#4338ca',
+    800: '#3730a3',
+    900: '#312e81',
+  },
+  blue: {
+    50: '#eff6ff',
+    100: '#dbeafe',
+    200: '#bfdbfe',
+    300: '#93c5fd',
+    400: '#60a5fa',
+    500: '#3b82f6',
+    600: '#2563eb',
+    700: '#1d4ed8',
+    800: '#1e40af',
+    900: '#1e3a8a',
+  },
+  'light-blue': {
+    50: '#f0f9ff',
+    100: '#e0f2fe',
+    200: '#bae6fd',
+    300: '#7dd3fc',
+    400: '#38bdf8',
+    500: '#0ea5e9',
+    600: '#0284c7',
+    700: '#0369a1',
+    800: '#075985',
+    900: '#0c4a6e',
+  },
+  cyan: {
+    50: '#ecfeff',
+    100: '#cffafe',
+    200: '#a5f3fc',
+    300: '#67e8f9',
+    400: '#22d3ee',
+    500: '#06b6d4',
+    600: '#0891b2',
+    700: '#0e7490',
+    800: '#155e75',
+    900: '#164e63',
+  },
+  teal: {
+    50: '#f0fdfa',
+    100: '#ccfbf1',
+    200: '#99f6e4',
+    300: '#5eead4',
+    400: '#2dd4bf',
+    500: '#14b8a6',
+    600: '#0d9488',
+    700: '#0f766e',
+    800: '#115e59',
+    900: '#134e4a',
+  },
+  emerald: {
+    50: '#ecfdf5',
+    100: '#d1fae5',
+    200: '#a7f3d0',
+    300: '#6ee7b7',
+    400: '#34d399',
+    500: '#10b981',
+    600: '#059669',
+    700: '#047857',
+    800: '#065f46',
+    900: '#064e3b',
+  },
+  green: {
+    50: '#f0fdf4',
+    100: '#dcfce7',
+    200: '#bbf7d0',
+    300: '#86efac',
+    400: '#4ade80',
+    500: '#22c55e',
+    600: '#16a34a',
+    700: '#15803d',
+    800: '#166534',
+    900: '#14532d',
+  },
+  lime: {
+    50: '#f7fee7',
+    100: '#ecfccb',
+    200: '#d9f99d',
+    300: '#bef264',
+    400: '#a3e635',
+    500: '#84cc16',
+    600: '#65a30d',
+    700: '#4d7c0f',
+    800: '#3f6212',
+    900: '#365314',
+  },
+  yellow: {
+    50: '#fefce8',
+    100: '#fef9c3',
+    200: '#fef08a',
+    300: '#fde047',
+    400: '#facc15',
+    500: '#eab308',
+    600: '#ca8a04',
+    700: '#a16207',
+    800: '#854d0e',
+    900: '#713f12',
+  },
+  amber: {
+    50: '#fffbeb',
+    100: '#fef3c7',
+    200: '#fde68a',
+    300: '#fcd34d',
+    400: '#fbbf24',
+    500: '#f59e0b',
+    600: '#d97706',
+    700: '#b45309',
+    800: '#92400e',
+    900: '#78350f',
+  },
+  orange: {
+    50: '#fff7ed',
+    100: '#ffedd5',
+    200: '#fed7aa',
+    300: '#fdba74',
+    400: '#fb923c',
+    500: '#f97316',
+    600: '#ea580c',
+    700: '#c2410c',
+    800: '#9a3412',
+    900: '#7c2d12',
+  },
+  red: {
+    50: '#fef2f2',
+    100: '#fee2e2',
+    200: '#fecaca',
+    300: '#fca5a5',
+    400: '#f87171',
+    500: '#ef4444',
+    600: '#dc2626',
+    700: '#b91c1c',
+    800: '#991b1b',
+    900: '#7f1d1d',
+  },
+  'warm-grey': {
+    50: '#fafaf9',
+    100: '#f5f5f4',
+    200: '#e7e5e4',
+    300: '#d6d3d1',
+    400: '#a8a29e',
+    500: '#78716c',
+    600: '#57534e',
+    700: '#44403c',
+    800: '#292524',
+    900: '#1c1917',
+  },
+  'true-gray': {
+    50: '#fafafa',
+    100: '#f5f5f5',
+    200: '#e5e5e5',
+    300: '#d4d4d4',
+    400: '#a3a3a3',
+    500: '#737373',
+    600: '#525252',
+    700: '#404040',
+    800: '#262626',
+    900: '#171717',
+  },
+  gray: {
+    50: '#fafafa',
+    100: '#f4f4f5',
+    200: '#e4e4e7',
+    300: '#d4d4d8',
+    400: '#a1a1aa',
+    500: '#71717a',
+    600: '#52525b',
+    700: '#3f3f46',
+    800: '#27272a',
+    900: '#18181b',
+  },
+  'cool-gray': {
+    50: '#f9fafb',
+    100: '#f3f4f6',
+    200: '#e5e7eb',
+    300: '#d1d5db',
+    400: '#9ca3af',
+    500: '#6b7280',
+    600: '#4b5563',
+    700: '#374151',
+    800: '#1f2937',
+    900: '#111827',
+  },
+  'blue-gray': {
+    50: '#f8fafc',
+    100: '#f1f5f9',
+    200: '#e2e8f0',
+    300: '#cbd5e1',
+    400: '#94a3b8',
+    500: '#64748b',
+    600: '#475569',
+    700: '#334155',
+    800: '#1e293b',
+    900: '#0f172a',
+  },
+};
 
 /** Detect free variable `global` from Node.js. */
 var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
@@ -6351,6 +6209,190 @@ function startsWith(string, target, position) {
 }
 
 /**
+ * Set color.
+ */
+const setColor = (color, type) => {
+  const styles = [];
+  /** Iterate through styles and push into array. */
+  const createCSSVars = (color) => {
+    Object.entries(color).forEach(([key, value]) => {
+      const array = ['--spx-color-' + type + '-' + key + '', value];
+      styles.push(array);
+    });
+  };
+  if (palette[color]) {
+    createCSSVars(palette[color]);
+  }
+  else {
+    createCSSVars(palette['teal']);
+  }
+  /** Convert array to object and create CSS styles. */
+  const cssStyleObject = fromPairs(styles);
+  const cssStyles = css(Object.assign(Object.assign({}, cssStyleObject), { label: 'color' }));
+  document.body.classList.add(cssStyles);
+  /** Set store. */
+  if (!palette[color]) {
+    if (type === 'primary') {
+      state.colorPrimary = 'teal';
+    }
+    if (type === 'secondary') {
+      state.colorSecondary = 'pink';
+    }
+    if (type === 'gray') {
+      state.colorGray = 'gray';
+    }
+  }
+};
+
+/**
+ * Set mobile class on body.
+ */
+const watchMobile = () => {
+  if (window.innerWidth < state.bpMobileWidth) {
+    state.bpMobile = true;
+    document.body.classList.add('spx-mobile');
+  }
+  else {
+    state.bpMobile = false;
+    document.body.classList.remove('spx-mobile');
+  }
+};
+
+/**
+ * State.
+ */
+const { state, onChange } = createStore({
+  bpMaxWidth: maxWidth,
+  bpMaxWidthMobile: maxWidthMobile,
+  bpMobile: null,
+  bpMobileWidth: bpMobileWidth,
+  buttonBackgroundPrimary: buttonBackgroundPrimary,
+  buttonBackgroundSecondary: buttonBackgroundSecondary,
+  buttonColorPrimary: buttonColorPrimary,
+  buttonColorSecondary: buttonColorSecondary,
+  colorGray: colorGray,
+  colorPrimary: colorPrimary,
+  colorSecondary: colorSecondary,
+  fontFamilyPrimary: fontFamilyPrimary,
+  fontFamilySecondary: fontFamilySecondary,
+  linearBase: linearBase,
+  linearMaxW: linearMaxW,
+  linearMinW: linearMinW,
+  paddingX: paddingX,
+  paddingXsm: paddingXSm,
+});
+/**
+ * Color.
+ */
+onChange('colorGray', (value) => {
+  removeClasses(document.body, 'color');
+  setColor(value, 'gray');
+  setColor(state.colorPrimary, 'primary');
+  setColor(state.colorSecondary, 'secondary');
+});
+onChange('colorPrimary', (value) => {
+  removeClasses(document.body, 'color');
+  setColor(value, 'primary');
+  setColor(state.colorSecondary, 'secondary');
+  setColor(state.colorGray, 'gray');
+});
+onChange('colorSecondary', (value) => {
+  removeClasses(document.body, 'color');
+  setColor(value, 'secondary');
+  setColor(state.colorPrimary, 'primary');
+  setColor(state.colorGray, 'gray');
+});
+/**
+ * Font.
+ */
+const setFont = (primary, secondary) => {
+  const styles = css({
+    '--spx-container-font-family-primary': primary,
+    '--spx-container-font-family-secondary': secondary,
+    label: 'font',
+  });
+  document.body.classList.add(styles);
+};
+onChange('fontFamilyPrimary', (value) => {
+  removeClasses(document.body, 'font');
+  setFont(value, state.fontFamilySecondary);
+});
+onChange('fontFamilySecondary', (value) => {
+  removeClasses(document.body, 'font');
+  setFont(state.fontFamilyPrimary, value);
+});
+/**
+ * BP Mobile.
+ */
+onChange('bpMobileWidth', (value) => {
+  state.bpMobileWidth = value;
+  watchMobile();
+});
+
+/**
+ * Set clamp.
+ */
+const setClamp = (tag, type, minValue, maxValue, base = state.linearBase, minWidthPx = state.linearMinW, maxWidthPx = state.linearMaxW) => {
+  const pixelsPerRem = base;
+  const minWidth = minWidthPx / pixelsPerRem;
+  const maxWidth = maxWidthPx / pixelsPerRem;
+  const slope = (maxValue - minValue) / (maxWidth - minWidth);
+  const yAxisIntersection = -minWidth * slope + minValue;
+  return `clamp(var(--${tag}-${type}-min, ${minValue}rem), ${yAxisIntersection}rem + ${slope * 100}vw, var(--${tag}-${type}-max, ${maxValue}rem))`;
+};
+
+/**
+ * Global defaults.
+ */
+const bpMobileWidth$1 = 768;
+const fontFamily = 'var(--spx-font-family)';
+const fontSize = 'var(--spx-font-size)';
+const borderRadius = 'var(--spx-border-radius)';
+const transitionDuration = 'var(--spx-transition-duration)';
+const transitionTimingFunction = 'var(--spx-transition-timing-function)';
+/**
+ * Global styles.
+ */
+const globalStyles = css({
+  '--spx-font-family': 'var(--spx-token-font-family, helvetica, segoe, arial, sans-serif)',
+  '--spx-font-size': 'var(--spx-token-font-size, 16px)',
+  '--spx-border-radius': 'var(--spx-token-border-radius, 0.375rem)',
+  '--spx-transition-duration': 'var(--spx-token-transition-duration, 150ms)',
+  '--spx-transition-duration-2': 'var(--spx-token-transition-duration-2, 500ms)',
+  '--spx-transition-timing-function': 'var(--spx-token-transition-timing-function, cubic-bezier(0.4, 0, 0.2, 1))',
+});
+document.body.classList.add(globalStyles);
+/**
+ * Positioning properties.
+ */
+const position = (component, array, distanceX, distanceY) => ({
+  top: array[0] === 'top' &&
+    'var(--spx-' + component + '-distance-y, ' + distanceY + ')',
+  right: array[1] === 'right'
+    ? 'var(--spx-' + component + '-distance-x, ' + distanceX + ')'
+    : null,
+  bottom: array[0] === 'bottom' &&
+    'var(--spx-' + component + '-distance-y, ' + distanceY + ')',
+  left: array[1] === 'center'
+    ? '50%'
+    : array[1] === 'left'
+      ? 'var(--spx-' + component + '-distance-x, ' + distanceX + ')'
+      : null,
+  transform: array[1] === 'center' && 'translate(-50%, 0)',
+});
+/**
+ * Text constants.
+ */
+const text = (tag, type, color, min, max, weight, letterSpacing, lineHeight, transform, global = false) => ({
+  color: setVar(tag, '' + type + '-color', color, global),
+  fontSize: setClamp(tag, type + '-font-size', min, max),
+  fontWeight: setVar(tag, '' + type + '-font-weight', weight, global),
+  letterSpacing: setVar(tag, '' + type + '-letter-spacing', letterSpacing, global),
+  lineHeight: setVar(tag, '' + type + '-line-height', lineHeight, global),
+  textTransform: setVar(tag, '' + type + '-text-transform', transform, global),
+});
+
+/**
  * A collection of shims that provide minimal functionality of the ES6 collections.
  *
  * These implementations are not meant to be used outside of the ResizeObserver
@@ -7277,8 +7319,11 @@ var index = (function () {
     return ResizeObserver;
 })();
 
+/**
+ *  Set up a resize observer.
+ */
 const resizeObserver = (el) => {
-  for (var att, i = 0, atts = el.attributes, n = atts.length; i < n; i++) {
+  for (let att, i = 0, atts = el.attributes, n = atts.length; i < n; i++) {
     att = atts[i];
     if (!startsWith(att.nodeName, 'bp-mobile') &&
       startsWith(att.nodeName, 'bp-')) {
@@ -7346,6 +7391,7 @@ const resizeObserver = (el) => {
           entries.forEach(() => {
             if (window.matchMedia('(max-width: ' + min + 'px)').matches) {
               Object.entries(obj).forEach((k) => {
+                // eslint-disable-next-line no-empty
                 if (k[0] === 'class') ;
                 else {
                   el.setAttribute(k[0], String(k[1]));
@@ -7365,29 +7411,41 @@ const resizeObserver = (el) => {
 };
 
 /**
- * Set component did load.
+ * Set up a mutation observer.
+ */
+const mutationObserver = (element, options, functionToRun) => {
+  const callback = (mutationsList) => {
+    mutationsList.forEach(() => {
+      functionToRun();
+    });
+  };
+  const observer = new MutationObserver(callback);
+  observer.observe(element, options);
+};
+
+/**
+ * Global componentDidLoad function for all components.
  */
 const globalComponentDidLoad = (el) => {
   resizeObserver(el);
-  /** Reload component when new child element has been loaded. */
+  /** Mark that component has been loaded. */
+  el.setAttribute('has-loaded', '');
+  /** Setup mutation observer to check if child elements have been added and reload component. */
   if (el.tagName !== 'SPX-TYPEWRITER' &&
     el.tagName !== 'SPX-ANIMATE' &&
     el.tagName !== 'SPX-LIGHTBOX' &&
     el.tagName !== 'SPX-PAGE-DOCS') {
-    const config = { childList: true };
-    const callback = function (mutationsList) {
-      mutationsList.forEach(() => {
-        el.reload();
-      });
-    };
-    const observer = new MutationObserver(callback);
-    observer.observe(el, config);
+    mutationObserver(el, {
+      childList: true,
+    }, function () {
+      el.reload();
+    });
   }
 };
 
 // eslint-disable-next-line no-unused-vars
 /**
- *  Tag selector.
+ * Tag selector.
  */
 const tagSelector = (condition, tag, text, slot, style = null) => {
   return condition ? (tag === 'h1' ? (h$1("h1", { class: style || false }, text)) : tag === 'h2' ? (h$1("h2", { class: style || false }, text)) : tag === 'h3' ? (h$1("h3", { class: style || false }, text)) : tag === 'h4' ? (h$1("h4", { class: style || false }, text)) : tag === 'h5' ? (h$1("h5", { class: style || false }, text)) : tag === 'h6' ? (h$1("h6", { class: style || false }, text)) : tag === 'p' ? (h$1("p", { class: style || false }, text)) : (h$1("span", { class: style || false }, text))) : (h$1("slot", { name: slot }));
@@ -7398,7 +7456,7 @@ const SpxAccordion = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
-    this.open = false;
+    this.spxAccordionDidLoad = createEvent(this, "spxAccordionDidLoad", 7);
     this.contentColor = 'var(--spx-color-gray-900)';
     /** Content text. */
     this.contentText = 'Default Content Text';
@@ -7428,21 +7486,59 @@ const SpxAccordion = class extends HTMLElement {
     this.indicatorIconType = 'ionicons';
     /** Indicator icon transform. */
     this.indicatorIconTransform = 'rotate(180deg)';
-    /** Toggle content. */
+    /** State of accordion. */
+    // prettier-ignore
+    this.openState = false;
+    /** Header is clicked. */
     this.clickHeader = () => {
-      if (this.open === true) {
-        this.content.style.maxHeight = null;
-        this.open = false;
+      /** Handle linked instances. */
+      if (this.link) {
+        document
+          .querySelectorAll('spx-accordion[link="' + this.link + '"]')
+          .forEach((item) => {
+          /** Make sure not to toggle current element. */
+          if (item !== this.el) {
+            if (this.linkType === 'open') {
+              item.setAttribute('open', '');
+            }
+            if (this.linkType === 'close') {
+              item.removeAttribute('open');
+            }
+            if (this.linkType === 'toggle') {
+              if (item.hasAttribute('open')) {
+                item.removeAttribute('open');
+              }
+              else {
+                item.setAttribute('open', '');
+              }
+            }
+          }
+        });
+      }
+      /** Set the correct heights.. */
+      if (this.openState) {
+        if (!this.disableAnimation) {
+          this.content.style.maxHeight = null;
+        }
+        this.openState = false;
       }
       else {
-        this.content.style.maxHeight = this.content.scrollHeight + 'px';
-        this.open = true;
+        if (!this.disableAnimation) {
+          this.content.style.maxHeight = this.content.scrollHeight + 'px';
+        }
+        this.openState = true;
       }
     };
   }
   onKeydown(e) {
-    if (e.keyCode === 13) {
+    if (e.key === 'Enter') {
       this.clickHeader();
+    }
+  }
+  componentWillLoad() {
+    /** Turn animation off if linked, since height can't be calculated otherwise. */
+    if (this.link) {
+      this.disableAnimation = true;
     }
   }
   componentDidLoad() {
@@ -7453,9 +7549,22 @@ const SpxAccordion = class extends HTMLElement {
     if (this.el.querySelector('[slot="content"]')) {
       this.contentCustom = true;
     }
+    this.spxAccordionDidLoad.emit({ target: 'document' });
+  }
+  /** Closes the accordion. */
+  async close() {
+    this.openState = false;
+  }
+  /** Opens the accordion. */
+  async open() {
+    this.openState = true;
   }
   async reload() {
     this.componentDidLoad();
+  }
+  /** Toggles the accordion. */
+  async toggle() {
+    this.openState = !this.openState;
   }
   render() {
     /** Host styles. */
@@ -7469,7 +7578,8 @@ const SpxAccordion = class extends HTMLElement {
     const styleHeader = css({
       display: 'grid',
       gridAutoFlow: 'column',
-      gridAutoColumns: 'max-content',
+      gridTemplateColumns: this.reverse ? '1fr auto' : 'auto 1fr',
+      alignItems: 'center',
       gridColumnGap: setVar(tag, 'header-gap', this.headerGap),
       cursor: 'pointer',
       'h1, h2, h3, h4, h5, h6, p, span': {
@@ -7480,29 +7590,36 @@ const SpxAccordion = class extends HTMLElement {
       },
     });
     /** Header custom styles. */
-    const styleHeaderCustom = css({
-      height: '100%',
+    const styleHeaderIcon = css({
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       transformOrigin: 'center center',
-      transform: this.open &&
+      gridColumn: this.reverse && '2',
+      transform: this.openState &&
         setVar(tag, 'indicator-icon-transform', this.indicatorIconTransform),
       color: setVar(tag, 'header-color', this.headerColor),
     });
+    /** Content styles. */
     const styleContent = css({
-      marginTop: this.open ? setVar(tag, 'gap', this.gap) : 0,
-      maxHeight: '0',
+      display: this.disableAnimation && this.openState
+        ? 'block'
+        : this.disableAnimation && !this.openState && 'none',
+      marginTop: this.openState ? setVar(tag, 'gap', this.gap) : 0,
+      maxHeight: this.disableAnimation ? 'none' : '0',
       overflow: 'hidden',
+      height: this.disableAnimation && 'auto',
       transitionProperty: 'max-height, margin-top',
       willChange: 'max-height, margin-top',
       transitionDuration: setVar(tag, 'transition-duration', this.contentTransitionDuration),
       transitionTimingFunction: setVar(tag, 'transition-timing-function', this.contentTransitionTimingFunction),
-      'h1, h2, h3, h4, h5, h6, p, span': {
+      'h1, h2, h3, h4, h5, h6, p, span:not(.token)': {
         color: setVar(tag, 'content-color', this.contentColor),
       },
     });
-    return (h$1(Host, { class: styleHost }, h$1("div", { tabindex: "0", role: "button", "aria-pressed": this.open ? 'true' : 'false', onClick: this.clickHeader, class: styleHeader }, !this.headerCustom && (h$1("div", { class: styleHeaderCustom }, this.indicatorIcon && this.indicatorIconType && (h$1("spx-icon", { icon: this.indicatorIcon, type: this.indicatorIconType })))), tagSelector(!this.headerCustom, this.headerTextTag, this.headerText, 'header')), h$1("div", { class: styleContent, ref: (el) => (this.content = el) }, tagSelector(!this.contentCustom, this.contentTextTag, this.contentText, 'content'))));
+    return (h$1(Host, { class: styleHost }, h$1("div", { tabindex: "0", role: "button", "aria-pressed": this.openState ? 'true' : 'false', onClick: this.clickHeader, class: !this.headerCustom && styleHeader }, !this.headerCustom && (h$1("div", { class: styleHeaderIcon }, this.indicatorIcon && this.indicatorIconType && (h$1("spx-icon", { icon: this.indicatorIcon, type: this.indicatorIconType })))), this.headerTextOpen && this.openState
+      ? tagSelector(!this.headerCustom, this.headerTextTag, this.headerTextOpen, 'header')
+      : tagSelector(!this.headerCustom, this.headerTextTag, this.headerText, 'header')), h$1("div", { class: styleContent, ref: (el) => (this.content = el) }, tagSelector(!this.contentCustom, this.contentTextTag, this.contentText, 'content'))));
   }
   get el() { return this; }
 };
@@ -12662,6 +12779,7 @@ const SpxAnimate = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxAnimateDidLoad = createEvent(this, "spxAnimateDidLoad", 7);
     /** Delay before animation starts. */
     this.delay = 0;
     /** Animation duration. */
@@ -12682,6 +12800,7 @@ const SpxAnimate = class extends HTMLElement {
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
+    /** Init loop to make sure the component fires correctly in Oxygen. */
     const init = () => {
       this.elements = this.el.querySelectorAll(this.target);
       if ((this.elements === undefined || this.elements.length === 0) &&
@@ -12747,16 +12866,17 @@ const SpxAnimate = class extends HTMLElement {
           }, options);
           intersectionObserver.observe(this.el);
         }
+        this.spxAnimateDidLoad.emit({ target: 'document' });
       }
     };
     init();
   }
-  async reload() {
-    this.componentDidLoad();
-  }
   /** Plays animation. */
   async play(from = 0, suppressEvents = true) {
     this.tl.play(from, suppressEvents);
+  }
+  async reload() {
+    this.componentDidLoad();
   }
   /** Restarts animation. */
   async restart(includeDelay = false, suppressEvents = true) {
@@ -12777,10 +12897,11 @@ const SpxClassToggle = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxClassToggleDidLoad = createEvent(this, "spxClassToggleDidLoad", 7);
     this.display = 'block';
     /** List of classes that should be toggled. */
     this.toggle = 'spx-class-toggle--active';
-    /** Set toggle array. */
+    /** Create an array of classes from the component attribute. */
     this.createToggleArray = () => {
       this.classesArray = this.toggle.replace(/ /g, ',').split(',');
     };
@@ -12818,6 +12939,7 @@ const SpxClassToggle = class extends HTMLElement {
         this.addClasses();
       }
     }
+    this.spxClassToggleDidLoad.emit({ target: 'document' });
   }
   /** Add classes. */
   addClasses() {
@@ -12858,11 +12980,11 @@ function getDefaultExportFromCjs (x) {
 
 function createCommonjsModule(fn, basedir, module) {
 	return module = {
-	  path: basedir,
-	  exports: {},
-	  require: function (path, base) {
-    return commonjsRequire();
-  }
+		path: basedir,
+		exports: {},
+		require: function (path, base) {
+			return commonjsRequire();
+		}
 	}, fn(module, module.exports), module.exports;
 }
 
@@ -13332,7 +13454,8 @@ var _ = {
 	 *
 	 * The following hooks will be run:
 	 * 1. `before-highlightall`
-	 * 2. All hooks of {@link Prism.highlightElement} for each element.
+	 * 2. `before-all-elements-highlight`
+	 * 3. All hooks of {@link Prism.highlightElement} for each element.
 	 *
 	 * @param {ParentNode} container The root element, whose descendants that have a `.language-xxxx` class will be highlighted.
 	 * @param {boolean} [async=false] Whether each element is to be highlighted asynchronously using Web Workers.
@@ -13364,10 +13487,13 @@ var _ = {
 	 * The following hooks will be run:
 	 * 1. `before-sanity-check`
 	 * 2. `before-highlight`
-	 * 3. All hooks of {@link Prism.highlight}. These hooks will only be run by the current worker if `async` is `true`.
+	 * 3. All hooks of {@link Prism.highlight}. These hooks will be run by an asynchronous worker if `async` is `true`.
 	 * 4. `before-insert`
 	 * 5. `after-highlight`
 	 * 6. `complete`
+	 *
+	 * Some the above hooks will be skipped if the element doesn't contain any text or there is no grammar loaded for
+	 * the element's language.
 	 *
 	 * @param {Element} element The element containing the code.
 	 * It must have a class of `language-xxxx` to be processed, where `xxxx` is a valid language identifier.
@@ -14342,7 +14468,17 @@ Prism.languages.insertBefore('javascript', 'keyword', {
 	'regex': {
 		pattern: /((?:^|[^$\w\xA0-\uFFFF."'\])\s]|\b(?:return|yield))\s*)\/(?:\[(?:[^\]\\\r\n]|\\.)*]|\\.|[^/\\\[\r\n])+\/[gimyus]{0,6}(?=(?:\s|\/\*(?:[^*]|\*(?!\/))*\*\/)*(?:$|[\r\n,.;:})\]]|\/\/))/,
 		lookbehind: true,
-		greedy: true
+		greedy: true,
+		inside: {
+			'regex-source': {
+				pattern: /^(\/)[\s\S]+(?=\/[a-z]*$)/,
+				lookbehind: true,
+				alias: 'language-regex',
+				inside: Prism.languages.regex
+			},
+			'regex-flags': /[a-z]+$/,
+			'regex-delimiter': /^\/|\/$/
+		}
 	},
 	// This must be declared before keyword because we use "function" inside the look-forward
 	'function-variable': {
@@ -14690,7 +14826,7 @@ Prism.languages.js = Prism.languages.javascript;
  */
 (function (Prism) {
 	Prism.languages.php = Prism.languages.extend('clike', {
-		'keyword': /\b(?:__halt_compiler|abstract|and|array|as|break|callable|case|catch|class|clone|const|continue|declare|default|die|do|echo|else|elseif|empty|enddeclare|endfor|endforeach|endif|endswitch|endwhile|eval|exit|extends|final|finally|for|foreach|function|global|goto|if|implements|include|include_once|instanceof|insteadof|interface|isset|list|namespace|new|or|parent|print|private|protected|public|require|require_once|return|static|switch|throw|trait|try|unset|use|var|while|xor|yield)\b/i,
+		'keyword': /\b(?:__halt_compiler|abstract|and|array|as|break|callable|case|catch|class|clone|const|continue|declare|default|die|do|echo|else|elseif|empty|enddeclare|endfor|endforeach|endif|endswitch|endwhile|eval|exit|extends|final|finally|for|foreach|function|global|goto|if|implements|include|include_once|instanceof|insteadof|interface|isset|list|match|namespace|new|or|parent|print|private|protected|public|require|require_once|return|static|switch|throw|trait|try|unset|use|var|while|xor|yield)\b/i,
 		'boolean': {
 			pattern: /\b(?:false|true)\b/i,
 			alias: 'constant'
@@ -14806,6 +14942,32 @@ Prism.languages.js = Prism.languages.javascript;
 	});
 
 }(Prism));
+
+// https://www.json.org/json-en.html
+Prism.languages.json = {
+	'property': {
+		pattern: /"(?:\\.|[^\\"\r\n])*"(?=\s*:)/,
+		greedy: true
+	},
+	'string': {
+		pattern: /"(?:\\.|[^\\"\r\n])*"(?!\s*:)/,
+		greedy: true
+	},
+	'comment': {
+		pattern: /\/\/.*|\/\*[\s\S]*?(?:\*\/|$)/,
+		greedy: true
+	},
+	'number': /-?\b\d+(?:\.\d+)?(?:e[+-]?\d+)?\b/i,
+	'punctuation': /[{}[\],]/,
+	'operator': /:/,
+	'boolean': /\b(?:true|false)\b/,
+	'null': {
+		pattern: /\bnull\b/,
+		alias: 'keyword'
+	}
+};
+
+Prism.languages.webmanifest = Prism.languages.json;
 
 var prismNormalizeWhitespace = createCommonjsModule(function (module) {
 (function() {
@@ -15004,21 +15166,1249 @@ Prism.hooks.add('before-sanity-check', function (env) {
 }());
 });
 
-const spxCodeDefaultCss = "spx-code code[class*=language-],spx-code pre[class*=language-]{color:#a9b7c6;direction:ltr;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}spx-code code[class*=language-] *,spx-code pre[class*=language-] *{font-family:Consolas, Monaco, \"Andale Mono\", monospace !important}spx-code pre[class*=language-]::-moz-selection,spx-code pre[class*=language-] ::-moz-selection,spx-code code[class*=language-]::-moz-selection,spx-code code[class*=language-] ::-moz-selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code pre[class*=language-]::selection,spx-code pre[class*=language-] ::selection,spx-code code[class*=language-]::selection,spx-code code[class*=language-] ::selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code .token.comment,spx-code .token.prolog,spx-code .token.cdata{color:#808080}spx-code .token.delimiter,spx-code .token.boolean,spx-code .token.keyword,spx-code .token.selector,spx-code .token.important,spx-code .token.atrule{color:#cc7832}spx-code .token.operator,spx-code .token.punctuation,spx-code .token.attr-name{color:#a9b7c6}spx-code .token.tag,spx-code .token.tag .punctuation,spx-code .token.doctype,spx-code .token.builtin{color:#e8bf6a}spx-code .token.entity,spx-code .token.number,spx-code .token.symbol{color:#6897bb}spx-code .token.property,spx-code .token.constant,spx-code .token.variable{color:#9876aa}spx-code .token.string,spx-code .token.char{color:#6a8759}spx-code .token.attr-value,spx-code .token.attr-value .punctuation{color:#a5c261}spx-code .token.attr-value .punctuation:first-child{color:#a9b7c6}spx-code .token.url{color:#287bde;text-decoration:underline}spx-code .token.function{color:#ffc66d}spx-code .token.regex{background:#364135}spx-code .token.bold{font-weight:bold}spx-code .token.italic{font-style:italic}spx-code .token.inserted{background:#294436}spx-code .token.deleted{background:#484a4a}spx-code code.language-css .token.property,spx-code code.language-css .token.property+.token.punctuation{color:#a9b7c6}spx-code code.language-css .token.id{color:#ffc66d}spx-code code.language-css .token.selector>.token.class,spx-code code.language-css .token.selector>.token.attribute,spx-code code.language-css .token.selector>.token.pseudo-class,spx-code code.language-css .token.selector>.token.pseudo-element{color:#ffc66d}";
+(function () {
 
-const spxCodeDraculaCss = "spx-code code[class*=language-],spx-code pre[class*=language-]{color:#a9b7c6;direction:ltr;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}spx-code code[class*=language-] *,spx-code pre[class*=language-] *{font-family:Consolas, Monaco, \"Andale Mono\", monospace !important}spx-code pre[class*=language-]::-moz-selection,spx-code pre[class*=language-] ::-moz-selection,spx-code code[class*=language-]::-moz-selection,spx-code code[class*=language-] ::-moz-selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code pre[class*=language-]::selection,spx-code pre[class*=language-] ::selection,spx-code code[class*=language-]::selection,spx-code code[class*=language-] ::selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code .language-css{color:#BD93F9}spx-code .token{color:#FF79C6}spx-code .language-css .token{color:#FF79C6}spx-code .token.script{color:#F8F8F2}spx-code .token.bold{font-weight:bold}spx-code .token.italic{font-style:italic}spx-code .token.atrule,spx-code .token.attr-name,spx-code .token.attr-value{color:#50FA7B}spx-code .language-css .token.atrule{color:#BD93F9}spx-code .language-html .token.attr-value,spx-code .language-markup .token.attr-value{color:#F1FA8C}spx-code .token.boolean{color:#BD93F9}spx-code .token.builtin,spx-code .token.class-name{color:#8BE9FD}spx-code .token.comment{color:#6272A4}spx-code .token.constant{color:#BD93F9}spx-code .language-javascript .token.constant{color:#FFB86C;font-style:italic}spx-code .token.entity{color:#FF79C6}spx-code .language-css .token.entity{color:#50FA7B}spx-code .language-html .token.entity.named-entity{color:#BD93F9}spx-code .language-html .token.entity:not(.named-entity){color:#FF79C6}spx-code .language-markup .token.entity.named-entity{color:#BD93F9}spx-code .language-markup .token.entity:not(.named-entity){color:#FF79C6}spx-code .token.function{color:#50FA7B}spx-code .language-css .token.function{color:#8BE9FD}spx-code .token.important,spx-code .token.keyword{color:#FF79C6}spx-code .token.prolog{color:#F8F8F2}spx-code .token.property{color:#FFB86C}spx-code .language-css .token.property{color:#8BE9FD}spx-code .token.punctuation{color:#FF79C6}spx-code .language-css .token.punctuation{color:#FFB86C}spx-code .language-html .token.punctuation,spx-code .language-markup .token.punctuation{color:#F8F8F2}spx-code .token.selector{color:#FF79C6}spx-code .language-css .token.selector{color:#50FA7B}spx-code .token.regex{color:#FF5555}spx-code .language-css .token.rule:not(.atrule){color:#F8F8F2}spx-code .token.string{color:#F1FA8C}spx-code .token.tag{color:#FF79C6}spx-code .token.url{color:#8BE9FD}spx-code .language-css .token.url{color:#FFB86C}spx-code .token.variable{color:#6272A4}spx-code .token.number{color:#bd93f9}spx-code .token.operator{color:#8be9fd}spx-code .token.char{color:#ff879d}spx-code .token.symbol{color:#ffb86c}spx-code .token.deleted{color:#e2777a}spx-code .token.namespace{color:#e2777a}";
+	if (typeof self === 'undefined' || !self.Prism || !self.document) {
+		return;
+	}
+
+	/**
+	 * Plugin name which is used as a class name for <pre> which is activating the plugin
+	 * @type {String}
+	 */
+	var PLUGIN_NAME = 'line-numbers';
+
+	/**
+	 * Regular expression used for determining line breaks
+	 * @type {RegExp}
+	 */
+	var NEW_LINE_EXP = /\n(?!$)/g;
+
+
+	/**
+	 * Global exports
+	 */
+	var config = Prism.plugins.lineNumbers = {
+		/**
+		 * Get node for provided line number
+		 * @param {Element} element pre element
+		 * @param {Number} number line number
+		 * @return {Element|undefined}
+		 */
+		getLine: function (element, number) {
+			if (element.tagName !== 'PRE' || !element.classList.contains(PLUGIN_NAME)) {
+				return;
+			}
+
+			var lineNumberRows = element.querySelector('.line-numbers-rows');
+			var lineNumberStart = parseInt(element.getAttribute('data-start'), 10) || 1;
+			var lineNumberEnd = lineNumberStart + (lineNumberRows.children.length - 1);
+
+			if (number < lineNumberStart) {
+				number = lineNumberStart;
+			}
+			if (number > lineNumberEnd) {
+				number = lineNumberEnd;
+			}
+
+			var lineIndex = number - lineNumberStart;
+
+			return lineNumberRows.children[lineIndex];
+		},
+
+		/**
+		 * Resizes the line numbers of the given element.
+		 *
+		 * This function will not add line numbers. It will only resize existing ones.
+		 * @param {HTMLElement} element A `<pre>` element with line numbers.
+		 * @returns {void}
+		 */
+		resize: function (element) {
+			resizeElements([element]);
+		},
+
+		/**
+		 * Whether the plugin can assume that the units font sizes and margins are not depended on the size of
+		 * the current viewport.
+		 *
+		 * Setting this to `true` will allow the plugin to do certain optimizations for better performance.
+		 *
+		 * Set this to `false` if you use any of the following CSS units: `vh`, `vw`, `vmin`, `vmax`.
+		 *
+		 * @type {boolean}
+		 */
+		assumeViewportIndependence: true
+	};
+
+	/**
+	 * Resizes the given elements.
+	 *
+	 * @param {HTMLElement[]} elements
+	 */
+	function resizeElements(elements) {
+		elements = elements.filter(function (e) {
+			var codeStyles = getStyles(e);
+			var whiteSpace = codeStyles['white-space'];
+			return whiteSpace === 'pre-wrap' || whiteSpace === 'pre-line';
+		});
+
+		if (elements.length == 0) {
+			return;
+		}
+
+		var infos = elements.map(function (element) {
+			var codeElement = element.querySelector('code');
+			var lineNumbersWrapper = element.querySelector('.line-numbers-rows');
+			if (!codeElement || !lineNumbersWrapper) {
+				return undefined;
+			}
+
+			/** @type {HTMLElement} */
+			var lineNumberSizer = element.querySelector('.line-numbers-sizer');
+			var codeLines = codeElement.textContent.split(NEW_LINE_EXP);
+
+			if (!lineNumberSizer) {
+				lineNumberSizer = document.createElement('span');
+				lineNumberSizer.className = 'line-numbers-sizer';
+
+				codeElement.appendChild(lineNumberSizer);
+			}
+
+			lineNumberSizer.innerHTML = '0';
+			lineNumberSizer.style.display = 'block';
+
+			var oneLinerHeight = lineNumberSizer.getBoundingClientRect().height;
+			lineNumberSizer.innerHTML = '';
+
+			return {
+				element: element,
+				lines: codeLines,
+				lineHeights: [],
+				oneLinerHeight: oneLinerHeight,
+				sizer: lineNumberSizer,
+			};
+		}).filter(Boolean);
+
+		infos.forEach(function (info) {
+			var lineNumberSizer = info.sizer;
+			var lines = info.lines;
+			var lineHeights = info.lineHeights;
+			var oneLinerHeight = info.oneLinerHeight;
+
+			lineHeights[lines.length - 1] = undefined;
+			lines.forEach(function (line, index) {
+				if (line && line.length > 1) {
+					var e = lineNumberSizer.appendChild(document.createElement('span'));
+					e.style.display = 'block';
+					e.textContent = line;
+				} else {
+					lineHeights[index] = oneLinerHeight;
+				}
+			});
+		});
+
+		infos.forEach(function (info) {
+			var lineNumberSizer = info.sizer;
+			var lineHeights = info.lineHeights;
+
+			var childIndex = 0;
+			for (var i = 0; i < lineHeights.length; i++) {
+				if (lineHeights[i] === undefined) {
+					lineHeights[i] = lineNumberSizer.children[childIndex++].getBoundingClientRect().height;
+				}
+			}
+		});
+
+		infos.forEach(function (info) {
+			var lineNumberSizer = info.sizer;
+			var wrapper = info.element.querySelector('.line-numbers-rows');
+
+			lineNumberSizer.style.display = 'none';
+			lineNumberSizer.innerHTML = '';
+
+			info.lineHeights.forEach(function (height, lineNumber) {
+				wrapper.children[lineNumber].style.height = height + 'px';
+			});
+		});
+	}
+
+	/**
+	 * Returns style declarations for the element
+	 * @param {Element} element
+	 */
+	var getStyles = function (element) {
+		if (!element) {
+			return null;
+		}
+
+		return window.getComputedStyle ? getComputedStyle(element) : (element.currentStyle || null);
+	};
+
+	var lastWidth = undefined;
+	window.addEventListener('resize', function () {
+		if (config.assumeViewportIndependence && lastWidth === window.innerWidth) {
+			return;
+		}
+		lastWidth = window.innerWidth;
+
+		resizeElements(Array.prototype.slice.call(document.querySelectorAll('pre.' + PLUGIN_NAME)));
+	});
+
+	Prism.hooks.add('complete', function (env) {
+		if (!env.code) {
+			return;
+		}
+
+		var code = /** @type {Element} */ (env.element);
+		var pre = /** @type {HTMLElement} */ (code.parentNode);
+
+		// works only for <code> wrapped inside <pre> (not inline)
+		if (!pre || !/pre/i.test(pre.nodeName)) {
+			return;
+		}
+
+		// Abort if line numbers already exists
+		if (code.querySelector('.line-numbers-rows')) {
+			return;
+		}
+
+		// only add line numbers if <code> or one of its ancestors has the `line-numbers` class
+		if (!Prism.util.isActive(code, PLUGIN_NAME)) {
+			return;
+		}
+
+		// Remove the class 'line-numbers' from the <code>
+		code.classList.remove(PLUGIN_NAME);
+		// Add the class 'line-numbers' to the <pre>
+		pre.classList.add(PLUGIN_NAME);
+
+		var match = env.code.match(NEW_LINE_EXP);
+		var linesNum = match ? match.length + 1 : 1;
+		var lineNumbersWrapper;
+
+		var lines = new Array(linesNum + 1).join('<span></span>');
+
+		lineNumbersWrapper = document.createElement('span');
+		lineNumbersWrapper.setAttribute('aria-hidden', 'true');
+		lineNumbersWrapper.className = 'line-numbers-rows';
+		lineNumbersWrapper.innerHTML = lines;
+
+		if (pre.hasAttribute('data-start')) {
+			pre.style.counterReset = 'linenumber ' + (parseInt(pre.getAttribute('data-start'), 10) - 1);
+		}
+
+		env.element.appendChild(lineNumbersWrapper);
+
+		resizeElements([pre]);
+
+		Prism.hooks.run('line-numbers', env);
+	});
+
+	Prism.hooks.add('line-numbers', function (env) {
+		env.plugins = env.plugins || {};
+		env.plugins.lineNumbers = true;
+	});
+
+}());
+
+var clipboard = createCommonjsModule(function (module, exports) {
+/*!
+ * clipboard.js v2.0.6
+ * https://clipboardjs.com/
+ * 
+ * Licensed MIT © Zeno Rocha
+ */
+(function webpackUniversalModuleDefinition(root, factory) {
+	module.exports = factory();
+})(commonjsGlobal, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports) {
+
+function select(element) {
+    var selectedText;
+
+    if (element.nodeName === 'SELECT') {
+        element.focus();
+
+        selectedText = element.value;
+    }
+    else if (element.nodeName === 'INPUT' || element.nodeName === 'TEXTAREA') {
+        var isReadOnly = element.hasAttribute('readonly');
+
+        if (!isReadOnly) {
+            element.setAttribute('readonly', '');
+        }
+
+        element.select();
+        element.setSelectionRange(0, element.value.length);
+
+        if (!isReadOnly) {
+            element.removeAttribute('readonly');
+        }
+
+        selectedText = element.value;
+    }
+    else {
+        if (element.hasAttribute('contenteditable')) {
+            element.focus();
+        }
+
+        var selection = window.getSelection();
+        var range = document.createRange();
+
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        selectedText = selection.toString();
+    }
+
+    return selectedText;
+}
+
+module.exports = select;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+function E () {
+  // Keep this empty so it's easier to inherit from
+  // (via https://github.com/lipsmack from https://github.com/scottcorgan/tiny-emitter/issues/3)
+}
+
+E.prototype = {
+  on: function (name, callback, ctx) {
+    var e = this.e || (this.e = {});
+
+    (e[name] || (e[name] = [])).push({
+      fn: callback,
+      ctx: ctx
+    });
+
+    return this;
+  },
+
+  once: function (name, callback, ctx) {
+    var self = this;
+    function listener () {
+      self.off(name, listener);
+      callback.apply(ctx, arguments);
+    }
+    listener._ = callback;
+    return this.on(name, listener, ctx);
+  },
+
+  emit: function (name) {
+    var data = [].slice.call(arguments, 1);
+    var evtArr = ((this.e || (this.e = {}))[name] || []).slice();
+    var i = 0;
+    var len = evtArr.length;
+
+    for (i; i < len; i++) {
+      evtArr[i].fn.apply(evtArr[i].ctx, data);
+    }
+
+    return this;
+  },
+
+  off: function (name, callback) {
+    var e = this.e || (this.e = {});
+    var evts = e[name];
+    var liveEvents = [];
+
+    if (evts && callback) {
+      for (var i = 0, len = evts.length; i < len; i++) {
+        if (evts[i].fn !== callback && evts[i].fn._ !== callback)
+          liveEvents.push(evts[i]);
+      }
+    }
+
+    // Remove event from queue to prevent memory leak
+    // Suggested by https://github.com/lazd
+    // Ref: https://github.com/scottcorgan/tiny-emitter/commit/c6ebfaa9bc973b33d110a84a307742b7cf94c953#commitcomment-5024910
+
+    (liveEvents.length)
+      ? e[name] = liveEvents
+      : delete e[name];
+
+    return this;
+  }
+};
+
+module.exports = E;
+module.exports.TinyEmitter = E;
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var is = __webpack_require__(3);
+var delegate = __webpack_require__(4);
+
+/**
+ * Validates all params and calls the right
+ * listener function based on its target type.
+ *
+ * @param {String|HTMLElement|HTMLCollection|NodeList} target
+ * @param {String} type
+ * @param {Function} callback
+ * @return {Object}
+ */
+function listen(target, type, callback) {
+    if (!target && !type && !callback) {
+        throw new Error('Missing required arguments');
+    }
+
+    if (!is.string(type)) {
+        throw new TypeError('Second argument must be a String');
+    }
+
+    if (!is.fn(callback)) {
+        throw new TypeError('Third argument must be a Function');
+    }
+
+    if (is.node(target)) {
+        return listenNode(target, type, callback);
+    }
+    else if (is.nodeList(target)) {
+        return listenNodeList(target, type, callback);
+    }
+    else if (is.string(target)) {
+        return listenSelector(target, type, callback);
+    }
+    else {
+        throw new TypeError('First argument must be a String, HTMLElement, HTMLCollection, or NodeList');
+    }
+}
+
+/**
+ * Adds an event listener to a HTML element
+ * and returns a remove listener function.
+ *
+ * @param {HTMLElement} node
+ * @param {String} type
+ * @param {Function} callback
+ * @return {Object}
+ */
+function listenNode(node, type, callback) {
+    node.addEventListener(type, callback);
+
+    return {
+        destroy: function() {
+            node.removeEventListener(type, callback);
+        }
+    }
+}
+
+/**
+ * Add an event listener to a list of HTML elements
+ * and returns a remove listener function.
+ *
+ * @param {NodeList|HTMLCollection} nodeList
+ * @param {String} type
+ * @param {Function} callback
+ * @return {Object}
+ */
+function listenNodeList(nodeList, type, callback) {
+    Array.prototype.forEach.call(nodeList, function(node) {
+        node.addEventListener(type, callback);
+    });
+
+    return {
+        destroy: function() {
+            Array.prototype.forEach.call(nodeList, function(node) {
+                node.removeEventListener(type, callback);
+            });
+        }
+    }
+}
+
+/**
+ * Add an event listener to a selector
+ * and returns a remove listener function.
+ *
+ * @param {String} selector
+ * @param {String} type
+ * @param {Function} callback
+ * @return {Object}
+ */
+function listenSelector(selector, type, callback) {
+    return delegate(document.body, selector, type, callback);
+}
+
+module.exports = listen;
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports) {
+
+/**
+ * Check if argument is a HTML element.
+ *
+ * @param {Object} value
+ * @return {Boolean}
+ */
+exports.node = function(value) {
+    return value !== undefined
+        && value instanceof HTMLElement
+        && value.nodeType === 1;
+};
+
+/**
+ * Check if argument is a list of HTML elements.
+ *
+ * @param {Object} value
+ * @return {Boolean}
+ */
+exports.nodeList = function(value) {
+    var type = Object.prototype.toString.call(value);
+
+    return value !== undefined
+        && (type === '[object NodeList]' || type === '[object HTMLCollection]')
+        && ('length' in value)
+        && (value.length === 0 || exports.node(value[0]));
+};
+
+/**
+ * Check if argument is a string.
+ *
+ * @param {Object} value
+ * @return {Boolean}
+ */
+exports.string = function(value) {
+    return typeof value === 'string'
+        || value instanceof String;
+};
+
+/**
+ * Check if argument is a function.
+ *
+ * @param {Object} value
+ * @return {Boolean}
+ */
+exports.fn = function(value) {
+    var type = Object.prototype.toString.call(value);
+
+    return type === '[object Function]';
+};
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var closest = __webpack_require__(5);
+
+/**
+ * Delegates event to a selector.
+ *
+ * @param {Element} element
+ * @param {String} selector
+ * @param {String} type
+ * @param {Function} callback
+ * @param {Boolean} useCapture
+ * @return {Object}
+ */
+function _delegate(element, selector, type, callback, useCapture) {
+    var listenerFn = listener.apply(this, arguments);
+
+    element.addEventListener(type, listenerFn, useCapture);
+
+    return {
+        destroy: function() {
+            element.removeEventListener(type, listenerFn, useCapture);
+        }
+    }
+}
+
+/**
+ * Delegates event to a selector.
+ *
+ * @param {Element|String|Array} [elements]
+ * @param {String} selector
+ * @param {String} type
+ * @param {Function} callback
+ * @param {Boolean} useCapture
+ * @return {Object}
+ */
+function delegate(elements, selector, type, callback, useCapture) {
+    // Handle the regular Element usage
+    if (typeof elements.addEventListener === 'function') {
+        return _delegate.apply(null, arguments);
+    }
+
+    // Handle Element-less usage, it defaults to global delegation
+    if (typeof type === 'function') {
+        // Use `document` as the first parameter, then apply arguments
+        // This is a short way to .unshift `arguments` without running into deoptimizations
+        return _delegate.bind(null, document).apply(null, arguments);
+    }
+
+    // Handle Selector-based usage
+    if (typeof elements === 'string') {
+        elements = document.querySelectorAll(elements);
+    }
+
+    // Handle Array-like based usage
+    return Array.prototype.map.call(elements, function (element) {
+        return _delegate(element, selector, type, callback, useCapture);
+    });
+}
+
+/**
+ * Finds closest match and invokes callback.
+ *
+ * @param {Element} element
+ * @param {String} selector
+ * @param {String} type
+ * @param {Function} callback
+ * @return {Function}
+ */
+function listener(element, selector, type, callback) {
+    return function(e) {
+        e.delegateTarget = closest(e.target, selector);
+
+        if (e.delegateTarget) {
+            callback.call(element, e);
+        }
+    }
+}
+
+module.exports = delegate;
+
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+var DOCUMENT_NODE_TYPE = 9;
+
+/**
+ * A polyfill for Element.matches()
+ */
+if (typeof Element !== 'undefined' && !Element.prototype.matches) {
+    var proto = Element.prototype;
+
+    proto.matches = proto.matchesSelector ||
+                    proto.mozMatchesSelector ||
+                    proto.msMatchesSelector ||
+                    proto.oMatchesSelector ||
+                    proto.webkitMatchesSelector;
+}
+
+/**
+ * Finds the closest parent that matches a selector.
+ *
+ * @param {Element} element
+ * @param {String} selector
+ * @return {Function}
+ */
+function closest (element, selector) {
+    while (element && element.nodeType !== DOCUMENT_NODE_TYPE) {
+        if (typeof element.matches === 'function' &&
+            element.matches(selector)) {
+          return element;
+        }
+        element = element.parentNode;
+    }
+}
+
+module.exports = closest;
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+__webpack_require__.r(__webpack_exports__);
+
+// EXTERNAL MODULE: ./node_modules/select/src/select.js
+var src_select = __webpack_require__(0);
+var select_default = /*#__PURE__*/__webpack_require__.n(src_select);
+
+// CONCATENATED MODULE: ./src/clipboard-action.js
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+/**
+ * Inner class which performs selection from either `text` or `target`
+ * properties and then executes copy or cut operations.
+ */
+
+var clipboard_action_ClipboardAction = function () {
+    /**
+     * @param {Object} options
+     */
+    function ClipboardAction(options) {
+        _classCallCheck(this, ClipboardAction);
+
+        this.resolveOptions(options);
+        this.initSelection();
+    }
+
+    /**
+     * Defines base properties passed from constructor.
+     * @param {Object} options
+     */
+
+
+    _createClass(ClipboardAction, [{
+        key: 'resolveOptions',
+        value: function resolveOptions() {
+            var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            this.action = options.action;
+            this.container = options.container;
+            this.emitter = options.emitter;
+            this.target = options.target;
+            this.text = options.text;
+            this.trigger = options.trigger;
+
+            this.selectedText = '';
+        }
+
+        /**
+         * Decides which selection strategy is going to be applied based
+         * on the existence of `text` and `target` properties.
+         */
+
+    }, {
+        key: 'initSelection',
+        value: function initSelection() {
+            if (this.text) {
+                this.selectFake();
+            } else if (this.target) {
+                this.selectTarget();
+            }
+        }
+
+        /**
+         * Creates a fake textarea element, sets its value from `text` property,
+         * and makes a selection on it.
+         */
+
+    }, {
+        key: 'selectFake',
+        value: function selectFake() {
+            var _this = this;
+
+            var isRTL = document.documentElement.getAttribute('dir') == 'rtl';
+
+            this.removeFake();
+
+            this.fakeHandlerCallback = function () {
+                return _this.removeFake();
+            };
+            this.fakeHandler = this.container.addEventListener('click', this.fakeHandlerCallback) || true;
+
+            this.fakeElem = document.createElement('textarea');
+            // Prevent zooming on iOS
+            this.fakeElem.style.fontSize = '12pt';
+            // Reset box model
+            this.fakeElem.style.border = '0';
+            this.fakeElem.style.padding = '0';
+            this.fakeElem.style.margin = '0';
+            // Move element out of screen horizontally
+            this.fakeElem.style.position = 'absolute';
+            this.fakeElem.style[isRTL ? 'right' : 'left'] = '-9999px';
+            // Move element to the same position vertically
+            var yPosition = window.pageYOffset || document.documentElement.scrollTop;
+            this.fakeElem.style.top = yPosition + 'px';
+
+            this.fakeElem.setAttribute('readonly', '');
+            this.fakeElem.value = this.text;
+
+            this.container.appendChild(this.fakeElem);
+
+            this.selectedText = select_default()(this.fakeElem);
+            this.copyText();
+        }
+
+        /**
+         * Only removes the fake element after another click event, that way
+         * a user can hit `Ctrl+C` to copy because selection still exists.
+         */
+
+    }, {
+        key: 'removeFake',
+        value: function removeFake() {
+            if (this.fakeHandler) {
+                this.container.removeEventListener('click', this.fakeHandlerCallback);
+                this.fakeHandler = null;
+                this.fakeHandlerCallback = null;
+            }
+
+            if (this.fakeElem) {
+                this.container.removeChild(this.fakeElem);
+                this.fakeElem = null;
+            }
+        }
+
+        /**
+         * Selects the content from element passed on `target` property.
+         */
+
+    }, {
+        key: 'selectTarget',
+        value: function selectTarget() {
+            this.selectedText = select_default()(this.target);
+            this.copyText();
+        }
+
+        /**
+         * Executes the copy operation based on the current selection.
+         */
+
+    }, {
+        key: 'copyText',
+        value: function copyText() {
+            var succeeded = void 0;
+
+            try {
+                succeeded = document.execCommand(this.action);
+            } catch (err) {
+                succeeded = false;
+            }
+
+            this.handleResult(succeeded);
+        }
+
+        /**
+         * Fires an event based on the copy operation result.
+         * @param {Boolean} succeeded
+         */
+
+    }, {
+        key: 'handleResult',
+        value: function handleResult(succeeded) {
+            this.emitter.emit(succeeded ? 'success' : 'error', {
+                action: this.action,
+                text: this.selectedText,
+                trigger: this.trigger,
+                clearSelection: this.clearSelection.bind(this)
+            });
+        }
+
+        /**
+         * Moves focus away from `target` and back to the trigger, removes current selection.
+         */
+
+    }, {
+        key: 'clearSelection',
+        value: function clearSelection() {
+            if (this.trigger) {
+                this.trigger.focus();
+            }
+            document.activeElement.blur();
+            window.getSelection().removeAllRanges();
+        }
+
+        /**
+         * Sets the `action` to be performed which can be either 'copy' or 'cut'.
+         * @param {String} action
+         */
+
+    }, {
+        key: 'destroy',
+
+
+        /**
+         * Destroy lifecycle.
+         */
+        value: function destroy() {
+            this.removeFake();
+        }
+    }, {
+        key: 'action',
+        set: function set() {
+            var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'copy';
+
+            this._action = action;
+
+            if (this._action !== 'copy' && this._action !== 'cut') {
+                throw new Error('Invalid "action" value, use either "copy" or "cut"');
+            }
+        }
+
+        /**
+         * Gets the `action` property.
+         * @return {String}
+         */
+        ,
+        get: function get() {
+            return this._action;
+        }
+
+        /**
+         * Sets the `target` property using an element
+         * that will be have its content copied.
+         * @param {Element} target
+         */
+
+    }, {
+        key: 'target',
+        set: function set(target) {
+            if (target !== undefined) {
+                if (target && (typeof target === 'undefined' ? 'undefined' : _typeof(target)) === 'object' && target.nodeType === 1) {
+                    if (this.action === 'copy' && target.hasAttribute('disabled')) {
+                        throw new Error('Invalid "target" attribute. Please use "readonly" instead of "disabled" attribute');
+                    }
+
+                    if (this.action === 'cut' && (target.hasAttribute('readonly') || target.hasAttribute('disabled'))) {
+                        throw new Error('Invalid "target" attribute. You can\'t cut text from elements with "readonly" or "disabled" attributes');
+                    }
+
+                    this._target = target;
+                } else {
+                    throw new Error('Invalid "target" value, use a valid Element');
+                }
+            }
+        }
+
+        /**
+         * Gets the `target` property.
+         * @return {String|HTMLElement}
+         */
+        ,
+        get: function get() {
+            return this._target;
+        }
+    }]);
+
+    return ClipboardAction;
+}();
+
+/* harmony default export */ var clipboard_action = (clipboard_action_ClipboardAction);
+// EXTERNAL MODULE: ./node_modules/tiny-emitter/index.js
+var tiny_emitter = __webpack_require__(1);
+var tiny_emitter_default = /*#__PURE__*/__webpack_require__.n(tiny_emitter);
+
+// EXTERNAL MODULE: ./node_modules/good-listener/src/listen.js
+var listen = __webpack_require__(2);
+var listen_default = /*#__PURE__*/__webpack_require__.n(listen);
+
+// CONCATENATED MODULE: ./src/clipboard.js
+var clipboard_typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var clipboard_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function clipboard_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+
+
+
+
+/**
+ * Base class which takes one or more elements, adds event listeners to them,
+ * and instantiates a new `ClipboardAction` on each click.
+ */
+
+var clipboard_Clipboard = function (_Emitter) {
+    _inherits(Clipboard, _Emitter);
+
+    /**
+     * @param {String|HTMLElement|HTMLCollection|NodeList} trigger
+     * @param {Object} options
+     */
+    function Clipboard(trigger, options) {
+        clipboard_classCallCheck(this, Clipboard);
+
+        var _this = _possibleConstructorReturn(this, (Clipboard.__proto__ || Object.getPrototypeOf(Clipboard)).call(this));
+
+        _this.resolveOptions(options);
+        _this.listenClick(trigger);
+        return _this;
+    }
+
+    /**
+     * Defines if attributes would be resolved using internal setter functions
+     * or custom functions that were passed in the constructor.
+     * @param {Object} options
+     */
+
+
+    clipboard_createClass(Clipboard, [{
+        key: 'resolveOptions',
+        value: function resolveOptions() {
+            var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
+            this.action = typeof options.action === 'function' ? options.action : this.defaultAction;
+            this.target = typeof options.target === 'function' ? options.target : this.defaultTarget;
+            this.text = typeof options.text === 'function' ? options.text : this.defaultText;
+            this.container = clipboard_typeof(options.container) === 'object' ? options.container : document.body;
+        }
+
+        /**
+         * Adds a click event listener to the passed trigger.
+         * @param {String|HTMLElement|HTMLCollection|NodeList} trigger
+         */
+
+    }, {
+        key: 'listenClick',
+        value: function listenClick(trigger) {
+            var _this2 = this;
+
+            this.listener = listen_default()(trigger, 'click', function (e) {
+                return _this2.onClick(e);
+            });
+        }
+
+        /**
+         * Defines a new `ClipboardAction` on each click event.
+         * @param {Event} e
+         */
+
+    }, {
+        key: 'onClick',
+        value: function onClick(e) {
+            var trigger = e.delegateTarget || e.currentTarget;
+
+            if (this.clipboardAction) {
+                this.clipboardAction = null;
+            }
+
+            this.clipboardAction = new clipboard_action({
+                action: this.action(trigger),
+                target: this.target(trigger),
+                text: this.text(trigger),
+                container: this.container,
+                trigger: trigger,
+                emitter: this
+            });
+        }
+
+        /**
+         * Default `action` lookup function.
+         * @param {Element} trigger
+         */
+
+    }, {
+        key: 'defaultAction',
+        value: function defaultAction(trigger) {
+            return getAttributeValue('action', trigger);
+        }
+
+        /**
+         * Default `target` lookup function.
+         * @param {Element} trigger
+         */
+
+    }, {
+        key: 'defaultTarget',
+        value: function defaultTarget(trigger) {
+            var selector = getAttributeValue('target', trigger);
+
+            if (selector) {
+                return document.querySelector(selector);
+            }
+        }
+
+        /**
+         * Returns the support of the given action, or all actions if no action is
+         * given.
+         * @param {String} [action]
+         */
+
+    }, {
+        key: 'defaultText',
+
+
+        /**
+         * Default `text` lookup function.
+         * @param {Element} trigger
+         */
+        value: function defaultText(trigger) {
+            return getAttributeValue('text', trigger);
+        }
+
+        /**
+         * Destroy lifecycle.
+         */
+
+    }, {
+        key: 'destroy',
+        value: function destroy() {
+            this.listener.destroy();
+
+            if (this.clipboardAction) {
+                this.clipboardAction.destroy();
+                this.clipboardAction = null;
+            }
+        }
+    }], [{
+        key: 'isSupported',
+        value: function isSupported() {
+            var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['copy', 'cut'];
+
+            var actions = typeof action === 'string' ? [action] : action;
+            var support = !!document.queryCommandSupported;
+
+            actions.forEach(function (action) {
+                support = support && !!document.queryCommandSupported(action);
+            });
+
+            return support;
+        }
+    }]);
+
+    return Clipboard;
+}(tiny_emitter_default.a);
+
+/**
+ * Helper function to retrieve attribute value.
+ * @param {String} suffix
+ * @param {Element} element
+ */
+
+
+function getAttributeValue(suffix, element) {
+    var attribute = 'data-clipboard-' + suffix;
+
+    if (!element.hasAttribute(attribute)) {
+        return;
+    }
+
+    return element.getAttribute(attribute);
+}
+
+/* harmony default export */ var clipboard = __webpack_exports__["default"] = (clipboard_Clipboard);
+
+/***/ })
+/******/ ])["default"];
+});
+});
+
+const Clipboard = /*@__PURE__*/getDefaultExportFromCjs(clipboard);
+
+const spxCodeDefaultCss = "spx-code pre[class*=language-].line-numbers{position:relative;padding-left:5.2em;counter-reset:linenumber}spx-code pre[class*=language-].line-numbers>code{position:relative;white-space:inherit}spx-code .line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:calc(var(--spx-code-padding) * -1);font-size:100%;left:-5.2em;z-index:0;width:3.5em;letter-spacing:-1px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}spx-code .line-numbers-rows>span{display:block;counter-increment:linenumber;z-index:1}spx-code .line-numbers-rows>span:before{content:counter(linenumber);display:block;padding-right:1.2em;text-align:right}spx-code code[class*=language-],spx-code pre[class*=language-]{color:#a9b7c6;direction:ltr;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}spx-code code[class*=language-] *,spx-code pre[class*=language-] *{font-family:Consolas, Monaco, \"Andale Mono\", monospace !important}spx-code pre[class*=language-]::-moz-selection,spx-code pre[class*=language-] ::-moz-selection,spx-code code[class*=language-]::-moz-selection,spx-code code[class*=language-] ::-moz-selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code pre[class*=language-]::selection,spx-code pre[class*=language-] ::selection,spx-code code[class*=language-]::selection,spx-code code[class*=language-] ::selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code .token.comment,spx-code .token.prolog,spx-code .token.cdata{color:#808080}spx-code .token.delimiter,spx-code .token.boolean,spx-code .token.keyword,spx-code .token.selector,spx-code .token.important,spx-code .token.atrule{color:#cc7832}spx-code .token.operator,spx-code .token.punctuation,spx-code .token.attr-name{color:#a9b7c6}spx-code .token.tag,spx-code .token.tag .punctuation,spx-code .token.doctype,spx-code .token.builtin{color:#e8bf6a}spx-code .token.entity,spx-code .token.number,spx-code .token.symbol{color:#6897bb}spx-code .token.property,spx-code .token.constant,spx-code .token.variable{color:#9876aa}spx-code .token.string,spx-code .token.char{color:#6a8759}spx-code .token.attr-value,spx-code .token.attr-value .punctuation{color:#a5c261}spx-code .token.attr-value .punctuation:first-child{color:#a9b7c6}spx-code .token.url{color:#287bde;text-decoration:underline}spx-code .token.function{color:#ffc66d}spx-code .token.regex{background:#364135}spx-code .token.bold{font-weight:bold}spx-code .token.italic{font-style:italic}spx-code .token.inserted{background:#294436}spx-code .token.deleted{background:#484a4a}spx-code code.language-css .token.property,spx-code code.language-css .token.property+.token.punctuation{color:#a9b7c6}spx-code code.language-css .token.id{color:#ffc66d}spx-code code.language-css .token.selector>.token.class,spx-code code.language-css .token.selector>.token.attribute,spx-code code.language-css .token.selector>.token.pseudo-class,spx-code code.language-css .token.selector>.token.pseudo-element{color:#ffc66d}";
+
+const spxCodeDraculaCss = "spx-code pre[class*=language-].line-numbers{position:relative;padding-left:5.2em;counter-reset:linenumber}spx-code pre[class*=language-].line-numbers>code{position:relative;white-space:inherit}spx-code .line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:calc(var(--spx-code-padding) * -1);font-size:100%;left:-5.2em;z-index:0;width:3.5em;letter-spacing:-1px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}spx-code .line-numbers-rows>span{display:block;counter-increment:linenumber;z-index:1}spx-code .line-numbers-rows>span:before{content:counter(linenumber);display:block;padding-right:1.2em;text-align:right}spx-code code[class*=language-],spx-code pre[class*=language-]{color:#a9b7c6;direction:ltr;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}spx-code code[class*=language-] *,spx-code pre[class*=language-] *{font-family:Consolas, Monaco, \"Andale Mono\", monospace !important}spx-code pre[class*=language-]::-moz-selection,spx-code pre[class*=language-] ::-moz-selection,spx-code code[class*=language-]::-moz-selection,spx-code code[class*=language-] ::-moz-selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code pre[class*=language-]::selection,spx-code pre[class*=language-] ::selection,spx-code code[class*=language-]::selection,spx-code code[class*=language-] ::selection{color:inherit;background:rgba(33, 66, 131, 0.85)}spx-code .language-css{color:#BD93F9}spx-code .token{color:#FF79C6}spx-code .language-css .token{color:#FF79C6}spx-code .token.script{color:#F8F8F2}spx-code .token.bold{font-weight:bold}spx-code .token.italic{font-style:italic}spx-code .token.atrule,spx-code .token.attr-name,spx-code .token.attr-value{color:#50FA7B}spx-code .language-css .token.atrule{color:#BD93F9}spx-code .language-html .token.attr-value,spx-code .language-markup .token.attr-value{color:#F1FA8C}spx-code .token.boolean{color:#BD93F9}spx-code .token.builtin,spx-code .token.class-name{color:#8BE9FD}spx-code .token.comment{color:#6272A4}spx-code .token.constant{color:#BD93F9}spx-code .language-javascript .token.constant{color:#FFB86C;font-style:italic}spx-code .token.entity{color:#FF79C6}spx-code .language-css .token.entity{color:#50FA7B}spx-code .language-html .token.entity.named-entity{color:#BD93F9}spx-code .language-html .token.entity:not(.named-entity){color:#FF79C6}spx-code .language-markup .token.entity.named-entity{color:#BD93F9}spx-code .language-markup .token.entity:not(.named-entity){color:#FF79C6}spx-code .token.function{color:#50FA7B}spx-code .language-css .token.function{color:#8BE9FD}spx-code .token.important,spx-code .token.keyword{color:#FF79C6}spx-code .token.prolog{color:#F8F8F2}spx-code .token.property{color:#FFB86C}spx-code .language-css .token.property{color:#8BE9FD}spx-code .token.punctuation{color:#FF79C6}spx-code .language-css .token.punctuation{color:#FFB86C}spx-code .language-html .token.punctuation,spx-code .language-markup .token.punctuation{color:#F8F8F2}spx-code .token.selector{color:#FF79C6}spx-code .language-css .token.selector{color:#50FA7B}spx-code .token.regex{color:#FF5555}spx-code .language-css .token.rule:not(.atrule){color:#F8F8F2}spx-code .token.string{color:#F1FA8C}spx-code .token.tag{color:#FF79C6}spx-code .token.url{color:#8BE9FD}spx-code .language-css .token.url{color:#FFB86C}spx-code .token.variable{color:#6272A4}spx-code .token.number{color:#bd93f9}spx-code .token.operator{color:#8be9fd}spx-code .token.char{color:#ff879d}spx-code .token.symbol{color:#ffb86c}spx-code .token.deleted{color:#e2777a}spx-code .token.namespace{color:#e2777a}";
 
 const tag$3 = 'spx-code';
 const SpxCode = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxCodeDidLoad = createEvent(this, "spxCodeDidLoad", 7);
     this.background = 'var(--spx-color-gray-900)';
     this.borderRadius = borderRadius;
+    /** Enable clipboard button. */
+    this.clipboard = true;
+    this.clipboardButtonBackground = 'var(--spx-color-gray-800)';
+    this.clipboardButtonColor = 'var(--spx-color-gray-400)';
+    this.clipboardButtonFontSize = '12px';
+    this.clipboardButtonFontWeight = 600;
+    this.clipboardButtonPadding = '6px 12px';
+    this.clipboardButtonTextTransform = 'uppercase';
     this.display = 'block';
     this.fontSize = 'clamp(12px, 1.6vw, 16px)';
+    this.height = 'auto';
+    /** Enable line numbers. */
+    this.lineNumbers = true;
+    this.lineNumbersBackground = 'var(--spx-color-gray-800)';
+    this.lineNumbersColor = 'var(--spx-color-gray-400)';
+    this.maxWidth = '100%';
     this.overflow = 'auto';
-    this.padding = 'var(--spx-space-lg)';
+    this.padding = 'clamp(20px, 2.4vw, 40px)';
     /**
      * Colour theme.
      * @choice 'default', 'dracula'
@@ -15026,12 +16416,22 @@ const SpxCode = class extends HTMLElement {
     this.theme = 'default';
     /**
      * Determines the programming language.
-     * @editor 'markup', 'css', 'php'
+     * @choice 'markup', 'css', 'php'
+     * @editor 'css'
      */
     this.type = 'markup';
+    this.onClickClipboard = () => {
+      /** Copy the code to the data-attribute and change button text.. */
+      this.clipboardButton.setAttribute('data-clipboard-text', this.el.querySelector('pre').innerText);
+      this.clipboardButton.innerText = 'Copied!';
+      setTimeout(() => {
+        this.clipboardButton.innerText = 'Copy';
+      }, 5000);
+    };
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
+    /** Highlight code. */
     prism.highlightAll();
     prism.plugins.NormalizeWhitespace.setDefaults({
       'remove-trailing': true,
@@ -15039,6 +16439,12 @@ const SpxCode = class extends HTMLElement {
       'left-trim': true,
       'right-trim': true,
     });
+    /** Setup clipboard button. */
+    if (this.clipboard) {
+      // eslint-disable-next-line no-new
+      new Clipboard(this.clipboardButton);
+    }
+    this.spxCodeDidLoad.emit({ target: 'document' });
   }
   async reload() {
     this.componentDidLoad();
@@ -15046,9 +16452,11 @@ const SpxCode = class extends HTMLElement {
   render() {
     /** Host styles. */
     const styleHost = css({
+      position: 'relative',
       display: setVar(tag$3, 'display', this.display),
       fontSize: setVar(tag$3, 'font-size', this.fontSize),
       borderRadius: setVar(tag$3, 'border-radius', this.borderRadius),
+      maxWidth: setVar(tag$3, 'max-width', this.maxWidth),
       '*': {
         fontSize: setVar(tag$3, 'font-size', this.fontSize),
       },
@@ -15060,9 +16468,49 @@ const SpxCode = class extends HTMLElement {
         background: setVar(tag$3, 'background', this.background),
         padding: setVar(tag$3, 'padding', this.padding),
         height: setVar(tag$3, 'height', this.height),
+        msOverflowStyle: this.hideScrollbar ? 'none' : 'auto',
+        scrollbarWidth: this.hideScrollbar ? 'none' : 'auto',
+        '::-webkit-scrollbar': {
+          display: this.hideScrollbar && 'none',
+        },
+        '.line-numbers-rows': {
+          top: 'calc(' + setVar(tag$3, 'padding', this.padding) + ' * -1 - 2px)',
+          paddingTop: setVar(tag$3, 'padding', this.padding),
+          height: 'calc(' + setVar(tag$3, 'padding', this.padding) + ' + 100%)',
+          background: setVar(tag$3, 'line-numbers-background', this.lineNumbersBackground),
+          '& > span:before': {
+            color: setVar(tag$3, 'line-numbers-color', this.lineNumbersColor),
+          },
+          '&:before': {
+            content: "''",
+            display: 'block',
+            position: 'absolute',
+            left: 0,
+            width: '100%',
+            height: 'calc(100% + 4px)',
+            zIndex: -1,
+            background: setVar(tag$3, 'line-numbers-background', this.lineNumbersBackground),
+          },
+        },
       },
     });
-    return (h$1(Host, { class: styleHost }, h$1("pre", null, h$1("code", { class: 'language-' + this.type }, h$1("slot", null)))));
+    /** Clipboard styles. */
+    const styleClipboard = css({
+      position: 'absolute',
+      border: 'none',
+      right: 0,
+      top: 0,
+      cursor: 'pointer',
+      textTransform: setVar(tag$3, 'clipboard-button-text-transform', this.clipboardButtonTextTransform),
+      background: setVar(tag$3, 'clipboard-button-background', this.clipboardButtonBackground),
+      color: setVar(tag$3, 'clipboard-button-color', this.clipboardButtonColor),
+      padding: setVar(tag$3, 'clipboard-button-padding', this.clipboardButtonPadding),
+      fontSize: setVar(tag$3, 'clipboard-button-font-size', this.clipboardButtonFontSize),
+      fontWeight: setVar(tag$3, 'clipboard-button-font-weight', this.clipboardButtonFontWeight),
+      borderBottomLeftRadius: setVar(tag$3, 'border-radius', this.borderRadius),
+      borderTopRightRadius: setVar(tag$3, 'border-radius', this.borderRadius),
+    });
+    return (h$1(Host, { class: styleHost }, h$1("pre", { class: this.lineNumbers && 'line-numbers' }, h$1("code", { class: 'language-' + this.type }, h$1("slot", null))), this.clipboard && (h$1("button", { ref: (el) => (this.clipboardButton = el), class: styleClipboard, onClick: this.onClickClipboard }, "Copy"))));
   }
   get el() { return this; }
   static get style() { return {
@@ -15071,826 +16519,6 @@ const SpxCode = class extends HTMLElement {
   }; }
 };
 
-/** Section defaults. */
-const maxWidth = '500px';
-const bpMobileWidth = 768;
-const buttonReverseColor = '';
-const colorPrimary = '';
-const colorSecondary = '';
-const fontFamilyPrimary = 'var(--spx-container-font-family-primary)';
-const fontFamilySecondary = 'var(--spx-container-font-family-secondary)';
-const spaceX = 'var(--spx-container-space-x)';
-const spaceXSm = 'var(--spx-container-space-x-sm)';
-/** Container styles. */
-const containerStyles = css({
-  '--spx-container-space-x': 'var(--spx-container-token-space-x, 8vw)',
-  '--spx-container-space-x-sm': 'var(--spx-container-token-space-x-sm, 2vw)',
-  '--spx-container-font-family-primary': 'var(--spx-container-token-font-family-primary, helvetica, segoe, arial, sans-serif)',
-  '--spx-container-font-family-secondary': 'var(--spx-container-token-font-family-secondary, helvetica, segoe, arial, sans-serif)',
-  '--spx-color-gray-50': '#FAFAFA',
-  '--spx-color-gray-100': '#F5F5F5',
-  '--spx-color-gray-200': '#EEEEEE',
-  '--spx-color-gray-300': '#E0E0E0',
-  '--spx-color-gray-400': '#BDBDBD',
-  '--spx-color-gray-500': '#9E9E9E',
-  '--spx-color-gray-600': '#757575',
-  '--spx-color-gray-700': '#616161',
-  '--spx-color-gray-800': '#424242',
-  '--spx-color-gray-900': '#212121',
-});
-document.body.classList.add(containerStyles);
-/** Space scale. */
-const spaceScale = (multiplier) => ({
-  '--spx-space-multiplier': multiplier,
-  '--spx-space-4xs': 'calc(0.125 * var(--spx-space-multiplier))',
-  '--spx-space-3xs': 'calc(0.25 * var(--spx-space-multiplier))',
-  '--spx-space-2xs': 'calc(0.375 * var(--spx-space-multiplier))',
-  '--spx-space-xs': 'calc(0.5 * var(--spx-space-multiplier))',
-  '--spx-space-sm': 'calc(0.75 * var(--spx-space-multiplier))',
-  '--spx-space-md': 'calc(1.25 * var(--spx-space-multiplier))',
-  '--spx-space-lg': 'calc(2 * var(--spx-space-multiplier))',
-  '--spx-space-xl': 'calc(3.25 * var(--spx-space-multiplier))',
-  '--spx-space-2xl': 'calc(5.25 * var(--spx-space-multiplier))',
-  '--spx-space-3xl': 'calc(8.5 * var(--spx-space-multiplier))',
-  '--spx-space-4xl': 'calc(13.75 * var(--spx-space-multiplier))',
-});
-
-const appendToMap = (map, propName, value) => {
-    const items = map.get(propName);
-    if (!items) {
-        map.set(propName, [value]);
-    }
-    else if (!items.includes(value)) {
-        items.push(value);
-    }
-};
-const debounce = (fn, ms) => {
-    let timeoutId;
-    return (...args) => {
-        if (timeoutId) {
-            clearTimeout(timeoutId);
-        }
-        timeoutId = setTimeout(() => {
-            timeoutId = 0;
-            fn(...args);
-        }, ms);
-    };
-};
-
-/**
- * Check if a possible element isConnected.
- * The property might not be there, so we check for it.
- *
- * We want it to return true if isConnected is not a property,
- * otherwise we would remove these elements and would not update.
- *
- * Better leak in Edge than to be useless.
- */
-const isConnected = (maybeElement) => !('isConnected' in maybeElement) || maybeElement.isConnected;
-const cleanupElements = debounce((map) => {
-    for (let key of map.keys()) {
-        map.set(key, map.get(key).filter(isConnected));
-    }
-}, 2000);
-const stencilSubscription = ({ on }) => {
-    const elmsToUpdate = new Map();
-    if (typeof getRenderingRef === 'function') {
-        // If we are not in a stencil project, we do nothing.
-        // This function is not really exported by @stencil/core.
-        on('dispose', () => {
-            elmsToUpdate.clear();
-        });
-        on('get', (propName) => {
-            const elm = getRenderingRef();
-            if (elm) {
-                appendToMap(elmsToUpdate, propName, elm);
-            }
-        });
-        on('set', (propName) => {
-            const elements = elmsToUpdate.get(propName);
-            if (elements) {
-                elmsToUpdate.set(propName, elements.filter(forceUpdate));
-            }
-            cleanupElements(elmsToUpdate);
-        });
-        on('reset', () => {
-            elmsToUpdate.forEach((elms) => elms.forEach(forceUpdate));
-            cleanupElements(elmsToUpdate);
-        });
-    }
-};
-
-const createObservableMap = (defaultState, shouldUpdate = (a, b) => a !== b) => {
-    let states = new Map(Object.entries(defaultState !== null && defaultState !== void 0 ? defaultState : {}));
-    const handlers = {
-        dispose: [],
-        get: [],
-        set: [],
-        reset: [],
-    };
-    const reset = () => {
-        states = new Map(Object.entries(defaultState !== null && defaultState !== void 0 ? defaultState : {}));
-        handlers.reset.forEach((cb) => cb());
-    };
-    const dispose = () => {
-        // Call first dispose as resetting the state would
-        // cause less updates ;)
-        handlers.dispose.forEach((cb) => cb());
-        reset();
-    };
-    const get = (propName) => {
-        handlers.get.forEach((cb) => cb(propName));
-        return states.get(propName);
-    };
-    const set = (propName, value) => {
-        const oldValue = states.get(propName);
-        if (shouldUpdate(value, oldValue, propName)) {
-            states.set(propName, value);
-            handlers.set.forEach((cb) => cb(propName, value, oldValue));
-        }
-    };
-    const state = (typeof Proxy === 'undefined'
-        ? {}
-        : new Proxy(defaultState, {
-            get(_, propName) {
-                return get(propName);
-            },
-            ownKeys(_) {
-                return Array.from(states.keys());
-            },
-            getOwnPropertyDescriptor() {
-                return {
-                    enumerable: true,
-                    configurable: true,
-                };
-            },
-            has(_, propName) {
-                return states.has(propName);
-            },
-            set(_, propName, value) {
-                set(propName, value);
-                return true;
-            },
-        }));
-    const on = (eventName, callback) => {
-        handlers[eventName].push(callback);
-        return () => {
-            removeFromArray(handlers[eventName], callback);
-        };
-    };
-    const onChange = (propName, cb) => {
-        const unSet = on('set', (key, newValue) => {
-            if (key === propName) {
-                cb(newValue);
-            }
-        });
-        const unReset = on('reset', () => cb(defaultState[propName]));
-        return () => {
-            unSet();
-            unReset();
-        };
-    };
-    const use = (...subscriptions) => subscriptions.forEach((subscription) => {
-        if (subscription.set) {
-            on('set', subscription.set);
-        }
-        if (subscription.get) {
-            on('get', subscription.get);
-        }
-        if (subscription.reset) {
-            on('reset', subscription.reset);
-        }
-    });
-    return {
-        state,
-        get,
-        set,
-        on,
-        onChange,
-        use,
-        dispose,
-        reset,
-    };
-};
-const removeFromArray = (array, item) => {
-    const index = array.indexOf(item);
-    if (index >= 0) {
-        array[index] = array[array.length - 1];
-        array.length--;
-    }
-};
-
-const createStore = (defaultState, shouldUpdate) => {
-    const map = createObservableMap(defaultState, shouldUpdate);
-    stencilSubscription(map);
-    return map;
-};
-
-/**
- * Pass attributes to nested components.
- */
-const removeClasses = (el, string) => {
-  el.classList.remove.apply(el.classList, 
-  // @ts-ignore
-  Array.from(el.classList).filter((v) => v.endsWith(string)));
-};
-
-/**
- * Material colour palettes.
- */
-const palette = {
-  red: {
-    41: { color: '#fffdfd', text: '#000000' },
-    42: { color: '#fffbfb', text: '#000000' },
-    43: { color: '#fff9f9', text: '#000000' },
-    44: { color: '#fff7f8', text: '#000000' },
-    45: { color: '#fff5f6', text: '#000000' },
-    46: { color: '#fff3f4', text: '#000000' },
-    47: { color: '#fff1f3', text: '#000000' },
-    48: { color: '#ffeff1', text: '#000000' },
-    49: { color: '#ffedef', text: '#000000' },
-    50: { color: '#FFEBEE', text: '#000000' },
-    100: { color: '#FFCDD2', text: '#000000' },
-    200: { color: '#EF9A9A', text: '#000000' },
-    300: { color: '#E57373', text: '#000000' },
-    400: { color: '#EF5350', text: '#ffffff' },
-    500: { color: '#F44336', text: '#ffffff' },
-    600: { color: '#E53935', text: '#ffffff' },
-    700: { color: '#D32F2F', text: '#ffffff' },
-    800: { color: '#C62828', text: '#ffffff' },
-    900: { color: '#B71C1C', text: '#ffffff' },
-    A100: { color: '#FF8A80', text: '#000000' },
-    A200: { color: '#FF5252', text: '#ffffff' },
-    A400: { color: '#FF1744', text: '#ffffff' },
-    A700: { color: '#D50000', text: '#ffffff' },
-  },
-  pink: {
-    41: { color: '#fefcfd', text: '#000000' },
-    42: { color: '#fef9fb', text: '#000000' },
-    43: { color: '#fef6f9', text: '#000000' },
-    44: { color: '#fdf4f7', text: '#000000' },
-    45: { color: '#fdf1f5', text: '#000000' },
-    46: { color: '#fdeef3', text: '#000000' },
-    47: { color: '#fcecf1', text: '#000000' },
-    48: { color: '#fce9ef', text: '#000000' },
-    49: { color: '#fce6ed', text: '#000000' },
-    50: { color: '#FCE4EC', text: '#000000' },
-    100: { color: '#F8BBD0', text: '#000000' },
-    200: { color: '#F48FB1', text: '#000000' },
-    300: { color: '#F06292', text: '#ffffff' },
-    400: { color: '#EC407A', text: '#ffffff' },
-    500: { color: '#E91E63', text: '#ffffff' },
-    600: { color: '#D81B60', text: '#ffffff' },
-    700: { color: '#C2185B', text: '#ffffff' },
-    800: { color: '#AD1457', text: '#ffffff' },
-    900: { color: '#880E4F', text: '#ffffff' },
-    A100: { color: '#FF80AB', text: '#000000' },
-    A200: { color: '#FF4081', text: '#ffffff' },
-    A400: { color: '#F50057', text: '#ffffff' },
-    A700: { color: '#C51162', text: '#ffffff' },
-  },
-  purple: {
-    41: { color: '#fdfcfe', text: '#000000' },
-    42: { color: '#fcf9fd', text: '#000000' },
-    43: { color: '#fbf7fc', text: '#000000' },
-    44: { color: '#faf4fb', text: '#000000' },
-    45: { color: '#f9f2fa', text: '#000000' },
-    46: { color: '#f7eff9', text: '#000000' },
-    47: { color: '#f6ecf8', text: '#000000' },
-    48: { color: '#f5eaf7', text: '#000000' },
-    49: { color: '#f4e7f6', text: '#000000' },
-    50: { color: '#F3E5F5', text: '#000000' },
-    100: { color: '#E1BEE7', text: '#000000' },
-    200: { color: '#CE93D8', text: '#000000' },
-    300: { color: '#BA68C8', text: '#ffffff' },
-    400: { color: '#AB47BC', text: '#ffffff' },
-    500: { color: '#9C27B0', text: '#ffffff' },
-    600: { color: '#8E24AA', text: '#ffffff' },
-    700: { color: '#7B1FA2', text: '#ffffff' },
-    800: { color: '#6A1B9A', text: '#ffffff' },
-    900: { color: '#4A148C', text: '#ffffff' },
-    A100: { color: '#EA80FC', text: '#000000' },
-    A200: { color: '#E040FB', text: '#ffffff' },
-    A400: { color: '#D500F9', text: '#ffffff' },
-    A700: { color: '#AA00FF', text: '#ffffff' },
-  },
-  'deep purple': {
-    41: { color: '#fdfcfe', text: '#000000' },
-    42: { color: '#fbfafd', text: '#000000' },
-    43: { color: '#f9f7fc', text: '#000000' },
-    44: { color: '#f7f5fb', text: '#000000' },
-    45: { color: '#f6f3fa', text: '#000000' },
-    46: { color: '#f4f0f9', text: '#000000' },
-    47: { color: '#f2eef8', text: '#000000' },
-    48: { color: '#f0ebf7', text: '#000000' },
-    49: { color: '#eee9f6', text: '#000000' },
-    50: { color: '#EDE7F6', text: '#000000' },
-    100: { color: '#D1C4E9', text: '#000000' },
-    200: { color: '#B39DDB', text: '#000000' },
-    300: { color: '#9575CD', text: '#ffffff' },
-    400: { color: '#7E57C2', text: '#ffffff' },
-    500: { color: '#673AB7', text: '#ffffff' },
-    600: { color: '#5E35B1', text: '#ffffff' },
-    700: { color: '#512DA8', text: '#ffffff' },
-    800: { color: '#4527A0', text: '#ffffff' },
-    900: { color: '#311B92', text: '#ffffff' },
-    A100: { color: '#B388FF', text: '#000000' },
-    A200: { color: '#7C4DFF', text: '#ffffff' },
-    A400: { color: '#651FFF', text: '#ffffff' },
-    A700: { color: '#6200EA', text: '#ffffff' },
-  },
-  indigo: {
-    41: { color: '#fcfcfe', text: '#000000' },
-    42: { color: '#fafafd', text: '#000000' },
-    43: { color: '#f8f8fc', text: '#000000' },
-    44: { color: '#f5f6fb', text: '#000000' },
-    45: { color: '#f3f4fa', text: '#000000' },
-    46: { color: '#f1f2f9', text: '#000000' },
-    47: { color: '#eef0f8', text: '#000000' },
-    48: { color: '#eceef7', text: '#000000' },
-    49: { color: '#eaecf6', text: '#000000' },
-    50: { color: '#E8EAF6', text: '#000000' },
-    100: { color: '#C5CAE9', text: '#000000' },
-    200: { color: '#9FA8DA', text: '#000000' },
-    300: { color: '#7986CB', text: '#ffffff' },
-    400: { color: '#5C6BC0', text: '#ffffff' },
-    500: { color: '#3F51B5', text: '#ffffff' },
-    600: { color: '#3949AB', text: '#ffffff' },
-    700: { color: '#303F9F', text: '#ffffff' },
-    800: { color: '#283593', text: '#ffffff' },
-    900: { color: '#1A237E', text: '#ffffff' },
-    A100: { color: '#8C9EFF', text: '#000000' },
-    A200: { color: '#536DFE', text: '#ffffff' },
-    A400: { color: '#3D5AFE', text: '#ffffff' },
-    A700: { color: '#304FFE', text: '#ffffff' },
-  },
-  blue: {
-    41: { color: '#fcfdfe', text: '#000000' },
-    42: { color: '#f9fcfe', text: '#000000' },
-    43: { color: '#f6fbfe', text: '#000000' },
-    44: { color: '#f3f9fe', text: '#000000' },
-    45: { color: '#f1f8fe', text: '#000000' },
-    46: { color: '#eef7fd', text: '#000000' },
-    47: { color: '#ebf5fd', text: '#000000' },
-    48: { color: '#e8f4fd', text: '#000000' },
-    49: { color: '#e5f3fd', text: '#000000' },
-    50: { color: '#E3F2FD', text: '#000000' },
-    100: { color: '#BBDEFB', text: '#000000' },
-    200: { color: '#90CAF9', text: '#000000' },
-    300: { color: '#64B5F6', text: '#000000' },
-    400: { color: '#42A5F5', text: '#000000' },
-    500: { color: '#2196F3', text: '#ffffff' },
-    600: { color: '#1E88E5', text: '#ffffff' },
-    700: { color: '#1976D2', text: '#ffffff' },
-    800: { color: '#1565C0', text: '#ffffff' },
-    900: { color: '#0D47A1', text: '#ffffff' },
-    A100: { color: '#82B1FF', text: '#000000' },
-    A200: { color: '#448AFF', text: '#ffffff' },
-    A400: { color: '#2979FF', text: '#ffffff' },
-    A700: { color: '#2962FF', text: '#ffffff' },
-  },
-  'light blue': {
-    41: { color: '#fcfefe', text: '#000000' },
-    42: { color: '#f9fdfe', text: '#000000' },
-    43: { color: '#f6fcfe', text: '#000000' },
-    44: { color: '#f3fbfe', text: '#000000' },
-    45: { color: '#f0fafe', text: '#000000' },
-    46: { color: '#edf9fe', text: '#000000' },
-    47: { color: '#eaf8fe', text: '#000000' },
-    48: { color: '#e7f7fe', text: '#000000' },
-    49: { color: '#e4f6fe', text: '#000000' },
-    50: { color: '#E1F5FE', text: '#000000' },
-    100: { color: '#B3E5FC', text: '#000000' },
-    200: { color: '#81D4FA', text: '#000000' },
-    300: { color: '#4FC3F7', text: '#000000' },
-    400: { color: '#29B6F6', text: '#000000' },
-    500: { color: '#03A9F4', text: '#000000' },
-    600: { color: '#039BE5', text: '#ffffff' },
-    700: { color: '#0288D1', text: '#ffffff' },
-    800: { color: '#0277BD', text: '#ffffff' },
-    900: { color: '#01579B', text: '#ffffff' },
-    A100: { color: '#80D8FF', text: '#000000' },
-    A200: { color: '#40C4FF', text: '#000000' },
-    A400: { color: '#00B0FF', text: '#000000' },
-    A700: { color: '#0091EA', text: '#ffffff' },
-  },
-  cyan: {
-    41: { color: '#fcfefe', text: '#000000' },
-    42: { color: '#f9fdfe', text: '#000000' },
-    43: { color: '#f6fcfe', text: '#000000' },
-    44: { color: '#f3fbfe', text: '#000000' },
-    45: { color: '#f0fafe', text: '#000000' },
-    46: { color: '#edf9fe', text: '#000000' },
-    47: { color: '#eaf8fe', text: '#000000' },
-    48: { color: '#e7f7fe', text: '#000000' },
-    49: { color: '#e4f6fe', text: '#000000' },
-    50: { color: '#E0F7FA', text: '#000000' },
-    100: { color: '#B2EBF2', text: '#000000' },
-    200: { color: '#80DEEA', text: '#000000' },
-    300: { color: '#4DD0E1', text: '#000000' },
-    400: { color: '#26C6DA', text: '#000000' },
-    500: { color: '#00BCD4', text: '#000000' },
-    600: { color: '#00ACC1', text: '#000000' },
-    700: { color: '#0097A7', text: '#ffffff' },
-    800: { color: '#00838F', text: '#ffffff' },
-    900: { color: '#006064', text: '#ffffff' },
-    A100: { color: '#84FFFF', text: '#000000' },
-    A200: { color: '#18FFFF', text: '#000000' },
-    A400: { color: '#00E5FF', text: '#000000' },
-    A700: { color: '#00B8D4', text: '#000000' },
-  },
-  teal: {
-    41: { color: '#fbfdfd', text: '#000000' },
-    42: { color: '#f8fcfc', text: '#000000' },
-    43: { color: '#f5fbfa', text: '#000000' },
-    44: { color: '#f2f9f9', text: '#000000' },
-    45: { color: '#eff8f8', text: '#000000' },
-    46: { color: '#ecf7f6', text: '#000000' },
-    47: { color: '#e9f5f5', text: '#000000' },
-    48: { color: '#e6f4f3', text: '#000000' },
-    49: { color: '#e3f3f2', text: '#000000' },
-    50: { color: '#e0f2f1', text: '#000000' },
-    100: { color: '#B2DFDB', text: '#000000' },
-    200: { color: '#80CBC4', text: '#000000' },
-    300: { color: '#4DB6AC', text: '#000000' },
-    400: { color: '#26A69A', text: '#000000' },
-    500: { color: '#009688', text: '#ffffff' },
-    600: { color: '#00897B', text: '#ffffff' },
-    700: { color: '#00796B', text: '#ffffff' },
-    800: { color: '#00695C', text: '#ffffff' },
-    900: { color: '#004D40', text: '#ffffff' },
-    A100: { color: '#A7FFEB', text: '#000000' },
-    A200: { color: '#64FFDA', text: '#000000' },
-    A400: { color: '#1DE9B6', text: '#000000' },
-    A700: { color: '#00BFA5', text: '#000000' },
-  },
-  green: {
-    41: { color: '#fcfefc', text: '#000000' },
-    42: { color: '#fafdfa', text: '#000000' },
-    43: { color: '#f8fcf8', text: '#000000' },
-    44: { color: '#f5fbf6', text: '#000000' },
-    45: { color: '#f3faf4', text: '#000000' },
-    46: { color: '#f1f9f1', text: '#000000' },
-    47: { color: '#eef8ef', text: '#000000' },
-    48: { color: '#ecf7ed', text: '#000000' },
-    49: { color: '#eaf6eb', text: '#000000' },
-    50: { color: '#E8F5E9', text: '#000000' },
-    100: { color: '#C8E6C9', text: '#000000' },
-    200: { color: '#A5D6A7', text: '#000000' },
-    300: { color: '#81C784', text: '#000000' },
-    400: { color: '#66BB6A', text: '#000000' },
-    500: { color: '#4CAF50', text: '#000000' },
-    600: { color: '#43A047', text: '#ffffff' },
-    700: { color: '#388E3C', text: '#ffffff' },
-    800: { color: '#2E7D32', text: '#ffffff' },
-    900: { color: '#1B5E20', text: '#ffffff' },
-    A100: { color: '#B9F6CA', text: '#000000' },
-    A200: { color: '#69F0AE', text: '#000000' },
-    A400: { color: '#00E676', text: '#000000' },
-    A700: { color: '#00C853', text: '#000000' },
-  },
-  'light green': {
-    41: { color: '#fdfefc', text: '#000000' },
-    42: { color: '#fcfdfa', text: '#000000' },
-    43: { color: '#fafcf8', text: '#000000' },
-    44: { color: '#f9fcf6', text: '#000000' },
-    45: { color: '#f8fbf4', text: '#000000' },
-    46: { color: '#f6faf1', text: '#000000' },
-    47: { color: '#f5faef', text: '#000000' },
-    48: { color: '#f3f9ed', text: '#000000' },
-    49: { color: '#f2f8eb', text: '#000000' },
-    50: { color: '#F1F8E9', text: '#000000' },
-    100: { color: '#DCEDC8', text: '#000000' },
-    200: { color: '#C5E1A5', text: '#000000' },
-    300: { color: '#AED581', text: '#000000' },
-    400: { color: '#9CCC65', text: '#000000' },
-    500: { color: '#8BC34A', text: '#000000' },
-    600: { color: '#7CB342', text: '#000000' },
-    700: { color: '#689F38', text: '#ffffff' },
-    800: { color: '#558B2F', text: '#ffffff' },
-    900: { color: '#33691E', text: '#ffffff' },
-    A100: { color: '#CCFF90', text: '#000000' },
-    A200: { color: '#B2FF59', text: '#000000' },
-    A400: { color: '#76FF03', text: '#000000' },
-    A700: { color: '#64DD17', text: '#000000' },
-  },
-  lime: {
-    41: { color: '#fefefc', text: '#000000' },
-    42: { color: '#fdfefa', text: '#000000' },
-    43: { color: '#fdfdf7', text: '#000000' },
-    44: { color: '#fcfdf5', text: '#000000' },
-    45: { color: '#fcfdf3', text: '#000000' },
-    46: { color: '#fbfcf0', text: '#000000' },
-    47: { color: '#fafcee', text: '#000000' },
-    48: { color: '#fafbeb', text: '#000000' },
-    49: { color: '#f9fbe9', text: '#000000' },
-    50: { color: '#F9FBE7', text: '#000000' },
-    100: { color: '#F0F4C3', text: '#000000' },
-    200: { color: '#E6EE9C', text: '#000000' },
-    300: { color: '#DCE775', text: '#000000' },
-    400: { color: '#D4E157', text: '#000000' },
-    500: { color: '#CDDC39', text: '#000000' },
-    600: { color: '#C0CA33', text: '#000000' },
-    700: { color: '#AFB42B', text: '#000000' },
-    800: { color: '#9E9D24', text: '#000000' },
-    900: { color: '#827717', text: '#ffffff' },
-    A100: { color: '#F4FF81', text: '#000000' },
-    A200: { color: '#EEFF41', text: '#000000' },
-    A400: { color: '#C6FF00', text: '#000000' },
-    A700: { color: '#AEEA00', text: '#000000' },
-  },
-  yellow: {
-    41: { color: '#fffefc', text: '#000000' },
-    42: { color: '#fffefa', text: '#000000' },
-    43: { color: '#fffef7', text: '#000000' },
-    44: { color: '#fffef5', text: '#000000' },
-    45: { color: '#fffef3', text: '#000000' },
-    46: { color: '#fffdf0', text: '#000000' },
-    47: { color: '#fffdee', text: '#000000' },
-    48: { color: '#fffdeb', text: '#000000' },
-    49: { color: '#fffde9', text: '#000000' },
-    50: { color: '#FFFDE7', text: '#000000' },
-    100: { color: '#FFF9C4', text: '#000000' },
-    200: { color: '#FFF59D', text: '#000000' },
-    300: { color: '#FFF176', text: '#000000' },
-    400: { color: '#FFEE58', text: '#000000' },
-    500: { color: '#FFEB3B', text: '#000000' },
-    600: { color: '#FDD835', text: '#000000' },
-    700: { color: '#FBC02D', text: '#000000' },
-    800: { color: '#F9A825', text: '#000000' },
-    900: { color: '#F57F17', text: '#000000' },
-    A100: { color: '#FFFF8D', text: '#000000' },
-    A200: { color: '#FFFF00', text: '#000000' },
-    A400: { color: '#FFEA00', text: '#000000' },
-    A700: { color: '#FFD600', text: '#000000' },
-  },
-  amber: {
-    41: { color: '#fffefc', text: '#000000' },
-    42: { color: '#fffdf9', text: '#000000' },
-    43: { color: '#fffcf6', text: '#000000' },
-    44: { color: '#fffcf3', text: '#000000' },
-    45: { color: '#fffbf0', text: '#000000' },
-    46: { color: '#fffaed', text: '#000000' },
-    47: { color: '#fffaea', text: '#000000' },
-    48: { color: '#fff9e7', text: '#000000' },
-    49: { color: '#fff8e4', text: '#000000' },
-    50: { color: '#FFF8E1', text: '#000000' },
-    100: { color: '#FFECB3', text: '#000000' },
-    200: { color: '#FFE082', text: '#000000' },
-    300: { color: '#FFD54F', text: '#000000' },
-    400: { color: '#FFCA28', text: '#000000' },
-    500: { color: '#FFC107', text: '#000000' },
-    600: { color: '#FFB300', text: '#000000' },
-    700: { color: '#FFA000', text: '#000000' },
-    800: { color: '#FF8F00', text: '#000000' },
-    900: { color: '#FF6F00', text: '#000000' },
-    A100: { color: '#FFE57F', text: '#000000' },
-    A200: { color: '#FFD740', text: '#000000' },
-    A400: { color: '#FFC400', text: '#000000' },
-    A700: { color: '#FFAB00', text: '#000000' },
-  },
-  orange: {
-    41: { color: '#fffdfb', text: '#000000' },
-    42: { color: '#fffcf8', text: '#000000' },
-    43: { color: '#fffbf5', text: '#000000' },
-    44: { color: '#fffaf2', text: '#000000' },
-    45: { color: '#fff9ef', text: '#000000' },
-    46: { color: '#fff7ec', text: '#000000' },
-    47: { color: '#fff6e9', text: '#000000' },
-    48: { color: '#fff5e6', text: '#000000' },
-    49: { color: '#fff4e3', text: '#000000' },
-    50: { color: '#FFF3E0', text: '#000000' },
-    100: { color: '#FFE0B2', text: '#000000' },
-    200: { color: '#FFCC80', text: '#000000' },
-    300: { color: '#FFB74D', text: '#000000' },
-    400: { color: '#FFA726', text: '#000000' },
-    500: { color: '#FF9800', text: '#000000' },
-    600: { color: '#FB8C00', text: '#000000' },
-    700: { color: '#F57C00', text: '#000000' },
-    800: { color: '#EF6C00', text: '#ffffff' },
-    900: { color: '#E65100', text: '#ffffff' },
-    A100: { color: '#FFD180', text: '#000000' },
-    A200: { color: '#FFAB40', text: '#000000' },
-    A400: { color: '#FF9100', text: '#000000' },
-    A700: { color: '#FF6D00', text: '#000000' },
-  },
-  'deep orange': {
-    41: { color: '#fefcfc', text: '#000000' },
-    42: { color: '#fefafa', text: '#000000' },
-    43: { color: '#fdf8f7', text: '#000000' },
-    44: { color: '#fdf6f5', text: '#000000' },
-    45: { color: '#fdf4f3', text: '#000000' },
-    46: { color: '#fcf1f0', text: '#000000' },
-    47: { color: '#fcefee', text: '#000000' },
-    48: { color: '#fbedeb', text: '#000000' },
-    49: { color: '#fbebe9', text: '#000000' },
-    50: { color: '#FBE9E7', text: '#000000' },
-    100: { color: '#FFCCBC', text: '#000000' },
-    200: { color: '#FFAB91', text: '#000000' },
-    300: { color: '#FF8A65', text: '#000000' },
-    400: { color: '#FF7043', text: '#000000' },
-    500: { color: '#FF5722', text: '#ffffff' },
-    600: { color: '#F4511E', text: '#ffffff' },
-    700: { color: '#E64A19', text: '#ffffff' },
-    800: { color: '#D84315', text: '#ffffff' },
-    900: { color: '#BF360C', text: '#ffffff' },
-    A100: { color: '#FF9E80', text: '#000000' },
-    A200: { color: '#FF6E40', text: '#000000' },
-    A400: { color: '#FF3D00', text: '#ffffff' },
-    A700: { color: '#DD2C00', text: '#ffffff' },
-  },
-  brown: {
-    41: { color: '#fdfdfc', text: '#000000' },
-    42: { color: '#fbfbfa', text: '#000000' },
-    43: { color: '#faf9f8', text: '#000000' },
-    44: { color: '#f8f7f6', text: '#000000' },
-    45: { color: '#f7f5f4', text: '#000000' },
-    46: { color: '#f5f3f1', text: '#000000' },
-    47: { color: '#f3f1ef', text: '#000000' },
-    48: { color: '#f2efed', text: '#000000' },
-    49: { color: '#f0edeb', text: '#000000' },
-    50: { color: '#EFEBE9', text: '#000000' },
-    100: { color: '#D7CCC8', text: '#000000' },
-    200: { color: '#BCAAA4', text: '#000000' },
-    300: { color: '#A1887F', text: '#ffffff' },
-    400: { color: '#8D6E63', text: '#ffffff' },
-    500: { color: '#795548', text: '#ffffff' },
-    600: { color: '#6D4C41', text: '#ffffff' },
-    700: { color: '#5D4037', text: '#ffffff' },
-    800: { color: '#4E342E', text: '#ffffff' },
-    900: { color: '#3E2723', text: '#ffffff' },
-    A100: { color: '#A1887F', text: '#ffffff' },
-    A200: { color: '#6D4C41', text: '#ffffff' },
-    A400: { color: '#4E342E', text: '#ffffff' },
-    A700: { color: '#3E2723', text: '#ffffff' },
-  },
-  gray: {
-    50: { color: '#FAFAFA', text: '#000000' },
-    100: { color: '#F5F5F5', text: '#000000' },
-    200: { color: '#EEEEEE', text: '#000000' },
-    300: { color: '#E0E0E0', text: '#000000' },
-    400: { color: '#BDBDBD', text: '#000000' },
-    500: { color: '#9E9E9E', text: '#000000' },
-    600: { color: '#757575', text: '#ffffff' },
-    700: { color: '#616161', text: '#ffffff' },
-    800: { color: '#424242', text: '#ffffff' },
-    900: { color: '#212121', text: '#ffffff' },
-    A100: { color: '#E0E0E0', text: '#ffffff' },
-    A200: { color: '#757575', text: '#ffffff' },
-    A400: { color: '#424242', text: '#ffffff' },
-    A700: { color: '#212121', text: '#ffffff' },
-  },
-  'blue gray': {
-    41: { color: '#fdfdfd', text: '#000000' },
-    42: { color: '#fbfbfc', text: '#000000' },
-    43: { color: '#f9fafa', text: '#000000' },
-    44: { color: '#f7f8f9', text: '#000000' },
-    45: { color: '#f5f7f8', text: '#000000' },
-    46: { color: '#f3f5f6', text: '#000000' },
-    47: { color: '#f1f3f5', text: '#000000' },
-    48: { color: '#eff2f3', text: '#000000' },
-    49: { color: '#edf0f2', text: '#000000' },
-    50: { color: '#ECEFF1', text: '#000000' },
-    100: { color: '#CFD8DC', text: '#000000' },
-    200: { color: '#B0BEC5', text: '#000000' },
-    300: { color: '#90A4AE', text: '#000000' },
-    400: { color: '#78909C', text: '#ffffff' },
-    500: { color: '#607D8B', text: '#ffffff' },
-    600: { color: '#546E7A', text: '#ffffff' },
-    700: { color: '#455A64', text: '#ffffff' },
-    800: { color: '#37474F', text: '#ffffff' },
-    900: { color: '#263238', text: '#ffffff' },
-    A100: { color: '#90A4AE', text: '#ffffff' },
-    A200: { color: '#546E7A', text: '#ffffff' },
-    A400: { color: '#37474F', text: '#ffffff' },
-    A700: { color: '#263238', text: '#ffffff' },
-  },
-};
-
-/**
- * Set color.
- */
-const setColor = (color, type) => {
-  const styles = [];
-  /** Iterate through styles and push into array. */
-  const createCSSVars = (color) => {
-    Object.entries(color).forEach(([key, value]) => {
-      const array = ['--spx-color-' + type + '-' + key + '', value['color']];
-      styles.push(array);
-    });
-  };
-  if (palette[color]) {
-    createCSSVars(palette[color]);
-  }
-  else {
-    createCSSVars(palette['teal']);
-  }
-  /** Convert array to object and create CSS styles. */
-  const cssStyleObject = fromPairs(styles);
-  const cssStyles = css(Object.assign(Object.assign({}, cssStyleObject), { label: 'color' }));
-  document.body.classList.add(cssStyles);
-  /** Set store. */
-  if (!palette[color]) {
-    if (type === 'primary') {
-      state.colorPrimary = 'teal';
-    }
-    else {
-      state.colorSecondary = 'pink';
-    }
-  }
-};
-
-/**
- * BP Mobile.
- */
-const watchMobile = () => {
-  if (window.innerWidth < state.bpMobileWidth) {
-    state.bpMobile = true;
-    document.body.classList.add('spx-mobile');
-  }
-  else {
-    state.bpMobile = false;
-    document.body.classList.remove('spx-mobile');
-  }
-};
-
-/**
- * State.
- */
-const { state, onChange } = createStore({
-  bpMaxWidth: maxWidth,
-  bpMobile: null,
-  bpMobileWidth: bpMobileWidth,
-  buttonReverseColor: buttonReverseColor,
-  colorPrimary: colorPrimary,
-  colorSecondary: colorSecondary,
-  fontFamilyPrimary: fontFamilyPrimary,
-  fontFamilySecondary: fontFamilySecondary,
-  spaceX: spaceX,
-  spaceXsm: spaceXSm,
-});
-/**
- * Color.
- */
-onChange('colorPrimary', (value) => {
-  removeClasses(document.body, 'color-palette');
-  setColor(value, 'primary');
-  setColor(state.colorSecondary, 'secondary');
-});
-onChange('colorSecondary', (value) => {
-  removeClasses(document.body, 'color');
-  setColor(value, 'secondary');
-  setColor(state.colorPrimary, 'primary');
-});
-/**
- * Font.
- */
-const setFont = (primary, secondary) => {
-  const styles = css({
-    '--spx-container-font-family-primary': primary,
-    '--spx-container-font-family-secondary': secondary,
-    label: 'font',
-  });
-  document.body.classList.add(styles);
-};
-onChange('fontFamilyPrimary', (value) => {
-  removeClasses(document.body, 'font');
-  setFont(value, state.fontFamilySecondary);
-});
-onChange('fontFamilySecondary', (value) => {
-  removeClasses(document.body, 'font');
-  setFont(state.fontFamilyPrimary, value);
-});
-/**
- * Buttons.
- */
-onChange('buttonReverseColor', (value) => {
-  document
-    .querySelectorAll('spx-section-button:not([reverse-color])')
-    .forEach((item) => {
-    item.removeAttribute('reverse-color');
-  });
-  if (value === 'all') {
-    document.querySelectorAll('spx-section-button').forEach((item) => {
-      item.setAttribute('reverse-color', '');
-    });
-  }
-  else {
-    document
-      .querySelectorAll('spx-section-button[type="' + value + '"]')
-      .forEach((item) => {
-      item.setAttribute('reverse-color', '');
-    });
-  }
-});
-/**
- * BP Mobile.
- */
-onChange('bpMobileWidth', (value) => {
-  state.bpMobileWidth = value;
-  watchMobile();
-});
-
 /**
  * Offset something to header.
  */
@@ -15898,7 +16526,7 @@ const offsetHeader = (el, target) => {
   /** Get height of target element. */
   const value = document.querySelector(target).getBoundingClientRect().height + 'px';
   /** Set root. */
-  document.documentElement.style.setProperty('--spx-offset', value);
+  document.body.style.setProperty('--spx-offset', value);
   /** Apply values as top property and variable. */
   if (el.parentElement.classList.contains('oxy-offset')) {
     el.parentElement.style.marginTop = value;
@@ -15915,92 +16543,112 @@ const SpxContainer = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxContainerDidLoad = createEvent(this, "spxContainerDidLoad", 7);
     /** Mobile breakpoint width. */
     this.bpMobile = bpMobileWidth;
+    this.buttonBackgroundPrimary = buttonBackgroundPrimary;
+    this.buttonBackgroundSecondary = buttonBackgroundSecondary;
     this.buttonBorderRadius = borderRadius;
-    this.buttonFontSizeMultiplier = 1;
+    this.buttonColorPrimary = buttonColorPrimary;
+    this.buttonColorSecondary = buttonColorSecondary;
+    this.buttonFontSizeMin = 1;
+    this.buttonFontSizeMax = 1.3;
     this.buttonFontWeight = 'bold';
-    this.buttonMarginX = 'var(--spx-space-sm)';
-    this.buttonMarginTop = 'var(--spx-space-lg)';
-    /**
-     * Reverse color of buttons.
-     * @choice 'all', 'primary', 'secondary'
-     */
-    this.buttonReverseColor = buttonReverseColor;
+    this.buttonMarginXMin = 0.5;
+    this.buttonMarginXMax = 1;
+    this.buttonMarginTopMin = 1;
+    this.buttonMarginTopMax = 2;
+    this.buttonPaddingXMin = 1;
+    this.buttonPaddingXMax = 2;
+    this.buttonPaddingYMin = 1;
+    this.buttonPaddingYMax = 1.5;
     this.buttonTextTransform = 'uppercase';
     /**
+     * Gray color which will be used for sections and pages.
+     * @choice 'blue-gray', 'cool-gray', 'gray', 'true-gray', 'warm-gray', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'light-blue', 'blue', 'indigo', 'violet', 'purple'; 'fuchsia', 'pink', 'rose'
+     */
+    this.colorGray = colorGray;
+    /**
      * Primary color which will be used for sections and pages.
-     * @choice 'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'
+     * @choice 'blue-gray', 'cool-gray', 'gray', 'true-gray', 'warm-gray', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'light-blue', 'blue', 'indigo', 'violet', 'purple'; 'fuchsia', 'pink', 'rose'
      */
     this.colorPrimary = colorPrimary;
     /**
      * Secondary color which will be used for sections and pages.
-     * @choice 'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'
+     * @choice 'blue-gray', 'cool-gray', 'gray', 'true-gray', 'warm-gray', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'light-blue', 'blue', 'indigo', 'violet', 'purple'; 'fuchsia', 'pink', 'rose'
      */
     this.colorSecondary = colorSecondary;
-    this.focusColor = 'var(--spx-color-secondary-A400)';
+    this.focusColor = 'var(--spx-color-secondary-600)';
     /** Primary font-family. */
     this.fontFamilyPrimary = fontFamilyPrimary;
     /** Secondary font-family. */
     this.fontFamilySecondary = fontFamilySecondary;
     this.imageMaxWidth = 'none';
+    /** Linear scaling root number. */
+    this.linearBase = linearBase;
+    /** Linear scaling minimum width. */
+    this.linearMinW = linearMinW;
+    /** Linear scaling maximum width. */
+    this.linearMaxW = linearMaxW;
+    /** Section max-width. */
+    this.maxWidth = maxWidth;
     /** Section max-width on mobile. */
-    this.maxWidth = '500px';
-    this.preTitleBackground = 'none';
-    this.preTitleBorderRadius = 'none';
-    this.preTitleColor = 'var(--spx-color-black)';
-    this.preTitleFontSizeMultiplier = 1;
+    this.maxWidthMobile = maxWidthMobile;
+    /**
+     * Space between content and outer edge of the viewport.
+     * @CSS
+     */
+    this.paddingX = paddingX;
+    /**
+     * Space between content and outer edge of the viewport.
+     * @CSS
+     */
+    this.paddingXSm = paddingXSm;
+    this.paddingYMin = 3;
+    this.paddingYMax = 10;
+    this.paddingYFirstMin = 2;
+    this.paddingYFirstMax = 8;
+    this.paddingYMaxWidth = 2560;
+    this.paddingYMultiplier = 1.5;
+    this.preTitleBackground = 'var(--spx-color-secondary-50)';
+    this.preTitleBorderRadius = '9999px';
+    this.preTitleColor = 'var(--spx-color-secondary-900)';
+    this.preTitleFontSizeMin = 0.6;
+    this.preTitleFontSizeMax = 0.7;
     this.preTitleFontWeight = '400';
     this.preTitleLetterSpacing = '0';
     this.preTitleLineHeight = '1.6';
-    this.preTitleMarginBottom = 'var(--spx-space-md)';
-    this.preTitlePadding = '0';
-    this.preTitleTextTransform = 'default';
-    /**
-     * Space between content and outer edge of the viewport.
-     * @CSS
-     */
-    this.spaceX = spaceX;
-    /**
-     * Space between content and outer edge of the viewport.
-     * @CSS
-     */
-    this.spaceXSm = spaceXSm;
-    /**
-     * Space between the sections.
-     * @CSS
-     */
-    this.spaceY = 'var(--spx-space-3xl)';
-    /**
-     * Space base for space-scale.
-     * @CSS
-     */
-    this.spacing = 'clamp(0.8em, 1vw, 1em)';
-    /**
-     * Margin between tab items.
-     * @CSS
-     */
-    this.tabsMarginBetween = 'var(--spx-space-sm)';
-    /**
-     * Top margin for first tab item.
-     * @CSS
-     */
-    this.tabsMarginFirst = 'var(--spx-space-md)';
+    this.preTitleMarginBottomMin = 1;
+    this.preTitleMarginBottomMax = 2.5;
+    this.preTitlePaddingXMin = 0.8;
+    this.preTitlePaddingXMax = 1.2;
+    this.preTitlePaddingYMin = 0.3;
+    this.preTitlePaddingYMax = 0.4;
+    this.preTitleTextTransform = 'uppercase';
+    this.tabsMarginTopMin = 0.5;
+    this.tabsMarginTopMax = 1;
+    this.tabsFirstMarginTopMin = 1;
+    this.tabsFirstMarginTopMax = 2;
     /**
      * Tabs opacity.
      * @CSS
      */
     this.tabsOpacity = 0.5;
     this.textColor = 'var(--spx-color-gray-600)';
-    this.textFontSizeMultiplier = 1;
+    this.textFontSizeMin = 1;
+    this.textFontSizeMax = 1.8;
     this.textFontWeight = '400';
     this.textLetterSpacing = '0';
     this.textLineHeight = '1.6';
-    this.textMarginTop = 'var(--spx-space-sm)';
+    this.textLinkDecorationColor = 'var(--spx-color-primary-400)';
+    this.textLinkDecorationColorHover = 'var(--spx-color-primary-500)';
+    this.textMarginTopMin = 1;
+    this.textMarginTopMax = 1.8;
     this.textMaxWidth = '800px';
     this.textTransform = 'default';
     this.titleColor = 'var(--spx-color-black)';
-    this.titleFontSizeMultiplier = 1;
+    this.titleFontSizeMin = 1.7;
+    this.titleFontSizeMax = 3;
     this.titleFontWeight = 500;
     this.titleLetterSpacing = '0';
     this.titleLineHeight = '1.25';
@@ -16010,12 +16658,17 @@ const SpxContainer = class extends HTMLElement {
   bpMobileChanged() {
     state.bpMobileWidth = this.bpMobile;
   }
-  buttonReverseColorChanged() {
-    state.buttonReverseColor = this.buttonReverseColor;
+  /** Watch all attributes that have a store value and update it changes. */
+  buttonColorsChanged() {
+    state.buttonBackgroundPrimary = this.buttonBackgroundPrimary;
+    state.buttonBackgroundSecondary = this.buttonBackgroundSecondary;
+    state.buttonColorPrimary = this.buttonColorPrimary;
+    state.buttonColorSecondary = this.buttonColorSecondary;
   }
   colorChanged() {
     state.colorPrimary = this.colorPrimary;
     state.colorSecondary = this.colorSecondary;
+    state.colorGray = this.colorGray;
   }
   fontChanged() {
     state.fontFamilyPrimary = this.fontFamilyPrimary;
@@ -16023,10 +16676,16 @@ const SpxContainer = class extends HTMLElement {
   }
   maxWidthChanged() {
     state.bpMaxWidth = this.maxWidth;
+    state.bpMaxWidthMobile = this.maxWidthMobile;
   }
   spaceChanged() {
-    state.spaceX = this.spaceX;
-    state.spaceXsm = this.spaceXSm;
+    state.paddingX = this.paddingX;
+    state.paddingXsm = this.paddingXSm;
+  }
+  linearChanged() {
+    state.linearBase = this.linearBase;
+    state.linearMinW = this.linearMinW;
+    state.linearMaxW = this.linearMaxW;
   }
   onResize() {
     if (this.offsetHeader) {
@@ -16035,18 +16694,27 @@ const SpxContainer = class extends HTMLElement {
     watchMobile();
   }
   connectedCallback() {
+    /** Set initial settings. */
     state.bpMaxWidth = this.maxWidth || maxWidth;
+    state.bpMaxWidthMobile = this.maxWidthMobile || maxWidthMobile;
     state.bpMobileWidth = this.bpMobile || bpMobileWidth;
-    state.buttonReverseColor = this.buttonReverseColor || buttonReverseColor;
+    state.buttonBackgroundPrimary =
+      this.buttonBackgroundPrimary || buttonBackgroundPrimary;
+    state.buttonBackgroundSecondary =
+      this.buttonBackgroundSecondary || buttonBackgroundSecondary;
+    state.buttonColorPrimary = this.buttonColorPrimary || buttonColorPrimary;
+    state.buttonColorSecondary =
+      this.buttonColorSecondary || buttonColorSecondary;
     if (!this.disableColors) {
-      state.colorPrimary = this.colorPrimary || 'teal';
+      state.colorPrimary = this.colorPrimary || 'red';
       state.colorSecondary = this.colorSecondary || 'pink';
+      state.colorGray = this.colorGray || 'gray';
     }
     state.fontFamilyPrimary = this.fontFamilyPrimary || fontFamilyPrimary;
     state.fontFamilySecondary =
       this.fontFamilySecondary || fontFamilySecondary;
-    state.spaceX = this.spaceX || spaceX;
-    state.spaceXsm = this.spaceXSm || spaceXSm;
+    state.paddingX = this.paddingX || paddingX;
+    state.paddingXsm = this.paddingXSm || paddingXSm;
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
@@ -16056,80 +16724,114 @@ const SpxContainer = class extends HTMLElement {
       if (item.nextElementSibling &&
         item.nextElementSibling.tagName === 'SPX-SECTION-BUTTON') {
         const style = css({
-          marginLeft: setVar(tag$4, 'button-margin-x', this.buttonMarginX),
-          marginRight: setVar(tag$4, 'button-margin-x', this.buttonMarginX),
+          margin: '0 ' +
+            setClamp('tag', 'button-margin-x', this.buttonMarginXMin, this.buttonMarginXMax),
         });
         item.classList.add(style);
         item.nextElementSibling.classList.add(style);
       }
     });
+    this.spxContainerDidLoad.emit({ target: 'document' });
   }
   componentDidRender() {
     this.onResize();
   }
   render() {
+    /** Text styles. */
     const styleText = {
-      '[slot="pre-title"]:not(.spx)': Object.assign(Object.assign({}, text(tag$4, 'pre-title', this.preTitleColor, '16px', '1.8vw', '24px', this.preTitleFontSizeMultiplier, this.preTitleFontWeight, this.preTitleLetterSpacing, this.preTitleLineHeight, this.preTitleTextTransform)), { background: setVar(tag$4, 'pre-title-background', this.preTitleBackground), padding: setVar(tag$4, 'pre-title-padding', this.preTitlePadding), borderRadius: setVar(tag$4, 'pre-title-border-radius', this.preTitleBorderRadius), marginBottom: setVar(tag$4, 'pre-title-margin-bottom', this.preTitleMarginBottom), fontFamily: setVar(tag$4, 'pre-title-font-family', state.fontFamilySecondary) }),
-      'h1:not(.spx), h1 span:not(.spx), h2:not(.spx), h2 span:not(.spx)': Object.assign(Object.assign({}, text(tag$4, 'title', this.titleColor, '32px', '5vw', '80px', this.titleFontSizeMultiplier, this.titleFontWeight, this.titleLetterSpacing, this.titleLineHeight, this.titleTextTransform)), { display: 'inline-block', maxWidth: setVar(tag$4, 'title-max-width', this.titleMaxWidth), fontFamily: setVar(tag$4, 'title-font-family', state.fontFamilyPrimary) }),
-      'p:not(.spx), [data-spx-tabs-header]:not(.spx)': Object.assign(Object.assign({}, text(tag$4, 'text', this.textColor, '18px', '2vw', '32px', this.textFontSizeMultiplier, this.textFontWeight, this.textLetterSpacing, this.textLineHeight, this.textTransform)), { background: 'none', maxWidth: setVar(tag$4, 'text-max-width', this.textMaxWidth), marginTop: setVar(tag$4, 'text-margin-top', this.textMarginTop), fontFamily: setVar(tag$4, 'text-font-family', state.fontFamilySecondary) }),
-    };
-    /** Style base. */
-    const styleBase = Object.assign(Object.assign({}, spaceScale(setVar('spx', 'space-unit', this.spacing))), { display: 'flex', flexDirection: 'column',
-      // height: this.el.querySelector('spx-page-docs') && '100vh',
-      '& > spx-section-text-media, & > spx-section-footer > div:not([data-spx-no-styles]) > div': {
-        paddingTop: setVar(tag$4, 'space-y', this.spaceY),
-        paddingBottom: setVar(tag$4, 'space-y', this.spaceY),
-      }, '& > spx-section-text-media:not([full]):not([media-full]) > div, & > spx-section-footer > div:not([data-spx-no-styles]) > div': {
-        width: '100%',
-        maxWidth: state.bpMobile && setVar(tag$4, 'max-width', this.maxWidth),
-        marginLeft: state.bpMobile && 'auto',
-        marginRight: state.bpMobile && 'auto',
-      }, '& > spx-section-text-media:not([full]):not([media-full]), & > spx-section-footer > div:not([data-spx-no-styles])': {
-        paddingLeft: this.spaceX,
-        paddingRight: this.spaceX,
-      }, '& > spx-section-text-media[media-full-mobile-fix] > div': {
-        paddingLeft: state.bpMobile && this.spaceX,
-        paddingRight: state.bpMobile && this.spaceX,
-      }, '& > *[background]:not(spx-section-header):not(spx-section-footer)': {
-        marginTop: 'calc(' + setVar(tag$4, 'padding-between', this.spaceY) + '/2)',
-        '& + [background]': {
-          marginTop: 0,
-        },
-        '& + *:not([background]):not([no-margin-top])': {
-          marginTop: 'calc(' + setVar(tag$4, 'padding-between', this.spaceY) + '/2)',
+      '[slot="pre-title"]:not(.spx-e)': Object.assign(Object.assign({}, text(tag$4, 'pre-title', this.preTitleColor, this.preTitleFontSizeMin, this.preTitleFontSizeMax, this.preTitleFontWeight, this.preTitleLetterSpacing, this.preTitleLineHeight, this.preTitleTextTransform)), { background: setVar(tag$4, 'pre-title-background', this.preTitleBackground), padding: setClamp(tag$4, 'pre-title-padding-y', this.preTitlePaddingYMin, this.preTitlePaddingYMax) +
+          ' ' +
+          setClamp(tag$4, 'pre-title-padding-x', this.preTitlePaddingXMin, this.preTitlePaddingXMax), borderRadius: setVar(tag$4, 'pre-title-border-radius', this.preTitleBorderRadius), marginBottom: setClamp(tag$4, 'pre-title-margin-bottom', this.preTitleMarginBottomMin, this.preTitleMarginBottomMax), fontFamily: setVar(tag$4, 'pre-title-font-family', state.fontFamilySecondary) }),
+      'h1:not(.spx-e), h1 span:not(.spx-e), h2:not(.spx-e), h2 span:not(.spx-e)': Object.assign(Object.assign({}, text(tag$4, 'title', this.titleColor, this.titleFontSizeMin, this.titleFontSizeMax, this.titleFontWeight, this.titleLetterSpacing, this.titleLineHeight, this.titleTextTransform)), { display: 'inline-block', maxWidth: setVar(tag$4, 'title-max-width', this.titleMaxWidth), fontFamily: setVar(tag$4, 'title-font-family', state.fontFamilyPrimary) }),
+      'p:not(.spx-e), [data-spx-tabs-header]:not(.spx-e)': Object.assign(Object.assign({}, text(tag$4, 'text', this.textColor, this.textFontSizeMin, this.textFontSizeMax, this.textFontWeight, this.textLetterSpacing, this.textLineHeight, this.textTransform)), { background: 'none', maxWidth: setVar(tag$4, 'text-max-width', this.textMaxWidth), marginTop: setClamp(tag$4, 'text-margin-top', this.textMarginTopMin, this.textMarginTopMax), fontFamily: setVar(tag$4, 'text-font-family', state.fontFamilySecondary) }),
+      'p a': {
+        fontFamily: setVar(tag$4, 'text-font-family', state.fontFamilySecondary),
+        textDecoration: 'underline',
+        textDecorationColor: setVar(tag$4, 'text-link-decoration-color', this.textLinkDecorationColor),
+        '&:hover': {
+          textDecorationColor: setVar(tag$4, 'text-link-decoration-color-hover', this.textLinkDecorationColorHover),
         },
       },
+    };
+    /** Style base. */
+    const styleBase = {
+      display: 'flex',
+      flexDirection: 'column',
+      margin: '0 auto',
+      // height: this.el.querySelector('spx-page-docs') && '100vh',
+      '& > spx-section-two-column, & > spx-section-footer > div:not([data-spx-no-styles]) > div': {
+        paddingTop: setClamp(tag$4, 'padding-y', this.paddingYMin, this.paddingYMax, state.linearBase, state.linearMinW, this.paddingYMaxWidth),
+        paddingBottom: setClamp(tag$4, 'padding-y', this.paddingYMin, this.paddingYMax, state.linearBase, state.linearMinW, this.paddingYMaxWidth),
+      },
+      '& > spx-section-two-column:not([background]) ~ spx-section-two-column[background]': {
+        marginTop: setClamp(tag$4, 'padding-y', this.paddingYMin / 2, this.paddingYMax / 2, state.linearBase, state.linearMinW, this.paddingYMaxWidth),
+      },
+      '& > spx-section-two-column[background]': {
+        paddingTop: setClamp(tag$4, 'padding-y', this.paddingYMin * this.paddingYMultiplier, this.paddingYMax * this.paddingYMultiplier, state.linearBase, state.linearMinW, this.paddingYMaxWidth),
+        paddingBottom: setClamp(tag$4, 'padding-y', this.paddingYMin * this.paddingYMultiplier, this.paddingYMax * this.paddingYMultiplier, state.linearBase, state.linearMinW, this.paddingYMaxWidth),
+        '& + spx-section-two-column[background]': {
+          marginTop: 0,
+        },
+        '& + spx-section-two-column:not([background])': {
+          paddingTop: setClamp(tag$4, 'padding-y', this.paddingYMin * this.paddingYMultiplier, this.paddingYMax * this.paddingYMultiplier, state.linearBase, state.linearMinW, this.paddingYMaxWidth),
+        },
+      },
+      '& > spx-section-two-column:not([full-width]):not([media-full-width]) > *, & > spx-section-footer > div:not([data-spx-no-styles]) > div': {
+        width: '100%',
+        maxWidth: state.bpMobile
+          ? setVar(tag$4, 'max-width-mobile', this.maxWidthMobile)
+          : setVar(tag$4, 'max-width', this.maxWidth),
+        marginLeft: state.bpMobile && 'auto',
+        marginRight: state.bpMobile && 'auto',
+      },
+      '& > spx-section-two-column:not([full-width]):not([media-full-width]) > * > div': {
+        maxWidth: state.bpMobile &&
+          setVar(tag$4, 'max-width-mobile', this.maxWidthMobile),
+      },
+      '& > spx-section-two-column:not([full-width]):not([media-full-width]), & > spx-section-footer > div:not([data-spx-no-styles])': {
+        paddingLeft: this.paddingX,
+        paddingRight: this.paddingX,
+      },
+      '& > spx-section-two-column[media-full-width-mobile-fix] > div': {
+        paddingLeft: state.bpMobile && this.paddingX,
+        paddingRight: state.bpMobile && this.paddingX,
+      },
       /** Button. */
+      'p + [data-spx-section-two-column-buttons], [data-spx-tabs-header] + [data-spx-section-two-column-buttons]': {
+        marginTop: setClamp(tag$4, 'button-margin-top', this.buttonMarginTopMin, this.buttonMarginTopMax),
+      },
       'spx-section-button': {
-        marginTop: setVar(tag$4, 'button-margin-top', this.buttonMarginTop),
-      }, 'spx-section-button a': {
+        marginTop: setClamp(tag$4, 'button-margin-x', this.buttonMarginXMin, this.buttonMarginXMax),
+      },
+      'spx-section-button a': {
         borderRadius: setVar(tag$4, 'button-border-radius', this.buttonBorderRadius),
-        padding: setVar(tag$4, 'button-padding', 'clamp(0.8em, 3.2vw, 0.95em) clamp(1em, 4vw, 1.4em)'),
-        fontSize: setFontSize(tag$4, 'button', '16px', '1.3vw', '24px', this.buttonFontSizeMultiplier),
+        padding: setClamp(tag$4, 'button-padding-y', this.buttonPaddingYMin, this.buttonPaddingYMax) +
+          ' ' +
+          setClamp(tag$4, 'button-padding-x', this.buttonPaddingXMin, this.buttonPaddingXMax),
+        fontSize: setClamp(tag$4, 'button-font-size', this.buttonFontSizeMin, this.buttonFontSizeMax),
         fontFamily: setVar(tag$4, 'button-font-family', state.fontFamilySecondary),
         fontWeight: setVar(tag$4, 'button-font-weight', this.buttonFontWeight),
         textTransform: setVar(tag$4, 'button-text-transform', this.buttonTextTransform),
       },
       /** Text Media styles. */
-      'spx-section-text-media': {
+      'spx-section-two-column': {
         '*': {
           fontFamily: setVar(tag$4, 'font-family', state.fontFamilyPrimary),
         },
         '&:first-of-type': {
-          paddingTop: setVar(tag$4, 'space-y', 'calc(' + this.spaceY + ' / 2)'),
+          paddingTop: setClamp(tag$4, 'padding-y', this.paddingYFirstMin, this.paddingYFirstMax, state.linearBase, state.linearMinW, this.paddingYMaxWidth),
         },
         '&:first-of-type[first]': {
           paddingTop: 'calc(' +
-            setVar(tag$4, 'space-y', this.spaceY) +
-            ' / 2 + var(--spx-offset))',
+            setClamp(tag$4, 'padding-y-first', this.paddingYFirstMin, this.paddingYFirstMax, state.linearBase, state.linearMinW, this.paddingYMaxWidth) +
+            ' + var(--spx-offset))',
         },
         img: {
           width: '100%',
           maxWidth: setVar(tag$4, 'image-max-width', this.imageMaxWidth),
         },
-        '& > div > div': Object.assign({}, styleText),
+        '& > * > div': Object.assign({}, styleText),
         '&[type="tabs"]': {
-          '& > div:first-of-type': Object.assign({}, spaceScale(setVar(tag$4, 'space-unit', 'clamp(0.8em, 1.4vw, 2em)'))),
           '[data-spx-tabs-header]': {
             maxWidth: 'max-content',
             opacity: setVar(tag$4, 'tabs-opacity', this.tabsOpacity),
@@ -16139,10 +16841,10 @@ const SpxContainer = class extends HTMLElement {
               opacity: 1,
             },
             '&:first-of-type': {
-              marginTop: setVar(tag$4, 'tabs-margin-first', this.tabsMarginFirst),
+              marginTop: setClamp(tag$4, 'tabs-first-margin-top', this.tabsFirstMarginTopMin, this.tabsFirstMarginTopMax),
             },
             '& + [data-spx-tabs-header]': {
-              marginTop: setVar(tag$4, 'tabs-margin-between', this.tabsMarginBetween),
+              marginTop: setClamp(tag$4, 'tabs-margin-top', this.tabsMarginTopMin, this.tabsMarginTopMax),
             },
           },
         },
@@ -16161,7 +16863,8 @@ const SpxContainer = class extends HTMLElement {
         '&[spx-focus-border]:focus-visible': {
           borderColor: setVar(tag$4, 'focus-color', this.focusColor) + '!important',
         },
-      } });
+      },
+    };
     /** Merge objects to avoid emotion error. */
     const styleMerge = css(merge$1(styleBase, {}));
     return h$1(Host, { class: styleMerge });
@@ -16169,14 +16872,22 @@ const SpxContainer = class extends HTMLElement {
   get el() { return this; }
   static get watchers() { return {
     "bpMobile": ["bpMobileChanged"],
-    "buttonReverseColor": ["buttonReverseColorChanged"],
+    "buttonBackgroundPrimary": ["buttonColorsChanged"],
+    "buttonBackgroundSecondary": ["buttonColorsChanged"],
+    "buttonColorPrimary": ["buttonColorsChanged"],
+    "buttonColorSecondary": ["buttonColorsChanged"],
     "colorSecondary": ["colorChanged"],
     "colorPrimary": ["colorChanged"],
+    "colorGray": ["colorChanged"],
     "fontFamilySecondary": ["fontChanged"],
     "fontFamilyPrimary": ["fontChanged"],
     "maxWidth": ["maxWidthChanged"],
-    "spaceXSm": ["spaceChanged"],
-    "spaceX": ["spaceChanged"]
+    "maxWidthMobile": ["maxWidthChanged"],
+    "paddingXSm": ["spaceChanged"],
+    "paddingX": ["spaceChanged"],
+    "linearBase": ["linearChanged"],
+    "linearMinW": ["linearChanged"],
+    "linearMaxW": ["linearChanged"]
   }; }
   static get style() { return spxContainerCss; }
 };
@@ -16202,9 +16913,9 @@ const SpxEdit = class extends HTMLElement {
     }
   }
   /** Prevent enter key. */
-  onClickEnter(evt) {
-    if (evt.keyCode === 13) {
-      evt.preventDefault();
+  onClickEnter(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
     }
   }
   /** Discard changes. */
@@ -16228,6 +16939,10 @@ const SpxEdit = class extends HTMLElement {
     this.typeText(this.originalText);
   }
   typeText(src) {
+    /**
+     * Update body string with a special identifier.
+     * Is used to distinguish between content types in the AJAX call.
+     */
     this.el.setAttribute('body-string', '&' +
       this.name +
       '=' +
@@ -16266,6 +16981,7 @@ const SpxEditButton = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxEditButtonDidLoad = createEvent(this, "spxEditButtonDidLoad", 7);
     this.spxEditButtonDiscard = createEvent(this, "spxEditButtonDiscard", 7);
     this.spxEditButtonSave = createEvent(this, "spxEditButtonSave", 7);
     this.loading = false;
@@ -16308,7 +17024,10 @@ const SpxEditButton = class extends HTMLElement {
      * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
      */
     this.position = 'bottom-right';
-    /** CSS property position of button. */
+    /**
+     * CSS property position of button.
+     * @editor 'absolute'
+     */
     this.positionCss = 'fixed';
     /** Discard button text. */
     this.textDiscard = 'Discard';
@@ -16356,6 +17075,7 @@ const SpxEditButton = class extends HTMLElement {
       this.loading = true;
       /** Emit save event to document. */
       const getBodyString = () => {
+        /** Create the body string to be sent off to the AJAX call. */
         const string = Math.random().toString(36).substr(2, 9);
         const bodyStringArray = [];
         const elements = document.querySelectorAll('spx-edit');
@@ -16368,7 +17088,6 @@ const SpxEditButton = class extends HTMLElement {
           const final = '&' + encoded;
           bodyStringArray.push(final.replace(string, '='));
         });
-        console.log(bodyStringArray.toString().replace(/,&/g, '&'));
         return bodyStringArray.toString().replace(/,&/g, '&');
       };
       const afterSuccess = () => {
@@ -16427,6 +17146,7 @@ const SpxEditButton = class extends HTMLElement {
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
+    this.spxEditButtonDidLoad.emit({ target: 'document' });
   }
   createPositionArray() {
     this.positionArray = this.position.split('-');
@@ -16655,7 +17375,7 @@ function contains(parent, child) {
   if (parent.contains(child)) {
     return true;
   } // then fallback to custom implementation with Shadow DOM support
-  else if (isShadowRoot(rootNode)) {
+  else if (rootNode && isShadowRoot(rootNode)) {
       var next = child;
 
       do {
@@ -18145,7 +18865,7 @@ var createPopper = /*#__PURE__*/popperGenerator({
 }); // eslint-disable-next-line import/no-unused-modules
 
 /**!
-* tippy.js v6.2.6
+* tippy.js v6.2.7
 * (c) 2017-2020 atomiks
 * MIT License
 */
@@ -18632,8 +19352,7 @@ function createTippy(reference, passedProps) {
   var onFirstUpdate;
   var listeners = [];
   var debouncedOnMouseMove = debounce$2(onMouseMove, props.interactiveDebounce);
-  var currentTarget;
-  var doc = getOwnerDocument(props.triggerTarget || reference); // ===========================================================================
+  var currentTarget; // ===========================================================================
   // 🔑 Public members
   // ===========================================================================
 
@@ -18716,7 +19435,7 @@ function createTippy(reference, passedProps) {
   });
   popper.addEventListener('mouseleave', function (event) {
     if (instance.props.interactive && instance.props.trigger.indexOf('mouseenter') >= 0) {
-      doc.addEventListener('mousemove', debouncedOnMouseMove);
+      getDocument().addEventListener('mousemove', debouncedOnMouseMove);
       debouncedOnMouseMove(event);
     }
   });
@@ -18742,6 +19461,11 @@ function createTippy(reference, passedProps) {
 
   function getCurrentTarget() {
     return currentTarget || reference;
+  }
+
+  function getDocument() {
+    var parent = getCurrentTarget().parentNode;
+    return parent ? getOwnerDocument(parent) : document;
   }
 
   function getDefaultTemplateChildren() {
@@ -18825,7 +19549,7 @@ function createTippy(reference, passedProps) {
   }
 
   function cleanupInteractiveMouseListeners() {
-    doc.removeEventListener('mousemove', debouncedOnMouseMove);
+    getDocument().removeEventListener('mousemove', debouncedOnMouseMove);
     mouseMoveListeners = mouseMoveListeners.filter(function (listener) {
       return listener !== debouncedOnMouseMove;
     });
@@ -18885,6 +19609,7 @@ function createTippy(reference, passedProps) {
   }
 
   function addDocumentPress() {
+    var doc = getDocument();
     doc.addEventListener('mousedown', onDocumentPress, true);
     doc.addEventListener('touchend', onDocumentPress, TOUCH_OPTIONS);
     doc.addEventListener('touchstart', onTouchStart, TOUCH_OPTIONS);
@@ -18892,6 +19617,7 @@ function createTippy(reference, passedProps) {
   }
 
   function removeDocumentPress() {
+    var doc = getDocument();
     doc.removeEventListener('mousedown', onDocumentPress, true);
     doc.removeEventListener('touchend', onDocumentPress, TOUCH_OPTIONS);
     doc.removeEventListener('touchstart', onTouchStart, TOUCH_OPTIONS);
@@ -19494,7 +20220,7 @@ function createTippy(reference, passedProps) {
 
   function hideWithInteractivity(event) {
 
-    doc.addEventListener('mousemove', debouncedOnMouseMove);
+    getDocument().addEventListener('mousemove', debouncedOnMouseMove);
     pushIfUnique(mouseMoveListeners, debouncedOnMouseMove);
     debouncedOnMouseMove(event);
   }
@@ -19575,974 +20301,6 @@ tippy.currentInput = currentInput;
 tippy.setDefaultProps({
   render: render
 });
-
-var clipboard = createCommonjsModule(function (module, exports) {
-/*!
- * clipboard.js v2.0.6
- * https://clipboardjs.com/
- * 
- * Licensed MIT © Zeno Rocha
- */
-(function webpackUniversalModuleDefinition(root, factory) {
-	module.exports = factory();
-})(commonjsGlobal, function() {
-return /******/ (function(modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
-/******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if(installedModules[moduleId]) {
-/******/ 			return installedModules[moduleId].exports;
-/******/ 		}
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			i: moduleId,
-/******/ 			l: false,
-/******/ 			exports: {}
-/******/ 		};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.l = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
-/******/ 	}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// define getter function for harmony exports
-/******/ 	__webpack_require__.d = function(exports, name, getter) {
-/******/ 		if(!__webpack_require__.o(exports, name)) {
-/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
-/******/ 		}
-/******/ 	};
-/******/
-/******/ 	// define __esModule on exports
-/******/ 	__webpack_require__.r = function(exports) {
-/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
-/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
-/******/ 		}
-/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
-/******/ 	};
-/******/
-/******/ 	// create a fake namespace object
-/******/ 	// mode & 1: value is a module id, require it
-/******/ 	// mode & 2: merge all properties of value into the ns
-/******/ 	// mode & 4: return value when already ns object
-/******/ 	// mode & 8|1: behave like require
-/******/ 	__webpack_require__.t = function(value, mode) {
-/******/ 		if(mode & 1) value = __webpack_require__(value);
-/******/ 		if(mode & 8) return value;
-/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
-/******/ 		var ns = Object.create(null);
-/******/ 		__webpack_require__.r(ns);
-/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
-/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
-/******/ 		return ns;
-/******/ 	};
-/******/
-/******/ 	// getDefaultExport function for compatibility with non-harmony modules
-/******/ 	__webpack_require__.n = function(module) {
-/******/ 		var getter = module && module.__esModule ?
-/******/ 			function getDefault() { return module['default']; } :
-/******/ 			function getModuleExports() { return module; };
-/******/ 		__webpack_require__.d(getter, 'a', getter);
-/******/ 		return getter;
-/******/ 	};
-/******/
-/******/ 	// Object.prototype.hasOwnProperty.call
-/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
-/******/ })
-/************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports) {
-
-function select(element) {
-    var selectedText;
-
-    if (element.nodeName === 'SELECT') {
-        element.focus();
-
-        selectedText = element.value;
-    }
-    else if (element.nodeName === 'INPUT' || element.nodeName === 'TEXTAREA') {
-        var isReadOnly = element.hasAttribute('readonly');
-
-        if (!isReadOnly) {
-            element.setAttribute('readonly', '');
-        }
-
-        element.select();
-        element.setSelectionRange(0, element.value.length);
-
-        if (!isReadOnly) {
-            element.removeAttribute('readonly');
-        }
-
-        selectedText = element.value;
-    }
-    else {
-        if (element.hasAttribute('contenteditable')) {
-            element.focus();
-        }
-
-        var selection = window.getSelection();
-        var range = document.createRange();
-
-        range.selectNodeContents(element);
-        selection.removeAllRanges();
-        selection.addRange(range);
-
-        selectedText = selection.toString();
-    }
-
-    return selectedText;
-}
-
-module.exports = select;
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, exports) {
-
-function E () {
-  // Keep this empty so it's easier to inherit from
-  // (via https://github.com/lipsmack from https://github.com/scottcorgan/tiny-emitter/issues/3)
-}
-
-E.prototype = {
-  on: function (name, callback, ctx) {
-    var e = this.e || (this.e = {});
-
-    (e[name] || (e[name] = [])).push({
-      fn: callback,
-      ctx: ctx
-    });
-
-    return this;
-  },
-
-  once: function (name, callback, ctx) {
-    var self = this;
-    function listener () {
-      self.off(name, listener);
-      callback.apply(ctx, arguments);
-    }
-    listener._ = callback;
-    return this.on(name, listener, ctx);
-  },
-
-  emit: function (name) {
-    var data = [].slice.call(arguments, 1);
-    var evtArr = ((this.e || (this.e = {}))[name] || []).slice();
-    var i = 0;
-    var len = evtArr.length;
-
-    for (i; i < len; i++) {
-      evtArr[i].fn.apply(evtArr[i].ctx, data);
-    }
-
-    return this;
-  },
-
-  off: function (name, callback) {
-    var e = this.e || (this.e = {});
-    var evts = e[name];
-    var liveEvents = [];
-
-    if (evts && callback) {
-      for (var i = 0, len = evts.length; i < len; i++) {
-        if (evts[i].fn !== callback && evts[i].fn._ !== callback)
-          liveEvents.push(evts[i]);
-      }
-    }
-
-    // Remove event from queue to prevent memory leak
-    // Suggested by https://github.com/lazd
-    // Ref: https://github.com/scottcorgan/tiny-emitter/commit/c6ebfaa9bc973b33d110a84a307742b7cf94c953#commitcomment-5024910
-
-    (liveEvents.length)
-      ? e[name] = liveEvents
-      : delete e[name];
-
-    return this;
-  }
-};
-
-module.exports = E;
-module.exports.TinyEmitter = E;
-
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var is = __webpack_require__(3);
-var delegate = __webpack_require__(4);
-
-/**
- * Validates all params and calls the right
- * listener function based on its target type.
- *
- * @param {String|HTMLElement|HTMLCollection|NodeList} target
- * @param {String} type
- * @param {Function} callback
- * @return {Object}
- */
-function listen(target, type, callback) {
-    if (!target && !type && !callback) {
-        throw new Error('Missing required arguments');
-    }
-
-    if (!is.string(type)) {
-        throw new TypeError('Second argument must be a String');
-    }
-
-    if (!is.fn(callback)) {
-        throw new TypeError('Third argument must be a Function');
-    }
-
-    if (is.node(target)) {
-        return listenNode(target, type, callback);
-    }
-    else if (is.nodeList(target)) {
-        return listenNodeList(target, type, callback);
-    }
-    else if (is.string(target)) {
-        return listenSelector(target, type, callback);
-    }
-    else {
-        throw new TypeError('First argument must be a String, HTMLElement, HTMLCollection, or NodeList');
-    }
-}
-
-/**
- * Adds an event listener to a HTML element
- * and returns a remove listener function.
- *
- * @param {HTMLElement} node
- * @param {String} type
- * @param {Function} callback
- * @return {Object}
- */
-function listenNode(node, type, callback) {
-    node.addEventListener(type, callback);
-
-    return {
-        destroy: function() {
-            node.removeEventListener(type, callback);
-        }
-    }
-}
-
-/**
- * Add an event listener to a list of HTML elements
- * and returns a remove listener function.
- *
- * @param {NodeList|HTMLCollection} nodeList
- * @param {String} type
- * @param {Function} callback
- * @return {Object}
- */
-function listenNodeList(nodeList, type, callback) {
-    Array.prototype.forEach.call(nodeList, function(node) {
-        node.addEventListener(type, callback);
-    });
-
-    return {
-        destroy: function() {
-            Array.prototype.forEach.call(nodeList, function(node) {
-                node.removeEventListener(type, callback);
-            });
-        }
-    }
-}
-
-/**
- * Add an event listener to a selector
- * and returns a remove listener function.
- *
- * @param {String} selector
- * @param {String} type
- * @param {Function} callback
- * @return {Object}
- */
-function listenSelector(selector, type, callback) {
-    return delegate(document.body, selector, type, callback);
-}
-
-module.exports = listen;
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, exports) {
-
-/**
- * Check if argument is a HTML element.
- *
- * @param {Object} value
- * @return {Boolean}
- */
-exports.node = function(value) {
-    return value !== undefined
-        && value instanceof HTMLElement
-        && value.nodeType === 1;
-};
-
-/**
- * Check if argument is a list of HTML elements.
- *
- * @param {Object} value
- * @return {Boolean}
- */
-exports.nodeList = function(value) {
-    var type = Object.prototype.toString.call(value);
-
-    return value !== undefined
-        && (type === '[object NodeList]' || type === '[object HTMLCollection]')
-        && ('length' in value)
-        && (value.length === 0 || exports.node(value[0]));
-};
-
-/**
- * Check if argument is a string.
- *
- * @param {Object} value
- * @return {Boolean}
- */
-exports.string = function(value) {
-    return typeof value === 'string'
-        || value instanceof String;
-};
-
-/**
- * Check if argument is a function.
- *
- * @param {Object} value
- * @return {Boolean}
- */
-exports.fn = function(value) {
-    var type = Object.prototype.toString.call(value);
-
-    return type === '[object Function]';
-};
-
-
-/***/ }),
-/* 4 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var closest = __webpack_require__(5);
-
-/**
- * Delegates event to a selector.
- *
- * @param {Element} element
- * @param {String} selector
- * @param {String} type
- * @param {Function} callback
- * @param {Boolean} useCapture
- * @return {Object}
- */
-function _delegate(element, selector, type, callback, useCapture) {
-    var listenerFn = listener.apply(this, arguments);
-
-    element.addEventListener(type, listenerFn, useCapture);
-
-    return {
-        destroy: function() {
-            element.removeEventListener(type, listenerFn, useCapture);
-        }
-    }
-}
-
-/**
- * Delegates event to a selector.
- *
- * @param {Element|String|Array} [elements]
- * @param {String} selector
- * @param {String} type
- * @param {Function} callback
- * @param {Boolean} useCapture
- * @return {Object}
- */
-function delegate(elements, selector, type, callback, useCapture) {
-    // Handle the regular Element usage
-    if (typeof elements.addEventListener === 'function') {
-        return _delegate.apply(null, arguments);
-    }
-
-    // Handle Element-less usage, it defaults to global delegation
-    if (typeof type === 'function') {
-        // Use `document` as the first parameter, then apply arguments
-        // This is a short way to .unshift `arguments` without running into deoptimizations
-        return _delegate.bind(null, document).apply(null, arguments);
-    }
-
-    // Handle Selector-based usage
-    if (typeof elements === 'string') {
-        elements = document.querySelectorAll(elements);
-    }
-
-    // Handle Array-like based usage
-    return Array.prototype.map.call(elements, function (element) {
-        return _delegate(element, selector, type, callback, useCapture);
-    });
-}
-
-/**
- * Finds closest match and invokes callback.
- *
- * @param {Element} element
- * @param {String} selector
- * @param {String} type
- * @param {Function} callback
- * @return {Function}
- */
-function listener(element, selector, type, callback) {
-    return function(e) {
-        e.delegateTarget = closest(e.target, selector);
-
-        if (e.delegateTarget) {
-            callback.call(element, e);
-        }
-    }
-}
-
-module.exports = delegate;
-
-
-/***/ }),
-/* 5 */
-/***/ (function(module, exports) {
-
-var DOCUMENT_NODE_TYPE = 9;
-
-/**
- * A polyfill for Element.matches()
- */
-if (typeof Element !== 'undefined' && !Element.prototype.matches) {
-    var proto = Element.prototype;
-
-    proto.matches = proto.matchesSelector ||
-                    proto.mozMatchesSelector ||
-                    proto.msMatchesSelector ||
-                    proto.oMatchesSelector ||
-                    proto.webkitMatchesSelector;
-}
-
-/**
- * Finds the closest parent that matches a selector.
- *
- * @param {Element} element
- * @param {String} selector
- * @return {Function}
- */
-function closest (element, selector) {
-    while (element && element.nodeType !== DOCUMENT_NODE_TYPE) {
-        if (typeof element.matches === 'function' &&
-            element.matches(selector)) {
-          return element;
-        }
-        element = element.parentNode;
-    }
-}
-
-module.exports = closest;
-
-
-/***/ }),
-/* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-__webpack_require__.r(__webpack_exports__);
-
-// EXTERNAL MODULE: ./node_modules/select/src/select.js
-var src_select = __webpack_require__(0);
-var select_default = /*#__PURE__*/__webpack_require__.n(src_select);
-
-// CONCATENATED MODULE: ./src/clipboard-action.js
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-
-
-/**
- * Inner class which performs selection from either `text` or `target`
- * properties and then executes copy or cut operations.
- */
-
-var clipboard_action_ClipboardAction = function () {
-    /**
-     * @param {Object} options
-     */
-    function ClipboardAction(options) {
-        _classCallCheck(this, ClipboardAction);
-
-        this.resolveOptions(options);
-        this.initSelection();
-    }
-
-    /**
-     * Defines base properties passed from constructor.
-     * @param {Object} options
-     */
-
-
-    _createClass(ClipboardAction, [{
-        key: 'resolveOptions',
-        value: function resolveOptions() {
-            var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-            this.action = options.action;
-            this.container = options.container;
-            this.emitter = options.emitter;
-            this.target = options.target;
-            this.text = options.text;
-            this.trigger = options.trigger;
-
-            this.selectedText = '';
-        }
-
-        /**
-         * Decides which selection strategy is going to be applied based
-         * on the existence of `text` and `target` properties.
-         */
-
-    }, {
-        key: 'initSelection',
-        value: function initSelection() {
-            if (this.text) {
-                this.selectFake();
-            } else if (this.target) {
-                this.selectTarget();
-            }
-        }
-
-        /**
-         * Creates a fake textarea element, sets its value from `text` property,
-         * and makes a selection on it.
-         */
-
-    }, {
-        key: 'selectFake',
-        value: function selectFake() {
-            var _this = this;
-
-            var isRTL = document.documentElement.getAttribute('dir') == 'rtl';
-
-            this.removeFake();
-
-            this.fakeHandlerCallback = function () {
-                return _this.removeFake();
-            };
-            this.fakeHandler = this.container.addEventListener('click', this.fakeHandlerCallback) || true;
-
-            this.fakeElem = document.createElement('textarea');
-            // Prevent zooming on iOS
-            this.fakeElem.style.fontSize = '12pt';
-            // Reset box model
-            this.fakeElem.style.border = '0';
-            this.fakeElem.style.padding = '0';
-            this.fakeElem.style.margin = '0';
-            // Move element out of screen horizontally
-            this.fakeElem.style.position = 'absolute';
-            this.fakeElem.style[isRTL ? 'right' : 'left'] = '-9999px';
-            // Move element to the same position vertically
-            var yPosition = window.pageYOffset || document.documentElement.scrollTop;
-            this.fakeElem.style.top = yPosition + 'px';
-
-            this.fakeElem.setAttribute('readonly', '');
-            this.fakeElem.value = this.text;
-
-            this.container.appendChild(this.fakeElem);
-
-            this.selectedText = select_default()(this.fakeElem);
-            this.copyText();
-        }
-
-        /**
-         * Only removes the fake element after another click event, that way
-         * a user can hit `Ctrl+C` to copy because selection still exists.
-         */
-
-    }, {
-        key: 'removeFake',
-        value: function removeFake() {
-            if (this.fakeHandler) {
-                this.container.removeEventListener('click', this.fakeHandlerCallback);
-                this.fakeHandler = null;
-                this.fakeHandlerCallback = null;
-            }
-
-            if (this.fakeElem) {
-                this.container.removeChild(this.fakeElem);
-                this.fakeElem = null;
-            }
-        }
-
-        /**
-         * Selects the content from element passed on `target` property.
-         */
-
-    }, {
-        key: 'selectTarget',
-        value: function selectTarget() {
-            this.selectedText = select_default()(this.target);
-            this.copyText();
-        }
-
-        /**
-         * Executes the copy operation based on the current selection.
-         */
-
-    }, {
-        key: 'copyText',
-        value: function copyText() {
-            var succeeded = void 0;
-
-            try {
-                succeeded = document.execCommand(this.action);
-            } catch (err) {
-                succeeded = false;
-            }
-
-            this.handleResult(succeeded);
-        }
-
-        /**
-         * Fires an event based on the copy operation result.
-         * @param {Boolean} succeeded
-         */
-
-    }, {
-        key: 'handleResult',
-        value: function handleResult(succeeded) {
-            this.emitter.emit(succeeded ? 'success' : 'error', {
-                action: this.action,
-                text: this.selectedText,
-                trigger: this.trigger,
-                clearSelection: this.clearSelection.bind(this)
-            });
-        }
-
-        /**
-         * Moves focus away from `target` and back to the trigger, removes current selection.
-         */
-
-    }, {
-        key: 'clearSelection',
-        value: function clearSelection() {
-            if (this.trigger) {
-                this.trigger.focus();
-            }
-            document.activeElement.blur();
-            window.getSelection().removeAllRanges();
-        }
-
-        /**
-         * Sets the `action` to be performed which can be either 'copy' or 'cut'.
-         * @param {String} action
-         */
-
-    }, {
-        key: 'destroy',
-
-
-        /**
-         * Destroy lifecycle.
-         */
-        value: function destroy() {
-            this.removeFake();
-        }
-    }, {
-        key: 'action',
-        set: function set() {
-            var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'copy';
-
-            this._action = action;
-
-            if (this._action !== 'copy' && this._action !== 'cut') {
-                throw new Error('Invalid "action" value, use either "copy" or "cut"');
-            }
-        }
-
-        /**
-         * Gets the `action` property.
-         * @return {String}
-         */
-        ,
-        get: function get() {
-            return this._action;
-        }
-
-        /**
-         * Sets the `target` property using an element
-         * that will be have its content copied.
-         * @param {Element} target
-         */
-
-    }, {
-        key: 'target',
-        set: function set(target) {
-            if (target !== undefined) {
-                if (target && (typeof target === 'undefined' ? 'undefined' : _typeof(target)) === 'object' && target.nodeType === 1) {
-                    if (this.action === 'copy' && target.hasAttribute('disabled')) {
-                        throw new Error('Invalid "target" attribute. Please use "readonly" instead of "disabled" attribute');
-                    }
-
-                    if (this.action === 'cut' && (target.hasAttribute('readonly') || target.hasAttribute('disabled'))) {
-                        throw new Error('Invalid "target" attribute. You can\'t cut text from elements with "readonly" or "disabled" attributes');
-                    }
-
-                    this._target = target;
-                } else {
-                    throw new Error('Invalid "target" value, use a valid Element');
-                }
-            }
-        }
-
-        /**
-         * Gets the `target` property.
-         * @return {String|HTMLElement}
-         */
-        ,
-        get: function get() {
-            return this._target;
-        }
-    }]);
-
-    return ClipboardAction;
-}();
-
-/* harmony default export */ var clipboard_action = (clipboard_action_ClipboardAction);
-// EXTERNAL MODULE: ./node_modules/tiny-emitter/index.js
-var tiny_emitter = __webpack_require__(1);
-var tiny_emitter_default = /*#__PURE__*/__webpack_require__.n(tiny_emitter);
-
-// EXTERNAL MODULE: ./node_modules/good-listener/src/listen.js
-var listen = __webpack_require__(2);
-var listen_default = /*#__PURE__*/__webpack_require__.n(listen);
-
-// CONCATENATED MODULE: ./src/clipboard.js
-var clipboard_typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
-var clipboard_createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function clipboard_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-
-
-
-
-/**
- * Base class which takes one or more elements, adds event listeners to them,
- * and instantiates a new `ClipboardAction` on each click.
- */
-
-var clipboard_Clipboard = function (_Emitter) {
-    _inherits(Clipboard, _Emitter);
-
-    /**
-     * @param {String|HTMLElement|HTMLCollection|NodeList} trigger
-     * @param {Object} options
-     */
-    function Clipboard(trigger, options) {
-        clipboard_classCallCheck(this, Clipboard);
-
-        var _this = _possibleConstructorReturn(this, (Clipboard.__proto__ || Object.getPrototypeOf(Clipboard)).call(this));
-
-        _this.resolveOptions(options);
-        _this.listenClick(trigger);
-        return _this;
-    }
-
-    /**
-     * Defines if attributes would be resolved using internal setter functions
-     * or custom functions that were passed in the constructor.
-     * @param {Object} options
-     */
-
-
-    clipboard_createClass(Clipboard, [{
-        key: 'resolveOptions',
-        value: function resolveOptions() {
-            var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-
-            this.action = typeof options.action === 'function' ? options.action : this.defaultAction;
-            this.target = typeof options.target === 'function' ? options.target : this.defaultTarget;
-            this.text = typeof options.text === 'function' ? options.text : this.defaultText;
-            this.container = clipboard_typeof(options.container) === 'object' ? options.container : document.body;
-        }
-
-        /**
-         * Adds a click event listener to the passed trigger.
-         * @param {String|HTMLElement|HTMLCollection|NodeList} trigger
-         */
-
-    }, {
-        key: 'listenClick',
-        value: function listenClick(trigger) {
-            var _this2 = this;
-
-            this.listener = listen_default()(trigger, 'click', function (e) {
-                return _this2.onClick(e);
-            });
-        }
-
-        /**
-         * Defines a new `ClipboardAction` on each click event.
-         * @param {Event} e
-         */
-
-    }, {
-        key: 'onClick',
-        value: function onClick(e) {
-            var trigger = e.delegateTarget || e.currentTarget;
-
-            if (this.clipboardAction) {
-                this.clipboardAction = null;
-            }
-
-            this.clipboardAction = new clipboard_action({
-                action: this.action(trigger),
-                target: this.target(trigger),
-                text: this.text(trigger),
-                container: this.container,
-                trigger: trigger,
-                emitter: this
-            });
-        }
-
-        /**
-         * Default `action` lookup function.
-         * @param {Element} trigger
-         */
-
-    }, {
-        key: 'defaultAction',
-        value: function defaultAction(trigger) {
-            return getAttributeValue('action', trigger);
-        }
-
-        /**
-         * Default `target` lookup function.
-         * @param {Element} trigger
-         */
-
-    }, {
-        key: 'defaultTarget',
-        value: function defaultTarget(trigger) {
-            var selector = getAttributeValue('target', trigger);
-
-            if (selector) {
-                return document.querySelector(selector);
-            }
-        }
-
-        /**
-         * Returns the support of the given action, or all actions if no action is
-         * given.
-         * @param {String} [action]
-         */
-
-    }, {
-        key: 'defaultText',
-
-
-        /**
-         * Default `text` lookup function.
-         * @param {Element} trigger
-         */
-        value: function defaultText(trigger) {
-            return getAttributeValue('text', trigger);
-        }
-
-        /**
-         * Destroy lifecycle.
-         */
-
-    }, {
-        key: 'destroy',
-        value: function destroy() {
-            this.listener.destroy();
-
-            if (this.clipboardAction) {
-                this.clipboardAction.destroy();
-                this.clipboardAction = null;
-            }
-        }
-    }], [{
-        key: 'isSupported',
-        value: function isSupported() {
-            var action = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['copy', 'cut'];
-
-            var actions = typeof action === 'string' ? [action] : action;
-            var support = !!document.queryCommandSupported;
-
-            actions.forEach(function (action) {
-                support = support && !!document.queryCommandSupported(action);
-            });
-
-            return support;
-        }
-    }]);
-
-    return Clipboard;
-}(tiny_emitter_default.a);
-
-/**
- * Helper function to retrieve attribute value.
- * @param {String} suffix
- * @param {Element} element
- */
-
-
-function getAttributeValue(suffix, element) {
-    var attribute = 'data-clipboard-' + suffix;
-
-    if (!element.hasAttribute(attribute)) {
-        return;
-    }
-
-    return element.getAttribute(attribute);
-}
-
-/* harmony default export */ var clipboard = __webpack_exports__["default"] = (clipboard_Clipboard);
-
-/***/ })
-/******/ ])["default"];
-});
-});
-
-const Clipboard = /*@__PURE__*/getDefaultExportFromCjs(clipboard);
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -20733,13 +20491,15 @@ var clearAllBodyScrollLocks = function clearAllBodyScrollLocks() {
 };
 
 const name = "spx-accordion";
-const description = "Accordions are the classic method to show and hide elements on your website.";
+const description = "The classic method to show and hide elements on your website.\nCan be used with custom markup for the header and/or content section.";
 const properties = [
 	{
 		id: "accordion-contentColor",
 		name: "contentColor",
+		attribute: "content-color",
 		type: "string",
 		description: "",
+		"default": "'var(--spx-color-gray-900)'",
 		defaultValue: "'var(--spx-color-gray-900)'",
 		tags: [
 		]
@@ -20747,8 +20507,10 @@ const properties = [
 	{
 		id: "accordion-contentText",
 		name: "contentText",
+		attribute: "content-text",
 		type: "string",
 		description: "Content text.",
+		"default": "'Default Content Text'",
 		defaultValue: "'Default Content Text'",
 		tags: [
 		]
@@ -20756,8 +20518,10 @@ const properties = [
 	{
 		id: "accordion-contentTextTag",
 		name: "contentTextTag",
+		attribute: "content-text-tag",
 		type: "string",
 		description: "Content text tag.",
+		"default": "'span'",
 		defaultValue: "'span'",
 		tags: [
 		]
@@ -20765,8 +20529,10 @@ const properties = [
 	{
 		id: "accordion-contentTransitionDuration",
 		name: "contentTransitionDuration",
+		attribute: "content-transition-duration",
 		type: "string",
 		description: "",
+		"default": "s.transitionDuration",
 		defaultValue: "'var(--spx-transition-duration)'",
 		tags: [
 		]
@@ -20774,17 +20540,30 @@ const properties = [
 	{
 		id: "accordion-contentTransitionTimingFunction",
 		name: "contentTransitionTimingFunction",
+		attribute: "content-transition-timing-function",
 		type: "string",
 		description: "",
+		"default": "s.transitionTimingFunction",
 		defaultValue: "'var(--spx-transition-timing-function)'",
+		tags: [
+		]
+	},
+	{
+		id: "accordion-disableAnimation",
+		name: "disableAnimation",
+		attribute: "disable-animation",
+		type: "boolean",
+		description: "Disables the animation.\nSet this attribute if the accordion is starting hidden in the DOM.",
 		tags: [
 		]
 	},
 	{
 		id: "accordion-fontSize",
 		name: "fontSize",
+		attribute: "font-size",
 		type: "string",
 		description: "",
+		"default": "s.fontSize",
 		defaultValue: "'var(--spx-font-size)'",
 		tags: [
 		]
@@ -20792,8 +20571,10 @@ const properties = [
 	{
 		id: "accordion-gap",
 		name: "gap",
+		attribute: "gap",
 		type: "string",
 		description: "Space between header and content.",
+		"default": "'0.4em'",
 		defaultValue: "'0.4em'",
 		tags: [
 			{
@@ -20804,8 +20585,10 @@ const properties = [
 	{
 		id: "accordion-headerColor",
 		name: "headerColor",
+		attribute: "header-color",
 		type: "string",
 		description: "",
+		"default": "'var(--spx-color-gray-900)'",
 		defaultValue: "'var(--spx-color-gray-900)'",
 		tags: [
 		]
@@ -20813,8 +20596,10 @@ const properties = [
 	{
 		id: "accordion-headerGap",
 		name: "headerGap",
+		attribute: "header-gap",
 		type: "string",
 		description: "Gap between header text and icon.",
+		"default": "'0.4em'",
 		defaultValue: "'0.4em'",
 		tags: [
 			{
@@ -20825,17 +20610,30 @@ const properties = [
 	{
 		id: "accordion-headerText",
 		name: "headerText",
+		attribute: "header-text",
 		type: "string",
 		description: "Header text.",
+		"default": "'Default Header Text'",
 		defaultValue: "'Default Header Text'",
+		tags: [
+		]
+	},
+	{
+		id: "accordion-headerTextOpen",
+		name: "headerTextOpen",
+		attribute: "header-text-open",
+		type: "string",
+		description: "Header text when component is closed.",
 		tags: [
 		]
 	},
 	{
 		id: "accordion-headerTextTag",
 		name: "headerTextTag",
+		attribute: "header-text-tag",
 		type: "string",
 		description: "Header text tag.",
+		"default": "'span'",
 		defaultValue: "'span'",
 		tags: [
 		]
@@ -20843,8 +20641,10 @@ const properties = [
 	{
 		id: "accordion-indicatorIcon",
 		name: "indicatorIcon",
+		attribute: "indicator-icon",
 		type: "string",
 		description: "Indicator icon.",
+		"default": "'arrow-down'",
 		defaultValue: "'arrow-down'",
 		tags: [
 		]
@@ -20852,8 +20652,10 @@ const properties = [
 	{
 		id: "accordion-indicatorIconTransform",
 		name: "indicatorIconTransform",
+		attribute: "indicator-icon-transform",
 		type: "string",
 		description: "Indicator icon transform.",
+		"default": "'rotate(180deg)'",
 		defaultValue: "'rotate(180deg)'",
 		tags: [
 		]
@@ -20861,34 +20663,93 @@ const properties = [
 	{
 		id: "accordion-indicatorIconType",
 		name: "indicatorIconType",
+		attribute: "indicator-icon-type",
 		type: "string",
 		description: "Indicator icon type.",
+		"default": "'ionicons'",
 		defaultValue: "'ionicons'",
+		tags: [
+		]
+	},
+	{
+		id: "accordion-link",
+		name: "link",
+		attribute: "link",
+		type: "string",
+		description: "Sets the ID to link different accordions together.",
+		tags: [
+		]
+	},
+	{
+		id: "accordion-linkType",
+		name: "linkType",
+		attribute: "link-type",
+		type: "string",
+		description: "Sets the type of link.",
+		tags: [
+			{
+				text: "'open', 'close', 'toggle'",
+				name: "choice"
+			}
+		]
+	},
+	{
+		id: "accordion-openState",
+		name: "openState",
+		attribute: "open-state",
+		type: "boolean",
+		description: "State of accordion.",
+		"default": "false",
+		defaultValue: "false",
+		tags: [
+		]
+	},
+	{
+		id: "accordion-reverse",
+		name: "reverse",
+		attribute: "reverse",
+		type: "boolean",
+		description: "Reverse icon positioning.",
 		tags: [
 		]
 	}
 ];
 const events = [
+	{
+		name: "spxAccordionDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods = [
+	{
+		name: "close",
+		description: "Closes the accordion.",
+		signature: "close() => Promise<void>"
+	},
+	{
+		name: "open",
+		description: "Opens the accordion.",
+		signature: "open() => Promise<void>"
+	},
 	{
 		name: "reload",
 		description: "",
 		signature: "reload() => Promise<void>"
+	},
+	{
+		name: "toggle",
+		description: "Toggles the accordion.",
+		signature: "toggle() => Promise<void>"
 	}
 ];
 const slots = [
 	{
 		name: "content",
-		description: "Content."
+		description: "Slot for the content."
 	},
 	{
 		name: "header",
-		description: "Header."
-	},
-	{
-		name: "icon",
-		description: "Icon."
+		description: "Slot for the header."
 	}
 ];
 const spxAccordion = {
@@ -20917,8 +20778,10 @@ const properties$1 = [
 	{
 		id: "animate-delay",
 		name: "delay",
+		attribute: "delay",
 		type: "number",
 		description: "Delay before animation starts.",
+		"default": "0",
 		defaultValue: "0",
 		tags: [
 		]
@@ -20926,8 +20789,10 @@ const properties$1 = [
 	{
 		id: "animate-display",
 		name: "display",
+		attribute: "display",
 		type: "string",
 		description: "",
+		"default": "'block'",
 		defaultValue: "'block'",
 		tags: [
 		]
@@ -20935,8 +20800,10 @@ const properties$1 = [
 	{
 		id: "animate-duration",
 		name: "duration",
+		attribute: "duration",
 		type: "number",
 		description: "Animation duration.",
+		"default": "1",
 		defaultValue: "1",
 		tags: [
 		]
@@ -20944,8 +20811,10 @@ const properties$1 = [
 	{
 		id: "animate-ease",
 		name: "ease",
+		attribute: "ease",
 		type: "string",
 		description: "Ease being used. Accepts all common GSAP options.",
+		"default": "'power1.out'",
 		defaultValue: "'power1.out'",
 		tags: [
 		]
@@ -20953,6 +20822,7 @@ const properties$1 = [
 	{
 		id: "animate-once",
 		name: "once",
+		attribute: "once",
 		type: "boolean",
 		description: "Determines if animation should only play once. (if viewport is true)",
 		tags: [
@@ -20961,8 +20831,10 @@ const properties$1 = [
 	{
 		id: "animate-opacity",
 		name: "opacity",
+		attribute: "opacity",
 		type: "number",
 		description: "Opacity level the animation starts from.",
+		"default": "0",
 		defaultValue: "0",
 		tags: [
 		]
@@ -20970,6 +20842,7 @@ const properties$1 = [
 	{
 		id: "animate-repeat",
 		name: "repeat",
+		attribute: "repeat",
 		type: "number",
 		description: "Repeats the animation. -1 to repeat indefinitely.",
 		tags: [
@@ -20978,6 +20851,7 @@ const properties$1 = [
 	{
 		id: "animate-repeatDelay",
 		name: "repeatDelay",
+		attribute: "repeat-delay",
 		type: "number",
 		description: "Time to wait between repetitions.",
 		tags: [
@@ -20986,6 +20860,7 @@ const properties$1 = [
 	{
 		id: "animate-reverse",
 		name: "reverse",
+		attribute: "reverse",
 		type: "boolean",
 		description: "Reverses the animation.",
 		tags: [
@@ -20994,8 +20869,10 @@ const properties$1 = [
 	{
 		id: "animate-stagger",
 		name: "stagger",
+		attribute: "stagger",
 		type: "number",
 		description: "Amount of time elements should be staggered by.",
+		"default": "0.15",
 		defaultValue: "0.15",
 		tags: [
 		]
@@ -21003,8 +20880,10 @@ const properties$1 = [
 	{
 		id: "animate-target",
 		name: "target",
+		attribute: "target",
 		type: "string",
 		description: "The target element that should be animated inside the component.",
+		"default": "'*'",
 		defaultValue: "'*'",
 		tags: [
 		]
@@ -21012,6 +20891,7 @@ const properties$1 = [
 	{
 		id: "animate-viewport",
 		name: "viewport",
+		attribute: "viewport",
 		type: "boolean",
 		description: "Starts animation when target is in the viewport.",
 		tags: [
@@ -21020,6 +20900,7 @@ const properties$1 = [
 	{
 		id: "animate-viewportMarginBottom",
 		name: "viewportMarginBottom",
+		attribute: "viewport-margin-bottom",
 		type: "string",
 		description: "Adjust the root margin of the animation start.",
 		tags: [
@@ -21028,6 +20909,7 @@ const properties$1 = [
 	{
 		id: "animate-viewportMarginLeft",
 		name: "viewportMarginLeft",
+		attribute: "viewport-margin-left",
 		type: "string",
 		description: "Adjust the root margin of the animation start.",
 		tags: [
@@ -21036,6 +20918,7 @@ const properties$1 = [
 	{
 		id: "animate-viewportMarginRight",
 		name: "viewportMarginRight",
+		attribute: "viewport-margin-right",
 		type: "string",
 		description: "Adjust the root margin of the animation start.",
 		tags: [
@@ -21044,6 +20927,7 @@ const properties$1 = [
 	{
 		id: "animate-viewportMarginTop",
 		name: "viewportMarginTop",
+		attribute: "viewport-margin-top",
 		type: "string",
 		description: "Adjust the root margin of the animation start.",
 		tags: [
@@ -21052,8 +20936,10 @@ const properties$1 = [
 	{
 		id: "animate-x",
 		name: "x",
+		attribute: "x",
 		type: "number",
 		description: "X position the animation starts from.",
+		"default": "0",
 		defaultValue: "0",
 		tags: [
 		]
@@ -21061,8 +20947,10 @@ const properties$1 = [
 	{
 		id: "animate-y",
 		name: "y",
+		attribute: "y",
 		type: "number",
 		description: "Y position the animation starts from.",
+		"default": "0",
 		defaultValue: "0",
 		tags: [
 		]
@@ -21070,6 +20958,7 @@ const properties$1 = [
 	{
 		id: "animate-yoyo",
 		name: "yoyo",
+		attribute: "yoyo",
 		type: "boolean",
 		description: "Causes the animation to go back and forth, alternating backward and forward on each repeat.",
 		tags: [
@@ -21077,6 +20966,10 @@ const properties$1 = [
 	}
 ];
 const events$1 = [
+	{
+		name: "spxAnimateDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods$1 = [
 	{
@@ -21123,8 +21016,10 @@ const properties$2 = [
 	{
 		id: "class-toggle-display",
 		name: "display",
+		attribute: "display",
 		type: "string",
 		description: "",
+		"default": "'block'",
 		defaultValue: "'block'",
 		tags: [
 		]
@@ -21132,6 +21027,7 @@ const properties$2 = [
 	{
 		id: "class-toggle-local",
 		name: "local",
+		attribute: "local",
 		type: "string",
 		description: "Specify a local storage item, so the toggle state will be remembered when the user visits the site again.",
 		tags: [
@@ -21140,6 +21036,7 @@ const properties$2 = [
 	{
 		id: "class-toggle-target",
 		name: "target",
+		attribute: "target",
 		type: "string",
 		description: "Target element. Can take any querySelector value. (id, class, tag etc.) If none is set it will default to the first element inside.",
 		tags: [
@@ -21148,14 +21045,20 @@ const properties$2 = [
 	{
 		id: "class-toggle-toggle",
 		name: "toggle",
+		attribute: "toggle",
 		type: "string",
 		description: "List of classes that should be toggled.",
+		"default": "'spx-class-toggle--active'",
 		defaultValue: "'spx-class-toggle--active'",
 		tags: [
 		]
 	}
 ];
 const events$2 = [
+	{
+		name: "spxClassToggleDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods$2 = [
 	{
@@ -21192,8 +21095,10 @@ const properties$3 = [
 	{
 		id: "code-background",
 		name: "background",
+		attribute: "background",
 		type: "string",
 		description: "",
+		"default": "'var(--spx-color-gray-900)'",
 		defaultValue: "'var(--spx-color-gray-900)'",
 		tags: [
 		]
@@ -21201,17 +21106,98 @@ const properties$3 = [
 	{
 		id: "code-borderRadius",
 		name: "borderRadius",
+		attribute: "border-radius",
 		type: "string",
 		description: "",
+		"default": "s.borderRadius",
 		defaultValue: "'var(--spx-border-radius)'",
+		tags: [
+		]
+	},
+	{
+		id: "code-clipboard",
+		name: "clipboard",
+		attribute: "clipboard",
+		type: "boolean",
+		description: "Enable clipboard button.",
+		"default": "true",
+		defaultValue: "true",
+		tags: [
+		]
+	},
+	{
+		id: "code-clipboardButtonBackground",
+		name: "clipboardButtonBackground",
+		attribute: "clipboard-button-background",
+		type: "string",
+		description: "",
+		"default": "'var(--spx-color-gray-800)'",
+		defaultValue: "'var(--spx-color-gray-800)'",
+		tags: [
+		]
+	},
+	{
+		id: "code-clipboardButtonColor",
+		name: "clipboardButtonColor",
+		attribute: "clipboard-button-color",
+		type: "string",
+		description: "",
+		"default": "'var(--spx-color-gray-400)'",
+		defaultValue: "'var(--spx-color-gray-400)'",
+		tags: [
+		]
+	},
+	{
+		id: "code-clipboardButtonFontSize",
+		name: "clipboardButtonFontSize",
+		attribute: "clipboard-button-font-size",
+		type: "string",
+		description: "",
+		"default": "'12px'",
+		defaultValue: "'12px'",
+		tags: [
+		]
+	},
+	{
+		id: "code-clipboardButtonFontWeight",
+		name: "clipboardButtonFontWeight",
+		attribute: "clipboard-button-font-weight",
+		type: "any",
+		description: "",
+		"default": "600",
+		defaultValue: "600",
+		tags: [
+		]
+	},
+	{
+		id: "code-clipboardButtonPadding",
+		name: "clipboardButtonPadding",
+		attribute: "clipboard-button-padding",
+		type: "string",
+		description: "",
+		"default": "'6px 12px'",
+		defaultValue: "'6px 12px'",
+		tags: [
+		]
+	},
+	{
+		id: "code-clipboardButtonTextTransform",
+		name: "clipboardButtonTextTransform",
+		attribute: "clipboard-button-text-transform",
+		type: "string",
+		description: "",
+		"default": "'uppercase'",
+		defaultValue: "'uppercase'",
 		tags: [
 		]
 	},
 	{
 		id: "code-display",
 		name: "display",
+		attribute: "display",
 		type: "string",
 		description: "",
+		"default": "'block'",
 		defaultValue: "'block'",
 		tags: [
 		]
@@ -21219,8 +21205,10 @@ const properties$3 = [
 	{
 		id: "code-fontSize",
 		name: "fontSize",
+		attribute: "font-size",
 		type: "string",
 		description: "",
+		"default": "'clamp(12px, 1.6vw, 16px)'",
 		defaultValue: "'clamp(12px, 1.6vw, 16px)'",
 		tags: [
 		]
@@ -21228,24 +21216,74 @@ const properties$3 = [
 	{
 		id: "code-height",
 		name: "height",
+		attribute: "height",
 		type: "string",
 		description: "",
+		"default": "'auto'",
+		defaultValue: "'auto'",
 		tags: [
 		]
 	},
 	{
 		id: "code-hideScrollbar",
 		name: "hideScrollbar",
+		attribute: "hide-scrollbar",
 		type: "boolean",
 		description: "Hide scrollbar.",
 		tags: [
 		]
 	},
 	{
-		id: "code-overflow",
-		name: "overflow",
+		id: "code-lineNumbers",
+		name: "lineNumbers",
+		attribute: "line-numbers",
+		type: "boolean",
+		description: "Enable line numbers.",
+		"default": "true",
+		defaultValue: "true",
+		tags: [
+		]
+	},
+	{
+		id: "code-lineNumbersBackground",
+		name: "lineNumbersBackground",
+		attribute: "line-numbers-background",
 		type: "string",
 		description: "",
+		"default": "'var(--spx-color-gray-800)'",
+		defaultValue: "'var(--spx-color-gray-800)'",
+		tags: [
+		]
+	},
+	{
+		id: "code-lineNumbersColor",
+		name: "lineNumbersColor",
+		attribute: "line-numbers-color",
+		type: "string",
+		description: "",
+		"default": "'var(--spx-color-gray-400)'",
+		defaultValue: "'var(--spx-color-gray-400)'",
+		tags: [
+		]
+	},
+	{
+		id: "code-maxWidth",
+		name: "maxWidth",
+		attribute: "max-width",
+		type: "string",
+		description: "",
+		"default": "'100%'",
+		defaultValue: "'100%'",
+		tags: [
+		]
+	},
+	{
+		id: "code-overflow",
+		name: "overflow",
+		attribute: "overflow",
+		type: "string",
+		description: "",
+		"default": "'auto'",
 		defaultValue: "'auto'",
 		tags: [
 		]
@@ -21253,17 +21291,21 @@ const properties$3 = [
 	{
 		id: "code-padding",
 		name: "padding",
+		attribute: "padding",
 		type: "string",
 		description: "",
-		defaultValue: "'var(--spx-space-lg)'",
+		"default": "'clamp(20px, 2.4vw, 40px)'",
+		defaultValue: "'clamp(20px, 2.4vw, 40px)'",
 		tags: [
 		]
 	},
 	{
 		id: "code-theme",
 		name: "theme",
+		attribute: "theme",
 		type: "string",
 		description: "Colour theme.",
+		"default": "'default'",
 		defaultValue: "'default'",
 		tags: [
 			{
@@ -21275,18 +21317,28 @@ const properties$3 = [
 	{
 		id: "code-type",
 		name: "type",
+		attribute: "type",
 		type: "string",
 		description: "Determines the programming language.",
+		"default": "'markup'",
 		defaultValue: "'markup'",
 		tags: [
 			{
 				text: "'markup', 'css', 'php'",
+				name: "choice"
+			},
+			{
+				text: "'css'",
 				name: "editor"
 			}
 		]
 	}
 ];
 const events$3 = [
+	{
+		name: "spxCodeDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods$3 = [
 	{
@@ -21323,8 +21375,10 @@ const properties$4 = [
 	{
 		id: "edit-button-background",
 		name: "background",
+		attribute: "background",
 		type: "string",
 		description: "",
+		"default": "'var(--spx-color-gray-900)'",
 		defaultValue: "'var(--spx-color-gray-900)'",
 		tags: [
 		]
@@ -21332,8 +21386,10 @@ const properties$4 = [
 	{
 		id: "edit-button-backgroundDiscard",
 		name: "backgroundDiscard",
+		attribute: "background-discard",
 		type: "string",
 		description: "Discard button background.",
+		"default": "'var(--spx-color-gray-600)'",
 		defaultValue: "'var(--spx-color-gray-600)'",
 		tags: [
 			{
@@ -21344,8 +21400,10 @@ const properties$4 = [
 	{
 		id: "edit-button-border",
 		name: "border",
+		attribute: "border",
 		type: "string",
 		description: "",
+		"default": "'none'",
 		defaultValue: "'none'",
 		tags: [
 		]
@@ -21353,8 +21411,10 @@ const properties$4 = [
 	{
 		id: "edit-button-borderRadius",
 		name: "borderRadius",
+		attribute: "border-radius",
 		type: "string",
 		description: "",
+		"default": "s.borderRadius",
 		defaultValue: "'var(--spx-border-radius)'",
 		tags: [
 		]
@@ -21362,8 +21422,10 @@ const properties$4 = [
 	{
 		id: "edit-button-color",
 		name: "color",
+		attribute: "color",
 		type: "string",
 		description: "",
+		"default": "'#ffffff'",
 		defaultValue: "'#ffffff'",
 		tags: [
 		]
@@ -21371,8 +21433,10 @@ const properties$4 = [
 	{
 		id: "edit-button-colorDiscard",
 		name: "colorDiscard",
+		attribute: "color-discard",
 		type: "string",
 		description: "Discard button color.",
+		"default": "'#ffffff'",
 		defaultValue: "'#ffffff'",
 		tags: [
 			{
@@ -21383,8 +21447,10 @@ const properties$4 = [
 	{
 		id: "edit-button-distanceX",
 		name: "distanceX",
+		attribute: "distance-x",
 		type: "string",
 		description: "Distance to the edge of the viewport on the x-axis.",
+		"default": "'1em'",
 		defaultValue: "'1em'",
 		tags: [
 			{
@@ -21395,8 +21461,10 @@ const properties$4 = [
 	{
 		id: "edit-button-distanceY",
 		name: "distanceY",
+		attribute: "distance-y",
 		type: "string",
 		description: "Distance to the edge of the viewport on the y-axis.",
+		"default": "'1em'",
 		defaultValue: "'1em'",
 		tags: [
 			{
@@ -21407,6 +21475,7 @@ const properties$4 = [
 	{
 		id: "edit-button-editId",
 		name: "editId",
+		attribute: "edit-id",
 		type: "string",
 		description: "Corresponding ID for editable fields. This property is needed when multiple edit-button components are used on the page. Simply apply a \"data-spx-edit-id\" attribute with the same value to editable elements.",
 		tags: [
@@ -21415,8 +21484,10 @@ const properties$4 = [
 	{
 		id: "edit-button-fontFamily",
 		name: "fontFamily",
+		attribute: "font-family",
 		type: "string",
 		description: "",
+		"default": "s.fontFamily",
 		defaultValue: "'var(--spx-font-family)'",
 		tags: [
 		]
@@ -21424,8 +21495,10 @@ const properties$4 = [
 	{
 		id: "edit-button-fontSize",
 		name: "fontSize",
+		attribute: "font-size",
 		type: "string",
 		description: "",
+		"default": "s.fontSize",
 		defaultValue: "'var(--spx-font-size)'",
 		tags: [
 		]
@@ -21433,8 +21506,10 @@ const properties$4 = [
 	{
 		id: "edit-button-gap",
 		name: "gap",
+		attribute: "gap",
 		type: "string",
 		description: "Gap between the buttons.",
+		"default": "'0.4em'",
 		defaultValue: "'0.4em'",
 		tags: [
 			{
@@ -21445,8 +21520,10 @@ const properties$4 = [
 	{
 		id: "edit-button-padding",
 		name: "padding",
+		attribute: "padding",
 		type: "string",
 		description: "",
+		"default": "'0.8em 1.2em'",
 		defaultValue: "'0.8em 1.2em'",
 		tags: [
 		]
@@ -21454,8 +21531,10 @@ const properties$4 = [
 	{
 		id: "edit-button-position",
 		name: "position",
+		attribute: "position",
 		type: "string",
 		description: "Component position in page.",
+		"default": "'bottom-right'",
 		defaultValue: "'bottom-right'",
 		tags: [
 			{
@@ -21467,17 +21546,25 @@ const properties$4 = [
 	{
 		id: "edit-button-positionCss",
 		name: "positionCss",
+		attribute: "position-css",
 		type: "\"absolute\" | \"fixed\" | \"relative\" | \"static\"",
 		description: "CSS property position of button.",
+		"default": "'fixed'",
 		defaultValue: "'fixed'",
 		tags: [
+			{
+				text: "'absolute'",
+				name: "editor"
+			}
 		]
 	},
 	{
 		id: "edit-button-test",
 		name: "test",
+		attribute: "test",
 		type: "boolean",
 		description: "",
+		"default": "false",
 		defaultValue: "false",
 		tags: [
 		]
@@ -21485,8 +21572,10 @@ const properties$4 = [
 	{
 		id: "edit-button-textDiscard",
 		name: "textDiscard",
+		attribute: "text-discard",
 		type: "string",
 		description: "Discard button text.",
+		"default": "'Discard'",
 		defaultValue: "'Discard'",
 		tags: [
 		]
@@ -21494,8 +21583,10 @@ const properties$4 = [
 	{
 		id: "edit-button-textEdit",
 		name: "textEdit",
+		attribute: "text-edit",
 		type: "string",
 		description: "Edit button text.",
+		"default": "'Edit site'",
 		defaultValue: "'Edit site'",
 		tags: [
 		]
@@ -21503,8 +21594,10 @@ const properties$4 = [
 	{
 		id: "edit-button-textSave",
 		name: "textSave",
+		attribute: "text-save",
 		type: "string",
 		description: "Save button text.",
+		"default": "'Save'",
 		defaultValue: "'Save'",
 		tags: [
 		]
@@ -21512,8 +21605,10 @@ const properties$4 = [
 	{
 		id: "edit-button-textSuccess",
 		name: "textSuccess",
+		attribute: "text-success",
 		type: "string",
 		description: "Success message.",
+		"default": "'Save was successful'",
 		defaultValue: "'Save was successful'",
 		tags: [
 		]
@@ -21521,14 +21616,20 @@ const properties$4 = [
 	{
 		id: "edit-button-zIndex",
 		name: "zIndex",
+		attribute: "z-index",
 		type: "number",
 		description: "",
+		"default": "99",
 		defaultValue: "99",
 		tags: [
 		]
 	}
 ];
 const events$4 = [
+	{
+		name: "spxEditButtonDidLoad",
+		description: "Fires after component has loaded."
+	},
 	{
 		name: "spxEditButtonDiscard",
 		description: "Fires after pressing the discard button."
@@ -21568,13 +21669,15 @@ const editButton = /*#__PURE__*/Object.freeze({
 });
 
 const name$5 = "spx-group";
-const description$5 = "Pass attributes to all inner (spx) child elements.\nAll attributes that start with g-* will be passed on to child elements.\nFor example, to change all icons for a group of accordions, the data attribute would look like that:\ng-icon-indicator='far fa-arrow-down'";
+const description$5 = "Pass attributes to all inner (spx) child elements.\nAll attributes that start with g-* will be passed on to child elements.";
 const properties$5 = [
 	{
 		id: "group-display",
 		name: "display",
+		attribute: "display",
 		type: "string",
 		description: "",
+		"default": "'block'",
 		defaultValue: "'block'",
 		tags: [
 		]
@@ -21582,6 +21685,7 @@ const properties$5 = [
 	{
 		id: "group-target",
 		name: "target",
+		attribute: "target",
 		type: "string",
 		description: "Specifies a target element.",
 		tags: [
@@ -21589,6 +21693,10 @@ const properties$5 = [
 	}
 ];
 const events$5 = [
+	{
+		name: "spxGroupDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods$5 = [
 	{
@@ -21623,10 +21731,85 @@ const name$6 = "spx-iframe";
 const description$6 = "A wrapper around a standard iframe element, which scales proportionally to its parent.\nGreat for showing desktop versions of a website on smaller screens or viewports.";
 const properties$6 = [
 	{
+		id: "iframe-display",
+		name: "display",
+		attribute: "display",
+		type: "string",
+		description: "",
+		"default": "'block'",
+		defaultValue: "'block'",
+		tags: [
+		]
+	},
+	{
+		id: "iframe-documentBorder",
+		name: "documentBorder",
+		attribute: "document-border",
+		type: "string",
+		description: "",
+		"default": "'none'",
+		defaultValue: "'none'",
+		tags: [
+		]
+	},
+	{
+		id: "iframe-documentBorderRadius",
+		name: "documentBorderRadius",
+		attribute: "document-border-radius",
+		type: "string",
+		description: "",
+		"default": "'none'",
+		defaultValue: "'none'",
+		tags: [
+		]
+	},
+	{
+		id: "iframe-documentHeight",
+		name: "documentHeight",
+		attribute: "document-height",
+		type: "string",
+		description: "",
+		"default": "'auto'",
+		defaultValue: "'auto'",
+		tags: [
+		]
+	},
+	{
+		id: "iframe-documentWidth",
+		name: "documentWidth",
+		attribute: "document-width",
+		type: "string",
+		description: "",
+		"default": "'100%'",
+		defaultValue: "'100%'",
+		tags: [
+		]
+	},
+	{
+		id: "iframe-fit",
+		name: "fit",
+		attribute: "fit",
+		type: "boolean",
+		description: "Automatically resize iframe to fit content.",
+		tags: [
+		]
+	},
+	{
+		id: "iframe-lazy",
+		name: "lazy",
+		attribute: "lazy",
+		type: "boolean",
+		description: "Lazy load content.",
+		tags: [
+		]
+	},
+	{
 		id: "iframe-size",
 		name: "size",
+		attribute: "size",
 		type: "string",
 		description: "Screen size of the site shown inside the iframe.",
+		"default": "'1440px'",
 		defaultValue: "'1440px'",
 		tags: [
 		]
@@ -21634,14 +21817,35 @@ const properties$6 = [
 	{
 		id: "iframe-src",
 		name: "src",
+		attribute: "src",
 		type: "string",
 		description: "Source for the iframe.",
+		"default": "'https://spx.dev'",
 		defaultValue: "'https://spx.dev'",
 		tags: [
+		]
+	},
+	{
+		id: "iframe-type",
+		name: "type",
+		attribute: "type",
+		type: "string",
+		description: "Screen size of the site shown inside the iframe.",
+		"default": "'resize'",
+		defaultValue: "'resize'",
+		tags: [
+			{
+				text: "'resize', 'document', 'type'",
+				name: "choice"
+			}
 		]
 	}
 ];
 const events$6 = [
+	{
+		name: "spxIFrameDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods$6 = [
 	{
@@ -21678,17 +21882,32 @@ const properties$7 = [
 	{
 		id: "image-comparison-color",
 		name: "color",
+		attribute: "color",
 		type: "string",
 		description: "",
+		"default": "'#ffffff'",
 		defaultValue: "'#ffffff'",
+		tags: [
+		]
+	},
+	{
+		id: "image-comparison-height",
+		name: "height",
+		attribute: "height",
+		type: "string",
+		description: "",
+		"default": "'100%'",
+		defaultValue: "'100%'",
 		tags: [
 		]
 	},
 	{
 		id: "image-comparison-iconColor",
 		name: "iconColor",
+		attribute: "icon-color",
 		type: "string",
 		description: "",
+		"default": "'var(--spx-color-gray-900)'",
 		defaultValue: "'var(--spx-color-gray-900)'",
 		tags: [
 		]
@@ -21696,8 +21915,10 @@ const properties$7 = [
 	{
 		id: "image-comparison-srcAfter",
 		name: "srcAfter",
+		attribute: "src-after",
 		type: "string",
 		description: "Image URL of the before image.",
+		"default": "'https://source.unsplash.com/random/1200x300'",
 		defaultValue: "'https://source.unsplash.com/random/1200x300'",
 		tags: [
 		]
@@ -21705,8 +21926,10 @@ const properties$7 = [
 	{
 		id: "image-comparison-srcBefore",
 		name: "srcBefore",
+		attribute: "src-before",
 		type: "string",
 		description: "Image URL of the after image.",
+		"default": "'https://source.unsplash.com/random/1201x300'",
 		defaultValue: "'https://source.unsplash.com/random/1201x300'",
 		tags: [
 		]
@@ -21714,14 +21937,20 @@ const properties$7 = [
 	{
 		id: "image-comparison-start",
 		name: "start",
+		attribute: "start",
 		type: "number",
 		description: "Opening state in pixels.",
+		"default": "150",
 		defaultValue: "150",
 		tags: [
 		]
 	}
 ];
 const events$7 = [
+	{
+		name: "spxImageComparisonDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods$7 = [
 	{
@@ -21758,8 +21987,10 @@ const properties$8 = [
 	{
 		id: "lightbox-display",
 		name: "display",
+		attribute: "display",
 		type: "string",
 		description: "",
+		"default": "'block'",
 		defaultValue: "'block'",
 		tags: [
 		]
@@ -21767,8 +21998,10 @@ const properties$8 = [
 	{
 		id: "lightbox-height",
 		name: "height",
+		attribute: "height",
 		type: "string",
 		description: "",
+		"default": "'auto'",
 		defaultValue: "'auto'",
 		tags: [
 		]
@@ -21776,8 +22009,10 @@ const properties$8 = [
 	{
 		id: "lightbox-overlayColor",
 		name: "overlayColor",
+		attribute: "overlay-color",
 		type: "string",
 		description: "",
+		"default": "'rgba(0, 0, 0, 0.92)'",
 		defaultValue: "'rgba(0, 0, 0, 0.92)'",
 		tags: [
 		]
@@ -21785,14 +22020,20 @@ const properties$8 = [
 	{
 		id: "lightbox-width",
 		name: "width",
+		attribute: "width",
 		type: "string",
 		description: "",
+		"default": "'100%'",
 		defaultValue: "'100%'",
 		tags: [
 		]
 	}
 ];
 const events$8 = [
+	{
+		name: "spxLightboxDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods$8 = [
 	{
@@ -21829,6 +22070,7 @@ const properties$9 = [
 	{
 		id: "masonry-bpColumns",
 		name: "bpColumns",
+		attribute: "bp-columns",
 		type: "string",
 		description: "Columns for different screen sizes. Example value: 1000:3;600:2 - this will switch to a three column layout when the screen size is under 1000px and to a two column layout under 600px.",
 		tags: [
@@ -21837,8 +22079,10 @@ const properties$9 = [
 	{
 		id: "masonry-columns",
 		name: "columns",
+		attribute: "columns",
 		type: "number",
 		description: "Number of columns.",
+		"default": "4",
 		defaultValue: "4",
 		tags: [
 		]
@@ -21846,8 +22090,10 @@ const properties$9 = [
 	{
 		id: "masonry-gap",
 		name: "gap",
+		attribute: "gap",
 		type: "string",
 		description: "Gap between images.",
+		"default": "'10px'",
 		defaultValue: "'10px'",
 		tags: [
 			{
@@ -21858,6 +22104,7 @@ const properties$9 = [
 	{
 		id: "masonry-imageSize",
 		name: "imageSize",
+		attribute: "image-size",
 		type: "string",
 		description: "WordPress media size when using the helper function..",
 		tags: [
@@ -21866,6 +22113,7 @@ const properties$9 = [
 	{
 		id: "masonry-images",
 		name: "images",
+		attribute: "images",
 		type: "string",
 		description: "Gets images from an ACF or Metabox field.",
 		tags: [
@@ -21878,6 +22126,7 @@ const properties$9 = [
 	{
 		id: "masonry-imagesSrc",
 		name: "imagesSrc",
+		attribute: "images-src",
 		type: "string",
 		description: "Gets images from an ACF or Metabox field.",
 		tags: [
@@ -21891,7 +22140,7 @@ const properties$9 = [
 const events$9 = [
 	{
 		name: "spxMasonryDidLoad",
-		description: ""
+		description: "Fires after component has loaded."
 	}
 ];
 const methods$9 = [
@@ -21934,8 +22183,11 @@ const properties$a = [
 	{
 		id: "mockup-colorGalaxyS8",
 		name: "colorGalaxyS8",
+		attribute: "color-galaxy-s-8",
 		type: "string",
 		description: "Samsung S8 color.",
+		"default": "'black'",
+		defaultValue: "'black'",
 		tags: [
 			{
 				text: "'black', 'blue'",
@@ -21946,8 +22198,11 @@ const properties$a = [
 	{
 		id: "mockup-colorGooglePixel",
 		name: "colorGooglePixel",
+		attribute: "color-google-pixel",
 		type: "string",
 		description: "Google Pixel color.",
+		"default": "'silver'",
+		defaultValue: "'silver'",
 		tags: [
 			{
 				text: "'silver', 'black', 'blue'",
@@ -21958,8 +22213,11 @@ const properties$a = [
 	{
 		id: "mockup-colorIpadPro",
 		name: "colorIpadPro",
+		attribute: "color-ipad-pro",
 		type: "string",
 		description: "iPad Pro color.",
+		"default": "'silver'",
+		defaultValue: "'silver'",
 		tags: [
 			{
 				text: "'silver', 'gold', 'rosegold', 'spacegray'",
@@ -21970,8 +22228,11 @@ const properties$a = [
 	{
 		id: "mockup-colorIphone8",
 		name: "colorIphone8",
+		attribute: "color-iphone-8",
 		type: "string",
 		description: "iPhone 8 color.",
+		"default": "'silver'",
+		defaultValue: "'silver'",
 		tags: [
 			{
 				text: "'silver', 'gold', 'spacegray'",
@@ -21982,8 +22243,11 @@ const properties$a = [
 	{
 		id: "mockup-colorMacbook",
 		name: "colorMacbook",
+		attribute: "color-macbook",
 		type: "string",
 		description: "MacBook color.",
+		"default": "'silver'",
+		defaultValue: "'silver'",
 		tags: [
 			{
 				text: "'silver', 'gold', 'rosegold', 'spacegray'",
@@ -21994,8 +22258,11 @@ const properties$a = [
 	{
 		id: "mockup-colorMacbookPro",
 		name: "colorMacbookPro",
+		attribute: "color-macbook-pro",
 		type: "string",
 		description: "MacBook Pro color.",
+		"default": "'silver'",
+		defaultValue: "'silver'",
 		tags: [
 			{
 				text: "'silver', 'spacegray'",
@@ -22006,17 +22273,21 @@ const properties$a = [
 	{
 		id: "mockup-display",
 		name: "display",
+		attribute: "display",
 		type: "string",
 		description: "",
-		defaultValue: "'block'",
+		"default": "'inline-block'",
+		defaultValue: "'inline-block'",
 		tags: [
 		]
 	},
 	{
 		id: "mockup-imagePosition",
 		name: "imagePosition",
+		attribute: "image-position",
 		type: "string",
 		description: "",
+		"default": "'50% 50%'",
 		defaultValue: "'50% 50%'",
 		tags: [
 		]
@@ -22024,8 +22295,10 @@ const properties$a = [
 	{
 		id: "mockup-src",
 		name: "src",
+		attribute: "src",
 		type: "string",
 		description: "Image src if no inner slot is used.",
+		"default": "'https://picsum.photos/400/1200'",
 		defaultValue: "'https://picsum.photos/400/1200'",
 		tags: [
 		]
@@ -22033,8 +22306,10 @@ const properties$a = [
 	{
 		id: "mockup-type",
 		name: "type",
+		attribute: "type",
 		type: "string",
 		description: "Device type.",
+		"default": "'iphone-8'",
 		defaultValue: "'iphone-8'",
 		tags: [
 			{
@@ -22045,6 +22320,10 @@ const properties$a = [
 	}
 ];
 const events$a = [
+	{
+		name: "spxMockupDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods$a = [
 	{
@@ -22081,8 +22360,10 @@ const properties$b = [
 	{
 		id: "notation-animation",
 		name: "animation",
+		attribute: "animation",
 		type: "boolean",
 		description: "Turn animation on or off when animation.",
+		"default": "true",
 		defaultValue: "true",
 		tags: [
 		]
@@ -22090,8 +22371,10 @@ const properties$b = [
 	{
 		id: "notation-animationDuration",
 		name: "animationDuration",
+		attribute: "animation-duration",
 		type: "number",
 		description: "Animation duration.",
+		"default": "800",
 		defaultValue: "800",
 		tags: [
 		]
@@ -22099,8 +22382,10 @@ const properties$b = [
 	{
 		id: "notation-color",
 		name: "color",
+		attribute: "color",
 		type: "string",
 		description: "",
+		"default": "'var(--spx-color-secondary-100)'",
 		defaultValue: "'var(--spx-color-secondary-100)'",
 		tags: [
 		]
@@ -22108,8 +22393,10 @@ const properties$b = [
 	{
 		id: "notation-display",
 		name: "display",
+		attribute: "display",
 		type: "string",
 		description: "",
+		"default": "'inline-block'",
 		defaultValue: "'inline-block'",
 		tags: [
 		]
@@ -22117,8 +22404,10 @@ const properties$b = [
 	{
 		id: "notation-iterations",
 		name: "iterations",
+		attribute: "iterations",
 		type: "number",
 		description: "Number of iterations.",
+		"default": "1",
 		defaultValue: "1",
 		tags: [
 		]
@@ -22126,8 +22415,10 @@ const properties$b = [
 	{
 		id: "notation-multiline",
 		name: "multiline",
+		attribute: "multiline",
 		type: "boolean",
 		description: "Annotate multiline text.",
+		"default": "true",
 		defaultValue: "true",
 		tags: [
 		]
@@ -22135,8 +22426,10 @@ const properties$b = [
 	{
 		id: "notation-strokeWidth",
 		name: "strokeWidth",
+		attribute: "stroke-width",
 		type: "number",
 		description: "Stroke width.",
+		"default": "1",
 		defaultValue: "1",
 		tags: [
 		]
@@ -22144,8 +22437,10 @@ const properties$b = [
 	{
 		id: "notation-type",
 		name: "type",
+		attribute: "type",
 		type: "string",
 		description: "Type of notation.",
+		"default": "'underline'",
 		defaultValue: "'underline'",
 		tags: [
 			{
@@ -22156,6 +22451,10 @@ const properties$b = [
 	}
 ];
 const events$b = [
+	{
+		name: "spxNotationDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods$b = [
 	{
@@ -22207,8 +22506,10 @@ const properties$c = [
 	{
 		id: "offset-display",
 		name: "display",
+		attribute: "display",
 		type: "string",
 		description: "",
+		"default": "'block'",
 		defaultValue: "'block'",
 		tags: [
 		]
@@ -22216,14 +22517,24 @@ const properties$c = [
 	{
 		id: "offset-target",
 		name: "target",
+		attribute: "target",
 		type: "string",
 		description: "Target element.",
+		"default": "'header'",
 		defaultValue: "'header'",
 		tags: [
+			{
+				text: "'.header1'",
+				name: "editor"
+			}
 		]
 	}
 ];
 const events$c = [
+	{
+		name: "spxOffsetDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods$c = [
 	{
@@ -22260,8 +22571,10 @@ const properties$d = [
 	{
 		id: "share-fontSize",
 		name: "fontSize",
+		attribute: "font-size",
 		type: "string",
 		description: "",
+		"default": "s.fontSize",
 		defaultValue: "'var(--spx-font-size)'",
 		tags: [
 		]
@@ -22269,6 +22582,7 @@ const properties$d = [
 	{
 		id: "share-itemBackground",
 		name: "itemBackground",
+		attribute: "item-background",
 		type: "string",
 		description: "",
 		tags: [
@@ -22277,8 +22591,10 @@ const properties$d = [
 	{
 		id: "share-itemBorderRadius",
 		name: "itemBorderRadius",
+		attribute: "item-border-radius",
 		type: "string",
 		description: "",
+		"default": "s.borderRadius",
 		defaultValue: "'var(--spx-border-radius)'",
 		tags: [
 		]
@@ -22286,6 +22602,7 @@ const properties$d = [
 	{
 		id: "share-itemColor",
 		name: "itemColor",
+		attribute: "item-color",
 		type: "string",
 		description: "Gap between buttons.",
 		tags: [
@@ -22297,8 +22614,10 @@ const properties$d = [
 	{
 		id: "share-itemFilterHover",
 		name: "itemFilterHover",
+		attribute: "item-filter-hover",
 		type: "string",
 		description: "Filter hover.",
+		"default": "'brightness(110%) saturate(120%)'",
 		defaultValue: "'brightness(110%) saturate(120%)'",
 		tags: [
 			{
@@ -22309,8 +22628,10 @@ const properties$d = [
 	{
 		id: "share-itemGap",
 		name: "itemGap",
+		attribute: "item-gap",
 		type: "string",
 		description: "Gap between buttons.",
+		"default": "'0.5em'",
 		defaultValue: "'0.5em'",
 		tags: [
 			{
@@ -22321,8 +22642,10 @@ const properties$d = [
 	{
 		id: "share-itemPadding",
 		name: "itemPadding",
+		attribute: "item-padding",
 		type: "string",
 		description: "",
+		"default": "'0.5em'",
 		defaultValue: "'0.5em'",
 		tags: [
 		]
@@ -22330,8 +22653,10 @@ const properties$d = [
 	{
 		id: "share-itemSize",
 		name: "itemSize",
+		attribute: "item-size",
 		type: "string",
 		description: "",
+		"default": "'1em'",
 		defaultValue: "'1em'",
 		tags: [
 		]
@@ -22339,8 +22664,10 @@ const properties$d = [
 	{
 		id: "share-itemTransitionDuration",
 		name: "itemTransitionDuration",
+		attribute: "item-transition-duration",
 		type: "string",
 		description: "",
+		"default": "s.transitionDuration",
 		defaultValue: "'var(--spx-transition-duration)'",
 		tags: [
 		]
@@ -22348,8 +22675,10 @@ const properties$d = [
 	{
 		id: "share-itemTransitionTimingFunction",
 		name: "itemTransitionTimingFunction",
+		attribute: "item-transition-timing-function",
 		type: "string",
 		description: "",
+		"default": "s.transitionTimingFunction",
 		defaultValue: "'var(--spx-transition-timing-function)'",
 		tags: [
 		]
@@ -22357,8 +22686,10 @@ const properties$d = [
 	{
 		id: "share-target",
 		name: "target",
+		attribute: "target",
 		type: "string",
 		description: "Button href target.",
+		"default": "'_blank'",
 		defaultValue: "'_blank'",
 		tags: [
 		]
@@ -22366,8 +22697,10 @@ const properties$d = [
 	{
 		id: "share-theme",
 		name: "theme",
+		attribute: "theme",
 		type: "string",
 		description: "Button theme.",
+		"default": "'default'",
 		defaultValue: "'default'",
 		tags: [
 			{
@@ -22379,6 +22712,7 @@ const properties$d = [
 	{
 		id: "share-vertical",
 		name: "vertical",
+		attribute: "vertical",
 		type: "boolean",
 		description: "Render buttons vertically.",
 		tags: [
@@ -22386,6 +22720,10 @@ const properties$d = [
 	}
 ];
 const events$d = [
+	{
+		name: "spxShareDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods$d = [
 	{
@@ -22422,8 +22760,10 @@ const properties$e = [
 	{
 		id: "slider-autoheight",
 		name: "autoheight",
+		attribute: "autoheight",
 		type: "boolean",
 		description: "Automatically adjusts height of slider.",
+		"default": "false",
 		defaultValue: "false",
 		tags: [
 		]
@@ -22431,8 +22771,10 @@ const properties$e = [
 	{
 		id: "slider-autoplay",
 		name: "autoplay",
+		attribute: "autoplay",
 		type: "boolean",
 		description: "Starts navigating to the next slide when page is loaded.",
+		"default": "false",
 		defaultValue: "false",
 		tags: [
 		]
@@ -22440,8 +22782,10 @@ const properties$e = [
 	{
 		id: "slider-autoplayDelay",
 		name: "autoplayDelay",
+		attribute: "autoplay-delay",
 		type: "number",
 		description: "Autoplay delay.",
+		"default": "6000",
 		defaultValue: "6000",
 		tags: [
 		]
@@ -22449,8 +22793,10 @@ const properties$e = [
 	{
 		id: "slider-autoplayDisableOnInteraction",
 		name: "autoplayDisableOnInteraction",
+		attribute: "autoplay-disable-on-interaction",
 		type: "boolean",
 		description: "Disable autoplay after interaction with slides.",
+		"default": "false",
 		defaultValue: "false",
 		tags: [
 		]
@@ -22458,6 +22804,7 @@ const properties$e = [
 	{
 		id: "slider-bpTabs",
 		name: "bpTabs",
+		attribute: "bp-tabs",
 		type: "string",
 		description: "Starts navigating to the next slide when page is loaded.",
 		tags: [
@@ -22466,8 +22813,10 @@ const properties$e = [
 	{
 		id: "slider-centeredSlides",
 		name: "centeredSlides",
+		attribute: "centered-slides",
 		type: "boolean",
 		description: "Centers slides in viewport.",
+		"default": "false",
 		defaultValue: "false",
 		tags: [
 		]
@@ -22475,8 +22824,10 @@ const properties$e = [
 	{
 		id: "slider-direction",
 		name: "direction",
+		attribute: "direction",
 		type: "string",
 		description: "Slider direction.",
+		"default": "'horizontal'",
 		defaultValue: "'horizontal'",
 		tags: [
 			{
@@ -22488,8 +22839,10 @@ const properties$e = [
 	{
 		id: "slider-effect",
 		name: "effect",
+		attribute: "effect",
 		type: "string",
 		description: "Slider effect.",
+		"default": "'slide'",
 		defaultValue: "'slide'",
 		tags: [
 			{
@@ -22501,8 +22854,10 @@ const properties$e = [
 	{
 		id: "slider-imageObjectFit",
 		name: "imageObjectFit",
+		attribute: "image-object-fit",
 		type: "string",
 		description: "Image object-fit.",
+		"default": "'cover'",
 		defaultValue: "'cover'",
 		tags: [
 			{
@@ -22514,6 +22869,7 @@ const properties$e = [
 	{
 		id: "slider-imageSize",
 		name: "imageSize",
+		attribute: "image-size",
 		type: "string",
 		description: "WordPress media size when using the helper function..",
 		tags: [
@@ -22522,6 +22878,7 @@ const properties$e = [
 	{
 		id: "slider-images",
 		name: "images",
+		attribute: "images",
 		type: "string",
 		description: "Gets images from an ACF or Metabox field.",
 		tags: [
@@ -22534,6 +22891,7 @@ const properties$e = [
 	{
 		id: "slider-imagesSrc",
 		name: "imagesSrc",
+		attribute: "images-src",
 		type: "string",
 		description: "Gets images from an ACF or Metabox field.",
 		tags: [
@@ -22546,8 +22904,10 @@ const properties$e = [
 	{
 		id: "slider-loop",
 		name: "loop",
+		attribute: "loop",
 		type: "boolean",
 		description: "Loops all slides infinitely.",
+		"default": "false",
 		defaultValue: "false",
 		tags: [
 		]
@@ -22555,8 +22915,10 @@ const properties$e = [
 	{
 		id: "slider-maxHeight",
 		name: "maxHeight",
+		attribute: "max-height",
 		type: "string",
 		description: "Max height.",
+		"default": "'100%'",
 		defaultValue: "'100%'",
 		tags: [
 			{
@@ -22568,8 +22930,10 @@ const properties$e = [
 	{
 		id: "slider-maxWidth",
 		name: "maxWidth",
+		attribute: "max-width",
 		type: "string",
 		description: "Max width.",
+		"default": "'100%'",
 		defaultValue: "'100%'",
 		tags: [
 			{
@@ -22581,6 +22945,7 @@ const properties$e = [
 	{
 		id: "slider-navigation",
 		name: "navigation",
+		attribute: "navigation",
 		type: "boolean",
 		description: "",
 		tags: [
@@ -22589,8 +22954,10 @@ const properties$e = [
 	{
 		id: "slider-navigationBackground",
 		name: "navigationBackground",
+		attribute: "navigation-background",
 		type: "string",
 		description: "",
+		"default": "'rgba(0,0,0,0.7)'",
 		defaultValue: "'rgba(0,0,0,0.7)'",
 		tags: [
 		]
@@ -22598,8 +22965,10 @@ const properties$e = [
 	{
 		id: "slider-navigationBorderRadius",
 		name: "navigationBorderRadius",
+		attribute: "navigation-border-radius",
 		type: "string",
 		description: "",
+		"default": "s.borderRadius",
 		defaultValue: "'var(--spx-border-radius)'",
 		tags: [
 		]
@@ -22607,8 +22976,10 @@ const properties$e = [
 	{
 		id: "slider-navigationColor",
 		name: "navigationColor",
+		attribute: "navigation-color",
 		type: "string",
 		description: "",
+		"default": "'#ffffff'",
 		defaultValue: "'#ffffff'",
 		tags: [
 		]
@@ -22616,8 +22987,10 @@ const properties$e = [
 	{
 		id: "slider-navigationDistanceX",
 		name: "navigationDistanceX",
+		attribute: "navigation-distance-x",
 		type: "string",
 		description: "Navigation distance.",
+		"default": "'12px'",
 		defaultValue: "'12px'",
 		tags: [
 			{
@@ -22628,8 +23001,10 @@ const properties$e = [
 	{
 		id: "slider-navigationIconNext",
 		name: "navigationIconNext",
+		attribute: "navigation-icon-next",
 		type: "string",
 		description: "Navigation icon type.",
+		"default": "'arrow-forward'",
 		defaultValue: "'arrow-forward'",
 		tags: [
 		]
@@ -22637,8 +23012,10 @@ const properties$e = [
 	{
 		id: "slider-navigationIconPrev",
 		name: "navigationIconPrev",
+		attribute: "navigation-icon-prev",
 		type: "string",
 		description: "Navigation icon type.",
+		"default": "'arrow-back'",
 		defaultValue: "'arrow-back'",
 		tags: [
 		]
@@ -22646,8 +23023,10 @@ const properties$e = [
 	{
 		id: "slider-navigationIconType",
 		name: "navigationIconType",
+		attribute: "navigation-icon-type",
 		type: "string",
 		description: "Navigation icon type.",
+		"default": "'ionicons'",
 		defaultValue: "'ionicons'",
 		tags: [
 		]
@@ -22655,8 +23034,10 @@ const properties$e = [
 	{
 		id: "slider-navigationPadding",
 		name: "navigationPadding",
+		attribute: "navigation-padding",
 		type: "string",
 		description: "",
+		"default": "'12px'",
 		defaultValue: "'12px'",
 		tags: [
 		]
@@ -22664,8 +23045,10 @@ const properties$e = [
 	{
 		id: "slider-navigationSize",
 		name: "navigationSize",
+		attribute: "navigation-size",
 		type: "string",
 		description: "Navigation size.",
+		"default": "'20px'",
 		defaultValue: "'20px'",
 		tags: [
 			{
@@ -22676,8 +23059,10 @@ const properties$e = [
 	{
 		id: "slider-pagination",
 		name: "pagination",
+		attribute: "pagination",
 		type: "string",
 		description: "Pagination type.",
+		"default": "'bullets'",
 		defaultValue: "'bullets'",
 		tags: [
 			{
@@ -22689,8 +23074,10 @@ const properties$e = [
 	{
 		id: "slider-paginationBulletsBackground",
 		name: "paginationBulletsBackground",
+		attribute: "pagination-bullets-background",
 		type: "string",
 		description: "",
+		"default": "'var(--spx-color-gray-300)'",
 		defaultValue: "'var(--spx-color-gray-300)'",
 		tags: [
 		]
@@ -22698,15 +23085,18 @@ const properties$e = [
 	{
 		id: "slider-paginationBulletsBackgroundActive",
 		name: "paginationBulletsBackgroundActive",
+		attribute: "pagination-bullets-background-active",
 		type: "string",
 		description: "",
-		defaultValue: "'var(--spx-color-primary-A700)'",
+		"default": "'var(--spx-color-gray-900)'",
+		defaultValue: "'var(--spx-color-gray-900)'",
 		tags: [
 		]
 	},
 	{
 		id: "slider-paginationBulletsClickable",
 		name: "paginationBulletsClickable",
+		attribute: "pagination-bullets-clickable",
 		type: "boolean",
 		description: "Make bullets clickable.",
 		tags: [
@@ -22715,6 +23105,7 @@ const properties$e = [
 	{
 		id: "slider-paginationBulletsDynamic",
 		name: "paginationBulletsDynamic",
+		attribute: "pagination-bullets-dynamic",
 		type: "boolean",
 		description: "Will only keep a selected amount of bullets visible.",
 		tags: [
@@ -22723,8 +23114,10 @@ const properties$e = [
 	{
 		id: "slider-paginationBulletsDynamicAmount",
 		name: "paginationBulletsDynamicAmount",
+		attribute: "pagination-bullets-dynamic-amount",
 		type: "number",
 		description: "Amount of dynamic bullets.",
+		"default": "5",
 		defaultValue: "5",
 		tags: [
 		]
@@ -22732,8 +23125,10 @@ const properties$e = [
 	{
 		id: "slider-paginationBulletsSize",
 		name: "paginationBulletsSize",
+		attribute: "pagination-bullets-size",
 		type: "string",
 		description: "Size of the bullets.",
+		"default": "'8px'",
 		defaultValue: "'8px'",
 		tags: [
 			{
@@ -22744,8 +23139,10 @@ const properties$e = [
 	{
 		id: "slider-paginationBulletsSpaceBetween",
 		name: "paginationBulletsSpaceBetween",
+		attribute: "pagination-bullets-space-between",
 		type: "string",
 		description: "Space between the bullets.",
+		"default": "'4px'",
 		defaultValue: "'4px'",
 		tags: [
 			{
@@ -22754,19 +23151,111 @@ const properties$e = [
 		]
 	},
 	{
+		id: "slider-paginationTabsGapMax",
+		name: "paginationTabsGapMax",
+		attribute: "pagination-tabs-gap-max",
+		type: "number",
+		description: "",
+		"default": "1.8",
+		defaultValue: "1.8",
+		tags: [
+		]
+	},
+	{
+		id: "slider-paginationTabsGapMin",
+		name: "paginationTabsGapMin",
+		attribute: "pagination-tabs-gap-min",
+		type: "number",
+		description: "",
+		"default": "1",
+		defaultValue: "1",
+		tags: [
+		]
+	},
+	{
+		id: "slider-paginationTabsInnerGapMax",
+		name: "paginationTabsInnerGapMax",
+		attribute: "pagination-tabs-inner-gap-max",
+		type: "number",
+		description: "",
+		"default": "1",
+		defaultValue: "1",
+		tags: [
+		]
+	},
+	{
+		id: "slider-paginationTabsInnerGapMin",
+		name: "paginationTabsInnerGapMin",
+		attribute: "pagination-tabs-inner-gap-min",
+		type: "number",
+		description: "",
+		"default": "0.8",
+		defaultValue: "0.8",
+		tags: [
+		]
+	},
+	{
+		id: "slider-paginationTabsMarginBottomMax",
+		name: "paginationTabsMarginBottomMax",
+		attribute: "pagination-tabs-margin-bottom-max",
+		type: "number",
+		description: "",
+		"default": "2.6",
+		defaultValue: "2.6",
+		tags: [
+		]
+	},
+	{
+		id: "slider-paginationTabsMarginBottomMin",
+		name: "paginationTabsMarginBottomMin",
+		attribute: "pagination-tabs-margin-bottom-min",
+		type: "number",
+		description: "",
+		"default": "1.4",
+		defaultValue: "1.4",
+		tags: [
+		]
+	},
+	{
 		id: "slider-paginationTabsMaxWidth",
 		name: "paginationTabsMaxWidth",
+		attribute: "pagination-tabs-max-width",
 		type: "string",
 		description: "",
+		"default": "'320px'",
 		defaultValue: "'320px'",
+		tags: [
+		]
+	},
+	{
+		id: "slider-paginationTabsPaddingMax",
+		name: "paginationTabsPaddingMax",
+		attribute: "pagination-tabs-padding-max",
+		type: "number",
+		description: "",
+		"default": "1.4",
+		defaultValue: "1.4",
+		tags: [
+		]
+	},
+	{
+		id: "slider-paginationTabsPaddingMin",
+		name: "paginationTabsPaddingMin",
+		attribute: "pagination-tabs-padding-min",
+		type: "number",
+		description: "",
+		"default": "1",
+		defaultValue: "1",
 		tags: [
 		]
 	},
 	{
 		id: "slider-paginationTransitionDuration",
 		name: "paginationTransitionDuration",
+		attribute: "pagination-transition-duration",
 		type: "string",
 		description: "",
+		"default": "s.transitionDuration",
 		defaultValue: "'var(--spx-transition-duration)'",
 		tags: [
 		]
@@ -22774,8 +23263,10 @@ const properties$e = [
 	{
 		id: "slider-paginationTransitionTimingFunction",
 		name: "paginationTransitionTimingFunction",
+		attribute: "pagination-transition-timing-function",
 		type: "string",
 		description: "",
+		"default": "s.transitionTimingFunction",
 		defaultValue: "'var(--spx-transition-timing-function)'",
 		tags: [
 		]
@@ -22783,6 +23274,7 @@ const properties$e = [
 	{
 		id: "slider-prevNextFilter",
 		name: "prevNextFilter",
+		attribute: "prev-next-filter",
 		type: "string",
 		description: "Filter property for the previous and next elements.",
 		tags: [
@@ -22791,8 +23283,10 @@ const properties$e = [
 	{
 		id: "slider-slideMessageFirst",
 		name: "slideMessageFirst",
+		attribute: "slide-message-first",
 		type: "string",
 		description: "Screen reader message for first slide.",
+		"default": "'This is the first slide'",
 		defaultValue: "'This is the first slide'",
 		tags: [
 		]
@@ -22800,8 +23294,10 @@ const properties$e = [
 	{
 		id: "slider-slideMessageLast",
 		name: "slideMessageLast",
+		attribute: "slide-message-last",
 		type: "string",
 		description: "Screen reader message for last slide.",
+		"default": "'This is the last slide'",
 		defaultValue: "'This is the last slide'",
 		tags: [
 		]
@@ -22809,8 +23305,10 @@ const properties$e = [
 	{
 		id: "slider-slideMessageNext",
 		name: "slideMessageNext",
+		attribute: "slide-message-next",
 		type: "string",
 		description: "Screen reader message for next slide.",
+		"default": "'Next slide'",
 		defaultValue: "'Next slide'",
 		tags: [
 		]
@@ -22818,8 +23316,10 @@ const properties$e = [
 	{
 		id: "slider-slideMessagePrevious",
 		name: "slideMessagePrevious",
+		attribute: "slide-message-previous",
 		type: "string",
 		description: "Screen reader message for previous slide.",
+		"default": "'Previous slide'",
 		defaultValue: "'Previous slide'",
 		tags: [
 		]
@@ -22827,8 +23327,10 @@ const properties$e = [
 	{
 		id: "slider-slidesPerView",
 		name: "slidesPerView",
+		attribute: "slides-per-view",
 		type: "number",
 		description: "Amount of slides shown at once.",
+		"default": "1",
 		defaultValue: "1",
 		tags: [
 		]
@@ -22836,8 +23338,10 @@ const properties$e = [
 	{
 		id: "slider-spaceBetween",
 		name: "spaceBetween",
+		attribute: "space-between",
 		type: "number",
 		description: "Space between slides.",
+		"default": "0",
 		defaultValue: "0",
 		tags: [
 		]
@@ -22845,14 +23349,20 @@ const properties$e = [
 	{
 		id: "slider-speed",
 		name: "speed",
+		attribute: "speed",
 		type: "number",
 		description: "Sliding speed.",
+		"default": "1000",
 		defaultValue: "1000",
 		tags: [
 		]
 	}
 ];
 const events$e = [
+	{
+		name: "spxSliderDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods$e = [
 	{
@@ -22887,10 +23397,23 @@ const name$f = "spx-slideshow";
 const description$f = "Continuously playing slideshow.";
 const properties$f = [
 	{
+		id: "slideshow-display",
+		name: "display",
+		attribute: "display",
+		type: "string",
+		description: "",
+		"default": "'block'",
+		defaultValue: "'block'",
+		tags: [
+		]
+	},
+	{
 		id: "slideshow-duration",
 		name: "duration",
+		attribute: "duration",
 		type: "string",
 		description: "Duration of slideshow to complete one cycle.",
+		"default": "'60s'",
 		defaultValue: "'60s'",
 		tags: [
 			{
@@ -22901,9 +23424,11 @@ const properties$f = [
 	{
 		id: "slideshow-gap",
 		name: "gap",
+		attribute: "gap",
 		type: "string",
 		description: "Gap between inner elements.",
-		defaultValue: "'var(--spx-space-lg)'",
+		"default": "'1em'",
+		defaultValue: "'1em'",
 		tags: [
 			{
 				name: "CSS"
@@ -22913,6 +23438,7 @@ const properties$f = [
 	{
 		id: "slideshow-imageSize",
 		name: "imageSize",
+		attribute: "image-size",
 		type: "string",
 		description: "WordPress media size when using the helper function..",
 		tags: [
@@ -22921,6 +23447,7 @@ const properties$f = [
 	{
 		id: "slideshow-images",
 		name: "images",
+		attribute: "images",
 		type: "string",
 		description: "Gets images from an ACF or Metabox field.",
 		tags: [
@@ -22933,6 +23460,7 @@ const properties$f = [
 	{
 		id: "slideshow-imagesSrc",
 		name: "imagesSrc",
+		attribute: "images-src",
 		type: "string",
 		description: "Gets images from an ACF or Metabox field.",
 		tags: [
@@ -22945,9 +23473,23 @@ const properties$f = [
 	{
 		id: "slideshow-maxWidth",
 		name: "maxWidth",
+		attribute: "max-width",
 		type: "string",
 		description: "Max width of inner elements.",
+		"default": "'350px'",
 		defaultValue: "'350px'",
+		tags: [
+			{
+				name: "CSS"
+			}
+		]
+	},
+	{
+		id: "slideshow-overflow",
+		name: "overflow",
+		attribute: "overflow",
+		type: "string",
+		description: "If not set with this attribute, overflow should be set on the parent element.",
 		tags: [
 			{
 				name: "CSS"
@@ -22956,6 +23498,10 @@ const properties$f = [
 	}
 ];
 const events$f = [
+	{
+		name: "spxSlideshowDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods$f = [
 ];
@@ -22987,8 +23533,10 @@ const properties$g = [
 	{
 		id: "snackbar-animationDelay",
 		name: "animationDelay",
+		attribute: "animation-delay",
 		type: "string",
 		description: "",
+		"default": "'200ms'",
 		defaultValue: "'200ms'",
 		tags: [
 		]
@@ -22996,8 +23544,10 @@ const properties$g = [
 	{
 		id: "snackbar-animationDuration",
 		name: "animationDuration",
+		attribute: "animation-duration",
 		type: "string",
 		description: "",
+		"default": "'2000ms'",
 		defaultValue: "'2000ms'",
 		tags: [
 		]
@@ -23005,8 +23555,10 @@ const properties$g = [
 	{
 		id: "snackbar-background",
 		name: "background",
+		attribute: "background",
 		type: "string",
 		description: "",
+		"default": "'var(--spx-color-gray-900)'",
 		defaultValue: "'var(--spx-color-gray-900)'",
 		tags: [
 		]
@@ -23014,6 +23566,7 @@ const properties$g = [
 	{
 		id: "snackbar-border",
 		name: "border",
+		attribute: "border",
 		type: "string",
 		description: "",
 		tags: [
@@ -23022,8 +23575,10 @@ const properties$g = [
 	{
 		id: "snackbar-borderRadius",
 		name: "borderRadius",
+		attribute: "border-radius",
 		type: "string",
 		description: "",
+		"default": "s.borderRadius",
 		defaultValue: "'var(--spx-border-radius)'",
 		tags: [
 		]
@@ -23031,6 +23586,7 @@ const properties$g = [
 	{
 		id: "snackbar-closeable",
 		name: "closeable",
+		attribute: "closeable",
 		type: "boolean",
 		description: "Adds option to close snackbar after its creation.",
 		tags: [
@@ -23039,8 +23595,10 @@ const properties$g = [
 	{
 		id: "snackbar-color",
 		name: "color",
+		attribute: "color",
 		type: "string",
 		description: "",
+		"default": "'#ffffff'",
 		defaultValue: "'#ffffff'",
 		tags: [
 		]
@@ -23048,8 +23606,10 @@ const properties$g = [
 	{
 		id: "snackbar-distanceX",
 		name: "distanceX",
+		attribute: "distance-x",
 		type: "string",
 		description: "Distance to the edge of the viewport on the x-axis.",
+		"default": "'1em'",
 		defaultValue: "'1em'",
 		tags: [
 			{
@@ -23060,8 +23620,10 @@ const properties$g = [
 	{
 		id: "snackbar-distanceY",
 		name: "distanceY",
+		attribute: "distance-y",
 		type: "string",
 		description: "Distance to the edge of the viewport on the y-axis.",
+		"default": "'1em'",
 		defaultValue: "'1em'",
 		tags: [
 			{
@@ -23072,16 +23634,23 @@ const properties$g = [
 	{
 		id: "snackbar-fixed",
 		name: "fixed",
+		attribute: "fixed",
 		type: "boolean",
 		description: "Makes snackbar not removable.",
 		tags: [
+			{
+				text: "'#components'",
+				name: "editor"
+			}
 		]
 	},
 	{
 		id: "snackbar-fontSize",
 		name: "fontSize",
+		attribute: "font-size",
 		type: "string",
 		description: "",
+		"default": "'18px'",
 		defaultValue: "'18px'",
 		tags: [
 		]
@@ -23089,17 +23658,25 @@ const properties$g = [
 	{
 		id: "snackbar-identifier",
 		name: "identifier",
+		attribute: "identifier",
 		type: "string",
 		description: "Unique identifier for snackbar instance.",
+		"default": "'primary'",
 		defaultValue: "'primary'",
 		tags: [
+			{
+				text: "'#components'",
+				name: "editor"
+			}
 		]
 	},
 	{
 		id: "snackbar-padding",
 		name: "padding",
+		attribute: "padding",
 		type: "string",
 		description: "",
+		"default": "'1em'",
 		defaultValue: "'1em'",
 		tags: [
 		]
@@ -23107,12 +23684,14 @@ const properties$g = [
 	{
 		id: "snackbar-position",
 		name: "position",
+		attribute: "position",
 		type: "string",
 		description: "Component position in page.",
+		"default": "'bottom-right'",
 		defaultValue: "'bottom-right'",
 		tags: [
 			{
-				text: "'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center\", 'top-right'",
+				text: "'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'",
 				name: "choice"
 			}
 		]
@@ -23120,15 +23699,22 @@ const properties$g = [
 	{
 		id: "snackbar-positionCss",
 		name: "positionCss",
+		attribute: "position-css",
 		type: "\"absolute\" | \"fixed\" | \"relative\" | \"static\"",
 		description: "CSS property position of button.",
+		"default": "'fixed'",
 		defaultValue: "'fixed'",
 		tags: [
+			{
+				text: "'absolute'",
+				name: "editor"
+			}
 		]
 	},
 	{
 		id: "snackbar-reverse",
 		name: "reverse",
+		attribute: "reverse",
 		type: "boolean",
 		description: "Reverses the close button if \"closable\" prop is true.",
 		tags: [
@@ -23137,26 +23723,36 @@ const properties$g = [
 	{
 		id: "snackbar-spaceBetween",
 		name: "spaceBetween",
+		attribute: "space-between",
 		type: "string",
 		description: "Space between snackbars.",
-		defaultValue: "'var(--spx-space-xs)'",
+		"default": "'12px'",
+		defaultValue: "'12px'",
 		tags: [
 		]
 	},
 	{
 		id: "snackbar-target",
 		name: "target",
+		attribute: "target",
 		type: "string",
 		description: "Element where snackbars should be created in.",
+		"default": "'body'",
 		defaultValue: "'body'",
 		tags: [
+			{
+				text: "'#components'",
+				name: "editor"
+			}
 		]
 	},
 	{
 		id: "snackbar-text",
 		name: "text",
+		attribute: "text",
 		type: "string",
 		description: "Text inside snackbar.",
+		"default": "\"Hello, I'm a snackbar.\"",
 		defaultValue: "\"Hello, I'm a snackbar.\"",
 		tags: [
 		]
@@ -23164,14 +23760,20 @@ const properties$g = [
 	{
 		id: "snackbar-zIndex",
 		name: "zIndex",
+		attribute: "z-index",
 		type: "number",
 		description: "",
+		"default": "103",
 		defaultValue: "103",
 		tags: [
 		]
 	}
 ];
 const events$g = [
+	{
+		name: "spxSnackbarDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods$g = [
 	{
@@ -23208,8 +23810,10 @@ const properties$h = [
 	{
 		id: "typewriter-autoStart",
 		name: "autoStart",
+		attribute: "auto-start",
 		type: "boolean",
 		description: "Automatically starts writing.",
+		"default": "true",
 		defaultValue: "true",
 		tags: [
 		]
@@ -23217,8 +23821,10 @@ const properties$h = [
 	{
 		id: "typewriter-delay",
 		name: "delay",
+		attribute: "delay",
 		type: "any",
 		description: "Writing delay in ms. Also accepts 'natural' value.",
+		"default": "'natural'",
 		defaultValue: "'natural'",
 		tags: [
 		]
@@ -23226,8 +23832,10 @@ const properties$h = [
 	{
 		id: "typewriter-deleteSpeed",
 		name: "deleteSpeed",
+		attribute: "delete-speed",
 		type: "any",
 		description: "Delete delay in ms. Also accepts 'natural' value.",
+		"default": "'natural'",
 		defaultValue: "'natural'",
 		tags: [
 		]
@@ -23235,8 +23843,10 @@ const properties$h = [
 	{
 		id: "typewriter-display",
 		name: "display",
+		attribute: "display",
 		type: "string",
 		description: "",
+		"default": "'block'",
 		defaultValue: "'block'",
 		tags: [
 		]
@@ -23244,6 +23854,7 @@ const properties$h = [
 	{
 		id: "typewriter-loop",
 		name: "loop",
+		attribute: "loop",
 		type: "boolean",
 		description: "Loops the animation.",
 		tags: [
@@ -23252,14 +23863,20 @@ const properties$h = [
 	{
 		id: "typewriter-text",
 		name: "text",
+		attribute: "text",
 		type: "string",
 		description: "Text that should be written.",
+		"default": "\"I'm a typewriter\"",
 		defaultValue: "\"I'm a typewriter\"",
 		tags: [
 		]
 	}
 ];
 const events$h = [
+	{
+		name: "spxTypewriterDidLoad",
+		description: "Fires after component has loaded."
+	}
 ];
 const methods$h = [
 	{
@@ -23296,11 +23913,11 @@ const typewriter = /*#__PURE__*/Object.freeze({
 });
 
 /**
- *  Make every first letter from string uppercase.
+ * Make every first letter from string uppercase.
  */
 const titleCase = (str) => {
-  var splitStr = str.toLowerCase().split(' ');
-  for (var i = 0; i < splitStr.length; i++) {
+  const splitStr = str.toLowerCase().split(' ');
+  for (let i = 0; i < splitStr.length; i++) {
     splitStr[i] =
       splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
   }
@@ -23314,19 +23931,7 @@ const SpxEditor = class extends HTMLElement {
     super();
     this.__registerHost();
     this.fullscreen = false;
-    this.setDefault = (attr, value) => {
-      const create = () => {
-        if (this.controls.querySelector('[data-attr="' + attr + '"]')) {
-          const input = this.controls.querySelector('[data-attr="' + attr + '"]');
-          input.value = value;
-          this.comp.setAttribute(attr, value);
-        }
-        else {
-          setTimeout(create, 0);
-        }
-      };
-      create();
-    };
+    /** Export code. */
     this.exportCode = () => {
       const el = this.component.querySelector('spx-' + this.current + '');
       this.export.setAttribute('data-clipboard-text', String(el.outerHTML
@@ -23341,8 +23946,9 @@ const SpxEditor = class extends HTMLElement {
       snackbar.setAttribute('text', 'Code copied to clipboard');
       document.body.appendChild(snackbar);
     };
+    /** Fullscreen function. */
     this.goFullscreen = () => {
-      if (this.fullscreen === false) {
+      if (!this.fullscreen) {
         this.fullscreen = true;
         disableBodyScroll(this.el);
       }
@@ -23388,6 +23994,7 @@ const SpxEditor = class extends HTMLElement {
       animate: animate,
       'class-toggle': classToggle,
       code: code,
+      // document: document,
       'edit-button': editButton,
       group: group,
       iframe: iframe,
@@ -23423,7 +24030,7 @@ const SpxEditor = class extends HTMLElement {
     // eslint-disable-next-line no-new
     new Clipboard(this.export);
     /** Check if query string is there and use it's data instead. */
-    if (this.query === true) {
+    if (this.query) {
       this.createQueryComponent();
     }
     else {
@@ -23436,6 +24043,7 @@ const SpxEditor = class extends HTMLElement {
     /** Remove first and last apostrophe. */
     this.removeStringFirstLast();
   }
+  /** Creates the URL query string. */
   createQueryString() {
     const controls = {};
     this.controls.querySelectorAll('input, select').forEach((item) => {
@@ -23452,6 +24060,7 @@ const SpxEditor = class extends HTMLElement {
       '?' +
       encodeURIComponent(new URLSearchParams(searchQuery).toString()));
   }
+  /** Creates an object from the string. */
   createQueryObject() {
     const URL = decodeURIComponent(location.search.substring(1));
     this.query = true;
@@ -23460,14 +24069,16 @@ const SpxEditor = class extends HTMLElement {
       '"}');
     this.current = this.queryObj['id'];
   }
+  /** Create the component based on the query string. */
   createQueryComponent() {
-    /** Create component and set correct value. */
+    /** Set correct value. */
     this.createComponent(this.queryObj['id']);
     const component = this.el.querySelector('#component');
     component.value = this.queryObj['id'];
     /** Delete ID again since it's not needed for the other values. */
     delete this.queryObj['id'];
     /** Set individual values. */
+    // eslint-disable-next-line array-callback-return
     Object.entries(this.queryObj).map((key) => {
       /** Get constants. */
       const item = this.controls.querySelector('[data-attr="' + key[0] + '"]');
@@ -23490,8 +24101,8 @@ const SpxEditor = class extends HTMLElement {
       }
     });
   }
+  /** Creates the component. */
   createComponent(component) {
-    this.adjustedValues = {};
     /** Images. */
     const img = '<img src="/wp-content/themes/spx-child/assets/images/playground/andre-benz-RRshxnCn8Lk-unsplash.jpg"/>' +
       '<img src="/wp-content/themes/spx-child/assets/images/playground/beasty--HxIhfS_dUk-unsplash.jpg"/>' +
@@ -23525,16 +24136,16 @@ const SpxEditor = class extends HTMLElement {
     /** Animate. */
     if (component === 'animate') {
       this.comp.innerHTML =
-        '<h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>' +
-          '<h1>Sed vel ante nec urna iaculis faucibus.</h1>' +
-          '<h1>Nam bibendum, erat vel ultricies finibus, justo risus elementum dui, at egestas diam justo nec turpis.</h1>' +
-          '<h1>Sed imperdiet neque lorem, eget semper ante vehicula ac.</h1>' +
-          '<h1>Quisque a maximus risus.</h1>' +
-          '<h1>Morbi facilisis elit sed ex pellentesque suscipit.</h1>' +
-          '<h1>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</h1>' +
-          '<h1>Sed tincidunt eros non libero ultricies, volutpat mollis erat ultricies.</h1>' +
-          '<h1>Integer ut nisl ut tellus tincidunt ultrices nec eget elit.</h1>' +
-          '<h1>Proin malesuada augue dolor, ut laoreet libero fringilla vel.</h1>';
+        '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>' +
+          '<p>Sed vel ante nec urna iaculis faucibus.</>' +
+          '<p>Nam bibendum, erat vel ultricies finibus, justo risus elementum dui, at egestas diam justo nec turpis.</>' +
+          '<p>Sed imperdiet neque lorem, eget semper ante vehicula ac.</>' +
+          '<p>Quisque a maximus risus.</>' +
+          '<p>Morbi facilisis elit sed ex pellentesque suscipit.</>' +
+          '<p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</>' +
+          '<p>Sed tincidunt eros non libero ultricies, volutpat mollis erat ultricies.</>' +
+          '<p>Integer ut nisl ut tellus tincidunt ultrices nec eget elit.</>' +
+          '<p>Proin malesuada augue dolor, ut laoreet libero fringilla vel.</>';
     }
     /** Class Toggle. */
     if (component === 'class-toggle') {
@@ -23546,7 +24157,6 @@ const SpxEditor = class extends HTMLElement {
     }
     /** Code. */
     if (component === 'code') {
-      this.comp.setAttribute('type', 'css');
       this.comp.innerHTML =
         '' +
           'my-card {\n' +
@@ -23555,21 +24165,24 @@ const SpxEditor = class extends HTMLElement {
           '&nbsp;&nbsp;border-radius: 0.125em;\n' +
           '}';
     }
+    /** Edit button. */
     if (component === 'edit-button') {
-      this.comp.setAttribute('position-css', 'absolute');
       this.comp.setAttribute('test', '');
       const h1 = document.createElement('h1');
       h1.setAttribute('data-spx-edit', 'test');
       h1.innerHTML = 'Edit me!';
       this.component.appendChild(h1);
     }
+    /** Group. */
     if (component === 'group') {
       this.comp.innerHTML =
         '<spx-accordion/>' + '<spx-accordion/>' + '<spx-accordion/>';
     }
+    /** Masonry/Lightbox. */
     if (component === 'masonry' || component === 'lightbox') {
       this.comp.innerHTML = img;
     }
+    /** Notation. */
     if (component === 'notation') {
       this.comp.innerHTML =
         '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>';
@@ -23577,6 +24190,7 @@ const SpxEditor = class extends HTMLElement {
         maxWidth: '500px',
       }));
     }
+    /** Offset. */
     if (component === 'offset') {
       const style = css({
         width: '50%',
@@ -23600,15 +24214,11 @@ const SpxEditor = class extends HTMLElement {
       }));
       header2.classList.add(style);
       header2.innerHTML = '.header2';
-      this.setDefault('target', '.header1');
       this.comp.innerHTML = '<p>Adjusting my distance to an element height</p>';
       this.component.appendChild(header1);
       this.component.appendChild(header2);
     }
-    if (component === 'slider') {
-      this.comp.setAttribute('max-height', '500px');
-      this.comp.setAttribute('max-width', '500px');
-    }
+    /** Slider/Slideshow. */
     if (component === 'slider' || component === 'slideshow') {
       this.comp.classList.add(css({
         img: {
@@ -23618,14 +24228,17 @@ const SpxEditor = class extends HTMLElement {
       }));
       this.comp.innerHTML = img;
     }
-    if (component === 'snackbar') {
-      this.comp.setAttribute('target', '#components');
-      this.comp.setAttribute('identifier', 'components');
-      this.comp.setAttribute('fixed', '');
-      this.comp.setAttribute('position-css', 'absolute');
-    }
+    /** Append component. */
     this.component.appendChild(this.comp);
+    /** Set default values for components. */
+    this.ar[component]['properties'].forEach((item) => {
+      if (some(item['tags'], { name: 'editor' })) {
+        const attribute = filter(item['tags'], { name: 'editor' })[0]['text'];
+        this.comp.setAttribute(item['attribute'], attribute.replaceAll("'", ''));
+      }
+    });
   }
+  /** Creates the component selector. */
   createComponentControl() {
     /** On select component. */
     const onSelect = (event) => {
@@ -23651,9 +24264,11 @@ const SpxEditor = class extends HTMLElement {
       this.createQueryString();
     };
     /** Render select. */
-    // eslint-disable-next-line react/jsx-no-bind
     return [
-      h$1("select", { onChange: (event) => onSelect(event), name: "components", id: "component" }, Object.keys(this.ar).map((object) => {
+      h$1("select", {
+        // eslint-disable-next-line react/jsx-no-bind
+        onChange: (event) => onSelect(event), name: "components", id: "component"
+      }, Object.keys(this.ar).map((object) => {
         return (h$1("option", { value: object }, titleCase(object.replaceAll('-', ' '))));
       })),
       h$1("div", { class: css({
@@ -23677,13 +24292,15 @@ const SpxEditor = class extends HTMLElement {
               background: 'var(--spx-color-gray-200)',
             },
           },
-        }) }, h$1("button", { onClick: () => onReset() }, "Reset"), (this.current === 'animate' || this.current === 'notation') && (
-      /* eslint-disable-next-line react/jsx-no-bind */
-      h$1("button", { onClick: () => 
+        }) }, h$1("button", { onClick: () => onReset() }, "Reset"), (this.current === 'animate' || this.current === 'notation') && (h$1("button", {
+        /* eslint-disable-next-line react/jsx-no-bind */
+        onClick: () => 
         // @ts-ignore
-        this.component.querySelector('spx-' + this.current + '').reload() }, "Play"))),
+        this.component.querySelector('spx-' + this.current + '').reload()
+      }, "Play"))),
     ];
   }
+  /** Removes first and last quote. */
   removeStringFirstLast() {
     this.el.querySelectorAll('input').forEach((item) => {
       if (item.value.slice(-1) === "'") {
@@ -23692,6 +24309,7 @@ const SpxEditor = class extends HTMLElement {
       }
     });
   }
+  /** Create all sidebar controls. */
   createControls() {
     /** Update attributes on pressing enter. */
     const onSlider = () => {
@@ -23717,7 +24335,7 @@ const SpxEditor = class extends HTMLElement {
     /** Immediately change all number inputs and checkboxes. */
     const onChange = (event, attr, type) => {
       if (type === 'boolean') {
-        if (event.target.checked === true) {
+        if (event.target.checked) {
           this.component
             .querySelector(':scope ' + this.ar[this.current]['name'] + '')
             .setAttribute(attr, '');
@@ -23739,22 +24357,37 @@ const SpxEditor = class extends HTMLElement {
     /** Set up group properly. */
     const component = this.current === 'group' ? 'accordion' : this.current;
     /** Render props. */
+    // eslint-disable-next-line array-callback-return
     return Object.values(this.ar[component]['properties']).map((object) => {
       const attribute = kebabCase(object['name']);
-      const defaultValue = some(object['tags'], { name: 'editor' }) === true
+      const defaultValue = some(object['tags'], { name: 'editor' })
         ? filter(object['tags'], { name: 'editor' })[0]['text']
         : object['defaultValue'];
       const noControl = [
         '' + this.current + '-display',
+        'accordion-link',
+        'accordion-linkType',
+        'accordion-openState',
+        'accordion-indicatorIconType',
         'animate-viewportMarginTop',
         'animate-viewportMarginRight',
         'animate-viewportMarginBottom',
         'animate-viewportMarginLeft',
         'accordion-indicatorIcon',
+        'code-type',
+        'code-theme',
+        'code-lineNumbers',
         'edit-button-test',
         'edit-button-type',
         'edit-button-editId',
         'edit-button-positionCss',
+        'iframe-documentBorder',
+        'iframe-documentBorderRadius',
+        'iframe-documentHeight',
+        'iframe-documentWidth',
+        'iframe-fit',
+        'iframe-lazy',
+        'iframe-type',
         'masonry-imageSize',
         'masonry-images',
         'masonry-imagesSrc',
@@ -23769,6 +24402,10 @@ const SpxEditor = class extends HTMLElement {
         'slider-images',
         'slider-imagesSrc',
         'slider-imagesSize',
+        'slideshow-imageSize',
+        'slideshow-images',
+        'slideshow-imagesSrc',
+        'slideshow-overflow',
         'snackbar-fixed',
         'snackbar-positionCss',
         'typewriter-autoStart',
@@ -23820,7 +24457,7 @@ const SpxEditor = class extends HTMLElement {
                   transition: 'left 0.25s ease',
                 },
                 'input[type="checkbox"]:checked + label::before': {
-                  backgroundColor: 'var(--spx-color-primary-A700)',
+                  backgroundColor: 'var(--spx-color-primary-600)',
                 },
                 'input[type="checkbox"]:checked + label::after': {
                   left: '24px',
@@ -23881,18 +24518,21 @@ const SpxEditor = class extends HTMLElement {
       },
       'p.mobile': {
         display: !this.mobile && 'none',
+        margin: '20px !important',
       },
     });
     /** Header styles. */
     const styleHeader = css({
       gridArea: 'header',
-      padding: '16px 32px',
+      padding: '16px 32px 20px 32px',
       borderBottom: '1px solid var(--spx-color-gray-200)',
-      h1: {
+      display: 'flex',
+      flexDirection: 'column',
+      'span:nth-child(1)': {
         fontSize: 'clamp(20px, 3vw, 36px)',
         fontWeight: 500,
       },
-      h2: {
+      'span:nth-child(2)': {
         marginTop: '4px',
         color: 'var(--spx-color-gray-700)',
         fontWeight: 450,
@@ -23938,7 +24578,7 @@ const SpxEditor = class extends HTMLElement {
         fontSize: 'clamp(16px, 3vw, 20px)',
       },
       'h1 + h1': {
-        marginTop: 'var(--spx-space-sm)',
+        marginTop: '24px',
       },
     });
     /** Sidebar styles. */
@@ -23947,11 +24587,14 @@ const SpxEditor = class extends HTMLElement {
       gridArea: 'sidebar',
       display: 'grid',
       gridGap: '24px',
-      overflow: 'scroll',
+      overflowY: 'scroll',
       borderLeft: '1px solid var(--spx-color-gray-200)',
       '& > div > div:nth-child(2)': {
         display: 'grid',
         gridGap: '24px',
+        '&:last-child': {
+          marginBottom: '48px',
+        },
       },
     });
     /** Export styles. */
@@ -24005,6 +24648,7 @@ const SpxEditor = class extends HTMLElement {
         backgroundSize: '10px',
       },
     });
+    /** Fullscreen styles. */
     const styleFullscreen = css({
       position: 'absolute',
       left: '0',
@@ -24012,7 +24656,7 @@ const SpxEditor = class extends HTMLElement {
       borderTopRightRadius: borderRadius,
       borderBottomLeftRadius: borderRadius,
     });
-    return (h$1(Host, { class: styleHost }, h$1("div", { class: styleHeader }, h$1("h1", null, titleCase(this.current.replaceAll('-', ' '))), h$1("h2", { title: this.ar[this.current]['description'] }, this.ar[this.current]['description'])), h$1("div", { id: "components", ref: (el) => (this.component = el), class: styleComponent }), h$1("div", { class: styleExport }, h$1("spx-section-button", { ref: (el) => (this.export = el), onClick: this.exportCode, type: "secondary" }, "Export")), h$1("div", { ref: (el) => (this.sidebar = el), class: styleSidebar }, h$1("div", { class: styleControls }, h$1("div", null, h$1("span", null, "Component"), this.createComponentControl()), h$1("div", { ref: (el) => (this.controls = el) }, this.createControls()))), h$1("button", { onClick: this.goFullscreen, class: styleFullscreen }, this.fullscreen ? 'Exit Fullscreen' : 'Go Fullscreen'), h$1("p", { class: "mobile" }, "The playground only works on devices larger than 1024px.")));
+    return (h$1(Host, { class: styleHost }, h$1("div", { class: styleHeader }, h$1("span", null, titleCase(this.current.replaceAll('-', ' '))), h$1("span", { title: this.ar[this.current]['description'] }, this.ar[this.current]['description'])), h$1("div", { id: "components", ref: (el) => (this.component = el), class: styleComponent }), h$1("div", { class: styleExport }, h$1("spx-section-button", { ref: (el) => (this.export = el), onClick: this.exportCode, type: "secondary" }, "Export")), h$1("div", { ref: (el) => (this.sidebar = el), class: styleSidebar }, h$1("div", { class: styleControls }, h$1("div", null, h$1("span", null, "Component"), this.createComponentControl()), h$1("div", { ref: (el) => (this.controls = el) }, this.createControls()))), h$1("button", { onClick: this.goFullscreen, class: styleFullscreen }, this.fullscreen ? 'Exit Fullscreen' : 'Go Fullscreen'), h$1("p", { class: "mobile" }, "The playground only works on devices larger than 1024px.")));
   }
   get el() { return this; }
   static get style() { return spxEditorCss; }
@@ -24023,6 +24667,7 @@ const SpxGroup = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxGroupDidLoad = createEvent(this, "spxGroupDidLoad", 7);
     this.display = 'block';
   }
   componentDidLoad() {
@@ -24037,6 +24682,7 @@ const SpxGroup = class extends HTMLElement {
     observer.observe(this.el, {
       attributes: true,
     });
+    this.spxGroupDidLoad.emit({ target: 'document' });
   }
   forwardAttributes() {
     /** Function to filter elements. */
@@ -24052,7 +24698,7 @@ const SpxGroup = class extends HTMLElement {
       ? getAllTagMatches(new RegExp(this.target, 'i'))
       : getAllTagMatches(/^spx/i);
     /** Loop matches. */
-    for (var att, i = 0, atts = this.el.attributes, n = atts.length; i < n; i++) {
+    for (let att, i = 0, atts = this.el.attributes, n = atts.length; i < n; i++) {
       att = atts[i];
       if (startsWith(att.nodeName, 'g-')) {
         elements.forEach((item) => {
@@ -24079,6 +24725,7 @@ const SpxIcon = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxIconDidLoad = createEvent(this, "spxIconDidLoad", 7);
     this.color = 'inherit';
     /**
      * Icon type.
@@ -24086,15 +24733,16 @@ const SpxIcon = class extends HTMLElement {
      */
     this.type = 'ionicons';
     /** Icon size. */
-    this.size = '20px';
+    this.size = '1em';
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
+    this.spxIconDidLoad.emit({ target: 'document' });
   }
   render() {
     /** Host styles. */
     const styleHost = css({
-      display: 'flex',
+      display: 'inline-flex',
       alignItems: 'center',
       justifyContent: 'center',
     });
@@ -24112,38 +24760,133 @@ const SpxIcon = class extends HTMLElement {
   get el() { return this; }
 };
 
+var lazyload_min = createCommonjsModule(function (module, exports) {
+!function(t,n){module.exports=n();}(commonjsGlobal,(function(){function t(){return (t=Object.assign||function(t){for(var n=1;n<arguments.length;n++){var e=arguments[n];for(var i in e)Object.prototype.hasOwnProperty.call(e,i)&&(t[i]=e[i]);}return t}).apply(this,arguments)}var n="undefined"!=typeof window,e=n&&!("onscroll"in window)||"undefined"!=typeof navigator&&/(gle|ing|ro)bot|crawl|spider/i.test(navigator.userAgent),i=n&&"IntersectionObserver"in window,o=n&&"classList"in document.createElement("p"),r=n&&window.devicePixelRatio>1,a={elements_selector:".lazy",container:e||n?document:null,threshold:300,thresholds:null,data_src:"src",data_srcset:"srcset",data_sizes:"sizes",data_bg:"bg",data_bg_hidpi:"bg-hidpi",data_bg_multi:"bg-multi",data_bg_multi_hidpi:"bg-multi-hidpi",data_poster:"poster",class_applied:"applied",class_loading:"loading",class_loaded:"loaded",class_error:"error",class_entered:"entered",class_exited:"exited",unobserve_completed:!0,unobserve_entered:!1,cancel_on_exit:!0,callback_enter:null,callback_exit:null,callback_applied:null,callback_loading:null,callback_loaded:null,callback_error:null,callback_finish:null,callback_cancel:null,use_native:!1},c=function(n){return t({},a,n)},s=function(t,n){var e,i="LazyLoad::Initialized",o=new t(n);try{e=new CustomEvent(i,{detail:{instance:o}});}catch(t){(e=document.createEvent("CustomEvent")).initCustomEvent(i,!1,!1,{instance:o});}window.dispatchEvent(e);},l="loading",u="loaded",d="applied",f="error",_="native",g="data-",v="ll-status",p=function(t,n){return t.getAttribute(g+n)},b=function(t){return p(t,v)},h=function(t,n){return function(t,n,e){var i="data-ll-status";null!==e?t.setAttribute(i,e):t.removeAttribute(i);}(t,0,n)},m=function(t){return h(t,null)},E=function(t){return null===b(t)},y=function(t){return b(t)===_},A=[l,u,d,f],I=function(t,n,e,i){t&&(void 0===i?void 0===e?t(n):t(n,e):t(n,e,i));},L=function(t,n){o?t.classList.add(n):t.className+=(t.className?" ":"")+n;},w=function(t,n){o?t.classList.remove(n):t.className=t.className.replace(new RegExp("(^|\\s+)"+n+"(\\s+|$)")," ").replace(/^\s+/,"").replace(/\s+$/,"");},k=function(t){return t.llTempImage},O=function(t,n){if(n){var e=n._observer;e&&e.unobserve(t);}},x=function(t,n){t&&(t.loadingCount+=n);},z=function(t,n){t&&(t.toLoadCount=n);},C=function(t){for(var n,e=[],i=0;n=t.children[i];i+=1)"SOURCE"===n.tagName&&e.push(n);return e},N=function(t,n,e){e&&t.setAttribute(n,e);},M=function(t,n){t.removeAttribute(n);},R=function(t){return !!t.llOriginalAttrs},G=function(t){if(!R(t)){var n={};n.src=t.getAttribute("src"),n.srcset=t.getAttribute("srcset"),n.sizes=t.getAttribute("sizes"),t.llOriginalAttrs=n;}},T=function(t){if(R(t)){var n=t.llOriginalAttrs;N(t,"src",n.src),N(t,"srcset",n.srcset),N(t,"sizes",n.sizes);}},j=function(t,n){N(t,"sizes",p(t,n.data_sizes)),N(t,"srcset",p(t,n.data_srcset)),N(t,"src",p(t,n.data_src));},D=function(t){M(t,"src"),M(t,"srcset"),M(t,"sizes");},F=function(t,n){var e=t.parentNode;e&&"PICTURE"===e.tagName&&C(e).forEach(n);},P={IMG:function(t,n){F(t,(function(t){G(t),j(t,n);})),G(t),j(t,n);},IFRAME:function(t,n){N(t,"src",p(t,n.data_src));},VIDEO:function(t,n){!function(t,e){C(t).forEach((function(t){N(t,"src",p(t,n.data_src));}));}(t),N(t,"poster",p(t,n.data_poster)),N(t,"src",p(t,n.data_src)),t.load();}},S=function(t,n){var e=P[t.tagName];e&&e(t,n);},V=function(t,n,e){x(e,1),L(t,n.class_loading),h(t,l),I(n.callback_loading,t,e);},U=["IMG","IFRAME","VIDEO"],$=function(t,n){!n||function(t){return t.loadingCount>0}(n)||function(t){return t.toLoadCount>0}(n)||I(t.callback_finish,n);},q=function(t,n,e){t.addEventListener(n,e),t.llEvLisnrs[n]=e;},H=function(t,n,e){t.removeEventListener(n,e);},B=function(t){return !!t.llEvLisnrs},J=function(t){if(B(t)){var n=t.llEvLisnrs;for(var e in n){var i=n[e];H(t,e,i);}delete t.llEvLisnrs;}},K=function(t,n,e){!function(t){delete t.llTempImage;}(t),x(e,-1),function(t){t&&(t.toLoadCount-=1);}(e),w(t,n.class_loading),n.unobserve_completed&&O(t,e);},Q=function(t,n,e){var i=k(t)||t;B(i)||function(t,n,e){B(t)||(t.llEvLisnrs={});var i="VIDEO"===t.tagName?"loadeddata":"load";q(t,i,n),q(t,"error",e);}(i,(function(o){!function(t,n,e,i){var o=y(n);K(n,e,i),L(n,e.class_loaded),h(n,u),I(e.callback_loaded,n,i),o||$(e,i);}(0,t,n,e),J(i);}),(function(o){!function(t,n,e,i){var o=y(n);K(n,e,i),L(n,e.class_error),h(n,f),I(e.callback_error,n,i),o||$(e,i);}(0,t,n,e),J(i);}));},W=function(t,n,e){!function(t){t.llTempImage=document.createElement("IMG");}(t),Q(t,n,e),function(t,n,e){var i=p(t,n.data_bg),o=p(t,n.data_bg_hidpi),a=r&&o?o:i;a&&(t.style.backgroundImage='url("'.concat(a,'")'),k(t).setAttribute("src",a),V(t,n,e));}(t,n,e),function(t,n,e){var i=p(t,n.data_bg_multi),o=p(t,n.data_bg_multi_hidpi),a=r&&o?o:i;a&&(t.style.backgroundImage=a,function(t,n,e){L(t,n.class_applied),h(t,d),n.unobserve_completed&&O(t,n),I(n.callback_applied,t,e);}(t,n,e));}(t,n,e);},X=function(t,n,e){!function(t){return U.indexOf(t.tagName)>-1}(t)?W(t,n,e):function(t,n,e){Q(t,n,e),S(t,n),V(t,n,e);}(t,n,e);},Y=["IMG","IFRAME"],Z=function(t){return t.use_native&&"loading"in HTMLImageElement.prototype},tt=function(t,n,e){t.forEach((function(t){return function(t){return t.isIntersecting||t.intersectionRatio>0}(t)?function(t,n,e,i){h(t,"entered"),L(t,e.class_entered),w(t,e.class_exited),function(t,n,e){n.unobserve_entered&&O(t,e);}(t,e,i),I(e.callback_enter,t,n,i),function(t){return A.indexOf(b(t))>=0}(t)||X(t,e,i);}(t.target,t,n,e):function(t,n,e,i){E(t)||(L(t,e.class_exited),function(t,n,e,i){e.cancel_on_exit&&function(t){return b(t)===l}(t)&&"IMG"===t.tagName&&(J(t),function(t){F(t,(function(t){D(t);})),D(t);}(t),function(t){F(t,(function(t){T(t);})),T(t);}(t),w(t,e.class_loading),x(i,-1),m(t),I(e.callback_cancel,t,n,i));}(t,n,e,i),I(e.callback_exit,t,n,i));}(t.target,t,n,e)}));},nt=function(t){return Array.prototype.slice.call(t)},et=function(t){return t.container.querySelectorAll(t.elements_selector)},it=function(t){return function(t){return b(t)===f}(t)},ot=function(t,n){return function(t){return nt(t).filter(E)}(t||et(n))},rt=function(t,e){var o=c(t);this._settings=o,this.loadingCount=0,function(t,n){i&&!Z(t)&&(n._observer=new IntersectionObserver((function(e){tt(e,t,n);}),function(t){return {root:t.container===document?null:t.container,rootMargin:t.thresholds||t.threshold+"px"}}(t)));}(o,this),function(t,e){n&&window.addEventListener("online",(function(){!function(t,n){var e;(e=et(t),nt(e).filter(it)).forEach((function(n){w(n,t.class_error),m(n);})),n.update();}(t,e);}));}(o,this),this.update(e);};return rt.prototype={update:function(t){var n,o,r=this._settings,a=ot(t,r);z(this,a.length),!e&&i?Z(r)?function(t,n,e){t.forEach((function(t){-1!==Y.indexOf(t.tagName)&&(t.setAttribute("loading","lazy"),function(t,n,e){Q(t,n,e),S(t,n),h(t,_);}(t,n,e));})),z(e,0);}(a,r,this):(o=a,function(t){t.disconnect();}(n=this._observer),function(t,n){n.forEach((function(n){t.observe(n);}));}(n,o)):this.loadAll(a);},destroy:function(){this._observer&&this._observer.disconnect(),et(this._settings).forEach((function(t){delete t.llOriginalAttrs;})),delete this._observer,delete this._settings,delete this.loadingCount,delete this.toLoadCount;},loadAll:function(t){var n=this,e=this._settings;ot(t,e).forEach((function(t){O(t,n),X(t,e,n);}));}},rt.load=function(t,n){var e=c(n);X(t,e);},rt.resetStatus=function(t){m(t);},n&&function(t,n){if(n)if(n.length)for(var e,i=0;e=n[i];i+=1)s(t,e);else s(t,n);}(rt,window.lazyLoadOptions),rt}));
+});
+
+const tag$9 = 'spx-iframe';
 const SpxIframe = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxIframeDidLoad = createEvent(this, "spxIFrameDidLoad", 7);
+    this.display = 'block';
+    this.documentBorder = 'none';
+    this.documentBorderRadius = 'none';
+    this.documentHeight = 'auto';
+    this.documentWidth = '100%';
     /** Screen size of the site shown inside the iframe. */
     this.size = '1440px';
     /** Source for the iframe. */
     this.src = 'https://spx.dev';
+    /**
+     * Screen size of the site shown inside the iframe.
+     * @choice 'resize', 'document', 'type'
+     */
+    this.type = 'resize';
   }
   onResize() {
-    this.handleResize();
+    if (this.type === 'resize') {
+      this.handleResize();
+    }
+    if (this.fit) {
+      this.setHeight();
+    }
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
-    /** Assign states. */
-    this.iframe = this.el.querySelector('iframe');
-    this.parent = this.el;
-    /** Resize and wait for iFrame to load before showing content. */
-    this.handleResize();
-    this.el.querySelector('iframe').onload = () => {
-      this.loaded = true;
-    };
+    /** Setup lazy loading. */
+    if (this.lazy) {
+      // @ts-ignore
+      // eslint-disable-next-line no-unused-vars
+      const lazyLoadInstance = new lazyload_min({
+        unobserve_entered: true,
+        unobserve_completed: true,
+        callback_loaded: () => {
+          setTimeout(() => {
+            if (this.fit) {
+              this.setHeight();
+              this.setUpMutationObserver();
+            }
+            if (this.type === 'resize') {
+              this.handleResize();
+            }
+          }, 10);
+        },
+      }, this.el.querySelectorAll('[data-src]'));
+    }
+    if (this.type === 'resize') {
+      /** Assign states. */
+      this.iframe = this.el.querySelector('iframe');
+      this.parent = this.el;
+      /** Wait for Iframe to load before showing content. */
+      this.el.querySelector('iframe').onload = () => {
+        this.loaded = true;
+        if (!this.lazy) {
+          this.handleResize();
+        }
+      };
+    }
+    if (this.type === 'document') {
+      this.createIframeContent();
+    }
+    if (this.fit && !this.lazy) {
+      this.setHeight();
+      this.setUpMutationObserver();
+    }
+    this.spxIframeDidLoad.emit({ target: 'document' });
   }
   componentDidUpdate() {
-    this.handleResize();
+    if (this.type === 'resize') {
+      this.handleResize();
+    }
+    if (this.type === 'document') {
+      this.createIframeContent();
+    }
   }
-  /** Resize function to keep src element in proportion. */
+  /** Fit function. */
+  setHeight() {
+    const set = () => {
+      if (this.el.querySelector('iframe').contentWindow.document.body ===
+        undefined ||
+        this.el.querySelector('iframe').contentWindow.document.body === null) {
+        setTimeout(set, 100);
+      }
+      else {
+        this.iframe.style.height =
+          this.el.querySelector('iframe').contentWindow.document.body
+            .scrollHeight + 'px';
+      }
+    };
+    set();
+  }
+  /** Set up mutation observer. */
+  setUpMutationObserver() {
+    mutationObserver(this.el.querySelector('iframe').contentWindow.document.body, {
+      attributes: true,
+      childList: true,
+      subtree: true,
+    }, () => {
+      this.setHeight();
+      setTimeout(() => this.setHeight(), 500);
+    });
+  }
+  /** Type: resize - function to keep src element in proportion. */
   handleResize() {
-    const ratio = this.parent.offsetWidth / this.iframe.offsetWidth;
-    this.iframe.style.transform = 'scale(calc((' + ratio + '))';
-    this.parentHeight = this.parent.offsetHeight;
-    this.iframe.style.height = this.parentHeight / ratio + 'px';
+    if (this.parent && this.iframe) {
+      const ratio = this.parent.offsetWidth / this.iframe.offsetWidth;
+      this.iframe.style.transform = 'scale(calc((' + ratio + '))';
+      this.parentHeight = this.parent.offsetHeight;
+      this.iframe.style.height = this.parentHeight / ratio + 'px';
+    }
+  }
+  /** Type: document - add all slot elements to iframe. */
+  createIframeContent() {
+    const doc = this.iframe.contentDocument;
+    this.content.querySelectorAll('*').forEach((item) => {
+      doc.body.appendChild(item);
+    });
+    this.content.remove();
   }
   async reload() {
     this.componentDidLoad();
@@ -24151,21 +24894,30 @@ const SpxIframe = class extends HTMLElement {
   render() {
     /** Host styles. */
     const styleHost = css({
-      height: '100%',
+      display: setVar(tag$9, 'display', this.display),
+      height: this.type === 'resize' ? '100%' : 'auto',
       width: '100%',
       position: 'relative',
-      overflowX: 'scroll',
-      overflowY: 'hidden',
-      display: 'block',
     });
-    /** Iframe styles. */
-    const styleIframe = css({
+    /** Iframe resize styles. */
+    const styleIframeResize = css({
       border: 'none',
       width: this.size,
       height: '100vh',
       transformOrigin: 'left top',
       position: 'absolute',
     });
+    /** Iframe document styles. */
+    const styleIframeDocument = css({
+      border: setVar(tag$9, 'document-border', this.documentBorder),
+      borderRadius: setVar(tag$9, 'document-border-radius', this.documentBorderRadius),
+      width: setVar(tag$9, 'document-width', this.documentWidth),
+      height: setVar(tag$9, 'document-height', this.documentHeight),
+    });
+    /** Iframe styles. */
+    const styleIframe = this.type === 'resize'
+      ? styleIframeResize
+      : this.type === 'document' && styleIframeDocument;
     /** Loader styles. */
     const styleLoader = css({
       padding: '0.8em',
@@ -24176,17 +24928,19 @@ const SpxIframe = class extends HTMLElement {
       top: '50%',
       transform: 'translate(-50%, -50%) scale(2)',
     });
-    return (h$1(Host, { class: styleHost }, h$1("iframe", { class: styleIframe, tabindex: "-1", src: this.src }), !this.loaded && (h$1("div", { class: styleLoader }, h$1("spx-loader", null)))));
+    return (h$1(Host, { class: styleHost }, this.type === 'document' && (h$1("div", { ref: (el) => (this.content = el) }, h$1("slot", null))), this.type === 'resize' || this.type === 'default' ? (h$1("iframe", { class: styleIframe, ref: (el) => (this.iframe = el), tabindex: "-1", src: !this.lazy ? this.src : '', "data-src": this.lazy && this.src })) : (h$1("iframe", { class: styleIframe, ref: (el) => (this.iframe = el), tabindex: "-1" })), this.type === 'resize' && !this.loaded && (h$1("div", { class: styleLoader }, h$1("spx-loader", null)))));
   }
   get el() { return this; }
 };
 
-const tag$9 = 'spx-image-comparison';
+const tag$a = 'spx-image-comparison';
 const SpxImageComparison = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxImageComparisonDidLoad = createEvent(this, "spxImageComparisonDidLoad", 7);
     this.color = '#ffffff';
+    this.height = '100%';
     this.iconColor = 'var(--spx-color-gray-900)';
     /** Image URL of the before image. */
     this.srcAfter = 'https://source.unsplash.com/random/1200x300';
@@ -24203,7 +24957,7 @@ const SpxImageComparison = class extends HTMLElement {
   startChanged(x) {
     /** Show image in start. */
     const transform = Math.max(0, Math.min(x, this.container.offsetWidth));
-    this.imageAfter.style.width = transform + 'px';
+    this.imageAfter.style.width = transform + 2 + 'px';
     this.scroller.style.left = transform - 25 + 'px';
   }
   componentDidLoad() {
@@ -24247,7 +25001,9 @@ const SpxImageComparison = class extends HTMLElement {
     document.body.addEventListener('touchmove', (e) => {
       this.mover(e);
     });
+    this.spxImageComparisonDidLoad.emit({ target: 'document' });
   }
+  /** Thumb mover function. */
   mover(e) {
     if (!this.active)
       return;
@@ -24259,9 +25015,18 @@ const SpxImageComparison = class extends HTMLElement {
     this.componentDidLoad();
   }
   render() {
+    /** Host styles. */
+    const styleHost = css({
+      display: 'block',
+      position: 'relative',
+      height: setVar(tag$a, 'height', this.height),
+      width: '100%',
+      overflow: 'hidden',
+    });
+    /** Container styles. */
     const styleContainer = css({
       width: '100%',
-      height: '100%',
+      height: setVar(tag$a, 'height', this.height),
       backgroundRepeat: 'no-repeat',
       backgroundColor: 'white',
       backgroundSize: 'cover',
@@ -24273,12 +25038,15 @@ const SpxImageComparison = class extends HTMLElement {
       overflow: 'hidden',
       userSelect: 'none',
     });
+    /** Image styles. */
     const styleImage = css({
       height: '100%',
     });
+    /** Image after styles. */
     const styleImageAfter = css({
       width: '125px',
     });
+    /** Scroller styles. */
     const styleScroller = css({
       width: '50px',
       height: '50px',
@@ -24291,8 +25059,8 @@ const SpxImageComparison = class extends HTMLElement {
       opacity: this.active ? 1 : 0.9,
       pointerEvents: !this.active ? 'auto' : 'none',
       cursor: 'pointer',
-      background: setVar(tag$9, 'color', this.color),
-      border: '4px solid ' + setVar(tag$9, 'color', this.color) + '',
+      background: setVar(tag$a, 'color', this.color),
+      border: '4px solid ' + setVar(tag$a, 'color', this.color) + '',
       '&:hover': {
         opacity: 1,
       },
@@ -24306,7 +25074,7 @@ const SpxImageComparison = class extends HTMLElement {
         marginLeft: '-2px',
         zIndex: 30,
         transition: '0.1s',
-        background: setVar(tag$9, 'color', this.color),
+        background: setVar(tag$a, 'color', this.color),
       },
       '&:before': {
         top: '100%',
@@ -24315,6 +25083,7 @@ const SpxImageComparison = class extends HTMLElement {
         bottom: '100%',
       },
     });
+    /** Thumb styles. */
     const styleThumb = css({
       height: '100%',
       width: '100%',
@@ -24325,13 +25094,7 @@ const SpxImageComparison = class extends HTMLElement {
         transform: 'rotate(45deg)',
       },
     });
-    return (h$1(Host, { class: css({
-        display: 'block',
-        position: 'relative',
-        height: '100%',
-        width: '100%',
-        overflow: 'hidden',
-      }) }, this.srcBefore &&
+    return (h$1(Host, { class: styleHost }, this.srcBefore &&
       this.srcAfter /** Before. */ && [
       h$1("div", { ref: (el) => (this.container = el), class: styleContainer }, h$1("img", { class: styleImage, src: this.srcBefore, alt: "before" })),
       /** After. */
@@ -24347,11 +25110,11 @@ const SpxImageComparison = class extends HTMLElement {
 };
 
 var glightbox_min = createCommonjsModule(function (module, exports) {
-!function(e,t){module.exports=t();}(commonjsGlobal,(function(){function e(t){return (e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(t)}function t(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){for(var i=0;i<t.length;i++){var n=t[i];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n);}}function n(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}function s(e){return function(e){if(Array.isArray(e))return l(e)}(e)||function(e){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e))return Array.from(e)}(e)||function(e,t){if(!e)return;if("string"==typeof e)return l(e,t);var i=Object.prototype.toString.call(e).slice(8,-1);"Object"===i&&e.constructor&&(i=e.constructor.name);if("Map"===i||"Set"===i)return Array.from(e);if("Arguments"===i||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(i))return l(e,t)}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function l(e,t){(null==t||t>e.length)&&(t=e.length);for(var i=0,n=new Array(t);i<t;i++)n[i]=e[i];return n}var o=Date.now();function r(){var e={},t=!0,i=0,n=arguments.length;"[object Boolean]"===Object.prototype.toString.call(arguments[0])&&(t=arguments[0],i++);for(var s=function(i){for(var n in i)Object.prototype.hasOwnProperty.call(i,n)&&(t&&"[object Object]"===Object.prototype.toString.call(i[n])?e[n]=r(!0,e[n],i[n]):e[n]=i[n]);};i<n;i++){var l=arguments[i];s(l);}return e}function a(e,t){if((A(e)||e===window||e===document)&&(e=[e]),O(e)||P(e)||(e=[e]),0!=X(e))if(O(e)&&!P(e))for(var i=e.length,n=0;n<i&&!1!==t.call(e[n],e[n],n,e);n++);else if(P(e))for(var s in e)if(I(e,s)&&!1===t.call(e[s],e[s],s,e))break}function h(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,i=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null,n=e[o]=e[o]||[],s={all:n,evt:null,found:null};return t&&i&&X(n)>0&&a(n,(function(e,n){if(e.eventName==t&&e.fn.toString()==i.toString())return s.found=!0,s.evt=n,!1})),s}function c(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},i=t.onElement,n=t.withCallback,s=t.avoidDuplicate,l=void 0===s||s,o=t.once,r=void 0!==o&&o,c=t.useCapture,d=void 0!==c&&c,u=arguments.length>2?arguments[2]:void 0,g=i||[];function v(e){C(n)&&n.call(u,e,this),r&&v.destroy();}return E(g)&&(g=document.querySelectorAll(g)),v.destroy=function(){a(g,(function(t){var i=h(t,e,v);i.found&&i.all.splice(i.evt,1),t.removeEventListener&&t.removeEventListener(e,v,d);}));},a(g,(function(t){var i=h(t,e,v);(t.addEventListener&&l&&!i.found||!l)&&(t.addEventListener(e,v,d),i.all.push({eventName:e,fn:v}));})),v}function d(e,t){a(t.split(" "),(function(t){return e.classList.add(t)}));}function u(e,t){a(t.split(" "),(function(t){return e.classList.remove(t)}));}function g(e,t){return e.classList.contains(t)}function v(e,t){for(;e!==document.body;){if(!(e=e.parentElement))return !1;if("function"==typeof e.matches?e.matches(t):e.msMatchesSelector(t))return e}}function f(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",i=arguments.length>2&&void 0!==arguments[2]&&arguments[2];if(!e||""===t)return !1;if("none"==t)return C(i)&&i(),!1;var n=S(),s=t.split(" ");a(s,(function(t){d(e,"g"+t);})),c(n,{onElement:e,avoidDuplicate:!1,once:!0,withCallback:function(e,t){a(s,(function(e){u(t,"g"+e);})),C(i)&&i();}});}function p(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"";if(""==t)return e.style.webkitTransform="",e.style.MozTransform="",e.style.msTransform="",e.style.OTransform="",e.style.transform="",!1;e.style.webkitTransform=t,e.style.MozTransform=t,e.style.msTransform=t,e.style.OTransform=t,e.style.transform=t;}function m(e){e.style.display="block";}function y(e){e.style.display="none";}function b(e){var t=document.createDocumentFragment(),i=document.createElement("div");for(i.innerHTML=e;i.firstChild;)t.appendChild(i.firstChild);return t}function x(){return {width:window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,height:window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight}}function S(){var e,t=document.createElement("fakeelement"),i={animation:"animationend",OAnimation:"oAnimationEnd",MozAnimation:"animationend",WebkitAnimation:"webkitAnimationEnd"};for(e in i)if(void 0!==t.style[e])return i[e]}function w(e,t,i,n){if(e())t();else {var s;i||(i=100);var l=setInterval((function(){e()&&(clearInterval(l),s&&clearTimeout(s),t());}),i);n&&(s=setTimeout((function(){clearInterval(l);}),n));}}function T(e,t,i){if(M(e))console.error("Inject videos api error");else {var n;if(C(t)&&(i=t,t=!1),-1!==e.indexOf(".css")){if((n=document.querySelectorAll('link[href="'+e+'"]'))&&n.length>0)return void(C(i)&&i());var s=document.getElementsByTagName("head")[0],l=s.querySelectorAll('link[rel="stylesheet"]'),o=document.createElement("link");return o.rel="stylesheet",o.type="text/css",o.href=e,o.media="all",l?s.insertBefore(o,l[0]):s.appendChild(o),void(C(i)&&i())}if((n=document.querySelectorAll('script[src="'+e+'"]'))&&n.length>0){if(C(i)){if(E(t))return w((function(){return void 0!==window[t]}),(function(){i();})),!1;i();}}else {var r=document.createElement("script");r.type="text/javascript",r.src=e,r.onload=function(){if(C(i)){if(E(t))return w((function(){return void 0!==window[t]}),(function(){i();})),!1;i();}},document.body.appendChild(r);}}}function k(){return "navigator"in window&&window.navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(Android)|(PlayBook)|(BB10)|(BlackBerry)|(Opera Mini)|(IEMobile)|(webOS)|(MeeGo)/i)}function C(e){return "function"==typeof e}function E(e){return "string"==typeof e}function A(e){return !(!e||!e.nodeType||1!=e.nodeType)}function L(e){return Array.isArray(e)}function O(e){return e&&e.length&&isFinite(e.length)}function P(t){return "object"===e(t)&&null!=t&&!C(t)&&!L(t)}function M(e){return null==e}function I(e,t){return null!==e&&hasOwnProperty.call(e,t)}function X(e){if(P(e)){if(e.keys)return e.keys().length;var t=0;for(var i in e)I(e,i)&&t++;return t}return e.length}function z(e){return !isNaN(parseFloat(e))&&isFinite(e)}function Y(e){if(e.events.hasOwnProperty("keyboard"))return !1;e.events.keyboard=c("keydown",{onElement:window,withCallback:function(t,i){var n=(t=t||window.event).keyCode;if(9==n){var l=!(!document.activeElement||!document.activeElement.nodeName)&&document.activeElement.nodeName.toLocaleLowerCase();if("input"==l||"textarea"==l||"button"==l)return;t.preventDefault();var o=document.querySelectorAll(".gbtn");if(!o||o.length<=0)return;var r=s(o).filter((function(e){return g(e,"focused")}));if(!r.length){var a=document.querySelector('.gbtn[tabindex="0"]');return void(a&&(a.focus(),d(a,"focused")))}o.forEach((function(e){return u(e,"focused")}));var h=r[0].getAttribute("tabindex");h=h||"0";var c=parseInt(h)+1;c>o.length-1&&(c="0");var v=document.querySelector('.gbtn[tabindex="'.concat(c,'"]'));v&&(v.focus(),d(v,"focused"));}39==n&&e.nextSlide(),37==n&&e.prevSlide(),27==n&&e.close();}});}function q(e){return Math.sqrt(e.x*e.x+e.y*e.y)}function D(e,t){var i=function(e,t){var i=q(e)*q(t);if(0===i)return 0;var n=function(e,t){return e.x*t.x+e.y*t.y}(e,t)/i;return n>1&&(n=1),Math.acos(n)}(e,t);return function(e,t){return e.x*t.y-t.x*e.y}(e,t)>0&&(i*=-1),180*i/Math.PI}var _=function(){function e(i){t(this,e),this.handlers=[],this.el=i;}return n(e,[{key:"add",value:function(e){this.handlers.push(e);}},{key:"del",value:function(e){e||(this.handlers=[]);for(var t=this.handlers.length;t>=0;t--)this.handlers[t]===e&&this.handlers.splice(t,1);}},{key:"dispatch",value:function(){for(var e=0,t=this.handlers.length;e<t;e++){var i=this.handlers[e];"function"==typeof i&&i.apply(this.el,arguments);}}}]),e}();function N(e,t){var i=new _(e);return i.add(t),i}var B=function(){function e(i,n){t(this,e),this.element="string"==typeof i?document.querySelector(i):i,this.start=this.start.bind(this),this.move=this.move.bind(this),this.end=this.end.bind(this),this.cancel=this.cancel.bind(this),this.element.addEventListener("touchstart",this.start,!1),this.element.addEventListener("touchmove",this.move,!1),this.element.addEventListener("touchend",this.end,!1),this.element.addEventListener("touchcancel",this.cancel,!1),this.preV={x:null,y:null},this.pinchStartLen=null,this.zoom=1,this.isDoubleTap=!1;var s=function(){};this.rotate=N(this.element,n.rotate||s),this.touchStart=N(this.element,n.touchStart||s),this.multipointStart=N(this.element,n.multipointStart||s),this.multipointEnd=N(this.element,n.multipointEnd||s),this.pinch=N(this.element,n.pinch||s),this.swipe=N(this.element,n.swipe||s),this.tap=N(this.element,n.tap||s),this.doubleTap=N(this.element,n.doubleTap||s),this.longTap=N(this.element,n.longTap||s),this.singleTap=N(this.element,n.singleTap||s),this.pressMove=N(this.element,n.pressMove||s),this.twoFingerPressMove=N(this.element,n.twoFingerPressMove||s),this.touchMove=N(this.element,n.touchMove||s),this.touchEnd=N(this.element,n.touchEnd||s),this.touchCancel=N(this.element,n.touchCancel||s),this._cancelAllHandler=this.cancelAll.bind(this),window.addEventListener("scroll",this._cancelAllHandler),this.delta=null,this.last=null,this.now=null,this.tapTimeout=null,this.singleTapTimeout=null,this.longTapTimeout=null,this.swipeTimeout=null,this.x1=this.x2=this.y1=this.y2=null,this.preTapPosition={x:null,y:null};}return n(e,[{key:"start",value:function(e){if(e.touches){this.now=Date.now(),this.x1=e.touches[0].pageX,this.y1=e.touches[0].pageY,this.delta=this.now-(this.last||this.now),this.touchStart.dispatch(e,this.element),null!==this.preTapPosition.x&&(this.isDoubleTap=this.delta>0&&this.delta<=250&&Math.abs(this.preTapPosition.x-this.x1)<30&&Math.abs(this.preTapPosition.y-this.y1)<30,this.isDoubleTap&&clearTimeout(this.singleTapTimeout)),this.preTapPosition.x=this.x1,this.preTapPosition.y=this.y1,this.last=this.now;var t=this.preV;if(e.touches.length>1){this._cancelLongTap(),this._cancelSingleTap();var i={x:e.touches[1].pageX-this.x1,y:e.touches[1].pageY-this.y1};t.x=i.x,t.y=i.y,this.pinchStartLen=q(t),this.multipointStart.dispatch(e,this.element);}this._preventTap=!1,this.longTapTimeout=setTimeout(function(){this.longTap.dispatch(e,this.element),this._preventTap=!0;}.bind(this),750);}}},{key:"move",value:function(e){if(e.touches){var t=this.preV,i=e.touches.length,n=e.touches[0].pageX,s=e.touches[0].pageY;if(this.isDoubleTap=!1,i>1){var l=e.touches[1].pageX,o=e.touches[1].pageY,r={x:e.touches[1].pageX-n,y:e.touches[1].pageY-s};null!==t.x&&(this.pinchStartLen>0&&(e.zoom=q(r)/this.pinchStartLen,this.pinch.dispatch(e,this.element)),e.angle=D(r,t),this.rotate.dispatch(e,this.element)),t.x=r.x,t.y=r.y,null!==this.x2&&null!==this.sx2?(e.deltaX=(n-this.x2+l-this.sx2)/2,e.deltaY=(s-this.y2+o-this.sy2)/2):(e.deltaX=0,e.deltaY=0),this.twoFingerPressMove.dispatch(e,this.element),this.sx2=l,this.sy2=o;}else {if(null!==this.x2){e.deltaX=n-this.x2,e.deltaY=s-this.y2;var a=Math.abs(this.x1-this.x2),h=Math.abs(this.y1-this.y2);(a>10||h>10)&&(this._preventTap=!0);}else e.deltaX=0,e.deltaY=0;this.pressMove.dispatch(e,this.element);}this.touchMove.dispatch(e,this.element),this._cancelLongTap(),this.x2=n,this.y2=s,i>1&&e.preventDefault();}}},{key:"end",value:function(e){if(e.changedTouches){this._cancelLongTap();var t=this;e.touches.length<2&&(this.multipointEnd.dispatch(e,this.element),this.sx2=this.sy2=null),this.x2&&Math.abs(this.x1-this.x2)>30||this.y2&&Math.abs(this.y1-this.y2)>30?(e.direction=this._swipeDirection(this.x1,this.x2,this.y1,this.y2),this.swipeTimeout=setTimeout((function(){t.swipe.dispatch(e,t.element);}),0)):(this.tapTimeout=setTimeout((function(){t._preventTap||t.tap.dispatch(e,t.element),t.isDoubleTap&&(t.doubleTap.dispatch(e,t.element),t.isDoubleTap=!1);}),0),t.isDoubleTap||(t.singleTapTimeout=setTimeout((function(){t.singleTap.dispatch(e,t.element);}),250))),this.touchEnd.dispatch(e,this.element),this.preV.x=0,this.preV.y=0,this.zoom=1,this.pinchStartLen=null,this.x1=this.x2=this.y1=this.y2=null;}}},{key:"cancelAll",value:function(){this._preventTap=!0,clearTimeout(this.singleTapTimeout),clearTimeout(this.tapTimeout),clearTimeout(this.longTapTimeout),clearTimeout(this.swipeTimeout);}},{key:"cancel",value:function(e){this.cancelAll(),this.touchCancel.dispatch(e,this.element);}},{key:"_cancelLongTap",value:function(){clearTimeout(this.longTapTimeout);}},{key:"_cancelSingleTap",value:function(){clearTimeout(this.singleTapTimeout);}},{key:"_swipeDirection",value:function(e,t,i,n){return Math.abs(e-t)>=Math.abs(i-n)?e-t>0?"Left":"Right":i-n>0?"Up":"Down"}},{key:"on",value:function(e,t){this[e]&&this[e].add(t);}},{key:"off",value:function(e,t){this[e]&&this[e].del(t);}},{key:"destroy",value:function(){return this.singleTapTimeout&&clearTimeout(this.singleTapTimeout),this.tapTimeout&&clearTimeout(this.tapTimeout),this.longTapTimeout&&clearTimeout(this.longTapTimeout),this.swipeTimeout&&clearTimeout(this.swipeTimeout),this.element.removeEventListener("touchstart",this.start),this.element.removeEventListener("touchmove",this.move),this.element.removeEventListener("touchend",this.end),this.element.removeEventListener("touchcancel",this.cancel),this.rotate.del(),this.touchStart.del(),this.multipointStart.del(),this.multipointEnd.del(),this.pinch.del(),this.swipe.del(),this.tap.del(),this.doubleTap.del(),this.longTap.del(),this.singleTap.del(),this.pressMove.del(),this.twoFingerPressMove.del(),this.touchMove.del(),this.touchEnd.del(),this.touchCancel.del(),this.preV=this.pinchStartLen=this.zoom=this.isDoubleTap=this.delta=this.last=this.now=this.tapTimeout=this.singleTapTimeout=this.longTapTimeout=this.swipeTimeout=this.x1=this.x2=this.y1=this.y2=this.preTapPosition=this.rotate=this.touchStart=this.multipointStart=this.multipointEnd=this.pinch=this.swipe=this.tap=this.doubleTap=this.longTap=this.singleTap=this.pressMove=this.touchMove=this.touchEnd=this.touchCancel=this.twoFingerPressMove=null,window.removeEventListener("scroll",this._cancelAllHandler),null}}]),e}();function W(e){var t=function(){var e,t=document.createElement("fakeelement"),i={transition:"transitionend",OTransition:"oTransitionEnd",MozTransition:"transitionend",WebkitTransition:"webkitTransitionEnd"};for(e in i)if(void 0!==t.style[e])return i[e]}(),i=g(e,"gslide-media")?e:e.querySelector(".gslide-media"),n=e.querySelector(".gslide-description");d(i,"greset"),p(i,"translate3d(0, 0, 0)");c(t,{onElement:i,once:!0,withCallback:function(e,t){u(i,"greset");}});i.style.opacity="",n&&(n.style.opacity="");}function H(e){if(e.events.hasOwnProperty("touch"))return !1;var t,i,n,s=x(),l=s.width,o=s.height,r=!1,a=null,h=null,c=null,f=!1,m=1,y=1,b=!1,S=!1,w=null,T=null,k=null,C=null,E=0,A=0,L=!1,O=!1,P={},M={},I=0,X=0,z=document.getElementById("glightbox-slider"),Y=document.querySelector(".goverlay"),q=new B(z,{touchStart:function(t){if(g(t.targetTouches[0].target,"ginner-container")||v(t.targetTouches[0].target,".gslide-desc"))return r=!1,!1;r=!0,M=t.targetTouches[0],P.pageX=t.targetTouches[0].pageX,P.pageY=t.targetTouches[0].pageY,I=t.targetTouches[0].clientX,X=t.targetTouches[0].clientY,a=e.activeSlide,h=a.querySelector(".gslide-media"),n=a.querySelector(".gslide-inline"),c=null,g(h,"gslide-image")&&(c=h.querySelector("img")),u(Y,"greset"),t.pageX>20&&t.pageX<window.innerWidth-20||t.preventDefault();},touchMove:function(s){if(r&&(M=s.targetTouches[0],!b&&!S)){if(n&&n.offsetHeight>o){var a=P.pageX-M.pageX;if(Math.abs(a)<=13)return !1}f=!0;var d,u=s.targetTouches[0].clientX,g=s.targetTouches[0].clientY,v=I-u,m=X-g;if(Math.abs(v)>Math.abs(m)?(L=!1,O=!0):(O=!1,L=!0),t=M.pageX-P.pageX,E=100*t/l,i=M.pageY-P.pageY,A=100*i/o,L&&c&&(d=1-Math.abs(i)/o,Y.style.opacity=d,e.settings.touchFollowAxis&&(E=0)),O&&(d=1-Math.abs(t)/l,h.style.opacity=d,e.settings.touchFollowAxis&&(A=0)),!c)return p(h,"translate3d(".concat(E,"%, 0, 0)"));p(h,"translate3d(".concat(E,"%, ").concat(A,"%, 0)"));}},touchEnd:function(){if(r){if(f=!1,S||b)return k=w,void(C=T);var t=Math.abs(parseInt(A)),i=Math.abs(parseInt(E));if(!(t>29&&c))return t<29&&i<25?(d(Y,"greset"),Y.style.opacity=1,W(h)):void 0;e.close();}},multipointEnd:function(){setTimeout((function(){b=!1;}),50);},multipointStart:function(){b=!0,m=y||1;},pinch:function(e){if(!c||f)return !1;b=!0,c.scaleX=c.scaleY=m*e.zoom;var t=m*e.zoom;if(S=!0,t<=1)return S=!1,t=1,C=null,k=null,w=null,T=null,void c.setAttribute("style","");t>4.5&&(t=4.5),c.style.transform="scale3d(".concat(t,", ").concat(t,", 1)"),y=t;},pressMove:function(e){if(S&&!b){var t=M.pageX-P.pageX,i=M.pageY-P.pageY;k&&(t+=k),C&&(i+=C),w=t,T=i;var n="translate3d(".concat(t,"px, ").concat(i,"px, 0)");y&&(n+=" scale3d(".concat(y,", ").concat(y,", 1)")),p(c,n);}},swipe:function(t){if(!S)if(b)b=!1;else {if("Left"==t.direction){if(e.index==e.elements.length-1)return W(h);e.nextSlide();}if("Right"==t.direction){if(0==e.index)return W(h);e.prevSlide();}}}});e.events.touch=q;}var j=function(){function e(i,n){var s=this,l=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null;if(t(this,e),this.img=i,this.slide=n,this.onclose=l,this.img.setZoomEvents)return !1;this.active=!1,this.zoomedIn=!1,this.dragging=!1,this.currentX=null,this.currentY=null,this.initialX=null,this.initialY=null,this.xOffset=0,this.yOffset=0,this.img.addEventListener("mousedown",(function(e){return s.dragStart(e)}),!1),this.img.addEventListener("mouseup",(function(e){return s.dragEnd(e)}),!1),this.img.addEventListener("mousemove",(function(e){return s.drag(e)}),!1),this.img.addEventListener("click",(function(e){return s.slide.classList.contains("dragging-nav")?(s.zoomOut(),!1):s.zoomedIn?void(s.zoomedIn&&!s.dragging&&s.zoomOut()):s.zoomIn()}),!1),this.img.setZoomEvents=!0;}return n(e,[{key:"zoomIn",value:function(){var e=this.widowWidth();if(!(this.zoomedIn||e<=768)){var t=this.img;if(t.setAttribute("data-style",t.getAttribute("style")),t.style.maxWidth=t.naturalWidth+"px",t.style.maxHeight=t.naturalHeight+"px",t.naturalWidth>e){var i=e/2-t.naturalWidth/2;this.setTranslate(this.img.parentNode,i,0);}this.slide.classList.add("zoomed"),this.zoomedIn=!0;}}},{key:"zoomOut",value:function(){this.img.parentNode.setAttribute("style",""),this.img.setAttribute("style",this.img.getAttribute("data-style")),this.slide.classList.remove("zoomed"),this.zoomedIn=!1,this.currentX=null,this.currentY=null,this.initialX=null,this.initialY=null,this.xOffset=0,this.yOffset=0,this.onclose&&"function"==typeof this.onclose&&this.onclose();}},{key:"dragStart",value:function(e){e.preventDefault(),this.zoomedIn?("touchstart"===e.type?(this.initialX=e.touches[0].clientX-this.xOffset,this.initialY=e.touches[0].clientY-this.yOffset):(this.initialX=e.clientX-this.xOffset,this.initialY=e.clientY-this.yOffset),e.target===this.img&&(this.active=!0,this.img.classList.add("dragging"))):this.active=!1;}},{key:"dragEnd",value:function(e){var t=this;e.preventDefault(),this.initialX=this.currentX,this.initialY=this.currentY,this.active=!1,setTimeout((function(){t.dragging=!1,t.img.isDragging=!1,t.img.classList.remove("dragging");}),100);}},{key:"drag",value:function(e){this.active&&(e.preventDefault(),"touchmove"===e.type?(this.currentX=e.touches[0].clientX-this.initialX,this.currentY=e.touches[0].clientY-this.initialY):(this.currentX=e.clientX-this.initialX,this.currentY=e.clientY-this.initialY),this.xOffset=this.currentX,this.yOffset=this.currentY,this.img.isDragging=!0,this.dragging=!0,this.setTranslate(this.img,this.currentX,this.currentY));}},{key:"onMove",value:function(e){if(this.zoomedIn){var t=e.clientX-this.img.naturalWidth/2,i=e.clientY-this.img.naturalHeight/2;this.setTranslate(this.img,t,i);}}},{key:"setTranslate",value:function(e,t,i){e.style.transform="translate3d("+t+"px, "+i+"px, 0)";}},{key:"widowWidth",value:function(){return window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth}}]),e}(),V=function(){function e(){var i=this,n=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};t(this,e);var s=n.dragEl,l=n.toleranceX,o=void 0===l?40:l,r=n.toleranceY,a=void 0===r?65:r,h=n.slide,c=void 0===h?null:h,d=n.instance,u=void 0===d?null:d;this.el=s,this.active=!1,this.dragging=!1,this.currentX=null,this.currentY=null,this.initialX=null,this.initialY=null,this.xOffset=0,this.yOffset=0,this.direction=null,this.lastDirection=null,this.toleranceX=o,this.toleranceY=a,this.toleranceReached=!1,this.dragContainer=this.el,this.slide=c,this.instance=u,this.el.addEventListener("mousedown",(function(e){return i.dragStart(e)}),!1),this.el.addEventListener("mouseup",(function(e){return i.dragEnd(e)}),!1),this.el.addEventListener("mousemove",(function(e){return i.drag(e)}),!1);}return n(e,[{key:"dragStart",value:function(e){if(this.slide.classList.contains("zoomed"))this.active=!1;else {"touchstart"===e.type?(this.initialX=e.touches[0].clientX-this.xOffset,this.initialY=e.touches[0].clientY-this.yOffset):(this.initialX=e.clientX-this.xOffset,this.initialY=e.clientY-this.yOffset);var t=e.target.nodeName.toLowerCase();e.target.classList.contains("nodrag")||v(e.target,".nodrag")||-1!==["input","select","textarea","button","a"].indexOf(t)?this.active=!1:(e.preventDefault(),(e.target===this.el||"img"!==t&&v(e.target,".gslide-inline"))&&(this.active=!0,this.el.classList.add("dragging"),this.dragContainer=v(e.target,".ginner-container")));}}},{key:"dragEnd",value:function(e){var t=this;e&&e.preventDefault(),this.initialX=0,this.initialY=0,this.currentX=null,this.currentY=null,this.initialX=null,this.initialY=null,this.xOffset=0,this.yOffset=0,this.active=!1,this.doSlideChange&&(this.instance.preventOutsideClick=!0,"right"==this.doSlideChange&&this.instance.prevSlide(),"left"==this.doSlideChange&&this.instance.nextSlide()),this.doSlideClose&&this.instance.close(),this.toleranceReached||this.setTranslate(this.dragContainer,0,0,!0),setTimeout((function(){t.instance.preventOutsideClick=!1,t.toleranceReached=!1,t.lastDirection=null,t.dragging=!1,t.el.isDragging=!1,t.el.classList.remove("dragging"),t.slide.classList.remove("dragging-nav"),t.dragContainer.style.transform="",t.dragContainer.style.transition="";}),100);}},{key:"drag",value:function(e){if(this.active){e.preventDefault(),this.slide.classList.add("dragging-nav"),"touchmove"===e.type?(this.currentX=e.touches[0].clientX-this.initialX,this.currentY=e.touches[0].clientY-this.initialY):(this.currentX=e.clientX-this.initialX,this.currentY=e.clientY-this.initialY),this.xOffset=this.currentX,this.yOffset=this.currentY,this.el.isDragging=!0,this.dragging=!0,this.doSlideChange=!1,this.doSlideClose=!1;var t=Math.abs(this.currentX),i=Math.abs(this.currentY);if(t>0&&t>=Math.abs(this.currentY)&&(!this.lastDirection||"x"==this.lastDirection)){this.yOffset=0,this.lastDirection="x",this.setTranslate(this.dragContainer,this.currentX,0);var n=this.shouldChange();if(!this.instance.settings.dragAutoSnap&&n&&(this.doSlideChange=n),this.instance.settings.dragAutoSnap&&n)return this.instance.preventOutsideClick=!0,this.toleranceReached=!0,this.active=!1,this.instance.preventOutsideClick=!0,this.dragEnd(null),"right"==n&&this.instance.prevSlide(),void("left"==n&&this.instance.nextSlide())}if(this.toleranceY>0&&i>0&&i>=t&&(!this.lastDirection||"y"==this.lastDirection)){this.xOffset=0,this.lastDirection="y",this.setTranslate(this.dragContainer,0,this.currentY);var s=this.shouldClose();return !this.instance.settings.dragAutoSnap&&s&&(this.doSlideClose=!0),void(this.instance.settings.dragAutoSnap&&s&&this.instance.close())}}}},{key:"shouldChange",value:function(){var e=!1;if(Math.abs(this.currentX)>=this.toleranceX){var t=this.currentX>0?"right":"left";("left"==t&&this.slide!==this.slide.parentNode.lastChild||"right"==t&&this.slide!==this.slide.parentNode.firstChild)&&(e=t);}return e}},{key:"shouldClose",value:function(){var e=!1;return Math.abs(this.currentY)>=this.toleranceY&&(e=!0),e}},{key:"setTranslate",value:function(e,t,i){var n=arguments.length>3&&void 0!==arguments[3]&&arguments[3];e.style.transition=n?"all .2s ease":"",e.style.transform="translate3d("+t+"px, "+i+"px, 0)";}}]),e}();function F(e,t,i){var n=e.querySelector(".gslide-media"),s=new Image,l="gSlideTitle_"+t.index,o="gSlideDesc_"+t.index;s.addEventListener("load",(function(){C(i)&&i();}),!1),s.src=t.href,s.alt="",""!==t.title&&s.setAttribute("aria-labelledby",l),""!==t.description&&s.setAttribute("aria-describedby",o),n.insertBefore(s,n.firstChild);}function R(e,t,i){var n=this,s=e.querySelector(".ginner-container"),l="gvideo"+t.index,o=e.querySelector(".gslide-media"),r=this.getAllPlayers();d(s,"gvideo-container"),o.insertBefore(b('<div class="gvideo-wrapper"></div>'),o.firstChild);var a=e.querySelector(".gvideo-wrapper");T(this.settings.plyr.css);var h=t.href,c=location.protocol.replace(":",""),u="",g="",v=!1;"file"==c&&(c="http"),o.style.maxWidth=t.width,T(this.settings.plyr.js,"Plyr",(function(){if(h.match(/vimeo\.com\/([0-9]*)/)){var e=/vimeo.*\/(\d+)/i.exec(h);u="vimeo",g=e[1];}if(h.match(/(youtube\.com|youtube-nocookie\.com)\/watch\?v=([a-zA-Z0-9\-_]+)/)||h.match(/youtu\.be\/([a-zA-Z0-9\-_]+)/)||h.match(/(youtube\.com|youtube-nocookie\.com)\/embed\/([a-zA-Z0-9\-_]+)/)){var s=function(e){var t="";t=void 0!==(e=e.replace(/(>|<)/gi,"").split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/))[2]?(t=e[2].split(/[^0-9a-z_\-]/i))[0]:e;return t}(h);u="youtube",g=s;}if(null!==h.match(/\.(mp4|ogg|webm|mov)$/)){u="local";var o='<video id="'+l+'" ';o+='style="background:#000; max-width: '.concat(t.width,';" '),o+='preload="metadata" ',o+='x-webkit-airplay="allow" ',o+='webkit-playsinline="" ',o+="controls ",o+='class="gvideo-local">';var c=h.toLowerCase().split(".").pop(),f={mp4:"",ogg:"",webm:""};for(var p in f[c="mov"==c?"mp4":c]=h,f)if(f.hasOwnProperty(p)){var m=f[p];t.hasOwnProperty(p)&&(m=t[p]),""!==m&&(o+='<source src="'.concat(m,'" type="video/').concat(p,'">'));}v=b(o+="</video>");}var y=v||b('<div id="'.concat(l,'" data-plyr-provider="').concat(u,'" data-plyr-embed-id="').concat(g,'"></div>'));d(a,"".concat(u,"-video gvideo")),a.appendChild(y),a.setAttribute("data-id",l),a.setAttribute("data-index",t.index);var x=I(n.settings.plyr,"config")?n.settings.plyr.config:{},S=new Plyr("#"+l,x);S.on("ready",(function(e){var t=e.detail.plyr;r[l]=t,C(i)&&i();})),S.on("enterfullscreen",G),S.on("exitfullscreen",G);}));}function G(e){var t=v(e.target,".gslide-media");"enterfullscreen"==e.type&&d(t,"fullscreen"),"exitfullscreen"==e.type&&u(t,"fullscreen");}function Z(e,t,i){var n,s=this,l=e.querySelector(".gslide-media"),o=!(!I(t,"href")||!t.href)&&t.href.split("#").pop().trim(),r=!(!I(t,"content")||!t.content)&&t.content;if(r&&(E(r)&&(n=b('<div class="ginlined-content">'.concat(r,"</div>"))),A(r))){"none"==r.style.display&&(r.style.display="block");var a=document.createElement("div");a.className="ginlined-content",a.appendChild(r),n=a;}if(o){var h=document.getElementById(o);if(!h)return !1;var u=h.cloneNode(!0);u.style.height=t.height,u.style.maxWidth=t.width,d(u,"ginlined-content"),n=u;}if(!n)return console.error("Unable to append inline slide content",t),!1;l.style.height=t.height,l.style.width=t.width,l.appendChild(n),this.events["inlineclose"+o]=c("click",{onElement:l.querySelectorAll(".gtrigger-close"),withCallback:function(e){e.preventDefault(),s.close();}}),C(i)&&i();}function $(e,t,i){var n=e.querySelector(".gslide-media"),s=function(e){var t=e.url,i=e.allow,n=e.callback,s=e.appendTo,l=document.createElement("iframe");return l.className="vimeo-video gvideo",l.src=t,l.style.width="100%",l.style.height="100%",i&&l.setAttribute("allow",i),l.onload=function(){d(l,"node-ready"),C(n)&&n();},s&&s.appendChild(l),l}({url:t.href,callback:i});n.parentNode.style.maxWidth=t.width,n.parentNode.style.height=t.height,n.appendChild(s);}var U=function(){function e(i,n){t(this,e),this.element=i,this.settings=n,this.defaults={href:"",title:"",type:"",description:"",descPosition:"bottom",effect:"",width:"",height:"",node:!1,content:!1,zoomable:!0,draggable:!0};}return n(e,[{key:"sourceType",value:function(e){var t=e;if(null!==(e=e.toLowerCase()).match(/\.(jpeg|jpg|jpe|gif|png|apn|webp|svg)$/))return "image";if(e.match(/(youtube\.com|youtube-nocookie\.com)\/watch\?v=([a-zA-Z0-9\-_]+)/)||e.match(/youtu\.be\/([a-zA-Z0-9\-_]+)/)||e.match(/(youtube\.com|youtube-nocookie\.com)\/embed\/([a-zA-Z0-9\-_]+)/))return "video";if(e.match(/vimeo\.com\/([0-9]*)/))return "video";if(null!==e.match(/\.(mp4|ogg|webm|mov)$/))return "video";if(null!==e.match(/\.(mp3|wav|wma|aac|ogg)$/))return "audio";if(e.indexOf("#")>-1&&""!==t.split("#").pop().trim())return "inline";return e.indexOf("goajax=true")>-1?"ajax":"external"}},{key:"parseConfig",value:function(e,t){var i=this,n=r({descPosition:t.descPosition},this.defaults);if(P(e)&&!A(e)){I(e,"type")||(I(e,"content")&&e.content?e.type="inline":I(e,"href")&&(e.type=this.sourceType(e.href)));var s=r(n,e);return this.setSize(s,t),s}var l="",o=e.getAttribute("data-glightbox"),h=e.nodeName.toLowerCase();if("a"===h&&(l=e.href),"img"===h&&(l=e.src),n.href=l,a(n,(function(s,l){I(t,l)&&"width"!==l&&(n[l]=t[l]);var o=e.dataset[l];M(o)||(n[l]=i.sanitizeValue(o));})),n.content&&(n.type="inline"),!n.type&&l&&(n.type=this.sourceType(l)),M(o)){if("a"==h){var c=e.title;M(c)||""===c||(n.title=c);}if("img"==h){var d=e.alt;M(d)||""===d||(n.title=d);}var u=e.getAttribute("data-description");M(u)||""===u||(n.description=u);}else {var g=[];a(n,(function(e,t){g.push(";\\s?"+t);})),g=g.join("\\s?:|"),""!==o.trim()&&a(n,(function(e,t){var s=o,l=new RegExp("s?"+t+"s?:s?(.*?)("+g+"s?:|$)"),r=s.match(l);if(r&&r.length&&r[1]){var a=r[1].trim().replace(/;\s*$/,"");n[t]=i.sanitizeValue(a);}}));}if(n.description&&"."==n.description.substring(0,1)&&document.querySelector(n.description))n.description=document.querySelector(n.description).innerHTML;else {var v=e.querySelector(".glightbox-desc");v&&(n.description=v.innerHTML);}return this.setSize(n,t),this.slideConfig=n,n}},{key:"setSize",value:function(e,t){var i="video"==e.type?this.checkSize(t.videosWidth):this.checkSize(t.width),n=this.checkSize(t.height);return e.width=I(e,"width")&&""!==e.width?this.checkSize(e.width):i,e.height=I(e,"height")&&""!==e.height?this.checkSize(e.height):n,e}},{key:"checkSize",value:function(e){return z(e)?"".concat(e,"px"):e}},{key:"sanitizeValue",value:function(e){return "true"!==e&&"false"!==e?e:"true"===e}}]),e}(),J=function(){function e(i,n){t(this,e),this.element=i,this.instance=n;}return n(e,[{key:"setContent",value:function(){var e=this,t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null,i=arguments.length>1&&void 0!==arguments[1]&&arguments[1];if(g(t,"loaded"))return !1;var n=this.instance.settings,s=this.slideConfig,l=k();C(n.beforeSlideLoad)&&n.beforeSlideLoad({index:s.index,slide:t,player:!1});var o=s.type,r=s.descPosition,a=t.querySelector(".gslide-media"),h=t.querySelector(".gslide-title"),c=t.querySelector(".gslide-desc"),u=t.querySelector(".gdesc-inner"),v=i,f="gSlideTitle_"+s.index,p="gSlideDesc_"+s.index;if(C(n.afterSlideLoad)&&(v=function(){C(i)&&i(),n.afterSlideLoad({index:s.index,slide:t,player:e.instance.getSlidePlayerInstance(s.index)});}),""==s.title&&""==s.description?u&&u.parentNode.parentNode.removeChild(u.parentNode):(h&&""!==s.title?(h.id=f,h.innerHTML=s.title):h.parentNode.removeChild(h),c&&""!==s.description?(c.id=p,l&&n.moreLength>0?(s.smallDescription=this.slideShortDesc(s.description,n.moreLength,n.moreText),c.innerHTML=s.smallDescription,this.descriptionEvents(c,s)):c.innerHTML=s.description):c.parentNode.removeChild(c),d(a.parentNode,"desc-".concat(r)),d(u.parentNode,"description-".concat(r))),d(a,"gslide-".concat(o)),d(t,"loaded"),"video"!==o){if("external"!==o)return "inline"===o?(Z.apply(this.instance,[t,s,v]),void(s.draggable&&new V({dragEl:t.querySelector(".gslide-inline"),toleranceX:n.dragToleranceX,toleranceY:n.dragToleranceY,slide:t,instance:this.instance}))):void("image"!==o?C(v)&&v():F(t,s,(function(){var i=t.querySelector("img");s.draggable&&new V({dragEl:i,toleranceX:n.dragToleranceX,toleranceY:n.dragToleranceY,slide:t,instance:e.instance}),s.zoomable&&i.naturalWidth>i.offsetWidth&&(d(i,"zoomable"),new j(i,t,(function(){e.instance.resize();}))),C(v)&&v();})));$.apply(this,[t,s,v]);}else R.apply(this.instance,[t,s,v]);}},{key:"slideShortDesc",value:function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:50,i=arguments.length>2&&void 0!==arguments[2]&&arguments[2],n=i;if((e=e.trim()).length<=t)return e;var s=e.substr(0,t-1);return n?s+'... <a href="#" class="desc-more">'+i+"</a>":s}},{key:"descriptionEvents",value:function(e,t){var i=this,n=e.querySelector(".desc-more");if(!n)return !1;c("click",{onElement:n,withCallback:function(e,n){e.preventDefault();var s=document.body,l=v(n,".gslide-desc");if(!l)return !1;l.innerHTML=t.description,d(s,"gdesc-open");var o=c("click",{onElement:[s,v(l,".gslide-description")],withCallback:function(e,n){"a"!==e.target.nodeName.toLowerCase()&&(u(s,"gdesc-open"),d(s,"gdesc-closed"),l.innerHTML=t.smallDescription,i.descriptionEvents(l,t),setTimeout((function(){u(s,"gdesc-closed");}),400),o.destroy());}});}});}},{key:"create",value:function(){return b(this.instance.settings.slideHTML)}},{key:"getConfig",value:function(){var e=new U;return this.slideConfig=e.parseConfig(this.element,this.instance.settings),this.slideConfig}}]),e}(),K=k(),Q=null!==k()||void 0!==document.createTouch||"ontouchstart"in window||"onmsgesturechange"in window||navigator.msMaxTouchPoints,ee=document.getElementsByTagName("html")[0],te={selector:".glightbox",elements:null,skin:"clean",closeButton:!0,startAt:null,autoplayVideos:!0,descPosition:"bottom",width:"900px",height:"506px",videosWidth:"960px",beforeSlideChange:null,afterSlideChange:null,beforeSlideLoad:null,afterSlideLoad:null,slideInserted:null,slideRemoved:null,onOpen:null,onClose:null,loop:!1,zoomable:!0,draggable:!0,dragAutoSnap:!1,dragToleranceX:40,dragToleranceY:65,preload:!0,oneSlidePerOpen:!1,touchNavigation:!0,touchFollowAxis:!0,keyboardNavigation:!0,closeOnOutsideClick:!0,plyr:{css:"https://cdn.plyr.io/3.5.6/plyr.css",js:"https://cdn.plyr.io/3.5.6/plyr.js",config:{ratio:"16:9",youtube:{noCookie:!0,rel:0,showinfo:0,iv_load_policy:3},vimeo:{byline:!1,portrait:!1,title:!1,transparent:!1}}},openEffect:"zoom",closeEffect:"zoom",slideEffect:"slide",moreText:"See more",moreLength:60,lightboxHTML:"",cssEfects:{fade:{in:"fadeIn",out:"fadeOut"},zoom:{in:"zoomIn",out:"zoomOut"},slide:{in:"slideInRight",out:"slideOutLeft"},slide_back:{in:"slideInLeft",out:"slideOutRight"},none:{in:"none",out:"none"}},svg:{close:'<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve"><g><g><path d="M505.943,6.058c-8.077-8.077-21.172-8.077-29.249,0L6.058,476.693c-8.077,8.077-8.077,21.172,0,29.249C10.096,509.982,15.39,512,20.683,512c5.293,0,10.586-2.019,14.625-6.059L505.943,35.306C514.019,27.23,514.019,14.135,505.943,6.058z"/></g></g><g><g><path d="M505.942,476.694L35.306,6.059c-8.076-8.077-21.172-8.077-29.248,0c-8.077,8.076-8.077,21.171,0,29.248l470.636,470.636c4.038,4.039,9.332,6.058,14.625,6.058c5.293,0,10.587-2.019,14.624-6.057C514.018,497.866,514.018,484.771,505.942,476.694z"/></g></g></svg>',next:'<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 477.175 477.175" xml:space="preserve"> <g><path d="M360.731,229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1,0s-5.3,13.8,0,19.1l215.5,215.5l-215.5,215.5c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3,9.5-4l225.1-225.1C365.931,242.875,365.931,234.275,360.731,229.075z"/></g></svg>',prev:'<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 477.175 477.175" xml:space="preserve"><g><path d="M145.188,238.575l215.5-215.5c5.3-5.3,5.3-13.8,0-19.1s-13.8-5.3-19.1,0l-225.1,225.1c-5.3,5.3-5.3,13.8,0,19.1l225.1,225c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4c5.3-5.3,5.3-13.8,0-19.1L145.188,238.575z"/></g></svg>'},slideHTML:'<div class="gslide">\n    <div class="gslide-inner-content">\n        <div class="ginner-container">\n            <div class="gslide-media">\n            </div>\n            <div class="gslide-description">\n                <div class="gdesc-inner">\n                    <h4 class="gslide-title"></h4>\n                    <div class="gslide-desc"></div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>'};te.lightboxHTML='<div id="glightbox-body" class="glightbox-container">\n    <div class="gloader visible"></div>\n    <div class="goverlay"></div>\n    <div class="gcontainer">\n    <div id="glightbox-slider" class="gslider"></div>\n    <button class="gnext gbtn" tabindex="0" aria-label="Next">{nextSVG}</button>\n    <button class="gprev gbtn" tabindex="1" aria-label="Previous">{prevSVG}</button>\n    <button class="gclose gbtn" tabindex="2" aria-label="Close">{closeSVG}</button>\n</div>\n</div>';var ie=function(){function e(){var i=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};t(this,e),this.settings=r(te,i),this.effectsClasses=this.getAnimationClasses(),this.videoPlayers={},this.apiEvents=[],this.fullElementsList=!1;}return n(e,[{key:"init",value:function(){var e=this,t=this.getSelector();t&&(this.baseEvents=c("click",{onElement:t,withCallback:function(t,i){t.preventDefault(),e.open(i);}})),this.elements=this.getElements();}},{key:"open",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null,t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;if(0==this.elements.length)return !1;this.activeSlide=null,this.prevActiveSlideIndex=null,this.prevActiveSlide=null;var i=z(t)?t:this.settings.startAt;if(A(e)){var n=e.getAttribute("data-gallery");n&&(this.fullElementsList=this.elements,this.elements=this.getGalleryElements(this.elements,n)),M(i)&&(i=this.getElementIndex(e))<0&&(i=0);}z(i)||(i=0),this.build(),f(this.overlay,"none"==this.settings.openEffect?"none":this.settings.cssEfects.fade.in);var s=document.body,l=window.innerWidth-document.documentElement.clientWidth;if(l>0){var o=document.createElement("style");o.type="text/css",o.className="gcss-styles",o.innerText=".gscrollbar-fixer {margin-right: ".concat(l,"px}"),document.head.appendChild(o),d(s,"gscrollbar-fixer");}d(s,"glightbox-open"),d(ee,"glightbox-open"),K&&(d(document.body,"glightbox-mobile"),this.settings.slideEffect="slide"),this.showSlide(i,!0),1==this.elements.length?(y(this.prevButton),y(this.nextButton)):(m(this.prevButton),m(this.nextButton)),this.lightboxOpen=!0,this.trigger("open"),C(this.settings.onOpen)&&this.settings.onOpen(),Q&&this.settings.touchNavigation&&H(this),this.settings.keyboardNavigation&&Y(this);}},{key:"openAt",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0;this.open(null,e);}},{key:"showSlide",value:function(){var e=this,t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0,i=arguments.length>1&&void 0!==arguments[1]&&arguments[1];m(this.loader),this.index=parseInt(t);var n=this.slidesContainer.querySelector(".current");n&&u(n,"current"),this.slideAnimateOut();var s=this.slidesContainer.querySelectorAll(".gslide")[t];if(g(s,"loaded"))this.slideAnimateIn(s,i),y(this.loader);else {m(this.loader);var l=this.elements[t];this.trigger("slide_before_load",l),l.instance.setContent(s,(function(){y(e.loader),e.resize(),e.slideAnimateIn(s,i),e.trigger("slide_after_load",l);}));}this.slideDescription=s.querySelector(".gslide-description"),this.slideDescriptionContained=this.slideDescription&&g(this.slideDescription.parentNode,"gslide-media"),this.settings.preload&&(this.preloadSlide(t+1),this.preloadSlide(t-1)),this.updateNavigationClasses(),this.activeSlide=s;}},{key:"preloadSlide",value:function(e){var t=this;if(e<0||e>this.elements.length-1)return !1;if(M(this.elements[e]))return !1;var i=this.slidesContainer.querySelectorAll(".gslide")[e];if(g(i,"loaded"))return !1;var n=this.elements[e],s=n.type;this.trigger("slide_before_load",n),"video"==s||"external"==s?setTimeout((function(){n.instance.setContent(i,(function(){t.trigger("slide_after_load",n);}));}),200):n.instance.setContent(i,(function(){t.trigger("slide_after_load",n);}));}},{key:"prevSlide",value:function(){this.goToSlide(this.index-1);}},{key:"nextSlide",value:function(){this.goToSlide(this.index+1);}},{key:"goToSlide",value:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];if(this.prevActiveSlide=this.activeSlide,this.prevActiveSlideIndex=this.index,!this.loop()&&(e<0||e>this.elements.length-1))return !1;e<0?e=this.elements.length-1:e>=this.elements.length&&(e=0),this.showSlide(e);}},{key:"insertSlide",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:-1,i=new J(e,this),n=i.getConfig(),s=i.create(),l=this.elements.length-1;if(t<0&&(t=this.elements.length),n.index=t,n.node=!1,n.instance=i,this.elements.splice(t,0,n),this.slidesContainer){if(t>l)this.slidesContainer.appendChild(s);else {var o=this.slidesContainer.querySelectorAll(".gslide")[t];this.slidesContainer.insertBefore(s,o);}(this.settings.preload&&0==this.index&&0==t||this.index-1==t||this.index+1==t)&&this.preloadSlide(t),0==this.index&&0==t&&(this.index=1),this.updateNavigationClasses();}this.trigger("slide_inserted",{index:t,slide:this.slidesContainer.querySelectorAll(".gslide")[t],player:this.getSlidePlayerInstance(t)}),C(this.settings.slideInserted)&&this.settings.slideInserted({index:t,slide:this.slidesContainer.querySelectorAll(".gslide")[t],player:this.getSlidePlayerInstance(t)});}},{key:"removeSlide",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:-1;if(e<0||e>this.elements.length-1)return !1;var t=this.slidesContainer&&this.slidesContainer.querySelectorAll(".gslide")[e];t&&(this.getActiveSlideIndex()==e&&(e==this.elements.length-1?this.prevSlide():this.nextSlide()),t.parentNode.removeChild(t)),this.elements.splice(e,1),this.trigger("slide_removed",e),C(this.settings.slideRemoved)&&this.settings.slideRemoved(e);}},{key:"slideAnimateIn",value:function(e,t){var i=this,n=e.querySelector(".gslide-media"),s=e.querySelector(".gslide-description"),l={index:this.prevActiveSlideIndex,slide:this.prevActiveSlide,player:this.getSlidePlayerInstance(this.prevActiveSlideIndex)},o={index:this.index,slide:this.activeSlide,player:this.getSlidePlayerInstance(this.index)};if(n.offsetWidth>0&&s&&(y(s),s.style.display=""),u(e,this.effectsClasses),t)f(e,this.settings.cssEfects[this.settings.openEffect].in,(function(){!K&&i.settings.autoplayVideos&&i.slidePlayerPlay(e),i.trigger("slide_changed",{prev:l,current:o}),C(i.settings.afterSlideChange)&&i.settings.afterSlideChange.apply(i,[l,o]);}));else {var r=this.settings.slideEffect,a="none"!==r?this.settings.cssEfects[r].in:r;this.prevActiveSlideIndex>this.index&&"slide"==this.settings.slideEffect&&(a=this.settings.cssEfects.slide_back.in),f(e,a,(function(){!K&&i.settings.autoplayVideos&&i.slidePlayerPlay(e),i.trigger("slide_changed",{prev:l,current:o}),C(i.settings.afterSlideChange)&&i.settings.afterSlideChange.apply(i,[l,o]);}));}setTimeout((function(){i.resize(e);}),100),d(e,"current");}},{key:"slideAnimateOut",value:function(){if(!this.prevActiveSlide)return !1;var e=this.prevActiveSlide;u(e,this.effectsClasses),d(e,"prev");var t=this.settings.slideEffect,i="none"!==t?this.settings.cssEfects[t].out:t;this.slidePlayerPause(e),this.trigger("slide_before_change",{prev:{index:this.prevActiveSlideIndex,slide:this.prevActiveSlide,player:this.getSlidePlayerInstance(this.prevActiveSlideIndex)},current:{index:this.index,slide:this.activeSlide,player:this.getSlidePlayerInstance(this.index)}}),C(this.settings.beforeSlideChange)&&this.settings.beforeSlideChange.apply(this,[{index:this.prevActiveSlideIndex,slide:this.prevActiveSlide,player:this.getSlidePlayerInstance(this.prevActiveSlideIndex)},{index:this.index,slide:this.activeSlide,player:this.getSlidePlayerInstance(this.index)}]),this.prevActiveSlideIndex>this.index&&"slide"==this.settings.slideEffect&&(i=this.settings.cssEfects.slide_back.out),f(e,i,(function(){var t=e.querySelector(".gslide-media"),i=e.querySelector(".gslide-description");t.style.transform="",u(t,"greset"),t.style.opacity="",i&&(i.style.opacity=""),u(e,"prev");}));}},{key:"getAllPlayers",value:function(){return this.videoPlayers}},{key:"getSlidePlayerInstance",value:function(e){var t="gvideo"+e,i=this.getAllPlayers();return !(!I(i,t)||!i[t])&&i[t]}},{key:"stopSlideVideo",value:function(e){if(A(e)){var t=e.querySelector(".gvideo-wrapper");t&&(e=t.getAttribute("data-index"));}console.log("stopSlideVideo is deprecated, use slidePlayerPause");var i=this.getSlidePlayerInstance(e);i&&i.playing&&i.pause();}},{key:"slidePlayerPause",value:function(e){if(A(e)){var t=e.querySelector(".gvideo-wrapper");t&&(e=t.getAttribute("data-index"));}var i=this.getSlidePlayerInstance(e);i&&i.playing&&i.pause();}},{key:"playSlideVideo",value:function(e){if(A(e)){var t=e.querySelector(".gvideo-wrapper");t&&(e=t.getAttribute("data-index"));}console.log("playSlideVideo is deprecated, use slidePlayerPlay");var i=this.getSlidePlayerInstance(e);i&&!i.playing&&i.play();}},{key:"slidePlayerPlay",value:function(e){if(A(e)){var t=e.querySelector(".gvideo-wrapper");t&&(e=t.getAttribute("data-index"));}var i=this.getSlidePlayerInstance(e);i&&!i.playing&&i.play();}},{key:"setElements",value:function(e){var t=this;this.settings.elements=!1;var i=[];e&&e.length&&a(e,(function(e,n){var s=new J(e,t),l=s.getConfig();l.instance=s,l.index=n,i.push(l);})),this.elements=i,this.lightboxOpen&&(this.slidesContainer.innerHTML="",this.elements.length&&(a(this.elements,(function(){var e=b(t.settings.slideHTML);t.slidesContainer.appendChild(e);})),this.showSlide(0,!0)));}},{key:"getElementIndex",value:function(e){var t=!1;return a(this.elements,(function(i,n){if(I(i,"node")&&i.node==e)return t=n,!0})),t}},{key:"getElements",value:function(){var e=this,t=[];this.elements=this.elements?this.elements:[],!M(this.settings.elements)&&L(this.settings.elements)&&this.settings.elements.length&&a(this.settings.elements,(function(i,n){var s=new J(i,e),l=s.getConfig();l.node=!1,l.index=n,l.instance=s,t.push(l);}));var i=!1;return this.getSelector()&&(i=document.querySelectorAll(this.getSelector())),i?(a(i,(function(i,n){var s=new J(i,e),l=s.getConfig();l.node=i,l.index=n,l.instance=s,l.gallery=i.getAttribute("data-gallery"),t.push(l);})),t):t}},{key:"getGalleryElements",value:function(e,t){return e.filter((function(e){return e.gallery==t}))}},{key:"getSelector",value:function(){return !this.settings.elements&&(this.settings.selector&&"data-"==this.settings.selector.substring(0,5)?"*[".concat(this.settings.selector,"]"):this.settings.selector)}},{key:"getActiveSlide",value:function(){return this.slidesContainer.querySelectorAll(".gslide")[this.index]}},{key:"getActiveSlideIndex",value:function(){return this.index}},{key:"getAnimationClasses",value:function(){var e=[];for(var t in this.settings.cssEfects)if(this.settings.cssEfects.hasOwnProperty(t)){var i=this.settings.cssEfects[t];e.push("g".concat(i.in)),e.push("g".concat(i.out));}return e.join(" ")}},{key:"build",value:function(){var e=this;if(this.built)return !1;var t=I(this.settings.svg,"next")?this.settings.svg.next:"",i=I(this.settings.svg,"prev")?this.settings.svg.prev:"",n=I(this.settings.svg,"close")?this.settings.svg.close:"",s=this.settings.lightboxHTML;s=b(s=(s=(s=s.replace(/{nextSVG}/g,t)).replace(/{prevSVG}/g,i)).replace(/{closeSVG}/g,n)),document.body.appendChild(s);var l=document.getElementById("glightbox-body");this.modal=l;var o=l.querySelector(".gclose");this.prevButton=l.querySelector(".gprev"),this.nextButton=l.querySelector(".gnext"),this.overlay=l.querySelector(".goverlay"),this.loader=l.querySelector(".gloader"),this.slidesContainer=document.getElementById("glightbox-slider"),this.events={},d(this.modal,"glightbox-"+this.settings.skin),this.settings.closeButton&&o&&(this.events.close=c("click",{onElement:o,withCallback:function(t,i){t.preventDefault(),e.close();}})),o&&!this.settings.closeButton&&o.parentNode.removeChild(o),this.nextButton&&(this.events.next=c("click",{onElement:this.nextButton,withCallback:function(t,i){t.preventDefault(),e.nextSlide();}})),this.prevButton&&(this.events.prev=c("click",{onElement:this.prevButton,withCallback:function(t,i){t.preventDefault(),e.prevSlide();}})),this.settings.closeOnOutsideClick&&(this.events.outClose=c("click",{onElement:l,withCallback:function(t,i){e.preventOutsideClick||g(document.body,"glightbox-mobile")||v(t.target,".ginner-container")||v(t.target,".gbtn")||g(t.target,"gnext")||g(t.target,"gprev")||e.close();}})),a(this.elements,(function(t){e.slidesContainer.appendChild(t.instance.create());})),Q&&d(document.body,"glightbox-touch"),this.events.resize=c("resize",{onElement:window,withCallback:function(){e.resize();}}),this.built=!0;}},{key:"resize",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null;if((e=e||this.activeSlide)&&!g(e,"zoomed")){var t=x(),i=e.querySelector(".gvideo-wrapper"),n=e.querySelector(".gslide-image"),s=this.slideDescription,l=t.width,o=t.height;if(l<=768?d(document.body,"glightbox-mobile"):u(document.body,"glightbox-mobile"),i||n){var r=!1;if(s&&(g(s,"description-bottom")||g(s,"description-top"))&&!g(s,"gabsolute")&&(r=!0),n)if(l<=768){var a=n.querySelector("img");a.setAttribute("style","");}else if(r){var h=s.offsetHeight,c=n.querySelector("img");c.setAttribute("style","max-height: calc(100vh - ".concat(h,"px)")),s.setAttribute("style","max-width: ".concat(c.offsetWidth,"px;"));}if(i){var v=I(this.settings.plyr.config,"ratio")?this.settings.plyr.config.ratio:"16:9",f=v.split(":"),p=900,m=p/(parseInt(f[0])/parseInt(f[1]));if(m=Math.floor(m),r&&(o-=s.offsetHeight),o<m&&l>p){var y=i.offsetWidth,b=i.offsetHeight,S=o/b,w={width:y*S,height:b*S};i.parentNode.setAttribute("style","max-width: ".concat(w.width,"px")),r&&s.setAttribute("style","max-width: ".concat(w.width,"px;"));}else i.parentNode.style.maxWidth="".concat(p,"px"),r&&s.setAttribute("style","max-width: ".concat(p,"px;"));}}}}},{key:"reload",value:function(){this.init();}},{key:"updateNavigationClasses",value:function(){var e=this.loop();u(this.nextButton,"disabled"),u(this.prevButton,"disabled"),0==this.index&&this.elements.length-1==0?(d(this.prevButton,"disabled"),d(this.nextButton,"disabled")):0!==this.index||e?this.index!==this.elements.length-1||e||d(this.nextButton,"disabled"):d(this.prevButton,"disabled");}},{key:"loop",value:function(){var e=I(this.settings,"loopAtEnd")?this.settings.loopAtEnd:null;return e=I(this.settings,"loop")?this.settings.loop:e,e}},{key:"close",value:function(){var e=this;if(!this.lightboxOpen){if(this.events){for(var t in this.events)this.events.hasOwnProperty(t)&&this.events[t].destroy();this.events=null;}return !1}if(this.closing)return !1;this.closing=!0,this.slidePlayerPause(this.activeSlide),this.fullElementsList&&(this.elements=this.fullElementsList),d(this.modal,"glightbox-closing"),f(this.overlay,"none"==this.settings.openEffect?"none":this.settings.cssEfects.fade.out),f(this.activeSlide,this.settings.cssEfects[this.settings.closeEffect].out,(function(){if(e.activeSlide=null,e.prevActiveSlideIndex=null,e.prevActiveSlide=null,e.built=!1,e.events){for(var t in e.events)e.events.hasOwnProperty(t)&&e.events[t].destroy();e.events=null;}var i=document.body;u(ee,"glightbox-open"),u(i,"glightbox-open touching gdesc-open glightbox-touch glightbox-mobile gscrollbar-fixer"),e.modal.parentNode.removeChild(e.modal),e.trigger("close"),C(e.settings.onClose)&&e.settings.onClose();var n=document.querySelector(".gcss-styles");n&&n.parentNode.removeChild(n),e.lightboxOpen=!1,e.closing=null;}));}},{key:"destroy",value:function(){this.close(),this.clearAllEvents(),this.baseEvents.destroy();}},{key:"on",value:function(e,t){var i=arguments.length>2&&void 0!==arguments[2]&&arguments[2];if(!e||!C(t))throw new TypeError("Event name and callback must be defined");this.apiEvents.push({evt:e,once:i,callback:t});}},{key:"once",value:function(e,t){this.on(e,t,!0);}},{key:"trigger",value:function(e){var t=this,i=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,n=[];a(this.apiEvents,(function(t,s){var l=t.evt,o=t.once,r=t.callback;l==e&&(r(i),o&&n.push(s));})),n.length&&a(n,(function(e){return t.apiEvents.splice(e,1)}));}},{key:"clearAllEvents",value:function(){this.apiEvents.push({evt:evt,once:once,callback:callback});}},{key:"version",value:function(){return "3.0.5"}}]),e}();return function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=new ie(e);return t.init(),t}}));
+!function(e,t){module.exports=t();}(commonjsGlobal,(function(){function e(t){return (e="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(t)}function t(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function i(e,t){for(var i=0;i<t.length;i++){var n=t[i];n.enumerable=n.enumerable||!1,n.configurable=!0,"value"in n&&(n.writable=!0),Object.defineProperty(e,n.key,n);}}function n(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}function s(e){return function(e){if(Array.isArray(e))return l(e)}(e)||function(e){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e))return Array.from(e)}(e)||function(e,t){if(!e)return;if("string"==typeof e)return l(e,t);var i=Object.prototype.toString.call(e).slice(8,-1);"Object"===i&&e.constructor&&(i=e.constructor.name);if("Map"===i||"Set"===i)return Array.from(e);if("Arguments"===i||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(i))return l(e,t)}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function l(e,t){(null==t||t>e.length)&&(t=e.length);for(var i=0,n=new Array(t);i<t;i++)n[i]=e[i];return n}var o=Date.now();function r(){var e={},t=!0,i=0,n=arguments.length;"[object Boolean]"===Object.prototype.toString.call(arguments[0])&&(t=arguments[0],i++);for(var s=function(i){for(var n in i)Object.prototype.hasOwnProperty.call(i,n)&&(t&&"[object Object]"===Object.prototype.toString.call(i[n])?e[n]=r(!0,e[n],i[n]):e[n]=i[n]);};i<n;i++){var l=arguments[i];s(l);}return e}function a(e,t){if((A(e)||e===window||e===document)&&(e=[e]),I(e)||O(e)||(e=[e]),0!=X(e))if(I(e)&&!O(e))for(var i=e.length,n=0;n<i&&!1!==t.call(e[n],e[n],n,e);n++);else if(O(e))for(var s in e)if(M(e,s)&&!1===t.call(e[s],e[s],s,e))break}function h(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,i=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null,n=e[o]=e[o]||[],s={all:n,evt:null,found:null};return t&&i&&X(n)>0&&a(n,(function(e,n){if(e.eventName==t&&e.fn.toString()==i.toString())return s.found=!0,s.evt=n,!1})),s}function c(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:{},i=t.onElement,n=t.withCallback,s=t.avoidDuplicate,l=void 0===s||s,o=t.once,r=void 0!==o&&o,c=t.useCapture,d=void 0!==c&&c,u=arguments.length>2?arguments[2]:void 0,g=i||[];function v(e){C(n)&&n.call(u,e,this),r&&v.destroy();}return E(g)&&(g=document.querySelectorAll(g)),v.destroy=function(){a(g,(function(t){var i=h(t,e,v);i.found&&i.all.splice(i.evt,1),t.removeEventListener&&t.removeEventListener(e,v,d);}));},a(g,(function(t){var i=h(t,e,v);(t.addEventListener&&l&&!i.found||!l)&&(t.addEventListener(e,v,d),i.all.push({eventName:e,fn:v}));})),v}function d(e,t){a(t.split(" "),(function(t){return e.classList.add(t)}));}function u(e,t){a(t.split(" "),(function(t){return e.classList.remove(t)}));}function g(e,t){return e.classList.contains(t)}function v(e,t){for(;e!==document.body;){if(!(e=e.parentElement))return !1;if("function"==typeof e.matches?e.matches(t):e.msMatchesSelector(t))return e}}function f(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"",i=arguments.length>2&&void 0!==arguments[2]&&arguments[2];if(!e||""===t)return !1;if("none"==t)return C(i)&&i(),!1;var n=S(),s=t.split(" ");a(s,(function(t){d(e,"g"+t);})),c(n,{onElement:e,avoidDuplicate:!1,once:!0,withCallback:function(e,t){a(s,(function(e){u(t,"g"+e);})),C(i)&&i();}});}function p(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:"";if(""==t)return e.style.webkitTransform="",e.style.MozTransform="",e.style.msTransform="",e.style.OTransform="",e.style.transform="",!1;e.style.webkitTransform=t,e.style.MozTransform=t,e.style.msTransform=t,e.style.OTransform=t,e.style.transform=t;}function m(e){e.style.display="block";}function y(e){e.style.display="none";}function x(e){var t=document.createDocumentFragment(),i=document.createElement("div");for(i.innerHTML=e;i.firstChild;)t.appendChild(i.firstChild);return t}function b(){return {width:window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth,height:window.innerHeight||document.documentElement.clientHeight||document.body.clientHeight}}function S(){var e,t=document.createElement("fakeelement"),i={animation:"animationend",OAnimation:"oAnimationEnd",MozAnimation:"animationend",WebkitAnimation:"webkitAnimationEnd"};for(e in i)if(void 0!==t.style[e])return i[e]}function w(e,t,i,n){if(e())t();else {var s;i||(i=100);var l=setInterval((function(){e()&&(clearInterval(l),s&&clearTimeout(s),t());}),i);n&&(s=setTimeout((function(){clearInterval(l);}),n));}}function T(e,t,i){if(P(e))console.error("Inject assets error");else if(C(t)&&(i=t,t=!1),E(t)&&t in window)C(i)&&i();else {var n;if(-1!==e.indexOf(".css")){if((n=document.querySelectorAll('link[href="'+e+'"]'))&&n.length>0)return void(C(i)&&i());var s=document.getElementsByTagName("head")[0],l=s.querySelectorAll('link[rel="stylesheet"]'),o=document.createElement("link");return o.rel="stylesheet",o.type="text/css",o.href=e,o.media="all",l?s.insertBefore(o,l[0]):s.appendChild(o),void(C(i)&&i())}if((n=document.querySelectorAll('script[src="'+e+'"]'))&&n.length>0){if(C(i)){if(E(t))return w((function(){return void 0!==window[t]}),(function(){i();})),!1;i();}}else {var r=document.createElement("script");r.type="text/javascript",r.src=e,r.onload=function(){if(C(i)){if(E(t))return w((function(){return void 0!==window[t]}),(function(){i();})),!1;i();}},document.body.appendChild(r);}}}function k(){return "navigator"in window&&window.navigator.userAgent.match(/(iPad)|(iPhone)|(iPod)|(Android)|(PlayBook)|(BB10)|(BlackBerry)|(Opera Mini)|(IEMobile)|(webOS)|(MeeGo)/i)}function C(e){return "function"==typeof e}function E(e){return "string"==typeof e}function A(e){return !(!e||!e.nodeType||1!=e.nodeType)}function L(e){return Array.isArray(e)}function I(e){return e&&e.length&&isFinite(e.length)}function O(t){return "object"===e(t)&&null!=t&&!C(t)&&!L(t)}function P(e){return null==e}function M(e,t){return null!==e&&hasOwnProperty.call(e,t)}function X(e){if(O(e)){if(e.keys)return e.keys().length;var t=0;for(var i in e)M(e,i)&&t++;return t}return e.length}function z(e){return !isNaN(parseFloat(e))&&isFinite(e)}function Y(e){if(e.events.hasOwnProperty("keyboard"))return !1;e.events.keyboard=c("keydown",{onElement:window,withCallback:function(t,i){var n=(t=t||window.event).keyCode;if(9==n){var l=!(!document.activeElement||!document.activeElement.nodeName)&&document.activeElement.nodeName.toLocaleLowerCase();if("input"==l||"textarea"==l||"button"==l)return;t.preventDefault();var o=document.querySelectorAll(".gbtn");if(!o||o.length<=0)return;var r=s(o).filter((function(e){return g(e,"focused")}));if(!r.length){var a=document.querySelector('.gbtn[tabindex="0"]');return void(a&&(a.focus(),d(a,"focused")))}o.forEach((function(e){return u(e,"focused")}));var h=r[0].getAttribute("tabindex");h=h||"0";var c=parseInt(h)+1;c>o.length-1&&(c="0");var v=document.querySelector('.gbtn[tabindex="'.concat(c,'"]'));v&&(v.focus(),d(v,"focused"));}39==n&&e.nextSlide(),37==n&&e.prevSlide(),27==n&&e.close();}});}function q(e){return Math.sqrt(e.x*e.x+e.y*e.y)}function D(e,t){var i=function(e,t){var i=q(e)*q(t);if(0===i)return 0;var n=function(e,t){return e.x*t.x+e.y*t.y}(e,t)/i;return n>1&&(n=1),Math.acos(n)}(e,t);return function(e,t){return e.x*t.y-t.x*e.y}(e,t)>0&&(i*=-1),180*i/Math.PI}var N=function(){function e(i){t(this,e),this.handlers=[],this.el=i;}return n(e,[{key:"add",value:function(e){this.handlers.push(e);}},{key:"del",value:function(e){e||(this.handlers=[]);for(var t=this.handlers.length;t>=0;t--)this.handlers[t]===e&&this.handlers.splice(t,1);}},{key:"dispatch",value:function(){for(var e=0,t=this.handlers.length;e<t;e++){var i=this.handlers[e];"function"==typeof i&&i.apply(this.el,arguments);}}}]),e}();function _(e,t){var i=new N(e);return i.add(t),i}var B=function(){function e(i,n){t(this,e),this.element="string"==typeof i?document.querySelector(i):i,this.start=this.start.bind(this),this.move=this.move.bind(this),this.end=this.end.bind(this),this.cancel=this.cancel.bind(this),this.element.addEventListener("touchstart",this.start,!1),this.element.addEventListener("touchmove",this.move,!1),this.element.addEventListener("touchend",this.end,!1),this.element.addEventListener("touchcancel",this.cancel,!1),this.preV={x:null,y:null},this.pinchStartLen=null,this.zoom=1,this.isDoubleTap=!1;var s=function(){};this.rotate=_(this.element,n.rotate||s),this.touchStart=_(this.element,n.touchStart||s),this.multipointStart=_(this.element,n.multipointStart||s),this.multipointEnd=_(this.element,n.multipointEnd||s),this.pinch=_(this.element,n.pinch||s),this.swipe=_(this.element,n.swipe||s),this.tap=_(this.element,n.tap||s),this.doubleTap=_(this.element,n.doubleTap||s),this.longTap=_(this.element,n.longTap||s),this.singleTap=_(this.element,n.singleTap||s),this.pressMove=_(this.element,n.pressMove||s),this.twoFingerPressMove=_(this.element,n.twoFingerPressMove||s),this.touchMove=_(this.element,n.touchMove||s),this.touchEnd=_(this.element,n.touchEnd||s),this.touchCancel=_(this.element,n.touchCancel||s),this._cancelAllHandler=this.cancelAll.bind(this),window.addEventListener("scroll",this._cancelAllHandler),this.delta=null,this.last=null,this.now=null,this.tapTimeout=null,this.singleTapTimeout=null,this.longTapTimeout=null,this.swipeTimeout=null,this.x1=this.x2=this.y1=this.y2=null,this.preTapPosition={x:null,y:null};}return n(e,[{key:"start",value:function(e){if(e.touches){this.now=Date.now(),this.x1=e.touches[0].pageX,this.y1=e.touches[0].pageY,this.delta=this.now-(this.last||this.now),this.touchStart.dispatch(e,this.element),null!==this.preTapPosition.x&&(this.isDoubleTap=this.delta>0&&this.delta<=250&&Math.abs(this.preTapPosition.x-this.x1)<30&&Math.abs(this.preTapPosition.y-this.y1)<30,this.isDoubleTap&&clearTimeout(this.singleTapTimeout)),this.preTapPosition.x=this.x1,this.preTapPosition.y=this.y1,this.last=this.now;var t=this.preV;if(e.touches.length>1){this._cancelLongTap(),this._cancelSingleTap();var i={x:e.touches[1].pageX-this.x1,y:e.touches[1].pageY-this.y1};t.x=i.x,t.y=i.y,this.pinchStartLen=q(t),this.multipointStart.dispatch(e,this.element);}this._preventTap=!1,this.longTapTimeout=setTimeout(function(){this.longTap.dispatch(e,this.element),this._preventTap=!0;}.bind(this),750);}}},{key:"move",value:function(e){if(e.touches){var t=this.preV,i=e.touches.length,n=e.touches[0].pageX,s=e.touches[0].pageY;if(this.isDoubleTap=!1,i>1){var l=e.touches[1].pageX,o=e.touches[1].pageY,r={x:e.touches[1].pageX-n,y:e.touches[1].pageY-s};null!==t.x&&(this.pinchStartLen>0&&(e.zoom=q(r)/this.pinchStartLen,this.pinch.dispatch(e,this.element)),e.angle=D(r,t),this.rotate.dispatch(e,this.element)),t.x=r.x,t.y=r.y,null!==this.x2&&null!==this.sx2?(e.deltaX=(n-this.x2+l-this.sx2)/2,e.deltaY=(s-this.y2+o-this.sy2)/2):(e.deltaX=0,e.deltaY=0),this.twoFingerPressMove.dispatch(e,this.element),this.sx2=l,this.sy2=o;}else {if(null!==this.x2){e.deltaX=n-this.x2,e.deltaY=s-this.y2;var a=Math.abs(this.x1-this.x2),h=Math.abs(this.y1-this.y2);(a>10||h>10)&&(this._preventTap=!0);}else e.deltaX=0,e.deltaY=0;this.pressMove.dispatch(e,this.element);}this.touchMove.dispatch(e,this.element),this._cancelLongTap(),this.x2=n,this.y2=s,i>1&&e.preventDefault();}}},{key:"end",value:function(e){if(e.changedTouches){this._cancelLongTap();var t=this;e.touches.length<2&&(this.multipointEnd.dispatch(e,this.element),this.sx2=this.sy2=null),this.x2&&Math.abs(this.x1-this.x2)>30||this.y2&&Math.abs(this.y1-this.y2)>30?(e.direction=this._swipeDirection(this.x1,this.x2,this.y1,this.y2),this.swipeTimeout=setTimeout((function(){t.swipe.dispatch(e,t.element);}),0)):(this.tapTimeout=setTimeout((function(){t._preventTap||t.tap.dispatch(e,t.element),t.isDoubleTap&&(t.doubleTap.dispatch(e,t.element),t.isDoubleTap=!1);}),0),t.isDoubleTap||(t.singleTapTimeout=setTimeout((function(){t.singleTap.dispatch(e,t.element);}),250))),this.touchEnd.dispatch(e,this.element),this.preV.x=0,this.preV.y=0,this.zoom=1,this.pinchStartLen=null,this.x1=this.x2=this.y1=this.y2=null;}}},{key:"cancelAll",value:function(){this._preventTap=!0,clearTimeout(this.singleTapTimeout),clearTimeout(this.tapTimeout),clearTimeout(this.longTapTimeout),clearTimeout(this.swipeTimeout);}},{key:"cancel",value:function(e){this.cancelAll(),this.touchCancel.dispatch(e,this.element);}},{key:"_cancelLongTap",value:function(){clearTimeout(this.longTapTimeout);}},{key:"_cancelSingleTap",value:function(){clearTimeout(this.singleTapTimeout);}},{key:"_swipeDirection",value:function(e,t,i,n){return Math.abs(e-t)>=Math.abs(i-n)?e-t>0?"Left":"Right":i-n>0?"Up":"Down"}},{key:"on",value:function(e,t){this[e]&&this[e].add(t);}},{key:"off",value:function(e,t){this[e]&&this[e].del(t);}},{key:"destroy",value:function(){return this.singleTapTimeout&&clearTimeout(this.singleTapTimeout),this.tapTimeout&&clearTimeout(this.tapTimeout),this.longTapTimeout&&clearTimeout(this.longTapTimeout),this.swipeTimeout&&clearTimeout(this.swipeTimeout),this.element.removeEventListener("touchstart",this.start),this.element.removeEventListener("touchmove",this.move),this.element.removeEventListener("touchend",this.end),this.element.removeEventListener("touchcancel",this.cancel),this.rotate.del(),this.touchStart.del(),this.multipointStart.del(),this.multipointEnd.del(),this.pinch.del(),this.swipe.del(),this.tap.del(),this.doubleTap.del(),this.longTap.del(),this.singleTap.del(),this.pressMove.del(),this.twoFingerPressMove.del(),this.touchMove.del(),this.touchEnd.del(),this.touchCancel.del(),this.preV=this.pinchStartLen=this.zoom=this.isDoubleTap=this.delta=this.last=this.now=this.tapTimeout=this.singleTapTimeout=this.longTapTimeout=this.swipeTimeout=this.x1=this.x2=this.y1=this.y2=this.preTapPosition=this.rotate=this.touchStart=this.multipointStart=this.multipointEnd=this.pinch=this.swipe=this.tap=this.doubleTap=this.longTap=this.singleTap=this.pressMove=this.touchMove=this.touchEnd=this.touchCancel=this.twoFingerPressMove=null,window.removeEventListener("scroll",this._cancelAllHandler),null}}]),e}();function W(e){var t=function(){var e,t=document.createElement("fakeelement"),i={transition:"transitionend",OTransition:"oTransitionEnd",MozTransition:"transitionend",WebkitTransition:"webkitTransitionEnd"};for(e in i)if(void 0!==t.style[e])return i[e]}(),i=g(e,"gslide-media")?e:e.querySelector(".gslide-media"),n=e.querySelector(".gslide-description");d(i,"greset"),p(i,"translate3d(0, 0, 0)");c(t,{onElement:i,once:!0,withCallback:function(e,t){u(i,"greset");}});i.style.opacity="",n&&(n.style.opacity="");}function H(e){if(e.events.hasOwnProperty("touch"))return !1;var t,i,n,s=b(),l=s.width,o=s.height,r=!1,a=null,h=null,c=null,f=!1,m=1,y=1,x=!1,S=!1,w=null,T=null,k=null,C=null,E=0,A=0,L=!1,I=!1,O={},P={},M=0,X=0,z=document.getElementById("glightbox-slider"),Y=document.querySelector(".goverlay"),q=new B(z,{touchStart:function(t){if(g(t.targetTouches[0].target,"ginner-container")||v(t.targetTouches[0].target,".gslide-desc"))return r=!1,!1;r=!0,P=t.targetTouches[0],O.pageX=t.targetTouches[0].pageX,O.pageY=t.targetTouches[0].pageY,M=t.targetTouches[0].clientX,X=t.targetTouches[0].clientY,a=e.activeSlide,h=a.querySelector(".gslide-media"),n=a.querySelector(".gslide-inline"),c=null,g(h,"gslide-image")&&(c=h.querySelector("img")),u(Y,"greset"),t.pageX>20&&t.pageX<window.innerWidth-20||t.preventDefault();},touchMove:function(s){if(r&&(P=s.targetTouches[0],!x&&!S)){if(n&&n.offsetHeight>o){var a=O.pageX-P.pageX;if(Math.abs(a)<=13)return !1}f=!0;var d,u=s.targetTouches[0].clientX,g=s.targetTouches[0].clientY,v=M-u,m=X-g;if(Math.abs(v)>Math.abs(m)?(L=!1,I=!0):(I=!1,L=!0),t=P.pageX-O.pageX,E=100*t/l,i=P.pageY-O.pageY,A=100*i/o,L&&c&&(d=1-Math.abs(i)/o,Y.style.opacity=d,e.settings.touchFollowAxis&&(E=0)),I&&(d=1-Math.abs(t)/l,h.style.opacity=d,e.settings.touchFollowAxis&&(A=0)),!c)return p(h,"translate3d(".concat(E,"%, 0, 0)"));p(h,"translate3d(".concat(E,"%, ").concat(A,"%, 0)"));}},touchEnd:function(){if(r){if(f=!1,S||x)return k=w,void(C=T);var t=Math.abs(parseInt(A)),i=Math.abs(parseInt(E));if(!(t>29&&c))return t<29&&i<25?(d(Y,"greset"),Y.style.opacity=1,W(h)):void 0;e.close();}},multipointEnd:function(){setTimeout((function(){x=!1;}),50);},multipointStart:function(){x=!0,m=y||1;},pinch:function(e){if(!c||f)return !1;x=!0,c.scaleX=c.scaleY=m*e.zoom;var t=m*e.zoom;if(S=!0,t<=1)return S=!1,t=1,C=null,k=null,w=null,T=null,void c.setAttribute("style","");t>4.5&&(t=4.5),c.style.transform="scale3d(".concat(t,", ").concat(t,", 1)"),y=t;},pressMove:function(e){if(S&&!x){var t=P.pageX-O.pageX,i=P.pageY-O.pageY;k&&(t+=k),C&&(i+=C),w=t,T=i;var n="translate3d(".concat(t,"px, ").concat(i,"px, 0)");y&&(n+=" scale3d(".concat(y,", ").concat(y,", 1)")),p(c,n);}},swipe:function(t){if(!S)if(x)x=!1;else {if("Left"==t.direction){if(e.index==e.elements.length-1)return W(h);e.nextSlide();}if("Right"==t.direction){if(0==e.index)return W(h);e.prevSlide();}}}});e.events.touch=q;}var j=function(){function e(i,n){var s=this,l=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null;if(t(this,e),this.img=i,this.slide=n,this.onclose=l,this.img.setZoomEvents)return !1;this.active=!1,this.zoomedIn=!1,this.dragging=!1,this.currentX=null,this.currentY=null,this.initialX=null,this.initialY=null,this.xOffset=0,this.yOffset=0,this.img.addEventListener("mousedown",(function(e){return s.dragStart(e)}),!1),this.img.addEventListener("mouseup",(function(e){return s.dragEnd(e)}),!1),this.img.addEventListener("mousemove",(function(e){return s.drag(e)}),!1),this.img.addEventListener("click",(function(e){return s.slide.classList.contains("dragging-nav")?(s.zoomOut(),!1):s.zoomedIn?void(s.zoomedIn&&!s.dragging&&s.zoomOut()):s.zoomIn()}),!1),this.img.setZoomEvents=!0;}return n(e,[{key:"zoomIn",value:function(){var e=this.widowWidth();if(!(this.zoomedIn||e<=768)){var t=this.img;if(t.setAttribute("data-style",t.getAttribute("style")),t.style.maxWidth=t.naturalWidth+"px",t.style.maxHeight=t.naturalHeight+"px",t.naturalWidth>e){var i=e/2-t.naturalWidth/2;this.setTranslate(this.img.parentNode,i,0);}this.slide.classList.add("zoomed"),this.zoomedIn=!0;}}},{key:"zoomOut",value:function(){this.img.parentNode.setAttribute("style",""),this.img.setAttribute("style",this.img.getAttribute("data-style")),this.slide.classList.remove("zoomed"),this.zoomedIn=!1,this.currentX=null,this.currentY=null,this.initialX=null,this.initialY=null,this.xOffset=0,this.yOffset=0,this.onclose&&"function"==typeof this.onclose&&this.onclose();}},{key:"dragStart",value:function(e){e.preventDefault(),this.zoomedIn?("touchstart"===e.type?(this.initialX=e.touches[0].clientX-this.xOffset,this.initialY=e.touches[0].clientY-this.yOffset):(this.initialX=e.clientX-this.xOffset,this.initialY=e.clientY-this.yOffset),e.target===this.img&&(this.active=!0,this.img.classList.add("dragging"))):this.active=!1;}},{key:"dragEnd",value:function(e){var t=this;e.preventDefault(),this.initialX=this.currentX,this.initialY=this.currentY,this.active=!1,setTimeout((function(){t.dragging=!1,t.img.isDragging=!1,t.img.classList.remove("dragging");}),100);}},{key:"drag",value:function(e){this.active&&(e.preventDefault(),"touchmove"===e.type?(this.currentX=e.touches[0].clientX-this.initialX,this.currentY=e.touches[0].clientY-this.initialY):(this.currentX=e.clientX-this.initialX,this.currentY=e.clientY-this.initialY),this.xOffset=this.currentX,this.yOffset=this.currentY,this.img.isDragging=!0,this.dragging=!0,this.setTranslate(this.img,this.currentX,this.currentY));}},{key:"onMove",value:function(e){if(this.zoomedIn){var t=e.clientX-this.img.naturalWidth/2,i=e.clientY-this.img.naturalHeight/2;this.setTranslate(this.img,t,i);}}},{key:"setTranslate",value:function(e,t,i){e.style.transform="translate3d("+t+"px, "+i+"px, 0)";}},{key:"widowWidth",value:function(){return window.innerWidth||document.documentElement.clientWidth||document.body.clientWidth}}]),e}(),V=function(){function e(){var i=this,n=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};t(this,e);var s=n.dragEl,l=n.toleranceX,o=void 0===l?40:l,r=n.toleranceY,a=void 0===r?65:r,h=n.slide,c=void 0===h?null:h,d=n.instance,u=void 0===d?null:d;this.el=s,this.active=!1,this.dragging=!1,this.currentX=null,this.currentY=null,this.initialX=null,this.initialY=null,this.xOffset=0,this.yOffset=0,this.direction=null,this.lastDirection=null,this.toleranceX=o,this.toleranceY=a,this.toleranceReached=!1,this.dragContainer=this.el,this.slide=c,this.instance=u,this.el.addEventListener("mousedown",(function(e){return i.dragStart(e)}),!1),this.el.addEventListener("mouseup",(function(e){return i.dragEnd(e)}),!1),this.el.addEventListener("mousemove",(function(e){return i.drag(e)}),!1);}return n(e,[{key:"dragStart",value:function(e){if(this.slide.classList.contains("zoomed"))this.active=!1;else {"touchstart"===e.type?(this.initialX=e.touches[0].clientX-this.xOffset,this.initialY=e.touches[0].clientY-this.yOffset):(this.initialX=e.clientX-this.xOffset,this.initialY=e.clientY-this.yOffset);var t=e.target.nodeName.toLowerCase();e.target.classList.contains("nodrag")||v(e.target,".nodrag")||-1!==["input","select","textarea","button","a"].indexOf(t)?this.active=!1:(e.preventDefault(),(e.target===this.el||"img"!==t&&v(e.target,".gslide-inline"))&&(this.active=!0,this.el.classList.add("dragging"),this.dragContainer=v(e.target,".ginner-container")));}}},{key:"dragEnd",value:function(e){var t=this;e&&e.preventDefault(),this.initialX=0,this.initialY=0,this.currentX=null,this.currentY=null,this.initialX=null,this.initialY=null,this.xOffset=0,this.yOffset=0,this.active=!1,this.doSlideChange&&(this.instance.preventOutsideClick=!0,"right"==this.doSlideChange&&this.instance.prevSlide(),"left"==this.doSlideChange&&this.instance.nextSlide()),this.doSlideClose&&this.instance.close(),this.toleranceReached||this.setTranslate(this.dragContainer,0,0,!0),setTimeout((function(){t.instance.preventOutsideClick=!1,t.toleranceReached=!1,t.lastDirection=null,t.dragging=!1,t.el.isDragging=!1,t.el.classList.remove("dragging"),t.slide.classList.remove("dragging-nav"),t.dragContainer.style.transform="",t.dragContainer.style.transition="";}),100);}},{key:"drag",value:function(e){if(this.active){e.preventDefault(),this.slide.classList.add("dragging-nav"),"touchmove"===e.type?(this.currentX=e.touches[0].clientX-this.initialX,this.currentY=e.touches[0].clientY-this.initialY):(this.currentX=e.clientX-this.initialX,this.currentY=e.clientY-this.initialY),this.xOffset=this.currentX,this.yOffset=this.currentY,this.el.isDragging=!0,this.dragging=!0,this.doSlideChange=!1,this.doSlideClose=!1;var t=Math.abs(this.currentX),i=Math.abs(this.currentY);if(t>0&&t>=Math.abs(this.currentY)&&(!this.lastDirection||"x"==this.lastDirection)){this.yOffset=0,this.lastDirection="x",this.setTranslate(this.dragContainer,this.currentX,0);var n=this.shouldChange();if(!this.instance.settings.dragAutoSnap&&n&&(this.doSlideChange=n),this.instance.settings.dragAutoSnap&&n)return this.instance.preventOutsideClick=!0,this.toleranceReached=!0,this.active=!1,this.instance.preventOutsideClick=!0,this.dragEnd(null),"right"==n&&this.instance.prevSlide(),void("left"==n&&this.instance.nextSlide())}if(this.toleranceY>0&&i>0&&i>=t&&(!this.lastDirection||"y"==this.lastDirection)){this.xOffset=0,this.lastDirection="y",this.setTranslate(this.dragContainer,0,this.currentY);var s=this.shouldClose();return !this.instance.settings.dragAutoSnap&&s&&(this.doSlideClose=!0),void(this.instance.settings.dragAutoSnap&&s&&this.instance.close())}}}},{key:"shouldChange",value:function(){var e=!1;if(Math.abs(this.currentX)>=this.toleranceX){var t=this.currentX>0?"right":"left";("left"==t&&this.slide!==this.slide.parentNode.lastChild||"right"==t&&this.slide!==this.slide.parentNode.firstChild)&&(e=t);}return e}},{key:"shouldClose",value:function(){var e=!1;return Math.abs(this.currentY)>=this.toleranceY&&(e=!0),e}},{key:"setTranslate",value:function(e,t,i){var n=arguments.length>3&&void 0!==arguments[3]&&arguments[3];e.style.transition=n?"all .2s ease":"",e.style.transform="translate3d("+t+"px, "+i+"px, 0)";}}]),e}();function F(e,t,i){var n=e.querySelector(".gslide-media"),s=new Image,l="gSlideTitle_"+t.index,o="gSlideDesc_"+t.index;s.addEventListener("load",(function(){C(i)&&i();}),!1),s.src=t.href,s.alt="",""!==t.title&&s.setAttribute("aria-labelledby",l),""!==t.description&&s.setAttribute("aria-describedby",o),n.insertBefore(s,n.firstChild);}function R(e,t,i){var n=this,s=e.querySelector(".ginner-container"),l="gvideo"+t.index,o=e.querySelector(".gslide-media"),r=this.getAllPlayers();d(s,"gvideo-container"),o.insertBefore(x('<div class="gvideo-wrapper"></div>'),o.firstChild);var a=e.querySelector(".gvideo-wrapper");T(this.settings.plyr.css,"Plyr");var h=t.href,c=location.protocol.replace(":",""),u="",g="",v=!1;"file"==c&&(c="http"),o.style.maxWidth=t.width,T(this.settings.plyr.js,"Plyr",(function(){if(h.match(/vimeo\.com\/([0-9]*)/)){var e=/vimeo.*\/(\d+)/i.exec(h);u="vimeo",g=e[1];}if(h.match(/(youtube\.com|youtube-nocookie\.com)\/watch\?v=([a-zA-Z0-9\-_]+)/)||h.match(/youtu\.be\/([a-zA-Z0-9\-_]+)/)||h.match(/(youtube\.com|youtube-nocookie\.com)\/embed\/([a-zA-Z0-9\-_]+)/)){var s=function(e){var t="";t=void 0!==(e=e.replace(/(>|<)/gi,"").split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/))[2]?(t=e[2].split(/[^0-9a-z_\-]/i))[0]:e;return t}(h);u="youtube",g=s;}if(null!==h.match(/\.(mp4|ogg|webm|mov)$/)){u="local";var o='<video id="'+l+'" ';o+='style="background:#000; max-width: '.concat(t.width,';" '),o+='preload="metadata" ',o+='x-webkit-airplay="allow" ',o+='webkit-playsinline="" ',o+="controls ",o+='class="gvideo-local">';var c=h.toLowerCase().split(".").pop(),f={mp4:"",ogg:"",webm:""};for(var p in f[c="mov"==c?"mp4":c]=h,f)if(f.hasOwnProperty(p)){var m=f[p];t.hasOwnProperty(p)&&(m=t[p]),""!==m&&(o+='<source src="'.concat(m,'" type="video/').concat(p,'">'));}v=x(o+="</video>");}var y=v||x('<div id="'.concat(l,'" data-plyr-provider="').concat(u,'" data-plyr-embed-id="').concat(g,'"></div>'));d(a,"".concat(u,"-video gvideo")),a.appendChild(y),a.setAttribute("data-id",l),a.setAttribute("data-index",t.index);var b=M(n.settings.plyr,"config")?n.settings.plyr.config:{},S=new Plyr("#"+l,b);S.on("ready",(function(e){var t=e.detail.plyr;r[l]=t,C(i)&&i();})),S.on("enterfullscreen",G),S.on("exitfullscreen",G);}));}function G(e){var t=v(e.target,".gslide-media");"enterfullscreen"==e.type&&d(t,"fullscreen"),"exitfullscreen"==e.type&&u(t,"fullscreen");}function Z(e,t,i){var n,s=this,l=e.querySelector(".gslide-media"),o=!(!M(t,"href")||!t.href)&&t.href.split("#").pop().trim(),r=!(!M(t,"content")||!t.content)&&t.content;if(r&&(E(r)&&(n=x('<div class="ginlined-content">'.concat(r,"</div>"))),A(r))){"none"==r.style.display&&(r.style.display="block");var a=document.createElement("div");a.className="ginlined-content",a.appendChild(r),n=a;}if(o){var h=document.getElementById(o);if(!h)return !1;var u=h.cloneNode(!0);u.style.height=t.height,u.style.maxWidth=t.width,d(u,"ginlined-content"),n=u;}if(!n)return console.error("Unable to append inline slide content",t),!1;l.style.height=t.height,l.style.width=t.width,l.appendChild(n),this.events["inlineclose"+o]=c("click",{onElement:l.querySelectorAll(".gtrigger-close"),withCallback:function(e){e.preventDefault(),s.close();}}),C(i)&&i();}function $(e,t,i){var n=e.querySelector(".gslide-media"),s=function(e){var t=e.url,i=e.allow,n=e.callback,s=e.appendTo,l=document.createElement("iframe");return l.className="vimeo-video gvideo",l.src=t,l.style.width="100%",l.style.height="100%",i&&l.setAttribute("allow",i),l.onload=function(){d(l,"node-ready"),C(n)&&n();},s&&s.appendChild(l),l}({url:t.href,callback:i});n.parentNode.style.maxWidth=t.width,n.parentNode.style.height=t.height,n.appendChild(s);}var U=function(){function e(){var i=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};t(this,e),this.defaults={href:"",title:"",type:"",description:"",descPosition:"bottom",effect:"",width:"",height:"",content:!1,zoomable:!0,draggable:!0},O(i)&&(this.defaults=r(this.defaults,i));}return n(e,[{key:"sourceType",value:function(e){var t=e;if(null!==(e=e.toLowerCase()).match(/\.(jpeg|jpg|jpe|gif|png|apn|webp|svg)$/))return "image";if(e.match(/(youtube\.com|youtube-nocookie\.com)\/watch\?v=([a-zA-Z0-9\-_]+)/)||e.match(/youtu\.be\/([a-zA-Z0-9\-_]+)/)||e.match(/(youtube\.com|youtube-nocookie\.com)\/embed\/([a-zA-Z0-9\-_]+)/))return "video";if(e.match(/vimeo\.com\/([0-9]*)/))return "video";if(null!==e.match(/\.(mp4|ogg|webm|mov)$/))return "video";if(null!==e.match(/\.(mp3|wav|wma|aac|ogg)$/))return "audio";if(e.indexOf("#")>-1&&""!==t.split("#").pop().trim())return "inline";return e.indexOf("goajax=true")>-1?"ajax":"external"}},{key:"parseConfig",value:function(e,t){var i=this,n=r({descPosition:t.descPosition},this.defaults);if(O(e)&&!A(e)){M(e,"type")||(M(e,"content")&&e.content?e.type="inline":M(e,"href")&&(e.type=this.sourceType(e.href)));var s=r(n,e);return this.setSize(s,t),s}var l="",o=e.getAttribute("data-glightbox"),h=e.nodeName.toLowerCase();if("a"===h&&(l=e.href),"img"===h&&(l=e.src),n.href=l,a(n,(function(s,l){M(t,l)&&"width"!==l&&(n[l]=t[l]);var o=e.dataset[l];P(o)||(n[l]=i.sanitizeValue(o));})),n.content&&(n.type="inline"),!n.type&&l&&(n.type=this.sourceType(l)),P(o)){if(!n.title&&"a"==h){var c=e.title;P(c)||""===c||(n.title=c);}if(!n.title&&"img"==h){var d=e.alt;P(d)||""===d||(n.title=d);}}else {var u=[];a(n,(function(e,t){u.push(";\\s?"+t);})),u=u.join("\\s?:|"),""!==o.trim()&&a(n,(function(e,t){var s=o,l=new RegExp("s?"+t+"s?:s?(.*?)("+u+"s?:|$)"),r=s.match(l);if(r&&r.length&&r[1]){var a=r[1].trim().replace(/;\s*$/,"");n[t]=i.sanitizeValue(a);}}));}if(n.description&&"."==n.description.substring(0,1)&&document.querySelector(n.description))n.description=document.querySelector(n.description).innerHTML;else {var g=e.querySelector(".glightbox-desc");g&&(n.description=g.innerHTML);}return this.setSize(n,t),this.slideConfig=n,n}},{key:"setSize",value:function(e,t){var i="video"==e.type?this.checkSize(t.videosWidth):this.checkSize(t.width),n=this.checkSize(t.height);return e.width=M(e,"width")&&""!==e.width?this.checkSize(e.width):i,e.height=M(e,"height")&&""!==e.height?this.checkSize(e.height):n,e}},{key:"checkSize",value:function(e){return z(e)?"".concat(e,"px"):e}},{key:"sanitizeValue",value:function(e){return "true"!==e&&"false"!==e?e:"true"===e}}]),e}(),J=function(){function e(i,n){t(this,e),this.element=i,this.instance=n;}return n(e,[{key:"setContent",value:function(){var e=this,t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null,i=arguments.length>1&&void 0!==arguments[1]&&arguments[1];if(g(t,"loaded"))return !1;var n=this.instance.settings,s=this.slideConfig,l=k();C(n.beforeSlideLoad)&&n.beforeSlideLoad({index:s.index,slide:t,player:!1});var o=s.type,r=s.descPosition,a=t.querySelector(".gslide-media"),h=t.querySelector(".gslide-title"),c=t.querySelector(".gslide-desc"),u=t.querySelector(".gdesc-inner"),v=i,f="gSlideTitle_"+s.index,p="gSlideDesc_"+s.index;if(C(n.afterSlideLoad)&&(v=function(){C(i)&&i(),n.afterSlideLoad({index:s.index,slide:t,player:e.instance.getSlidePlayerInstance(s.index)});}),""==s.title&&""==s.description?u&&u.parentNode.parentNode.removeChild(u.parentNode):(h&&""!==s.title?(h.id=f,h.innerHTML=s.title):h.parentNode.removeChild(h),c&&""!==s.description?(c.id=p,l&&n.moreLength>0?(s.smallDescription=this.slideShortDesc(s.description,n.moreLength,n.moreText),c.innerHTML=s.smallDescription,this.descriptionEvents(c,s)):c.innerHTML=s.description):c.parentNode.removeChild(c),d(a.parentNode,"desc-".concat(r)),d(u.parentNode,"description-".concat(r))),d(a,"gslide-".concat(o)),d(t,"loaded"),"video"!==o){if("external"!==o)return "inline"===o?(Z.apply(this.instance,[t,s,v]),void(s.draggable&&new V({dragEl:t.querySelector(".gslide-inline"),toleranceX:n.dragToleranceX,toleranceY:n.dragToleranceY,slide:t,instance:this.instance}))):void("image"!==o?C(v)&&v():F(t,s,(function(){var i=t.querySelector("img");s.draggable&&new V({dragEl:i,toleranceX:n.dragToleranceX,toleranceY:n.dragToleranceY,slide:t,instance:e.instance}),s.zoomable&&i.naturalWidth>i.offsetWidth&&(d(i,"zoomable"),new j(i,t,(function(){e.instance.resize();}))),C(v)&&v();})));$.apply(this,[t,s,v]);}else R.apply(this.instance,[t,s,v]);}},{key:"slideShortDesc",value:function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:50,i=arguments.length>2&&void 0!==arguments[2]&&arguments[2],n=i;if((e=e.trim()).length<=t)return e;var s=e.substr(0,t-1);return n?s+'... <a href="#" class="desc-more">'+i+"</a>":s}},{key:"descriptionEvents",value:function(e,t){var i=this,n=e.querySelector(".desc-more");if(!n)return !1;c("click",{onElement:n,withCallback:function(e,n){e.preventDefault();var s=document.body,l=v(n,".gslide-desc");if(!l)return !1;l.innerHTML=t.description,d(s,"gdesc-open");var o=c("click",{onElement:[s,v(l,".gslide-description")],withCallback:function(e,n){"a"!==e.target.nodeName.toLowerCase()&&(u(s,"gdesc-open"),d(s,"gdesc-closed"),l.innerHTML=t.smallDescription,i.descriptionEvents(l,t),setTimeout((function(){u(s,"gdesc-closed");}),400),o.destroy());}});}});}},{key:"create",value:function(){return x(this.instance.settings.slideHTML)}},{key:"getConfig",value:function(){var e=new U(this.instance.settings.slideExtraAttributes);return this.slideConfig=e.parseConfig(this.element,this.instance.settings),this.slideConfig}}]),e}(),K=k(),Q=null!==k()||void 0!==document.createTouch||"ontouchstart"in window||"onmsgesturechange"in window||navigator.msMaxTouchPoints,ee=document.getElementsByTagName("html")[0],te={selector:".glightbox",elements:null,skin:"clean",closeButton:!0,startAt:null,autoplayVideos:!0,autofocusVideos:!0,descPosition:"bottom",width:"900px",height:"506px",videosWidth:"960px",beforeSlideChange:null,afterSlideChange:null,beforeSlideLoad:null,afterSlideLoad:null,slideInserted:null,slideRemoved:null,slideExtraAttributes:null,onOpen:null,onClose:null,loop:!1,zoomable:!0,draggable:!0,dragAutoSnap:!1,dragToleranceX:40,dragToleranceY:65,preload:!0,oneSlidePerOpen:!1,touchNavigation:!0,touchFollowAxis:!0,keyboardNavigation:!0,closeOnOutsideClick:!0,plyr:{css:"https://cdn.plyr.io/3.6.3/plyr.css",js:"https://cdn.plyr.io/3.6.3/plyr.js",config:{ratio:"16:9",youtube:{noCookie:!0,rel:0,showinfo:0,iv_load_policy:3},vimeo:{byline:!1,portrait:!1,title:!1,transparent:!1}}},openEffect:"zoom",closeEffect:"zoom",slideEffect:"slide",moreText:"See more",moreLength:60,cssEfects:{fade:{in:"fadeIn",out:"fadeOut"},zoom:{in:"zoomIn",out:"zoomOut"},slide:{in:"slideInRight",out:"slideOutLeft"},slideBack:{in:"slideInLeft",out:"slideOutRight"},none:{in:"none",out:"none"}},svg:{close:'<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve"><g><g><path d="M505.943,6.058c-8.077-8.077-21.172-8.077-29.249,0L6.058,476.693c-8.077,8.077-8.077,21.172,0,29.249C10.096,509.982,15.39,512,20.683,512c5.293,0,10.586-2.019,14.625-6.059L505.943,35.306C514.019,27.23,514.019,14.135,505.943,6.058z"/></g></g><g><g><path d="M505.942,476.694L35.306,6.059c-8.076-8.077-21.172-8.077-29.248,0c-8.077,8.076-8.077,21.171,0,29.248l470.636,470.636c4.038,4.039,9.332,6.058,14.625,6.058c5.293,0,10.587-2.019,14.624-6.057C514.018,497.866,514.018,484.771,505.942,476.694z"/></g></g></svg>',next:'<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 477.175 477.175" xml:space="preserve"> <g><path d="M360.731,229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1,0s-5.3,13.8,0,19.1l215.5,215.5l-215.5,215.5c-5.3,5.3-5.3,13.8,0,19.1c2.6,2.6,6.1,4,9.5,4c3.4,0,6.9-1.3,9.5-4l225.1-225.1C365.931,242.875,365.931,234.275,360.731,229.075z"/></g></svg>',prev:'<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 477.175 477.175" xml:space="preserve"><g><path d="M145.188,238.575l215.5-215.5c5.3-5.3,5.3-13.8,0-19.1s-13.8-5.3-19.1,0l-225.1,225.1c-5.3,5.3-5.3,13.8,0,19.1l225.1,225c2.6,2.6,6.1,4,9.5,4s6.9-1.3,9.5-4c5.3-5.3,5.3-13.8,0-19.1L145.188,238.575z"/></g></svg>'},slideHTML:'<div class="gslide">\n    <div class="gslide-inner-content">\n        <div class="ginner-container">\n            <div class="gslide-media">\n            </div>\n            <div class="gslide-description">\n                <div class="gdesc-inner">\n                    <h4 class="gslide-title"></h4>\n                    <div class="gslide-desc"></div>\n                </div>\n            </div>\n        </div>\n    </div>\n</div>',lightboxHTML:'<div id="glightbox-body" class="glightbox-container">\n    <div class="gloader visible"></div>\n    <div class="goverlay"></div>\n    <div class="gcontainer">\n    <div id="glightbox-slider" class="gslider"></div>\n    <button class="gnext gbtn" tabindex="0" aria-label="Next">{nextSVG}</button>\n    <button class="gprev gbtn" tabindex="1" aria-label="Previous">{prevSVG}</button>\n    <button class="gclose gbtn" tabindex="2" aria-label="Close">{closeSVG}</button>\n</div>\n</div>'},ie=function(){function e(){var i=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{};t(this,e),this.settings=r(te,i),this.effectsClasses=this.getAnimationClasses(),this.videoPlayers={},this.apiEvents=[],this.fullElementsList=!1;}return n(e,[{key:"init",value:function(){var e=this,t=this.getSelector();t&&(this.baseEvents=c("click",{onElement:t,withCallback:function(t,i){t.preventDefault(),e.open(i);}})),this.elements=this.getElements();}},{key:"open",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null,t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;if(0==this.elements.length)return !1;this.activeSlide=null,this.prevActiveSlideIndex=null,this.prevActiveSlide=null;var i=z(t)?t:this.settings.startAt;if(A(e)){var n=e.getAttribute("data-gallery");n&&(this.fullElementsList=this.elements,this.elements=this.getGalleryElements(this.elements,n)),P(i)&&(i=this.getElementIndex(e))<0&&(i=0);}z(i)||(i=0),this.build(),f(this.overlay,"none"==this.settings.openEffect?"none":this.settings.cssEfects.fade.in);var s=document.body,l=window.innerWidth-document.documentElement.clientWidth;if(l>0){var o=document.createElement("style");o.type="text/css",o.className="gcss-styles",o.innerText=".gscrollbar-fixer {margin-right: ".concat(l,"px}"),document.head.appendChild(o),d(s,"gscrollbar-fixer");}d(s,"glightbox-open"),d(ee,"glightbox-open"),K&&(d(document.body,"glightbox-mobile"),this.settings.slideEffect="slide"),this.showSlide(i,!0),1==this.elements.length?(y(this.prevButton),y(this.nextButton)):(m(this.prevButton),m(this.nextButton)),this.lightboxOpen=!0,this.trigger("open"),C(this.settings.onOpen)&&this.settings.onOpen(),Q&&this.settings.touchNavigation&&H(this),this.settings.keyboardNavigation&&Y(this);}},{key:"openAt",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0;this.open(null,e);}},{key:"showSlide",value:function(){var e=this,t=arguments.length>0&&void 0!==arguments[0]?arguments[0]:0,i=arguments.length>1&&void 0!==arguments[1]&&arguments[1];m(this.loader),this.index=parseInt(t);var n=this.slidesContainer.querySelector(".current");n&&u(n,"current"),this.slideAnimateOut();var s=this.slidesContainer.querySelectorAll(".gslide")[t];if(g(s,"loaded"))this.slideAnimateIn(s,i),y(this.loader);else {m(this.loader);var l=this.elements[t],o={index:this.index,slide:s,slideNode:s,slideConfig:l.slideConfig,slideIndex:this.index,trigger:l.node,player:null};this.trigger("slide_before_load",o),l.instance.setContent(s,(function(){y(e.loader),e.resize(),e.slideAnimateIn(s,i),e.trigger("slide_after_load",o);}));}this.slideDescription=s.querySelector(".gslide-description"),this.slideDescriptionContained=this.slideDescription&&g(this.slideDescription.parentNode,"gslide-media"),this.settings.preload&&(this.preloadSlide(t+1),this.preloadSlide(t-1)),this.updateNavigationClasses(),this.activeSlide=s;}},{key:"preloadSlide",value:function(e){var t=this;if(e<0||e>this.elements.length-1)return !1;if(P(this.elements[e]))return !1;var i=this.slidesContainer.querySelectorAll(".gslide")[e];if(g(i,"loaded"))return !1;var n=this.elements[e],s=n.type,l={index:e,slide:i,slideNode:i,slideConfig:n.slideConfig,slideIndex:e,trigger:n.node,player:null};this.trigger("slide_before_load",l),"video"==s||"external"==s?setTimeout((function(){n.instance.setContent(i,(function(){t.trigger("slide_after_load",l);}));}),200):n.instance.setContent(i,(function(){t.trigger("slide_after_load",l);}));}},{key:"prevSlide",value:function(){this.goToSlide(this.index-1);}},{key:"nextSlide",value:function(){this.goToSlide(this.index+1);}},{key:"goToSlide",value:function(){var e=arguments.length>0&&void 0!==arguments[0]&&arguments[0];if(this.prevActiveSlide=this.activeSlide,this.prevActiveSlideIndex=this.index,!this.loop()&&(e<0||e>this.elements.length-1))return !1;e<0?e=this.elements.length-1:e>=this.elements.length&&(e=0),this.showSlide(e);}},{key:"insertSlide",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:-1,i=new J(e,this),n=i.getConfig(),s=r({},n),l=i.create(),o=this.elements.length-1;t<0&&(t=this.elements.length),s.index=t,s.node=!1,s.instance=i,s.slideConfig=n,this.elements.splice(t,0,s);var a=null,h=null;if(this.slidesContainer){if(t>o)this.slidesContainer.appendChild(l);else {var c=this.slidesContainer.querySelectorAll(".gslide")[t];this.slidesContainer.insertBefore(l,c);}(this.settings.preload&&0==this.index&&0==t||this.index-1==t||this.index+1==t)&&this.preloadSlide(t),0==this.index&&0==t&&(this.index=1),this.updateNavigationClasses(),a=this.slidesContainer.querySelectorAll(".gslide")[t],h=this.getSlidePlayerInstance(t),s.slideNode=a;}this.trigger("slide_inserted",{index:t,slide:a,slideNode:a,slideConfig:n,slideIndex:t,trigger:null,player:h}),C(this.settings.slideInserted)&&this.settings.slideInserted({index:t,slide:a,player:h});}},{key:"removeSlide",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:-1;if(e<0||e>this.elements.length-1)return !1;var t=this.slidesContainer&&this.slidesContainer.querySelectorAll(".gslide")[e];t&&(this.getActiveSlideIndex()==e&&(e==this.elements.length-1?this.prevSlide():this.nextSlide()),t.parentNode.removeChild(t)),this.elements.splice(e,1),this.trigger("slide_removed",e),C(this.settings.slideRemoved)&&this.settings.slideRemoved(e);}},{key:"slideAnimateIn",value:function(e,t){var i=this,n=e.querySelector(".gslide-media"),s=e.querySelector(".gslide-description"),l={index:this.prevActiveSlideIndex,slide:this.prevActiveSlide,slideNode:this.prevActiveSlide,slideIndex:this.prevActiveSlide,slideConfig:P(this.prevActiveSlideIndex)?null:this.elements[this.prevActiveSlideIndex].slideConfig,trigger:P(this.prevActiveSlideIndex)?null:this.elements[this.prevActiveSlideIndex].node,player:this.getSlidePlayerInstance(this.prevActiveSlideIndex)},o={index:this.index,slide:this.activeSlide,slideNode:this.activeSlide,slideConfig:this.elements[this.index].slideConfig,slideIndex:this.index,trigger:this.elements[this.index].node,player:this.getSlidePlayerInstance(this.index)};if(n.offsetWidth>0&&s&&(y(s),s.style.display=""),u(e,this.effectsClasses),t)f(e,this.settings.cssEfects[this.settings.openEffect].in,(function(){i.settings.autoplayVideos&&i.slidePlayerPlay(e),i.trigger("slide_changed",{prev:l,current:o}),C(i.settings.afterSlideChange)&&i.settings.afterSlideChange.apply(i,[l,o]);}));else {var r=this.settings.slideEffect,a="none"!==r?this.settings.cssEfects[r].in:r;this.prevActiveSlideIndex>this.index&&"slide"==this.settings.slideEffect&&(a=this.settings.cssEfects.slideBack.in),f(e,a,(function(){i.settings.autoplayVideos&&i.slidePlayerPlay(e),i.trigger("slide_changed",{prev:l,current:o}),C(i.settings.afterSlideChange)&&i.settings.afterSlideChange.apply(i,[l,o]);}));}setTimeout((function(){i.resize(e);}),100),d(e,"current");}},{key:"slideAnimateOut",value:function(){if(!this.prevActiveSlide)return !1;var e=this.prevActiveSlide;u(e,this.effectsClasses),d(e,"prev");var t=this.settings.slideEffect,i="none"!==t?this.settings.cssEfects[t].out:t;this.slidePlayerPause(e),this.trigger("slide_before_change",{prev:{index:this.prevActiveSlideIndex,slide:this.prevActiveSlide,slideNode:this.prevActiveSlide,slideIndex:this.prevActiveSlideIndex,slideConfig:P(this.prevActiveSlideIndex)?null:this.elements[this.prevActiveSlideIndex].slideConfig,trigger:P(this.prevActiveSlideIndex)?null:this.elements[this.prevActiveSlideIndex].node,player:this.getSlidePlayerInstance(this.prevActiveSlideIndex)},current:{index:this.index,slide:this.activeSlide,slideNode:this.activeSlide,slideIndex:this.index,slideConfig:this.elements[this.index].slideConfig,trigger:this.elements[this.index].node,player:this.getSlidePlayerInstance(this.index)}}),C(this.settings.beforeSlideChange)&&this.settings.beforeSlideChange.apply(this,[{index:this.prevActiveSlideIndex,slide:this.prevActiveSlide,player:this.getSlidePlayerInstance(this.prevActiveSlideIndex)},{index:this.index,slide:this.activeSlide,player:this.getSlidePlayerInstance(this.index)}]),this.prevActiveSlideIndex>this.index&&"slide"==this.settings.slideEffect&&(i=this.settings.cssEfects.slideBack.out),f(e,i,(function(){var t=e.querySelector(".gslide-media"),i=e.querySelector(".gslide-description");t.style.transform="",u(t,"greset"),t.style.opacity="",i&&(i.style.opacity=""),u(e,"prev");}));}},{key:"getAllPlayers",value:function(){return this.videoPlayers}},{key:"getSlidePlayerInstance",value:function(e){var t="gvideo"+e,i=this.getAllPlayers();return !(!M(i,t)||!i[t])&&i[t]}},{key:"stopSlideVideo",value:function(e){if(A(e)){var t=e.querySelector(".gvideo-wrapper");t&&(e=t.getAttribute("data-index"));}console.log("stopSlideVideo is deprecated, use slidePlayerPause");var i=this.getSlidePlayerInstance(e);i&&i.playing&&i.pause();}},{key:"slidePlayerPause",value:function(e){if(A(e)){var t=e.querySelector(".gvideo-wrapper");t&&(e=t.getAttribute("data-index"));}var i=this.getSlidePlayerInstance(e);i&&i.playing&&i.pause();}},{key:"playSlideVideo",value:function(e){if(A(e)){var t=e.querySelector(".gvideo-wrapper");t&&(e=t.getAttribute("data-index"));}console.log("playSlideVideo is deprecated, use slidePlayerPlay");var i=this.getSlidePlayerInstance(e);i&&!i.playing&&i.play();}},{key:"slidePlayerPlay",value:function(e){if(A(e)){var t=e.querySelector(".gvideo-wrapper");t&&(e=t.getAttribute("data-index"));}var i=this.getSlidePlayerInstance(e);i&&!i.playing&&(i.play(),this.settings.autofocusVideos&&i.elements.container.focus());}},{key:"setElements",value:function(e){var t=this;this.settings.elements=!1;var i=[];e&&e.length&&a(e,(function(e,n){var s=new J(e,t),l=s.getConfig(),o=r({},l);o.slideConfig=l,o.instance=s,o.index=n,i.push(o);})),this.elements=i,this.lightboxOpen&&(this.slidesContainer.innerHTML="",this.elements.length&&(a(this.elements,(function(){var e=x(t.settings.slideHTML);t.slidesContainer.appendChild(e);})),this.showSlide(0,!0)));}},{key:"getElementIndex",value:function(e){var t=!1;return a(this.elements,(function(i,n){if(M(i,"node")&&i.node==e)return t=n,!0})),t}},{key:"getElements",value:function(){var e=this,t=[];this.elements=this.elements?this.elements:[],!P(this.settings.elements)&&L(this.settings.elements)&&this.settings.elements.length&&a(this.settings.elements,(function(i,n){var s=new J(i,e),l=s.getConfig(),o=r({},l);o.node=!1,o.index=n,o.instance=s,o.slideConfig=l,t.push(o);}));var i=!1;return this.getSelector()&&(i=document.querySelectorAll(this.getSelector())),i?(a(i,(function(i,n){var s=new J(i,e),l=s.getConfig(),o=r({},l);o.node=i,o.index=n,o.instance=s,o.slideConfig=l,o.gallery=i.getAttribute("data-gallery"),t.push(o);})),t):t}},{key:"getGalleryElements",value:function(e,t){return e.filter((function(e){return e.gallery==t}))}},{key:"getSelector",value:function(){return !this.settings.elements&&(this.settings.selector&&"data-"==this.settings.selector.substring(0,5)?"*[".concat(this.settings.selector,"]"):this.settings.selector)}},{key:"getActiveSlide",value:function(){return this.slidesContainer.querySelectorAll(".gslide")[this.index]}},{key:"getActiveSlideIndex",value:function(){return this.index}},{key:"getAnimationClasses",value:function(){var e=[];for(var t in this.settings.cssEfects)if(this.settings.cssEfects.hasOwnProperty(t)){var i=this.settings.cssEfects[t];e.push("g".concat(i.in)),e.push("g".concat(i.out));}return e.join(" ")}},{key:"build",value:function(){var e=this;if(this.built)return !1;var t=M(this.settings.svg,"next")?this.settings.svg.next:"",i=M(this.settings.svg,"prev")?this.settings.svg.prev:"",n=M(this.settings.svg,"close")?this.settings.svg.close:"",s=this.settings.lightboxHTML;s=x(s=(s=(s=s.replace(/{nextSVG}/g,t)).replace(/{prevSVG}/g,i)).replace(/{closeSVG}/g,n)),document.body.appendChild(s);var l=document.getElementById("glightbox-body");this.modal=l;var o=l.querySelector(".gclose");this.prevButton=l.querySelector(".gprev"),this.nextButton=l.querySelector(".gnext"),this.overlay=l.querySelector(".goverlay"),this.loader=l.querySelector(".gloader"),this.slidesContainer=document.getElementById("glightbox-slider"),this.events={},d(this.modal,"glightbox-"+this.settings.skin),this.settings.closeButton&&o&&(this.events.close=c("click",{onElement:o,withCallback:function(t,i){t.preventDefault(),e.close();}})),o&&!this.settings.closeButton&&o.parentNode.removeChild(o),this.nextButton&&(this.events.next=c("click",{onElement:this.nextButton,withCallback:function(t,i){t.preventDefault(),e.nextSlide();}})),this.prevButton&&(this.events.prev=c("click",{onElement:this.prevButton,withCallback:function(t,i){t.preventDefault(),e.prevSlide();}})),this.settings.closeOnOutsideClick&&(this.events.outClose=c("click",{onElement:l,withCallback:function(t,i){e.preventOutsideClick||g(document.body,"glightbox-mobile")||v(t.target,".ginner-container")||v(t.target,".gbtn")||g(t.target,"gnext")||g(t.target,"gprev")||e.close();}})),a(this.elements,(function(t,i){e.slidesContainer.appendChild(t.instance.create()),t.slideNode=e.slidesContainer.querySelectorAll(".gslide")[i];})),Q&&d(document.body,"glightbox-touch"),this.events.resize=c("resize",{onElement:window,withCallback:function(){e.resize();}}),this.built=!0;}},{key:"resize",value:function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:null;if((e=e||this.activeSlide)&&!g(e,"zoomed")){var t=b(),i=e.querySelector(".gvideo-wrapper"),n=e.querySelector(".gslide-image"),s=this.slideDescription,l=t.width,o=t.height;if(l<=768?d(document.body,"glightbox-mobile"):u(document.body,"glightbox-mobile"),i||n){var r=!1;if(s&&(g(s,"description-bottom")||g(s,"description-top"))&&!g(s,"gabsolute")&&(r=!0),n)if(l<=768){var a=n.querySelector("img");a.setAttribute("style","");}else if(r){var h=s.offsetHeight,c=n.querySelector("img");c.setAttribute("style","max-height: calc(100vh - ".concat(h,"px)")),s.setAttribute("style","max-width: ".concat(c.offsetWidth,"px;"));}if(i){var v=M(this.settings.plyr.config,"ratio")?this.settings.plyr.config.ratio:"16:9",f=v.split(":"),p=900,m=p/(parseInt(f[0])/parseInt(f[1]));if(m=Math.floor(m),r&&(o-=s.offsetHeight),o<m&&l>p){var y=i.offsetWidth,x=i.offsetHeight,S=o/x,w={width:y*S,height:x*S};i.parentNode.setAttribute("style","max-width: ".concat(w.width,"px")),r&&s.setAttribute("style","max-width: ".concat(w.width,"px;"));}else i.parentNode.style.maxWidth="".concat(p,"px"),r&&s.setAttribute("style","max-width: ".concat(p,"px;"));}}}}},{key:"reload",value:function(){this.init();}},{key:"updateNavigationClasses",value:function(){var e=this.loop();u(this.nextButton,"disabled"),u(this.prevButton,"disabled"),0==this.index&&this.elements.length-1==0?(d(this.prevButton,"disabled"),d(this.nextButton,"disabled")):0!==this.index||e?this.index!==this.elements.length-1||e||d(this.nextButton,"disabled"):d(this.prevButton,"disabled");}},{key:"loop",value:function(){var e=M(this.settings,"loopAtEnd")?this.settings.loopAtEnd:null;return e=M(this.settings,"loop")?this.settings.loop:e,e}},{key:"close",value:function(){var e=this;if(!this.lightboxOpen){if(this.events){for(var t in this.events)this.events.hasOwnProperty(t)&&this.events[t].destroy();this.events=null;}return !1}if(this.closing)return !1;this.closing=!0,this.slidePlayerPause(this.activeSlide),this.fullElementsList&&(this.elements=this.fullElementsList),d(this.modal,"glightbox-closing"),f(this.overlay,"none"==this.settings.openEffect?"none":this.settings.cssEfects.fade.out),f(this.activeSlide,this.settings.cssEfects[this.settings.closeEffect].out,(function(){if(e.activeSlide=null,e.prevActiveSlideIndex=null,e.prevActiveSlide=null,e.built=!1,e.events){for(var t in e.events)e.events.hasOwnProperty(t)&&e.events[t].destroy();e.events=null;}var i=document.body;u(ee,"glightbox-open"),u(i,"glightbox-open touching gdesc-open glightbox-touch glightbox-mobile gscrollbar-fixer"),e.modal.parentNode.removeChild(e.modal),e.trigger("close"),C(e.settings.onClose)&&e.settings.onClose();var n=document.querySelector(".gcss-styles");n&&n.parentNode.removeChild(n),e.lightboxOpen=!1,e.closing=null;}));}},{key:"destroy",value:function(){this.close(),this.clearAllEvents(),this.baseEvents&&this.baseEvents.destroy();}},{key:"on",value:function(e,t){var i=arguments.length>2&&void 0!==arguments[2]&&arguments[2];if(!e||!C(t))throw new TypeError("Event name and callback must be defined");this.apiEvents.push({evt:e,once:i,callback:t});}},{key:"once",value:function(e,t){this.on(e,t,!0);}},{key:"trigger",value:function(e){var t=this,i=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,n=[];a(this.apiEvents,(function(t,s){var l=t.evt,o=t.once,r=t.callback;l==e&&(r(i),o&&n.push(s));})),n.length&&a(n,(function(e){return t.apiEvents.splice(e,1)}));}},{key:"clearAllEvents",value:function(){this.apiEvents.splice(0,this.apiEvents.length);}},{key:"version",value:function(){return "3.0.6"}}]),e}();return function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:{},t=new ie(e);return t.init(),t}}));
 });
 
 /**
- * Wrap elements in another element.
+ * Wrap element in another element.
  */
 const wrap$1 = (el, wrapper) => {
   el.parentNode.insertBefore(wrapper, el);
@@ -24360,11 +25123,12 @@ const wrap$1 = (el, wrapper) => {
 
 const glightboxCss = ".glightbox-container{width:100%;height:100%;position:fixed;top:0;left:0;z-index:999999 !important;overflow:hidden;-ms-touch-action:none;touch-action:none;-webkit-text-size-adjust:100%;-webkit-backface-visibility:hidden;outline:none;overflow:hidden}.glightbox-container.inactive{display:none}.glightbox-container .gcontainer{position:relative;width:100%;height:100%;z-index:9999;overflow:hidden}.glightbox-container .gslider{-webkit-transition:-webkit-transform .4s ease;transition:-webkit-transform .4s ease;transition:transform .4s ease;transition:transform .4s ease, -webkit-transform .4s ease;height:100%;left:0;top:0;width:100%;position:relative;overflow:hidden;display:-webkit-box !important;display:-ms-flexbox !important;display:flex !important;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0)}.glightbox-container .gslide{width:100%;position:absolute;opacity:1;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;opacity:0}.glightbox-container .gslide.current{opacity:1;z-index:99999;position:relative}.glightbox-container .gslide.prev{opacity:1;z-index:9999}.glightbox-container .gslide-inner-content{width:100%}.glightbox-container .ginner-container{position:relative;width:100%;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column;max-width:100%;margin:auto;height:100vh}.glightbox-container .ginner-container.gvideo-container{width:100%}.glightbox-container .ginner-container.desc-bottom,.glightbox-container .ginner-container.desc-top{-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.glightbox-container .ginner-container.desc-left,.glightbox-container .ginner-container.desc-right{max-width:100% !important}.gslide iframe,.gslide video{outline:none !important;border:none;min-height:165px;-webkit-overflow-scrolling:touch;-ms-touch-action:auto;touch-action:auto}.gslide-image{-webkit-box-align:center;-ms-flex-align:center;align-items:center}.gslide-image img{max-height:100vh;display:block;max-width:100%;margin:0;padding:0;float:none;outline:none;border:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;max-width:100vw;width:auto;height:auto;-o-object-fit:cover;object-fit:cover;-ms-touch-action:none;touch-action:none;margin:auto;min-width:200px}.desc-top .gslide-image img,.desc-bottom .gslide-image img{width:auto}.desc-left .gslide-image img,.desc-right .gslide-image img{width:auto;max-width:100%}.gslide-image img.zoomable{position:relative}.gslide-image img.dragging{cursor:-webkit-grabbing !important;cursor:grabbing !important;-webkit-transition:none;transition:none}.gslide-video{width:100%;max-width:100%;position:relative;width:100vh;max-width:100vh;width:100% !important}.gslide-video .gvideo-wrapper{width:100%;margin:auto}.gslide-video::before{content:'';display:block;position:absolute;width:100%;height:100%;background:rgba(255, 0, 0, 0.34);display:none}.gslide-video.playing::before{display:none}.gslide-video.fullscreen{max-width:100% !important;min-width:100%;height:75vh}.gslide-video.fullscreen video{max-width:100% !important;width:100% !important}.gslide-inline{background:#fff;text-align:left;max-height:calc(100vh - 40px);overflow:auto;max-width:100%}.gslide-inline .ginlined-content{padding:20px;width:100%}.gslide-inline .dragging{cursor:-webkit-grabbing !important;cursor:grabbing !important;-webkit-transition:none;transition:none}.ginlined-content{overflow:auto;display:block !important;opacity:1}.gslide-external{display:-webkit-box;display:-ms-flexbox;display:flex;width:100%;min-width:100%;background:#fff;padding:0;overflow:auto;max-height:75vh;height:100%}.gslide-media{display:block;display:-webkit-inline-box;display:-ms-inline-flexbox;display:inline-flex;display:-webkit-box;display:-ms-flexbox;display:flex;width:auto}.zoomed .gslide-media{-webkit-box-shadow:none !important;box-shadow:none !important}.desc-top .gslide-media,.desc-bottom .gslide-media{margin:0 auto;-webkit-box-orient:vertical;-webkit-box-direction:normal;-ms-flex-direction:column;flex-direction:column}.gslide-description{position:relative;-webkit-box-flex:1;-ms-flex:1 0 100%;flex:1 0 100%}.gslide-description.description-left,.gslide-description.description-right{max-width:100%}.gslide-description.description-bottom,.gslide-description.description-top{margin:0 auto;width:100%}.gslide-description p{margin-bottom:12px}.gslide-description p:last-child{margin-bottom:0}.zoomed .gslide-description{display:none}.glightbox-mobile .glightbox-container .gslide-description{height:auto !important;width:100%;background:transparent;position:absolute;bottom:15px;padding:19px 11px;max-width:100vw !important;-webkit-box-ordinal-group:3 !important;-ms-flex-order:2 !important;order:2 !important;max-height:78vh;overflow:auto !important;background:-webkit-gradient(linear, left top, left bottom, from(rgba(0, 0, 0, 0)), to(rgba(0, 0, 0, .75)));background:linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .75) 100%);-webkit-transition:opacity .3s linear;transition:opacity .3s linear;padding-bottom:50px}.glightbox-mobile .glightbox-container .gslide-title{color:#fff;font-size:1em}.glightbox-mobile .glightbox-container .gslide-desc{color:#a1a1a1}.glightbox-mobile .glightbox-container .gslide-desc a{color:#fff;font-weight:bold}.glightbox-mobile .glightbox-container .gslide-desc *{color:inherit}.glightbox-mobile .glightbox-container .gslide-desc string{color:#fff}.glightbox-mobile .glightbox-container .gslide-desc .desc-more{color:#fff;opacity:.4}.gdesc-open .gslide-media{-webkit-transition:opacity .5s ease;transition:opacity .5s ease;opacity:.4}.gdesc-open .gdesc-inner{padding-bottom:30px}.gdesc-closed .gslide-media{-webkit-transition:opacity .5s ease;transition:opacity .5s ease;opacity:1}.greset{-webkit-transition:all .3s ease;transition:all .3s ease}.gabsolute{position:absolute}.grelative{position:relative}.glightbox-desc{display:none !important}.glightbox-open{overflow:hidden}.gloader{height:25px;width:25px;-webkit-animation:lightboxLoader .8s infinite linear;animation:lightboxLoader .8s infinite linear;border:2px solid #fff;border-right-color:transparent;border-radius:50%;position:absolute;display:block;z-index:9999;left:0;right:0;margin:0 auto;top:47%}.goverlay{width:100%;height:100%;position:fixed;top:0;left:0;background:#000;will-change:opacity}.glightbox-mobile .goverlay{background:#000}.gprev,.gnext,.gclose{background-repeat:no-repeat;z-index:99999;cursor:pointer;width:26px;height:44px;display:block;background-position:0 0;border:none}.gprev svg,.gnext svg,.gclose svg{display:block;width:100%;height:auto}.gprev.disabled,.gnext.disabled,.gclose.disabled{opacity:.1}.gprev .garrow,.gnext .garrow,.gclose .garrow{stroke:#fff}iframe.wait-autoplay{opacity:0}.glightbox-closing .gnext,.glightbox-closing .gprev,.glightbox-closing .gclose{opacity:0 !important}.glightbox-clean .gslide-description,.glightbox-modern .gslide-description{background:#fff}.glightbox-clean .gdesc-inner,.glightbox-modern .gdesc-inner{padding:22px 20px}.glightbox-clean .gslide-title,.glightbox-modern .gslide-title{font-size:1em;font-weight:normal;font-family:arial;color:#000;margin-bottom:19px;line-height:1.4em}.glightbox-clean .gslide-desc,.glightbox-modern .gslide-desc{font-size:0.86em;margin-bottom:0;font-family:arial;line-height:1.4em}.glightbox-clean .gslide-video,.glightbox-modern .gslide-video{background:#000}.glightbox-clean .gprev,.glightbox-clean .gnext,.glightbox-clean .gclose,.glightbox-modern .gprev,.glightbox-modern .gnext,.glightbox-modern .gclose{background-color:rgba(0, 0, 0, 0.12)}.glightbox-clean .gprev:hover,.glightbox-clean .gnext:hover,.glightbox-clean .gclose:hover,.glightbox-modern .gprev:hover,.glightbox-modern .gnext:hover,.glightbox-modern .gclose:hover{background-color:rgba(0, 0, 0, 0.20)}.glightbox-clean .gprev path,.glightbox-clean .gnext path,.glightbox-clean .gclose path,.glightbox-modern .gprev path,.glightbox-modern .gnext path,.glightbox-modern .gclose path{fill:#fff}.glightbox-clean button:focus:not(.focused):not(.disabled),.glightbox-modern button:focus:not(.focused):not(.disabled){outline:none}.glightbox-clean .gprev,.glightbox-modern .gprev{position:absolute;top:-100%;left:30px;width:40px;height:56px}.glightbox-clean .gnext,.glightbox-modern .gnext{position:absolute;top:-100%;right:30px;width:40px;height:56px}.glightbox-clean .gclose,.glightbox-modern .gclose{width:35px;height:35px;top:15px;right:10px;position:absolute;opacity:.7;background-position:-59px 2px}.glightbox-clean .gclose svg,.glightbox-modern .gclose svg{width:20px}.glightbox-clean .gclose:hover,.glightbox-modern .gclose:hover{opacity:1}.gfadeIn{-webkit-animation:gfadeIn .5s ease;animation:gfadeIn .5s ease}.gfadeOut{-webkit-animation:gfadeOut .5s ease;animation:gfadeOut .5s ease}.gslideOutLeft{-webkit-animation:gslideOutLeft .3s ease;animation:gslideOutLeft .3s ease}.gslideInLeft{-webkit-animation:gslideInLeft .3s ease;animation:gslideInLeft .3s ease}.gslideOutRight{-webkit-animation:gslideOutRight .3s ease;animation:gslideOutRight .3s ease}.gslideInRight{-webkit-animation:gslideInRight .3s ease;animation:gslideInRight .3s ease}.gzoomIn{-webkit-animation:gzoomIn .5s ease;animation:gzoomIn .5s ease}.gzoomOut{-webkit-animation:gzoomOut .5s ease;animation:gzoomOut .5s ease}@-webkit-keyframes lightboxLoader{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes lightboxLoader{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@-webkit-keyframes gfadeIn{from{opacity:0}to{opacity:1}}@keyframes gfadeIn{from{opacity:0}to{opacity:1}}@-webkit-keyframes gfadeOut{from{opacity:1}to{opacity:0}}@keyframes gfadeOut{from{opacity:1}to{opacity:0}}@-webkit-keyframes gslideInLeft{from{opacity:0;-webkit-transform:translate3d(-60%, 0, 0);transform:translate3d(-60%, 0, 0)}to{visibility:visible;-webkit-transform:translate3d( 0, 0, 0);transform:translate3d( 0, 0, 0);opacity:1}}@keyframes gslideInLeft{from{opacity:0;-webkit-transform:translate3d(-60%, 0, 0);transform:translate3d(-60%, 0, 0)}to{visibility:visible;-webkit-transform:translate3d( 0, 0, 0);transform:translate3d( 0, 0, 0);opacity:1}}@-webkit-keyframes gslideOutLeft{from{opacity:1;visibility:visible;-webkit-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0)}to{-webkit-transform:translate3d(-60%, 0, 0);transform:translate3d(-60%, 0, 0);opacity:0;visibility:hidden}}@keyframes gslideOutLeft{from{opacity:1;visibility:visible;-webkit-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0)}to{-webkit-transform:translate3d(-60%, 0, 0);transform:translate3d(-60%, 0, 0);opacity:0;visibility:hidden}}@-webkit-keyframes gslideInRight{from{opacity:0;visibility:visible;-webkit-transform:translate3d(60%, 0, 0);transform:translate3d(60%, 0, 0)}to{-webkit-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0);opacity:1}}@keyframes gslideInRight{from{opacity:0;visibility:visible;-webkit-transform:translate3d(60%, 0, 0);transform:translate3d(60%, 0, 0)}to{-webkit-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0);opacity:1}}@-webkit-keyframes gslideOutRight{from{opacity:1;visibility:visible;-webkit-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0)}to{-webkit-transform:translate3d(60%, 0, 0);transform:translate3d(60%, 0, 0);opacity:0}}@keyframes gslideOutRight{from{opacity:1;visibility:visible;-webkit-transform:translate3d(0, 0, 0);transform:translate3d(0, 0, 0)}to{-webkit-transform:translate3d(60%, 0, 0);transform:translate3d(60%, 0, 0);opacity:0}}@-webkit-keyframes gzoomIn{from{opacity:0;-webkit-transform:scale3d(.3, .3, .3);transform:scale3d(.3, .3, .3)}to{opacity:1}}@keyframes gzoomIn{from{opacity:0;-webkit-transform:scale3d(.3, .3, .3);transform:scale3d(.3, .3, .3)}to{opacity:1}}@-webkit-keyframes gzoomOut{from{opacity:1}50%{opacity:0;-webkit-transform:scale3d(.3, .3, .3);transform:scale3d(.3, .3, .3)}to{opacity:0}}@keyframes gzoomOut{from{opacity:1}50%{opacity:0;-webkit-transform:scale3d(.3, .3, .3);transform:scale3d(.3, .3, .3)}to{opacity:0}}@media (min-width: 769px){.glightbox-container .ginner-container{width:auto;height:auto;-webkit-box-orient:horizontal;-webkit-box-direction:normal;-ms-flex-direction:row;flex-direction:row}.glightbox-container .ginner-container.desc-top .gslide-description{-webkit-box-ordinal-group:1;-ms-flex-order:0;order:0}.glightbox-container .ginner-container.desc-top .gslide-image,.glightbox-container .ginner-container.desc-top .gslide-image img{-webkit-box-ordinal-group:2;-ms-flex-order:1;order:1}.glightbox-container .ginner-container.desc-left .gslide-description{-webkit-box-ordinal-group:1;-ms-flex-order:0;order:0}.glightbox-container .ginner-container.desc-left .gslide-image{-webkit-box-ordinal-group:2;-ms-flex-order:1;order:1}.gslide-image img{max-height:97vh;max-width:calc(100% - 20px);max-width:100%}.gslide-image img.zoomable{cursor:-webkit-zoom-in;cursor:zoom-in}.zoomed .gslide-image img.zoomable{cursor:-webkit-grab;cursor:grab}.gslide-inline{max-height:95vh}.gslide-external{max-height:100vh}.gslide-description.description-left,.gslide-description.description-right{max-width:275px}.glightbox-open{height:auto}.goverlay{background:rgba(0, 0, 0, .92)}.glightbox-clean .gslide-media,.glightbox-modern .gslide-media{-webkit-box-shadow:1px 2px 9px 0px rgba(0, 0, 0, 0.65);box-shadow:1px 2px 9px 0px rgba(0, 0, 0, 0.65)}.glightbox-clean .description-left .gdesc-inner,.glightbox-clean .description-right .gdesc-inner,.glightbox-modern .description-left .gdesc-inner,.glightbox-modern .description-right .gdesc-inner{position:absolute;height:100%;overflow-y:auto}.glightbox-clean .gprev,.glightbox-modern .gprev{top:45%}.glightbox-clean .gnext,.glightbox-modern .gnext{top:45%}}@media (min-width: 992px){.glightbox-clean .gclose,.glightbox-modern .gclose{right:20px}}@media screen and (max-height: 420px){.goverlay{background:#000}}";
 
-const tag$a = 'spx-lightbox';
+const tag$b = 'spx-lightbox';
 const SpxLightbox = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxLightboxDidLoad = createEvent(this, "spxLightboxDidLoad", 7);
     this.display = 'block';
     this.height = 'auto';
     this.overlayColor = 'rgba(0, 0, 0, 0.92)';
@@ -24372,7 +25136,7 @@ const SpxLightbox = class extends HTMLElement {
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
-    /** Generate random string. */
+    /** Generate random string as gallery ID. */
     const random = '_' + Math.random().toString(36).substr(2, 9);
     /** Wrap elements in <a> element. */
     const elements = this.el.querySelectorAll('img, video, iframe');
@@ -24410,7 +25174,7 @@ const SpxLightbox = class extends HTMLElement {
             boxShadow: 'none !important',
           },
           '.goverlay': {
-            background: setVar(tag$a, 'overlay-color', this.overlayColor) + ' !important',
+            background: setVar(tag$b, 'overlay-color', this.overlayColor) + ' !important',
           },
           '.gbtn': {
             display: 'flex',
@@ -24441,6 +25205,7 @@ const SpxLightbox = class extends HTMLElement {
         clearAllBodyScrollLocks();
       },
     });
+    this.spxLightboxDidLoad.emit({ target: 'document' });
   }
   async reload() {
     this.componentDidLoad();
@@ -24448,7 +25213,10 @@ const SpxLightbox = class extends HTMLElement {
   render() {
     /** Host styles. */
     const styleHost = css({
-      display: setVar(tag$a, 'display', this.display),
+      display: setVar(tag$b, 'display', this.display),
+      img: {
+        verticalAlign: 'top',
+      },
     });
     return h$1(Host, { class: styleHost });
   }
@@ -24456,16 +25224,18 @@ const SpxLightbox = class extends HTMLElement {
   static get style() { return glightboxCss; }
 };
 
-const tag$b = 'spx-loader';
+const tag$c = 'spx-loader';
 const SpxLoader = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxLoaderDidLoad = createEvent(this, "spxLoaderDidLoad", 7);
     this.color = '#ffffff';
     this.speed = '1.5s';
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
+    this.spxLoaderDidLoad.emit({ target: 'document' });
   }
   render() {
     /** Animation. */
@@ -24484,9 +25254,9 @@ const SpxLoader = class extends HTMLElement {
       height: 'max-content',
       svg: {
         width: '1em',
-        color: setVar(tag$b, 'color', this.color),
+        color: setVar(tag$c, 'color', this.color),
         animation: kf,
-        animationDuration: setVar(tag$b, 'speed', this.speed),
+        animationDuration: setVar(tag$c, 'speed', this.speed),
         animationIterationCount: 'infinite',
         animationTimingFunction: 'linear',
         transformOrigin: 'center',
@@ -24530,7 +25300,7 @@ const SpxMasonry = class extends HTMLElement {
     if (newValue)
       this.imagesArray = JSON.parse(newValue);
   }
-  /** Watch columns. */
+  /** Watch columns and restart Macy. */
   columnsChanged() {
     this.macyState.remove();
     this.initMacy();
@@ -24565,13 +25335,7 @@ const SpxMasonry = class extends HTMLElement {
   disconnectedCallback() {
     this.macyState.remove();
   }
-  /** Recalculate grid. */
-  async recalc() {
-    this.macyState.recalculate();
-  }
-  async reload() {
-    this.macyState.reInit();
-  }
+  /** Init Macy. */
   initMacy() {
     this.macyState = macy({
       container: this.container,
@@ -24585,6 +25349,13 @@ const SpxMasonry = class extends HTMLElement {
           9999: this.columns ? this.columns : 4,
         },
     });
+  }
+  /** Recalculate grid. */
+  async recalc() {
+    this.macyState.recalculate();
+  }
+  async reload() {
+    this.macyState.reInit();
   }
   render() {
     /** Host styles. */
@@ -24600,11 +25371,13 @@ const SpxMasonry = class extends HTMLElement {
           this.gap +
           ') / 2)',
         boxSizing: 'border-box',
-      },
-      /** Force 100% width for elements. */
-      'div > div *': {
-        width: '100%',
-        maxWidth: '100%',
+        '*': {
+          width: '100%',
+          maxWidth: '100%',
+        },
+        img: {
+          verticalAlign: 'top',
+        },
       },
     });
     /** Container styles. */
@@ -24629,12 +25402,43 @@ const SpxMasonry = class extends HTMLElement {
 
 const spxMockupCss = "/*! Devices.css v0.1.16 | MIT License | github.com/picturepan2/devices.css */.spx-mockup-wrap,.oxy-mockup{max-width:100%}.spx-mockup,.spx-mockup::before,.spx-mockup::after,.spx-mockup *,.spx-mockup *::before,.spx-mockup *::after{box-sizing:border-box;display:block}.spx-mockup{position:relative;transform:scale(1);transform-origin:left top;z-index:1}.spx-mockup .spx-mockup-frame{z-index:1}.spx-mockup .spx-mockup-content{background-color:#fff;background-position:center center;background-size:cover;object-fit:cover;position:relative;overflow:hidden;height:100%;width:100%}.spx-mockup .spx-mockup-content script{display:none}.spx-mockup-iphone-x{height:868px;width:428px}.spx-mockup-iphone-x .spx-mockup-frame{background:#222;border-radius:68px;box-shadow:inset 0 0 2px 2px #c8cacb, inset 0 0 0 7px #e2e3e4;height:868px;padding:28px;width:428px}.spx-mockup-iphone-x .spx-mockup-content{border-radius:40px;height:812px;width:375px}.spx-mockup-iphone-x .spx-mockup-stripe::after,.spx-mockup-iphone-x .spx-mockup-stripe::before{border:solid rgba(51, 51, 51, .25);border-width:0 7px;content:\"\";height:7px;left:0;position:absolute;width:100%;z-index:9}.spx-mockup-iphone-x .spx-mockup-stripe::after{top:85px}.spx-mockup-iphone-x .spx-mockup-stripe::before{bottom:85px}.spx-mockup-iphone-x .spx-mockup-header{background:#222;border-bottom-left-radius:20px;border-bottom-right-radius:20px;height:30px;left:50%;margin-left:-102px;position:absolute;top:28px;width:204px}.spx-mockup-iphone-x .spx-mockup-header::after,.spx-mockup-iphone-x .spx-mockup-header::before{content:\"\";height:10px;position:absolute;top:0;width:10px}.spx-mockup-iphone-x .spx-mockup-header::after{background:radial-gradient(circle at bottom left, transparent 0, transparent 75%, #222 75%, #222 100%);left:-10px}.spx-mockup-iphone-x .spx-mockup-header::before{background:radial-gradient(circle at bottom right, transparent 0, transparent 75%, #222 75%, #222 100%);right:-10px}.spx-mockup-iphone-x .spx-mockup-sensors::after,.spx-mockup-iphone-x .spx-mockup-sensors::before{content:\"\";position:absolute}.spx-mockup-iphone-x .spx-mockup-sensors::after{background:#444;border-radius:3px;height:6px;left:50%;margin-left:-25px;top:32px;width:50px}.spx-mockup-iphone-x .spx-mockup-sensors::before{background:#444;border-radius:50%;height:14px;left:50%;margin-left:40px;top:28px;width:14px}.spx-mockup-iphone-x .spx-mockup-btns{background:#c8cacb;height:32px;left:-3px;position:absolute;top:115px;width:3px}.spx-mockup-iphone-x .spx-mockup-btns::after,.spx-mockup-iphone-x .spx-mockup-btns::before{background:#c8cacb;content:\"\";height:62px;left:0;position:absolute;width:3px}.spx-mockup-iphone-x .spx-mockup-btns::after{top:60px}.spx-mockup-iphone-x .spx-mockup-btns::before{top:140px}.spx-mockup-iphone-x .spx-mockup-power{background:#c8cacb;height:100px;position:absolute;right:-3px;top:200px;width:3px}.spx-mockup-iphone-8{height:871px;width:419px}.spx-mockup-iphone-8 .spx-mockup-frame{background:#fff;border-radius:68px;box-shadow:inset 0 0 0 2px #c8cacb, inset 0 0 0 7px #e2e3e4;height:871px;padding:102px 22px;width:419px}.spx-mockup-iphone-8 .spx-mockup-content{border:2px solid #222;border-radius:4px;height:667px;width:375px}.spx-mockup-iphone-8 .spx-mockup-stripe::after,.spx-mockup-iphone-8 .spx-mockup-stripe::before{border:solid rgba(51, 51, 51, .15);border-width:0 7px;content:\"\";height:6px;left:0;position:absolute;width:100%;z-index:9}.spx-mockup-iphone-8 .spx-mockup-stripe::after{top:68px}.spx-mockup-iphone-8 .spx-mockup-stripe::before{bottom:68px}.spx-mockup-iphone-8 .spx-mockup-header{border:2px solid #c8cacb;border-radius:50%;bottom:25px;height:58px;left:50%;margin-left:-29px;position:absolute;width:58px}.spx-mockup-iphone-8 .spx-mockup-sensors{background:#666;border-radius:3px;height:6px;left:50%;margin-left:-38px;position:absolute;top:52px;width:76px}.spx-mockup-iphone-8 .spx-mockup-sensors::after,.spx-mockup-iphone-8 .spx-mockup-sensors::before{background:#666;border-radius:50%;content:\"\";position:absolute}.spx-mockup-iphone-8 .spx-mockup-sensors::after{height:10px;left:50%;margin-left:-5px;top:-25px;width:10px}.spx-mockup-iphone-8 .spx-mockup-sensors::before{height:12px;left:-42px;margin-top:-6px;top:50%;width:12px}.spx-mockup-iphone-8 .spx-mockup-btns{background:#c8cacb;height:30px;left:-3px;position:absolute;top:102px;width:3px}.spx-mockup-iphone-8 .spx-mockup-btns::after,.spx-mockup-iphone-8 .spx-mockup-btns::before{background:#c8cacb;content:\"\";height:56px;left:0;position:absolute;width:3px}.spx-mockup-iphone-8 .spx-mockup-btns::after{top:62px}.spx-mockup-iphone-8 .spx-mockup-btns::before{top:132px}.spx-mockup-iphone-8 .spx-mockup-power{background:#c8cacb;height:80px;position:absolute;right:-2px;top:160px;width:3px}.spx-mockup-iphone-8.spx-mockup-gold .spx-mockup-frame{box-shadow:inset 0 0 0 2px #e4b08a, inset 0 0 0 7px #f7e8dd}.spx-mockup-iphone-8.spx-mockup-gold .spx-mockup-header{border-color:#e4b08a}.spx-mockup-iphone-8.spx-mockup-gold .spx-mockup-btns,.spx-mockup-iphone-8.spx-mockup-gold .spx-mockup-btns::after,.spx-mockup-iphone-8.spx-mockup-gold .spx-mockup-btns::before{background:#e4b08a}.spx-mockup-iphone-8.spx-mockup-gold .spx-mockup-power{background:#e4b08a}.spx-mockup-iphone-8.spx-mockup-spacegray .spx-mockup-frame{background:#222;box-shadow:inset 0 0 0 2px #74747a, inset 0 0 0 7px #9b9ba0}.spx-mockup-iphone-8.spx-mockup-spacegray .spx-mockup-stripe::after,.spx-mockup-iphone-8.spx-mockup-spacegray .spx-mockup-stripe::before{border-color:rgba(204, 204, 204, .35)}.spx-mockup-iphone-8.spx-mockup-spacegray .spx-mockup-btns,.spx-mockup-iphone-8.spx-mockup-spacegray .spx-mockup-btns::after,.spx-mockup-iphone-8.spx-mockup-spacegray .spx-mockup-btns::before{background:#74747a}.spx-mockup-google-pixel-2-xl{height:832px;width:404px}.spx-mockup-google-pixel-2-xl .spx-mockup-frame{background:#121212;border-radius:36px;box-shadow:inset 0 0 0 2px #cfcfcf, inset 0 0 0 7px #9c9c9c;height:832px;padding:56px 22px;width:404px}.spx-mockup-google-pixel-2-xl .spx-mockup-content{border-radius:27px;height:720px;width:360px}.spx-mockup-google-pixel-2-xl .spx-mockup-header{height:832px;left:50%;margin-left:-150px;position:absolute;top:0;width:300px}.spx-mockup-google-pixel-2-xl .spx-mockup-header::after,.spx-mockup-google-pixel-2-xl .spx-mockup-header::before{background:#333;border-radius:3px;content:\"\";height:6px;left:50%;margin-left:-73px;margin-top:-3px;position:absolute;width:146px}.spx-mockup-google-pixel-2-xl .spx-mockup-header::after{top:24px}.spx-mockup-google-pixel-2-xl .spx-mockup-header::before{bottom:28px}.spx-mockup-google-pixel-2-xl .spx-mockup-sensors{background:#333;border-radius:7px;height:14px;left:54px;margin-top:-7px;position:absolute;top:36px;width:14px}.spx-mockup-google-pixel-2-xl .spx-mockup-btns{background:#cfcfcf;height:102px;position:absolute;right:-3px;top:306px;width:3px}.spx-mockup-google-pixel-2-xl .spx-mockup-power{background:#cfcfcf;height:58px;position:absolute;right:-3px;top:194px;width:3px}.spx-mockup-google-pixel{height:744px;width:360px}.spx-mockup-google-pixel .spx-mockup-frame{background:#f7f7f8;border-radius:54px;box-shadow:inset 0 0 0 2px #c8cacb, inset 0 0 0 6px #e2e3e4, inset 0 0 0 10px white;height:744px;padding:82px 18px 86px 18px;width:360px}.spx-mockup-google-pixel .spx-mockup-content{border:2px solid #222;border-radius:2px;height:576px;width:324px}.spx-mockup-google-pixel .spx-mockup-stripe{border-top:6px solid rgba(51, 51, 51, .15);bottom:0;left:254px;position:absolute;top:0;width:8px}.spx-mockup-google-pixel .spx-mockup-stripe::after,.spx-mockup-google-pixel .spx-mockup-stripe::before{border:solid rgba(51, 51, 51, .15);border-width:0 6px;content:\"\";height:10px;left:-254px;position:absolute;width:360px;z-index:9}.spx-mockup-google-pixel .spx-mockup-stripe::after{top:60px}.spx-mockup-google-pixel .spx-mockup-stripe::before{bottom:46px}.spx-mockup-google-pixel .spx-mockup-sensors{background:#ddd;border-radius:2.5px;height:5px;left:50%;margin-left:-39px;margin-top:-2.5px;position:absolute;top:41px;width:78px}.spx-mockup-google-pixel .spx-mockup-sensors::after,.spx-mockup-google-pixel .spx-mockup-sensors::before{background:#333;border-radius:6px;content:\"\";position:absolute}.spx-mockup-google-pixel .spx-mockup-sensors::after{height:12px;left:50%;margin-left:-14px;top:21.5px;width:28px}.spx-mockup-google-pixel .spx-mockup-sensors::before{height:10px;left:-81px;margin-top:-5px;top:50%;width:10px}.spx-mockup-google-pixel .spx-mockup-btns{background:#c8cacb;height:102px;position:absolute;right:-2px;top:298px;width:3px}.spx-mockup-google-pixel .spx-mockup-power{background:#c8cacb;height:50px;position:absolute;right:-2px;top:184px;width:3px}.spx-mockup-google-pixel.spx-mockup-black .spx-mockup-frame{background:#211d1c;box-shadow:inset 0 0 0 2px #363635, inset 0 0 0 6px #6a6967, inset 0 0 0 10px #3d3533}.spx-mockup-google-pixel.spx-mockup-black .spx-mockup-stripe,.spx-mockup-google-pixel.spx-mockup-black .spx-mockup-stripe::after,.spx-mockup-google-pixel.spx-mockup-black .spx-mockup-stripe::before{border-color:rgba(13, 13, 13, .35)}.spx-mockup-google-pixel.spx-mockup-black .spx-mockup-sensors{background:#444}.spx-mockup-google-pixel.spx-mockup-black .spx-mockup-sensors::after{background:#0d0d0d}.spx-mockup-google-pixel.spx-mockup-black .spx-mockup-btns,.spx-mockup-google-pixel.spx-mockup-black .spx-mockup-btns::after,.spx-mockup-google-pixel.spx-mockup-black .spx-mockup-btns::before{background:#363635}.spx-mockup-google-pixel.spx-mockup-black .spx-mockup-power{background:#363635}.spx-mockup-google-pixel.spx-mockup-blue .spx-mockup-frame{box-shadow:inset 0 0 0 2px #2a5aff, inset 0 0 0 6px #7695ff, inset 0 0 0 10px white}.spx-mockup-google-pixel.spx-mockup-blue .spx-mockup-btns,.spx-mockup-google-pixel.spx-mockup-blue .spx-mockup-btns::after,.spx-mockup-google-pixel.spx-mockup-blue .spx-mockup-btns::before{background:#2a5aff}.spx-mockup-google-pixel.spx-mockup-blue .spx-mockup-power{background:#2a5aff}.spx-mockup-galaxy-s8{height:828px;width:380px}.spx-mockup-galaxy-s8 .spx-mockup-frame{background:#222;border:solid #cfcfcf;border-radius:55px;border-width:5px 0;box-shadow:inset 0 0 0 2px #9c9c9c;height:828px;padding:48px 10px 40px 10px;width:380px}.spx-mockup-galaxy-s8 .spx-mockup-content{border:2px solid #222;border-radius:34px;height:740px;width:360px}.spx-mockup-galaxy-s8 .spx-mockup-stripe::after,.spx-mockup-galaxy-s8 .spx-mockup-stripe::before{border:solid rgba(51, 51, 51, .15);border-width:5px 0;content:\"\";height:828px;position:absolute;top:0;width:6px;z-index:9}.spx-mockup-galaxy-s8 .spx-mockup-stripe::after{left:48px}.spx-mockup-galaxy-s8 .spx-mockup-stripe::before{right:48px}.spx-mockup-galaxy-s8 .spx-mockup-sensors{background:#666;border-radius:3px;height:6px;left:50%;margin-left:-24px;margin-top:-3px;position:absolute;top:32px;width:48px}.spx-mockup-galaxy-s8 .spx-mockup-sensors::after,.spx-mockup-galaxy-s8 .spx-mockup-sensors::before{background:#666;border-radius:50%;content:\"\";position:absolute;top:50%}.spx-mockup-galaxy-s8 .spx-mockup-sensors::after{box-shadow:-192px 0 #333, -174px 0 #333, -240px 0 #333;height:8px;margin-top:-4px;right:-90px;width:8px}.spx-mockup-galaxy-s8 .spx-mockup-sensors::before{box-shadow:186px 0 #666;height:12px;left:-90px;margin-top:-6px;width:12px}.spx-mockup-galaxy-s8 .spx-mockup-btns{background:#9c9c9c;border-radius:3px 0 0 3px;height:116px;left:-3px;position:absolute;top:144px;width:3px}.spx-mockup-galaxy-s8 .spx-mockup-btns::after{background:#9c9c9c;border-radius:3px 0 0 3px;content:\"\";height:54px;left:0;position:absolute;top:164px;width:3px}.spx-mockup-galaxy-s8 .spx-mockup-power{background:#9c9c9c;border-radius:0 3px 3px 0;height:54px;position:absolute;right:-3px;top:260px;width:3px}.spx-mockup-galaxy-s8.spx-mockup-blue .spx-mockup-frame{border-color:#a3c5e8;box-shadow:inset 0 0 0 2px #5192d4}.spx-mockup-galaxy-s8.spx-mockup-blue .spx-mockup-stripe::after,.spx-mockup-galaxy-s8.spx-mockup-blue .spx-mockup-stripe::before{border-color:rgba(255, 255, 255, .35)}.spx-mockup-galaxy-s8.spx-mockup-blue .spx-mockup-btns,.spx-mockup-galaxy-s8.spx-mockup-blue .spx-mockup-btns::after{background:#5192d4}.spx-mockup-galaxy-s8.spx-mockup-blue .spx-mockup-power{background:#5192d4}.spx-mockup-ipad-pro{height:804px;width:560px}.spx-mockup-ipad-pro .spx-mockup-frame{background:#fff;border-radius:38px;box-shadow:inset 0 0 0 2px #c8cacb, inset 0 0 0 6px #e2e3e4;height:804px;padding:62px 25px;width:560px}.spx-mockup-ipad-pro .spx-mockup-content{border:2px solid #222;border-radius:2px;height:680px;width:510px}.spx-mockup-ipad-pro .spx-mockup-header{border:2px solid #c8cacb;border-radius:50%;bottom:17px;height:34px;left:50%;margin-left:-17px;position:absolute;width:34px}.spx-mockup-ipad-pro .spx-mockup-sensors{background:#666;border-radius:50%;height:10px;left:50%;margin-left:-5px;margin-top:-5px;position:absolute;top:34px;width:10px}.spx-mockup-ipad-pro.spx-mockup-gold .spx-mockup-frame{box-shadow:inset 0 0 0 2px #e4b08a, inset 0 0 0 6px #f7e8dd}.spx-mockup-ipad-pro.spx-mockup-gold .spx-mockup-header{border-color:#e4b08a}.spx-mockup-ipad-pro.spx-mockup-rosegold .spx-mockup-frame{box-shadow:inset 0 0 0 2px #f6a69a, inset 0 0 0 6px #facfc9}.spx-mockup-ipad-pro.spx-mockup-rosegold .spx-mockup-header{border-color:#f6a69a}.spx-mockup-ipad-pro.spx-mockup-spacegray .spx-mockup-frame{background:#222;box-shadow:inset 0 0 0 2px #818187, inset 0 0 0 6px #9b9ba0}.spx-mockup-ipad-pro.spx-mockup-spacegray .spx-mockup-header{border-color:#818187}.spx-mockup-surface-pro{height:394px;width:561px}.spx-mockup-surface-pro .spx-mockup-frame{background:#0d0d0d;border-radius:10px;box-shadow:inset 0 0 0 2px #c8c8c8;height:394px;margin:0 auto;padding:26px 24px;width:561px}.spx-mockup-surface-pro .spx-mockup-content{border:2px solid #121212;border-radius:2px;height:342px;width:513px}.spx-mockup-surface-pro .spx-mockup-btns::after,.spx-mockup-surface-pro .spx-mockup-btns::before{background:#c8c8c8;content:\"\";height:2px;position:absolute;top:-2px}.spx-mockup-surface-pro .spx-mockup-btns::after{left:48px;width:26px}.spx-mockup-surface-pro .spx-mockup-btns::before{left:94px;width:48px}.spx-mockup-surface-pro .spx-mockup-sensors{background:#333;border-radius:50%;height:6px;left:50%;margin-left:-3px;margin-top:-3px;position:absolute;top:14px;width:6px}.spx-mockup-surface-book{height:424px;width:728px}.spx-mockup-surface-book .spx-mockup-frame{background:#0d0d0d;border-radius:12px;box-shadow:inset 0 0 0 2px #c8c8c8;height:408px;margin:0 auto;padding:24px 22px;position:relative;width:584px}.spx-mockup-surface-book .spx-mockup-content{border:2px solid #121212;border-radius:2px;height:360px;width:540px}.spx-mockup-surface-book .spx-mockup-btns::after,.spx-mockup-surface-book .spx-mockup-btns::before{background:#c8c8c8;content:\"\";height:2px;position:absolute;top:-2px}.spx-mockup-surface-book .spx-mockup-btns::after{left:122px;width:20px}.spx-mockup-surface-book .spx-mockup-btns::before{left:168px;width:44px}.spx-mockup-surface-book .spx-mockup-power{background:linear-gradient(to bottom, #eee, #c8c8c8);border:solid #c8c8c8;border-radius:2px;border-width:0 2px;height:12px;margin-top:4px;position:relative;width:728px}.spx-mockup-surface-book .spx-mockup-power::after,.spx-mockup-surface-book .spx-mockup-power::before{content:\"\";position:absolute}.spx-mockup-surface-book .spx-mockup-power::after{background:radial-gradient(circle at center, #eee 0, #eee 95%, #a2a1a1 100%);border-radius:0 0 6px 6px;height:8px;left:50%;margin-left:-125px;top:0;width:250px;z-index:1}.spx-mockup-surface-book .spx-mockup-power::before{background:linear-gradient(to bottom, #eee, #c8c8c8);border-radius:2px 2px 0 0;bottom:12px;height:8px;left:50%;margin-left:-292px;width:584px}.spx-mockup-macbook-pro{height:444px;width:740px}.spx-mockup-macbook-pro .spx-mockup-frame{background:#0d0d0d;border-radius:20px;box-shadow:inset 0 0 0 2px #c8cacb;height:428px;margin:0 auto;padding:29px 19px 39px 19px;position:relative;width:614px}.spx-mockup-macbook-pro .spx-mockup-frame::after{background:#272626;border-radius:0 0 20px 20px;bottom:2px;content:\"\";height:26px;left:2px;position:absolute;width:610px}.spx-mockup-macbook-pro .spx-mockup-frame::before{bottom:10px;color:#c8cacb;content:\"MacBook Pro\";font-size:12px;height:16px;left:50%;line-height:16px;margin-left:-100px;position:absolute;text-align:center;width:200px;z-index:1}.spx-mockup-macbook-pro .spx-mockup-content{border:2px solid #121212;border-radius:2px;height:360px;width:576px}.spx-mockup-macbook-pro .spx-mockup-power{background:#e2e3e4;border:solid #d5d6d8;border-radius:2px 2px 0 0;border-width:2px 4px 0 4px;height:14px;margin-top:-10px;position:relative;width:740px;z-index:9}.spx-mockup-macbook-pro .spx-mockup-power::after,.spx-mockup-macbook-pro .spx-mockup-power::before{content:\"\";position:absolute}.spx-mockup-macbook-pro .spx-mockup-power::after{background:#d5d6d8;border-radius:0 0 10px 10px;box-shadow:inset 0 0 4px 2px #babdbf;height:10px;left:50%;margin-left:-60px;top:-2px;width:120px}.spx-mockup-macbook-pro .spx-mockup-power::before{background:#a0a3a7;border-radius:0 0 180px 180px/ 0 0 12px 12px;box-shadow:inset 0 -2px 6px 0 #474a4d;height:12px;left:-4px;margin:0 auto;top:10px;width:740px}.spx-mockup-macbook-pro.spx-mockup-spacegray .spx-mockup-frame{box-shadow:inset 0 0 0 2px #767a7d}.spx-mockup-macbook-pro.spx-mockup-spacegray .spx-mockup-power{background:#909496;border-color:#767a7d}.spx-mockup-macbook-pro.spx-mockup-spacegray .spx-mockup-power::after{background:#83878a;box-shadow:inset 0 0 4px 2px #6a6d70}.spx-mockup-macbook-pro.spx-mockup-spacegray .spx-mockup-power::before{background:#515456;box-shadow:inset 0 -2px 6px 0 black}.spx-mockup-macbook{height:432px;width:740px}.spx-mockup-macbook .spx-mockup-frame{background:#0d0d0d;border-radius:20px;box-shadow:inset 0 0 0 2px #c8cacb;height:428px;margin:0 auto;padding:29px 19px 39px 19px;position:relative;width:614px}.spx-mockup-macbook .spx-mockup-frame::after{background:#272626;border-radius:0 0 20px 20px;bottom:2px;content:\"\";height:26px;left:2px;position:absolute;width:610px}.spx-mockup-macbook .spx-mockup-frame::before{bottom:10px;color:#c8cacb;content:\"MacBook\";font-size:12px;height:16px;left:50%;line-height:16px;margin-left:-100px;position:absolute;text-align:center;width:200px;z-index:1}.spx-mockup-macbook .spx-mockup-content{border:2px solid #121212;border-radius:2px;height:360px;width:576px}.spx-mockup-macbook .spx-mockup-power{background:#e2e3e4;border:solid #d5d6d8;border-radius:2px 2px 0 0;border-width:0 4px;height:4px;margin-top:-10px;position:relative;width:740px;z-index:9}.spx-mockup-macbook .spx-mockup-power::after,.spx-mockup-macbook .spx-mockup-power::before{content:\"\";position:absolute}.spx-mockup-macbook .spx-mockup-power::after{background:radial-gradient(circle at center, #e2e3e4 0, #e2e3e4 85%, #a0a3a7 100%);border:solid #adb0b3;border-width:0 2px;height:4px;left:50%;margin-left:-60px;width:120px}.spx-mockup-macbook .spx-mockup-power::before{background:#a0a3a7;border-radius:0 0 180px 180px/ 0 0 10px 10px;box-shadow:inset 0 -2px 6px 0 #474a4d;height:10px;left:-4px;margin:0 auto;top:4px;width:740px}.spx-mockup-macbook.spx-mockup-gold .spx-mockup-frame{box-shadow:inset 0 0 0 2px #edccb4}.spx-mockup-macbook.spx-mockup-gold .spx-mockup-power{background:#f7e8dd;border-color:#edccb4}.spx-mockup-macbook.spx-mockup-gold .spx-mockup-power::after{background:radial-gradient(circle at center, #f7e8dd 0, #f7e8dd 85%, #dfa276 100%);border-color:#e4b08a}.spx-mockup-macbook.spx-mockup-gold .spx-mockup-power::before{background:#edccb4;box-shadow:inset 0 -2px 6px 0 #83491f}.spx-mockup-macbook.spx-mockup-rosegold .spx-mockup-frame{box-shadow:inset 0 0 0 2px #f6a69a}.spx-mockup-macbook.spx-mockup-rosegold .spx-mockup-power{background:#facfc9;border-color:#f6a69a}.spx-mockup-macbook.spx-mockup-rosegold .spx-mockup-power::after{background:radial-gradient(circle at center, #facfc9 0, #facfc9 85%, #ef6754 100%);border-color:#f6a69a}.spx-mockup-macbook.spx-mockup-rosegold .spx-mockup-power::before{background:#f6a69a;box-shadow:inset 0 -2px 6px 0 #851b0c}.spx-mockup-macbook.spx-mockup-spacegray .spx-mockup-frame{box-shadow:inset 0 0 0 2px #767a7d}.spx-mockup-macbook.spx-mockup-spacegray .spx-mockup-power{background:#909496;border-color:#767a7d}.spx-mockup-macbook.spx-mockup-spacegray .spx-mockup-power::after{background:radial-gradient(circle at center, #909496 0, #909496 85%, #515456 100%);border-color:#5d6163}.spx-mockup-macbook.spx-mockup-spacegray .spx-mockup-power::before{background:#515456;box-shadow:inset 0 -2px 6px 0 black}.spx-mockup-surface-studio{height:506px;width:640px}.spx-mockup-surface-studio .spx-mockup-frame{background:#0d0d0d;border-radius:10px;box-shadow:inset 0 0 0 2px black;height:440px;padding:20px;width:640px}.spx-mockup-surface-studio .spx-mockup-content{border:2px solid #121212;border-radius:2px;height:400px;width:600px}.spx-mockup-surface-studio .spx-mockup-stripe{background:#444;border-radius:0 0 2px 2px;bottom:0;height:4px;left:50%;margin-left:-117px;position:absolute;width:234px}.spx-mockup-surface-studio .spx-mockup-stripe::after,.spx-mockup-surface-studio .spx-mockup-stripe::before{content:\"\";left:50%;position:absolute;top:-75px}.spx-mockup-surface-studio .spx-mockup-stripe::after{border:6px solid #d5d6d8;border-radius:0 0 18px 18px;border-top:0;box-shadow:inset 0 0 0 4px #c8cacb;height:60px;margin-left:-140px;width:280px;z-index:-1}.spx-mockup-surface-studio .spx-mockup-stripe::before{border:15px solid #e2e3e4;border-radius:0 0 4px 4px;border-top:0;height:70px;margin-left:-150px;width:300px;z-index:-2}.spx-mockup-surface-studio .spx-mockup-power{background:#eff0f0;border:solid #e2e3e4;border-radius:0 0 2px 2px;border-width:0 4px 2px 4px;height:32px;margin:30px auto 0 auto;position:relative;width:250px}.spx-mockup-surface-studio .spx-mockup-power::after{background:#adb0b3;content:\"\";height:2px;left:-4px;position:absolute;top:4px;width:250px}.spx-mockup-imac-pro{height:484px;width:624px}.spx-mockup-imac-pro .spx-mockup-frame{background:#0d0d0d;border-radius:18px;box-shadow:inset 0 0 0 2px #080808;height:428px;padding:24px 24px 80px 24px;position:relative;width:624px}.spx-mockup-imac-pro .spx-mockup-frame::after{background:#2f2e33;border-radius:0 0 18px 18px;bottom:2px;content:\"\";height:54px;left:2px;position:absolute;width:620px}.spx-mockup-imac-pro .spx-mockup-frame::before{bottom:15px;color:#0d0d0d;content:\"\";font-size:24px;height:24px;left:50%;line-height:24px;margin-left:-100px;position:absolute;text-align:center;width:200px;z-index:9}.spx-mockup-imac-pro .spx-mockup-content{border:2px solid #121212;border-radius:2px;height:324px;width:576px}.spx-mockup-imac-pro .spx-mockup-power::after,.spx-mockup-imac-pro .spx-mockup-power::before{content:\"\"}.spx-mockup-imac-pro .spx-mockup-power::after{background:#222225;border-radius:2px;height:6px;margin:0 auto;position:relative;width:180px}.spx-mockup-imac-pro .spx-mockup-power::before{border:solid transparent;border-bottom-color:#333;border-width:0 8px 50px 8px;height:50px;margin:0 auto;position:relative;width:130px}.spx-mockup-apple-watch{height:234px;max-width:300px}.spx-mockup-apple-watch .spx-mockup-frame{background:#0d0d0d;border-radius:40px;box-shadow:inset 0 0 2px 2px #adb0b3, inset 0 0 0 6px #e2e3e4, inset 0 0 0 8px #e2e3e4;height:234px;padding:32px;position:relative;width:200px}.spx-mockup-apple-watch .spx-mockup-frame::after{border-radius:30px;box-shadow:inset 0 0 25px 0 rgba(255, 255, 255, .75);content:\"\";height:216px;left:9px;position:absolute;top:9px;width:182px}.spx-mockup-apple-watch .spx-mockup-content{border:2px solid #121212;border-radius:2px;height:170px;width:136px}.spx-mockup-apple-watch .spx-mockup-btns{background:#e2e3e4;border-left:2px solid #adb0b3;border-radius:8px 4px 4px 8px / 20px 4px 4px 20px;box-shadow:inset 0 0 2px 2px #adb0b3;height:44px;position:absolute;right:-10px;top:52px;width:16px;z-index:9}.spx-mockup-apple-watch .spx-mockup-btns::after{background:#e2e3e4;border-radius:4px 2px 2px 4px / 10px 2px 2px 10px;box-shadow:inset 0 0 1px 2px #adb0b3;content:\"\";height:66px;position:absolute;right:6px;top:68px;width:8px}.spx-mockup-apple-watch .spx-mockup-btns::before{background:#adb0b3;box-shadow:0 -16px #adb0b3, 0 -12px #adb0b3, 0 -8px #adb0b3, 0 -4px #adb0b3, 0 4px #adb0b3, 0 8px #adb0b3, 0 12px #adb0b3, 0 16px #adb0b3;content:\"\";height:2px;margin-top:-1px;position:absolute;right:0;top:50%;width:6px}";
 
-const tag$c = 'spx-mockup';
+const tag$d = 'spx-mockup';
 const SpxMockup = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
-    this.display = 'block';
+    this.spxMockupDidLoad = createEvent(this, "spxMockupDidLoad", 7);
+    /**
+     * Samsung S8 color.
+     * @choice 'black', 'blue'
+     */
+    this.colorGalaxyS8 = 'black';
+    /**
+     * Google Pixel color.
+     * @choice 'silver', 'black', 'blue'
+     */
+    this.colorGooglePixel = 'silver';
+    /**
+     * iPad Pro color.
+     * @choice 'silver', 'gold', 'rosegold', 'spacegray'
+     */
+    this.colorIpadPro = 'silver';
+    /**
+     * iPhone 8 color.
+     * @choice 'silver', 'gold', 'spacegray'
+     */
+    this.colorIphone8 = 'silver';
+    /**
+     * MacBook color.
+     * @choice 'silver', 'gold', 'rosegold', 'spacegray'
+     */
+    this.colorMacbook = 'silver';
+    /**
+     * MacBook Pro color.
+     * @choice 'silver', 'spacegray'
+     */
+    this.colorMacbookPro = 'silver';
+    this.display = 'inline-block';
     this.imagePosition = '50% 50%';
     /** Image src if no inner slot is used. */
     this.src = 'https://picsum.photos/400/1200';
@@ -24652,8 +25456,9 @@ const SpxMockup = class extends HTMLElement {
     /** Assign states. */
     this.mockup = this.el.querySelector('.spx-mockup');
     this.parent = this.el.querySelector('.spx-mockup-wrap');
-    /** Resize and wait for iFrame to load before showing content. */
+    /** Resize mockup. */
     this.handleResize();
+    this.spxMockupDidLoad.emit({ target: 'document' });
   }
   componentDidUpdate() {
     this.handleResize();
@@ -24669,6 +25474,7 @@ const SpxMockup = class extends HTMLElement {
     this.componentDidLoad();
   }
   render() {
+    /** Set the correct color. */
     const color = this.type === 'galaxy-s8'
       ? this.colorGalaxyS8
       : this.type === 'google-pixel'
@@ -24679,13 +25485,16 @@ const SpxMockup = class extends HTMLElement {
             ? this.colorIphone8
             : this.type === 'macbook'
               ? this.colorMacbook
-              : this.type === 'macbook-pro' && this.colorMacbookPro;
-    /** Device style. */
+              : this.type === 'macbook-pro'
+                ? this.colorMacbookPro
+                : null;
+    /** Hist styles. */
     const styleHost = css({
-      display: setVar(tag$c, 'display', this.display),
+      position: 'relative',
+      display: setVar(tag$d, 'display', this.display),
       maxWidth: '100%',
     });
-    /** Image style. */
+    /** Image styles. */
     const styleImg = css({
       width: '100%',
       height: '100%',
@@ -24695,15 +25504,14 @@ const SpxMockup = class extends HTMLElement {
     return (h$1(Host, { class: styleHost }, h$1("div", { class: "spx-mockup-wrap" }, h$1("div", { class: 'spx-mockup spx-mockup-' +
         this.type +
         ' ' +
-        'spx-mockup-' +
-        color +
+        (color !== null && 'spx-mockup-' + color) +
         '' }, h$1("div", { class: "spx-mockup-frame" }, h$1("div", { class: "spx-mockup-content" }, this.src ? h$1("img", { class: styleImg, src: this.src }) : h$1("slot", null))), h$1("div", { class: "spx-mockup-stripe" }), h$1("div", { class: "spx-mockup-header" }), h$1("div", { class: "spx-mockup-sensors" }), h$1("div", { class: "spx-mockup-btns" }), h$1("div", { class: "spx-mockup-power" }), this.type === 'iphone-x' && h$1("div", { class: "spx-mockup-home" })))));
   }
   get el() { return this; }
   static get style() { return spxMockupCss; }
 };
 
-const tag$d = 'spx-navigation';
+const tag$e = 'spx-navigation';
 const SpxNavigation = class extends HTMLElement {
   constructor() {
     super();
@@ -24750,11 +25558,11 @@ const SpxNavigation = class extends HTMLElement {
      * @choice 'start', 'end'
      */
     this.childPlacement = 'start';
-    this.fontSize = fontSize;
+    this.fontSize = 'clamp(18px, 1.6vw, 20px)';
     this.itemTransitionDuration = transitionDuration;
     this.itemTransitionTimingFunction = transitionTimingFunction;
     /** Mobile breakpoint. */
-    this.mobile = mobileBpWidth;
+    this.mobile = bpMobileWidth$1;
     /** Mobile button icon type. */
     this.mobileIconType = 'ionicons';
     this.mobileItemBackground = '#ffffff';
@@ -24781,13 +25589,13 @@ const SpxNavigation = class extends HTMLElement {
     this.parentItemPadding = '0.6em';
   }
   /** Watch menu prop and parse to iteratable array. */
-  imagesChanged(newValue) {
+  navigationChanged(newValue) {
     if (newValue)
       this.menuArray = JSON.parse(newValue);
   }
   /** Init popper on mouse/touch enter. */
   onClick() {
-    if (this.mobileBP) {
+    if (this.mobileBp) {
       this.initPopperMobile();
     }
     else {
@@ -24797,13 +25605,13 @@ const SpxNavigation = class extends HTMLElement {
   }
   /** Listen to window resize. */
   onResize() {
-    this.mobileBP = window.innerWidth < this.mobile;
+    this.mobileBp = window.innerWidth < this.mobile;
   }
   componentWillLoad() {
-    /** If menu prop is set. */
-    this.imagesChanged(this.menu);
     /** Check if is mobile view. */
     this.onResize();
+    /** If menu prop is set. */
+    this.navigationChanged(this.menu);
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
@@ -24840,7 +25648,7 @@ const SpxNavigation = class extends HTMLElement {
               'spx-navigation__item--has-child' +
               extraClasses
           : 'spx-navigation__item--' + type + '' + ' ' + extraClasses, "data-order": object['menu_order'] }, h$1("a", { href: object['url'] === '#' ? '#0' : object['url'] }, object['title'], objectChild &&
-        !this.mobileBP &&
+        !this.mobileBp &&
         !this.vertical &&
         this.childIcon && (h$1("spx-icon", { type: this.childIconType, icon: this.childIcon }))), objectChild &&
         !mobile &&
@@ -24849,8 +25657,8 @@ const SpxNavigation = class extends HTMLElement {
         this.renderMenu(object['spxChildren'], 'child', true)));
     }))));
   }
+  /** Sort menu items depending on menu order. */
   sortMenuItem() {
-    /** Sort menu items depending on menu order. */
     const dataItems = this.el.querySelectorAll('li');
     const dataArray = [];
     for (let i = 0; i < dataItems.length; ++i) {
@@ -24863,6 +25671,7 @@ const SpxNavigation = class extends HTMLElement {
       e.closest('ul').appendChild(e);
     });
   }
+  /** Init Popper positioning for desktop. */
   initPopperDesktop() {
     if (!this.vertical) {
       /** Init popper for parent menu. */
@@ -24927,8 +25736,8 @@ const SpxNavigation = class extends HTMLElement {
       }
     }
   }
+  /** Init Popper positioning for mobile. */
   initPopperMobile() {
-    /** Init popper for mobile menu. */
     const mobileMenu = this.el.querySelector('.spx-navigation__mobile-button');
     if (mobileMenu) {
       createPopper(mobileMenu, mobileMenu.querySelector('.spx-navigation--mobile'), {
@@ -24945,10 +25754,10 @@ const SpxNavigation = class extends HTMLElement {
     const styleHost = css({
       display: 'block',
       fontFamily: fontFamily,
-      fontSize: setVar(tag$d, 'font-size', this.fontSize),
+      fontSize: setVar(tag$e, 'font-size', this.fontSize),
       zIndex: 999999,
       'nav > .spx-navigation--parent': {
-        display: this.mobileBP ? 'none' : 'grid',
+        display: this.mobileBp ? 'none' : 'grid',
       },
       ul: {
         margin: '0',
@@ -24956,59 +25765,61 @@ const SpxNavigation = class extends HTMLElement {
         listStyleType: 'none',
         ul: {
           display: this.vertical && 'grid',
-          gridGap: this.vertical && setVar(tag$d, 'parent-item-gap', this.parentItemGap),
-          marginLeft: (this.mobileBP || this.vertical) &&
-            setVar(tag$d, 'mobile-item-nested-margin-left', this.mobileItemNestedMarginLeft),
+          borderLeft: this.mobileBp && '1px solid rgba(0,0,0,0.1)',
+          borderRadius: this.mobileBp && '0 !important',
+          gridGap: this.vertical && setVar(tag$e, 'parent-item-gap', this.parentItemGap),
+          marginLeft: (this.mobileBp || this.vertical) &&
+            setVar(tag$e, 'mobile-item-nested-margin-left', this.mobileItemNestedMarginLeft),
         },
       },
       'ul ul, .spx-navigation--mobile ul': {
-        border: !this.mobileBP && setVar(tag$d, 'child-border', this.childBorder),
-        borderRadius: setVar(tag$d, 'child-border-radius', this.childBorderRadius),
+        border: !this.mobileBp && setVar(tag$e, 'child-border', this.childBorder),
+        borderRadius: setVar(tag$e, 'child-border-radius', this.childBorderRadius),
         overflow: 'hidden',
-        boxShadow: !this.mobileBP &&
-          setVar(tag$d, 'child-box-shadow', this.childBoxShadow),
+        boxShadow: !this.mobileBp &&
+          setVar(tag$e, 'child-box-shadow', this.childBoxShadow),
       },
       '.spx-navigation--parent:not(.spx-navigation--mobile) > ul': {
         display: 'grid',
-        gridAutoFlow: this.mobileBP || this.vertical ? 'row' : 'column',
+        gridAutoFlow: this.mobileBp || this.vertical ? 'row' : 'column',
         gridAutoColumns: 'max-content',
-        gridAutoRows: (this.mobileBP || this.vertical) && 'max-content',
-        gridGap: setVar(tag$d, 'parent-item-gap', this.parentItemGap),
+        gridAutoRows: (this.mobileBp || this.vertical) && 'max-content',
+        gridGap: setVar(tag$e, 'parent-item-gap', this.parentItemGap),
       },
       '.spx-navigation__item--parent': {
         a: {
-          padding: setVar(tag$d, 'parent-item-padding', this.parentItemPadding),
-          color: setVar(tag$d, 'parent-item-color', this.parentItemColor),
-          background: setVar(tag$d, 'parent-item-background', this.parentItemBackground),
+          padding: setVar(tag$e, 'parent-item-padding', this.parentItemPadding),
+          color: setVar(tag$e, 'parent-item-color', this.parentItemColor),
+          background: setVar(tag$e, 'parent-item-background', this.parentItemBackground),
           '&:hover': {
-            color: setVar(tag$d, 'parent-item-color-hover', this.parentItemColorHover),
-            background: setVar(tag$d, 'parent-item-color-background-hover', this.parentItemBackgroundHover),
+            color: setVar(tag$e, 'parent-item-color-hover', this.parentItemColorHover),
+            background: setVar(tag$e, 'parent-item-color-background-hover', this.parentItemBackgroundHover),
           },
         },
         '&.spx-navigation__item--has-child > .spx-navigation--child': {
           flexDirection: 'column',
-          marginTop: this.vertical && setVar(tag$d, 'parent-item-gap', this.parentItemGap),
+          marginTop: this.vertical && setVar(tag$e, 'parent-item-gap', this.parentItemGap),
           a: {
             display: 'flex',
             justifyContent: 'space-between',
             width: '100%',
             whiteSpace: 'nowrap',
-            color: !this.mobileBP &&
-              setVar(tag$d, 'child-item-color', this.childItemColor),
-            background: !this.mobileBP &&
-              setVar(tag$d, 'child-item-background', this.childItemBackground),
+            color: !this.mobileBp &&
+              setVar(tag$e, 'child-item-color', this.childItemColor),
+            background: !this.mobileBp &&
+              setVar(tag$e, 'child-item-background', this.childItemBackground),
             '&:hover': {
-              color: !this.mobileBP &&
-                setVar(tag$d, 'child-item-color-hover', this.childItemColorHover),
-              background: !this.mobileBP &&
-                setVar(tag$d, 'child-item-color-background-hover', this.childItemBackgroundHover),
+              color: !this.mobileBp &&
+                setVar(tag$e, 'child-item-color-hover', this.childItemColorHover),
+              background: !this.mobileBp &&
+                setVar(tag$e, 'child-item-color-background-hover', this.childItemBackgroundHover),
             },
           },
           '::before': {
             content: '" "',
             position: 'relative',
-            display: this.mobileBP || this.vertical ? 'none' : 'block',
-            minHeight: setVar(tag$d, 'child-gap', this.childGap),
+            display: this.mobileBp || this.vertical ? 'none' : 'block',
+            minHeight: setVar(tag$e, 'child-gap', this.childGap),
             width: '100%',
           },
         },
@@ -25018,10 +25829,10 @@ const SpxNavigation = class extends HTMLElement {
         opacity: !this.vertical ? '0' : '1',
         position: !this.vertical ? 'absolute' : 'relative',
         display: 'flex',
-        flexDirection: this.mobileBP ? 'column' : 'row',
+        flexDirection: this.mobileBp ? 'column' : 'row',
         transitionProperty: 'opacity',
-        transitionDuration: setVar(tag$d, 'item-transition-duration', this.itemTransitionDuration),
-        transitionTimingFunction: setVar(tag$d, 'item-transition-timing-function', this.itemTransitionTimingFunction),
+        transitionDuration: setVar(tag$e, 'item-transition-duration', this.itemTransitionDuration),
+        transitionTimingFunction: setVar(tag$e, 'item-transition-timing-function', this.itemTransitionTimingFunction),
       },
       '.spx-navigation--mobile .spx-navigation--child': {
         position: 'relative',
@@ -25038,7 +25849,7 @@ const SpxNavigation = class extends HTMLElement {
       },
       '.spx-navigation__item--child': {
         a: {
-          padding: setVar(tag$d, 'child-item-padding', this.childItemPadding),
+          padding: setVar(tag$e, 'child-item-padding', this.childItemPadding),
         },
         '[data-popper-placement="left-start"]': {
           flexDirection: 'row-reverse',
@@ -25046,26 +25857,26 @@ const SpxNavigation = class extends HTMLElement {
         '[data-popper-placement]::before': {
           content: '" "',
           position: 'relative',
-          display: this.mobileBP || this.vertical ? 'none' : 'block',
-          minWidth: setVar(tag$d, 'child-child-gap', this.childChildGap),
+          display: this.mobileBp || this.vertical ? 'none' : 'block',
+          minWidth: setVar(tag$e, 'child-child-gap', this.childChildGap),
           height: '100%',
         },
       },
       li: {
         position: 'relative',
-        display: !this.mobileBP && !this.vertical && 'flex',
+        display: !this.mobileBp && !this.vertical && 'flex',
         flexDirection: 'row',
       },
       a: {
         display: 'inline-grid',
         gridAutoFlow: 'column',
-        gridColumnGap: setVar(tag$d, 'child-indicator-gap', this.childIndicatorGap),
+        gridColumnGap: setVar(tag$e, 'child-indicator-gap', this.childIndicatorGap),
         textDecoration: this.itemUnderline ? 'underline' : 'none',
         width: '100%',
         fontSize: 'inherit',
         transitionProperty: 'color, background',
-        transitionDuration: setVar(tag$d, 'item-transition-duration', this.itemTransitionDuration),
-        transitionTimingFunction: setVar(tag$d, 'item-transition-timing-function', this.itemTransitionTimingFunction),
+        transitionDuration: setVar(tag$e, 'item-transition-duration', this.itemTransitionDuration),
+        transitionTimingFunction: setVar(tag$e, 'item-transition-timing-function', this.itemTransitionTimingFunction),
         '&:hover': {
           textDecoration: this.itemUnderlineHover && 'underline',
         },
@@ -25073,20 +25884,20 @@ const SpxNavigation = class extends HTMLElement {
       '.spx-navigation__mobile-button': {
         cursor: 'pointer',
         maxWidth: 'fit-content',
-        padding: setVar(tag$d, 'parent-item-padding', this.parentItemPadding),
-        color: setVar(tag$d, 'parent-item-color', this.parentItemColor),
-        background: setVar(tag$d, 'parent-item-background', this.parentItemBackground),
+        padding: setVar(tag$e, 'parent-item-padding', this.parentItemPadding),
+        color: setVar(tag$e, 'parent-item-color', this.parentItemColor),
+        background: setVar(tag$e, 'parent-item-background', this.parentItemBackground),
         gridGap: '0.4rem',
         gridAutoFlow: 'column',
         alignItems: 'center',
-        display: this.mobileBP ? 'grid' : 'none',
+        display: this.mobileBp ? 'grid' : 'none',
         a: {
-          padding: setVar(tag$d, 'mobile-item-padding', this.mobileItemPadding),
-          color: setVar(tag$d, 'mobile-item-color', this.mobileItemColor),
-          background: setVar(tag$d, 'mobile-item-background', this.mobileItemBackground),
+          padding: setVar(tag$e, 'mobile-item-padding', this.mobileItemPadding),
+          color: setVar(tag$e, 'mobile-item-color', this.mobileItemColor),
+          background: setVar(tag$e, 'mobile-item-background', this.mobileItemBackground),
           '&:hover': {
-            color: setVar(tag$d, 'mobile-item-color-hover', this.mobileItemColorHover),
-            background: setVar(tag$d, 'mobile-item-background-hover', this.mobileItemBackgroundHover),
+            color: setVar(tag$e, 'mobile-item-color-hover', this.mobileItemColorHover),
+            background: setVar(tag$e, 'mobile-item-background-hover', this.mobileItemBackgroundHover),
           },
         },
         '.spx-navigation--parent': {
@@ -25094,13 +25905,13 @@ const SpxNavigation = class extends HTMLElement {
             content: '" "',
             position: 'relative',
             display: 'block',
-            minHeight: setVar(tag$d, 'child-gap', this.childGap),
+            minHeight: setVar(tag$e, 'child-gap', this.childGap),
             width: '100%',
           },
           '> ul': {
-            background: setVar(tag$d, 'child-item-background', this.childItemBackground),
-            border: setVar(tag$d, 'child-border', this.childBorder),
-            boxShadow: setVar(tag$d, 'child-box-shadow', this.childBoxShadow),
+            background: setVar(tag$e, 'child-item-background', this.childItemBackground),
+            border: setVar(tag$e, 'child-border', this.childBorder),
+            boxShadow: setVar(tag$e, 'child-box-shadow', this.childBoxShadow),
           },
         },
       },
@@ -25113,17 +25924,18 @@ const SpxNavigation = class extends HTMLElement {
   }
   get el() { return this; }
   static get watchers() { return {
-    "menu": ["imagesChanged"]
+    "menu": ["navigationChanged"]
   }; }
 };
 
-const t="http://www.w3.org/2000/svg";class e{constructor(t){this.seed=t;}next(){return this.seed?(2**31-1&(this.seed=Math.imul(48271,this.seed)))/2**31:Math.random()}}function s(t,e,s,i,n){return {type:"path",ops:c(t,e,s,i,n)}}function i(t,e,i){const n=(t||[]).length;if(n>2){const s=[];for(let e=0;e<n-1;e++)s.push(...c(t[e][0],t[e][1],t[e+1][0],t[e+1][1],i));return e&&s.push(...c(t[n-1][0],t[n-1][1],t[0][0],t[0][1],i)),{type:"path",ops:s}}return 2===n?s(t[0][0],t[0][1],t[1][0],t[1][1],i):{type:"path",ops:[]}}function n(t,e,s,n,o){return function(t,e){return i(t,!0,e)}([[t,e],[t+s,e],[t+s,e+n],[t,e+n]],o)}function o(t,e,s,i,n){return function(t,e,s,i){const[n,o]=l(i.increment,t,e,i.rx,i.ry,1,i.increment*h(.1,h(.4,1,s),s),s);let r=f(n,null,s);if(!s.disableMultiStroke){const[n]=l(i.increment,t,e,i.rx,i.ry,1.5,0,s),o=f(n,null,s);r=r.concat(o);}return {estimatedPoints:o,opset:{type:"path",ops:r}}}(t,e,n,function(t,e,s){const i=Math.sqrt(2*Math.PI*Math.sqrt((Math.pow(t/2,2)+Math.pow(e/2,2))/2)),n=Math.max(s.curveStepCount,s.curveStepCount/Math.sqrt(200)*i),o=2*Math.PI/n;let r=Math.abs(t/2),h=Math.abs(e/2);const c=1-s.curveFitting;return r+=a(r*c,s),h+=a(h*c,s),{increment:o,rx:r,ry:h}}(s,i,n)).opset}function r(t){return t.randomizer||(t.randomizer=new e(t.seed||0)),t.randomizer.next()}function h(t,e,s,i=1){return s.roughness*i*(r(s)*(e-t)+t)}function a(t,e,s=1){return h(-t,t,e,s)}function c(t,e,s,i,n,o=!1){const r=o?n.disableMultiStrokeFill:n.disableMultiStroke,h=u(t,e,s,i,n,!0,!1);if(r)return h;const a=u(t,e,s,i,n,!0,!0);return h.concat(a)}function u(t,e,s,i,n,o,h){const c=Math.pow(t-s,2)+Math.pow(e-i,2),u=Math.sqrt(c);let f=1;f=u<200?1:u>500?.4:-.0016668*u+1.233334;let l=n.maxRandomnessOffset||0;l*l*100>c&&(l=u/10);const g=l/2,d=.2+.2*r(n);let p=n.bowing*n.maxRandomnessOffset*(i-e)/200,_=n.bowing*n.maxRandomnessOffset*(t-s)/200;p=a(p,n,f),_=a(_,n,f);const m=[],w=()=>a(g,n,f),v=()=>a(l,n,f);return o&&(h?m.push({op:"move",data:[t+w(),e+w()]}):m.push({op:"move",data:[t+a(l,n,f),e+a(l,n,f)]})),h?m.push({op:"bcurveTo",data:[p+t+(s-t)*d+w(),_+e+(i-e)*d+w(),p+t+2*(s-t)*d+w(),_+e+2*(i-e)*d+w(),s+w(),i+w()]}):m.push({op:"bcurveTo",data:[p+t+(s-t)*d+v(),_+e+(i-e)*d+v(),p+t+2*(s-t)*d+v(),_+e+2*(i-e)*d+v(),s+v(),i+v()]}),m}function f(t,e,s){const i=t.length,n=[];if(i>3){const o=[],r=1-s.curveTightness;n.push({op:"move",data:[t[1][0],t[1][1]]});for(let e=1;e+2<i;e++){const s=t[e];o[0]=[s[0],s[1]],o[1]=[s[0]+(r*t[e+1][0]-r*t[e-1][0])/6,s[1]+(r*t[e+1][1]-r*t[e-1][1])/6],o[2]=[t[e+1][0]+(r*t[e][0]-r*t[e+2][0])/6,t[e+1][1]+(r*t[e][1]-r*t[e+2][1])/6],o[3]=[t[e+1][0],t[e+1][1]],n.push({op:"bcurveTo",data:[o[1][0],o[1][1],o[2][0],o[2][1],o[3][0],o[3][1]]});}if(e&&2===e.length){const t=s.maxRandomnessOffset;n.push({op:"lineTo",data:[e[0]+a(t,s),e[1]+a(t,s)]});}}else 3===i?(n.push({op:"move",data:[t[1][0],t[1][1]]}),n.push({op:"bcurveTo",data:[t[1][0],t[1][1],t[2][0],t[2][1],t[2][0],t[2][1]]})):2===i&&n.push(...c(t[0][0],t[0][1],t[1][0],t[1][1],s));return n}function l(t,e,s,i,n,o,r,h){const c=[],u=[],f=a(.5,h)-Math.PI/2;u.push([a(o,h)+e+.9*i*Math.cos(f-t),a(o,h)+s+.9*n*Math.sin(f-t)]);for(let r=f;r<2*Math.PI+f-.01;r+=t){const t=[a(o,h)+e+i*Math.cos(r),a(o,h)+s+n*Math.sin(r)];c.push(t),u.push(t);}return u.push([a(o,h)+e+i*Math.cos(f+2*Math.PI+.5*r),a(o,h)+s+n*Math.sin(f+2*Math.PI+.5*r)]),u.push([a(o,h)+e+.98*i*Math.cos(f+r),a(o,h)+s+.98*n*Math.sin(f+r)]),u.push([a(o,h)+e+.9*i*Math.cos(f+.5*r),a(o,h)+s+.9*n*Math.sin(f+.5*r)]),[u,c]}function g(t,e){return {maxRandomnessOffset:2,roughness:"highlight"===t?3:1.5,bowing:1,stroke:"#000",strokeWidth:1.5,curveTightness:0,curveFitting:.95,curveStepCount:9,fillStyle:"hachure",fillWeight:-1,hachureAngle:-41,hachureGap:-1,dashOffset:-1,dashGap:-1,zigzagOffset:-1,combineNestedSvgPaths:!1,disableMultiStroke:"double"!==t,disableMultiStrokeFill:!1,seed:e}}function d(e,r,h,a,c,u){const f=[];let l=h.strokeWidth||2;const d=function(t){const e=t.padding;if(e||0===e){if("number"==typeof e)return [e,e,e,e];if(Array.isArray(e)){const t=e;if(t.length)switch(t.length){case 4:return [...t];case 1:return [t[0],t[0],t[0],t[0]];case 2:return [...t,...t];case 3:return [...t,t[1]];default:return [t[0],t[1],t[2],t[3]]}}}return [5,5,5,5]}(h),p=void 0===h.animate||!!h.animate,_=h.iterations||2,m=g("single",u);switch(h.type){case"underline":{const t=r.y+r.h+d[2];for(let e=0;e<_;e++)e%2?f.push(s(r.x+r.w,t,r.x,t,m)):f.push(s(r.x,t,r.x+r.w,t,m));break}case"strike-through":{const t=r.y+r.h/2;for(let e=0;e<_;e++)e%2?f.push(s(r.x+r.w,t,r.x,t,m)):f.push(s(r.x,t,r.x+r.w,t,m));break}case"box":{const t=r.x-d[3],e=r.y-d[0],s=r.w+(d[1]+d[3]),i=r.h+(d[0]+d[2]);for(let o=0;o<_;o++)f.push(n(t,e,s,i,m));break}case"bracket":{const t=Array.isArray(h.brackets)?h.brackets:h.brackets?[h.brackets]:["right"],e=r.x-2*d[3],s=r.x+r.w+2*d[1],n=r.y-2*d[0],o=r.y+r.h+2*d[2];for(const h of t){let t;switch(h){case"bottom":t=[[e,r.y+r.h],[e,o],[s,o],[s,r.y+r.h]];break;case"top":t=[[e,r.y],[e,n],[s,n],[s,r.y]];break;case"left":t=[[r.x,n],[e,n],[e,o],[r.x,o]];break;case"right":t=[[r.x+r.w,n],[s,n],[s,o],[r.x+r.w,o]];}t&&f.push(i(t,!1,m));}break}case"crossed-off":{const t=r.x,e=r.y,i=t+r.w,n=e+r.h;for(let o=0;o<_;o++)o%2?f.push(s(i,n,t,e,m)):f.push(s(t,e,i,n,m));for(let o=0;o<_;o++)o%2?f.push(s(t,n,i,e,m)):f.push(s(i,e,t,n,m));break}case"circle":{const t=g("double",u),e=r.w+(d[1]+d[3]),s=r.h+(d[0]+d[2]),i=r.x-d[3]+e/2,n=r.y-d[0]+s/2,h=Math.floor(_/2),a=_-2*h;for(let r=0;r<h;r++)f.push(o(i,n,e,s,t));for(let t=0;t<a;t++)f.push(o(i,n,e,s,m));break}case"highlight":{const t=g("highlight",u);l=.95*r.h;const e=r.y+r.h/2;for(let i=0;i<_;i++)i%2?f.push(s(r.x+r.w,e,r.x,e,t)):f.push(s(r.x,e,r.x+r.w,e,t));break}}if(f.length){const s=function(t){const e=[];for(const s of t){let t="";for(const i of s.ops){const s=i.data;switch(i.op){case"move":t.trim()&&e.push(t.trim()),t=`M${s[0]} ${s[1]} `;break;case"bcurveTo":t+=`C${s[0]} ${s[1]}, ${s[2]} ${s[3]}, ${s[4]} ${s[5]} `;break;case"lineTo":t+=`L${s[0]} ${s[1]} `;}}t.trim()&&e.push(t.trim());}return e}(f),i=[],n=[];let o=0;const r=(t,e,s)=>t.setAttribute(e,s);for(const a of s){const s=document.createElementNS(t,"path");if(r(s,"d",a),r(s,"fill","none"),r(s,"stroke",h.color||"currentColor"),r(s,"stroke-width",""+l),p){const t=s.getTotalLength();i.push(t),o+=t;}e.appendChild(s),n.push(s);}if(p){let t=0;for(let e=0;e<n.length;e++){const s=n[e],r=i[e],h=o?c*(r/o):0,u=a+t,f=s.style;f.strokeDashoffset=""+r,f.strokeDasharray=""+r,f.animation=`rough-notation-dash ${h}ms ease-out ${u}ms forwards`,t+=h;}}}}class p{constructor(t,e){this._state="unattached",this._resizing=!1,this._seed=Math.floor(Math.random()*2**31),this._lastSizes=[],this._animationDelay=0,this._resizeListener=()=>{this._resizing||(this._resizing=!0,setTimeout(()=>{this._resizing=!1,"showing"===this._state&&this.haveRectsChanged()&&this.show();},400));},this._e=t,this._config=JSON.parse(JSON.stringify(e)),this.attach();}get animate(){return this._config.animate}set animate(t){this._config.animate=t;}get animationDuration(){return this._config.animationDuration}set animationDuration(t){this._config.animationDuration=t;}get iterations(){return this._config.iterations}set iterations(t){this._config.iterations=t;}get color(){return this._config.color}set color(t){this._config.color!==t&&(this._config.color=t,this.refresh());}get strokeWidth(){return this._config.strokeWidth}set strokeWidth(t){this._config.strokeWidth!==t&&(this._config.strokeWidth=t,this.refresh());}get padding(){return this._config.padding}set padding(t){this._config.padding!==t&&(this._config.padding=t,this.refresh());}attach(){if("unattached"===this._state&&this._e.parentElement){!function(){if(!window.__rno_kf_s){const t=window.__rno_kf_s=document.createElement("style");t.textContent="@keyframes rough-notation-dash { to { stroke-dashoffset: 0; } }",document.head.appendChild(t);}}();const e=this._svg=document.createElementNS(t,"svg");e.setAttribute("class","rough-annotation");const s=e.style;s.position="absolute",s.top="0",s.left="0",s.overflow="visible",s.pointerEvents="none",s.width="100px",s.height="100px";const i="highlight"===this._config.type;if(this._e.insertAdjacentElement(i?"beforebegin":"afterend",e),this._state="not-showing",i){const t=window.getComputedStyle(this._e).position;(!t||"static"===t)&&(this._e.style.position="relative");}this.attachListeners();}}detachListeners(){window.removeEventListener("resize",this._resizeListener),this._ro&&this._ro.unobserve(this._e);}attachListeners(){this.detachListeners(),window.addEventListener("resize",this._resizeListener,{passive:!0}),!this._ro&&"ResizeObserver"in window&&(this._ro=new window.ResizeObserver(t=>{for(const e of t)e.contentRect&&this._resizeListener();})),this._ro&&this._ro.observe(this._e);}haveRectsChanged(){if(this._lastSizes.length){const t=this.rects();if(t.length!==this._lastSizes.length)return !0;for(let e=0;e<t.length;e++)if(!this.isSameRect(t[e],this._lastSizes[e]))return !0}return !1}isSameRect(t,e){const s=(t,e)=>Math.round(t)===Math.round(e);return s(t.x,e.x)&&s(t.y,e.y)&&s(t.w,e.w)&&s(t.h,e.h)}isShowing(){return "not-showing"!==this._state}refresh(){this.isShowing()&&!this.pendingRefresh&&(this.pendingRefresh=Promise.resolve().then(()=>{this.isShowing()&&this.show(),delete this.pendingRefresh;}));}show(){switch(this._state){case"unattached":break;case"showing":this.hide(),this._svg&&this.render(this._svg,!0);break;case"not-showing":this.attach(),this._svg&&this.render(this._svg,!1);}}hide(){if(this._svg)for(;this._svg.lastChild;)this._svg.removeChild(this._svg.lastChild);this._state="not-showing";}remove(){this._svg&&this._svg.parentElement&&this._svg.parentElement.removeChild(this._svg),this._svg=void 0,this._state="unattached",this.detachListeners();}render(t,e){let s=this._config;e&&(s=JSON.parse(JSON.stringify(this._config)),s.animate=!1);const i=this.rects();let n=0;i.forEach(t=>n+=t.w);const o=s.animationDuration||800;let r=0;for(let e=0;e<i.length;e++){const h=o*(i[e].w/n);d(t,i[e],s,r+this._animationDelay,h,this._seed),r+=h;}this._lastSizes=i,this._state="showing";}rects(){const t=[];if(this._svg)if(this._config.multiline){const e=this._e.getClientRects();for(let s=0;s<e.length;s++)t.push(this.svgRect(this._svg,e[s]));}else t.push(this.svgRect(this._svg,this._e.getBoundingClientRect()));return t}svgRect(t,e){const s=t.getBoundingClientRect(),i=e;return {x:(i.x||i.left)-(s.x||s.left),y:(i.y||i.top)-(s.y||s.top),w:i.width,h:i.height}}}function _(t,e){return new p(t,e)}
+const t$1="http://www.w3.org/2000/svg";class e$1{constructor(t){this.seed=t;}next(){return this.seed?(2**31-1&(this.seed=Math.imul(48271,this.seed)))/2**31:Math.random()}}function s(t,e,s,i,n){return {type:"path",ops:c$1(t,e,s,i,n)}}function i$1(t,e,i){const n=(t||[]).length;if(n>2){const s=[];for(let e=0;e<n-1;e++)s.push(...c$1(t[e][0],t[e][1],t[e+1][0],t[e+1][1],i));return e&&s.push(...c$1(t[n-1][0],t[n-1][1],t[0][0],t[0][1],i)),{type:"path",ops:s}}return 2===n?s(t[0][0],t[0][1],t[1][0],t[1][1],i):{type:"path",ops:[]}}function n$1(t,e,s,n,o){return function(t,e){return i$1(t,!0,e)}([[t,e],[t+s,e],[t+s,e+n],[t,e+n]],o)}function o(t,e,s,i,n){return function(t,e,s,i){const[n,o]=l(i.increment,t,e,i.rx,i.ry,1,i.increment*h(.1,h(.4,1,s),s),s);let r=f(n,null,s);if(!s.disableMultiStroke){const[n]=l(i.increment,t,e,i.rx,i.ry,1.5,0,s),o=f(n,null,s);r=r.concat(o);}return {estimatedPoints:o,opset:{type:"path",ops:r}}}(t,e,n,function(t,e,s){const i=Math.sqrt(2*Math.PI*Math.sqrt((Math.pow(t/2,2)+Math.pow(e/2,2))/2)),n=Math.max(s.curveStepCount,s.curveStepCount/Math.sqrt(200)*i),o=2*Math.PI/n;let r=Math.abs(t/2),h=Math.abs(e/2);const c=1-s.curveFitting;return r+=a$1(r*c,s),h+=a$1(h*c,s),{increment:o,rx:r,ry:h}}(s,i,n)).opset}function r$1(t){return t.randomizer||(t.randomizer=new e$1(t.seed||0)),t.randomizer.next()}function h(t,e,s,i=1){return s.roughness*i*(r$1(s)*(e-t)+t)}function a$1(t,e,s=1){return h(-t,t,e,s)}function c$1(t,e,s,i,n,o=!1){const r=o?n.disableMultiStrokeFill:n.disableMultiStroke,h=u(t,e,s,i,n,!0,!1);if(r)return h;const a=u(t,e,s,i,n,!0,!0);return h.concat(a)}function u(t,e,s,i,n,o,h){const c=Math.pow(t-s,2)+Math.pow(e-i,2),u=Math.sqrt(c);let f=1;f=u<200?1:u>500?.4:-.0016668*u+1.233334;let l=n.maxRandomnessOffset||0;l*l*100>c&&(l=u/10);const g=l/2,d=.2+.2*r$1(n);let p=n.bowing*n.maxRandomnessOffset*(i-e)/200,_=n.bowing*n.maxRandomnessOffset*(t-s)/200;p=a$1(p,n,f),_=a$1(_,n,f);const m=[],w=()=>a$1(g,n,f),v=()=>a$1(l,n,f);return o&&(h?m.push({op:"move",data:[t+w(),e+w()]}):m.push({op:"move",data:[t+a$1(l,n,f),e+a$1(l,n,f)]})),h?m.push({op:"bcurveTo",data:[p+t+(s-t)*d+w(),_+e+(i-e)*d+w(),p+t+2*(s-t)*d+w(),_+e+2*(i-e)*d+w(),s+w(),i+w()]}):m.push({op:"bcurveTo",data:[p+t+(s-t)*d+v(),_+e+(i-e)*d+v(),p+t+2*(s-t)*d+v(),_+e+2*(i-e)*d+v(),s+v(),i+v()]}),m}function f(t,e,s){const i=t.length,n=[];if(i>3){const o=[],r=1-s.curveTightness;n.push({op:"move",data:[t[1][0],t[1][1]]});for(let e=1;e+2<i;e++){const s=t[e];o[0]=[s[0],s[1]],o[1]=[s[0]+(r*t[e+1][0]-r*t[e-1][0])/6,s[1]+(r*t[e+1][1]-r*t[e-1][1])/6],o[2]=[t[e+1][0]+(r*t[e][0]-r*t[e+2][0])/6,t[e+1][1]+(r*t[e][1]-r*t[e+2][1])/6],o[3]=[t[e+1][0],t[e+1][1]],n.push({op:"bcurveTo",data:[o[1][0],o[1][1],o[2][0],o[2][1],o[3][0],o[3][1]]});}if(e&&2===e.length){const t=s.maxRandomnessOffset;n.push({op:"lineTo",data:[e[0]+a$1(t,s),e[1]+a$1(t,s)]});}}else 3===i?(n.push({op:"move",data:[t[1][0],t[1][1]]}),n.push({op:"bcurveTo",data:[t[1][0],t[1][1],t[2][0],t[2][1],t[2][0],t[2][1]]})):2===i&&n.push(...c$1(t[0][0],t[0][1],t[1][0],t[1][1],s));return n}function l(t,e,s,i,n,o,r,h){const c=[],u=[],f=a$1(.5,h)-Math.PI/2;u.push([a$1(o,h)+e+.9*i*Math.cos(f-t),a$1(o,h)+s+.9*n*Math.sin(f-t)]);for(let r=f;r<2*Math.PI+f-.01;r+=t){const t=[a$1(o,h)+e+i*Math.cos(r),a$1(o,h)+s+n*Math.sin(r)];c.push(t),u.push(t);}return u.push([a$1(o,h)+e+i*Math.cos(f+2*Math.PI+.5*r),a$1(o,h)+s+n*Math.sin(f+2*Math.PI+.5*r)]),u.push([a$1(o,h)+e+.98*i*Math.cos(f+r),a$1(o,h)+s+.98*n*Math.sin(f+r)]),u.push([a$1(o,h)+e+.9*i*Math.cos(f+.5*r),a$1(o,h)+s+.9*n*Math.sin(f+.5*r)]),[u,c]}function g$1(t,e){return {maxRandomnessOffset:2,roughness:"highlight"===t?3:1.5,bowing:1,stroke:"#000",strokeWidth:1.5,curveTightness:0,curveFitting:.95,curveStepCount:9,fillStyle:"hachure",fillWeight:-1,hachureAngle:-41,hachureGap:-1,dashOffset:-1,dashGap:-1,zigzagOffset:-1,combineNestedSvgPaths:!1,disableMultiStroke:"double"!==t,disableMultiStrokeFill:!1,seed:e}}function d$1(e,r,h,a,c,u){const f=[];let l=h.strokeWidth||2;const d=function(t){const e=t.padding;if(e||0===e){if("number"==typeof e)return [e,e,e,e];if(Array.isArray(e)){const t=e;if(t.length)switch(t.length){case 4:return [...t];case 1:return [t[0],t[0],t[0],t[0]];case 2:return [...t,...t];case 3:return [...t,t[1]];default:return [t[0],t[1],t[2],t[3]]}}}return [5,5,5,5]}(h),p=void 0===h.animate||!!h.animate,_=h.iterations||2,m=h.rtl?1:0,w=g$1("single",u);switch(h.type){case"underline":{const t=r.y+r.h+d[2];for(let e=m;e<_+m;e++)e%2?f.push(s(r.x+r.w,t,r.x,t,w)):f.push(s(r.x,t,r.x+r.w,t,w));break}case"strike-through":{const t=r.y+r.h/2;for(let e=m;e<_+m;e++)e%2?f.push(s(r.x+r.w,t,r.x,t,w)):f.push(s(r.x,t,r.x+r.w,t,w));break}case"box":{const t=r.x-d[3],e=r.y-d[0],s=r.w+(d[1]+d[3]),i=r.h+(d[0]+d[2]);for(let o=0;o<_;o++)f.push(n$1(t,e,s,i,w));break}case"bracket":{const t=Array.isArray(h.brackets)?h.brackets:h.brackets?[h.brackets]:["right"],e=r.x-2*d[3],s=r.x+r.w+2*d[1],n=r.y-2*d[0],o=r.y+r.h+2*d[2];for(const h of t){let t;switch(h){case"bottom":t=[[e,r.y+r.h],[e,o],[s,o],[s,r.y+r.h]];break;case"top":t=[[e,r.y],[e,n],[s,n],[s,r.y]];break;case"left":t=[[r.x,n],[e,n],[e,o],[r.x,o]];break;case"right":t=[[r.x+r.w,n],[s,n],[s,o],[r.x+r.w,o]];}t&&f.push(i$1(t,!1,w));}break}case"crossed-off":{const t=r.x,e=r.y,i=t+r.w,n=e+r.h;for(let o=m;o<_+m;o++)o%2?f.push(s(i,n,t,e,w)):f.push(s(t,e,i,n,w));for(let o=m;o<_+m;o++)o%2?f.push(s(t,n,i,e,w)):f.push(s(i,e,t,n,w));break}case"circle":{const t=g$1("double",u),e=r.w+(d[1]+d[3]),s=r.h+(d[0]+d[2]),i=r.x-d[3]+e/2,n=r.y-d[0]+s/2,h=Math.floor(_/2),a=_-2*h;for(let r=0;r<h;r++)f.push(o(i,n,e,s,t));for(let t=0;t<a;t++)f.push(o(i,n,e,s,w));break}case"highlight":{const t=g$1("highlight",u);l=.95*r.h;const e=r.y+r.h/2;for(let i=m;i<_+m;i++)i%2?f.push(s(r.x+r.w,e,r.x,e,t)):f.push(s(r.x,e,r.x+r.w,e,t));break}}if(f.length){const s=function(t){const e=[];for(const s of t){let t="";for(const i of s.ops){const s=i.data;switch(i.op){case"move":t.trim()&&e.push(t.trim()),t=`M${s[0]} ${s[1]} `;break;case"bcurveTo":t+=`C${s[0]} ${s[1]}, ${s[2]} ${s[3]}, ${s[4]} ${s[5]} `;break;case"lineTo":t+=`L${s[0]} ${s[1]} `;}}t.trim()&&e.push(t.trim());}return e}(f),i=[],n=[];let o=0;const r=(t,e,s)=>t.setAttribute(e,s);for(const a of s){const s=document.createElementNS(t$1,"path");if(r(s,"d",a),r(s,"fill","none"),r(s,"stroke",h.color||"currentColor"),r(s,"stroke-width",""+l),p){const t=s.getTotalLength();i.push(t),o+=t;}e.appendChild(s),n.push(s);}if(p){let t=0;for(let e=0;e<n.length;e++){const s=n[e],r=i[e],h=o?c*(r/o):0,u=a+t,f=s.style;f.strokeDashoffset=""+r,f.strokeDasharray=""+r,f.animation=`rough-notation-dash ${h}ms ease-out ${u}ms forwards`,t+=h;}}}}class p$1{constructor(t,e){this._state="unattached",this._resizing=!1,this._seed=Math.floor(Math.random()*2**31),this._lastSizes=[],this._animationDelay=0,this._resizeListener=()=>{this._resizing||(this._resizing=!0,setTimeout(()=>{this._resizing=!1,"showing"===this._state&&this.haveRectsChanged()&&this.show();},400));},this._e=t,this._config=JSON.parse(JSON.stringify(e)),this.attach();}get animate(){return this._config.animate}set animate(t){this._config.animate=t;}get animationDuration(){return this._config.animationDuration}set animationDuration(t){this._config.animationDuration=t;}get iterations(){return this._config.iterations}set iterations(t){this._config.iterations=t;}get color(){return this._config.color}set color(t){this._config.color!==t&&(this._config.color=t,this.refresh());}get strokeWidth(){return this._config.strokeWidth}set strokeWidth(t){this._config.strokeWidth!==t&&(this._config.strokeWidth=t,this.refresh());}get padding(){return this._config.padding}set padding(t){this._config.padding!==t&&(this._config.padding=t,this.refresh());}attach(){if("unattached"===this._state&&this._e.parentElement){!function(){if(!window.__rno_kf_s){const t=window.__rno_kf_s=document.createElement("style");t.textContent="@keyframes rough-notation-dash { to { stroke-dashoffset: 0; } }",document.head.appendChild(t);}}();const e=this._svg=document.createElementNS(t$1,"svg");e.setAttribute("class","rough-annotation");const s=e.style;s.position="absolute",s.top="0",s.left="0",s.overflow="visible",s.pointerEvents="none",s.width="100px",s.height="100px";const i="highlight"===this._config.type;if(this._e.insertAdjacentElement(i?"beforebegin":"afterend",e),this._state="not-showing",i){const t=window.getComputedStyle(this._e).position;(!t||"static"===t)&&(this._e.style.position="relative");}this.attachListeners();}}detachListeners(){window.removeEventListener("resize",this._resizeListener),this._ro&&this._ro.unobserve(this._e);}attachListeners(){this.detachListeners(),window.addEventListener("resize",this._resizeListener,{passive:!0}),!this._ro&&"ResizeObserver"in window&&(this._ro=new window.ResizeObserver(t=>{for(const e of t)e.contentRect&&this._resizeListener();})),this._ro&&this._ro.observe(this._e);}haveRectsChanged(){if(this._lastSizes.length){const t=this.rects();if(t.length!==this._lastSizes.length)return !0;for(let e=0;e<t.length;e++)if(!this.isSameRect(t[e],this._lastSizes[e]))return !0}return !1}isSameRect(t,e){const s=(t,e)=>Math.round(t)===Math.round(e);return s(t.x,e.x)&&s(t.y,e.y)&&s(t.w,e.w)&&s(t.h,e.h)}isShowing(){return "not-showing"!==this._state}refresh(){this.isShowing()&&!this.pendingRefresh&&(this.pendingRefresh=Promise.resolve().then(()=>{this.isShowing()&&this.show(),delete this.pendingRefresh;}));}show(){switch(this._state){case"unattached":break;case"showing":this.hide(),this._svg&&this.render(this._svg,!0);break;case"not-showing":this.attach(),this._svg&&this.render(this._svg,!1);}}hide(){if(this._svg)for(;this._svg.lastChild;)this._svg.removeChild(this._svg.lastChild);this._state="not-showing";}remove(){this._svg&&this._svg.parentElement&&this._svg.parentElement.removeChild(this._svg),this._svg=void 0,this._state="unattached",this.detachListeners();}render(t,e){let s=this._config;e&&(s=JSON.parse(JSON.stringify(this._config)),s.animate=!1);const i=this.rects();let n=0;i.forEach(t=>n+=t.w);const o=s.animationDuration||800;let r=0;for(let e=0;e<i.length;e++){const h=o*(i[e].w/n);d$1(t,i[e],s,r+this._animationDelay,h,this._seed),r+=h;}this._lastSizes=i,this._state="showing";}rects(){const t=[];if(this._svg)if(this._config.multiline){const e=this._e.getClientRects();for(let s=0;s<e.length;s++)t.push(this.svgRect(this._svg,e[s]));}else t.push(this.svgRect(this._svg,this._e.getBoundingClientRect()));return t}svgRect(t,e){const s=t.getBoundingClientRect(),i=e;return {x:(i.x||i.left)-(s.x||s.left),y:(i.y||i.top)-(s.y||s.top),w:i.width,h:i.height}}}function _$1(t,e){return new p$1(t,e)}
 
-const tag$e = 'spx-notation';
+const tag$f = 'spx-notation';
 const SpxNotation = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxNotationDidLoad = createEvent(this, "spxNotationDidLoad", 7);
     /** Turn animation on or off when animation. */
     this.animation = true;
     /** Animation duration. */
@@ -25147,9 +25959,10 @@ const SpxNotation = class extends HTMLElement {
     if (this.el.querySelector('span').innerHTML.length !== 0) {
       this.annotate();
     }
+    this.spxNotationDidLoad.emit({ target: 'document' });
   }
   annotate() {
-    this.annotation = _(this.el.querySelector('span > *'), {
+    this.annotation = _$1(this.el.querySelector('span > *'), {
       animate: this.animation,
       animationDuration: this.animationDuration,
       type: this.type === 'underline'
@@ -25172,39 +25985,43 @@ const SpxNotation = class extends HTMLElement {
     });
     this.annotation.show();
   }
-  /** Draws the annotation. */
-  async show() {
-    this.annotation.show();
+  /** Remove the annotation. */
+  async clear() {
+    this.annotation.remove();
   }
   /** Hides the annotation. (non animated) */
   async hide() {
     this.annotation.hide();
   }
-  /** Remove the annotation. */
-  async clear() {
-    this.annotation.remove();
-  }
   async reload() {
     this.annotation.remove();
     this.annotate();
   }
+  /** Draws the annotation. */
+  async show() {
+    this.annotation.show();
+  }
   render() {
     /** Host styles. */
     const styleHost = css({
-      display: setVar(tag$e, 'display', this.display),
+      display: setVar(tag$f, 'display', this.display),
     });
     return (h$1(Host, { class: styleHost }, h$1("span", null, h$1("slot", null))));
   }
   get el() { return this; }
 };
 
-const tag$f = 'spx-offset';
+const tag$g = 'spx-offset';
 const SpxOffset = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxOffsetDidLoad = createEvent(this, "spxOffsetDidLoad", 7);
     this.display = 'block';
-    /** Target element. */
+    /**
+     * Target element.
+     * @editor '.header1'
+     */
     this.target = 'header';
   }
   /** Listen to window resize. */
@@ -25214,6 +26031,7 @@ const SpxOffset = class extends HTMLElement {
   componentDidLoad() {
     globalComponentDidLoad(this.el);
     this.onResize();
+    this.spxOffsetDidLoad.emit({ target: 'document' });
   }
   componentDidUpdate() {
     this.onResize();
@@ -25224,14 +26042,14 @@ const SpxOffset = class extends HTMLElement {
   render() {
     /** Host styles. */
     const styleHost = css({
-      display: setVar(tag$f, 'display', this.display),
+      display: setVar(tag$g, 'display', this.display),
     });
     return (h$1(Host, { class: styleHost }, h$1("slot", null)));
   }
   get el() { return this; }
 };
 
-const tag$g = 'spx-page-docs';
+const tag$h = 'spx-page-docs';
 const SpxPageDocs = class extends HTMLElement {
   constructor() {
     super();
@@ -25241,39 +26059,34 @@ const SpxPageDocs = class extends HTMLElement {
     this.contentHeadingFontFamily = state.fontFamilyPrimary;
     this.navigationBackground = 'var(--spx-color-gray-50)';
     this.navigationFontFamily = state.fontFamilyPrimary;
-    this.navigationFontSizeMultiplier = 1;
-    this.navigationLinkFontSizeMultiplier = 1;
-    this.navigationGap = 'var(--spx-space-2xs)';
+    this.navigationGapMin = 0.2;
+    this.navigationGapMax = 0.4;
     this.navigationHeadingTag = 'h1';
     this.navigationLinkColor = 'var(--spx-color-800)';
-    this.navigationLinkColorActive = 'var(--spx-color-primary-A700)';
+    this.navigationLinkColorActive = 'var(--spx-color-primary-600)';
     this.navigationLinkFontWeight = '500';
     this.navigationLinkLetterSpacing = '0';
     this.navigationLinkLineHeight = '1.25';
     this.navigationLinkTextTransform = 'default';
-    this.navigationPadding = 'var(--spx-space-xl)' + ' ' + state.spaceXsm;
+    this.navigationSpaceYMin = 2;
+    this.navigationSpaceYMax = 4;
     this.navigationTitleColor = 'var(--spx-color-gray-600)';
     this.navigationTitleFontWeight = '500';
     this.navigationTitleLetterSpacing = '0';
     this.navigationTitleLineHeight = '1.25';
     this.navigationTitleTextTransform = 'uppercase';
+    this.navigationTitleMarginBottomMin = 1;
+    this.navigationTitleMarginBottomMax = 2;
     this.navigationTop = 'var(--spx-offset)';
-    this.offsetMarginTop = 'var(--spx-space-md)';
-    /**
-     * Space from the last content element to the end of the component.
-     * @CSS
-     */
-    this.spaceBottom = 'var(--spx-space-3xl)';
+    this.offsetMarginTopMin = 0.7;
+    this.offsetMarginTopMax = 1.2;
     /**
      * Distance to the edge of the viewport on the x-axis.
      * @CSS
      */
-    this.spaceX = state.spaceX;
-    /**
-     * Distance to the edge of the viewport on the y-axis.
-     * @CSS
-     */
-    this.spaceY = 'var(--spx-space-xl)';
+    this.paddingX = state.paddingX;
+    this.paddingYMin = 2;
+    this.paddingYMax = 4;
   }
   /** Listen to window resize. */
   onResize() {
@@ -25285,14 +26098,15 @@ const SpxPageDocs = class extends HTMLElement {
   componentDidLoad() {
     globalComponentDidLoad(this.el);
     this.createNavigation();
-    this.spxPageDocsDidLoad.emit({ target: 'document' });
     if (window.location.hash) {
       document.querySelector(window.location.hash).scrollIntoView();
     }
+    this.spxPageDocsDidLoad.emit({ target: 'document' });
   }
+  /** Generates the navigation. */
   createNavigation() {
     if (this.content.innerHTML !== '') {
-      /** Create links. */
+      /** Create links from h1 tags. */
       this.content
         .querySelectorAll(this.navigationHeadingTag + ':not([data-spx-docs-no-navigation])')
         .forEach((item, index) => {
@@ -25333,62 +26147,69 @@ const SpxPageDocs = class extends HTMLElement {
     });
     const styleNavigationWrap = css({
       display: this.mobile ? 'none' : 'block',
-      background: setVar(tag$g, 'navigation-background', this.navigationBackground),
+      background: setVar(tag$h, 'navigation-background', this.navigationBackground),
       width: '120%',
     });
     /** Navigation. */
     const styleNavigation = {
       position: 'sticky',
-      top: setVar(tag$g, 'navigation-top', this.navigationTop),
+      top: setVar(tag$h, 'navigation-top', this.navigationTop),
       gridAutoRows: 'max-content',
       height: 'calc(100vh - ' + this.navigationTop + ')',
-      padding: setVar(tag$g, 'navigation-padding', this.navigationPadding),
+      paddingTop: setClamp(tag$h, 'navigation-space-y', this.navigationSpaceYMin, this.navigationSpaceYMax),
+      paddingBottom: setClamp(tag$h, 'navigation-space-y', this.navigationSpaceYMin, this.navigationSpaceYMax),
+      paddingLeft: state.paddingXsm,
+      paddingRight: state.paddingXsm,
       overflowY: 'auto',
       ul: {
         display: 'grid',
-        gridGap: setVar(tag$g, 'navigation-gap', this.navigationGap),
+        gridGap: setClamp(tag$h, 'navigation-gap', this.navigationGapMin, this.navigationGapMax),
       },
-      a: Object.assign(Object.assign({}, text(tag$g, 'navigation-link', this.navigationLinkColor, '16px', '16px', '16px', this.navigationFontSizeMultiplier, this.navigationLinkFontWeight, this.navigationLinkLetterSpacing, this.navigationLinkLineHeight, this.navigationLinkTextTransform)), { fontFamily: setVar(tag$g, 'navigation-font-family', this.navigationFontFamily), width: 'max-content', transitionProperty: 'color', transitionDuration: setVar(tag$g, 'navigation-transition-duration', transitionDuration), itemTransitionTimingFunction: setVar(tag$g, 'navigation-transition-timing-function', transitionTimingFunction) }),
+      a: Object.assign(Object.assign({}, text(tag$h, 'navigation-link', this.navigationLinkColor, 0.8, 1, this.navigationLinkFontWeight, this.navigationLinkLetterSpacing, this.navigationLinkLineHeight, this.navigationLinkTextTransform)), { fontFamily: setVar(tag$h, 'navigation-font-family', this.navigationFontFamily), width: 'max-content', transitionProperty: 'color', transitionDuration: setVar(tag$h, 'navigation-transition-duration', transitionDuration), itemTransitionTimingFunction: setVar(tag$h, 'navigation-transition-timing-function', transitionTimingFunction) }),
       li: {
         '&:last-of-type': {
-          marginBottom: this.spaceY,
+          marginBottom: setClamp(tag$h, 'navigation-spacey-y', this.navigationSpaceYMin, this.navigationSpaceYMax),
         },
         '&.spx-scrollspy__nav--active a': {
-          color: setVar(tag$g, 'navigation-link-color-active', this.navigationLinkColorActive),
+          color: setVar(tag$h, 'navigation-link-color-active', this.navigationLinkColorActive),
         },
       },
-      span: Object.assign(Object.assign({}, text(tag$g, 'navigation-title', this.navigationTitleColor, '14px', '14px', '14px', this.navigationFontSizeMultiplier, this.navigationTitleFontWeight, this.navigationTitleLetterSpacing, this.navigationTitleLineHeight, this.navigationTitleTextTransform)), { fontFamily: setVar(tag$g, 'navigation-font-family', this.navigationFontFamily) }),
+      span: Object.assign(Object.assign({}, text(tag$h, 'navigation-title', this.navigationTitleColor, 0.8, 0.9, this.navigationTitleFontWeight, this.navigationTitleLetterSpacing, this.navigationTitleLineHeight, this.navigationTitleTextTransform)), { fontFamily: setVar(tag$h, 'navigation-font-family', this.navigationFontFamily) }),
       'li + span': {
         display: 'block',
-        marginTop: 'var(--spx-space-lg)',
+        marginTop: setClamp(tag$h, 'navigation-title-margin-bottom', this.navigationTitleMarginBottomMin, this.navigationTitleMarginBottomMax),
       },
     };
     /** Merge navigation objects to avoid emotion error. */
     const styleNavigationMerge = css(merge$1(styleNavigation, {}));
     /** Content. */
     const styleContent = {
-      padding: setVar(tag$g, 'content-padding', '' +
-        setVar(tag$g, 'space-y', this.spaceY) +
+      padding: setVar(tag$h, 'content-padding', '' +
+        setClamp(tag$h, 'padding-y', this.paddingYMin, this.paddingYMax) +
         ' ' +
-        setVar(tag$g, 'space-x', this.spaceX) +
+        setVar(tag$h, 'padding-x', this.paddingX) +
         ''),
       h1: {
         '&[id]:before': {
           display: 'block',
           content: '" "',
-          marginTop: 'calc((var(--spx-offset) + ' + this.offsetMarginTop + ') * -1)',
-          height: 'calc(var(--spx-offset) + ' + this.offsetMarginTop + ')',
+          marginTop: 'calc((var(--spx-offset) + ' +
+            setClamp(tag$h, 'offset-margin-top', this.offsetMarginTopMin, this.offsetMarginTopMax) +
+            ') * -1)',
+          height: 'calc(var(--spx-offset) + ' +
+            setClamp(tag$h, 'offset-margin-top', this.offsetMarginTopMin, this.offsetMarginTopMax) +
+            ')',
           visibility: 'hidden',
         },
       },
       'spx-code': {
-        maxWidth: 'calc(100vw - ' + this.spaceX + ')',
+        maxWidth: 'calc(100vw - ' + this.paddingX + ')',
       },
       img: {
         maxWidth: '100%',
       },
       '&:last-child': {
-        marginBottom: setVar(tag$g, 'space-bottom', this.spaceBottom),
+        marginBottom: setClamp(tag$h, 'space-y', this.paddingYMin, this.paddingYMax),
       },
     };
     /** Merge content objects to avoid emotion error. */
@@ -25398,51 +26219,61 @@ const SpxPageDocs = class extends HTMLElement {
   get el() { return this; }
 };
 
-const tag$h = 'spx-page-single';
+const tag$i = 'spx-page-single';
 const SpxPageSingle = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxPageSingleDidLoad = createEvent(this, "spxPageSingleDidLoad", 7);
     this.authorColor = 'var(--spx-color-800)';
     this.authorFontFamily = state.fontFamilyPrimary;
-    this.authorFontSizeMultiplier = 1;
+    this.authorFontSizeMin = 0.9;
+    this.authorFontSizeMax = 1.2;
     this.authorFontWeight = '500';
     this.authorLetterSpacing = '0';
     this.authorLineHeight = '1.25';
-    this.authorMarginTop = 'var(--spx-space-lg)';
+    this.authorMarginTopMin = 1;
+    this.authorMarginTopMax = 2;
     this.authorTextTransform = 'uppercase';
-    this.contentMarginTop = 'var(--spx-space-xl)';
+    this.contentMarginTopMin = 3;
+    this.contentMarginTopMax = 4;
     this.contentMaxWidth = '700px';
-    this.contentSpaceX = 'var(--spx-container-space-x)';
+    this.contentPaddingX = 'var(--spx-container-padding-x)';
     /** Display date. */
     this.date = true;
     this.dateColor = 'var(--spx-color-gray-600)';
     this.dateFontFamily = state.fontFamilyPrimary;
-    this.dateFontSizeMultiplier = 1;
+    this.dateFontSizeMin = 0.9;
+    this.dateFontSizeMax = 0.9;
     this.dateFontWeight = '500';
     this.dateLetterSpacing = '0';
     this.dateLineHeight = '1.25';
-    this.dateMarginTop = 'var(--spx-space-sm)';
+    this.dateMarginTopMin = 1.5;
+    this.dateMarginTopMax = 2;
     this.dateTextTransform = 'default';
-    this.headerPaddingBottom = 'var(--spx-space-xl)';
+    this.headerPaddingBottomMin = 1;
+    this.headerPaddingBottomMax = 2;
     this.headerBorderBottom = '1px solid var(--spx-color-gray-200)';
     /** Display image. */
     this.image = true;
     this.imageBorderRadius = borderRadius;
     this.imageHeight = 'clamp(200px, 50vh, 600px)';
     this.imageObjectPosition = '50% 50%';
-    this.imageSpaceX = 'var(--spx-container-space-x-sm)';
-    this.imageSpaceY = 'var(--spx-space-md)';
+    this.imagePaddingX = 'var(--spx-container-padding-x-sm)';
+    this.imageSpaceYMin = 1;
+    this.imageSpaceYMax = 2;
     /** Mobile breakpoint. */
-    this.mobile = mobileBpWidth;
+    this.mobile = bpMobileWidth;
     /** Space to edge of the viewport. */
     this.titleColor = 'var(--spx-color-800)';
     this.titleFontFamily = state.fontFamilyPrimary;
-    this.titleFontSizeMultiplier = 1;
+    this.titleFontSizeMin = 2.7;
+    this.titleFontSizeMax = 4;
     this.titleFontWeight = '500';
     this.titleLetterSpacing = '0';
     this.titleLineHeight = '1.25';
-    this.titleMarginTop = 'var(--spx-space-md)';
+    this.titleMarginTopMin = 1;
+    this.titleMarginTopMax = 2;
     this.titleTextTransform = 'default';
   }
   /** Watch post prop and parse to iteratable array. */
@@ -25464,56 +26295,64 @@ const SpxPageSingle = class extends HTMLElement {
     if (this.content) {
       this.postContentContainer.innerHTML = this.postContent.body.innerHTML;
     }
+    this.spxPageSingleDidLoad.emit({ target: 'document' });
   }
   render() {
-    /** Style host. */
+    /** Host styles. */
     const styleHost = css({
       fontSize: fontSize,
       display: 'block',
     });
+    /** Outer styles. */
     const styleOuter = css({
       display: 'block',
       gridGap: '40px',
-      padding: '0 ' + setVar(tag$h, 'content-space-x', this.contentSpaceX) + '',
+      padding: '0 ' + setVar(tag$i, 'content-padding-x', this.contentPaddingX) + '',
     });
+    /** Image styles. */
     const styleImage = css({
       maxWidth: '100%',
       padding: '' +
-        setVar(tag$h, 'image-space-y', this.imageSpaceY) +
+        setClamp(tag$i, 'image-space-y', this.imageSpaceYMin, this.imageSpaceYMax) +
         ' ' +
-        setVar(tag$h, 'image-space-x', this.imageSpaceX) +
+        setVar(tag$i, 'image-padding-x', this.imagePaddingX) +
         '',
       img: {
         width: '100%',
         objectFit: 'cover',
-        objectPosition: setVar(tag$h, 'image-object-position', this.imageObjectPosition),
+        objectPosition: setVar(tag$i, 'image-object-position', this.imageObjectPosition),
         maxWidth: '100%',
-        height: setVar(tag$h, 'image-height', this.imageHeight),
-        borderRadius: setVar(tag$h, 'image-border-radius', this.imageBorderRadius),
+        height: setVar(tag$i, 'image-height', this.imageHeight),
+        borderRadius: setVar(tag$i, 'image-border-radius', this.imageBorderRadius),
       },
     });
+    /** Header container styles. */
     const styleHeaderContainer = css({
       maxWidth: 'var(--spx-text-max-width)',
       margin: '0 auto',
-      paddingBottom: setVar(tag$h, 'header-padding-bottom', this.headerPaddingBottom),
-      borderBottom: setVar(tag$h, 'header-padding-bottom', this.headerBorderBottom),
+      paddingBottom: setClamp(tag$i, 'header-padding-bottom', this.headerPaddingBottomMin, this.headerPaddingBottomMax),
+      borderBottom: setVar(tag$i, 'header-padding-bottom', this.headerBorderBottom),
     });
+    /** Author styles. */
     const styleAuthor = css(merge$1({
       display: 'flex',
       alignItems: 'center',
-      marginTop: setVar(tag$h, 'author-margin-top', this.authorMarginTop),
-      span: Object.assign({ marginLeft: 'var(--spx-space-sm)' }, text(tag$h, 'title', this.authorColor, '12px', '12px', '12px', this.authorFontSizeMultiplier, this.authorFontWeight, this.authorLetterSpacing, this.authorLineHeight, this.authorTextTransform)),
+      marginTop: setClamp(tag$i, 'author-margin-top', this.authorMarginTopMin, this.authorMarginTopMax),
+      span: Object.assign({ marginLeft: '12px' }, text(tag$i, 'title', this.authorColor, this.authorFontSizeMin, this.authorFontSizeMax, this.authorFontWeight, this.authorLetterSpacing, this.authorLineHeight, this.authorTextTransform)),
     }), {});
+    /** Author image styles. */
     const styleAuthorImg = css({
       height: '30px',
       width: '30px',
       borderRadius: '9999px',
     });
-    const styleTitle = css(merge$1(Object.assign(Object.assign({}, text(tag$h, 'title', this.titleColor, '24px', '4vw', '48px', this.titleFontSizeMultiplier, this.titleFontWeight, this.titleLetterSpacing, this.titleLineHeight, this.titleTextTransform)), { fontFamily: setVar(tag$h, 'title-font-family', this.titleFontFamily), marginTop: setVar(tag$h, 'title-margin-top', this.titleMarginTop) })), {});
-    const styleDate = css(merge$1(Object.assign(Object.assign({}, text(tag$h, 'date', this.dateColor, '14px', '3vw', '18px', this.dateFontSizeMultiplier, this.dateFontWeight, this.dateLetterSpacing, this.dateLineHeight, this.dateTextTransform)), { display: 'block', fontFamily: setVar(tag$h, 'date-font-family', this.dateFontFamily), marginTop: setVar(tag$h, 'date-margin-top', this.dateMarginTop) })), {});
+    /** Title styles. */
+    const styleTitle = css(merge$1(Object.assign(Object.assign({}, text(tag$i, 'title', this.titleColor, this.titleFontSizeMin, this.titleFontSizeMax, this.titleFontWeight, this.titleLetterSpacing, this.titleLineHeight, this.titleTextTransform)), { fontFamily: setVar(tag$i, 'title-font-family', this.titleFontFamily), marginTop: setClamp(tag$i, 'title-margin-top', this.titleMarginTopMin, this.titleMarginTopMax) })), {});
+    /** Date styles. */
+    const styleDate = css(merge$1(Object.assign(Object.assign({}, text(tag$i, 'date', this.dateColor, this.dateFontSizeMin, this.dateFontSizeMax, this.dateFontWeight, this.dateLetterSpacing, this.dateLineHeight, this.dateTextTransform)), { display: 'block', fontFamily: setVar(tag$i, 'date-font-family', this.dateFontFamily), marginTop: setClamp(tag$i, 'date-margin-top', this.dateMarginTopMin, this.dateMarginTopMax) })), {});
+    /** Content styles. */
     const styleContent = css({
-      marginTop: setVar(tag$h, 'content-margin-top', this.contentMarginTop) +
-        ' !important',
+      marginTop: setClamp(tag$i, 'content-margin-top', this.contentMarginTopMin, this.contentMarginTopMax) + ' !important',
     });
     return (h$1(Host, { class: styleHost }, h$1("article", null, h$1("slot", { name: "start" }), this.image && this.postArray['image'] && (
     /** Image. */
@@ -26027,7 +26866,7 @@ const offset$3 = (element) => {
   }
 };
 
-const tag$i = 'spx-scrollspy';
+const tag$j = 'spx-scrollspy';
 const SpxScrollspy = class extends HTMLElement {
   constructor() {
     super();
@@ -26049,10 +26888,10 @@ const SpxScrollspy = class extends HTMLElement {
   }
   /** Replace state of URL bar . */
   onLinkChange(event) {
-    if (this.urlChange === true) {
+    if (this.urlChange) {
       history.replaceState(null, null, event.detail.link.getAttribute('href'));
     }
-    if (this.scrolling === true) {
+    if (this.scrolling) {
       this.el.scroll({
         top: this.el.querySelector('a[href="' + event.detail.link.getAttribute('href') + '"]')['offsetTop'] - this.scrollingOffset,
         behavior: 'smooth',
@@ -26061,6 +26900,7 @@ const SpxScrollspy = class extends HTMLElement {
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
+    /** Init Gumshoe. */
     // eslint-disable-next-line no-new
     this.myGumshoe = new gumshoe(':scope ' + this.target + '', {
       reflow: true,
@@ -26081,7 +26921,7 @@ const SpxScrollspy = class extends HTMLElement {
   render() {
     /** Host styles. */
     const styleHost = css({
-      display: setVar(tag$i, 'display', this.display),
+      display: setVar(tag$j, 'display', this.display),
     });
     return h$1(Host, { class: styleHost });
   }
@@ -26110,9 +26950,10 @@ const setSectionVar = (el) => {
   const config = { attributes: true };
   const callback = (mutationsList) => {
     mutationsList.forEach((mutation) => {
-      if (has(objParent, mutation.attributeName) &&
-        mutation.attributeName !== 'class') {
-        style['--spx-container-' + mutation.attributeName + ''] = el.getAttribute(mutation.attributeName);
+      const attribute = mutation.attributeName.replace('c-', '');
+      if (mutation.attributeName.startsWith('c-') &&
+        has(objParent, attribute)) {
+        style['--spx-container-' + attribute + ''] = el.getAttribute(mutation.attributeName);
         const styleCSS = css(Object.assign(Object.assign({}, style), { label: 'container' }));
         removeClasses(el, 'container');
         el.classList.add(styleCSS);
@@ -26123,8 +26964,9 @@ const setSectionVar = (el) => {
   observer.observe(targetNode, config);
   /** Set up styles for start. */
   Object.keys(objEl).forEach((item) => {
-    if (has(objParent, item) && item !== 'class') {
-      style['--spx-container-' + item + ''] = el.getAttribute(item);
+    const attribute = item.replace('c-', '');
+    if (item.startsWith('c-') && has(objParent, attribute)) {
+      style['--spx-container-' + attribute + ''] = el.getAttribute(item);
       const styleCSS = css(Object.assign(Object.assign({}, style), { label: 'container' }));
       removeClasses(el, 'container');
       el.classList.add(styleCSS);
@@ -26135,11 +26977,14 @@ const setSectionVar = (el) => {
 /**
  * Button component for sections.
  */
-const tag$j = 'spx-section-button';
+const tag$k = 'spx-section-button';
 const SpxSectionButton = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxSectionButtonDidLoad = createEvent(this, "spxSectionButtonDidLoad", 7);
+    this.iconGapMin = 0.4;
+    this.iconGapMax = 1;
     this.transitionDuration = transitionDuration;
     this.transitionTimingFunction = transitionTimingFunction;
     /**
@@ -26151,47 +26996,35 @@ const SpxSectionButton = class extends HTMLElement {
   componentDidLoad() {
     globalComponentDidLoad(this.el);
     setSectionVar(this.el);
+    this.spxSectionButtonDidLoad.emit({ target: 'document' });
   }
   applyColors(type) {
-    /** Apply color depending if primary or secondary. */
-    const style = this.type === 'primary'
-      ? 'var(--spx-color-primary-A700)'
-      : 'var(--spx-color-primary-45)';
-    /** Get the hue. */
-    const styleHue = style
-      .substring(style.lastIndexOf('-'))
-      .slice(1, -1)
-      .replace(/^0+/, '');
-    const color = palette[state.colorPrimary][styleHue]['text'];
-    /** Apply background, color or hover. */
+    /** Background. */
     if (type === 'background') {
-      return this.type === 'translucent'
-        ? color === '#ffffff'
-          ? 'rgba(0,0,0,0.2)'
-          : 'rgba(255,255,255,0.2)'
-        : style;
-    }
-    if (type === 'color') {
-      if (this.reverseColor) {
-        if (color === '#000000') {
-          return '#ffffff';
-        }
-        else if (color === '#ffffff') {
-          return '#000000';
-        }
+      if (this.type === 'primary') {
+        return palette[state.colorPrimary][state.buttonBackgroundPrimary];
       }
-      else {
-        return palette[state.colorPrimary][styleHue]['text'];
+      else if (this.type === 'secondary') {
+        return palette[state.colorPrimary][state.buttonBackgroundSecondary];
+      }
+    }
+    /** Color. */
+    if (type === 'color') {
+      if (this.type === 'primary') {
+        return palette[state.colorPrimary][state.buttonColorPrimary];
+      }
+      else if (this.type === 'secondary') {
+        return palette[state.colorPrimary][state.buttonColorSecondary];
       }
     }
     if (type === 'background-hover') {
-      return this.type === 'primary'
-        ? palette[state.colorPrimary]['600']['color']
-        : this.type === 'translucent'
-          ? color === '#ffffff'
-            ? 'rgba(0,0,0,0.3)'
-            : 'rgba(255,255,255,0.3)'
-          : palette[state.colorPrimary]['50']['color'];
+      if (this.type === 'primary') {
+        return palette[state.colorPrimary][state.buttonBackgroundPrimary + 100];
+      }
+      else if (this.type === 'secondary') {
+        return palette[state.colorPrimary][state.buttonBackgroundSecondary +
+          (state.buttonBackgroundSecondary === 50 ? 50 : 100)];
+      }
     }
   }
   render() {
@@ -26205,8 +27038,8 @@ const SpxSectionButton = class extends HTMLElement {
       background: this.applyColors('background'),
       color: this.applyColors('color'),
       transitionProperty: 'background',
-      transitionDuration: setVar(tag$j, 'transition-duration', this.transitionDuration),
-      transitionTimingFunction: setVar(tag$j, 'transition-timing-function', this.transitionDuration),
+      transitionDuration: setVar(tag$k, 'transition-duration', this.transitionDuration),
+      transitionTimingFunction: setVar(tag$k, 'transition-timing-function', this.transitionDuration),
       a: {
         height: '100%',
         display: 'flex',
@@ -26218,53 +27051,12 @@ const SpxSectionButton = class extends HTMLElement {
         background: this.applyColors('background-hover'),
       },
     });
-    return (h$1(Host, null, h$1("a", { class: styleHost, href: this.href, target: this.target }, h$1("slot", null))));
-  }
-  get el() { return this; }
-};
-
-const tag$k = 'spx-section-card';
-const SpxSectionCard = class extends HTMLElement {
-  constructor() {
-    super();
-    this.__registerHost();
-    this.boxShadow = '0px 2px 10px 0px rgba(0, 0, 0, 0.1)';
-    this.padding = 'var(--spx-space-lg)';
-    this.textColor = 'var(--spx-color-gray-600)';
-    this.textFontSizeMultiplier = 1;
-    this.textFontWeight = '500';
-    this.textLetterSpacing = '0';
-    this.textLineHeight = '1.6';
-    this.textMarginTop = 'var(--spx-space-lg)';
-    this.textTransform = 'default';
-    this.titleColor = 'var(--spx-color-black)';
-    this.titleFontSizeMultiplier = 1;
-    this.titleFontWeight = '500';
-    this.titleLetterSpacing = '0';
-    this.titleLineHeight = '1.25';
-    this.titleTextTransform = 'default';
-  }
-  componentDidLoad() {
-    globalComponentDidLoad(this.el);
-    setSectionVar(this.el);
-  }
-  render() {
-    /** Style base. */
-    const styleBase = {
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      padding: setVar(tag$k, 'padding', this.padding),
-      boxShadow: setVar(tag$k, 'box-shadow', this.boxShadow),
-      h3: Object.assign(Object.assign({}, text(tag$k, 'title', this.titleColor, '16px', '4vw', '24px', this.titleFontSizeMultiplier, this.titleFontWeight, this.titleLetterSpacing, this.titleLineHeight, this.titleTextTransform)), { display: 'inline-block', maxWidth: 'max-content' }),
-      p: Object.assign(Object.assign({}, text(tag$k, 'text', this.textColor, '14px', '3vw', '18px', this.textFontSizeMultiplier, this.textFontWeight, this.textLetterSpacing, this.textLineHeight, this.textTransform)), { display: 'inline-block', maxWidth: 'max-content', marginTop: setVar(tag$k, 'text-margin-top', this.textMarginTop) }),
-    };
-    /** Style default. */
-    const styleDefault = {
-      display: 'flex',
-    };
-    /** Merge objects. */
-    const styleMerge = css(merge$1(styleBase, styleDefault));
-    return (h$1(Host, { class: styleMerge }, h$1("slot", null)));
+    /** Icon styles. */
+    const styleIcon = css({
+      marginRight: !this.reverse && setClamp(tag$k, 'gap', this.iconGapMin, this.iconGapMax),
+      marginLeft: this.reverse && setClamp(tag$k, 'gap', this.iconGapMin, this.iconGapMax),
+    });
+    return (h$1(Host, null, h$1("a", { class: styleHost, href: this.href, target: this.target }, this.icon && h$1("spx-icon", { class: styleIcon, icon: this.icon }), h$1("slot", null))));
   }
   get el() { return this; }
 };
@@ -26274,31 +27066,39 @@ const SpxSectionFooter = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
-    this.background = 'var(--spx-color-gray-900)';
+    this.spxSectionFooterDidLoad = createEvent(this, "spxSectionFooterDidLoad", 7);
+    this.background = 'var(--spx-color-gray-800)';
     this.imageMaxHeight = '40px';
     this.justifyContent = 'space-between';
-    /**
-     * Space before the footer.
-     * @CSS
-     */
-    this.spaceBefore = 'var(--spx-space-4xl)';
-    /**
-     * Distance to the edge of the viewport on the y-axis.
-     * @CSS
-     */
-    this.spaceY = 'var(--spx-space-3xl)';
-    this.textColor = 'var(--spx-color-gray-600)';
+    this.spaceBeforeMin = 5;
+    this.spaceBeforeMax = 12;
+    this.paddingYMin = 4;
+    this.paddingYMax = 12;
+    this.textColor = 'var(--spx-color-gray-500)';
+    this.textFontSizeMin = 1;
+    this.textFontSizeMax = 1.2;
+    this.textMarginTopMin = 0.8;
+    this.textMarginTopMax = 1.2;
     this.textMaxWidth = '370px';
+    this.titleFontSizeMin = 1;
+    this.titleFontSizeMax = 1.6;
+    this.titleMarginBottomMin = 1;
+    this.titleMarginBottomMax = 2;
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
     setSectionVar(this.el);
+    this.spxSectionFooterDidLoad.emit({ target: 'document' });
   }
   render() {
+    /** Padding Y. */
+    const stylePaddingY = '' +
+      setClamp(tag$l, 'padding-y', this.paddingYMin, this.paddingYMax) +
+      ' 0 !important';
     /** Text styles. */
     const styleText = {
       color: setVar(tag$l, 'text-color', this.textColor),
-      fontSize: 'clamp(16px, 1.2vw, 20px)',
+      fontSize: setClamp(tag$l, 'text-font-size', this.textFontSizeMin, this.textFontSizeMax),
       lineHeight: '1.6',
       maxWidth: setVar(tag$l, 'text-max-width', this.textMaxWidth),
     };
@@ -26306,13 +27106,19 @@ const SpxSectionFooter = class extends HTMLElement {
     const styleHost = css({
       marginTop: 'auto',
       'div > h3, & > h3': {
-        marginTop: state.bpMobile && 'var(--spx-space-lg)',
-        marginBottom: 'var(--spx-space-md)',
+        marginBottom: setClamp(tag$l, 'title-margin-bottom', this.titleMarginBottomMin, this.titleMarginBottomMax),
+      },
+      'div > h3:not(.spx-e), & > h3': {
+        marginTop: state.bpMobile &&
+          setClamp(tag$l, 'text-margin-top', this.textMarginTopMin * 4, this.textMarginTopMax * 4),
       },
       '&:before': {
         display: 'block',
         content: '" "',
-        height: setVar(tag$l, 'space-before', this.spaceBefore),
+        height: setClamp(tag$l, 'space-before', this.spaceBeforeMin, this.spaceBeforeMax),
+      },
+      'div[data-spx-footer-padding-y]': {
+        padding: stylePaddingY,
       },
     });
     /** Outer styles. */
@@ -26325,11 +27131,12 @@ const SpxSectionFooter = class extends HTMLElement {
     const styleInner = css({
       display: 'flex',
       flexDirection: state.bpMobile ? 'column' : 'row',
-      justifyContent: setVar(tag$l, 'justify-content', this.justifyContent),
+      // justifyContent: setVar(tag, 'justify-content', this.justifyContent),
+      justifyContent: 'space-between',
       flexWrap: 'wrap',
       marginLeft: 'auto',
       marginRight: 'auto',
-      padding: '' + setVar(tag$l, 'padding', this.spaceY) + ' 0',
+      padding: stylePaddingY,
       maxWidth: setVar(tag$l, 'max-width', this.maxWidth),
       '& > div + div:not(.spx-e)': {
         marginLeft: !state.bpMobile && setVar(tag$l, 'gap', this.gap),
@@ -26338,18 +27145,22 @@ const SpxSectionFooter = class extends HTMLElement {
         color: '#ffffff',
         textTransform: 'uppercase',
         fontWeight: 600,
-        fontSize: 'clamp(18px, 1.6vw, 28px)',
+        fontSize: setClamp(tag$l, 'title-font-size', this.titleFontSizeMin, this.titleFontSizeMax),
         fontFamily: state.fontFamilyPrimary,
       },
+      'h3:not(.spx-e)': {
+        marginTop: state.bpMobile &&
+          setClamp(tag$l, 'title-margin-bottom', this.titleMarginBottomMin * 2, this.titleMarginBottomMax * 2),
+      },
       a: Object.assign(Object.assign({}, styleText), { display: 'block', fontFamily: state.fontFamilySecondary, maxWidth: 'max-content', '& + a': {
-          marginTop: 'var(--spx-space-sm)',
+          marginTop: setClamp(tag$l, 'text-margin-top', this.textMarginTopMin, this.textMarginTopMax),
+        }, '& + h3': {
+          marginTop: setClamp(tag$l, 'title-margin-bottom', this.titleMarginBottomMin * 2, this.titleMarginBottomMax * 2),
         }, '&:hover': {
           textDecoration: 'underline',
-        }, '& + h3': {
-          marginTop: 'var(--spx-space-lg)',
         } }),
-      p: Object.assign(Object.assign({}, styleText), { marginTop: 'var(--spx-space-sm)', fontFamily: state.fontFamilySecondary, '& + a': {
-          marginTop: 'var(--spx-space-lg)',
+      p: Object.assign(Object.assign({}, styleText), { marginTop: setClamp(tag$l, 'text-margin-top', this.textMarginTopMin, this.textMarginTopMax), fontFamily: state.fontFamilySecondary, '& + a': {
+          marginTop: setClamp(tag$l, 'title-margin-bottom', this.titleMarginBottomMin, this.titleMarginBottomMax),
         } }),
       img: {
         width: 'auto !important',
@@ -26369,6 +27180,7 @@ const SpxSectionHeader = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxSectionHeaderDidLoad = createEvent(this, "spxSectionHeaderDidLoad", 7);
     this.backdropFilter = 'blur(10px)';
     this.background = 'rgba(255,255,255,0.85)';
     this.logoMaxHeight = '50px';
@@ -26377,11 +27189,8 @@ const SpxSectionHeader = class extends HTMLElement {
      * @choice 'center', 'right'
      */
     this.navigationAlign = 'center';
-    /**
-     * Distance to the edge of the viewport on the y-axis.
-     * @CSS
-     */
-    this.spaceX = 'var(--spx-space-md)';
+    this.paddingYMin = 0.8;
+    this.paddingYMax = 1;
     this.zIndex = 102;
   }
   onScroll() {
@@ -26393,14 +27202,17 @@ const SpxSectionHeader = class extends HTMLElement {
     globalComponentDidLoad(this.el);
     this.onScroll();
     setSectionVar(this.el);
+    this.spxSectionHeaderDidLoad.emit({ target: 'document' });
   }
   render() {
+    /** Image styles. */
     const styleImg = css({
       maxHeight: setVar(tag$m, 'logo-max-height', this.logoMaxHeight),
       width: 'auto !important',
     });
     /** Host styles. */
     const styleHost = css({
+      maxWidth: '2560px',
       background: this.backgroundScroll && !this.bgScroll
         ? 'none'
         : setVar(tag$m, 'background', this.background),
@@ -26412,7 +27224,11 @@ const SpxSectionHeader = class extends HTMLElement {
       display: state.bpMobile || this.navigationAlign === 'right' ? 'flex' : 'grid',
       gridTemplateColumns: '160px 1fr 160px',
       alignItems: 'center',
-      padding: '' + setVar(tag$m, 'padding', this.spaceX) + ' ' + state.spaceXsm + '',
+      padding: '' +
+        setClamp(tag$m, 'padding-y', this.paddingYMin, this.paddingYMax) +
+        ' ' +
+        state.paddingXsm +
+        '',
       zIndex: this.zIndex,
       transitionProperty: 'background',
       transitionDuration: setVar(tag$m, 'transition-duration', transitionDuration),
@@ -26425,9 +27241,9 @@ const SpxSectionHeader = class extends HTMLElement {
     const styleNavigation = css({
       justifySelf: 'center',
       marginLeft: state.bpMobile
-        ? 'var(--spx-space-md)'
+        ? '16px'
         : this.navigationAlign === 'right' && !state.bpMobile && 'auto',
-      marginRight: this.navigationAlign === 'right' && 'var(--spx-space-xl)',
+      marginRight: this.navigationAlign === 'right' && '32px',
     });
     /** Button styles. */
     const styleButtons = css({
@@ -26449,91 +27265,159 @@ const SpxSectionHeader = class extends HTMLElement {
 };
 
 /**
- *  Tabs logic.
+ * Tabs logic.
  */
-const tabs = (el) => {
+const tabs = (el, tag, transitionDuration = '1000ms', animate = false, animationDuration = 0, animationColor = '') => {
   const headerElements = el.querySelectorAll('[data-spx-tabs-header]');
   const headerElementsFirst = el.querySelector('[data-spx-tabs-header]:first-of-type');
   const contentElements = el.querySelectorAll('[data-spx-tabs-content]');
   const contentElementsFirst = el.querySelector('[data-spx-tabs-content]:first-of-type');
-  headerElements.forEach((item) => {
+  /** Header elements. */
+  headerElements.forEach((item, index) => {
     item.classList.add(css({
       cursor: 'pointer',
       textAlign: 'left',
-    }));
-  });
-  contentElements.forEach((item) => {
-    item.classList.add(css({
-      display: 'none',
       '&[open]': {
-        display: 'block',
+        '--spx-tabs-animation-width': '0%',
+        pointerEvents: 'none',
+        span: {
+          background: animate &&
+            'linear-gradient(90deg,' +
+              setVar(tag, 'tabs-animation-color', animationColor) +
+              ' var(--spx-tabs-animation-width), currentColor 0) !important',
+          backgroundClip: animate && 'text !important',
+          textFillColor: animate && 'transparent !important',
+        },
       },
     }));
+    item.setAttribute('data-spx-tabs-index', index);
   });
+  /** Animation in. */
+  const kfIn = keyframes({
+    '0%': {
+      opacity: 0,
+    },
+    '30%, 100%': {
+      opacity: 1,
+    },
+  });
+  contentElements.forEach((item, index) => {
+    item.classList.add(css({
+      display: 'none',
+      opacity: '0',
+      '&[open]': {
+        display: 'block',
+        animation: kfIn,
+        animationDuration: transitionDuration,
+        animationFillMode: 'forwards',
+        animationTimingFunction: 'var(--spx-transition-timing-function)',
+      },
+    }));
+    item.setAttribute('data-spx-tabs-index', index);
+  });
+  /** Set up click events. */
   headerElements.forEach((item) => {
     item.addEventListener('click', () => {
+      /** Remove header attributes. */
       headerElements.forEach((item) => {
         item.removeAttribute('open');
       });
+      /** Remove content attributes */
       contentElements.forEach((item) => {
         item.removeAttribute('open');
       });
+      /** Set clicked item attribute. */
       item.setAttribute('open', '');
+      /** Start animation. */
+      if (animate) {
+        gsapWithCSS.globalTimeline.getChildren().forEach((t) => t.kill());
+        gsapWithCSS.set(item, {
+          '--spx-tabs-animation-width': '0%',
+        });
+        gsapWithCSS.to(el.querySelector('[open]'), {
+          '--spx-tabs-animation-width': '100%',
+          ease: 'linear',
+          duration: animationDuration,
+          onComplete: () => {
+            if (el.querySelectorAll('button').length ===
+              parseInt(el.querySelector('[open]').getAttribute('data-spx-tabs-index'), 10) +
+                1) {
+              headerElementsFirst.click();
+            }
+            else {
+              el.querySelector('[open] + button').click();
+            }
+          },
+        });
+      }
+      /** Set click content attribute. */
       el.querySelector('[data-spx-tabs-content="' +
         item.getAttribute('data-spx-tabs-header') +
         '"]').setAttribute('open', '');
     });
   });
-  contentElementsFirst.setAttribute('open', '');
+  /** Set up initial data and fire off animation if set. */
   headerElementsFirst.setAttribute('open', '');
+  if (animate) {
+    headerElementsFirst.click();
+  }
+  contentElementsFirst.setAttribute('open', '');
 };
 
-const tag$n = 'spx-section-text-media';
-const SpxSectionTextMedia = class extends HTMLElement {
+const tag$n = 'spx-section-two-column';
+const SpxSectionTwoColumn = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxSectionTwoColumnDidLoad = createEvent(this, "spxSectionTwoColumnDidLoad", 7);
     /**
      * Column size.
      * @CSS
      */
     this.columnSize = '1fr 1fr';
-    /**
-     * Gap between columns.
-     * @CSS
-     */
-    this.gap = 'var(--spx-space-2xl)';
-    /**
-     * Gap between images.
-     * @CSS
-     */
-    this.imagesGap = 'var(--spx-space-md)';
+    this.gapMin = 3;
+    this.gapMax = 6;
+    this.imagesGapMin = 1;
+    this.imagesGapMax = 2;
+    this.mediaPaddingMin = 2;
+    this.mediaPaddingMax = 3;
     /**
      * Layout of the section.
      * @choice 'horizontal', 'vertical'
      */
     this.layout = 'horizontal';
+    this.mediaMargin = '0';
+    this.tabsAnimation = false;
     /** Alignment for the inner text wrapper. */
     this.textAlignInner = 'left';
     /** Alignment for the outer text wrapper. */
     this.textAlignOuter = 'left';
+  }
+  componentWillLoad() {
+    if (this.el.querySelector('[slot="buttons"]')) {
+      this.buttons = true;
+    }
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
     setSectionVar(this.el);
     if (this.el.querySelector('[data-spx-tabs-header]')) {
       this.tabs = true;
-      tabs(this.el);
+      tabs(this.el, tag$n, '1000ms', this.tabsAnimation, this.tabsAnimationDuration, this.tabsAnimationColor);
     }
+    this.spxSectionTwoColumnDidLoad.emit({ target: 'document' });
   }
   render() {
+    /** Helper function to determine layout. */
     const pq = (valueCenter, valueSide) => {
       return this.layout === 'vertical'
         ? valueCenter
         : this.layout === 'horizontal' && valueSide;
     };
+    /** Conditions. */
     const isVertical = this.layout === 'vertical';
     const isHorizontal = this.layout === 'horizontal';
+    /** Background overlap styles. */
     const backgroundOverlap = {
       content: "' '",
       position: 'absolute',
@@ -26542,11 +27426,13 @@ const SpxSectionTextMedia = class extends HTMLElement {
       height: '100%',
       zIndex: -1,
     };
+    /** Text align inner styles. */
     const textAlignInner = this.textAlignInner === 'left'
       ? 'flex-start'
       : this.textAlignInner === 'center'
         ? 'center'
         : this.textAlignInner === 'right' && 'flex-end';
+    /** Text align outer styles. */
     const textAlignOuter = this.textAlignOuter === 'left'
       ? 'flex-start'
       : this.textAlignOuter === 'center'
@@ -26554,32 +27440,41 @@ const SpxSectionTextMedia = class extends HTMLElement {
         : this.textAlignOuter === 'right' && 'flex-end';
     /** Host styles. */
     const styleHost = css({
-      position: 'relative',
+      '--spx-section-two-column-grid-gap': isHorizontal && setClamp(tag$n, 'gap', this.gapMin, this.gapMax),
       marginTop: this.first && '0 !important',
-      display: pq('block', 'grid'),
-      gridTemplateColumns: state.bpMobile
-        ? '1fr'
-        : setVar(tag$n, 'column-size', this.columnSize),
-      gridGap: isHorizontal && setVar(tag$n, 'gap', this.gap),
-      background: setVar(tag$n, 'background', this.background),
+      position: 'relative',
+      background: this.backgroundImage
+        ? setVar(tag$n, 'background', this.backgroundImage)
+        : setVar(tag$n, 'background', this.background),
       backgroundSize: 'cover',
       overflowX: 'hidden',
       'h1, h2, p': {
         textAlign: this.textAlignInner,
       },
       'img + img': {
-        marginTop: setVar(tag$n, 'images-gap', this.imagesGap),
+        marginTop: setClamp(tag$n, 'images-gap', this.imagesGapMin, this.imagesGapMax),
       },
+    });
+    /** Inner styles. */
+    const styleInner = css({
+      display: pq('block', 'grid'),
+      gridTemplateColumns: state.bpMobile
+        ? '1fr'
+        : setVar(tag$n, 'column-size', this.columnSize),
+      gridGap: isHorizontal && setClamp(tag$n, 'gap', this.gapMin, this.gapMax),
+      marginLeft: 'auto',
+      marginRight: 'auto',
     });
     /** Text styles. */
     const styleText = css({
       position: 'relative',
+      gridRow: state.bpMobile && this.reverseMobile && '1',
       gridColumn: this.reverse && !state.bpMobile ? 2 : state.bpMobile && 1,
       display: 'flex',
       flexDirection: 'column',
-      paddingLeft: this.mediaFull && state.spaceX,
-      paddingRight: this.mediaFull && state.spaceX,
-      justifyContent: this.layout === 'horizontal' ? 'center' : textAlignInner,
+      paddingLeft: this.mediaFull && state.paddingX,
+      paddingRight: this.mediaFull && state.paddingX,
+      justifyContent: textAlignInner,
       alignItems: state.bpMobile
         ? 'left'
         : this.layout === 'horizontal' && this.reverse
@@ -26604,21 +27499,29 @@ const SpxSectionTextMedia = class extends HTMLElement {
       flexWrap: 'wrap',
       width: this.layout === 'vertical' && '100%',
       justifyContent: textAlignInner,
+      'spx-section-button:nth-child(1)': {
+        marginLeft: this.textAlignInner !== 'center' &&
+          this.textAlignOuter !== 'center' &&
+          '0 !important',
+      },
     });
     /** Media styles. */
     const styleMedia = css({
       position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
       gridColumn: (this.reverse || state.bpMobile) && 1,
-      gridRow: (this.reverse || state.bpMobile) && 1,
-      marginTop: isVertical && setVar(tag$n, 'gap', this.gap),
+      gridRow: this.reverseMobile && state.bpMobile
+        ? 2
+        : (this.reverse || state.bpMobile) && 1,
+      marginTop: isVertical && setClamp(tag$n, 'gap', this.gapMin, this.gapMax),
       padding: this.mediaBackground &&
         !this.mediaFull &&
         !this.tabs &&
-        'var(--spx-space-xl)',
+        setClamp(tag$n, 'media-background-padding', this.mediaPaddingMin, this.mediaPaddingMax),
       background: !this.mediaBackgroundOverlap && this.mediaBackground,
       '&>*': {
-        marginLeft: 'auto',
-        marginRight: 'auto',
+        margin: setVar(tag$n, 'media-margin', this.mediaMargin),
       },
       '&:before': merge$1({
         background: this.mediaBackground,
@@ -26627,7 +27530,9 @@ const SpxSectionTextMedia = class extends HTMLElement {
         right: !this.reverse && '-230%',
       }, backgroundOverlap),
     });
-    return (h$1(Host, { class: styleHost }, h$1("div", { class: styleText }, h$1("div", { class: styleTextWrap }, h$1("slot", { name: "pre-title" }), h$1("slot", { name: "text" }), h$1("div", { class: styleButtons }, h$1("slot", { name: "buttons" })))), !this.hideMedia && (h$1("div", { class: styleMedia }, h$1("slot", { name: "media" })))));
+    return (h$1(Host, { class: styleHost }, h$1("section", { class: styleInner }, h$1("div", { class: styleText }, h$1("div", { class: styleTextWrap }, h$1("slot", { name: "pre-title" }), h$1("slot", { name: "text" }), this.buttons && (
+    /** Buttons. */
+    h$1("div", { "data-spx-section-two-column-buttons": true, class: styleButtons }, h$1("slot", { name: "buttons" }))))), !this.hideMedia && (h$1("div", { class: styleMedia }, h$1("slot", { name: "media" }))))));
   }
   get el() { return this; }
 };
@@ -26637,6 +27542,7 @@ const SpxShare = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxShareDidLoad = createEvent(this, "spxShareDidLoad", 7);
     this.fontSize = fontSize;
     this.itemBorderRadius = borderRadius;
     /**
@@ -26664,6 +27570,7 @@ const SpxShare = class extends HTMLElement {
   componentDidLoad() {
     globalComponentDidLoad(this.el);
     this.location = location.href;
+    this.spxShareDidLoad.emit({ target: 'document' });
   }
   async reload() {
     this.componentDidLoad();
@@ -26678,6 +27585,7 @@ const SpxShare = class extends HTMLElement {
       gridAutoRows: this.vertical && 'max-content',
       gridGap: setVar(tag$o, 'item-gap', this.itemGap),
     });
+    /** Link styles. */
     const styleLink = css({
       display: 'flex',
       alignItems: 'center',
@@ -26700,6 +27608,7 @@ const SpxShare = class extends HTMLElement {
         height: '100%',
       },
     });
+    /** Facebook styles. */
     const styleFacebook = css({
       background: this.theme === 'default' && !this.itemBackground
         ? '#1877F2'
@@ -26713,6 +27622,7 @@ const SpxShare = class extends HTMLElement {
           : null,
       border: this.theme === 'outline' && '1px solid #1877F2',
     });
+    /** Twitter styles. */
     const styleTwitter = css({
       background: this.theme === 'default' && !this.itemBackground
         ? '#1DA1F2'
@@ -26726,6 +27636,7 @@ const SpxShare = class extends HTMLElement {
           : null,
       border: this.theme === 'outline' && '1px solid #1DA1F2',
     });
+    /** Email styles. */
     const styleEmail = css({
       background: this.theme === 'default' && !this.itemBackground
         ? '#c6c6c6'
@@ -26739,6 +27650,7 @@ const SpxShare = class extends HTMLElement {
           : null,
       border: this.theme === 'outline' && '1px solid #c6c6c6',
     });
+    /** WhatsApp styles. */
     const styleWhatsapp = css({
       background: this.theme === 'default' && !this.itemBackground
         ? '#25D366'
@@ -26758,7 +27670,7 @@ const SpxShare = class extends HTMLElement {
 };
 
 /**
- * SSR Window 3.0.0-alpha.4
+ * SSR Window 3.0.0
  * Better handling for window object in SSR environment
  * https://github.com/nolimits4web/ssr-window
  *
@@ -26766,7 +27678,7 @@ const SpxShare = class extends HTMLElement {
  *
  * Licensed under MIT
  *
- * Released on: May 20, 2020
+ * Released on: November 9, 2020
  */
 /* eslint-disable no-param-reassign */
 function isObject$1(obj) {
@@ -26907,7 +27819,7 @@ function getWindow$1() {
 }
 
 /**
- * Dom7 3.0.0-alpha.9
+ * Dom7 3.0.0
  * Minimalistic JavaScript library for DOM manipulation, with a jQuery-compatible API
  * https://framework7.io/docs/dom7.html
  *
@@ -26915,7 +27827,7 @@ function getWindow$1() {
  *
  * Licensed under MIT
  *
- * Released on: August 25, 2020
+ * Released on: November 9, 2020
  */
 
 function _inheritsLoose$1(subClass, superClass) {
@@ -27235,7 +28147,7 @@ function transform(transform) {
 
 function transition(duration) {
   for (var i = 0; i < this.length; i += 1) {
-    this[i].style.transition = typeof duration !== 'string' ? duration + "ms" : duration;
+    this[i].style.transitionDuration = typeof duration !== 'string' ? duration + "ms" : duration;
   }
 
   return this;
@@ -28071,7 +28983,7 @@ function calcDevice(_temp) {
   var windows = platform === 'Win32';
   var macos = platform === 'MacIntel'; // iPadOs 13 fix
 
-  var iPadScreens = ['1024x1366', '1366x1024', '834x1194', '1194x834', '834x1112', '1112x834', '768x1024', '1024x768'];
+  var iPadScreens = ['1024x1366', '1366x1024', '834x1194', '1194x834', '834x1112', '1112x834', '768x1024', '1024x768', '820x1180', '1180x820', '810x1080', '1080x810'];
 
   if (!ipad && macos && support.touch && iPadScreens.indexOf(screenWidth + "x" + screenHeight) >= 0) {
     ipad = ua.match(/(Version)\/([\d.]+)/);
@@ -28597,7 +29509,10 @@ function updateSlides() {
           if (boxSizing && boxSizing === 'border-box') {
             slideSize = width + marginLeft + marginRight;
           } else {
-            slideSize = width + paddingLeft + paddingRight + marginLeft + marginRight;
+            var _slide$ = slide[0],
+                clientWidth = _slide$.clientWidth,
+                offsetWidth = _slide$.offsetWidth;
+            slideSize = width + paddingLeft + paddingRight + marginLeft + marginRight + (offsetWidth - clientWidth);
           }
         } else {
           var height = parseFloat(slideStyles.getPropertyValue('height') || 0);
@@ -28611,7 +29526,10 @@ function updateSlides() {
           if (_boxSizing && _boxSizing === 'border-box') {
             slideSize = height + marginTop + marginBottom;
           } else {
-            slideSize = height + paddingTop + paddingBottom + marginTop + marginBottom;
+            var _slide$2 = slide[0],
+                clientHeight = _slide$2.clientHeight,
+                offsetHeight = _slide$2.offsetHeight;
+            slideSize = height + paddingTop + paddingBottom + marginTop + marginBottom + (offsetHeight - clientHeight);
           }
         }
       }
@@ -29393,6 +30311,33 @@ function slideTo(index, speed, runCallbacks, internal) {
     runCallbacks = true;
   }
 
+  if (typeof index !== 'number' && typeof index !== 'string') {
+    throw new Error("The 'index' argument cannot have type other than 'number' or 'string'. [" + typeof index + "] given.");
+  }
+
+  if (typeof index === 'string') {
+    /**
+     * The `index` argument converted from `string` to `number`.
+     * @type {number}
+     */
+    var indexAsNumber = parseInt(index, 10);
+    /**
+     * Determines whether the `index` argument is a valid `number`
+     * after being converted from the `string` type.
+     * @type {boolean}
+     */
+
+    var isValidNumber = isFinite(indexAsNumber);
+
+    if (!isValidNumber) {
+      throw new Error("The passed-in 'index' (string) couldn't be converted to 'number'. [" + index + "] given.");
+    } // Knowing that the converted `index` is a valid number,
+    // we can update the original argument's value.
+
+
+    index = indexAsNumber;
+  }
+
   var swiper = this;
   var slideIndex = index;
   if (slideIndex < 0) slideIndex = 0;
@@ -30079,7 +31024,13 @@ function onTouchStart(event) {
   data.isTouchEvent = e.type === 'touchstart';
   if (!data.isTouchEvent && 'which' in e && e.which === 3) return;
   if (!data.isTouchEvent && 'button' in e && e.button > 0) return;
-  if (data.isTouched && data.isMoved) return;
+  if (data.isTouched && data.isMoved) return; // change target el for shadow root componenet
+
+  var swipingClassHasValue = !!params.noSwipingClass && params.noSwipingClass !== '';
+
+  if (swipingClassHasValue && e.target && e.target.shadowRoot && event.path && event.path[0]) {
+    $targetEl = $(event.path[0]);
+  }
 
   if (params.noSwiping && $targetEl.closest(params.noSwipingSelector ? params.noSwipingSelector : "." + params.noSwipingClass)[0]) {
     swiper.allowClick = true;
@@ -31172,6 +32123,7 @@ const defaults = {
   speed: 300,
   cssMode: false,
   updateOnWindowResize: true,
+  nested: false,
   // Overrides
   width: null,
   height: null,
@@ -31540,14 +32492,19 @@ var Swiper = /*#__PURE__*/function () {
     swiper.emit('_containerClasses', classes.join(' '));
   };
 
+  _proto.getSlideClasses = function getSlideClasses(slideEl) {
+    var swiper = this;
+    return slideEl.className.split(' ').filter(function (className) {
+      return className.indexOf('swiper-slide') === 0 || className.indexOf(swiper.params.slideClass) === 0;
+    }).join(' ');
+  };
+
   _proto.emitSlidesClasses = function emitSlidesClasses() {
     var swiper = this;
     if (!swiper.params._emitClasses || !swiper.el) return;
     swiper.slides.each(function (slideEl) {
-      var classes = slideEl.className.split(' ').filter(function (className) {
-        return className.indexOf('swiper-slide') === 0 || className.indexOf(swiper.params.slideClass) === 0;
-      });
-      swiper.emit('_slideClass', slideEl, classes.join(' '));
+      var classNames = swiper.getSlideClasses(slideEl);
+      swiper.emit('_slideClass', slideEl, classNames);
     });
   };
 
@@ -32644,35 +33601,39 @@ var Autoplay = {
 
     clearTimeout(swiper.autoplay.timeout);
     swiper.autoplay.timeout = nextTick(function () {
+      var autoplayResult;
+
       if (swiper.params.autoplay.reverseDirection) {
         if (swiper.params.loop) {
           swiper.loopFix();
-          swiper.slidePrev(swiper.params.speed, true, true);
+          autoplayResult = swiper.slidePrev(swiper.params.speed, true, true);
           swiper.emit('autoplay');
         } else if (!swiper.isBeginning) {
-          swiper.slidePrev(swiper.params.speed, true, true);
+          autoplayResult = swiper.slidePrev(swiper.params.speed, true, true);
           swiper.emit('autoplay');
         } else if (!swiper.params.autoplay.stopOnLastSlide) {
-          swiper.slideTo(swiper.slides.length - 1, swiper.params.speed, true, true);
+          autoplayResult = swiper.slideTo(swiper.slides.length - 1, swiper.params.speed, true, true);
           swiper.emit('autoplay');
         } else {
           swiper.autoplay.stop();
         }
       } else if (swiper.params.loop) {
         swiper.loopFix();
-        swiper.slideNext(swiper.params.speed, true, true);
+        autoplayResult = swiper.slideNext(swiper.params.speed, true, true);
         swiper.emit('autoplay');
       } else if (!swiper.isEnd) {
-        swiper.slideNext(swiper.params.speed, true, true);
+        autoplayResult = swiper.slideNext(swiper.params.speed, true, true);
         swiper.emit('autoplay');
       } else if (!swiper.params.autoplay.stopOnLastSlide) {
-        swiper.slideTo(0, swiper.params.speed, true, true);
+        autoplayResult = swiper.slideTo(0, swiper.params.speed, true, true);
         swiper.emit('autoplay');
       } else {
         swiper.autoplay.stop();
       }
 
-      if (swiper.params.cssMode && swiper.autoplay.running) swiper.autoplay.run();
+      if (swiper.params.cssMode && swiper.autoplay.running) swiper.autoplay.run();else if (autoplayResult === false) {
+        swiper.autoplay.run();
+      }
     }, delay);
   },
   start: function start() {
@@ -33018,6 +33979,7 @@ const SpxScrollspy$1 = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxSliderDidLoad = createEvent(this, "spxSliderDidLoad", 7);
     /** Automatically adjusts height of slider. */
     this.autoheight = false;
     /** Starts navigating to the next slide when page is loaded. */
@@ -33081,7 +34043,7 @@ const SpxScrollspy$1 = class extends HTMLElement {
      */
     this.pagination = 'bullets';
     this.paginationBulletsBackground = 'var(--spx-color-gray-300)';
-    this.paginationBulletsBackgroundActive = 'var(--spx-color-primary-A700)';
+    this.paginationBulletsBackgroundActive = 'var(--spx-color-gray-900)';
     /** Amount of dynamic bullets. */
     this.paginationBulletsDynamicAmount = 5;
     /**
@@ -33094,7 +34056,15 @@ const SpxScrollspy$1 = class extends HTMLElement {
      * @CSS
      */
     this.paginationBulletsSpaceBetween = '4px';
+    this.paginationTabsGapMin = 1;
+    this.paginationTabsGapMax = 1.8;
+    this.paginationTabsMarginBottomMin = 1.4;
+    this.paginationTabsMarginBottomMax = 2.6;
     this.paginationTabsMaxWidth = '320px';
+    this.paginationTabsInnerGapMin = 0.8;
+    this.paginationTabsInnerGapMax = 1;
+    this.paginationTabsPaddingMin = 1;
+    this.paginationTabsPaddingMax = 1.4;
     this.paginationTransitionDuration = transitionDuration;
     this.paginationTransitionTimingFunction = transitionTimingFunction;
     /** Screen reader message for first slide. */
@@ -33132,35 +34102,9 @@ const SpxScrollspy$1 = class extends HTMLElement {
       item.classList.add('swiper-slide');
       item.setAttribute('data-spx-slider-index', String(index));
     });
-    /*
-
-      if (this.gallery === true) {
-        const thumbs = this.el.querySelectorAll('.swiper-gallery')
-        if (thumbs) {
-          thumbs.forEach(item => {
-            item.remove()
-          })
-        }
-        const container = document.createElement('div')
-        container.classList.add('swiper-container')
-        container.classList.add('swiper-gallery')
-        const wrapper = document.createElement('div')
-        wrapper.classList.add('swiper-wrapper')
-        container.setAttribute('slot', 'gallery')
-
-        container.appendChild(wrapper)
-        this.el.appendChild(container)
-
-        this.el.querySelectorAll('.swiper-slide').forEach(item => {
-          const clone = item.cloneNode(true)
-          wrapper.appendChild(clone)
-        })
-      }
-
-         */
     /** Create breakpoint values. */
     const createBPs = () => {
-      for (var att, i = 0, atts = this.el.attributes, n = atts.length; i < n; i++) {
+      for (let att, i = 0, atts = this.el.attributes, n = atts.length; i < n; i++) {
         att = atts[i];
         if (startsWith(att.nodeName, 'bp-')) {
           const attribute = this.el.getAttribute(att.nodeName);
@@ -33180,17 +34124,6 @@ const SpxScrollspy$1 = class extends HTMLElement {
     };
     /** Use modules so autoplay works in build mode. */
     Swiper.use([Autoplay$1, Navigation$1, Pagination$1, A11y$1, Thumbs$1]);
-    /*
-
-      if (this.gallery === true) {
-        this.mySwiperGallery = new Swiper(this.el.querySelector('.swiper-gallery') as HTMLElement, {
-          slidesPerView: this.gallerySlidesPerView,
-          spaceBetween: this.gallerySpaceBetween,
-          freeMode: true
-        })
-      }
-
-      */
     /** Create swiper. */
     this.mySwiper = new Swiper(this.container, {
       a11y: {
@@ -33239,7 +34172,9 @@ const SpxScrollspy$1 = class extends HTMLElement {
           .getAttribute('data-spx-slider-index'));
       });
     }
+    this.spxSliderDidLoad.emit({ target: 'document' });
   }
+  /** Creates tab pagination from data-attributes. */
   createTabs() {
     this.paginationTabs.innerHTML = '';
     const slides = this.el.querySelectorAll('.swiper-wrapper > *.swiper-slide:not(.swiper-slide-duplicate)');
@@ -33259,12 +34194,15 @@ const SpxScrollspy$1 = class extends HTMLElement {
       const slide = document.createElement('div');
       slide.setAttribute('tabindex', '0');
       slide.classList.add(css({
-        padding: 'var(--spx-space-md) var(--spx-space-md) var(--spx-space-lg) var(--spx-space-md)',
-        display: 'grid',
-        gridGap: 'var(--spx-space-sm)',
-        gridAutoRows: 'max-content',
+        padding: setClamp(tag$p, 'pagination-tabs-padding', this.paginationTabsPaddingMin, this.paginationTabsPaddingMax) +
+          ' ' +
+          setClamp(tag$p, 'pagination-tabs-padding', this.paginationTabsPaddingMin, this.paginationTabsPaddingMax) +
+          ' ' +
+          setClamp(tag$p, 'pagination-tabs-padding', this.paginationTabsPaddingMin * 2, this.paginationTabsPaddingMax * 2) +
+          ' ' +
+          setClamp(tag$p, 'pagination-tabs-padding', this.paginationTabsPaddingMin, this.paginationTabsPaddingMax),
         background: 'var(--spx-color-gray-50)',
-        border: '1px solid var(--spx-color-gray-100)',
+        border: '1px solid var(--spx-color-gray-200)',
         borderRadius: borderRadius,
         cursor: 'pointer',
         transitionProperty: 'background, border',
@@ -33272,14 +34210,20 @@ const SpxScrollspy$1 = class extends HTMLElement {
         transitionTimingFunction: setVar(tag$p, 'pagination-transition-timing-function', this.paginationTransitionDuration),
         overflow: 'hidden',
         position: 'relative',
+        display: 'flex',
+        flexDirection: 'column',
+        'span:nth-child(2)': {
+          marginTop: setClamp(tag$p, 'pagination-tabs-inner-gap', this.paginationTabsInnerGapMin, this.paginationTabsInnerGapMax),
+        },
         '&[data-spx-slider-tab-active] div': {
           content: '" "',
           display: this.autoplay ? 'block' : 'none',
           position: 'absolute',
           bottom: '0',
+          left: '0',
           width: '100%',
           height: '3px',
-          background: 'var(--spx-color-primary-A700)',
+          background: 'var(--spx-color-primary-600)',
           animation: kf,
           animationIterationCount: 1,
           animationDuration: this.autoplayDelay + 'ms',
@@ -33290,12 +34234,12 @@ const SpxScrollspy$1 = class extends HTMLElement {
           display: 'none',
         },
         '&:hover:not([data-spx-slider-tab-active])': {
-          background: 'var(--spx-color-primary-42)',
-          borderColor: 'var(--spx-color-primary-50)',
+          background: 'var(--spx-color-primary-50)',
+          borderColor: 'var(--spx-color-primary-100)',
         },
         '&[data-spx-slider-tab-active]': {
-          background: 'var(--spx-color-primary-42)',
-          border: '1px solid var(--spx-color-primary-100)',
+          background: 'var(--spx-color-primary-50)',
+          border: '1px solid var(--spx-color-primary-200)',
           [mq(this.bpTabs)]: {
             display: 'grid',
           },
@@ -33314,7 +34258,7 @@ const SpxScrollspy$1 = class extends HTMLElement {
       });
       /** Enter listener. */
       slide.addEventListener('keydown', (e) => {
-        if (e.keyCode === 13) {
+        if (e.key === 'Enter') {
           tabClick();
         }
       });
@@ -33327,13 +34271,13 @@ const SpxScrollspy$1 = class extends HTMLElement {
       title.classList.add(css({
         fontWeight: 500,
         color: 'var(--spx-color-primary-600)',
-        fontSize: setSize('16px', '3vw', '20px', setVar(tag$p, 'pagination-title-font-size-multiplier', '1')),
+        fontSize: setClamp(tag$p, 'pagination-title-font-size', 1, 1.2),
       }));
       title.innerText = item.getAttribute('data-spx-slider-title');
       /** Description. */
       const description = document.createElement('span');
       description.classList.add(css({
-        fontSize: setSize('12px', '2.6vw', '15px', setVar(tag$p, 'pagination-description-font-size-multiplier', '1')),
+        fontSize: setClamp(tag$p, 'pagination-description-font-size', 0.8, 0.9),
       }));
       description.innerText = item.getAttribute('data-spx-slider-description');
       /** Loader. */
@@ -33355,12 +34299,6 @@ const SpxScrollspy$1 = class extends HTMLElement {
       .setAttribute('data-spx-slider-tab-active', '');
   }
   async reload() {
-    /*
-      if (this.el.querySelector('.swiper-gallery')) {
-        this.el.querySelector('.swiper-gallery').remove()
-        this.mySwiperGallery.destroy()
-      }
-      */
     this.mySwiper.destroy();
     const bullets = this.el.querySelector('.swiper-pagination-bullets-dynamic');
     if (bullets) {
@@ -33379,13 +34317,6 @@ const SpxScrollspy$1 = class extends HTMLElement {
         maxHeight: setVar(tag$p, 'max-height', this.maxHeight),
         maxWidth: setVar(tag$p, 'max-width', this.maxWidth),
       },
-      /*
-        '.swiper-gallery': {
-          marginTop: setVar(tag, 'gallery-space-top', this.gallerySpaceTop),
-          maxHeight: setVar(tag, 'gallery-max-height', this.galleryMaxHeight)
-        },
-        */
-      '.swiper-button-next, .swiper-button-prev': {},
       '.swiper-pagination-bullet': {
         position: 'static',
         opacity: '1',
@@ -33411,7 +34342,7 @@ const SpxScrollspy$1 = class extends HTMLElement {
     const stylePagination = css({
       display: 'flex',
       alignItems: 'center',
-      marginBottom: 'var(--spx-space-xl)',
+      marginBottom: setClamp(tag$p, 'pagination-tabs-margin-bottom', this.paginationTabsMarginBottomMin, this.paginationTabsMarginBottomMax),
     });
     /** Tab styles. */
     const stylePaginationTabs = css({
@@ -33419,7 +34350,7 @@ const SpxScrollspy$1 = class extends HTMLElement {
       display: 'grid',
       gridAutoFlow: 'column',
       gridAutoColumns: setVar(tag$p, 'pagination-tabs-max-width', this.paginationTabsMaxWidth),
-      gridGap: 'var(--spx-space-md)',
+      gridGap: setClamp(tag$p, 'pagination-tabs-gap', this.paginationTabsGapMin, this.paginationTabsGapMax),
     });
     /** Bullet styles. */
     const stylePaginationBullets = css({
@@ -33490,21 +34421,23 @@ const SpxSlideshow = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
-    /**
-     * Gap between inner elements.
-     * @CSS
-     */
-    this.gap = 'var(--spx-space-lg)';
-    /**
-     * Max width of inner elements.
-     * @CSS
-     */
-    this.maxWidth = '350px';
+    this.spxSlideshowDidLoad = createEvent(this, "spxSlideshowDidLoad", 7);
+    this.display = 'block';
     /**
      * Duration of slideshow to complete one cycle.
      * @CSS
      */
     this.duration = '60s';
+    /**
+     * Gap between inner elements.
+     * @CSS
+     */
+    this.gap = '1em';
+    /**
+     * Max width of inner elements.
+     * @CSS
+     */
+    this.maxWidth = '350px';
   }
   /** Watch images prop and parse to array. */
   imagesChanged(newValue) {
@@ -33512,7 +34445,9 @@ const SpxSlideshow = class extends HTMLElement {
       this.imagesArray = JSON.parse(newValue);
   }
   onResize() {
-    this.offsetWidth = this.elements.offsetWidth;
+    if (this.elements) {
+      this.offsetWidth = this.elements.offsetWidth;
+    }
   }
   componentWillLoad() {
     /** If image prop is set. */
@@ -33527,6 +34462,7 @@ const SpxSlideshow = class extends HTMLElement {
       this.clone.appendChild(clone);
     });
     this.offsetWidth = this.elements.offsetWidth;
+    this.spxSlideshowDidLoad.emit({ target: 'document' });
   }
   render() {
     /** Animation. */
@@ -33542,12 +34478,12 @@ const SpxSlideshow = class extends HTMLElement {
           '), 0px, 0px)',
       },
     });
-    const style = css({
-      display: 'grid',
-      gridAutoFlow: 'column',
-      gridAutoColumns: setVar(tag$q, 'max-width', this.maxWidth),
-      gridGap: setVar(tag$q, 'gap', this.gap),
+    /** Host styles. */
+    const styleHost = css({
+      display: setVar(tag$q, 'display', this.display),
+      overflow: setVar(tag$q, 'overflow', this.overflow),
     });
+    /** Wrap styles. */
     const styleWrap = css({
       animationName: kf,
       animationDuration: setVar(tag$q, 'speed', this.duration),
@@ -33563,7 +34499,14 @@ const SpxSlideshow = class extends HTMLElement {
         marginLeft: setVar(tag$q, 'gap', this.gap),
       },
     });
-    return (h$1(Host, null, h$1("div", { class: styleWrap }, h$1("div", { class: style, ref: (el) => (this.elements = el) }, getGallery(this.images, this.imagesSrc, this.imagesArray, this.imageSize)), h$1("div", { class: style, ref: (el) => (this.clone = el) }))));
+    /** Slideshow style. */
+    const slideshowStyle = css({
+      display: 'grid',
+      gridAutoFlow: 'column',
+      gridAutoColumns: setVar(tag$q, 'max-width', this.maxWidth),
+      gridGap: setVar(tag$q, 'gap', this.gap),
+    });
+    return (h$1(Host, { class: styleHost }, h$1("div", { class: styleWrap }, h$1("div", { class: slideshowStyle, ref: (el) => (this.elements = el) }, getGallery(this.images, this.imagesSrc, this.imagesArray, this.imageSize)), h$1("div", { class: slideshowStyle, ref: (el) => (this.clone = el) }))));
   }
   get el() { return this; }
   static get watchers() { return {
@@ -33576,6 +34519,7 @@ const SpxSnackbar = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxSnackbarDidLoad = createEvent(this, "spxSnackbarDidLoad", 7);
     this.animationDelay = '200ms';
     this.animationDuration = '2000ms';
     this.background = 'var(--spx-color-gray-900)';
@@ -33592,19 +34536,28 @@ const SpxSnackbar = class extends HTMLElement {
      */
     this.distanceY = '1em';
     this.fontSize = '18px';
-    /** Unique identifier for snackbar instance. */
+    /**
+     * Unique identifier for snackbar instance.
+     * @editor '#components'
+     */
     this.identifier = 'primary';
     this.padding = '1em';
     /**
      * Component position in page.
-     * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center", 'top-right'
+     * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
      */
     this.position = 'bottom-right';
-    /** CSS property position of button. */
+    /**
+     * CSS property position of button.
+     * @editor 'absolute'
+     */
     this.positionCss = 'fixed';
     /** Space between snackbars. */
-    this.spaceBetween = 'var(--spx-space-xs)';
-    /** Element where snackbars should be created in. */
+    this.spaceBetween = '12px';
+    /**
+     * Element where snackbars should be created in.
+     * @editor '#components'
+     */
     this.target = 'body';
     /** Text inside snackbar. */
     this.text = "Hello, I'm a snackbar.";
@@ -33631,7 +34584,7 @@ const SpxSnackbar = class extends HTMLElement {
   }
   componentWillLoad() {
     this.createPositionArray();
-    /** Load into container. */
+    /** Load into container if more than one snackbar are on screen. */
     if (!document.querySelector('[data-spx-id="' + this.identifier + '"]')) {
       const div = document.createElement('div');
       this.containerClass = {};
@@ -33651,6 +34604,7 @@ const SpxSnackbar = class extends HTMLElement {
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
+    this.spxSnackbarDidLoad.emit({ target: 'document' });
   }
   componentDidRender() {
     const removeItem = () => {
@@ -33735,40 +34689,6 @@ const SpxSnackbar = class extends HTMLElement {
     "spaceBetween": ["positionChanged"],
     "position": ["positionChanged"]
   }; }
-};
-
-/**
- * Pass attributes to nested components.
- */
-const passAttributes = (selector, element, component) => {
-  const elements = selector.querySelectorAll(component);
-  for (let att, i = 0, atts = element.attributes, n = atts.length; i < n; i++) {
-    att = atts[i];
-    if (startsWith(att.nodeName, component)) {
-      elements.forEach((item) => {
-        item.setAttribute(att.nodeName.replace(component + '-', ''), att.nodeValue);
-      });
-    }
-  }
-};
-
-const SpxSnackbarToggle = class extends HTMLElement {
-  constructor() {
-    super();
-    this.__registerHost();
-    this.createSnackbar = () => {
-      /** Create snackbar. */
-      const snackbar = document.createElement('spx-snackbar');
-      /** Append snackbar to the inside. */
-      document.body.appendChild(snackbar);
-      /** Pass all element attributes to snackbar. */
-      passAttributes(document, this.el, 'spx-snackbar');
-    };
-  }
-  render() {
-    return (h$1(Host, { onClick: this.createSnackbar }, h$1("slot", null)));
-  }
-  get el() { return this; }
 };
 
 /**
@@ -34279,7 +35199,6 @@ var Tokenizer_1 = class Tokenizer {
       let raw = cap[0];
       const bull = cap[2];
       const isordered = bull.length > 1;
-      const isparen = bull[bull.length - 1] === ')';
 
       const list = {
         type: 'list',
@@ -34296,16 +35215,44 @@ var Tokenizer_1 = class Tokenizer {
       let next = false,
         item,
         space,
-        b,
+        bcurr,
+        bnext,
         addBack,
         loose,
         istask,
         ischecked;
 
-      const l = itemMatch.length;
+      let l = itemMatch.length;
+      bcurr = this.rules.block.listItemStart.exec(itemMatch[0]);
       for (let i = 0; i < l; i++) {
         item = itemMatch[i];
         raw = item;
+
+        // Determine whether the next list item belongs here.
+        // Backpedal if it does not belong in this list.
+        if (i !== l - 1) {
+          bnext = this.rules.block.listItemStart.exec(itemMatch[i + 1]);
+
+          if (bnext[1].length > bcurr[0].length || bnext[1].length > 3) {
+            // nested list
+            itemMatch.splice(i, 2, itemMatch[i] + '\n' + itemMatch[i + 1]);
+            i--;
+            l--;
+            continue;
+          } else {
+            if (
+              // different bullet style
+              !this.options.pedantic || this.options.smartLists
+                ? bnext[2][bnext[2].length - 1] !== bull[bull.length - 1]
+                : isordered === (bnext[2].length === 1)
+            ) {
+              addBack = itemMatch.slice(i + 1).join('\n');
+              list.raw = list.raw.substring(0, list.raw.length - addBack.length);
+              i = l - 1;
+            }
+          }
+          bcurr = bnext;
+        }
 
         // Remove the list item's bullet
         // so it is seen as the next token.
@@ -34319,18 +35266,6 @@ var Tokenizer_1 = class Tokenizer {
           item = !this.options.pedantic
             ? item.replace(new RegExp('^ {1,' + space + '}', 'gm'), '')
             : item.replace(/^ {1,4}/gm, '');
-        }
-
-        // Determine whether the next list item belongs here.
-        // Backpedal if it does not belong in this list.
-        if (i !== l - 1) {
-          b = this.rules.block.bullet.exec(itemMatch[i + 1])[0];
-          if (isordered ? b.length === 1 || (!isparen && b[b.length - 1] === ')')
-            : (b.length > 1 || (this.options.smartLists && b !== bull))) {
-            addBack = itemMatch.slice(i + 1).join('\n');
-            list.raw = list.raw.substring(0, list.raw.length - addBack.length);
-            i = l - 1;
-          }
         }
 
         // Determine whether item is loose or not.
@@ -34347,11 +35282,13 @@ var Tokenizer_1 = class Tokenizer {
         }
 
         // Check for task list items
-        istask = /^\[[ xX]\] /.test(item);
-        ischecked = undefined;
-        if (istask) {
-          ischecked = item[1] !== ' ';
-          item = item.replace(/^\[[ xX]\] +/, '');
+        if (this.options.gfm) {
+          istask = /^\[[ xX]\] /.test(item);
+          ischecked = undefined;
+          if (istask) {
+            ischecked = item[1] !== ' ';
+            item = item.replace(/^\[[ xX]\] +/, '');
+          }
         }
 
         list.items.push({
@@ -34654,7 +35591,7 @@ var Tokenizer_1 = class Tokenizer {
       return {
         type: 'del',
         raw: cap[0],
-        text: cap[1]
+        text: cap[2]
       };
     }
   }
@@ -34758,7 +35695,7 @@ const block = {
   hr: /^ {0,3}((?:- *){3,}|(?:_ *){3,}|(?:\* *){3,})(?:\n+|$)/,
   heading: /^ {0,3}(#{1,6}) +([^\n]*?)(?: +#+)? *(?:\n+|$)/,
   blockquote: /^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/,
-  list: /^( {0,3})(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?!\1bull )\n*|\s*$)/,
+  list: /^( {0,3})(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?! {0,3}bull )\n*|\s*$)/,
   html: '^ {0,3}(?:' // optional indentation
     + '<(script|pre|style)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)' // (1)
     + '|comment[^\\n]*(\\n+|$)' // (2)
@@ -34787,9 +35724,13 @@ block.def = edit$1(block.def)
   .getRegex();
 
 block.bullet = /(?:[*+-]|\d{1,9}[.)])/;
-block.item = /^( *)(bull) ?[^\n]*(?:\n(?!\1bull ?)[^\n]*)*/;
+block.item = /^( *)(bull) ?[^\n]*(?:\n(?! *bull ?)[^\n]*)*/;
 block.item = edit$1(block.item, 'gm')
   .replace(/bull/g, block.bullet)
+  .getRegex();
+
+block.listItemStart = edit$1(/^( *)(bull)/)
+  .replace('bull', block.bullet)
   .getRegex();
 
 block.list = edit$1(block.list)
@@ -35058,8 +35999,8 @@ inline.gfm = merge$1$1({}, inline.normal, {
   _extended_email: /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/,
   url: /^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/,
   _backpedal: /(?:[^?!.,:;*_~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_~)]+(?!$))+/,
-  del: /^~+(?=\S)([\s\S]*?\S)~+/,
-  text: /^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*~]|\b_|https?:\/\/|ftp:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@))|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@))/
+  del: /^(~~?)(?=[^\s~])([\s\S]*?[^\s~])\1(?=[^~]|$)/,
+  text: /^([`~]+|[^`~])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*~]|\b_|https?:\/\/|ftp:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@))|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@))/
 });
 
 inline.gfm.url = edit$1(inline.gfm.url, 'i')
@@ -35408,12 +36349,13 @@ var Lexer_1 = class Lexer {
   /**
    * Lexing/Compiling
    */
-  inlineTokens(src, tokens = [], inLink = false, inRawBlock = false, prevChar = '') {
+  inlineTokens(src, tokens = [], inLink = false, inRawBlock = false) {
     let token;
 
     // String with links masked to avoid interference with em and strong
     let maskedSrc = src;
     let match;
+    let keepPrevChar, prevChar;
 
     // Mask out reflinks
     if (this.tokens.links) {
@@ -35432,6 +36374,10 @@ var Lexer_1 = class Lexer {
     }
 
     while (src) {
+      if (!keepPrevChar) {
+        prevChar = '';
+      }
+      keepPrevChar = false;
       // escape
       if (token = this.tokenizer.escape(src)) {
         src = src.substring(token.raw.length);
@@ -35524,6 +36470,7 @@ var Lexer_1 = class Lexer {
       if (token = this.tokenizer.inlineText(src, inRawBlock, smartypants)) {
         src = src.substring(token.raw.length);
         prevChar = token.raw.slice(-1);
+        keepPrevChar = true;
         tokens.push(token);
         continue;
       }
@@ -36324,93 +37271,91 @@ marked.parse = marked;
 
 var marked_1 = marked;
 
-const setClamp = (minWidthPx, maxWidthPx, minFontSize, maxFontSize, multiplier = 1, base = 16) => {
-  const pixelsPerRem = base;
-  const minWidth = minWidthPx / pixelsPerRem;
-  const maxWidth = maxWidthPx / pixelsPerRem;
-  const slope = (maxFontSize - minFontSize) / (maxWidth - minWidth);
-  const yAxisIntersection = -minWidth * slope + minFontSize;
-  return `clamp( ${minFontSize}rem, ${yAxisIntersection}rem + ${slope * 100}vw  * ${multiplier}, ${maxFontSize}rem )`;
-};
-
 const tag$s = 'spx-text';
 const SpxText = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
-    /** Only works if text-type is set to 'multiply'. */
-    this.contentFontSizeMultiplier = 1;
+    this.spxTextDidLoad = createEvent(this, "spxTextDidLoad", 7);
+    // prettier-ignore
+    this.h1FontSizeMin = 1.6;
+    // prettier-ignore
+    this.h1FontSizeMax = 3.2;
+    // prettier-ignore
+    this.h2FontSizeMin = 1.4;
+    // prettier-ignore
+    this.h2FontSizeMax = 2.2;
+    // prettier-ignore
+    this.h3FontSizeMin = 1.2;
+    // prettier-ignore
+    this.h3FontSizeMax = 1.8;
+    // prettier-ignore
+    this.h4FontSizeMin = 1;
+    // prettier-ignore
+    this.h4FontSizeMax = 1.6;
     this.headingColor = 'var(--spx-color-black)';
     this.headingFontFamily = state.fontFamilyPrimary;
     this.headingFontWeight = '500';
     this.headingLetterSpacing = '0';
     this.headingLineHeight = '1.5';
     this.headingTextTransform = 'default';
-    this.linkDecorationColor = 'var(--spx-color-primary-A700)';
+    this.linkDecorationColor = 'var(--spx-color-primary-600)';
     /** Parse markdown. */
     this.markdown = false;
-    this.maxWidth = 'clamp(700px, 40vw, 1200px)';
+    this.maxWidth = '768px';
+    this.paddingFigureMin = 0.9;
+    this.paddingFigureMax = 3;
+    this.spaceBeforeH1Min = 4;
+    this.spaceBeforeH1Max = 8;
+    this.spaceBetweenMin = 0.9;
+    this.spaceBetweenMax = 2;
+    this.spaceBetweenPMin = 0.9;
+    this.spaceBetweenPMax = 1.5;
     this.textColor = 'var(--spx-color-gray-700)';
     this.textFontFamily = state.fontFamilySecondary;
+    this.textFontSizeMin = 1;
+    this.textFontSizeMax = 1.4;
     this.textFontWeight = '400';
     this.textLetterSpacing = '0';
     this.textLineHeight = '1.5';
-    /** Minimum viewport width when text-type is set to linear. */
-    this.textMinW = 320;
-    /** Maximum viewport width when text-type is set to linear. */
-    this.textMaxW = 2560;
     this.textTextTransform = 'default';
-    this.textType = 'linear';
   }
   componentDidLoad() {
-    if (this.markdown === true) {
+    /** Parse Markdown. */
+    if (this.markdown) {
       marked_1.setOptions({
         gfm: true,
       });
       this.el.innerHTML = marked_1(this.el.innerHTML);
     }
+    /** Wrap images. */
     if (this.el.querySelector('img')) {
       const img = this.el.querySelectorAll('img, video');
       img.forEach((item) => {
         wrap$1(item, document.createElement('figure'));
       });
     }
+    this.spxTextDidLoad.emit({ target: 'document' });
   }
   render() {
-    /** Heading. */
-    const headingMultiply = {
+    /** Heading styles. */
+    const styleHeading = {
       h1: {
-        fontSize: setFontSize(tag$s, 'heading', '30px', '5vw', '48px', this.contentFontSizeMultiplier),
+        fontSize: setClamp(tag$s, 'h1-font-size', this.h1FontSizeMin, this.h1FontSizeMax),
       },
       h2: {
-        fontSize: setFontSize(tag$s, 'heading', '24px', '2.4vw', '36px', this.contentFontSizeMultiplier),
+        fontSize: setClamp(tag$s, 'h2-font-size', this.h2FontSizeMin, this.h2FontSizeMax),
       },
       h3: {
-        fontSize: setFontSize(tag$s, 'heading', '20px', '1.6vw', '28px', this.contentFontSizeMultiplier),
+        fontSize: setClamp(tag$s, 'h3-font-size', this.h3FontSizeMin, this.h3FontSizeMax),
       },
       h4: {
-        fontSize: setFontSize(tag$s, 'heading', '18px', '1.2vw', '24px', this.contentFontSizeMultiplier),
+        fontSize: setClamp(tag$s, 'h4-font-size', this.h4FontSizeMin, this.h4FontSizeMax),
       },
     };
-    const headingLinear = {
-      h1: {
-        fontSize: setClamp(this.textMinW, this.textMaxW, 2, 4),
-      },
-      h2: {
-        fontSize: setClamp(this.textMinW, this.textMaxW, 1.6, 2.8),
-      },
-      h3: {
-        fontSize: setClamp(this.textMinW, this.textMaxW, 1.2, 1.8),
-      },
-      h4: {
-        fontSize: setClamp(this.textMinW, this.textMaxW, 1, 1.6),
-      },
-    };
-    const heading = this.textType === 'linear' ? headingLinear : headingMultiply;
-    /** Text. */
-    const textMultiply = Object.assign(Object.assign({}, text(tag$s, 'text', this.textColor, '16px', '1.4vw', '24px', this.contentFontSizeMultiplier, this.textFontWeight, this.textLetterSpacing, this.textLineHeight, this.textTextTransform)), { fontFamily: setVar(tag$s, 'text-font-family', this.textFontFamily) });
-    const textLinear = {
-      fontSize: setClamp(this.textMinW, this.textMaxW, 0.9, 1.6),
+    /** Text styles. */
+    const styleText = {
+      fontSize: setClamp(tag$s, 'text-font-size', this.textFontSizeMin, this.textFontSizeMax),
       color: setVar(tag$s, 'text-color', this.textColor),
       fontFamily: setVar(tag$s, 'text-font-family', this.textFontFamily),
       fontWeight: setVar(tag$s, 'text-font-weight', this.textFontWeight),
@@ -36418,16 +37363,19 @@ const SpxText = class extends HTMLElement {
       lineHeight: setVar(tag$s, 'text-letter-spacing', this.textLineHeight),
       textTransform: setVar(tag$s, 'text-text-transform', this.textTextTransform),
     };
-    const text$1 = this.textType === 'linear' ? textLinear : textMultiply;
+    /** Host styles. */
     const styleHost = css(merge$1({
       display: 'block',
       maxWidth: setVar(tag$s, 'max-width', this.maxWidth, true),
       margin: '0 auto',
       '& > * + *': {
-        marginTop: 'var(--spx-space-md)',
+        marginTop: setClamp(tag$s, 'space-between', this.spaceBetweenMin, this.spaceBetweenMax),
+      },
+      '& > p + p, & > ul + p, & > p + ul': {
+        marginTop: setClamp(tag$s, 'space-between-p', this.spaceBetweenPMin, this.spaceBetweenPMax),
       },
       '& > * + h1': {
-        marginTop: 'var(--spx-space-lg)',
+        marginTop: setClamp(tag$s, 'h1-space', this.spaceBeforeH1Min, this.spaceBeforeH1Max),
       },
       'h1, h2, h3, h4, h5, h6': {
         color: setVar(tag$s, 'heading-color', this.headingColor),
@@ -36437,7 +37385,7 @@ const SpxText = class extends HTMLElement {
         lineHeight: setVar(tag$s, 'heading-letter-spacing', this.headingLineHeight),
         textTransform: setVar(tag$s, 'heading-text-transform', this.headingTextTransform),
       },
-      'p, ul, ol': Object.assign(Object.assign({}, text$1), { a: {
+      'p, ul, ol': Object.assign(Object.assign({}, styleText), { a: {
           color: 'inherit',
           textDecoration: 'underline',
           textDecorationColor: setVar(tag$s, 'link-decoration-color', this.linkDecorationColor),
@@ -36456,7 +37404,7 @@ const SpxText = class extends HTMLElement {
       figure: {
         borderRadius: borderRadius,
         background: 'var(--spx-color-gray-100)',
-        padding: 'var(--spx-space-lg)',
+        padding: setClamp(tag$s, 'figure-padding', this.paddingFigureMin, this.paddingFigureMax),
         img: {
           marginLeft: 'auto',
           marginRight: 'auto',
@@ -36467,17 +37415,14 @@ const SpxText = class extends HTMLElement {
       'img, video': {
         maxWidth: '100%',
       },
-      'spx-code, spx-code + p': {
-        marginTop: 'var(--spx-space-lg)',
-      },
-    }, heading));
+    }, styleHeading));
     return (h$1(Host, { class: styleHost }, h$1("slot", null)));
   }
   get el() { return this; }
 };
 
 var core = createCommonjsModule(function (module, exports) {
-!function(e,t){module.exports=t();}("undefined"!=typeof self?self:commonjsGlobal,(function(){return function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r});},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0});},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=3)}([,function(e,t,n){(function(t){for(var r=n(11),o="undefined"==typeof window?t:window,i=["moz","webkit"],a="AnimationFrame",s=o["request"+a],u=o["cancel"+a]||o["cancelRequest"+a],c=0;!s&&c<i.length;c++)s=o[i[c]+"Request"+a],u=o[i[c]+"Cancel"+a]||o[i[c]+"CancelRequest"+a];if(!s||!u){var l=0,p=0,d=[];s=function(e){if(0===d.length){var t=r(),n=Math.max(0,1e3/60-(t-l));l=n+t,setTimeout((function(){var e=d.slice(0);d.length=0;for(var t=0;t<e.length;t++)if(!e[t].cancelled)try{e[t].callback(l);}catch(e){setTimeout((function(){throw e}),0);}}),Math.round(n));}return d.push({handle:++p,callback:e,cancelled:!1}),p},u=function(e){for(var t=0;t<d.length;t++)d[t].handle===e&&(d[t].cancelled=!0);};}e.exports=function(e){return s.call(o,e)},e.exports.cancel=function(){u.apply(o,arguments);},e.exports.polyfill=function(e){e||(e=o),e.requestAnimationFrame=s,e.cancelAnimationFrame=u;};}).call(this,n(4));},,function(e,t,n){n.r(t),n.d(t,"default",(function(){return C}));var r=n(1),o=n.n(r),i=function(e){return new RegExp(/<[a-z][\s\S]*>/i).test(e)},a=function(e){var t=document.createElement("div");return t.innerHTML=e,t.childNodes},s=function(e,t){return Math.floor(Math.random()*(t-e+1))+e},u=function(e){var t=document.createElement("style");t.appendChild(document.createTextNode(e)),document.head.appendChild(t);},c="TYPE_CHARACTER",l="REMOVE_CHARACTER",p="REMOVE_ALL",d="REMOVE_LAST_VISIBLE_NODE",f="PAUSE_FOR",v="CALL_FUNCTION",h="ADD_HTML_TAG_ELEMENT",m="CHANGE_DELETE_SPEED",y="CHANGE_DELAY",g="CHANGE_CURSOR",w="PASTE_STRING",E="HTML_TAG",T="TEXT_NODE";function b(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(e);t&&(r=r.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),n.push.apply(n,r);}return n}function A(e){for(var t=1;t<arguments.length;t++){var n=null!=arguments[t]?arguments[t]:{};t%2?b(Object(n),!0).forEach((function(t){O(e,t,n[t]);})):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(n)):b(Object(n)).forEach((function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(n,t));}));}return e}function S(e){return function(e){if(Array.isArray(e)){for(var t=0,n=new Array(e.length);t<e.length;t++)n[t]=e[t];return n}}(e)||function(e){if(Symbol.iterator in Object(e)||"[object Arguments]"===Object.prototype.toString.call(e))return Array.from(e)}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance")}()}function _(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r);}}function O(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}var C=function(){function e(t,n){var u=this;if(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,e),O(this,"state",{cursorAnimation:null,lastFrameTime:null,pauseUntil:null,eventQueue:[],eventLoop:null,eventLoopPaused:!1,reverseCalledEvents:[],calledEvents:[],visibleNodes:[],initialOptions:null,elements:{container:null,wrapper:document.createElement("span"),cursor:document.createElement("span")}}),O(this,"options",{strings:null,cursor:"|",delay:"natural",deleteSpeed:"natural",loop:!1,autoStart:!1,devMode:!1,skipAddStyles:!1,wrapperClassName:"Typewriter__wrapper",cursorClassName:"Typewriter__cursor",stringSplitter:null}),O(this,"setupWrapperElement",(function(){u.state.elements.wrapper.className=u.options.wrapperClassName,u.state.elements.cursor.className=u.options.cursorClassName,u.state.elements.cursor.innerHTML=u.options.cursor,u.state.elements.container.innerHTML="",u.state.elements.container.appendChild(u.state.elements.wrapper),u.state.elements.container.appendChild(u.state.elements.cursor);})),O(this,"start",(function(){return u.state.eventLoopPaused=!1,u.runEventLoop(),u})),O(this,"pause",(function(){return u.state.eventLoopPaused=!0,u})),O(this,"stop",(function(){return u.state.eventLoop&&(Object(r.cancel)(u.state.eventLoop),u.state.eventLoop=null),u})),O(this,"pauseFor",(function(e){return u.addEventToQueue(f,{ms:e}),u})),O(this,"typeOutAllStrings",(function(){return "string"==typeof u.options.strings?(u.typeString(u.options.strings).pauseFor(1500),u):(u.options.strings.forEach((function(e){u.typeString(e).pauseFor(1500).deleteAll(u.options.deleteSpeed);})),u)})),O(this,"typeString",(function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;if(i(e))return u.typeOutHTMLString(e,t);if(e){var n=u.options||{},r=n.stringSplitter,o="function"==typeof r?r(e):e.split("");u.typeCharacters(o,t);}return u})),O(this,"pasteString",(function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return i(e)?u.typeOutHTMLString(e,t,!0):(e&&u.addEventToQueue(w,{character:e,node:t}),u)})),O(this,"typeOutHTMLString",(function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,n=arguments.length>2?arguments[2]:void 0,r=a(e);if(r.length>0)for(var o=0;o<r.length;o++){var i=r[o],s=i.innerHTML;i&&3!==i.nodeType?(i.innerHTML="",u.addEventToQueue(h,{node:i,parentNode:t}),n?u.pasteString(s,i):u.typeString(s,i)):i.textContent&&(n?u.pasteString(i.textContent,t):u.typeString(i.textContent,t));}return u})),O(this,"deleteAll",(function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"natural";return u.addEventToQueue(p,{speed:e}),u})),O(this,"changeDeleteSpeed",(function(e){if(!e)throw new Error("Must provide new delete speed");return u.addEventToQueue(m,{speed:e}),u})),O(this,"changeDelay",(function(e){if(!e)throw new Error("Must provide new delay");return u.addEventToQueue(y,{delay:e}),u})),O(this,"changeCursor",(function(e){if(!e)throw new Error("Must provide new cursor");return u.addEventToQueue(g,{cursor:e}),u})),O(this,"deleteChars",(function(e){if(!e)throw new Error("Must provide amount of characters to delete");for(var t=0;t<e;t++)u.addEventToQueue(l);return u})),O(this,"callFunction",(function(e,t){if(!e||"function"!=typeof e)throw new Error("Callbak must be a function");return u.addEventToQueue(v,{cb:e,thisArg:t}),u})),O(this,"typeCharacters",(function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;if(!e||!Array.isArray(e))throw new Error("Characters must be an array");return e.forEach((function(e){u.addEventToQueue(c,{character:e,node:t});})),u})),O(this,"removeCharacters",(function(e){if(!e||!Array.isArray(e))throw new Error("Characters must be an array");return e.forEach((function(){u.addEventToQueue(l);})),u})),O(this,"addEventToQueue",(function(e,t){var n=arguments.length>2&&void 0!==arguments[2]&&arguments[2];return u.addEventToStateProperty(e,t,n,"eventQueue")})),O(this,"addReverseCalledEvent",(function(e,t){var n=arguments.length>2&&void 0!==arguments[2]&&arguments[2],r=u.options.loop;return r?u.addEventToStateProperty(e,t,n,"reverseCalledEvents"):u})),O(this,"addEventToStateProperty",(function(e,t){var n=arguments.length>2&&void 0!==arguments[2]&&arguments[2],r=arguments.length>3?arguments[3]:void 0,o={eventName:e,eventArgs:t||{}};return u.state[r]=n?[o].concat(S(u.state[r])):[].concat(S(u.state[r]),[o]),u})),O(this,"runEventLoop",(function(){u.state.lastFrameTime||(u.state.lastFrameTime=Date.now());var e=Date.now(),t=e-u.state.lastFrameTime;if(!u.state.eventQueue.length){if(!u.options.loop)return;u.state.eventQueue=S(u.state.calledEvents),u.state.calledEvents=[],u.options=A({},u.state.initialOptions);}if(u.state.eventLoop=o()(u.runEventLoop),!u.state.eventLoopPaused){if(u.state.pauseUntil){if(e<u.state.pauseUntil)return;u.state.pauseUntil=null;}var n=S(u.state.eventQueue),r=n.shift(),i=0;if(!(t<=(i=r.eventName===d||r.eventName===l?"natural"===u.options.deleteSpeed?s(40,80):u.options.deleteSpeed:"natural"===u.options.delay?s(120,160):u.options.delay))){var a=r.eventName,b=r.eventArgs;switch(u.logInDevMode({currentEvent:r,state:u.state,delay:i}),a){case w:case c:var _=b.character,O=b.node,C=document.createTextNode(_);O?O.appendChild(C):u.state.elements.wrapper.appendChild(C),u.state.visibleNodes=[].concat(S(u.state.visibleNodes),[{type:T,node:C}]);break;case l:n.unshift({eventName:d,eventArgs:{removingCharacterNode:!0}});break;case f:var N=r.eventArgs.ms;u.state.pauseUntil=Date.now()+parseInt(N);break;case v:var L=r.eventArgs,M=L.cb,D=L.thisArg;M.call(D,{elements:u.state.elements});break;case h:var j=r.eventArgs,P=j.node,x=j.parentNode;x?x.appendChild(P):u.state.elements.wrapper.appendChild(P),u.state.visibleNodes=[].concat(S(u.state.visibleNodes),[{type:E,node:P,parentNode:x||u.state.elements.wrapper}]);break;case p:var k=u.state.visibleNodes,Q=b.speed,R=[];Q&&R.push({eventName:m,eventArgs:{speed:Q,temp:!0}});for(var H=0,F=k.length;H<F;H++)R.push({eventName:d,eventArgs:{removingCharacterNode:!1}});Q&&R.push({eventName:m,eventArgs:{speed:u.options.deleteSpeed,temp:!0}}),n.unshift.apply(n,R);break;case d:var I=r.eventArgs.removingCharacterNode;if(u.state.visibleNodes.length){var U=u.state.visibleNodes.pop(),q=U.type,G=U.node;G.parentNode.removeChild(G),q===E&&I&&n.unshift({eventName:d,eventArgs:{}});}break;case m:u.options.deleteSpeed=r.eventArgs.speed;break;case y:u.options.delay=r.eventArgs.delay;break;case g:u.options.cursor=r.eventArgs.cursor,u.state.elements.cursor.innerHTML=r.eventArgs.cursor;}u.options.loop&&(r.eventName===d||r.eventArgs&&r.eventArgs.temp||(u.state.calledEvents=[].concat(S(u.state.calledEvents),[r]))),u.state.eventQueue=n,u.state.lastFrameTime=e;}}})),!t)throw new Error("No container element was provided");if("string"==typeof t){var b=document.querySelector(t);if(!b)throw new Error("Could not find container element");this.state.elements.container=b;}else this.state.elements.container=t;n&&(this.options=A({},this.options,{},n)),this.state.initialOptions=A({},this.options),this.init();}var t,n;return t=e,(n=[{key:"init",value:function(){this.setupWrapperElement(),this.addEventToQueue(g,{cursor:this.options.cursor},!0),this.addEventToQueue(p,null,!0),!window||window.___TYPEWRITER_JS_STYLES_ADDED___||this.options.skipAddStyles||(u(".Typewriter__cursor{-webkit-animation:Typewriter-cursor 1s infinite;animation:Typewriter-cursor 1s infinite;margin-left:1px}@-webkit-keyframes Typewriter-cursor{0%{opacity:0}50%{opacity:1}100%{opacity:0}}@keyframes Typewriter-cursor{0%{opacity:0}50%{opacity:1}100%{opacity:0}}"),window.___TYPEWRITER_JS_STYLES_ADDED___=!0),!0===this.options.autoStart&&this.options.strings&&this.typeOutAllStrings().start();}},{key:"logInDevMode",value:function(e){this.options.devMode&&console.log(e);}}])&&_(t.prototype,n),e}();},function(e,t){var n;n=function(){return this}();try{n=n||new Function("return this")();}catch(e){"object"==typeof window&&(n=window);}e.exports=n;},,,,,,,function(e,t,n){(function(t){(function(){var n,r,o,i,a,s;"undefined"!=typeof performance&&null!==performance&&performance.now?e.exports=function(){return performance.now()}:null!=t&&t.hrtime?(e.exports=function(){return (n()-a)/1e6},r=t.hrtime,i=(n=function(){var e;return 1e9*(e=r())[0]+e[1]})(),s=1e9*t.uptime(),a=i-s):Date.now?(e.exports=function(){return Date.now()-o},o=Date.now()):(e.exports=function(){return (new Date).getTime()-o},o=(new Date).getTime());}).call(this);}).call(this,n(12));},function(e,t){var n,r,o=e.exports={};function i(){throw new Error("setTimeout has not been defined")}function a(){throw new Error("clearTimeout has not been defined")}function s(e){if(n===setTimeout)return setTimeout(e,0);if((n===i||!n)&&setTimeout)return n=setTimeout,setTimeout(e,0);try{return n(e,0)}catch(t){try{return n.call(null,e,0)}catch(t){return n.call(this,e,0)}}}!function(){try{n="function"==typeof setTimeout?setTimeout:i;}catch(e){n=i;}try{r="function"==typeof clearTimeout?clearTimeout:a;}catch(e){r=a;}}();var u,c=[],l=!1,p=-1;function d(){l&&u&&(l=!1,u.length?c=u.concat(c):p=-1,c.length&&f());}function f(){if(!l){var e=s(d);l=!0;for(var t=c.length;t;){for(u=c,c=[];++p<t;)u&&u[p].run();p=-1,t=c.length;}u=null,l=!1,function(e){if(r===clearTimeout)return clearTimeout(e);if((r===a||!r)&&clearTimeout)return r=clearTimeout,clearTimeout(e);try{r(e);}catch(t){try{return r.call(null,e)}catch(t){return r.call(this,e)}}}(e);}}function v(e,t){this.fun=e,this.array=t;}function h(){}o.nextTick=function(e){var t=new Array(arguments.length-1);if(arguments.length>1)for(var n=1;n<arguments.length;n++)t[n-1]=arguments[n];c.push(new v(e,t)),1!==c.length||l||s(f);},v.prototype.run=function(){this.fun.apply(null,this.array);},o.title="browser",o.browser=!0,o.env={},o.argv=[],o.version="",o.versions={},o.on=h,o.addListener=h,o.once=h,o.off=h,o.removeListener=h,o.removeAllListeners=h,o.emit=h,o.prependListener=h,o.prependOnceListener=h,o.listeners=function(e){return []},o.binding=function(e){throw new Error("process.binding is not supported")},o.cwd=function(){return "/"},o.chdir=function(e){throw new Error("process.chdir is not supported")},o.umask=function(){return 0};}]).default}));
+!function(e,t){module.exports=t();}("undefined"!=typeof self?self:commonjsGlobal,(function(){return function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r});},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0});},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=3)}([,function(e,t,n){(function(t){for(var r=n(11),o="undefined"==typeof window?t:window,i=["moz","webkit"],a="AnimationFrame",s=o["request"+a],u=o["cancel"+a]||o["cancelRequest"+a],c=0;!s&&c<i.length;c++)s=o[i[c]+"Request"+a],u=o[i[c]+"Cancel"+a]||o[i[c]+"CancelRequest"+a];if(!s||!u){var l=0,p=0,d=[];s=function(e){if(0===d.length){var t=r(),n=Math.max(0,1e3/60-(t-l));l=n+t,setTimeout((function(){var e=d.slice(0);d.length=0;for(var t=0;t<e.length;t++)if(!e[t].cancelled)try{e[t].callback(l);}catch(e){setTimeout((function(){throw e}),0);}}),Math.round(n));}return d.push({handle:++p,callback:e,cancelled:!1}),p},u=function(e){for(var t=0;t<d.length;t++)d[t].handle===e&&(d[t].cancelled=!0);};}e.exports=function(e){return s.call(o,e)},e.exports.cancel=function(){u.apply(o,arguments);},e.exports.polyfill=function(e){e||(e=o),e.requestAnimationFrame=s,e.cancelAnimationFrame=u;};}).call(this,n(4));},,function(e,t,n){n.r(t),n.d(t,"default",(function(){return O}));var r=n(1),o=n.n(r),i=function(e){return new RegExp(/<[a-z][\s\S]*>/i).test(e)},a=function(e){var t=document.createElement("div");return t.innerHTML=e,t.childNodes},s=function(e,t){return Math.floor(Math.random()*(t-e+1))+e},u=function(e){var t=document.createElement("style");t.appendChild(document.createTextNode(e)),document.head.appendChild(t);},c="TYPE_CHARACTER",l="REMOVE_CHARACTER",p="REMOVE_ALL",d="REMOVE_LAST_VISIBLE_NODE",f="PAUSE_FOR",v="CALL_FUNCTION",h="ADD_HTML_TAG_ELEMENT",m="CHANGE_DELETE_SPEED",y="CHANGE_DELAY",g="CHANGE_CURSOR",w="PASTE_STRING",T="HTML_TAG",E="TEXT_NODE";function b(e,t){var n=Object.keys(e);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(e);t&&(r=r.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),n.push.apply(n,r);}return n}function A(e){for(var t=1;t<arguments.length;t++){var n=null!=arguments[t]?arguments[t]:{};t%2?b(Object(n),!0).forEach((function(t){_(e,t,n[t]);})):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(n)):b(Object(n)).forEach((function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(n,t));}));}return e}function S(e){return function(e){if(Array.isArray(e))return N(e)}(e)||function(e){if("undefined"!=typeof Symbol&&Symbol.iterator in Object(e))return Array.from(e)}(e)||function(e,t){if(!e)return;if("string"==typeof e)return N(e,t);var n=Object.prototype.toString.call(e).slice(8,-1);"Object"===n&&e.constructor&&(n=e.constructor.name);if("Map"===n||"Set"===n)return Array.from(e);if("Arguments"===n||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))return N(e,t)}(e)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function N(e,t){(null==t||t>e.length)&&(t=e.length);for(var n=0,r=new Array(t);n<t;n++)r[n]=e[n];return r}function C(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r);}}function _(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}var O=function(){function e(t,n){var u=this;if(function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,e),_(this,"state",{cursorAnimation:null,lastFrameTime:null,pauseUntil:null,eventQueue:[],eventLoop:null,eventLoopPaused:!1,reverseCalledEvents:[],calledEvents:[],visibleNodes:[],initialOptions:null,elements:{container:null,wrapper:document.createElement("span"),cursor:document.createElement("span")}}),_(this,"options",{strings:null,cursor:"|",delay:"natural",pauseFor:1500,deleteSpeed:"natural",loop:!1,autoStart:!1,devMode:!1,skipAddStyles:!1,wrapperClassName:"Typewriter__wrapper",cursorClassName:"Typewriter__cursor",stringSplitter:null,onCreateTextNode:null,onRemoveNode:null}),_(this,"setupWrapperElement",(function(){u.state.elements.container&&(u.state.elements.wrapper.className=u.options.wrapperClassName,u.state.elements.cursor.className=u.options.cursorClassName,u.state.elements.cursor.innerHTML=u.options.cursor,u.state.elements.container.innerHTML="",u.state.elements.container.appendChild(u.state.elements.wrapper),u.state.elements.container.appendChild(u.state.elements.cursor));})),_(this,"start",(function(){return u.state.eventLoopPaused=!1,u.runEventLoop(),u})),_(this,"pause",(function(){return u.state.eventLoopPaused=!0,u})),_(this,"stop",(function(){return u.state.eventLoop&&(Object(r.cancel)(u.state.eventLoop),u.state.eventLoop=null),u})),_(this,"pauseFor",(function(e){return u.addEventToQueue(f,{ms:e}),u})),_(this,"typeOutAllStrings",(function(){return "string"==typeof u.options.strings?(u.typeString(u.options.strings).pauseFor(u.options.pauseFor),u):(u.options.strings.forEach((function(e){u.typeString(e).pauseFor(u.options.pauseFor).deleteAll(u.options.deleteSpeed);})),u)})),_(this,"typeString",(function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;if(i(e))return u.typeOutHTMLString(e,t);if(e){var n=u.options||{},r=n.stringSplitter,o="function"==typeof r?r(e):e.split("");u.typeCharacters(o,t);}return u})),_(this,"pasteString",(function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;return i(e)?u.typeOutHTMLString(e,t,!0):(e&&u.addEventToQueue(w,{character:e,node:t}),u)})),_(this,"typeOutHTMLString",(function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null,n=arguments.length>2?arguments[2]:void 0,r=a(e);if(r.length>0)for(var o=0;o<r.length;o++){var i=r[o],s=i.innerHTML;i&&3!==i.nodeType?(i.innerHTML="",u.addEventToQueue(h,{node:i,parentNode:t}),n?u.pasteString(s,i):u.typeString(s,i)):i.textContent&&(n?u.pasteString(i.textContent,t):u.typeString(i.textContent,t));}return u})),_(this,"deleteAll",(function(){var e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:"natural";return u.addEventToQueue(p,{speed:e}),u})),_(this,"changeDeleteSpeed",(function(e){if(!e)throw new Error("Must provide new delete speed");return u.addEventToQueue(m,{speed:e}),u})),_(this,"changeDelay",(function(e){if(!e)throw new Error("Must provide new delay");return u.addEventToQueue(y,{delay:e}),u})),_(this,"changeCursor",(function(e){if(!e)throw new Error("Must provide new cursor");return u.addEventToQueue(g,{cursor:e}),u})),_(this,"deleteChars",(function(e){if(!e)throw new Error("Must provide amount of characters to delete");for(var t=0;t<e;t++)u.addEventToQueue(l);return u})),_(this,"callFunction",(function(e,t){if(!e||"function"!=typeof e)throw new Error("Callbak must be a function");return u.addEventToQueue(v,{cb:e,thisArg:t}),u})),_(this,"typeCharacters",(function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:null;if(!e||!Array.isArray(e))throw new Error("Characters must be an array");return e.forEach((function(e){u.addEventToQueue(c,{character:e,node:t});})),u})),_(this,"removeCharacters",(function(e){if(!e||!Array.isArray(e))throw new Error("Characters must be an array");return e.forEach((function(){u.addEventToQueue(l);})),u})),_(this,"addEventToQueue",(function(e,t){var n=arguments.length>2&&void 0!==arguments[2]&&arguments[2];return u.addEventToStateProperty(e,t,n,"eventQueue")})),_(this,"addReverseCalledEvent",(function(e,t){var n=arguments.length>2&&void 0!==arguments[2]&&arguments[2],r=u.options.loop;return r?u.addEventToStateProperty(e,t,n,"reverseCalledEvents"):u})),_(this,"addEventToStateProperty",(function(e,t){var n=arguments.length>2&&void 0!==arguments[2]&&arguments[2],r=arguments.length>3?arguments[3]:void 0,o={eventName:e,eventArgs:t||{}};return u.state[r]=n?[o].concat(S(u.state[r])):[].concat(S(u.state[r]),[o]),u})),_(this,"runEventLoop",(function(){u.state.lastFrameTime||(u.state.lastFrameTime=Date.now());var e=Date.now(),t=e-u.state.lastFrameTime;if(!u.state.eventQueue.length){if(!u.options.loop)return;u.state.eventQueue=S(u.state.calledEvents),u.state.calledEvents=[],u.options=A({},u.state.initialOptions);}if(u.state.eventLoop=o()(u.runEventLoop),!u.state.eventLoopPaused){if(u.state.pauseUntil){if(e<u.state.pauseUntil)return;u.state.pauseUntil=null;}var n=S(u.state.eventQueue),r=n.shift(),i=0;if(!(t<=(i=r.eventName===d||r.eventName===l?"natural"===u.options.deleteSpeed?s(40,80):u.options.deleteSpeed:"natural"===u.options.delay?s(120,160):u.options.delay))){var a=r.eventName,b=r.eventArgs;switch(u.logInDevMode({currentEvent:r,state:u.state,delay:i}),a){case w:case c:var N=b.character,C=b.node,_=document.createTextNode(N),O=_;u.options.onCreateTextNode&&"function"==typeof u.options.onCreateTextNode&&(O=u.options.onCreateTextNode(N,_)),O&&(C?C.appendChild(O):u.state.elements.wrapper.appendChild(O)),u.state.visibleNodes=[].concat(S(u.state.visibleNodes),[{type:E,character:N,node:O}]);break;case l:n.unshift({eventName:d,eventArgs:{removingCharacterNode:!0}});break;case f:var L=r.eventArgs.ms;u.state.pauseUntil=Date.now()+parseInt(L);break;case v:var M=r.eventArgs,x=M.cb,j=M.thisArg;x.call(j,{elements:u.state.elements});break;case h:var D=r.eventArgs,P=D.node,k=D.parentNode;k?k.appendChild(P):u.state.elements.wrapper.appendChild(P),u.state.visibleNodes=[].concat(S(u.state.visibleNodes),[{type:T,node:P,parentNode:k||u.state.elements.wrapper}]);break;case p:var R=u.state.visibleNodes,Q=b.speed,F=[];Q&&F.push({eventName:m,eventArgs:{speed:Q,temp:!0}});for(var H=0,I=R.length;H<I;H++)F.push({eventName:d,eventArgs:{removingCharacterNode:!1}});Q&&F.push({eventName:m,eventArgs:{speed:u.options.deleteSpeed,temp:!0}}),n.unshift.apply(n,F);break;case d:var U=r.eventArgs.removingCharacterNode;if(u.state.visibleNodes.length){var q=u.state.visibleNodes.pop(),G=q.type,Y=q.node,V=q.character;u.options.onRemoveNode&&"function"==typeof u.options.onRemoveNode&&u.options.onRemoveNode({node:Y,character:V}),Y&&Y.parentNode.removeChild(Y),G===T&&U&&n.unshift({eventName:d,eventArgs:{}});}break;case m:u.options.deleteSpeed=r.eventArgs.speed;break;case y:u.options.delay=r.eventArgs.delay;break;case g:u.options.cursor=r.eventArgs.cursor,u.state.elements.cursor.innerHTML=r.eventArgs.cursor;}u.options.loop&&(r.eventName===d||r.eventArgs&&r.eventArgs.temp||(u.state.calledEvents=[].concat(S(u.state.calledEvents),[r]))),u.state.eventQueue=n,u.state.lastFrameTime=e;}}})),t)if("string"==typeof t){var b=document.querySelector(t);if(!b)throw new Error("Could not find container element");this.state.elements.container=b;}else this.state.elements.container=t;n&&(this.options=A(A({},this.options),n)),this.state.initialOptions=A({},this.options),this.init();}var t,n;return t=e,(n=[{key:"init",value:function(){this.setupWrapperElement(),this.addEventToQueue(g,{cursor:this.options.cursor},!0),this.addEventToQueue(p,null,!0),!window||window.___TYPEWRITER_JS_STYLES_ADDED___||this.options.skipAddStyles||(u(".Typewriter__cursor{-webkit-animation:Typewriter-cursor 1s infinite;animation:Typewriter-cursor 1s infinite;margin-left:1px}@-webkit-keyframes Typewriter-cursor{0%{opacity:0}50%{opacity:1}100%{opacity:0}}@keyframes Typewriter-cursor{0%{opacity:0}50%{opacity:1}100%{opacity:0}}"),window.___TYPEWRITER_JS_STYLES_ADDED___=!0),!0===this.options.autoStart&&this.options.strings&&this.typeOutAllStrings().start();}},{key:"logInDevMode",value:function(e){this.options.devMode&&console.log(e);}}])&&C(t.prototype,n),e}();},function(e,t){var n;n=function(){return this}();try{n=n||new Function("return this")();}catch(e){"object"==typeof window&&(n=window);}e.exports=n;},,,,,,,function(e,t,n){(function(t){(function(){var n,r,o,i,a,s;"undefined"!=typeof performance&&null!==performance&&performance.now?e.exports=function(){return performance.now()}:null!=t&&t.hrtime?(e.exports=function(){return (n()-a)/1e6},r=t.hrtime,i=(n=function(){var e;return 1e9*(e=r())[0]+e[1]})(),s=1e9*t.uptime(),a=i-s):Date.now?(e.exports=function(){return Date.now()-o},o=Date.now()):(e.exports=function(){return (new Date).getTime()-o},o=(new Date).getTime());}).call(this);}).call(this,n(12));},function(e,t){var n,r,o=e.exports={};function i(){throw new Error("setTimeout has not been defined")}function a(){throw new Error("clearTimeout has not been defined")}function s(e){if(n===setTimeout)return setTimeout(e,0);if((n===i||!n)&&setTimeout)return n=setTimeout,setTimeout(e,0);try{return n(e,0)}catch(t){try{return n.call(null,e,0)}catch(t){return n.call(this,e,0)}}}!function(){try{n="function"==typeof setTimeout?setTimeout:i;}catch(e){n=i;}try{r="function"==typeof clearTimeout?clearTimeout:a;}catch(e){r=a;}}();var u,c=[],l=!1,p=-1;function d(){l&&u&&(l=!1,u.length?c=u.concat(c):p=-1,c.length&&f());}function f(){if(!l){var e=s(d);l=!0;for(var t=c.length;t;){for(u=c,c=[];++p<t;)u&&u[p].run();p=-1,t=c.length;}u=null,l=!1,function(e){if(r===clearTimeout)return clearTimeout(e);if((r===a||!r)&&clearTimeout)return r=clearTimeout,clearTimeout(e);try{r(e);}catch(t){try{return r.call(null,e)}catch(t){return r.call(this,e)}}}(e);}}function v(e,t){this.fun=e,this.array=t;}function h(){}o.nextTick=function(e){var t=new Array(arguments.length-1);if(arguments.length>1)for(var n=1;n<arguments.length;n++)t[n-1]=arguments[n];c.push(new v(e,t)),1!==c.length||l||s(f);},v.prototype.run=function(){this.fun.apply(null,this.array);},o.title="browser",o.browser=!0,o.env={},o.argv=[],o.version="",o.versions={},o.on=h,o.addListener=h,o.once=h,o.off=h,o.removeListener=h,o.removeAllListeners=h,o.emit=h,o.prependListener=h,o.prependOnceListener=h,o.listeners=function(e){return []},o.binding=function(e){throw new Error("process.binding is not supported")},o.cwd=function(){return "/"},o.chdir=function(e){throw new Error("process.chdir is not supported")},o.umask=function(){return 0};}]).default}));
 });
 
 const Typewriter = /*@__PURE__*/getDefaultExportFromCjs(core);
@@ -36489,6 +37434,7 @@ const SpxTypewriter = class extends HTMLElement {
   constructor() {
     super();
     this.__registerHost();
+    this.spxTypewriterDidLoad = createEvent(this, "spxTypewriterDidLoad", 7);
     /** Automatically starts writing. */
     this.autoStart = true;
     /** Writing delay in ms. Also accepts 'natural' value. */
@@ -36501,7 +37447,9 @@ const SpxTypewriter = class extends HTMLElement {
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
+    /** Define elements. */
     const el = this.el.querySelector('h1, h2, h3, h4, h5, h6, p, span') || this.el;
+    /** Init Typewriter. */
     this.typewriter = new Typewriter(el, {
       strings: this.text[0] === '['
         ? this.text
@@ -36518,6 +37466,7 @@ const SpxTypewriter = class extends HTMLElement {
       cursorClassName: 'spx-typewriter__cursor',
       skipAddStyles: true,
     });
+    this.spxTypewriterDidLoad.emit({ target: 'document' });
   }
   /** Start animation. */
   async play() {
@@ -36540,40 +37489,38 @@ const SpxTypewriter = class extends HTMLElement {
 };
 
 globalScripts();
-const IonIcon = /*@__PURE__*/proxyCustomElement(Icon, [1,"ion-icon",{"mode":[1025],"color":[1],"ariaLabel":[1537,"aria-label"],"ariaHidden":[513,"aria-hidden"],"ios":[1],"md":[1],"flipRtl":[4,"flip-rtl"],"name":[1],"src":[1],"icon":[8],"size":[1],"lazy":[4],"svgContent":[32],"isVisible":[32]}]);
-const SpxAccordion$1 = /*@__PURE__*/proxyCustomElement(SpxAccordion, [4,"spx-accordion",{"contentColor":[513,"content-color"],"contentText":[513,"content-text"],"contentTextTag":[513,"content-text-tag"],"contentTransitionDuration":[513,"content-transition-duration"],"contentTransitionTimingFunction":[513,"content-transition-timing-function"],"fontSize":[513,"font-size"],"gap":[513],"headerColor":[513,"header-color"],"headerGap":[513,"header-gap"],"headerText":[513,"header-text"],"headerTextTag":[513,"header-text-tag"],"indicatorIcon":[513,"indicator-icon"],"indicatorIconType":[513,"indicator-icon-type"],"indicatorIconTransform":[513,"indicator-icon-transform"],"contentCustom":[32],"headerCustom":[32],"open":[32],"headerHeight":[32]},[[0,"keydown","onKeydown"]]]);
+const IonIcon = /*@__PURE__*/proxyCustomElement(Icon, [1,"ion-icon",{"mode":[1025],"color":[1],"ariaLabel":[1537,"aria-label"],"ariaHidden":[513,"aria-hidden"],"ios":[1],"md":[1],"flipRtl":[4,"flip-rtl"],"name":[1],"src":[1],"icon":[8],"size":[1],"lazy":[4],"sanitize":[4],"svgContent":[32],"isVisible":[32]}]);
+const SpxAccordion$1 = /*@__PURE__*/proxyCustomElement(SpxAccordion, [4,"spx-accordion",{"contentColor":[513,"content-color"],"contentText":[513,"content-text"],"contentTextTag":[513,"content-text-tag"],"contentTransitionDuration":[513,"content-transition-duration"],"contentTransitionTimingFunction":[513,"content-transition-timing-function"],"disableAnimation":[516,"disable-animation"],"fontSize":[513,"font-size"],"gap":[513],"headerColor":[513,"header-color"],"headerGap":[513,"header-gap"],"headerText":[513,"header-text"],"headerTextOpen":[513,"header-text-open"],"headerTextTag":[513,"header-text-tag"],"indicatorIcon":[513,"indicator-icon"],"indicatorIconType":[513,"indicator-icon-type"],"indicatorIconTransform":[513,"indicator-icon-transform"],"link":[513],"linkType":[513,"link-type"],"openState":[516,"open"],"reverse":[516],"contentCustom":[32],"headerCustom":[32],"headerHeight":[32]},[[0,"keydown","onKeydown"]]]);
 const SpxAnimate$1 = /*@__PURE__*/proxyCustomElement(SpxAnimate, [4,"spx-animate",{"delay":[2],"duration":[2],"ease":[1],"once":[4],"opacity":[2],"repeat":[2],"repeatDelay":[2,"repeat-delay"],"reverse":[4],"stagger":[2],"target":[1],"viewport":[4],"viewportMarginBottom":[1,"viewport-margin-bottom"],"viewportMarginLeft":[1,"viewport-margin-left"],"viewportMarginRight":[1,"viewport-margin-right"],"viewportMarginTop":[1,"viewport-margin-top"],"x":[2],"y":[2],"yoyo":[4],"display":[513],"elements":[32],"tl":[32]}]);
 const SpxClassToggle$1 = /*@__PURE__*/proxyCustomElement(SpxClassToggle, [4,"spx-class-toggle",{"display":[513],"local":[513],"target":[513],"toggle":[513],"classesArray":[32],"toggled":[32]}]);
-const SpxCode$1 = /*@__PURE__*/proxyCustomElement(SpxCode, [36,"spx-code",{"background":[513],"borderRadius":[513,"border-radius"],"display":[513],"fontSize":[513,"font-size"],"height":[513],"hideScrollbar":[516,"hide-scrollbar"],"overflow":[513],"padding":[513],"theme":[513],"type":[513]}]);
-const SpxContainer$1 = /*@__PURE__*/proxyCustomElement(SpxContainer, [0,"spx-container",{"bpMobile":[514,"bp-mobile"],"buttonBorderRadius":[513,"button-border-radius"],"buttonFontSizeMultiplier":[514,"button-font-size-multiplier"],"buttonFontWeight":[513,"button-font-weight"],"buttonMarginX":[513,"button-margin-x"],"buttonMarginTop":[513,"button-margin-top"],"buttonReverseColor":[513,"button-reverse-color"],"buttonTextTransform":[513,"button-text-transform"],"colorPrimary":[513,"color-primary"],"colorSecondary":[513,"color-secondary"],"disableColors":[516,"disable-colors"],"focusColor":[513,"focus-color"],"fontFamilyPrimary":[513,"font-family-primary"],"fontFamilySecondary":[513,"font-family-secondary"],"imageMaxWidth":[513,"image-max-width"],"maxWidth":[513,"max-width"],"offsetHeader":[516,"offset-header"],"preTitleBackground":[513,"pre-title-background"],"preTitleBorderRadius":[513,"pre-title-border-radius"],"preTitleColor":[513,"pre-title-color"],"preTitleFontSizeMultiplier":[514,"pre-title-font-size-multiplier"],"preTitleFontWeight":[513,"pre-title-font-weight"],"preTitleLetterSpacing":[513,"pre-title-letter-spacing"],"preTitleLineHeight":[513,"pre-title-line-height"],"preTitleMarginBottom":[513,"pre-title-margin-bottom"],"preTitlePadding":[513,"pre-title-padding"],"preTitleTextTransform":[513,"pre-title-text-transform"],"spaceX":[513,"space-x"],"spaceXSm":[513,"space-x-sm"],"spaceY":[513,"space-y"],"spacing":[513],"tabsMarginBetween":[513,"tabs-margin-between"],"tabsMarginFirst":[513,"tabs-margin-first"],"tabsOpacity":[514,"tabs-opacity"],"textColor":[513,"text-color"],"textFontSizeMultiplier":[514,"text-font-size-multiplier"],"textFontWeight":[513,"text-font-weight"],"textLetterSpacing":[513,"text-letter-spacing"],"textLineHeight":[513,"text-line-height"],"textMarginTop":[513,"text-margin-top"],"textMaxWidth":[513,"text-max-width"],"textTransform":[513,"text-transform"],"titleColor":[513,"title-color"],"titleFontSizeMultiplier":[514,"title-font-size-multiplier"],"titleFontWeight":[514,"title-font-weight"],"titleLetterSpacing":[513,"title-letter-spacing"],"titleLineHeight":[513,"title-line-height"],"titleMaxWidth":[513,"title-max-width"],"titleTextTransform":[513,"title-text-transform"]},[[9,"resize","onResize"]]]);
+const SpxCode$1 = /*@__PURE__*/proxyCustomElement(SpxCode, [36,"spx-code",{"background":[513],"borderRadius":[513,"border-radius"],"clipboard":[516],"clipboardButtonBackground":[513,"clipboard-button-background"],"clipboardButtonColor":[513,"clipboard-button-color"],"clipboardButtonFontSize":[513,"clipboard-button-font-size"],"clipboardButtonFontWeight":[520,"clipboard-button-font-weight"],"clipboardButtonPadding":[513,"clipboard-button-padding"],"clipboardButtonTextTransform":[513,"clipboard-button-text-transform"],"display":[513],"fontSize":[513,"font-size"],"height":[513],"hideScrollbar":[516,"hide-scrollbar"],"lineNumbers":[516,"line-numbers"],"lineNumbersBackground":[513,"line-numbers-background"],"lineNumbersColor":[513,"line-numbers-color"],"maxWidth":[513,"max-width"],"overflow":[513],"padding":[513],"theme":[513],"type":[513]}]);
+const SpxContainer$1 = /*@__PURE__*/proxyCustomElement(SpxContainer, [0,"spx-container",{"bpMobile":[514,"bp-mobile"],"buttonBackgroundPrimary":[514,"button-background-primary"],"buttonBackgroundSecondary":[514,"button-background-secondary"],"buttonBorderRadius":[513,"button-border-radius"],"buttonColorPrimary":[514,"button-color-primary"],"buttonColorSecondary":[514,"button-color-secondary"],"buttonFontSizeMin":[514,"button-font-size-min"],"buttonFontSizeMax":[514,"button-font-size-max"],"buttonFontWeight":[513,"button-font-weight"],"buttonMarginXMin":[514,"button-margin-x-min"],"buttonMarginXMax":[514,"button-margin-x-max"],"buttonMarginTopMin":[514,"button-margin-top-min"],"buttonMarginTopMax":[514,"button-margin-top-max"],"buttonPaddingXMin":[514,"button-padding-x-min"],"buttonPaddingXMax":[514,"button-padding-x-max"],"buttonPaddingYMin":[514,"button-padding-y-min"],"buttonPaddingYMax":[514,"button-padding-y-max"],"buttonTextTransform":[513,"button-text-transform"],"colorGray":[513,"color-gray"],"colorPrimary":[513,"color-primary"],"colorSecondary":[513,"color-secondary"],"disableColors":[516,"disable-colors"],"focusColor":[513,"focus-color"],"fontFamilyPrimary":[513,"font-family-primary"],"fontFamilySecondary":[513,"font-family-secondary"],"imageMaxWidth":[513,"image-max-width"],"linearBase":[514,"linear-base"],"linearMinW":[514,"linear-min-w"],"linearMaxW":[514,"linear-max-w"],"maxWidth":[513,"max-width"],"maxWidthMobile":[513,"max-width-mobile"],"offsetHeader":[516,"offset-header"],"paddingX":[513,"padding-x"],"paddingXSm":[513,"padding-x-sm"],"paddingYMin":[514,"padding-y-min"],"paddingYMax":[514,"padding-y-max"],"paddingYFirstMin":[514,"padding-y-first-min"],"paddingYFirstMax":[514,"padding-y-first-max"],"paddingYMaxWidth":[514,"padding-y-max-width"],"paddingYMultiplier":[514,"padding-y-multiplier"],"preTitleBackground":[513,"pre-title-background"],"preTitleBorderRadius":[513,"pre-title-border-radius"],"preTitleColor":[513,"pre-title-color"],"preTitleFontSizeMin":[514,"pre-title-font-size-min"],"preTitleFontSizeMax":[514,"pre-title-font-size-max"],"preTitleFontWeight":[513,"pre-title-font-weight"],"preTitleLetterSpacing":[513,"pre-title-letter-spacing"],"preTitleLineHeight":[513,"pre-title-line-height"],"preTitleMarginBottomMin":[514,"pre-title-margin-bottom-min"],"preTitleMarginBottomMax":[514,"pre-title-margin-bottom-max"],"preTitlePaddingXMin":[514,"pre-title-padding-x-min"],"preTitlePaddingXMax":[514,"pre-title-padding-x-max"],"preTitlePaddingYMin":[514,"pre-title-padding-y-min"],"preTitlePaddingYMax":[514,"pre-title-padding-y-max"],"preTitleTextTransform":[513,"pre-title-text-transform"],"tabsMarginTopMin":[514,"tabs-margin-top-min"],"tabsMarginTopMax":[514,"tabs-margin-top-max"],"tabsFirstMarginTopMin":[514,"tabs-first-margin-top-min"],"tabsFirstMarginTopMax":[514,"tabs-first-margin-top-max"],"tabsOpacity":[514,"tabs-opacity"],"textColor":[513,"text-color"],"textFontSizeMin":[514,"text-font-size-min"],"textFontSizeMax":[514,"text-font-size-max"],"textFontWeight":[513,"text-font-weight"],"textLetterSpacing":[513,"text-letter-spacing"],"textLineHeight":[513,"text-line-height"],"textLinkDecorationColor":[513,"text-link-decoration-color"],"textLinkDecorationColorHover":[513,"text-link-decoration-color-hover"],"textMarginTopMin":[514,"text-margin-top-min"],"textMarginTopMax":[514,"text-margin-top-max"],"textMaxWidth":[513,"text-max-width"],"textTransform":[513,"text-transform"],"titleColor":[513,"title-color"],"titleFontSizeMin":[514,"title-font-size-min"],"titleFontSizeMax":[514,"title-font-size-max"],"titleFontWeight":[514,"title-font-weight"],"titleLetterSpacing":[513,"title-letter-spacing"],"titleLineHeight":[513,"title-line-height"],"titleMaxWidth":[513,"title-max-width"],"titleTextTransform":[513,"title-text-transform"]},[[9,"resize","onResize"]]]);
 const SpxEdit$1 = /*@__PURE__*/proxyCustomElement(SpxEdit, [4,"spx-edit",{"display":[513],"name":[513],"outline":[513],"outlineFocus":[513,"outline-focus"],"placeholder":[513],"placeholderColor":[513,"placeholder-color"],"placeholderOpacity":[513,"placeholder-opacity"],"subfield":[516],"type":[513],"editable":[516],"originalText":[32],"subfieldArray":[32]},[[0,"keydown","onClickEnter"],[4,"spxEditButtonDiscard","onClickDiscard"],[4,"spxEditButtonSave","onClickSave"],[0,"keyup","onClickKeyup"]]]);
 const SpxEditButton$1 = /*@__PURE__*/proxyCustomElement(SpxEditButton, [4,"spx-edit-button",{"test":[4],"background":[513],"backgroundDiscard":[513,"background-discard"],"border":[513],"borderRadius":[513,"border-radius"],"color":[513],"colorDiscard":[513,"color-discard"],"distanceX":[513,"distance-x"],"distanceY":[513,"distance-y"],"editId":[513,"edit-id"],"fontFamily":[513,"font-family"],"fontSize":[513,"font-size"],"gap":[513],"padding":[513],"position":[513],"positionCss":[513,"position-css"],"textDiscard":[513,"text-discard"],"textEdit":[513,"text-edit"],"textSave":[513,"text-save"],"textSuccess":[513,"text-success"],"zIndex":[514,"z-index"],"loading":[32],"open":[32],"positionArray":[32]}]);
 const SpxEditor$1 = /*@__PURE__*/proxyCustomElement(SpxEditor, [0,"spx-editor",{"fullscreen":[516],"location":[513],"comp":[32],"ar":[32],"current":[32],"queryObj":[32],"query":[32],"mobile":[32],"headerHeight":[32],"adjustedValues":[32]},[[9,"resize","onResize"],[4,"keydown","onKeyDown"]]]);
 const SpxGroup$1 = /*@__PURE__*/proxyCustomElement(SpxGroup, [4,"spx-group",{"display":[513],"target":[513]}]);
 const SpxIcon$1 = /*@__PURE__*/proxyCustomElement(SpxIcon, [0,"spx-icon",{"color":[513],"icon":[513],"type":[513],"size":[513]}]);
-const SpxIframe$1 = /*@__PURE__*/proxyCustomElement(SpxIframe, [0,"spx-iframe",{"size":[1],"src":[1],"height":[32],"iframe":[32],"loaded":[32],"parent":[32],"parentHeight":[32],"width":[32]},[[9,"resize","onResize"]]]);
-const SpxImageComparison$1 = /*@__PURE__*/proxyCustomElement(SpxImageComparison, [0,"spx-image-comparison",{"color":[513],"iconColor":[513,"icon-color"],"srcAfter":[513,"src-after"],"srcBefore":[513,"src-before"],"start":[514],"active":[32],"width":[32]},[[9,"resize","onResize"]]]);
+const SpxIframe$1 = /*@__PURE__*/proxyCustomElement(SpxIframe, [4,"spx-iframe",{"display":[513],"documentBorder":[513,"document-border"],"documentBorderRadius":[513,"document-border-radius"],"documentHeight":[513,"document-height"],"documentWidth":[513,"document-width"],"fit":[4],"lazy":[4],"size":[1],"src":[1],"type":[1],"height":[32],"loaded":[32],"parent":[32],"parentHeight":[32],"width":[32]},[[9,"resize","onResize"]]]);
+const SpxImageComparison$1 = /*@__PURE__*/proxyCustomElement(SpxImageComparison, [0,"spx-image-comparison",{"color":[513],"height":[513],"iconColor":[513,"icon-color"],"srcAfter":[513,"src-after"],"srcBefore":[513,"src-before"],"start":[514],"active":[32],"width":[32]},[[9,"resize","onResize"]]]);
 const SpxLightbox$1 = /*@__PURE__*/proxyCustomElement(SpxLightbox, [0,"spx-lightbox",{"display":[513],"height":[513],"overlayColor":[513,"overlay-color"],"width":[513]}]);
 const SpxLoader$1 = /*@__PURE__*/proxyCustomElement(SpxLoader, [0,"spx-loader",{"color":[513],"speed":[513]}]);
 const SpxMasonry$1 = /*@__PURE__*/proxyCustomElement(SpxMasonry, [4,"spx-masonry",{"bpColumns":[513,"bp-columns"],"columns":[514],"gap":[513],"imageSize":[513,"image-size"],"images":[513],"imagesSrc":[513,"images-src"],"bpColumnsObject":[32],"imagesArray":[32],"macyState":[32]}]);
 const SpxMockup$1 = /*@__PURE__*/proxyCustomElement(SpxMockup, [4,"spx-mockup",{"colorGalaxyS8":[513,"color-galaxy-s-8"],"colorGooglePixel":[513,"color-google-pixel"],"colorIpadPro":[513,"color-ipad-pro"],"colorIphone8":[513,"color-iphone-8"],"colorMacbook":[513,"color-macbook"],"colorMacbookPro":[513,"color-macbook-pro"],"display":[513],"imagePosition":[513,"image-position"],"src":[513],"type":[513],"height":[32],"innerElId":[32],"mockup":[32],"outerElId":[32],"parent":[32],"parentHeight":[32],"width":[32]},[[9,"resize","onResize"]]]);
-const SpxNavigation$1 = /*@__PURE__*/proxyCustomElement(SpxNavigation, [0,"spx-navigation",{"childBorder":[513,"child-border"],"childBorderRadius":[513,"child-border-radius"],"childBoxShadow":[513,"child-box-shadow"],"childChildGap":[513,"child-child-gap"],"childGap":[513,"child-gap"],"childIcon":[513,"child-icon"],"childIconType":[513,"child-icon-type"],"childIndicatorGap":[513,"child-indicator-gap"],"childItemBackground":[513,"child-item-background"],"childItemBackgroundHover":[513,"child-item-background-hover"],"childItemColor":[513,"child-item-color"],"childItemColorHover":[513,"child-item-color-hover"],"childItemPadding":[513,"child-item-padding"],"childPlacement":[513,"child-placement"],"fontSize":[513,"font-size"],"itemTransitionDuration":[513,"item-transition-duration"],"itemTransitionTimingFunction":[513,"item-transition-timing-function"],"itemUnderline":[516,"item-underline"],"itemUnderlineHover":[516,"item-underline-hover"],"menu":[513],"mobile":[514],"mobileIcon":[513,"mobile-icon"],"mobileIconType":[513,"mobile-icon-type"],"mobileItemBackground":[513,"mobile-item-background"],"mobileItemBackgroundHover":[513,"mobile-item-background-hover"],"mobileItemColor":[513,"mobile-item-color"],"mobileItemColorHover":[513,"mobile-item-color-hover"],"mobileItemNestedMarginLeft":[513,"mobile-item-nested-margin-left"],"mobileItemPadding":[513,"mobile-item-padding"],"mobilePlacement":[513,"mobile-placement"],"parentItemBackground":[513,"parent-item-background"],"parentItemBackgroundHover":[513,"parent-item-background-hover"],"parentItemColor":[513,"parent-item-color"],"parentItemColorHover":[513,"parent-item-color-hover"],"parentItemGap":[513,"parent-item-gap"],"parentItemPadding":[513,"parent-item-padding"],"vertical":[516],"menuArray":[32],"mobileBP":[32]},[[0,"ontouchstart","onClick"],[1,"mouseenter","onClick"],[0,"focusin","onClick"],[9,"resize","onResize"]]]);
+const SpxNavigation$1 = /*@__PURE__*/proxyCustomElement(SpxNavigation, [0,"spx-navigation",{"childBorder":[513,"child-border"],"childBorderRadius":[513,"child-border-radius"],"childBoxShadow":[513,"child-box-shadow"],"childChildGap":[513,"child-child-gap"],"childGap":[513,"child-gap"],"childIcon":[513,"child-icon"],"childIconType":[513,"child-icon-type"],"childIndicatorGap":[513,"child-indicator-gap"],"childItemBackground":[513,"child-item-background"],"childItemBackgroundHover":[513,"child-item-background-hover"],"childItemColor":[513,"child-item-color"],"childItemColorHover":[513,"child-item-color-hover"],"childItemPadding":[513,"child-item-padding"],"childPlacement":[513,"child-placement"],"fontSize":[513,"font-size"],"itemTransitionDuration":[513,"item-transition-duration"],"itemTransitionTimingFunction":[513,"item-transition-timing-function"],"itemUnderline":[516,"item-underline"],"itemUnderlineHover":[516,"item-underline-hover"],"menu":[513],"mobile":[514],"mobileIcon":[513,"mobile-icon"],"mobileIconType":[513,"mobile-icon-type"],"mobileItemBackground":[513,"mobile-item-background"],"mobileItemBackgroundHover":[513,"mobile-item-background-hover"],"mobileItemColor":[513,"mobile-item-color"],"mobileItemColorHover":[513,"mobile-item-color-hover"],"mobileItemNestedMarginLeft":[513,"mobile-item-nested-margin-left"],"mobileItemPadding":[513,"mobile-item-padding"],"mobilePlacement":[513,"mobile-placement"],"parentItemBackground":[513,"parent-item-background"],"parentItemBackgroundHover":[513,"parent-item-background-hover"],"parentItemColor":[513,"parent-item-color"],"parentItemColorHover":[513,"parent-item-color-hover"],"parentItemGap":[513,"parent-item-gap"],"parentItemPadding":[513,"parent-item-padding"],"vertical":[516],"menuArray":[32],"mobileBp":[32]},[[0,"ontouchstart","onClick"],[1,"mouseenter","onClick"],[0,"focusin","onClick"],[9,"resize","onResize"]]]);
 const SpxNotation$1 = /*@__PURE__*/proxyCustomElement(SpxNotation, [4,"spx-notation",{"animation":[516],"animationDuration":[514,"animation-duration"],"color":[513],"display":[513],"iterations":[514],"multiline":[516],"strokeWidth":[514,"stroke-width"],"type":[513],"annotation":[32]}]);
 const SpxOffset$1 = /*@__PURE__*/proxyCustomElement(SpxOffset, [4,"spx-offset",{"display":[513],"target":[513]},[[9,"resize","onResize"]]]);
-const SpxPageDocs$1 = /*@__PURE__*/proxyCustomElement(SpxPageDocs, [4,"spx-page-docs",{"bpMobile":[514,"bp-mobile"],"contentHeadingFontFamily":[513,"content-heading-font-family"],"navigationBackground":[513,"navigation-background"],"navigationFontFamily":[513,"navigation-font-family"],"navigationFontSizeMultiplier":[514,"navigation-font-size-multiplier"],"navigationLinkFontSizeMultiplier":[514,"navigation-link-font-size-multiplier"],"navigationGap":[513,"navigation-gap"],"navigationHeadingTag":[513,"navigation-heading-tag"],"navigationHeightAdjust":[513,"navigation-height-adjust"],"navigationLinkColor":[513,"navigation-link-color"],"navigationLinkColorActive":[513,"navigation-link-color-active"],"navigationLinkFontWeight":[513,"navigation-link-font-weight"],"navigationLinkLetterSpacing":[513,"navigation-link-letter-spacing"],"navigationLinkLineHeight":[513,"navigation-link-line-height"],"navigationLinkTextTransform":[513,"navigation-link-text-transform"],"navigationPadding":[513,"navigation-padding"],"navigationTitleColor":[513,"navigation-title-color"],"navigationTitleFontWeight":[513,"navigation-title-font-weight"],"navigationTitleLetterSpacing":[513,"navigation-title-letter-spacing"],"navigationTitleLineHeight":[513,"navigation-title-line-height"],"navigationTitleTextTransform":[513,"navigation-title-text-transform"],"navigationTop":[513,"navigation-top"],"offsetMarginTop":[513,"offset-margin-top"],"uniqueId":[516,"unique-id"],"spaceBottom":[513,"space-bottom"],"spaceX":[513,"space-x"],"spaceY":[513,"space-y"],"mobile":[32]},[[9,"resize","onResize"]]]);
-const SpxPageSingle$1 = /*@__PURE__*/proxyCustomElement(SpxPageSingle, [4,"spx-page-single",{"authorColor":[513,"author-color"],"authorFontFamily":[513,"author-font-family"],"authorFontSizeMultiplier":[514,"author-font-size-multiplier"],"authorFontWeight":[513,"author-font-weight"],"authorLetterSpacing":[513,"author-letter-spacing"],"authorLineHeight":[513,"author-line-height"],"authorMarginTop":[513,"author-margin-top"],"authorTextTransform":[513,"author-text-transform"],"contentMarginTop":[513,"content-margin-top"],"contentMaxWidth":[513,"content-max-width"],"contentSpaceX":[513,"content-space-x"],"date":[516],"dateColor":[513,"date-color"],"dateFontFamily":[513,"date-font-family"],"dateFontSizeMultiplier":[514,"date-font-size-multiplier"],"dateFontWeight":[513,"date-font-weight"],"dateLetterSpacing":[513,"date-letter-spacing"],"dateLineHeight":[513,"date-line-height"],"dateMarginTop":[513,"date-margin-top"],"dateTextTransform":[513,"date-text-transform"],"headerPaddingBottom":[513,"header-padding-bottom"],"headerBorderBottom":[513,"header-border-bottom"],"image":[516],"imageBorderRadius":[513,"image-border-radius"],"imageHeight":[513,"image-height"],"imageObjectPosition":[513,"image-object-position"],"imageSpaceX":[513,"image-space-x"],"imageSpaceY":[513,"image-space-y"],"mobile":[514],"post":[513],"titleColor":[513,"title-color"],"titleFontFamily":[513,"title-font-family"],"titleFontSizeMultiplier":[514,"title-font-size-multiplier"],"titleFontWeight":[513,"title-font-weight"],"titleLetterSpacing":[513,"title-letter-spacing"],"titleLineHeight":[513,"title-line-height"],"titleMarginTop":[513,"title-margin-top"],"titleTextTransform":[513,"title-text-transform"],"content":[32],"mobileBP":[32],"postArray":[32],"postContent":[32]}]);
+const SpxPageDocs$1 = /*@__PURE__*/proxyCustomElement(SpxPageDocs, [4,"spx-page-docs",{"bpMobile":[514,"bp-mobile"],"contentHeadingFontFamily":[513,"content-heading-font-family"],"navigationBackground":[513,"navigation-background"],"navigationFontFamily":[513,"navigation-font-family"],"navigationGapMin":[514,"navigation-gap-min"],"navigationGapMax":[514,"navigation-gap-max"],"navigationHeadingTag":[513,"navigation-heading-tag"],"navigationHeightAdjust":[513,"navigation-height-adjust"],"navigationLinkColor":[513,"navigation-link-color"],"navigationLinkColorActive":[513,"navigation-link-color-active"],"navigationLinkFontWeight":[513,"navigation-link-font-weight"],"navigationLinkLetterSpacing":[513,"navigation-link-letter-spacing"],"navigationLinkLineHeight":[513,"navigation-link-line-height"],"navigationLinkTextTransform":[513,"navigation-link-text-transform"],"navigationSpaceYMin":[514,"navigation-space-y-min"],"navigationSpaceYMax":[514,"navigation-space-y-max"],"navigationTitleColor":[513,"navigation-title-color"],"navigationTitleFontWeight":[513,"navigation-title-font-weight"],"navigationTitleLetterSpacing":[513,"navigation-title-letter-spacing"],"navigationTitleLineHeight":[513,"navigation-title-line-height"],"navigationTitleTextTransform":[513,"navigation-title-text-transform"],"navigationTitleMarginBottomMin":[514,"navigation-title-margin-bottom-min"],"navigationTitleMarginBottomMax":[514,"navigation-title-margin-bottom-max"],"navigationTop":[513,"navigation-top"],"offsetMarginTopMin":[514,"offset-margin-top-min"],"offsetMarginTopMax":[514,"offset-margin-top-max"],"uniqueId":[516,"unique-id"],"paddingX":[513,"padding-x"],"paddingYMin":[514,"padding-y-min"],"paddingYMax":[514,"padding-y-max"],"mobile":[32]},[[9,"resize","onResize"]]]);
+const SpxPageSingle$1 = /*@__PURE__*/proxyCustomElement(SpxPageSingle, [4,"spx-page-single",{"authorColor":[513,"author-color"],"authorFontFamily":[513,"author-font-family"],"authorFontSizeMin":[514,"author-font-size-min"],"authorFontSizeMax":[514,"author-font-size-max"],"authorFontWeight":[513,"author-font-weight"],"authorLetterSpacing":[513,"author-letter-spacing"],"authorLineHeight":[513,"author-line-height"],"authorMarginTopMin":[514,"author-margin-top-min"],"authorMarginTopMax":[514,"author-margin-top-max"],"authorTextTransform":[513,"author-text-transform"],"contentMarginTopMin":[514,"content-margin-top-min"],"contentMarginTopMax":[514,"content-margin-top-max"],"contentMaxWidth":[513,"content-max-width"],"contentPaddingX":[513,"content-padding-x"],"date":[516],"dateColor":[513,"date-color"],"dateFontFamily":[513,"date-font-family"],"dateFontSizeMin":[514,"date-font-size-min"],"dateFontSizeMax":[514,"date-font-size-max"],"dateFontWeight":[513,"date-font-weight"],"dateLetterSpacing":[513,"date-letter-spacing"],"dateLineHeight":[513,"date-line-height"],"dateMarginTopMin":[514,"date-margin-top-min"],"dateMarginTopMax":[514,"date-margin-top-max"],"dateTextTransform":[513,"date-text-transform"],"headerPaddingBottomMin":[514,"header-padding-bottom-min"],"headerPaddingBottomMax":[514,"header-padding-bottom-max"],"headerBorderBottom":[513,"header-border-bottom"],"image":[516],"imageBorderRadius":[513,"image-border-radius"],"imageHeight":[513,"image-height"],"imageObjectPosition":[513,"image-object-position"],"imagePaddingX":[513,"image-padding-x"],"imageSpaceYMin":[514,"image-space-y-min"],"imageSpaceYMax":[514,"image-space-y-max"],"mobile":[514],"post":[513],"titleColor":[513,"title-color"],"titleFontFamily":[513,"title-font-family"],"titleFontSizeMin":[514,"title-font-size-min"],"titleFontSizeMax":[514,"title-font-size-max"],"titleFontWeight":[513,"title-font-weight"],"titleLetterSpacing":[513,"title-letter-spacing"],"titleLineHeight":[513,"title-line-height"],"titleMarginTopMin":[514,"title-margin-top-min"],"titleMarginTopMax":[514,"title-margin-top-max"],"titleTextTransform":[513,"title-text-transform"],"content":[32],"mobileBP":[32],"postArray":[32],"postContent":[32]}]);
 const SpxScrollspy$2 = /*@__PURE__*/proxyCustomElement(SpxScrollspy, [0,"spx-scrollspy",{"contentClass":[513,"content-class"],"display":[513],"navClass":[513,"nav-class"],"offset":[520],"scrolling":[516],"scrollingOffset":[514,"scrolling-offset"],"target":[513],"urlChange":[516,"url-change"],"myGumshoe":[32]},[[4,"gumshoeActivate","onLinkChange"]]]);
-const SpxSectionButton$1 = /*@__PURE__*/proxyCustomElement(SpxSectionButton, [4,"spx-section-button",{"href":[513],"reverseColor":[516,"reverse-color"],"target":[513],"transitionDuration":[513,"transition-duration"],"transitionTimingFunction":[513,"transition-timing-function"],"type":[513]}]);
-const SpxSectionCard$1 = /*@__PURE__*/proxyCustomElement(SpxSectionCard, [4,"spx-section-card",{"boxShadow":[513,"box-shadow"],"padding":[513],"textColor":[513,"text-color"],"textFontSizeMultiplier":[514,"text-font-size-multiplier"],"textFontWeight":[513,"text-font-weight"],"textLetterSpacing":[513,"text-letter-spacing"],"textLineHeight":[513,"text-line-height"],"textMarginTop":[513,"text-margin-top"],"textMaxWidth":[513,"text-max-width"],"textTransform":[513,"text-transform"],"titleColor":[513,"title-color"],"titleFontSizeMultiplier":[514,"title-font-size-multiplier"],"titleFontWeight":[513,"title-font-weight"],"titleLetterSpacing":[513,"title-letter-spacing"],"titleLineHeight":[513,"title-line-height"],"titleMaxWidth":[513,"title-max-width"],"titleTextTransform":[513,"title-text-transform"]}]);
-const SpxSectionFooter$1 = /*@__PURE__*/proxyCustomElement(SpxSectionFooter, [4,"spx-section-footer",{"background":[513],"gap":[513],"imageMaxHeight":[513,"image-max-height"],"justifyContent":[513,"justify-content"],"maxWidth":[513,"max-width"],"spaceBefore":[513,"space-before"],"spaceY":[513,"space-y"],"textColor":[513,"text-color"],"textMaxWidth":[513,"text-max-width"]}]);
-const SpxSectionHeader$1 = /*@__PURE__*/proxyCustomElement(SpxSectionHeader, [4,"spx-section-header",{"backdropFilter":[513,"backdrop-filter"],"background":[513],"backgroundScroll":[514,"background-scroll"],"borderBottom":[513,"border-bottom"],"logoLink":[513,"logo-link"],"logoMaxHeight":[513,"logo-max-height"],"logoSrc":[513,"logo-src"],"logoSrcMobile":[513,"logo-src-mobile"],"navigationAlign":[513,"navigation-align"],"position":[513],"spaceX":[513,"space-x"],"wrapper":[516],"zIndex":[514,"z-index"],"bgScroll":[32]},[[9,"scroll","onScroll"]]]);
-const SpxSectionTextMedia$1 = /*@__PURE__*/proxyCustomElement(SpxSectionTextMedia, [4,"spx-section-text-media",{"background":[513],"columnSize":[513,"column-size"],"first":[516],"gap":[513],"hideMedia":[516,"hide-media"],"imagesGap":[513,"images-gap"],"layout":[513],"mediaBackground":[513,"media-background"],"mediaBackgroundOverlap":[516,"media-background-overlap"],"mediaFull":[516,"media-full"],"mediaFullMobileFix":[516,"media-full-mobile-fix"],"reverse":[516],"textAlignInner":[513,"text-align-inner"],"textAlignOuter":[513,"text-align-outer"],"textBackground":[513,"text-background"],"textBackgroundOverlap":[516,"text-background-overlap"],"tabs":[32]}]);
+const SpxSectionButton$1 = /*@__PURE__*/proxyCustomElement(SpxSectionButton, [4,"spx-section-button",{"icon":[513],"iconGapMin":[514,"icon-gap-min"],"iconGapMax":[514,"icon-gap-max"],"href":[513],"reverse":[516],"target":[513],"transitionDuration":[513,"transition-duration"],"transitionTimingFunction":[513,"transition-timing-function"],"type":[513]}]);
+const SpxSectionFooter$1 = /*@__PURE__*/proxyCustomElement(SpxSectionFooter, [4,"spx-section-footer",{"background":[513],"gap":[513],"imageMaxHeight":[513,"image-max-height"],"justifyContent":[513,"justify-content"],"maxWidth":[513,"max-width"],"spaceBeforeMin":[514,"space-before-min"],"spaceBeforeMax":[514,"space-before-max"],"paddingYMin":[514,"padding-y-min"],"paddingYMax":[514,"padding-y-max"],"textColor":[513,"text-color"],"textFontSizeMin":[514,"text-font-size-min"],"textFontSizeMax":[514,"text-font-size-max"],"textMarginTopMin":[514,"text-margin-top-min"],"textMarginTopMax":[514,"text-margin-top-max"],"textMaxWidth":[513,"text-max-width"],"titleFontSizeMin":[514,"title-font-size-min"],"titleFontSizeMax":[514,"title-font-size-max"],"titleMarginBottomMin":[514,"title-margin-bottom-min"],"titleMarginBottomMax":[514,"title-margin-bottom-max"]}]);
+const SpxSectionHeader$1 = /*@__PURE__*/proxyCustomElement(SpxSectionHeader, [4,"spx-section-header",{"backdropFilter":[513,"backdrop-filter"],"background":[513],"backgroundScroll":[514,"background-scroll"],"borderBottom":[513,"border-bottom"],"logoLink":[513,"logo-link"],"logoMaxHeight":[513,"logo-max-height"],"logoSrc":[513,"logo-src"],"logoSrcMobile":[513,"logo-src-mobile"],"navigationAlign":[513,"navigation-align"],"position":[513],"paddingYMin":[514,"padding-y-min"],"paddingYMax":[514,"padding-y-max"],"wrapper":[516],"zIndex":[514,"z-index"],"bgScroll":[32]},[[9,"scroll","onScroll"]]]);
+const SpxSectionTwoColumn$1 = /*@__PURE__*/proxyCustomElement(SpxSectionTwoColumn, [4,"spx-section-two-column",{"background":[513],"backgroundImage":[513,"background-image"],"columnSize":[513,"column-size"],"first":[516],"gapMin":[514,"gap-min"],"gapMax":[514,"gap-max"],"hideMedia":[516,"hide-media"],"imagesGapMin":[514,"images-gap-min"],"imagesGapMax":[514,"images-gap-max"],"mediaPaddingMin":[514,"media-padding-min"],"mediaPaddingMax":[514,"media-padding-max"],"layout":[513],"mediaBackground":[513,"media-background"],"mediaBackgroundOverlap":[516,"media-background-overlap"],"mediaFull":[516,"media-full"],"mediaFullMobileFix":[516,"media-full-mobile-fix"],"mediaMargin":[513,"media-margin"],"reverse":[516],"reverseMobile":[516,"reverse-mobile"],"tabsAnimation":[516,"tabs-animation"],"tabsAnimationColor":[513,"tabs-animation-color"],"tabsAnimationDuration":[514,"tabs-animation-duration"],"textAlignInner":[513,"text-align-inner"],"textAlignOuter":[513,"text-align-outer"],"textBackground":[513,"text-background"],"textBackgroundOverlap":[516,"text-background-overlap"],"tabs":[32],"buttons":[32]}]);
 const SpxShare$1 = /*@__PURE__*/proxyCustomElement(SpxShare, [0,"spx-share",{"fontSize":[513,"font-size"],"itemBackground":[513,"item-background"],"itemBorderRadius":[513,"item-border-radius"],"itemColor":[513,"item-color"],"itemFilterHover":[513,"item-filter-hover"],"itemGap":[513,"item-gap"],"itemPadding":[513,"item-padding"],"itemSize":[513,"item-size"],"itemTransitionDuration":[513,"item-transition-duration"],"itemTransitionTimingFunction":[513,"item-transition-timing-function"],"target":[513],"theme":[513],"vertical":[516],"location":[32]}]);
-const SpxSlider = /*@__PURE__*/proxyCustomElement(SpxScrollspy$1, [4,"spx-slider",{"autoheight":[516],"autoplay":[516],"autoplayDelay":[514,"autoplay-delay"],"autoplayDisableOnInteraction":[516,"autoplay-disable-on-interaction"],"bpTabs":[513,"bp-tabs"],"centeredSlides":[516,"centered-slides"],"direction":[513],"effect":[513],"imageObjectFit":[513,"image-object-fit"],"imageSize":[513,"image-size"],"images":[513],"imagesSrc":[513,"images-src"],"loop":[516],"maxHeight":[513,"max-height"],"maxWidth":[513,"max-width"],"navigation":[516],"navigationBackground":[513,"navigation-background"],"navigationBorderRadius":[513,"navigation-border-radius"],"navigationColor":[513,"navigation-color"],"navigationDistanceX":[513,"navigation-distance-x"],"navigationIconNext":[513,"navigation-icon-next"],"navigationIconPrev":[513,"navigation-icon-prev"],"navigationIconType":[513,"navigation-icon-type"],"navigationPadding":[513,"navigation-padding"],"navigationSize":[513,"navigation-size"],"pagination":[513],"paginationBulletsBackground":[513,"pagination-bullets-background"],"paginationBulletsBackgroundActive":[513,"pagination-bullets-background-active"],"paginationBulletsClickable":[516,"pagination-bullets-clickable"],"paginationBulletsDynamic":[516,"pagination-bullets-dynamic"],"paginationBulletsDynamicAmount":[514,"pagination-bullets-dynamic-amount"],"paginationBulletsSize":[513,"pagination-bullets-size"],"paginationBulletsSpaceBetween":[513,"pagination-bullets-space-between"],"paginationTabsMaxWidth":[513,"pagination-tabs-max-width"],"paginationTransitionDuration":[513,"pagination-transition-duration"],"paginationTransitionTimingFunction":[513,"pagination-transition-timing-function"],"prevNextFilter":[513,"prev-next-filter"],"slideMessageFirst":[513,"slide-message-first"],"slideMessageLast":[513,"slide-message-last"],"slideMessageNext":[513,"slide-message-next"],"slideMessagePrevious":[513,"slide-message-previous"],"slidesPerView":[514,"slides-per-view"],"spaceBetween":[514,"space-between"],"speed":[514],"imagesArray":[32],"mySwiper":[32],"mySwiperGallery":[32],"swiperBreakpoints":[32]}]);
-const SpxSlideshow$1 = /*@__PURE__*/proxyCustomElement(SpxSlideshow, [4,"spx-slideshow",{"gap":[513],"imageSize":[513,"image-size"],"images":[513],"imagesSrc":[513,"images-src"],"maxWidth":[513,"max-width"],"duration":[513],"imagesArray":[32],"offsetWidth":[32]},[[9,"resize","onResize"]]]);
-const SpxSnackbar$1 = /*@__PURE__*/proxyCustomElement(SpxSnackbar, [4,"spx-snackbar",{"animationDelay":[513,"animation-delay"],"animationDuration":[513,"animation-duration"],"background":[513],"border":[513],"borderRadius":[513,"border-radius"],"closeable":[516],"color":[513],"distanceX":[513,"distance-x"],"distanceY":[513,"distance-y"],"fixed":[516],"fontSize":[513,"font-size"],"identifier":[513],"padding":[513],"position":[513],"positionCss":[513,"position-css"],"reverse":[516],"spaceBetween":[513,"space-between"],"target":[513],"text":[513],"zIndex":[514,"z-index"],"positionArray":[32],"containerClass":[32]}]);
-const SpxSnackbarToggle$1 = /*@__PURE__*/proxyCustomElement(SpxSnackbarToggle, [4,"spx-snackbar-toggle"]);
-const SpxText$1 = /*@__PURE__*/proxyCustomElement(SpxText, [4,"spx-text",{"contentFontSizeMultiplier":[514,"content-font-size-multiplier"],"headingColor":[513,"heading-color"],"headingFontFamily":[513,"heading-font-family"],"headingFontWeight":[513,"heading-font-weight"],"headingLetterSpacing":[513,"heading-letter-spacing"],"headingLineHeight":[513,"heading-line-height"],"headingTextTransform":[513,"heading-text-transform"],"linkDecorationColor":[513,"link-decoration-color"],"markdown":[516],"maxWidth":[513,"max-width"],"textColor":[513,"text-color"],"textFontFamily":[513,"text-font-family"],"textFontWeight":[513,"text-font-weight"],"textLetterSpacing":[513,"text-letter-spacing"],"textLineHeight":[513,"text-line-height"],"textMinW":[514,"text-min-w"],"textMaxW":[514,"text-max-w"],"textTextTransform":[513,"text-text-transform"],"textType":[513,"text-type"]}]);
+const SpxSlider = /*@__PURE__*/proxyCustomElement(SpxScrollspy$1, [4,"spx-slider",{"autoheight":[516],"autoplay":[516],"autoplayDelay":[514,"autoplay-delay"],"autoplayDisableOnInteraction":[516,"autoplay-disable-on-interaction"],"bpTabs":[513,"bp-tabs"],"centeredSlides":[516,"centered-slides"],"direction":[513],"effect":[513],"imageObjectFit":[513,"image-object-fit"],"imageSize":[513,"image-size"],"images":[513],"imagesSrc":[513,"images-src"],"loop":[516],"maxHeight":[513,"max-height"],"maxWidth":[513,"max-width"],"navigation":[516],"navigationBackground":[513,"navigation-background"],"navigationBorderRadius":[513,"navigation-border-radius"],"navigationColor":[513,"navigation-color"],"navigationDistanceX":[513,"navigation-distance-x"],"navigationIconNext":[513,"navigation-icon-next"],"navigationIconPrev":[513,"navigation-icon-prev"],"navigationIconType":[513,"navigation-icon-type"],"navigationPadding":[513,"navigation-padding"],"navigationSize":[513,"navigation-size"],"pagination":[513],"paginationBulletsBackground":[513,"pagination-bullets-background"],"paginationBulletsBackgroundActive":[513,"pagination-bullets-background-active"],"paginationBulletsClickable":[516,"pagination-bullets-clickable"],"paginationBulletsDynamic":[516,"pagination-bullets-dynamic"],"paginationBulletsDynamicAmount":[514,"pagination-bullets-dynamic-amount"],"paginationBulletsSize":[513,"pagination-bullets-size"],"paginationBulletsSpaceBetween":[513,"pagination-bullets-space-between"],"paginationTabsGapMin":[514,"pagination-tabs-gap-min"],"paginationTabsGapMax":[514,"pagination-tabs-gap-max"],"paginationTabsMarginBottomMin":[514,"pagination-tabs-margin-bottom-min"],"paginationTabsMarginBottomMax":[514,"pagination-tabs-margin-bottom-max"],"paginationTabsMaxWidth":[513,"pagination-tabs-max-width"],"paginationTabsInnerGapMin":[514,"pagination-tabs-inner-gap-min"],"paginationTabsInnerGapMax":[514,"pagination-tabs-inner-gap-max"],"paginationTabsPaddingMin":[514,"pagination-tabs-padding-min"],"paginationTabsPaddingMax":[514,"pagination-tabs-padding-max"],"paginationTransitionDuration":[513,"pagination-transition-duration"],"paginationTransitionTimingFunction":[513,"pagination-transition-timing-function"],"prevNextFilter":[513,"prev-next-filter"],"slideMessageFirst":[513,"slide-message-first"],"slideMessageLast":[513,"slide-message-last"],"slideMessageNext":[513,"slide-message-next"],"slideMessagePrevious":[513,"slide-message-previous"],"slidesPerView":[514,"slides-per-view"],"spaceBetween":[514,"space-between"],"speed":[514],"imagesArray":[32],"mySwiper":[32],"mySwiperGallery":[32],"swiperBreakpoints":[32]}]);
+const SpxSlideshow$1 = /*@__PURE__*/proxyCustomElement(SpxSlideshow, [4,"spx-slideshow",{"display":[513],"duration":[513],"gap":[513],"images":[513],"imageSize":[513,"image-size"],"imagesSrc":[513,"images-src"],"maxWidth":[513,"max-width"],"overflow":[513],"imagesArray":[32],"offsetWidth":[32]},[[9,"resize","onResize"]]]);
+const SpxSnackbar$1 = /*@__PURE__*/proxyCustomElement(SpxSnackbar, [4,"spx-snackbar",{"animationDelay":[513,"animation-delay"],"animationDuration":[513,"animation-duration"],"background":[513],"border":[513],"borderRadius":[513,"border-radius"],"closeable":[516],"color":[513],"distanceX":[513,"distance-x"],"distanceY":[513,"distance-y"],"fixed":[516],"fontSize":[513,"font-size"],"identifier":[513],"padding":[513],"position":[513],"positionCss":[513,"position-css"],"reverse":[516],"spaceBetween":[513,"space-between"],"target":[513],"text":[513],"zIndex":[514,"z-index"],"containerClass":[32],"positionArray":[32]}]);
+const SpxText$1 = /*@__PURE__*/proxyCustomElement(SpxText, [4,"spx-text",{"h1FontSizeMin":[514,"h1-font-size-min"],"h1FontSizeMax":[514,"h1-font-size-max"],"h2FontSizeMin":[514,"h2-font-size-min"],"h2FontSizeMax":[514,"h2-font-size-max"],"h3FontSizeMin":[514,"h3-font-size-min"],"h3FontSizeMax":[514,"h3-font-size-max"],"h4FontSizeMin":[514,"h4-font-size-min"],"h4FontSizeMax":[514,"h4-font-size-max"],"headingColor":[513,"heading-color"],"headingFontFamily":[513,"heading-font-family"],"headingFontWeight":[513,"heading-font-weight"],"headingLetterSpacing":[513,"heading-letter-spacing"],"headingLineHeight":[513,"heading-line-height"],"headingTextTransform":[513,"heading-text-transform"],"linkDecorationColor":[513,"link-decoration-color"],"markdown":[516],"maxWidth":[513,"max-width"],"paddingFigureMin":[514,"padding-figure-min"],"paddingFigureMax":[514,"padding-figure-max"],"spaceBeforeH1Min":[514,"space-before-h-1-min"],"spaceBeforeH1Max":[514,"space-before-h-1-max"],"spaceBetweenMin":[514,"space-between-min"],"spaceBetweenMax":[514,"space-between-max"],"spaceBetweenPMin":[514,"space-between-p-min"],"spaceBetweenPMax":[514,"space-between-p-max"],"textColor":[513,"text-color"],"textFontFamily":[513,"text-font-family"],"textFontSizeMin":[514,"text-font-size-min"],"textFontSizeMax":[514,"text-font-size-max"],"textFontWeight":[513,"text-font-weight"],"textLetterSpacing":[513,"text-letter-spacing"],"textLineHeight":[513,"text-line-height"],"textTextTransform":[513,"text-text-transform"]}]);
 const SpxTypewriter$1 = /*@__PURE__*/proxyCustomElement(SpxTypewriter, [0,"spx-typewriter",{"autoStart":[516,"auto-start"],"delay":[520],"deleteSpeed":[520,"delete-speed"],"display":[513],"loop":[516],"text":[513],"typewriter":[32]}]);
 const defineCustomElements = (opts) => {
   if (typeof customElements !== 'undefined') {
@@ -36602,15 +37549,13 @@ const defineCustomElements = (opts) => {
   SpxPageSingle$1,
   SpxScrollspy$2,
   SpxSectionButton$1,
-  SpxSectionCard$1,
   SpxSectionFooter$1,
   SpxSectionHeader$1,
-  SpxSectionTextMedia$1,
+  SpxSectionTwoColumn$1,
   SpxShare$1,
   SpxSlider,
   SpxSlideshow$1,
   SpxSnackbar$1,
-  SpxSnackbarToggle$1,
   SpxText$1,
   SpxTypewriter$1
     ].forEach(cmp => {
@@ -36621,4 +37566,4 @@ const defineCustomElements = (opts) => {
   }
 };
 
-export { IonIcon, SpxAccordion$1 as SpxAccordion, SpxAnimate$1 as SpxAnimate, SpxClassToggle$1 as SpxClassToggle, SpxCode$1 as SpxCode, SpxContainer$1 as SpxContainer, SpxEdit$1 as SpxEdit, SpxEditButton$1 as SpxEditButton, SpxEditor$1 as SpxEditor, SpxGroup$1 as SpxGroup, SpxIcon$1 as SpxIcon, SpxIframe$1 as SpxIframe, SpxImageComparison$1 as SpxImageComparison, SpxLightbox$1 as SpxLightbox, SpxLoader$1 as SpxLoader, SpxMasonry$1 as SpxMasonry, SpxMockup$1 as SpxMockup, SpxNavigation$1 as SpxNavigation, SpxNotation$1 as SpxNotation, SpxOffset$1 as SpxOffset, SpxPageDocs$1 as SpxPageDocs, SpxPageSingle$1 as SpxPageSingle, SpxScrollspy$2 as SpxScrollspy, SpxSectionButton$1 as SpxSectionButton, SpxSectionCard$1 as SpxSectionCard, SpxSectionFooter$1 as SpxSectionFooter, SpxSectionHeader$1 as SpxSectionHeader, SpxSectionTextMedia$1 as SpxSectionTextMedia, SpxShare$1 as SpxShare, SpxSlider, SpxSlideshow$1 as SpxSlideshow, SpxSnackbar$1 as SpxSnackbar, SpxSnackbarToggle$1 as SpxSnackbarToggle, SpxText$1 as SpxText, SpxTypewriter$1 as SpxTypewriter, defineCustomElements };
+export { IonIcon, SpxAccordion$1 as SpxAccordion, SpxAnimate$1 as SpxAnimate, SpxClassToggle$1 as SpxClassToggle, SpxCode$1 as SpxCode, SpxContainer$1 as SpxContainer, SpxEdit$1 as SpxEdit, SpxEditButton$1 as SpxEditButton, SpxEditor$1 as SpxEditor, SpxGroup$1 as SpxGroup, SpxIcon$1 as SpxIcon, SpxIframe$1 as SpxIframe, SpxImageComparison$1 as SpxImageComparison, SpxLightbox$1 as SpxLightbox, SpxLoader$1 as SpxLoader, SpxMasonry$1 as SpxMasonry, SpxMockup$1 as SpxMockup, SpxNavigation$1 as SpxNavigation, SpxNotation$1 as SpxNotation, SpxOffset$1 as SpxOffset, SpxPageDocs$1 as SpxPageDocs, SpxPageSingle$1 as SpxPageSingle, SpxScrollspy$2 as SpxScrollspy, SpxSectionButton$1 as SpxSectionButton, SpxSectionFooter$1 as SpxSectionFooter, SpxSectionHeader$1 as SpxSectionHeader, SpxSectionTwoColumn$1 as SpxSectionTwoColumn, SpxShare$1 as SpxShare, SpxSlider, SpxSlideshow$1 as SpxSlideshow, SpxSnackbar$1 as SpxSnackbar, SpxText$1 as SpxText, SpxTypewriter$1 as SpxTypewriter, defineCustomElements };

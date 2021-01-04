@@ -3,159 +3,342 @@
   "description": "This component styles text coming from a markdown file or a rich-text editor appropriately.\nIt will eventually be 100% compatible with the Gutenberg editor as well.",
   "properties": [
     {
-      "id": "text-contentFontSizeMultiplier",
-      "name": "contentFontSizeMultiplier",
+      "id": "text-h1FontSizeMax",
+      "name": "h1FontSizeMax",
+      "attribute": "h-1-font-size-max",
       "type": "number",
-      "description": "Only works if text-type is set to 'multiply'.",
+      "description": "",
+      "default": "3.2",
+      "defaultValue": "3.2",
+      "tags": []
+    },
+    {
+      "id": "text-h1FontSizeMin",
+      "name": "h1FontSizeMin",
+      "attribute": "h-1-font-size-min",
+      "type": "number",
+      "description": "",
+      "default": "1.6",
+      "defaultValue": "1.6",
+      "tags": []
+    },
+    {
+      "id": "text-h2FontSizeMax",
+      "name": "h2FontSizeMax",
+      "attribute": "h-2-font-size-max",
+      "type": "number",
+      "description": "",
+      "default": "2.2",
+      "defaultValue": "2.2",
+      "tags": []
+    },
+    {
+      "id": "text-h2FontSizeMin",
+      "name": "h2FontSizeMin",
+      "attribute": "h-2-font-size-min",
+      "type": "number",
+      "description": "",
+      "default": "1.4",
+      "defaultValue": "1.4",
+      "tags": []
+    },
+    {
+      "id": "text-h3FontSizeMax",
+      "name": "h3FontSizeMax",
+      "attribute": "h-3-font-size-max",
+      "type": "number",
+      "description": "",
+      "default": "1.8",
+      "defaultValue": "1.8",
+      "tags": []
+    },
+    {
+      "id": "text-h3FontSizeMin",
+      "name": "h3FontSizeMin",
+      "attribute": "h-3-font-size-min",
+      "type": "number",
+      "description": "",
+      "default": "1.2",
+      "defaultValue": "1.2",
+      "tags": []
+    },
+    {
+      "id": "text-h4FontSizeMax",
+      "name": "h4FontSizeMax",
+      "attribute": "h-4-font-size-max",
+      "type": "number",
+      "description": "",
+      "default": "1.6",
+      "defaultValue": "1.6",
+      "tags": []
+    },
+    {
+      "id": "text-h4FontSizeMin",
+      "name": "h4FontSizeMin",
+      "attribute": "h-4-font-size-min",
+      "type": "number",
+      "description": "",
+      "default": "1",
       "defaultValue": "1",
       "tags": []
     },
     {
       "id": "text-headingColor",
       "name": "headingColor",
+      "attribute": "heading-color",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-black)'",
       "defaultValue": "'var(--spx-color-black)'",
       "tags": []
     },
     {
       "id": "text-headingFontFamily",
       "name": "headingFontFamily",
+      "attribute": "heading-font-family",
       "type": "string",
       "description": "",
+      "default": "state.fontFamilyPrimary",
       "defaultValue": "state.fontFamilyPrimary",
       "tags": []
     },
     {
       "id": "text-headingFontWeight",
       "name": "headingFontWeight",
+      "attribute": "heading-font-weight",
       "type": "string",
       "description": "",
+      "default": "'500'",
       "defaultValue": "'500'",
       "tags": []
     },
     {
       "id": "text-headingLetterSpacing",
       "name": "headingLetterSpacing",
+      "attribute": "heading-letter-spacing",
       "type": "string",
       "description": "",
+      "default": "'0'",
       "defaultValue": "'0'",
       "tags": []
     },
     {
       "id": "text-headingLineHeight",
       "name": "headingLineHeight",
+      "attribute": "heading-line-height",
       "type": "string",
       "description": "",
+      "default": "'1.5'",
       "defaultValue": "'1.5'",
       "tags": []
     },
     {
       "id": "text-headingTextTransform",
       "name": "headingTextTransform",
+      "attribute": "heading-text-transform",
       "type": "string",
       "description": "",
+      "default": "'default'",
       "defaultValue": "'default'",
       "tags": []
     },
     {
       "id": "text-linkDecorationColor",
       "name": "linkDecorationColor",
+      "attribute": "link-decoration-color",
       "type": "string",
       "description": "",
-      "defaultValue": "'var(--spx-color-primary-A700)'",
+      "default": "'var(--spx-color-primary-600)'",
+      "defaultValue": "'var(--spx-color-primary-600)'",
       "tags": []
     },
     {
       "id": "text-markdown",
       "name": "markdown",
+      "attribute": "markdown",
       "type": "boolean",
       "description": "Parse markdown.",
+      "default": "false",
       "defaultValue": "false",
       "tags": []
     },
     {
       "id": "text-maxWidth",
       "name": "maxWidth",
+      "attribute": "max-width",
       "type": "string",
       "description": "",
-      "defaultValue": "'clamp(700px, 40vw, 1200px)'",
+      "default": "'768px'",
+      "defaultValue": "'768px'",
+      "tags": []
+    },
+    {
+      "id": "text-paddingFigureMax",
+      "name": "paddingFigureMax",
+      "attribute": "padding-figure-max",
+      "type": "number",
+      "description": "",
+      "default": "3",
+      "defaultValue": "3",
+      "tags": []
+    },
+    {
+      "id": "text-paddingFigureMin",
+      "name": "paddingFigureMin",
+      "attribute": "padding-figure-min",
+      "type": "number",
+      "description": "",
+      "default": "0.9",
+      "defaultValue": "0.9",
+      "tags": []
+    },
+    {
+      "id": "text-spaceBeforeH1Max",
+      "name": "spaceBeforeH1Max",
+      "attribute": "space-before-h-1-max",
+      "type": "number",
+      "description": "",
+      "default": "8",
+      "defaultValue": "8",
+      "tags": []
+    },
+    {
+      "id": "text-spaceBeforeH1Min",
+      "name": "spaceBeforeH1Min",
+      "attribute": "space-before-h-1-min",
+      "type": "number",
+      "description": "",
+      "default": "4",
+      "defaultValue": "4",
+      "tags": []
+    },
+    {
+      "id": "text-spaceBetweenMax",
+      "name": "spaceBetweenMax",
+      "attribute": "space-between-max",
+      "type": "number",
+      "description": "",
+      "default": "2",
+      "defaultValue": "2",
+      "tags": []
+    },
+    {
+      "id": "text-spaceBetweenMin",
+      "name": "spaceBetweenMin",
+      "attribute": "space-between-min",
+      "type": "number",
+      "description": "",
+      "default": "0.9",
+      "defaultValue": "0.9",
+      "tags": []
+    },
+    {
+      "id": "text-spaceBetweenPMax",
+      "name": "spaceBetweenPMax",
+      "attribute": "space-between-p-max",
+      "type": "number",
+      "description": "",
+      "default": "1.5",
+      "defaultValue": "1.5",
+      "tags": []
+    },
+    {
+      "id": "text-spaceBetweenPMin",
+      "name": "spaceBetweenPMin",
+      "attribute": "space-between-p-min",
+      "type": "number",
+      "description": "",
+      "default": "0.9",
+      "defaultValue": "0.9",
       "tags": []
     },
     {
       "id": "text-textColor",
       "name": "textColor",
+      "attribute": "text-color",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-700)'",
       "defaultValue": "'var(--spx-color-gray-700)'",
       "tags": []
     },
     {
       "id": "text-textFontFamily",
       "name": "textFontFamily",
+      "attribute": "text-font-family",
       "type": "string",
       "description": "",
+      "default": "state.fontFamilySecondary",
       "defaultValue": "state.fontFamilySecondary",
+      "tags": []
+    },
+    {
+      "id": "text-textFontSizeMax",
+      "name": "textFontSizeMax",
+      "attribute": "text-font-size-max",
+      "type": "number",
+      "description": "",
+      "default": "1.4",
+      "defaultValue": "1.4",
+      "tags": []
+    },
+    {
+      "id": "text-textFontSizeMin",
+      "name": "textFontSizeMin",
+      "attribute": "text-font-size-min",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
       "tags": []
     },
     {
       "id": "text-textFontWeight",
       "name": "textFontWeight",
+      "attribute": "text-font-weight",
       "type": "string",
       "description": "",
+      "default": "'400'",
       "defaultValue": "'400'",
       "tags": []
     },
     {
       "id": "text-textLetterSpacing",
       "name": "textLetterSpacing",
+      "attribute": "text-letter-spacing",
       "type": "string",
       "description": "",
+      "default": "'0'",
       "defaultValue": "'0'",
       "tags": []
     },
     {
       "id": "text-textLineHeight",
       "name": "textLineHeight",
+      "attribute": "text-line-height",
       "type": "string",
       "description": "",
+      "default": "'1.5'",
       "defaultValue": "'1.5'",
-      "tags": []
-    },
-    {
-      "id": "text-textMaxW",
-      "name": "textMaxW",
-      "type": "number",
-      "description": "Maximum viewport width when text-type is set to linear.",
-      "defaultValue": "2560",
-      "tags": []
-    },
-    {
-      "id": "text-textMinW",
-      "name": "textMinW",
-      "type": "number",
-      "description": "Minimum viewport width when text-type is set to linear.",
-      "defaultValue": "320",
       "tags": []
     },
     {
       "id": "text-textTextTransform",
       "name": "textTextTransform",
+      "attribute": "text-text-transform",
       "type": "string",
       "description": "",
+      "default": "'default'",
       "defaultValue": "'default'",
-      "tags": []
-    },
-    {
-      "id": "text-textType",
-      "name": "textType",
-      "type": "string",
-      "description": "",
-      "defaultValue": "'linear'",
       "tags": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxTextDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [],
   "slots": []
 }

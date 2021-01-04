@@ -11,8 +11,15 @@
 | -------- | --------- | ----------- | -------- | ------------ |
 | `color`  | `color`   |             | `string` | `'inherit'`  |
 | `icon`   | `icon`    | Icon code.  | `string` | `undefined`  |
-| `size`   | `size`    | Icon size.  | `string` | `'20px'`     |
+| `size`   | `size`    | Icon size.  | `string` | `'1em'`      |
 | `type`   | `type`    | Icon type.  | `string` | `'ionicons'` |
+
+
+## Events
+
+| Event            | Description                       | Type               |
+| ---------------- | --------------------------------- | ------------------ |
+| `spxIconDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
 
 
 ## Dependencies
@@ -22,6 +29,7 @@
  - [spx-accordion](../spx-accordion)
  - [spx-image-comparison](../spx-image-comparison)
  - [spx-navigation](../spx-navigation)
+ - [spx-section-button](../spx-section)
  - [spx-share](../spx-share)
  - [spx-slider](../spx-slider)
  - [spx-snackbar](../spx-snackbar)
@@ -37,6 +45,7 @@ graph TD;
   spx-accordion --> spx-icon
   spx-image-comparison --> spx-icon
   spx-navigation --> spx-icon
+  spx-section-button --> spx-icon
   spx-share --> spx-icon
   spx-slider --> spx-icon
   spx-snackbar --> spx-icon

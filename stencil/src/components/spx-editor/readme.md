@@ -27,6 +27,7 @@ graph TD;
   spx-editor --> spx-section-button
   spx-snackbar --> spx-icon
   spx-icon --> ion-icon
+  spx-section-button --> spx-icon
   style spx-editor fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

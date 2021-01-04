@@ -13,10 +13,12 @@ class Get {
 	/**
 	 * Gallery function.
 	 *
-	 * @param $field
+	 * @date    25/10/2020
+	 * @since   1.2.1
+	 *
 	 * @param $type
 	 *
-	 * @since 1.21
+	 * @param $field
 	 */
 
 	public static function gallery( $field, $type ) {
@@ -40,9 +42,11 @@ class Get {
 	/**
 	 * Navigation.
 	 *
+	 * @date    28/07/2020
+	 * @since   1.0.0
+	 *
 	 * @param $name
 	 *
-	 * @since 1.0
 	 */
 
 	public static function navigation( $name ) {
@@ -55,11 +59,13 @@ class Get {
 	/**
 	 * Post.
 	 *
-	 * @param $id
+	 * @date    20/10/2020
+	 * @since   1.1.9
+	 *
 	 * @param null $dateFormat
 	 * @param null $size
 	 *
-	 * @since 1.19
+	 * @param      $id
 	 */
 
 	public static function post( $id = NULL, $dateFormat = NULL, $size = NULL ) {

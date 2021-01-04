@@ -5,10 +5,12 @@ use spx\Get;
 /**
  * Get gallery.
  *
+ * @date    25/10/2020
+ * @since   1.2.1
+ *
  * @param $field
  * @param $type
  *
- * @since 1.21
  */
 
 function spxGetGallery( $field, $type ) {
@@ -18,9 +20,11 @@ function spxGetGallery( $field, $type ) {
 /**
  * Get navigation.
  *
+ * @date    28/07/2020
+ * @since   1.0.0
+ *
  * @param $name
  *
- * @since 1.0
  */
 
 
@@ -31,11 +35,13 @@ function spxGetNavigation( $name ) {
 /**
  * Get post.
  *
- * @param $id
+ * @date    28/07/2020
+ * @since   1.0.0
+ *
  * @param null $dateFormat
  * @param null $size
  *
- * @since 1.0
+ * @param      $id
  */
 
 function spxGetPost( $id = NULL, $dateFormat = NULL, $size = NULL ) {

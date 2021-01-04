@@ -5,45 +5,70 @@
     {
       "id": "image-comparison-color",
       "name": "color",
+      "attribute": "color",
       "type": "string",
       "description": "",
+      "default": "'#ffffff'",
       "defaultValue": "'#ffffff'",
+      "tags": []
+    },
+    {
+      "id": "image-comparison-height",
+      "name": "height",
+      "attribute": "height",
+      "type": "string",
+      "description": "",
+      "default": "'100%'",
+      "defaultValue": "'100%'",
       "tags": []
     },
     {
       "id": "image-comparison-iconColor",
       "name": "iconColor",
+      "attribute": "icon-color",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-900)'",
       "defaultValue": "'var(--spx-color-gray-900)'",
       "tags": []
     },
     {
       "id": "image-comparison-srcAfter",
       "name": "srcAfter",
+      "attribute": "src-after",
       "type": "string",
       "description": "Image URL of the before image.",
+      "default": "'https://source.unsplash.com/random/1200x300'",
       "defaultValue": "'https://source.unsplash.com/random/1200x300'",
       "tags": []
     },
     {
       "id": "image-comparison-srcBefore",
       "name": "srcBefore",
+      "attribute": "src-before",
       "type": "string",
       "description": "Image URL of the after image.",
+      "default": "'https://source.unsplash.com/random/1201x300'",
       "defaultValue": "'https://source.unsplash.com/random/1201x300'",
       "tags": []
     },
     {
       "id": "image-comparison-start",
       "name": "start",
+      "attribute": "start",
       "type": "number",
       "description": "Opening state in pixels.",
+      "default": "150",
       "defaultValue": "150",
       "tags": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxImageComparisonDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [
     {
       "name": "reload",

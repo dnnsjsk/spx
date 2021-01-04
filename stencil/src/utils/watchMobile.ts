@@ -1,7 +1,7 @@
 import state from '../stores/container';
 
 /**
- * BP Mobile.
+ * Set mobile class on body.
  */
 
 export const watchMobile = () => {

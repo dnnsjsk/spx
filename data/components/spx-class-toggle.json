@@ -5,14 +5,17 @@
     {
       "id": "class-toggle-display",
       "name": "display",
+      "attribute": "display",
       "type": "string",
       "description": "",
+      "default": "'block'",
       "defaultValue": "'block'",
       "tags": []
     },
     {
       "id": "class-toggle-local",
       "name": "local",
+      "attribute": "local",
       "type": "string",
       "description": "Specify a local storage item, so the toggle state will be remembered when the user visits the site again.",
       "tags": []
@@ -20,6 +23,7 @@
     {
       "id": "class-toggle-target",
       "name": "target",
+      "attribute": "target",
       "type": "string",
       "description": "Target element. Can take any querySelector value. (id, class, tag etc.) If none is set it will default to the first element inside.",
       "tags": []
@@ -27,13 +31,20 @@
     {
       "id": "class-toggle-toggle",
       "name": "toggle",
+      "attribute": "toggle",
       "type": "string",
       "description": "List of classes that should be toggled.",
+      "default": "'spx-class-toggle--active'",
       "defaultValue": "'spx-class-toggle--active'",
       "tags": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxClassToggleDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [
     {
       "name": "reload",

@@ -1,6 +1,14 @@
 // eslint-disable-next-line no-unused-vars
-import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { css, keyframes } from 'emotion';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+} from '@stencil/core';
+import { css, keyframes } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 
@@ -17,8 +25,16 @@ export class SpxLoader {
 
   @Prop({ reflect: true }) speed: string = '1.5s';
 
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxLoaderDidLoad' })
+  spxLoaderDidLoad: EventEmitter;
+
   componentDidLoad() {
     globalComponentDidLoad(this.el);
+
+    this.spxLoaderDidLoad.emit({ target: 'document' });
   }
 
   render() {

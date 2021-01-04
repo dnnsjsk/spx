@@ -5,21 +5,35 @@
     {
       "id": "offset-display",
       "name": "display",
+      "attribute": "display",
       "type": "string",
       "description": "",
+      "default": "'block'",
       "defaultValue": "'block'",
       "tags": []
     },
     {
       "id": "offset-target",
       "name": "target",
+      "attribute": "target",
       "type": "string",
       "description": "Target element.",
+      "default": "'header'",
       "defaultValue": "'header'",
-      "tags": []
+      "tags": [
+        {
+          "text": "'.header1'",
+          "name": "editor"
+        }
+      ]
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxOffsetDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [
     {
       "name": "reload",

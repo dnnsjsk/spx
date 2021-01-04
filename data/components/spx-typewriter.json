@@ -5,38 +5,47 @@
     {
       "id": "typewriter-autoStart",
       "name": "autoStart",
+      "attribute": "auto-start",
       "type": "boolean",
       "description": "Automatically starts writing.",
+      "default": "true",
       "defaultValue": "true",
       "tags": []
     },
     {
       "id": "typewriter-delay",
       "name": "delay",
+      "attribute": "delay",
       "type": "any",
       "description": "Writing delay in ms. Also accepts 'natural' value.",
+      "default": "'natural'",
       "defaultValue": "'natural'",
       "tags": []
     },
     {
       "id": "typewriter-deleteSpeed",
       "name": "deleteSpeed",
+      "attribute": "delete-speed",
       "type": "any",
       "description": "Delete delay in ms. Also accepts 'natural' value.",
+      "default": "'natural'",
       "defaultValue": "'natural'",
       "tags": []
     },
     {
       "id": "typewriter-display",
       "name": "display",
+      "attribute": "display",
       "type": "string",
       "description": "",
+      "default": "'block'",
       "defaultValue": "'block'",
       "tags": []
     },
     {
       "id": "typewriter-loop",
       "name": "loop",
+      "attribute": "loop",
       "type": "boolean",
       "description": "Loops the animation.",
       "tags": []
@@ -44,13 +53,20 @@
     {
       "id": "typewriter-text",
       "name": "text",
+      "attribute": "text",
       "type": "string",
       "description": "Text that should be written.",
+      "default": "\"I'm a typewriter\"",
       "defaultValue": "\"I'm a typewriter\"",
       "tags": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxTypewriterDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [
     {
       "name": "play",

@@ -1,8 +1,8 @@
 import { createStore } from '@stencil/store';
 import { removeClasses } from '../utils/removeClasses';
-import * as s from '../constants/container';
+import * as c from '../constants/container';
 import { setColor } from '../utils/setColor';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { watchMobile } from '../utils/watchMobile';
 
 /**
@@ -10,32 +10,49 @@ import { watchMobile } from '../utils/watchMobile';
  */
 
 const { state, onChange } = createStore({
-  bpMaxWidth: s.maxWidth,
+  bpMaxWidth: c.maxWidth,
+  bpMaxWidthMobile: c.maxWidthMobile,
   bpMobile: null,
-  bpMobileWidth: s.bpMobileWidth,
-  buttonReverseColor: s.buttonReverseColor,
-  colorPrimary: s.colorPrimary,
-  colorSecondary: s.colorSecondary,
-  fontFamilyPrimary: s.fontFamilyPrimary,
-  fontFamilySecondary: s.fontFamilySecondary,
-  spaceX: s.spaceX,
-  spaceXsm: s.spaceXSm,
+  bpMobileWidth: c.bpMobileWidth,
+  buttonBackgroundPrimary: c.buttonBackgroundPrimary,
+  buttonBackgroundSecondary: c.buttonBackgroundSecondary,
+  buttonColorPrimary: c.buttonColorPrimary,
+  buttonColorSecondary: c.buttonColorSecondary,
+  colorGray: c.colorGray,
+  colorPrimary: c.colorPrimary,
+  colorSecondary: c.colorSecondary,
+  fontFamilyPrimary: c.fontFamilyPrimary,
+  fontFamilySecondary: c.fontFamilySecondary,
+  linearBase: c.linearBase,
+  linearMaxW: c.linearMaxW,
+  linearMinW: c.linearMinW,
+  paddingX: c.paddingX,
+  paddingXsm: c.paddingXSm,
 });
 
 /**
  * Color.
  */
 
+onChange('colorGray', (value) => {
+  removeClasses(document.body, 'color');
+  setColor(value, 'gray');
+  setColor(state.colorPrimary, 'primary');
+  setColor(state.colorSecondary, 'secondary');
+});
+
 onChange('colorPrimary', (value) => {
-  removeClasses(document.body, 'color-palette');
+  removeClasses(document.body, 'color');
   setColor(value, 'primary');
   setColor(state.colorSecondary, 'secondary');
+  setColor(state.colorGray, 'gray');
 });
 
 onChange('colorSecondary', (value) => {
   removeClasses(document.body, 'color');
   setColor(value, 'secondary');
   setColor(state.colorPrimary, 'primary');
+  setColor(state.colorGray, 'gray');
 });
 
 /**
@@ -59,30 +76,6 @@ onChange('fontFamilyPrimary', (value) => {
 onChange('fontFamilySecondary', (value) => {
   removeClasses(document.body, 'font');
   setFont(state.fontFamilyPrimary, value);
-});
-
-/**
- * Buttons.
- */
-
-onChange('buttonReverseColor', (value) => {
-  document
-    .querySelectorAll('spx-section-button:not([reverse-color])')
-    .forEach((item) => {
-      item.removeAttribute('reverse-color');
-    });
-
-  if (value === 'all') {
-    document.querySelectorAll('spx-section-button').forEach((item) => {
-      item.setAttribute('reverse-color', '');
-    });
-  } else {
-    document
-      .querySelectorAll('spx-section-button[type="' + value + '"]')
-      .forEach((item) => {
-        item.setAttribute('reverse-color', '');
-      });
-  }
 });
 
 /**

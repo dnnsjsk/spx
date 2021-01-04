@@ -8,8 +8,10 @@ import {
   Listen,
   Element,
   Watch,
+  Event,
+  EventEmitter,
 } from '@stencil/core';
-import { css, keyframes } from 'emotion';
+import { css, keyframes } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 import { getGallery } from '../../utils/getGallery';
@@ -32,18 +34,21 @@ export class SpxSlideshow {
   @State() imagesArray: Array<string>;
   @State() offsetWidth;
 
+  @Prop({ reflect: true }) display: string = 'block';
+
+  /**
+   * Duration of slideshow to complete one cycle.
+   * @CSS
+   */
+
+  @Prop({ reflect: true }) duration: string = '60s';
+
   /**
    * Gap between inner elements.
    * @CSS
    */
 
-  @Prop({ reflect: true }) gap: string = 'var(--spx-space-lg)';
-
-  /**
-   * WordPress media size when using the helper function..
-   */
-
-  @Prop({ reflect: true }) imageSize: string;
+  @Prop({ reflect: true }) gap: string = '1em';
 
   /**
    * Gets images from an ACF or Metabox field.
@@ -51,6 +56,12 @@ export class SpxSlideshow {
    */
 
   @Prop({ reflect: true }) images: string;
+
+  /**
+   * WordPress media size when using the helper function..
+   */
+
+  @Prop({ reflect: true }) imageSize: string;
 
   /**
    * Gets images from an ACF or Metabox field.
@@ -67,11 +78,17 @@ export class SpxSlideshow {
   @Prop({ reflect: true }) maxWidth: string = '350px';
 
   /**
-   * Duration of slideshow to complete one cycle.
+   * If not set with this attribute, overflow should be set on the parent element.
    * @CSS
    */
 
-  @Prop({ reflect: true }) duration: string = '60s';
+  @Prop({ reflect: true }) overflow: string;
+
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxSlideshowDidLoad' })
+  spxSlideshowDidLoad: EventEmitter;
 
   /** Watch images prop and parse to array. */
 
@@ -82,7 +99,9 @@ export class SpxSlideshow {
 
   @Listen('resize', { target: 'window' })
   onResize() {
-    this.offsetWidth = this.elements.offsetWidth;
+    if (this.elements) {
+      this.offsetWidth = this.elements.offsetWidth;
+    }
   }
 
   componentWillLoad() {
@@ -100,7 +119,10 @@ export class SpxSlideshow {
       const clone = item.cloneNode(true);
       this.clone.appendChild(clone);
     });
+
     this.offsetWidth = this.elements.offsetWidth;
+
+    this.spxSlideshowDidLoad.emit({ target: 'document' });
   }
 
   render() {
@@ -120,12 +142,14 @@ export class SpxSlideshow {
       },
     });
 
-    const style = css({
-      display: 'grid',
-      gridAutoFlow: 'column',
-      gridAutoColumns: setVar(tag, 'max-width', this.maxWidth),
-      gridGap: setVar(tag, 'gap', this.gap),
+    /** Host styles. */
+
+    const styleHost = css({
+      display: setVar(tag, 'display', this.display),
+      overflow: setVar(tag, 'overflow', this.overflow),
     });
+
+    /** Wrap styles. */
 
     const styleWrap = css({
       animationName: kf,
@@ -145,10 +169,22 @@ export class SpxSlideshow {
       },
     });
 
+    /** Slideshow style. */
+
+    const slideshowStyle = css({
+      display: 'grid',
+      gridAutoFlow: 'column',
+      gridAutoColumns: setVar(tag, 'max-width', this.maxWidth),
+      gridGap: setVar(tag, 'gap', this.gap),
+    });
+
     return (
-      <Host>
+      <Host class={styleHost}>
         <div class={styleWrap}>
-          <div class={style} ref={(el) => (this.elements = el as HTMLElement)}>
+          <div
+            class={slideshowStyle}
+            ref={(el) => (this.elements = el as HTMLElement)}
+          >
             {getGallery(
               this.images,
               this.imagesSrc,
@@ -156,7 +192,10 @@ export class SpxSlideshow {
               this.imageSize
             )}
           </div>
-          <div class={style} ref={(el) => (this.clone = el as HTMLElement)} />
+          <div
+            class={slideshowStyle}
+            ref={(el) => (this.clone = el as HTMLElement)}
+          />
         </div>
       </Host>
     );

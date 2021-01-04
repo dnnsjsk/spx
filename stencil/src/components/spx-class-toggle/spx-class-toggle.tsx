@@ -1,6 +1,8 @@
 import {
   Component,
   Element,
+  Event,
+  EventEmitter,
   // eslint-disable-next-line no-unused-vars
   h,
   Host,
@@ -9,7 +11,7 @@ import {
   State,
   Watch,
 } from '@stencil/core';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 
@@ -43,6 +45,12 @@ export class SpxClassToggle {
 
   @Prop({ reflect: true }) toggle: string = 'spx-class-toggle--active';
 
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxClassToggleDidLoad' })
+  spxClassToggleDidLoad: EventEmitter;
+
   @Watch('toggle')
   toggleChanged() {
     this.createToggleArray();
@@ -60,9 +68,11 @@ export class SpxClassToggle {
         this.addClasses();
       }
     }
+
+    this.spxClassToggleDidLoad.emit({ target: 'document' });
   }
 
-  /** Set toggle array. */
+  /** Create an array of classes from the component attribute. */
 
   private createToggleArray = () => {
     this.classesArray = this.toggle.replace(/ /g, ',').split(',');

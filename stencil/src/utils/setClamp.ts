@@ -1,20 +1,27 @@
+/**
+ * Set clamp.
+ */
+
+import state from '../stores/container';
+
 export const setClamp = (
-  minWidthPx,
-  maxWidthPx,
-  minFontSize,
-  maxFontSize,
-  multiplier = 1,
-  base = 16
+  tag,
+  type,
+  minValue,
+  maxValue,
+  base = state.linearBase,
+  minWidthPx = state.linearMinW,
+  maxWidthPx = state.linearMaxW
 ) => {
   const pixelsPerRem = base;
 
   const minWidth = minWidthPx / pixelsPerRem;
   const maxWidth = maxWidthPx / pixelsPerRem;
 
-  const slope = (maxFontSize - minFontSize) / (maxWidth - minWidth);
-  const yAxisIntersection = -minWidth * slope + minFontSize;
+  const slope = (maxValue - minValue) / (maxWidth - minWidth);
+  const yAxisIntersection = -minWidth * slope + minValue;
 
-  return `clamp( ${minFontSize}rem, ${yAxisIntersection}rem + ${
+  return `clamp(var(--${tag}-${type}-min, ${minValue}rem), ${yAxisIntersection}rem + ${
     slope * 100
-  }vw  * ${multiplier}, ${maxFontSize}rem )`;
+  }vw, var(--${tag}-${type}-max, ${maxValue}rem))`;
 };

@@ -5,14 +5,17 @@
     {
       "id": "share-fontSize",
       "name": "fontSize",
+      "attribute": "font-size",
       "type": "string",
       "description": "",
+      "default": "s.fontSize",
       "defaultValue": "'var(--spx-font-size)'",
       "tags": []
     },
     {
       "id": "share-itemBackground",
       "name": "itemBackground",
+      "attribute": "item-background",
       "type": "string",
       "description": "",
       "tags": []
@@ -20,14 +23,17 @@
     {
       "id": "share-itemBorderRadius",
       "name": "itemBorderRadius",
+      "attribute": "item-border-radius",
       "type": "string",
       "description": "",
+      "default": "s.borderRadius",
       "defaultValue": "'var(--spx-border-radius)'",
       "tags": []
     },
     {
       "id": "share-itemColor",
       "name": "itemColor",
+      "attribute": "item-color",
       "type": "string",
       "description": "Gap between buttons.",
       "tags": [
@@ -39,8 +45,10 @@
     {
       "id": "share-itemFilterHover",
       "name": "itemFilterHover",
+      "attribute": "item-filter-hover",
       "type": "string",
       "description": "Filter hover.",
+      "default": "'brightness(110%) saturate(120%)'",
       "defaultValue": "'brightness(110%) saturate(120%)'",
       "tags": [
         {
@@ -51,8 +59,10 @@
     {
       "id": "share-itemGap",
       "name": "itemGap",
+      "attribute": "item-gap",
       "type": "string",
       "description": "Gap between buttons.",
+      "default": "'0.5em'",
       "defaultValue": "'0.5em'",
       "tags": [
         {
@@ -63,48 +73,60 @@
     {
       "id": "share-itemPadding",
       "name": "itemPadding",
+      "attribute": "item-padding",
       "type": "string",
       "description": "",
+      "default": "'0.5em'",
       "defaultValue": "'0.5em'",
       "tags": []
     },
     {
       "id": "share-itemSize",
       "name": "itemSize",
+      "attribute": "item-size",
       "type": "string",
       "description": "",
+      "default": "'1em'",
       "defaultValue": "'1em'",
       "tags": []
     },
     {
       "id": "share-itemTransitionDuration",
       "name": "itemTransitionDuration",
+      "attribute": "item-transition-duration",
       "type": "string",
       "description": "",
+      "default": "s.transitionDuration",
       "defaultValue": "'var(--spx-transition-duration)'",
       "tags": []
     },
     {
       "id": "share-itemTransitionTimingFunction",
       "name": "itemTransitionTimingFunction",
+      "attribute": "item-transition-timing-function",
       "type": "string",
       "description": "",
+      "default": "s.transitionTimingFunction",
       "defaultValue": "'var(--spx-transition-timing-function)'",
       "tags": []
     },
     {
       "id": "share-target",
       "name": "target",
+      "attribute": "target",
       "type": "string",
       "description": "Button href target.",
+      "default": "'_blank'",
       "defaultValue": "'_blank'",
       "tags": []
     },
     {
       "id": "share-theme",
       "name": "theme",
+      "attribute": "theme",
       "type": "string",
       "description": "Button theme.",
+      "default": "'default'",
       "defaultValue": "'default'",
       "tags": [
         {
@@ -116,12 +138,18 @@
     {
       "id": "share-vertical",
       "name": "vertical",
+      "attribute": "vertical",
       "type": "boolean",
       "description": "Render buttons vertically.",
       "tags": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxShareDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [
     {
       "name": "reload",

@@ -3,6 +3,7 @@
 /**
  * spx Wrapper element.
  *
+ * @date  22/09/2020
  * @since 2.0
  */
 
@@ -57,19 +58,20 @@ if ( ! class_exists( 'spxOxyEl' ) ) {
 					'code'             => 'Code',
 					'edit-button'      => 'Edit Button',
 					'group'            => 'Group',
-					'iframe'           => 'Iframe',
+					'icon'             => 'Icon',
+					//'iframe'           => 'Iframe',
 					'image-comparison' => 'Image Comparison',
 					'lightbox'         => 'Lightbox',
 					'masonry'          => 'Masonry',
 					'mockup'           => 'Mockup',
-					'navigation'       => 'Navigation',
-					'notation'         => 'Notation',
+					//'navigation'       => 'Navigation',
+					//'notation'         => 'Notation',
 					'offset'           => 'Offset',
 					'scrollspy'        => 'Scrollspy',
 					'share'            => 'Share',
 					'slider'           => 'Slider',
 					'slideshow'        => 'Slideshow',
-					'snackbar'         => 'Snackbar',
+					//'snackbar'         => 'Snackbar',
 					'typewriter'       => 'Typewriter',
 				)
 			);

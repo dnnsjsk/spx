@@ -283,7 +283,7 @@ class spxPlugin {
 	 * @since 1.0
 	 */
 
-	function deactivate() {
+	static function deactivate() {
 
 		// listen for our activate button to be clicked
 		if ( isset( $_POST[ self::$prefix . 'license_deactivate' ] ) ) {

@@ -1,6 +1,8 @@
 import {
   Component,
   Element,
+  Event,
+  EventEmitter,
   // eslint-disable-next-line no-unused-vars
   h,
   Host,
@@ -10,13 +12,13 @@ import {
   Watch,
 } from '@stencil/core';
 import Swiper, { Autoplay, Navigation, Pagination, A11y, Thumbs } from 'swiper';
-import { css, keyframes } from 'emotion';
+import { css, keyframes } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
-import * as c from '../../constants/style';
-import { setSize } from '../../utils/setSize';
+import * as s from '../../constants/style';
 import { startsWith, fromPairs, mapKeys, camelCase } from 'lodash-es';
 import { mq } from '../../utils/mq';
 import { getGallery } from '../../utils/getGallery';
+import { setClamp } from '../../utils/setClamp';
 
 const tag = 'spx-slider';
 
@@ -87,24 +89,6 @@ export class SpxScrollspy {
 
   @Prop({ reflect: true }) imageObjectFit: string = 'cover';
 
-  /** Creates a gallery from images. */
-
-  // @Prop({ reflect: true }) gallery: boolean = false
-
-  // @Prop({ reflect: true }) galleryMaxHeight: string = '200px'
-
-  /** Amount of gallery slides shown at once. */
-
-  // @Prop({ reflect: true }) gallerySlidesPerView: number = 3.5
-
-  /** Space between gallery slides. */
-
-  // @Prop({ reflect: true }) gallerySpaceBetween: number = 8
-
-  /** Space between gallery slides. */
-
-  // @Prop({ reflect: true }) gallerySpaceTop: string = 'var(--spx-space-xs)'
-
   /**
    * WordPress media size when using the helper function..
    */
@@ -147,7 +131,7 @@ export class SpxScrollspy {
 
   @Prop({ reflect: true }) navigationBackground: string = 'rgba(0,0,0,0.7)';
 
-  @Prop({ reflect: true }) navigationBorderRadius: string = c.borderRadius;
+  @Prop({ reflect: true }) navigationBorderRadius: string = s.borderRadius;
 
   @Prop({ reflect: true }) navigationColor: string = '#ffffff';
 
@@ -190,7 +174,7 @@ export class SpxScrollspy {
     'var(--spx-color-gray-300)';
 
   @Prop({ reflect: true }) paginationBulletsBackgroundActive: string =
-    'var(--spx-color-primary-A700)';
+    'var(--spx-color-gray-900)';
 
   /** Make bullets clickable. */
 
@@ -218,13 +202,29 @@ export class SpxScrollspy {
 
   @Prop({ reflect: true }) paginationBulletsSpaceBetween: string = '4px';
 
+  @Prop({ reflect: true }) paginationTabsGapMin: number = 1;
+
+  @Prop({ reflect: true }) paginationTabsGapMax: number = 1.8;
+
+  @Prop({ reflect: true }) paginationTabsMarginBottomMin: number = 1.4;
+
+  @Prop({ reflect: true }) paginationTabsMarginBottomMax: number = 2.6;
+
   @Prop({ reflect: true }) paginationTabsMaxWidth: string = '320px';
 
+  @Prop({ reflect: true }) paginationTabsInnerGapMin: number = 0.8;
+
+  @Prop({ reflect: true }) paginationTabsInnerGapMax: number = 1;
+
+  @Prop({ reflect: true }) paginationTabsPaddingMin: number = 1;
+
+  @Prop({ reflect: true }) paginationTabsPaddingMax: number = 1.4;
+
   @Prop({ reflect: true }) paginationTransitionDuration: string =
-    c.transitionDuration;
+    s.transitionDuration;
 
   @Prop({ reflect: true }) paginationTransitionTimingFunction: string =
-    c.transitionTimingFunction;
+    s.transitionTimingFunction;
 
   /** Filter property for the previous and next elements. */
 
@@ -259,6 +259,12 @@ export class SpxScrollspy {
 
   @Prop({ reflect: true }) speed: number = 1000;
 
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxSliderDidLoad' })
+  spxSliderDidLoad: EventEmitter;
+
   /** Watch images prop and parse to array. */
 
   @Watch('images')
@@ -286,38 +292,11 @@ export class SpxScrollspy {
       item.setAttribute('data-spx-slider-index', String(index));
     });
 
-    /*
-
-      if (this.gallery === true) {
-        const thumbs = this.el.querySelectorAll('.swiper-gallery')
-        if (thumbs) {
-          thumbs.forEach(item => {
-            item.remove()
-          })
-        }
-        const container = document.createElement('div')
-        container.classList.add('swiper-container')
-        container.classList.add('swiper-gallery')
-        const wrapper = document.createElement('div')
-        wrapper.classList.add('swiper-wrapper')
-        container.setAttribute('slot', 'gallery')
-
-        container.appendChild(wrapper)
-        this.el.appendChild(container)
-
-        this.el.querySelectorAll('.swiper-slide').forEach(item => {
-          const clone = item.cloneNode(true)
-          wrapper.appendChild(clone)
-        })
-      }
-
-         */
-
     /** Create breakpoint values. */
 
     const createBPs = () => {
       for (
-        var att, i = 0, atts = this.el.attributes, n = atts.length;
+        let att, i = 0, atts = this.el.attributes, n = atts.length;
         i < n;
         i++
       ) {
@@ -344,18 +323,6 @@ export class SpxScrollspy {
     /** Use modules so autoplay works in build mode. */
 
     Swiper.use([Autoplay, Navigation, Pagination, A11y, Thumbs]);
-
-    /*
-
-      if (this.gallery === true) {
-        this.mySwiperGallery = new Swiper(this.el.querySelector('.swiper-gallery') as HTMLElement, {
-          slidesPerView: this.gallerySlidesPerView,
-          spaceBetween: this.gallerySpaceBetween,
-          freeMode: true
-        })
-      }
-
-      */
 
     /** Create swiper. */
 
@@ -393,12 +360,6 @@ export class SpxScrollspy {
       slidesPerView: this.slidesPerView,
       spaceBetween: this.spaceBetween,
       speed: this.speed,
-      /*
-        thumbs: this.gallery === true && {
-          swiper: this.mySwiperGallery,
-          autoScrollOffset: 1
-        }
-        */
     });
 
     this.mySwiper.on('observerUpdate', () => {
@@ -418,7 +379,11 @@ export class SpxScrollspy {
         );
       });
     }
+
+    this.spxSliderDidLoad.emit({ target: 'document' });
   }
+
+  /** Creates tab pagination from data-attributes. */
 
   private createTabs() {
     this.paginationTabs.innerHTML = '';
@@ -450,13 +415,36 @@ export class SpxScrollspy {
       slide.classList.add(
         css({
           padding:
-            'var(--spx-space-md) var(--spx-space-md) var(--spx-space-lg) var(--spx-space-md)',
-          display: 'grid',
-          gridGap: 'var(--spx-space-sm)',
-          gridAutoRows: 'max-content',
+            setClamp(
+              tag,
+              'pagination-tabs-padding',
+              this.paginationTabsPaddingMin,
+              this.paginationTabsPaddingMax
+            ) +
+            ' ' +
+            setClamp(
+              tag,
+              'pagination-tabs-padding',
+              this.paginationTabsPaddingMin,
+              this.paginationTabsPaddingMax
+            ) +
+            ' ' +
+            setClamp(
+              tag,
+              'pagination-tabs-padding',
+              this.paginationTabsPaddingMin * 2,
+              this.paginationTabsPaddingMax * 2
+            ) +
+            ' ' +
+            setClamp(
+              tag,
+              'pagination-tabs-padding',
+              this.paginationTabsPaddingMin,
+              this.paginationTabsPaddingMax
+            ),
           background: 'var(--spx-color-gray-50)',
-          border: '1px solid var(--spx-color-gray-100)',
-          borderRadius: c.borderRadius,
+          border: '1px solid var(--spx-color-gray-200)',
+          borderRadius: s.borderRadius,
           cursor: 'pointer',
           transitionProperty: 'background, border',
           transitionDuration: setVar(
@@ -471,20 +459,32 @@ export class SpxScrollspy {
           ),
           overflow: 'hidden',
           position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+
+          'span:nth-child(2)': {
+            marginTop: setClamp(
+              tag,
+              'pagination-tabs-inner-gap',
+              this.paginationTabsInnerGapMin,
+              this.paginationTabsInnerGapMax
+            ),
+          },
 
           '&[data-spx-slider-tab-active] div': {
             content: '" "',
             display: this.autoplay ? 'block' : 'none',
             position: 'absolute',
             bottom: '0',
+            left: '0',
             width: '100%',
             height: '3px',
-            background: 'var(--spx-color-primary-A700)',
+            background: 'var(--spx-color-primary-600)',
             animation: kf,
             animationIterationCount: 1,
             animationDuration: this.autoplayDelay + 'ms',
             animationFillMode: 'forwards',
-            animationTimingFunction: c.transitionTimingFunction,
+            animationTimingFunction: s.transitionTimingFunction,
           },
 
           [mq(this.bpTabs)]: {
@@ -492,13 +492,13 @@ export class SpxScrollspy {
           },
 
           '&:hover:not([data-spx-slider-tab-active])': {
-            background: 'var(--spx-color-primary-42)',
-            borderColor: 'var(--spx-color-primary-50)',
+            background: 'var(--spx-color-primary-50)',
+            borderColor: 'var(--spx-color-primary-100)',
           },
 
           '&[data-spx-slider-tab-active]': {
-            background: 'var(--spx-color-primary-42)',
-            border: '1px solid var(--spx-color-primary-100)',
+            background: 'var(--spx-color-primary-50)',
+            border: '1px solid var(--spx-color-primary-200)',
 
             [mq(this.bpTabs)]: {
               display: 'grid',
@@ -527,7 +527,7 @@ export class SpxScrollspy {
       /** Enter listener. */
 
       slide.addEventListener('keydown', (e) => {
-        if (e.keyCode === 13) {
+        if (e.key === 'Enter') {
           tabClick();
         }
       });
@@ -545,12 +545,7 @@ export class SpxScrollspy {
         css({
           fontWeight: 500,
           color: 'var(--spx-color-primary-600)',
-          fontSize: setSize(
-            '16px',
-            '3vw',
-            '20px',
-            setVar(tag, 'pagination-title-font-size-multiplier', '1')
-          ),
+          fontSize: setClamp(tag, 'pagination-title-font-size', 1, 1.2),
         })
       );
       title.innerText = item.getAttribute('data-spx-slider-title');
@@ -560,12 +555,7 @@ export class SpxScrollspy {
       const description = document.createElement('span');
       description.classList.add(
         css({
-          fontSize: setSize(
-            '12px',
-            '2.6vw',
-            '15px',
-            setVar(tag, 'pagination-description-font-size-multiplier', '1')
-          ),
+          fontSize: setClamp(tag, 'pagination-description-font-size', 0.8, 0.9),
         })
       );
       description.innerText = item.getAttribute('data-spx-slider-description');
@@ -597,12 +587,6 @@ export class SpxScrollspy {
 
   @Method()
   async reload() {
-    /*
-      if (this.el.querySelector('.swiper-gallery')) {
-        this.el.querySelector('.swiper-gallery').remove()
-        this.mySwiperGallery.destroy()
-      }
-      */
     this.mySwiper.destroy();
 
     const bullets = this.el.querySelector('.swiper-pagination-bullets-dynamic');
@@ -627,15 +611,6 @@ export class SpxScrollspy {
         maxHeight: setVar(tag, 'max-height', this.maxHeight),
         maxWidth: setVar(tag, 'max-width', this.maxWidth),
       },
-
-      /*
-        '.swiper-gallery': {
-          marginTop: setVar(tag, 'gallery-space-top', this.gallerySpaceTop),
-          maxHeight: setVar(tag, 'gallery-max-height', this.galleryMaxHeight)
-        },
-        */
-
-      '.swiper-button-next, .swiper-button-prev': {},
 
       '.swiper-pagination-bullet': {
         position: 'static',
@@ -688,7 +663,12 @@ export class SpxScrollspy {
     const stylePagination = css({
       display: 'flex',
       alignItems: 'center',
-      marginBottom: 'var(--spx-space-xl)',
+      marginBottom: setClamp(
+        tag,
+        'pagination-tabs-margin-bottom',
+        this.paginationTabsMarginBottomMin,
+        this.paginationTabsMarginBottomMax
+      ),
     });
 
     /** Tab styles. */
@@ -702,7 +682,12 @@ export class SpxScrollspy {
         'pagination-tabs-max-width',
         this.paginationTabsMaxWidth
       ),
-      gridGap: 'var(--spx-space-md)',
+      gridGap: setClamp(
+        tag,
+        'pagination-tabs-gap',
+        this.paginationTabsGapMin,
+        this.paginationTabsGapMax
+      ),
     });
 
     /** Bullet styles. */

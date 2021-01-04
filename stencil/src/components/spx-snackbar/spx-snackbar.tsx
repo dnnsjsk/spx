@@ -8,9 +8,11 @@ import {
   State,
   Method,
   Watch,
+  Event,
+  EventEmitter,
 } from '@stencil/core';
-import { css, keyframes } from 'emotion';
-import * as c from '../../constants/style';
+import { css, keyframes } from '@emotion/css';
+import * as s from '../../constants/style';
 import { position } from '../../constants/style';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
@@ -30,13 +32,14 @@ export class SpxSnackbar {
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxSnackbarElement;
 
+  @State() containerClass;
   @State() positionArray;
 
   @Prop({ reflect: true }) animationDelay: string = '200ms';
   @Prop({ reflect: true }) animationDuration: string = '2000ms';
   @Prop({ reflect: true }) background: string = 'var(--spx-color-gray-900)';
   @Prop({ reflect: true }) border: string;
-  @Prop({ reflect: true }) borderRadius: string = c.borderRadius;
+  @Prop({ reflect: true }) borderRadius: string = s.borderRadius;
 
   /** Adds option to close snackbar after its creation. */
 
@@ -58,12 +61,19 @@ export class SpxSnackbar {
 
   @Prop({ reflect: true }) distanceY: string = '1em';
 
-  /** Makes snackbar not removable. */
+  /**
+   * Makes snackbar not removable.
+   * @editor '#components'
+   */
 
   @Prop({ reflect: true }) fixed: boolean;
+
   @Prop({ reflect: true }) fontSize: string = '18px';
 
-  /** Unique identifier for snackbar instance. */
+  /**
+   * Unique identifier for snackbar instance.
+   * @editor '#components'
+   */
 
   @Prop({ reflect: true }) identifier: string = 'primary';
 
@@ -71,12 +81,15 @@ export class SpxSnackbar {
 
   /**
    * Component position in page.
-   * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center", 'top-right'
+   * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
    */
 
   @Prop({ reflect: true }) position: string = 'bottom-right';
 
-  /** CSS property position of button. */
+  /**
+   * CSS property position of button.
+   * @editor 'absolute'
+   */
 
   @Prop({ reflect: true }) positionCss:
     | 'fixed'
@@ -90,9 +103,12 @@ export class SpxSnackbar {
 
   /** Space between snackbars. */
 
-  @Prop({ reflect: true }) spaceBetween: string = 'var(--spx-space-xs)';
+  @Prop({ reflect: true }) spaceBetween: string = '12px';
 
-  /** Element where snackbars should be created in. */
+  /**
+   * Element where snackbars should be created in.
+   * @editor '#components'
+   */
 
   @Prop({ reflect: true }) target: string = 'body';
 
@@ -102,7 +118,11 @@ export class SpxSnackbar {
 
   @Prop({ reflect: true }) zIndex: number = 103;
 
-  @State() containerClass;
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxSnackbarDidLoad' })
+  spxSnackbarDidLoad: EventEmitter;
 
   @Watch('zIndex')
   @Watch('spaceBetween')
@@ -137,7 +157,7 @@ export class SpxSnackbar {
   componentWillLoad() {
     this.createPositionArray();
 
-    /** Load into container. */
+    /** Load into container if more than one snackbar are on screen. */
 
     if (!document.querySelector('[data-spx-id="' + this.identifier + '"]')) {
       const div = document.createElement('div');
@@ -173,6 +193,8 @@ export class SpxSnackbar {
 
   componentDidLoad() {
     globalComponentDidLoad(this.el);
+
+    this.spxSnackbarDidLoad.emit({ target: 'document' });
   }
 
   componentDidRender() {
@@ -281,7 +303,7 @@ export class SpxSnackbar {
 
     const styleText = css({
       whiteSpace: 'nowrap',
-      fontFamily: c.fontFamily,
+      fontFamily: s.fontFamily,
       fontSize: setVar(tag, 'font-size', this.fontSize),
     });
 

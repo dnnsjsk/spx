@@ -7,8 +7,10 @@ import {
   Element,
   State,
   Method,
+  Event,
+  EventEmitter,
 } from '@stencil/core';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { gsap } from 'gsap';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
@@ -103,8 +105,16 @@ export class SpxAnimate {
 
   @Prop({ reflect: true }) display: string = 'block';
 
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxAnimateDidLoad' })
+  spxAnimateDidLoad: EventEmitter;
+
   componentDidLoad() {
     globalComponentDidLoad(this.el);
+
+    /** Init loop to make sure the component fires correctly in Oxygen. */
 
     const init = () => {
       this.elements = this.el.querySelectorAll(this.target);
@@ -179,15 +189,12 @@ export class SpxAnimate {
           }, options);
           intersectionObserver.observe(this.el);
         }
+
+        this.spxAnimateDidLoad.emit({ target: 'document' });
       }
     };
 
     init();
-  }
-
-  @Method()
-  async reload() {
-    this.componentDidLoad();
   }
 
   /** Plays animation. */
@@ -195,6 +202,11 @@ export class SpxAnimate {
   @Method()
   async play(from = 0, suppressEvents = true) {
     this.tl.play(from, suppressEvents);
+  }
+
+  @Method()
+  async reload() {
+    this.componentDidLoad();
   }
 
   /** Restarts animation. */

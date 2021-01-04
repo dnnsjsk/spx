@@ -12,7 +12,7 @@ import {
   State,
 } from '@stencil/core';
 import Gumshoe from '../../../../stencil/node_modules/gumshoejs/dist/gumshoe.js';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { offset } from '../../utils/offset';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
@@ -63,15 +63,21 @@ export class SpxScrollspy {
 
   @Prop({ reflect: true }) urlChange: boolean = false;
 
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxScrollspyDidLoad' })
+  spxScrollspyDidLoad: EventEmitter;
+
   /** Replace state of URL bar . */
 
   @Listen('gumshoeActivate', { target: 'document' })
   onLinkChange(event) {
-    if (this.urlChange === true) {
+    if (this.urlChange) {
       history.replaceState(null, null, event.detail.link.getAttribute('href'));
     }
 
-    if (this.scrolling === true) {
+    if (this.scrolling) {
       this.el.scroll({
         top:
           this.el.querySelector(
@@ -82,11 +88,10 @@ export class SpxScrollspy {
     }
   }
 
-  // prettier-ignore
-  @Event({eventName: "spxScrollspyDidLoad"}) spxScrollspyDidLoad: EventEmitter;
-
   componentDidLoad() {
     globalComponentDidLoad(this.el);
+
+    /** Init Gumshoe. */
 
     // eslint-disable-next-line no-new
     this.myGumshoe = new Gumshoe(':scope ' + this.target + '', {

@@ -1,13 +1,18 @@
 import { resizeObserver } from './resizeObserver';
+import { mutationObserver } from './mutationObserver';
 
 /**
- * Set component did load.
+ * Global componentDidLoad function for all components.
  */
 
 export const globalComponentDidLoad = (el) => {
   resizeObserver(el);
 
-  /** Reload component when new child element has been loaded. */
+  /** Mark that component has been loaded. */
+
+  el.setAttribute('has-loaded', '');
+
+  /** Setup mutation observer to check if child elements have been added and reload component. */
 
   if (
     el.tagName !== 'SPX-TYPEWRITER' &&
@@ -15,13 +20,14 @@ export const globalComponentDidLoad = (el) => {
     el.tagName !== 'SPX-LIGHTBOX' &&
     el.tagName !== 'SPX-PAGE-DOCS'
   ) {
-    const config = { childList: true };
-    const callback = function (mutationsList) {
-      mutationsList.forEach(() => {
+    mutationObserver(
+      el,
+      {
+        childList: true,
+      },
+      function () {
         el.reload();
-      });
-    };
-    const observer = new MutationObserver(callback);
-    observer.observe(el, config);
+      }
+    );
   }
 };

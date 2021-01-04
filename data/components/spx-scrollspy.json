@@ -5,38 +5,47 @@
     {
       "id": "scrollspy-contentClass",
       "name": "contentClass",
+      "attribute": "content-class",
       "type": "string",
       "description": "Applied class to active content element.",
+      "default": "'spx-scrollspy__content--active'",
       "defaultValue": "'spx-scrollspy__content--active'",
       "tags": []
     },
     {
       "id": "scrollspy-display",
       "name": "display",
+      "attribute": "display",
       "type": "string",
       "description": "",
+      "default": "'block'",
       "defaultValue": "'block'",
       "tags": []
     },
     {
       "id": "scrollspy-navClass",
       "name": "navClass",
+      "attribute": "nav-class",
       "type": "string",
       "description": "Applied class to active navigation element.",
+      "default": "'spx-scrollspy__nav--active'",
       "defaultValue": "'spx-scrollspy__nav--active'",
       "tags": []
     },
     {
       "id": "scrollspy-offset",
       "name": "offset",
+      "attribute": "offset",
       "type": "any",
       "description": "Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated.",
+      "default": "0",
       "defaultValue": "0",
       "tags": []
     },
     {
       "id": "scrollspy-scrolling",
       "name": "scrolling",
+      "attribute": "scrolling",
       "type": "boolean",
       "description": "Automatically scroll to the active element",
       "tags": []
@@ -44,24 +53,30 @@
     {
       "id": "scrollspy-scrollingOffset",
       "name": "scrollingOffset",
+      "attribute": "scrolling-offset",
       "type": "number",
       "description": "Scrolling offset from the top.",
+      "default": "50",
       "defaultValue": "50",
       "tags": []
     },
     {
       "id": "scrollspy-target",
       "name": "target",
+      "attribute": "target",
       "type": "string",
       "description": "Target element. Can take any querySelector value. (id, class, tag etc.)",
+      "default": "'a'",
       "defaultValue": "'a'",
       "tags": []
     },
     {
       "id": "scrollspy-urlChange",
       "name": "urlChange",
+      "attribute": "url-change",
       "type": "boolean",
       "description": "Appends the currently active link to the end of the URL.",
+      "default": "false",
       "defaultValue": "false",
       "tags": []
     }
@@ -69,7 +84,7 @@
   "events": [
     {
       "name": "spxScrollspyDidLoad",
-      "description": ""
+      "description": "Fires after component has loaded."
     }
   ],
   "methods": [

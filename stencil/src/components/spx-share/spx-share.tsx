@@ -7,9 +7,11 @@ import {
   Prop,
   State,
   Method,
+  Event,
+  EventEmitter,
 } from '@stencil/core';
-import { css } from 'emotion';
-import * as c from '../../constants/style';
+import { css } from '@emotion/css';
+import * as s from '../../constants/style';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 
@@ -28,11 +30,11 @@ export class SpxShare {
 
   @State() location;
 
-  @Prop({ reflect: true }) fontSize: string = c.fontSize;
+  @Prop({ reflect: true }) fontSize: string = s.fontSize;
 
   @Prop({ reflect: true }) itemBackground: string;
 
-  @Prop({ reflect: true }) itemBorderRadius: string = c.borderRadius;
+  @Prop({ reflect: true }) itemBorderRadius: string = s.borderRadius;
 
   /**
    * Gap between buttons.
@@ -61,10 +63,10 @@ export class SpxShare {
   @Prop({ reflect: true }) itemSize: string = '1em';
 
   @Prop({ reflect: true }) itemTransitionDuration: string =
-    c.transitionDuration;
+    s.transitionDuration;
 
   @Prop({ reflect: true }) itemTransitionTimingFunction: string =
-    c.transitionTimingFunction;
+    s.transitionTimingFunction;
 
   /** Button href target. */
 
@@ -81,10 +83,18 @@ export class SpxShare {
 
   @Prop({ reflect: true }) vertical: boolean;
 
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxShareDidLoad' })
+  spxShareDidLoad: EventEmitter;
+
   componentDidLoad() {
     globalComponentDidLoad(this.el);
 
     this.location = location.href;
+
+    this.spxShareDidLoad.emit({ target: 'document' });
   }
 
   @Method()
@@ -103,6 +113,8 @@ export class SpxShare {
       gridAutoRows: this.vertical && 'max-content',
       gridGap: setVar(tag, 'item-gap', this.itemGap),
     });
+
+    /** Link styles. */
 
     const styleLink = css({
       display: 'flex',
@@ -137,6 +149,8 @@ export class SpxShare {
       },
     });
 
+    /** Facebook styles. */
+
     const styleFacebook = css({
       background:
         this.theme === 'default' && !this.itemBackground
@@ -152,6 +166,8 @@ export class SpxShare {
           : null,
       border: this.theme === 'outline' && '1px solid #1877F2',
     });
+
+    /** Twitter styles. */
 
     const styleTwitter = css({
       background:
@@ -169,6 +185,8 @@ export class SpxShare {
       border: this.theme === 'outline' && '1px solid #1DA1F2',
     });
 
+    /** Email styles. */
+
     const styleEmail = css({
       background:
         this.theme === 'default' && !this.itemBackground
@@ -184,6 +202,8 @@ export class SpxShare {
           : null,
       border: this.theme === 'outline' && '1px solid #c6c6c6',
     });
+
+    /** WhatsApp styles. */
 
     const styleWhatsapp = css({
       background:
@@ -203,6 +223,8 @@ export class SpxShare {
 
     return (
       <Host class={styleHost}>
+        {/** Facebook. */}
+
         <a
           class={css([styleLink, styleFacebook])}
           target={this.target}
@@ -213,6 +235,8 @@ export class SpxShare {
           <spx-icon icon="logo-facebook" />
         </a>
 
+        {/** Twitter. */}
+
         <a
           class={css([styleLink, styleTwitter])}
           target={this.target}
@@ -221,6 +245,8 @@ export class SpxShare {
           <spx-icon icon="logo-twitter" />
         </a>
 
+        {/** WhatsApp. */}
+
         <a
           class={css([styleLink, styleWhatsapp])}
           target={this.target}
@@ -228,6 +254,8 @@ export class SpxShare {
         >
           <spx-icon icon="logo-whatsapp" />
         </a>
+
+        {/** Email. */}
 
         <a
           class={css([styleLink, styleEmail])}

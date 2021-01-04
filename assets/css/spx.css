@@ -1,33 +1,17 @@
 body {
-    --spx-space-multiplier: 1em;
-    --spx-space-4xs: calc(0.125 * var(--spx-space-multiplier));
-    --spx-space-3xs: calc(0.25 * var(--spx-space-multiplier));
-    --spx-space-2xs: calc(0.375 * var(--spx-space-multiplier));
-    --spx-space-xs: calc(0.5 * var(--spx-space-multiplier));
-    --spx-space-sm: calc(0.75 * var(--spx-space-multiplier));
-    --spx-space-md: calc(1.25 * var(--spx-space-multiplier));
-    --spx-space-lg: calc(2 * var(--spx-space-multiplier));
-    --spx-space-xl: calc(3.25 * var(--spx-space-multiplier));
-    --spx-space-2xl: calc(5.25 * var(--spx-space-multiplier));
-    --spx-space-3xl: calc(8.5 * var(--spx-space-multiplier));
-    --spx-space-4xl: calc(13.75 * var(--spx-space-multiplier));
-
+    margin: 0;
     --spx-color-black: #000000;
     --spx-color-white: #ffffff;
     --spx-color-gray-50: #FAFAFA;
-    --spx-color-gray-100: #F5F5F5;
-    --spx-color-gray-200: #EEEEEE;
-    --spx-color-gray-300: #E0E0E0;
-    --spx-color-gray-400: #BDBDBD;
-    --spx-color-gray-500: #9E9E9E;
-    --spx-color-gray-600: #757575;
-    --spx-color-gray-700: #616161;
-    --spx-color-gray-800: #424242;
-    --spx-color-gray-900: #212121;
-}
-
-body {
-    margin: 0;
+    --spx-color-gray-100: #F4F4F5;
+    --spx-color-gray-200: #E4E4E7;
+    --spx-color-gray-300: #D4D4D8;
+    --spx-color-gray-400: #A1A1AA;
+    --spx-color-gray-500: #71717A;
+    --spx-color-gray-600: #52525B;
+    --spx-color-gray-700: #3F3F46;
+    --spx-color-gray-800: #27272A;
+    --spx-color-gray-900: #18181B;
 }
 
 spx-container {

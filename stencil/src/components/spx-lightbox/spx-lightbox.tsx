@@ -1,8 +1,17 @@
 // eslint-disable-next-line no-unused-vars
-import { Component, Element, h, Host, Method, Prop } from '@stencil/core';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Method,
+  Prop,
+} from '@stencil/core';
 import GLightbox from 'glightbox';
 import { wrap } from '../../utils/wrap';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
@@ -29,10 +38,16 @@ export class SpxLightbox {
 
   @Prop({ reflect: true }) width: string = '100%';
 
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxLightboxDidLoad' })
+  spxLightboxDidLoad: EventEmitter;
+
   componentDidLoad() {
     globalComponentDidLoad(this.el);
 
-    /** Generate random string. */
+    /** Generate random string as gallery ID. */
 
     const random = '_' + Math.random().toString(36).substr(2, 9);
 
@@ -117,6 +132,8 @@ export class SpxLightbox {
         clearAllBodyScrollLocks();
       },
     });
+
+    this.spxLightboxDidLoad.emit({ target: 'document' });
   }
 
   @Method()
@@ -129,6 +146,10 @@ export class SpxLightbox {
 
     const styleHost = css({
       display: setVar(tag, 'display', this.display),
+
+      img: {
+        verticalAlign: 'top',
+      },
     });
 
     return <Host class={styleHost} />;

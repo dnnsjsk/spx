@@ -5,37 +5,50 @@
     {
       "id": "lightbox-display",
       "name": "display",
+      "attribute": "display",
       "type": "string",
       "description": "",
+      "default": "'block'",
       "defaultValue": "'block'",
       "tags": []
     },
     {
       "id": "lightbox-height",
       "name": "height",
+      "attribute": "height",
       "type": "string",
       "description": "",
+      "default": "'auto'",
       "defaultValue": "'auto'",
       "tags": []
     },
     {
       "id": "lightbox-overlayColor",
       "name": "overlayColor",
+      "attribute": "overlay-color",
       "type": "string",
       "description": "",
+      "default": "'rgba(0, 0, 0, 0.92)'",
       "defaultValue": "'rgba(0, 0, 0, 0.92)'",
       "tags": []
     },
     {
       "id": "lightbox-width",
       "name": "width",
+      "attribute": "width",
       "type": "string",
       "description": "",
+      "default": "'100%'",
       "defaultValue": "'100%'",
       "tags": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxLightboxDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [
     {
       "name": "reload",

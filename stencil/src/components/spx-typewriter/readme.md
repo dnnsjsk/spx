@@ -17,6 +17,13 @@
 | `text`        | `text`         | Text that should be written.                       | `string`  | `"I'm a typewriter"` |
 
 
+## Events
+
+| Event                  | Description                       | Type               |
+| ---------------------- | --------------------------------- | ------------------ |
+| `spxTypewriterDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+
+
 ## Methods
 
 ### `play() => Promise<void>`

@@ -12,8 +12,8 @@ import {
   EventEmitter,
   Method,
 } from '@stencil/core';
-import { css } from 'emotion';
-import * as c from '../../constants/style';
+import { css } from '@emotion/css';
+import * as s from '../../constants/style';
 import { createPopper } from '@popperjs/core';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
@@ -32,7 +32,7 @@ export class SpxNavigation {
   @Element() el?: HTMLSpxNavigationElement;
 
   @State() menuArray: Array<string>;
-  @State() mobileBP: boolean;
+  @State() mobileBp: boolean;
 
   @Prop({ reflect: true }) childBorder: string =
     '1px solid var(--spx-color-gray-200)';
@@ -42,7 +42,7 @@ export class SpxNavigation {
    * @CSS
    */
 
-  @Prop({ reflect: true }) childBorderRadius: string = c.borderRadius;
+  @Prop({ reflect: true }) childBorderRadius: string = s.borderRadius;
 
   /**
    * Child menu box-shadow.
@@ -101,13 +101,13 @@ export class SpxNavigation {
 
   @Prop({ reflect: true }) childPlacement: string = 'start';
 
-  @Prop({ reflect: true }) fontSize: string = c.fontSize;
+  @Prop({ reflect: true }) fontSize: string = 'clamp(18px, 1.6vw, 20px)';
 
   @Prop({ reflect: true }) itemTransitionDuration: string =
-    c.transitionDuration;
+    s.transitionDuration;
 
   @Prop({ reflect: true }) itemTransitionTimingFunction: string =
-    c.transitionTimingFunction;
+    s.transitionTimingFunction;
 
   /** Underlines all links. */
 
@@ -126,7 +126,7 @@ export class SpxNavigation {
 
   /** Mobile breakpoint. */
 
-  @Prop({ reflect: true }) mobile: number = c.mobileBpWidth;
+  @Prop({ reflect: true }) mobile: number = s.bpMobileWidth;
 
   /** Mobile button icon. */
 
@@ -183,17 +183,18 @@ export class SpxNavigation {
 
   @Prop({ reflect: true }) vertical: boolean;
 
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxNavigationDidLoad' })
+  spxNavigationDidLoad: EventEmitter;
+
   /** Watch menu prop and parse to iteratable array. */
 
   @Watch('menu')
-  imagesChanged(newValue: string) {
+  navigationChanged(newValue: string) {
     if (newValue) this.menuArray = JSON.parse(newValue);
   }
-
-  /** Fires when component has loaded. */
-
-  // prettier-ignore
-  @Event({ eventName: "spxNavigationDidLoad" }) spxNavigationDidLoad: EventEmitter;
 
   /** Init popper on mouse/touch enter. */
 
@@ -201,7 +202,7 @@ export class SpxNavigation {
   @Listen('mouseenter')
   @Listen('focusin')
   onClick() {
-    if (this.mobileBP) {
+    if (this.mobileBp) {
       this.initPopperMobile();
     } else {
       this.initPopperDesktop();
@@ -213,17 +214,17 @@ export class SpxNavigation {
 
   @Listen('resize', { target: 'window' })
   onResize() {
-    this.mobileBP = window.innerWidth < this.mobile;
+    this.mobileBp = window.innerWidth < this.mobile;
   }
 
   componentWillLoad() {
-    /** If menu prop is set. */
-
-    this.imagesChanged(this.menu);
-
     /** Check if is mobile view. */
 
     this.onResize();
+
+    /** If menu prop is set. */
+
+    this.navigationChanged(this.menu);
   }
 
   componentDidLoad() {
@@ -283,7 +284,7 @@ export class SpxNavigation {
                   {object['title']}
 
                   {objectChild &&
-                    !this.mobileBP &&
+                    !this.mobileBp &&
                     !this.vertical &&
                     this.childIcon && (
                       <spx-icon
@@ -308,9 +309,9 @@ export class SpxNavigation {
     );
   }
 
-  private sortMenuItem() {
-    /** Sort menu items depending on menu order. */
+  /** Sort menu items depending on menu order. */
 
+  private sortMenuItem() {
     const dataItems = this.el.querySelectorAll('li');
     const dataArray = [];
     for (let i = 0; i < dataItems.length; ++i) {
@@ -324,6 +325,8 @@ export class SpxNavigation {
       e.closest('ul').appendChild(e);
     });
   }
+
+  /** Init Popper positioning for desktop. */
 
   private initPopperDesktop() {
     if (!this.vertical) {
@@ -410,9 +413,9 @@ export class SpxNavigation {
     }
   }
 
-  private initPopperMobile() {
-    /** Init popper for mobile menu. */
+  /** Init Popper positioning for mobile. */
 
+  private initPopperMobile() {
     const mobileMenu = this.el.querySelector('.spx-navigation__mobile-button');
 
     if (mobileMenu) {
@@ -437,12 +440,12 @@ export class SpxNavigation {
 
     const styleHost = css({
       display: 'block',
-      fontFamily: c.fontFamily,
+      fontFamily: s.fontFamily,
       fontSize: setVar(tag, 'font-size', this.fontSize),
       zIndex: 999999,
 
       'nav > .spx-navigation--parent': {
-        display: this.mobileBP ? 'none' : 'grid',
+        display: this.mobileBp ? 'none' : 'grid',
       },
 
       ul: {
@@ -452,10 +455,12 @@ export class SpxNavigation {
 
         ul: {
           display: this.vertical && 'grid',
+          borderLeft: this.mobileBp && '1px solid rgba(0,0,0,0.1)',
+          borderRadius: this.mobileBp && '0 !important',
           gridGap:
             this.vertical && setVar(tag, 'parent-item-gap', this.parentItemGap),
           marginLeft:
-            (this.mobileBP || this.vertical) &&
+            (this.mobileBp || this.vertical) &&
             setVar(
               tag,
               'mobile-item-nested-margin-left',
@@ -465,7 +470,7 @@ export class SpxNavigation {
       },
 
       'ul ul, .spx-navigation--mobile ul': {
-        border: !this.mobileBP && setVar(tag, 'child-border', this.childBorder),
+        border: !this.mobileBp && setVar(tag, 'child-border', this.childBorder),
         borderRadius: setVar(
           tag,
           'child-border-radius',
@@ -473,15 +478,15 @@ export class SpxNavigation {
         ),
         overflow: 'hidden',
         boxShadow:
-          !this.mobileBP &&
+          !this.mobileBp &&
           setVar(tag, 'child-box-shadow', this.childBoxShadow),
       },
 
       '.spx-navigation--parent:not(.spx-navigation--mobile) > ul': {
         display: 'grid',
-        gridAutoFlow: this.mobileBP || this.vertical ? 'row' : 'column',
+        gridAutoFlow: this.mobileBp || this.vertical ? 'row' : 'column',
         gridAutoColumns: 'max-content',
-        gridAutoRows: (this.mobileBP || this.vertical) && 'max-content',
+        gridAutoRows: (this.mobileBp || this.vertical) && 'max-content',
         gridGap: setVar(tag, 'parent-item-gap', this.parentItemGap),
       },
 
@@ -520,18 +525,18 @@ export class SpxNavigation {
             width: '100%',
             whiteSpace: 'nowrap',
             color:
-              !this.mobileBP &&
+              !this.mobileBp &&
               setVar(tag, 'child-item-color', this.childItemColor),
             background:
-              !this.mobileBP &&
+              !this.mobileBp &&
               setVar(tag, 'child-item-background', this.childItemBackground),
 
             '&:hover': {
               color:
-                !this.mobileBP &&
+                !this.mobileBp &&
                 setVar(tag, 'child-item-color-hover', this.childItemColorHover),
               background:
-                !this.mobileBP &&
+                !this.mobileBp &&
                 setVar(
                   tag,
                   'child-item-color-background-hover',
@@ -543,7 +548,7 @@ export class SpxNavigation {
           '::before': {
             content: '" "',
             position: 'relative',
-            display: this.mobileBP || this.vertical ? 'none' : 'block',
+            display: this.mobileBp || this.vertical ? 'none' : 'block',
             minHeight: setVar(tag, 'child-gap', this.childGap),
             width: '100%',
           },
@@ -555,7 +560,7 @@ export class SpxNavigation {
         opacity: !this.vertical ? '0' : '1',
         position: !this.vertical ? 'absolute' : 'relative',
         display: 'flex',
-        flexDirection: this.mobileBP ? 'column' : 'row',
+        flexDirection: this.mobileBp ? 'column' : 'row',
         transitionProperty: 'opacity',
         transitionDuration: setVar(
           tag,
@@ -596,7 +601,7 @@ export class SpxNavigation {
         '[data-popper-placement]::before': {
           content: '" "',
           position: 'relative',
-          display: this.mobileBP || this.vertical ? 'none' : 'block',
+          display: this.mobileBp || this.vertical ? 'none' : 'block',
           minWidth: setVar(tag, 'child-child-gap', this.childChildGap),
           height: '100%',
         },
@@ -604,7 +609,7 @@ export class SpxNavigation {
 
       li: {
         position: 'relative',
-        display: !this.mobileBP && !this.vertical && 'flex',
+        display: !this.mobileBp && !this.vertical && 'flex',
         flexDirection: 'row',
       },
 
@@ -649,7 +654,7 @@ export class SpxNavigation {
         gridGap: '0.4rem',
         gridAutoFlow: 'column',
         alignItems: 'center',
-        display: this.mobileBP ? 'grid' : 'none',
+        display: this.mobileBp ? 'grid' : 'none',
 
         a: {
           padding: setVar(tag, 'mobile-item-padding', this.mobileItemPadding),

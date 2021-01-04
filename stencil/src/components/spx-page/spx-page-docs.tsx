@@ -10,13 +10,14 @@ import {
   Prop,
   State,
 } from '@stencil/core';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
-import * as c from '../../constants/style';
+import * as s from '../../constants/style';
 import { merge } from 'lodash-es';
 import state from '../../stores/container';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 import { wrap } from '../../utils/wrap';
+import { setClamp } from '../../utils/setClamp';
 
 const tag = 'spx-page-docs';
 
@@ -48,11 +49,9 @@ export class SpxPageDocs {
   @Prop({ reflect: true }) navigationFontFamily: string =
     state.fontFamilyPrimary;
 
-  @Prop({ reflect: true }) navigationFontSizeMultiplier: number = 1;
+  @Prop({ reflect: true }) navigationGapMin: number = 0.2;
 
-  @Prop({ reflect: true }) navigationLinkFontSizeMultiplier: number = 1;
-
-  @Prop({ reflect: true }) navigationGap: string = 'var(--spx-space-2xs)';
+  @Prop({ reflect: true }) navigationGapMax: number = 0.4;
 
   @Prop({ reflect: true }) navigationHeadingTag: string = 'h1';
 
@@ -61,7 +60,7 @@ export class SpxPageDocs {
   @Prop({ reflect: true }) navigationLinkColor: string = 'var(--spx-color-800)';
 
   @Prop({ reflect: true }) navigationLinkColorActive: string =
-    'var(--spx-color-primary-A700)';
+    'var(--spx-color-primary-600)';
 
   @Prop({ reflect: true }) navigationLinkFontWeight: string = '500';
 
@@ -71,8 +70,9 @@ export class SpxPageDocs {
 
   @Prop({ reflect: true }) navigationLinkTextTransform: string = 'default';
 
-  @Prop({ reflect: true }) navigationPadding: string =
-    'var(--spx-space-xl)' + ' ' + state.spaceXsm;
+  @Prop({ reflect: true }) navigationSpaceYMin: number = 2;
+
+  @Prop({ reflect: true }) navigationSpaceYMax: number = 4;
 
   @Prop({ reflect: true }) navigationTitleColor: string =
     'var(--spx-color-gray-600)';
@@ -85,32 +85,28 @@ export class SpxPageDocs {
 
   @Prop({ reflect: true }) navigationTitleTextTransform: string = 'uppercase';
 
+  @Prop({ reflect: true }) navigationTitleMarginBottomMin: number = 1;
+
+  @Prop({ reflect: true }) navigationTitleMarginBottomMax: number = 2;
+
   @Prop({ reflect: true }) navigationTop: string = 'var(--spx-offset)';
 
-  @Prop({ reflect: true }) offsetMarginTop: string = 'var(--spx-space-md)';
+  @Prop({ reflect: true }) offsetMarginTopMin: number = 0.7;
+
+  @Prop({ reflect: true }) offsetMarginTopMax: number = 1.2;
 
   @Prop({ reflect: true }) uniqueId: boolean;
-
-  /**
-   * Space from the last content element to the end of the component.
-   * @CSS
-   */
-
-  @Prop({ reflect: true }) spaceBottom: string = 'var(--spx-space-3xl)';
 
   /**
    * Distance to the edge of the viewport on the x-axis.
    * @CSS
    */
 
-  @Prop({ reflect: true }) spaceX: string = state.spaceX;
+  @Prop({ reflect: true }) paddingX: string = state.paddingX;
 
-  /**
-   * Distance to the edge of the viewport on the y-axis.
-   * @CSS
-   */
+  @Prop({ reflect: true }) paddingYMin: number = 2;
 
-  @Prop({ reflect: true }) spaceY: string = 'var(--spx-space-xl)';
+  @Prop({ reflect: true }) paddingYMax: number = 4;
 
   /** Listen to window resize. */
 
@@ -119,7 +115,11 @@ export class SpxPageDocs {
     this.mobile = window.innerWidth < this.bpMobile;
   }
 
-  @Event({ eventName: 'spxPageDocsDidLoad' }) spxPageDocsDidLoad: EventEmitter;
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxPageDocsDidLoad' })
+  spxPageDocsDidLoad: EventEmitter;
 
   componentWillLoad() {
     this.onResize();
@@ -129,16 +129,18 @@ export class SpxPageDocs {
     globalComponentDidLoad(this.el);
     this.createNavigation();
 
-    this.spxPageDocsDidLoad.emit({ target: 'document' });
-
     if (window.location.hash) {
       document.querySelector(window.location.hash).scrollIntoView();
     }
+
+    this.spxPageDocsDidLoad.emit({ target: 'document' });
   }
+
+  /** Generates the navigation. */
 
   private createNavigation() {
     if (this.content.innerHTML !== '') {
-      /** Create links. */
+      /** Create links from h1 tags. */
 
       this.content
         .querySelectorAll(
@@ -207,23 +209,39 @@ export class SpxPageDocs {
       top: setVar(tag, 'navigation-top', this.navigationTop),
       gridAutoRows: 'max-content',
       height: 'calc(100vh - ' + this.navigationTop + ')',
-      padding: setVar(tag, 'navigation-padding', this.navigationPadding),
+      paddingTop: setClamp(
+        tag,
+        'navigation-space-y',
+        this.navigationSpaceYMin,
+        this.navigationSpaceYMax
+      ),
+      paddingBottom: setClamp(
+        tag,
+        'navigation-space-y',
+        this.navigationSpaceYMin,
+        this.navigationSpaceYMax
+      ),
+      paddingLeft: state.paddingXsm,
+      paddingRight: state.paddingXsm,
       overflowY: 'auto',
 
       ul: {
         display: 'grid',
-        gridGap: setVar(tag, 'navigation-gap', this.navigationGap),
+        gridGap: setClamp(
+          tag,
+          'navigation-gap',
+          this.navigationGapMin,
+          this.navigationGapMax
+        ),
       },
 
       a: {
-        ...c.text(
+        ...s.text(
           tag,
           'navigation-link',
           this.navigationLinkColor,
-          '16px',
-          '16px',
-          '16px',
-          this.navigationFontSizeMultiplier,
+          0.8,
+          1,
           this.navigationLinkFontWeight,
           this.navigationLinkLetterSpacing,
           this.navigationLinkLineHeight,
@@ -239,18 +257,23 @@ export class SpxPageDocs {
         transitionDuration: setVar(
           tag,
           'navigation-transition-duration',
-          c.transitionDuration
+          s.transitionDuration
         ),
         itemTransitionTimingFunction: setVar(
           tag,
           'navigation-transition-timing-function',
-          c.transitionTimingFunction
+          s.transitionTimingFunction
         ),
       },
 
       li: {
         '&:last-of-type': {
-          marginBottom: this.spaceY,
+          marginBottom: setClamp(
+            tag,
+            'navigation-spacey-y',
+            this.navigationSpaceYMin,
+            this.navigationSpaceYMax
+          ),
         },
 
         '&.spx-scrollspy__nav--active a': {
@@ -263,14 +286,12 @@ export class SpxPageDocs {
       },
 
       span: {
-        ...c.text(
+        ...s.text(
           tag,
           'navigation-title',
           this.navigationTitleColor,
-          '14px',
-          '14px',
-          '14px',
-          this.navigationFontSizeMultiplier,
+          0.8,
+          0.9,
           this.navigationTitleFontWeight,
           this.navigationTitleLetterSpacing,
           this.navigationTitleLineHeight,
@@ -285,7 +306,12 @@ export class SpxPageDocs {
 
       'li + span': {
         display: 'block',
-        marginTop: 'var(--spx-space-lg)',
+        marginTop: setClamp(
+          tag,
+          'navigation-title-margin-bottom',
+          this.navigationTitleMarginBottomMin,
+          this.navigationTitleMarginBottomMax
+        ),
       },
     };
 
@@ -300,9 +326,9 @@ export class SpxPageDocs {
         tag,
         'content-padding',
         '' +
-          setVar(tag, 'space-y', this.spaceY) +
+          setClamp(tag, 'padding-y', this.paddingYMin, this.paddingYMax) +
           ' ' +
-          setVar(tag, 'space-x', this.spaceX) +
+          setVar(tag, 'padding-x', this.paddingX) +
           ''
       ),
 
@@ -311,14 +337,29 @@ export class SpxPageDocs {
           display: 'block',
           content: '" "',
           marginTop:
-            'calc((var(--spx-offset) + ' + this.offsetMarginTop + ') * -1)',
-          height: 'calc(var(--spx-offset) + ' + this.offsetMarginTop + ')',
+            'calc((var(--spx-offset) + ' +
+            setClamp(
+              tag,
+              'offset-margin-top',
+              this.offsetMarginTopMin,
+              this.offsetMarginTopMax
+            ) +
+            ') * -1)',
+          height:
+            'calc(var(--spx-offset) + ' +
+            setClamp(
+              tag,
+              'offset-margin-top',
+              this.offsetMarginTopMin,
+              this.offsetMarginTopMax
+            ) +
+            ')',
           visibility: 'hidden',
         },
       },
 
       'spx-code': {
-        maxWidth: 'calc(100vw - ' + this.spaceX + ')',
+        maxWidth: 'calc(100vw - ' + this.paddingX + ')',
       },
 
       img: {
@@ -326,7 +367,12 @@ export class SpxPageDocs {
       },
 
       '&:last-child': {
-        marginBottom: setVar(tag, 'space-bottom', this.spaceBottom),
+        marginBottom: setClamp(
+          tag,
+          'space-y',
+          this.paddingYMin,
+          this.paddingYMax
+        ),
       },
     };
 
@@ -336,6 +382,8 @@ export class SpxPageDocs {
 
     return (
       <Host class={styleHost}>
+        {/** Navigation. */}
+
         <div class={styleNavigationWrap}>
           <spx-scrollspy
             display="grid"
@@ -347,6 +395,9 @@ export class SpxPageDocs {
             <ul ref={(el) => (this.navigation = el as HTMLElement)} />
           </spx-scrollspy>
         </div>
+
+        {/** Content. */}
+
         <div
           ref={(el) => (this.content = el as HTMLElement)}
           class={styleContentMerge}

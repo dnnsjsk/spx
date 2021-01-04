@@ -1,60 +1,82 @@
 {
   "name": "spx-accordion",
-  "description": "Accordions are the classic method to show and hide elements on your website.",
+  "description": "The classic method to show and hide elements on your website.\nCan be used with custom markup for the header and/or content section.",
   "properties": [
     {
       "id": "accordion-contentColor",
       "name": "contentColor",
+      "attribute": "content-color",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-900)'",
       "defaultValue": "'var(--spx-color-gray-900)'",
       "tags": []
     },
     {
       "id": "accordion-contentText",
       "name": "contentText",
+      "attribute": "content-text",
       "type": "string",
       "description": "Content text.",
+      "default": "'Default Content Text'",
       "defaultValue": "'Default Content Text'",
       "tags": []
     },
     {
       "id": "accordion-contentTextTag",
       "name": "contentTextTag",
+      "attribute": "content-text-tag",
       "type": "string",
       "description": "Content text tag.",
+      "default": "'span'",
       "defaultValue": "'span'",
       "tags": []
     },
     {
       "id": "accordion-contentTransitionDuration",
       "name": "contentTransitionDuration",
+      "attribute": "content-transition-duration",
       "type": "string",
       "description": "",
+      "default": "s.transitionDuration",
       "defaultValue": "'var(--spx-transition-duration)'",
       "tags": []
     },
     {
       "id": "accordion-contentTransitionTimingFunction",
       "name": "contentTransitionTimingFunction",
+      "attribute": "content-transition-timing-function",
       "type": "string",
       "description": "",
+      "default": "s.transitionTimingFunction",
       "defaultValue": "'var(--spx-transition-timing-function)'",
+      "tags": []
+    },
+    {
+      "id": "accordion-disableAnimation",
+      "name": "disableAnimation",
+      "attribute": "disable-animation",
+      "type": "boolean",
+      "description": "Disables the animation.\nSet this attribute if the accordion is starting hidden in the DOM.",
       "tags": []
     },
     {
       "id": "accordion-fontSize",
       "name": "fontSize",
+      "attribute": "font-size",
       "type": "string",
       "description": "",
+      "default": "s.fontSize",
       "defaultValue": "'var(--spx-font-size)'",
       "tags": []
     },
     {
       "id": "accordion-gap",
       "name": "gap",
+      "attribute": "gap",
       "type": "string",
       "description": "Space between header and content.",
+      "default": "'0.4em'",
       "defaultValue": "'0.4em'",
       "tags": [
         {
@@ -65,16 +87,20 @@
     {
       "id": "accordion-headerColor",
       "name": "headerColor",
+      "attribute": "header-color",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-900)'",
       "defaultValue": "'var(--spx-color-gray-900)'",
       "tags": []
     },
     {
       "id": "accordion-headerGap",
       "name": "headerGap",
+      "attribute": "header-gap",
       "type": "string",
       "description": "Gap between header text and icon.",
+      "default": "'0.4em'",
       "defaultValue": "'0.4em'",
       "tags": [
         {
@@ -85,64 +111,137 @@
     {
       "id": "accordion-headerText",
       "name": "headerText",
+      "attribute": "header-text",
       "type": "string",
       "description": "Header text.",
+      "default": "'Default Header Text'",
       "defaultValue": "'Default Header Text'",
+      "tags": []
+    },
+    {
+      "id": "accordion-headerTextOpen",
+      "name": "headerTextOpen",
+      "attribute": "header-text-open",
+      "type": "string",
+      "description": "Header text when component is closed.",
       "tags": []
     },
     {
       "id": "accordion-headerTextTag",
       "name": "headerTextTag",
+      "attribute": "header-text-tag",
       "type": "string",
       "description": "Header text tag.",
+      "default": "'span'",
       "defaultValue": "'span'",
       "tags": []
     },
     {
       "id": "accordion-indicatorIcon",
       "name": "indicatorIcon",
+      "attribute": "indicator-icon",
       "type": "string",
       "description": "Indicator icon.",
+      "default": "'arrow-down'",
       "defaultValue": "'arrow-down'",
       "tags": []
     },
     {
       "id": "accordion-indicatorIconTransform",
       "name": "indicatorIconTransform",
+      "attribute": "indicator-icon-transform",
       "type": "string",
       "description": "Indicator icon transform.",
+      "default": "'rotate(180deg)'",
       "defaultValue": "'rotate(180deg)'",
       "tags": []
     },
     {
       "id": "accordion-indicatorIconType",
       "name": "indicatorIconType",
+      "attribute": "indicator-icon-type",
       "type": "string",
       "description": "Indicator icon type.",
+      "default": "'ionicons'",
       "defaultValue": "'ionicons'",
+      "tags": []
+    },
+    {
+      "id": "accordion-link",
+      "name": "link",
+      "attribute": "link",
+      "type": "string",
+      "description": "Sets the ID to link different accordions together.",
+      "tags": []
+    },
+    {
+      "id": "accordion-linkType",
+      "name": "linkType",
+      "attribute": "link-type",
+      "type": "string",
+      "description": "Sets the type of link.",
+      "tags": [
+        {
+          "text": "'open', 'close', 'toggle'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "accordion-openState",
+      "name": "openState",
+      "attribute": "open-state",
+      "type": "boolean",
+      "description": "State of accordion.",
+      "default": "false",
+      "defaultValue": "false",
+      "tags": []
+    },
+    {
+      "id": "accordion-reverse",
+      "name": "reverse",
+      "attribute": "reverse",
+      "type": "boolean",
+      "description": "Reverse icon positioning.",
       "tags": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxAccordionDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [
+    {
+      "name": "close",
+      "description": "Closes the accordion.",
+      "signature": "close() => Promise<void>"
+    },
+    {
+      "name": "open",
+      "description": "Opens the accordion.",
+      "signature": "open() => Promise<void>"
+    },
     {
       "name": "reload",
       "description": "",
       "signature": "reload() => Promise<void>"
+    },
+    {
+      "name": "toggle",
+      "description": "Toggles the accordion.",
+      "signature": "toggle() => Promise<void>"
     }
   ],
   "slots": [
     {
       "name": "content",
-      "description": "Content."
+      "description": "Slot for the content."
     },
     {
       "name": "header",
-      "description": "Header."
-    },
-    {
-      "name": "icon",
-      "description": "Icon."
+      "description": "Slot for the header."
     }
   ]
 }

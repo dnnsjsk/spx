@@ -5,14 +5,17 @@
     {
       "id": "section-footer-background",
       "name": "background",
+      "attribute": "background",
       "type": "string",
       "description": "",
-      "defaultValue": "'var(--spx-color-gray-900)'",
+      "default": "'var(--spx-color-gray-800)'",
+      "defaultValue": "'var(--spx-color-gray-800)'",
       "tags": []
     },
     {
       "id": "section-footer-gap",
       "name": "gap",
+      "attribute": "gap",
       "type": "string",
       "description": "Gap between columns.",
       "tags": [
@@ -24,68 +27,178 @@
     {
       "id": "section-footer-imageMaxHeight",
       "name": "imageMaxHeight",
+      "attribute": "image-max-height",
       "type": "string",
       "description": "",
+      "default": "'40px'",
       "defaultValue": "'40px'",
       "tags": []
     },
     {
       "id": "section-footer-justifyContent",
       "name": "justifyContent",
+      "attribute": "justify-content",
       "type": "string",
       "description": "",
+      "default": "'space-between'",
       "defaultValue": "'space-between'",
       "tags": []
     },
     {
       "id": "section-footer-maxWidth",
       "name": "maxWidth",
+      "attribute": "max-width",
       "type": "string",
       "description": "",
       "tags": []
     },
     {
-      "id": "section-footer-spaceBefore",
-      "name": "spaceBefore",
-      "type": "string",
-      "description": "Space before the footer.",
-      "defaultValue": "'var(--spx-space-4xl)'",
-      "tags": [
-        {
-          "name": "CSS"
-        }
-      ]
+      "id": "section-footer-paddingYMax",
+      "name": "paddingYMax",
+      "attribute": "padding-y-max",
+      "type": "number",
+      "description": "",
+      "default": "12",
+      "defaultValue": "12",
+      "tags": []
     },
     {
-      "id": "section-footer-spaceY",
-      "name": "spaceY",
-      "type": "string",
-      "description": "Distance to the edge of the viewport on the y-axis.",
-      "defaultValue": "'var(--spx-space-3xl)'",
-      "tags": [
-        {
-          "name": "CSS"
-        }
-      ]
+      "id": "section-footer-paddingYMin",
+      "name": "paddingYMin",
+      "attribute": "padding-y-min",
+      "type": "number",
+      "description": "",
+      "default": "4",
+      "defaultValue": "4",
+      "tags": []
+    },
+    {
+      "id": "section-footer-spaceBeforeMax",
+      "name": "spaceBeforeMax",
+      "attribute": "space-before-max",
+      "type": "number",
+      "description": "",
+      "default": "12",
+      "defaultValue": "12",
+      "tags": []
+    },
+    {
+      "id": "section-footer-spaceBeforeMin",
+      "name": "spaceBeforeMin",
+      "attribute": "space-before-min",
+      "type": "number",
+      "description": "",
+      "default": "5",
+      "defaultValue": "5",
+      "tags": []
     },
     {
       "id": "section-footer-textColor",
       "name": "textColor",
+      "attribute": "text-color",
       "type": "string",
       "description": "",
-      "defaultValue": "'var(--spx-color-gray-600)'",
+      "default": "'var(--spx-color-gray-500)'",
+      "defaultValue": "'var(--spx-color-gray-500)'",
+      "tags": []
+    },
+    {
+      "id": "section-footer-textFontSizeMax",
+      "name": "textFontSizeMax",
+      "attribute": "text-font-size-max",
+      "type": "number",
+      "description": "",
+      "default": "1.2",
+      "defaultValue": "1.2",
+      "tags": []
+    },
+    {
+      "id": "section-footer-textFontSizeMin",
+      "name": "textFontSizeMin",
+      "attribute": "text-font-size-min",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "section-footer-textMarginTopMax",
+      "name": "textMarginTopMax",
+      "attribute": "text-margin-top-max",
+      "type": "number",
+      "description": "",
+      "default": "1.2",
+      "defaultValue": "1.2",
+      "tags": []
+    },
+    {
+      "id": "section-footer-textMarginTopMin",
+      "name": "textMarginTopMin",
+      "attribute": "text-margin-top-min",
+      "type": "number",
+      "description": "",
+      "default": "0.8",
+      "defaultValue": "0.8",
       "tags": []
     },
     {
       "id": "section-footer-textMaxWidth",
       "name": "textMaxWidth",
+      "attribute": "text-max-width",
       "type": "string",
       "description": "",
+      "default": "'370px'",
       "defaultValue": "'370px'",
+      "tags": []
+    },
+    {
+      "id": "section-footer-titleFontSizeMax",
+      "name": "titleFontSizeMax",
+      "attribute": "title-font-size-max",
+      "type": "number",
+      "description": "",
+      "default": "1.6",
+      "defaultValue": "1.6",
+      "tags": []
+    },
+    {
+      "id": "section-footer-titleFontSizeMin",
+      "name": "titleFontSizeMin",
+      "attribute": "title-font-size-min",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "section-footer-titleMarginBottomMax",
+      "name": "titleMarginBottomMax",
+      "attribute": "title-margin-bottom-max",
+      "type": "number",
+      "description": "",
+      "default": "2",
+      "defaultValue": "2",
+      "tags": []
+    },
+    {
+      "id": "section-footer-titleMarginBottomMin",
+      "name": "titleMarginBottomMin",
+      "attribute": "title-margin-bottom-min",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
       "tags": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxSectionFooterDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [],
   "slots": []
 }

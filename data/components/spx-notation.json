@@ -5,64 +5,80 @@
     {
       "id": "notation-animation",
       "name": "animation",
+      "attribute": "animation",
       "type": "boolean",
       "description": "Turn animation on or off when animation.",
+      "default": "true",
       "defaultValue": "true",
       "tags": []
     },
     {
       "id": "notation-animationDuration",
       "name": "animationDuration",
+      "attribute": "animation-duration",
       "type": "number",
       "description": "Animation duration.",
+      "default": "800",
       "defaultValue": "800",
       "tags": []
     },
     {
       "id": "notation-color",
       "name": "color",
+      "attribute": "color",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-secondary-100)'",
       "defaultValue": "'var(--spx-color-secondary-100)'",
       "tags": []
     },
     {
       "id": "notation-display",
       "name": "display",
+      "attribute": "display",
       "type": "string",
       "description": "",
+      "default": "'inline-block'",
       "defaultValue": "'inline-block'",
       "tags": []
     },
     {
       "id": "notation-iterations",
       "name": "iterations",
+      "attribute": "iterations",
       "type": "number",
       "description": "Number of iterations.",
+      "default": "1",
       "defaultValue": "1",
       "tags": []
     },
     {
       "id": "notation-multiline",
       "name": "multiline",
+      "attribute": "multiline",
       "type": "boolean",
       "description": "Annotate multiline text.",
+      "default": "true",
       "defaultValue": "true",
       "tags": []
     },
     {
       "id": "notation-strokeWidth",
       "name": "strokeWidth",
+      "attribute": "stroke-width",
       "type": "number",
       "description": "Stroke width.",
+      "default": "1",
       "defaultValue": "1",
       "tags": []
     },
     {
       "id": "notation-type",
       "name": "type",
+      "attribute": "type",
       "type": "string",
       "description": "Type of notation.",
+      "default": "'underline'",
       "defaultValue": "'underline'",
       "tags": [
         {
@@ -72,7 +88,12 @@
       ]
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxNotationDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [
     {
       "name": "clear",

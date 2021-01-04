@@ -5,70 +5,198 @@
     {
       "id": "code-background",
       "name": "background",
+      "attribute": "background",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-900)'",
       "defaultValue": "'var(--spx-color-gray-900)'",
       "tags": []
     },
     {
       "id": "code-borderRadius",
       "name": "borderRadius",
+      "attribute": "border-radius",
       "type": "string",
       "description": "",
+      "default": "s.borderRadius",
       "defaultValue": "'var(--spx-border-radius)'",
+      "tags": []
+    },
+    {
+      "id": "code-clipboard",
+      "name": "clipboard",
+      "attribute": "clipboard",
+      "type": "boolean",
+      "description": "Enable clipboard button.",
+      "default": "true",
+      "defaultValue": "true",
+      "tags": []
+    },
+    {
+      "id": "code-clipboardButtonBackground",
+      "name": "clipboardButtonBackground",
+      "attribute": "clipboard-button-background",
+      "type": "string",
+      "description": "",
+      "default": "'var(--spx-color-gray-800)'",
+      "defaultValue": "'var(--spx-color-gray-800)'",
+      "tags": []
+    },
+    {
+      "id": "code-clipboardButtonColor",
+      "name": "clipboardButtonColor",
+      "attribute": "clipboard-button-color",
+      "type": "string",
+      "description": "",
+      "default": "'var(--spx-color-gray-400)'",
+      "defaultValue": "'var(--spx-color-gray-400)'",
+      "tags": []
+    },
+    {
+      "id": "code-clipboardButtonFontSize",
+      "name": "clipboardButtonFontSize",
+      "attribute": "clipboard-button-font-size",
+      "type": "string",
+      "description": "",
+      "default": "'12px'",
+      "defaultValue": "'12px'",
+      "tags": []
+    },
+    {
+      "id": "code-clipboardButtonFontWeight",
+      "name": "clipboardButtonFontWeight",
+      "attribute": "clipboard-button-font-weight",
+      "type": "any",
+      "description": "",
+      "default": "600",
+      "defaultValue": "600",
+      "tags": []
+    },
+    {
+      "id": "code-clipboardButtonPadding",
+      "name": "clipboardButtonPadding",
+      "attribute": "clipboard-button-padding",
+      "type": "string",
+      "description": "",
+      "default": "'6px 12px'",
+      "defaultValue": "'6px 12px'",
+      "tags": []
+    },
+    {
+      "id": "code-clipboardButtonTextTransform",
+      "name": "clipboardButtonTextTransform",
+      "attribute": "clipboard-button-text-transform",
+      "type": "string",
+      "description": "",
+      "default": "'uppercase'",
+      "defaultValue": "'uppercase'",
       "tags": []
     },
     {
       "id": "code-display",
       "name": "display",
+      "attribute": "display",
       "type": "string",
       "description": "",
+      "default": "'block'",
       "defaultValue": "'block'",
       "tags": []
     },
     {
       "id": "code-fontSize",
       "name": "fontSize",
+      "attribute": "font-size",
       "type": "string",
       "description": "",
+      "default": "'clamp(12px, 1.6vw, 16px)'",
       "defaultValue": "'clamp(12px, 1.6vw, 16px)'",
       "tags": []
     },
     {
       "id": "code-height",
       "name": "height",
+      "attribute": "height",
       "type": "string",
       "description": "",
+      "default": "'auto'",
+      "defaultValue": "'auto'",
       "tags": []
     },
     {
       "id": "code-hideScrollbar",
       "name": "hideScrollbar",
+      "attribute": "hide-scrollbar",
       "type": "boolean",
       "description": "Hide scrollbar.",
       "tags": []
     },
     {
-      "id": "code-overflow",
-      "name": "overflow",
+      "id": "code-lineNumbers",
+      "name": "lineNumbers",
+      "attribute": "line-numbers",
+      "type": "boolean",
+      "description": "Enable line numbers.",
+      "default": "true",
+      "defaultValue": "true",
+      "tags": []
+    },
+    {
+      "id": "code-lineNumbersBackground",
+      "name": "lineNumbersBackground",
+      "attribute": "line-numbers-background",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-800)'",
+      "defaultValue": "'var(--spx-color-gray-800)'",
+      "tags": []
+    },
+    {
+      "id": "code-lineNumbersColor",
+      "name": "lineNumbersColor",
+      "attribute": "line-numbers-color",
+      "type": "string",
+      "description": "",
+      "default": "'var(--spx-color-gray-400)'",
+      "defaultValue": "'var(--spx-color-gray-400)'",
+      "tags": []
+    },
+    {
+      "id": "code-maxWidth",
+      "name": "maxWidth",
+      "attribute": "max-width",
+      "type": "string",
+      "description": "",
+      "default": "'100%'",
+      "defaultValue": "'100%'",
+      "tags": []
+    },
+    {
+      "id": "code-overflow",
+      "name": "overflow",
+      "attribute": "overflow",
+      "type": "string",
+      "description": "",
+      "default": "'auto'",
       "defaultValue": "'auto'",
       "tags": []
     },
     {
       "id": "code-padding",
       "name": "padding",
+      "attribute": "padding",
       "type": "string",
       "description": "",
-      "defaultValue": "'var(--spx-space-lg)'",
+      "default": "'clamp(20px, 2.4vw, 40px)'",
+      "defaultValue": "'clamp(20px, 2.4vw, 40px)'",
       "tags": []
     },
     {
       "id": "code-theme",
       "name": "theme",
+      "attribute": "theme",
       "type": "string",
       "description": "Colour theme.",
+      "default": "'default'",
       "defaultValue": "'default'",
       "tags": [
         {
@@ -80,18 +208,29 @@
     {
       "id": "code-type",
       "name": "type",
+      "attribute": "type",
       "type": "string",
       "description": "Determines the programming language.",
+      "default": "'markup'",
       "defaultValue": "'markup'",
       "tags": [
         {
           "text": "'markup', 'css', 'php'",
+          "name": "choice"
+        },
+        {
+          "text": "'css'",
           "name": "editor"
         }
       ]
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxCodeDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [
     {
       "name": "reload",

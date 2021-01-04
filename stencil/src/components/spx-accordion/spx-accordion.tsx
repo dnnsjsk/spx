@@ -8,9 +8,11 @@ import {
   Prop,
   State,
   Listen,
+  Event,
+  EventEmitter,
 } from '@stencil/core';
-import { css } from 'emotion';
-import * as c from '../../constants/style';
+import { css } from '@emotion/css';
+import * as s from '../../constants/style';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 import { tagSelector } from '../../utils/tagSelector';
@@ -18,10 +20,10 @@ import { tagSelector } from '../../utils/tagSelector';
 const tag = 'spx-accordion';
 
 /**
- * Accordions are the classic method to show and hide elements on your website.
- * @slot content - Content.
- * @slot header - Header.
- * @slot icon - Icon.
+ * The classic method to show and hide elements on your website.
+ * Can be used with custom markup for the header and/or content section.
+ * @slot content - Slot for the content.
+ * @slot header - Slot for the header.
  */
 
 @Component({
@@ -34,7 +36,6 @@ export class SpxAccordion {
 
   @State() contentCustom: boolean;
   @State() headerCustom: boolean;
-  @State() open: boolean = false;
   @State() headerHeight;
 
   @Prop({ reflect: true }) contentColor: string = 'var(--spx-color-gray-900)';
@@ -48,12 +49,19 @@ export class SpxAccordion {
   @Prop({ reflect: true }) contentTextTag: string = 'span';
 
   @Prop({ reflect: true }) contentTransitionDuration: string =
-    c.transitionDuration;
+    s.transitionDuration;
 
   @Prop({ reflect: true }) contentTransitionTimingFunction: string =
-    c.transitionTimingFunction;
+    s.transitionTimingFunction;
 
-  @Prop({ reflect: true }) fontSize: string = c.fontSize;
+  /**
+   * Disables the animation.
+   * Set this attribute if the accordion is starting hidden in the DOM.
+   */
+
+  @Prop({ reflect: true }) disableAnimation: boolean;
+
+  @Prop({ reflect: true }) fontSize: string = s.fontSize;
 
   /**
    * Space between header and content.
@@ -75,6 +83,10 @@ export class SpxAccordion {
 
   @Prop({ reflect: true }) headerText: string = 'Default Header Text';
 
+  /** Header text when component is closed. */
+
+  @Prop({ reflect: true }) headerTextOpen: string;
+
   /** Header text tag. */
 
   @Prop({ reflect: true }) headerTextTag: string = 'span';
@@ -91,10 +103,44 @@ export class SpxAccordion {
 
   @Prop({ reflect: true }) indicatorIconTransform: string = 'rotate(180deg)';
 
+  /** Sets the ID to link different accordions together. */
+
+  @Prop({ reflect: true }) link: string;
+
+  /**
+   * Sets the type of link.
+   * @choice 'open', 'close', 'toggle'
+   */
+
+  @Prop({ reflect: true }) linkType: string;
+
+  /** State of accordion. */
+
+  // prettier-ignore
+  @Prop({ reflect: true, attribute: 'open' }) openState: boolean = false;
+
+  /** Reverse icon positioning. */
+
+  @Prop({ reflect: true }) reverse: boolean;
+
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxAccordionDidLoad' })
+  spxAccordionDidLoad: EventEmitter;
+
   @Listen('keydown')
   onKeydown(e) {
-    if (e.keyCode === 13) {
+    if (e.key === 'Enter') {
       this.clickHeader();
+    }
+  }
+
+  componentWillLoad() {
+    /** Turn animation off if linked, since height can't be calculated otherwise. */
+
+    if (this.link) {
+      this.disableAnimation = true;
     }
   }
 
@@ -108,30 +154,85 @@ export class SpxAccordion {
     if (this.el.querySelector('[slot="content"]')) {
       this.contentCustom = true;
     }
+
+    this.spxAccordionDidLoad.emit({ target: 'document' });
   }
 
-  /** Toggle content. */
+  /** Header is clicked. */
 
   private clickHeader = () => {
-    if (this.open === true) {
-      this.content.style.maxHeight = null;
-      this.open = false;
+    /** Handle linked instances. */
+
+    if (this.link) {
+      document
+        .querySelectorAll('spx-accordion[link="' + this.link + '"]')
+        .forEach((item) => {
+          /** Make sure not to toggle current element. */
+
+          if (item !== this.el) {
+            if (this.linkType === 'open') {
+              item.setAttribute('open', '');
+            }
+            if (this.linkType === 'close') {
+              item.removeAttribute('open');
+            }
+            if (this.linkType === 'toggle') {
+              if (item.hasAttribute('open')) {
+                item.removeAttribute('open');
+              } else {
+                item.setAttribute('open', '');
+              }
+            }
+          }
+        });
+    }
+
+    /** Set the correct heights.. */
+
+    if (this.openState) {
+      if (!this.disableAnimation) {
+        this.content.style.maxHeight = null;
+      }
+      this.openState = false;
     } else {
-      this.content.style.maxHeight = this.content.scrollHeight + 'px';
-      this.open = true;
+      if (!this.disableAnimation) {
+        this.content.style.maxHeight = this.content.scrollHeight + 'px';
+      }
+      this.openState = true;
     }
   };
+
+  /** Closes the accordion. */
+
+  @Method()
+  async close() {
+    this.openState = false;
+  }
+
+  /** Opens the accordion. */
+
+  @Method()
+  async open() {
+    this.openState = true;
+  }
 
   @Method()
   async reload() {
     this.componentDidLoad();
   }
 
+  /** Toggles the accordion. */
+
+  @Method()
+  async toggle() {
+    this.openState = !this.openState;
+  }
+
   render() {
     /** Host styles. */
 
     const styleHost = css({
-      fontFamily: c.fontFamily,
+      fontFamily: s.fontFamily,
       fontSize: setVar(tag, 'font-size', this.fontSize),
       display: 'flex',
       flexDirection: 'column',
@@ -142,7 +243,8 @@ export class SpxAccordion {
     const styleHeader = css({
       display: 'grid',
       gridAutoFlow: 'column',
-      gridAutoColumns: 'max-content',
+      gridTemplateColumns: this.reverse ? '1fr auto' : 'auto 1fr',
+      alignItems: 'center',
       gridColumnGap: setVar(tag, 'header-gap', this.headerGap),
       cursor: 'pointer',
 
@@ -157,22 +259,29 @@ export class SpxAccordion {
 
     /** Header custom styles. */
 
-    const styleHeaderCustom = css({
-      height: '100%',
+    const styleHeaderIcon = css({
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       transformOrigin: 'center center',
+      gridColumn: this.reverse && '2',
       transform:
-        this.open &&
+        this.openState &&
         setVar(tag, 'indicator-icon-transform', this.indicatorIconTransform),
       color: setVar(tag, 'header-color', this.headerColor),
     });
 
+    /** Content styles. */
+
     const styleContent = css({
-      marginTop: this.open ? setVar(tag, 'gap', this.gap) : 0,
-      maxHeight: '0',
+      display:
+        this.disableAnimation && this.openState
+          ? 'block'
+          : this.disableAnimation && !this.openState && 'none',
+      marginTop: this.openState ? setVar(tag, 'gap', this.gap) : 0,
+      maxHeight: this.disableAnimation ? 'none' : '0',
       overflow: 'hidden',
+      height: this.disableAnimation && 'auto',
       transitionProperty: 'max-height, margin-top',
       willChange: 'max-height, margin-top',
       transitionDuration: setVar(
@@ -186,7 +295,7 @@ export class SpxAccordion {
         this.contentTransitionTimingFunction
       ),
 
-      'h1, h2, h3, h4, h5, h6, p, span': {
+      'h1, h2, h3, h4, h5, h6, p, span:not(.token)': {
         color: setVar(tag, 'content-color', this.contentColor),
       },
     });
@@ -198,14 +307,14 @@ export class SpxAccordion {
         <div
           tabindex="0"
           role="button"
-          aria-pressed={this.open ? 'true' : 'false'}
+          aria-pressed={this.openState ? 'true' : 'false'}
           onClick={this.clickHeader}
-          class={styleHeader}
+          class={!this.headerCustom && styleHeader}
         >
           {/** Header custom. */}
 
           {!this.headerCustom && (
-            <div class={styleHeaderCustom}>
+            <div class={styleHeaderIcon}>
               {this.indicatorIcon && this.indicatorIconType && (
                 <spx-icon
                   icon={this.indicatorIcon}
@@ -214,12 +323,19 @@ export class SpxAccordion {
               )}
             </div>
           )}
-          {tagSelector(
-            !this.headerCustom,
-            this.headerTextTag,
-            this.headerText,
-            'header'
-          )}
+          {this.headerTextOpen && this.openState
+            ? tagSelector(
+                !this.headerCustom,
+                this.headerTextTag,
+                this.headerTextOpen,
+                'header'
+              )
+            : tagSelector(
+                !this.headerCustom,
+                this.headerTextTag,
+                this.headerText,
+                'header'
+              )}
         </div>
 
         {/** Content. */}

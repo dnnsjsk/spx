@@ -1,5 +1,5 @@
 /**
- * Wrap elements in another element.
+ * Wrap element in another element.
  */
 
 export const wrap = (el, wrapper) => {

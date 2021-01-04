@@ -7,10 +7,25 @@
 
 ## Properties
 
-| Property | Attribute | Description                                      | Type     | Default             |
-| -------- | --------- | ------------------------------------------------ | -------- | ------------------- |
-| `size`   | `size`    | Screen size of the site shown inside the iframe. | `string` | `'1440px'`          |
-| `src`    | `src`     | Source for the iframe.                           | `string` | `'https://spx.dev'` |
+| Property               | Attribute                | Description                                      | Type      | Default             |
+| ---------------------- | ------------------------ | ------------------------------------------------ | --------- | ------------------- |
+| `display`              | `display`                |                                                  | `string`  | `'block'`           |
+| `documentBorder`       | `document-border`        |                                                  | `string`  | `'none'`            |
+| `documentBorderRadius` | `document-border-radius` |                                                  | `string`  | `'none'`            |
+| `documentHeight`       | `document-height`        |                                                  | `string`  | `'auto'`            |
+| `documentWidth`        | `document-width`         |                                                  | `string`  | `'100%'`            |
+| `fit`                  | `fit`                    | Automatically resize iframe to fit content.      | `boolean` | `undefined`         |
+| `lazy`                 | `lazy`                   | Lazy load content.                               | `boolean` | `undefined`         |
+| `size`                 | `size`                   | Screen size of the site shown inside the iframe. | `string`  | `'1440px'`          |
+| `src`                  | `src`                    | Source for the iframe.                           | `string`  | `'https://spx.dev'` |
+| `type`                 | `type`                   | Screen size of the site shown inside the iframe. | `string`  | `'resize'`          |
+
+
+## Events
+
+| Event              | Description                       | Type               |
+| ------------------ | --------------------------------- | ------------------ |
+| `spxIFrameDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
 
 
 ## Methods

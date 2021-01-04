@@ -3,6 +3,7 @@
 /**
  * Sets global settings.
  *
+ * @date  22/09/2020
  * @since 2.0
  */
 
@@ -13,11 +14,12 @@ class Set {
 	/**
 	 * Color.
 	 *
+	 * @date    28/07/2020
+	 * @since   1.0.0
+	 *
 	 * @param $color
 	 *
 	 * @param $type
-	 *
-	 * @since 1.0
 	 */
 
 	public static function color( $color, $type ) {

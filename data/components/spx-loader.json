@@ -5,21 +5,30 @@
     {
       "id": "loader-color",
       "name": "color",
+      "attribute": "color",
       "type": "string",
       "description": "",
+      "default": "'#ffffff'",
       "defaultValue": "'#ffffff'",
       "tags": []
     },
     {
       "id": "loader-speed",
       "name": "speed",
+      "attribute": "speed",
       "type": "string",
       "description": "",
+      "default": "'1.5s'",
       "defaultValue": "'1.5s'",
       "tags": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxLoaderDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [],
   "slots": []
 }

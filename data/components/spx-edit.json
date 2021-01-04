@@ -5,14 +5,17 @@
     {
       "id": "edit-display",
       "name": "display",
+      "attribute": "display",
       "type": "string",
       "description": "",
+      "default": "'inline'",
       "defaultValue": "'inline'",
       "tags": []
     },
     {
       "id": "edit-editable",
       "name": "editable",
+      "attribute": "editable",
       "type": "boolean",
       "description": "Watch editable state.",
       "tags": []
@@ -20,6 +23,7 @@
     {
       "id": "edit-name",
       "name": "name",
+      "attribute": "name",
       "type": "string",
       "description": "",
       "tags": []
@@ -27,46 +31,57 @@
     {
       "id": "edit-outline",
       "name": "outline",
+      "attribute": "outline",
       "type": "string",
       "description": "",
+      "default": "'2px solid red'",
       "defaultValue": "'2px solid red'",
       "tags": []
     },
     {
       "id": "edit-outlineFocus",
       "name": "outlineFocus",
+      "attribute": "outline-focus",
       "type": "string",
       "description": "",
+      "default": "'blue'",
       "defaultValue": "'blue'",
       "tags": []
     },
     {
       "id": "edit-placeholder",
       "name": "placeholder",
+      "attribute": "placeholder",
       "type": "string",
       "description": "",
+      "default": "'Enter some text here.'",
       "defaultValue": "'Enter some text here.'",
       "tags": []
     },
     {
       "id": "edit-placeholderColor",
       "name": "placeholderColor",
+      "attribute": "placeholder-color",
       "type": "string",
       "description": "",
+      "default": "'inherit'",
       "defaultValue": "'inherit'",
       "tags": []
     },
     {
       "id": "edit-placeholderOpacity",
       "name": "placeholderOpacity",
+      "attribute": "placeholder-opacity",
       "type": "string",
       "description": "",
+      "default": "'0.7'",
       "defaultValue": "'0.7'",
       "tags": []
     },
     {
       "id": "edit-subfield",
       "name": "subfield",
+      "attribute": "subfield",
       "type": "boolean",
       "description": "",
       "tags": []
@@ -74,6 +89,7 @@
     {
       "id": "edit-type",
       "name": "type",
+      "attribute": "type",
       "type": "string",
       "description": "",
       "tags": []

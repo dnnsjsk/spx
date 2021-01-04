@@ -1,6 +1,8 @@
 import {
   Component,
   Element,
+  Event,
+  EventEmitter,
   // eslint-disable-next-line no-unused-vars
   h,
   Host,
@@ -8,7 +10,7 @@ import {
   Method,
   Prop,
 } from '@stencil/core';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
 import { offsetHeader } from '../../utils/offsetHeader';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
@@ -30,9 +32,18 @@ export class SpxOffset {
 
   @Prop({ reflect: true }) display: string = 'block';
 
-  /** Target element. */
+  /**
+   * Target element.
+   * @editor '.header1'
+   */
 
   @Prop({ reflect: true }) target: string = 'header';
+
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxOffsetDidLoad' })
+  spxOffsetDidLoad: EventEmitter;
 
   /** Listen to window resize. */
 
@@ -44,6 +55,8 @@ export class SpxOffset {
   componentDidLoad() {
     globalComponentDidLoad(this.el);
     this.onResize();
+
+    this.spxOffsetDidLoad.emit({ target: 'document' });
   }
 
   componentDidUpdate() {

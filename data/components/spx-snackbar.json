@@ -5,30 +5,37 @@
     {
       "id": "snackbar-animationDelay",
       "name": "animationDelay",
+      "attribute": "animation-delay",
       "type": "string",
       "description": "",
+      "default": "'200ms'",
       "defaultValue": "'200ms'",
       "tags": []
     },
     {
       "id": "snackbar-animationDuration",
       "name": "animationDuration",
+      "attribute": "animation-duration",
       "type": "string",
       "description": "",
+      "default": "'2000ms'",
       "defaultValue": "'2000ms'",
       "tags": []
     },
     {
       "id": "snackbar-background",
       "name": "background",
+      "attribute": "background",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-900)'",
       "defaultValue": "'var(--spx-color-gray-900)'",
       "tags": []
     },
     {
       "id": "snackbar-border",
       "name": "border",
+      "attribute": "border",
       "type": "string",
       "description": "",
       "tags": []
@@ -36,14 +43,17 @@
     {
       "id": "snackbar-borderRadius",
       "name": "borderRadius",
+      "attribute": "border-radius",
       "type": "string",
       "description": "",
+      "default": "s.borderRadius",
       "defaultValue": "'var(--spx-border-radius)'",
       "tags": []
     },
     {
       "id": "snackbar-closeable",
       "name": "closeable",
+      "attribute": "closeable",
       "type": "boolean",
       "description": "Adds option to close snackbar after its creation.",
       "tags": []
@@ -51,16 +61,20 @@
     {
       "id": "snackbar-color",
       "name": "color",
+      "attribute": "color",
       "type": "string",
       "description": "",
+      "default": "'#ffffff'",
       "defaultValue": "'#ffffff'",
       "tags": []
     },
     {
       "id": "snackbar-distanceX",
       "name": "distanceX",
+      "attribute": "distance-x",
       "type": "string",
       "description": "Distance to the edge of the viewport on the x-axis.",
+      "default": "'1em'",
       "defaultValue": "'1em'",
       "tags": [
         {
@@ -71,8 +85,10 @@
     {
       "id": "snackbar-distanceY",
       "name": "distanceY",
+      "attribute": "distance-y",
       "type": "string",
       "description": "Distance to the edge of the viewport on the y-axis.",
+      "default": "'1em'",
       "defaultValue": "'1em'",
       "tags": [
         {
@@ -83,43 +99,62 @@
     {
       "id": "snackbar-fixed",
       "name": "fixed",
+      "attribute": "fixed",
       "type": "boolean",
       "description": "Makes snackbar not removable.",
-      "tags": []
+      "tags": [
+        {
+          "text": "'#components'",
+          "name": "editor"
+        }
+      ]
     },
     {
       "id": "snackbar-fontSize",
       "name": "fontSize",
+      "attribute": "font-size",
       "type": "string",
       "description": "",
+      "default": "'18px'",
       "defaultValue": "'18px'",
       "tags": []
     },
     {
       "id": "snackbar-identifier",
       "name": "identifier",
+      "attribute": "identifier",
       "type": "string",
       "description": "Unique identifier for snackbar instance.",
+      "default": "'primary'",
       "defaultValue": "'primary'",
-      "tags": []
+      "tags": [
+        {
+          "text": "'#components'",
+          "name": "editor"
+        }
+      ]
     },
     {
       "id": "snackbar-padding",
       "name": "padding",
+      "attribute": "padding",
       "type": "string",
       "description": "",
+      "default": "'1em'",
       "defaultValue": "'1em'",
       "tags": []
     },
     {
       "id": "snackbar-position",
       "name": "position",
+      "attribute": "position",
       "type": "string",
       "description": "Component position in page.",
+      "default": "'bottom-right'",
       "defaultValue": "'bottom-right'",
       "tags": [
         {
-          "text": "'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center\", 'top-right'",
+          "text": "'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'",
           "name": "choice"
         }
       ]
@@ -127,14 +162,22 @@
     {
       "id": "snackbar-positionCss",
       "name": "positionCss",
+      "attribute": "position-css",
       "type": "\"absolute\" | \"fixed\" | \"relative\" | \"static\"",
       "description": "CSS property position of button.",
+      "default": "'fixed'",
       "defaultValue": "'fixed'",
-      "tags": []
+      "tags": [
+        {
+          "text": "'absolute'",
+          "name": "editor"
+        }
+      ]
     },
     {
       "id": "snackbar-reverse",
       "name": "reverse",
+      "attribute": "reverse",
       "type": "boolean",
       "description": "Reverses the close button if \"closable\" prop is true.",
       "tags": []
@@ -142,37 +185,55 @@
     {
       "id": "snackbar-spaceBetween",
       "name": "spaceBetween",
+      "attribute": "space-between",
       "type": "string",
       "description": "Space between snackbars.",
-      "defaultValue": "'var(--spx-space-xs)'",
+      "default": "'12px'",
+      "defaultValue": "'12px'",
       "tags": []
     },
     {
       "id": "snackbar-target",
       "name": "target",
+      "attribute": "target",
       "type": "string",
       "description": "Element where snackbars should be created in.",
+      "default": "'body'",
       "defaultValue": "'body'",
-      "tags": []
+      "tags": [
+        {
+          "text": "'#components'",
+          "name": "editor"
+        }
+      ]
     },
     {
       "id": "snackbar-text",
       "name": "text",
+      "attribute": "text",
       "type": "string",
       "description": "Text inside snackbar.",
+      "default": "\"Hello, I'm a snackbar.\"",
       "defaultValue": "\"Hello, I'm a snackbar.\"",
       "tags": []
     },
     {
       "id": "snackbar-zIndex",
       "name": "zIndex",
+      "attribute": "z-index",
       "type": "number",
       "description": "",
+      "default": "103",
       "defaultValue": "103",
       "tags": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxSnackbarDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [
     {
       "name": "reload",

@@ -21,9 +21,9 @@
 
 ## Events
 
-| Event                 | Description | Type               |
-| --------------------- | ----------- | ------------------ |
-| `spxScrollspyDidLoad` |             | `CustomEvent<any>` |
+| Event                 | Description                       | Type               |
+| --------------------- | --------------------------------- | ------------------ |
+| `spxScrollspyDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
 
 
 ## Methods

@@ -1,10 +1,19 @@
 // eslint-disable-next-line no-unused-vars
-import { Component, Element, h, Host, Prop } from '@stencil/core';
-import { css } from 'emotion';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+} from '@stencil/core';
+import { css } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
 import state from '../../stores/container';
-import { setSectionVar } from '../../utils/setSectionVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
+import { setClamp } from '../../utils/setClamp';
+import { setSectionVar } from '../../utils/setSectionVar';
 
 const tag = 'spx-section-footer';
 
@@ -19,7 +28,7 @@ export class SpxSectionFooter {
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxSectionFooterElement;
 
-  @Prop({ reflect: true }) background: string = 'var(--spx-color-gray-900)';
+  @Prop({ reflect: true }) background: string = 'var(--spx-color-gray-800)';
 
   /**
    * Gap between columns.
@@ -34,35 +43,65 @@ export class SpxSectionFooter {
 
   @Prop({ reflect: true }) maxWidth: string;
 
-  /**
-   * Space before the footer.
-   * @CSS
-   */
+  @Prop({ reflect: true }) spaceBeforeMin: number = 5;
 
-  @Prop({ reflect: true }) spaceBefore: string = 'var(--spx-space-4xl)';
+  @Prop({ reflect: true }) spaceBeforeMax: number = 12;
 
-  /**
-   * Distance to the edge of the viewport on the y-axis.
-   * @CSS
-   */
+  @Prop({ reflect: true }) paddingYMin: number = 4;
 
-  @Prop({ reflect: true }) spaceY: string = 'var(--spx-space-3xl)';
+  @Prop({ reflect: true }) paddingYMax: number = 12;
 
-  @Prop({ reflect: true }) textColor: string = 'var(--spx-color-gray-600)';
+  @Prop({ reflect: true }) textColor: string = 'var(--spx-color-gray-500)';
+
+  @Prop({ reflect: true }) textFontSizeMin: number = 1;
+
+  @Prop({ reflect: true }) textFontSizeMax: number = 1.2;
+
+  @Prop({ reflect: true }) textMarginTopMin: number = 0.8;
+
+  @Prop({ reflect: true }) textMarginTopMax: number = 1.2;
 
   @Prop({ reflect: true }) textMaxWidth: string = '370px';
+
+  @Prop({ reflect: true }) titleFontSizeMin: number = 1;
+
+  @Prop({ reflect: true }) titleFontSizeMax: number = 1.6;
+
+  @Prop({ reflect: true }) titleMarginBottomMin: number = 1;
+
+  @Prop({ reflect: true }) titleMarginBottomMax: number = 2;
+
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxSectionFooterDidLoad' })
+  spxSectionFooterDidLoad: EventEmitter;
 
   componentDidLoad() {
     globalComponentDidLoad(this.el);
     setSectionVar(this.el);
+
+    this.spxSectionFooterDidLoad.emit({ target: 'document' });
   }
 
   render() {
+    /** Padding Y. */
+
+    const stylePaddingY =
+      '' +
+      setClamp(tag, 'padding-y', this.paddingYMin, this.paddingYMax) +
+      ' 0 !important';
+
     /** Text styles. */
 
     const styleText = {
       color: setVar(tag, 'text-color', this.textColor),
-      fontSize: 'clamp(16px, 1.2vw, 20px)',
+      fontSize: setClamp(
+        tag,
+        'text-font-size',
+        this.textFontSizeMin,
+        this.textFontSizeMax
+      ),
       lineHeight: '1.6',
       maxWidth: setVar(tag, 'text-max-width', this.textMaxWidth),
     };
@@ -73,14 +112,38 @@ export class SpxSectionFooter {
       marginTop: 'auto',
 
       'div > h3, & > h3': {
-        marginTop: state.bpMobile && 'var(--spx-space-lg)',
-        marginBottom: 'var(--spx-space-md)',
+        marginBottom: setClamp(
+          tag,
+          'title-margin-bottom',
+          this.titleMarginBottomMin,
+          this.titleMarginBottomMax
+        ),
+      },
+
+      'div > h3:not(.spx-e), & > h3': {
+        marginTop:
+          state.bpMobile &&
+          setClamp(
+            tag,
+            'text-margin-top',
+            this.textMarginTopMin * 4,
+            this.textMarginTopMax * 4
+          ),
       },
 
       '&:before': {
         display: 'block',
         content: '" "',
-        height: setVar(tag, 'space-before', this.spaceBefore),
+        height: setClamp(
+          tag,
+          'space-before',
+          this.spaceBeforeMin,
+          this.spaceBeforeMax
+        ),
+      },
+
+      'div[data-spx-footer-padding-y]': {
+        padding: stylePaddingY,
       },
     });
 
@@ -97,11 +160,12 @@ export class SpxSectionFooter {
     const styleInner = css({
       display: 'flex',
       flexDirection: state.bpMobile ? 'column' : 'row',
-      justifyContent: setVar(tag, 'justify-content', this.justifyContent),
+      // justifyContent: setVar(tag, 'justify-content', this.justifyContent),
+      justifyContent: 'space-between',
       flexWrap: 'wrap',
       marginLeft: 'auto',
       marginRight: 'auto',
-      padding: '' + setVar(tag, 'padding', this.spaceY) + ' 0',
+      padding: stylePaddingY,
       maxWidth: setVar(tag, 'max-width', this.maxWidth),
 
       '& > div + div:not(.spx-e)': {
@@ -112,8 +176,24 @@ export class SpxSectionFooter {
         color: '#ffffff',
         textTransform: 'uppercase',
         fontWeight: 600,
-        fontSize: 'clamp(18px, 1.6vw, 28px)',
+        fontSize: setClamp(
+          tag,
+          'title-font-size',
+          this.titleFontSizeMin,
+          this.titleFontSizeMax
+        ),
         fontFamily: state.fontFamilyPrimary,
+      },
+
+      'h3:not(.spx-e)': {
+        marginTop:
+          state.bpMobile &&
+          setClamp(
+            tag,
+            'title-margin-bottom',
+            this.titleMarginBottomMin * 2,
+            this.titleMarginBottomMax * 2
+          ),
       },
 
       a: {
@@ -123,25 +203,45 @@ export class SpxSectionFooter {
         maxWidth: 'max-content',
 
         '& + a': {
-          marginTop: 'var(--spx-space-sm)',
+          marginTop: setClamp(
+            tag,
+            'text-margin-top',
+            this.textMarginTopMin,
+            this.textMarginTopMax
+          ),
+        },
+
+        '& + h3': {
+          marginTop: setClamp(
+            tag,
+            'title-margin-bottom',
+            this.titleMarginBottomMin * 2,
+            this.titleMarginBottomMax * 2
+          ),
         },
 
         '&:hover': {
           textDecoration: 'underline',
         },
-
-        '& + h3': {
-          marginTop: 'var(--spx-space-lg)',
-        },
       },
 
       p: {
         ...styleText,
-        marginTop: 'var(--spx-space-sm)',
+        marginTop: setClamp(
+          tag,
+          'text-margin-top',
+          this.textMarginTopMin,
+          this.textMarginTopMax
+        ),
         fontFamily: state.fontFamilySecondary,
 
         '& + a': {
-          marginTop: 'var(--spx-space-lg)',
+          marginTop: setClamp(
+            tag,
+            'title-margin-bottom',
+            this.titleMarginBottomMin,
+            this.titleMarginBottomMax
+          ),
         },
       },
 

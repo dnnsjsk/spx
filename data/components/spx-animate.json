@@ -5,38 +5,47 @@
     {
       "id": "animate-delay",
       "name": "delay",
+      "attribute": "delay",
       "type": "number",
       "description": "Delay before animation starts.",
+      "default": "0",
       "defaultValue": "0",
       "tags": []
     },
     {
       "id": "animate-display",
       "name": "display",
+      "attribute": "display",
       "type": "string",
       "description": "",
+      "default": "'block'",
       "defaultValue": "'block'",
       "tags": []
     },
     {
       "id": "animate-duration",
       "name": "duration",
+      "attribute": "duration",
       "type": "number",
       "description": "Animation duration.",
+      "default": "1",
       "defaultValue": "1",
       "tags": []
     },
     {
       "id": "animate-ease",
       "name": "ease",
+      "attribute": "ease",
       "type": "string",
       "description": "Ease being used. Accepts all common GSAP options.",
+      "default": "'power1.out'",
       "defaultValue": "'power1.out'",
       "tags": []
     },
     {
       "id": "animate-once",
       "name": "once",
+      "attribute": "once",
       "type": "boolean",
       "description": "Determines if animation should only play once. (if viewport is true)",
       "tags": []
@@ -44,14 +53,17 @@
     {
       "id": "animate-opacity",
       "name": "opacity",
+      "attribute": "opacity",
       "type": "number",
       "description": "Opacity level the animation starts from.",
+      "default": "0",
       "defaultValue": "0",
       "tags": []
     },
     {
       "id": "animate-repeat",
       "name": "repeat",
+      "attribute": "repeat",
       "type": "number",
       "description": "Repeats the animation. -1 to repeat indefinitely.",
       "tags": []
@@ -59,6 +71,7 @@
     {
       "id": "animate-repeatDelay",
       "name": "repeatDelay",
+      "attribute": "repeat-delay",
       "type": "number",
       "description": "Time to wait between repetitions.",
       "tags": []
@@ -66,6 +79,7 @@
     {
       "id": "animate-reverse",
       "name": "reverse",
+      "attribute": "reverse",
       "type": "boolean",
       "description": "Reverses the animation.",
       "tags": []
@@ -73,22 +87,27 @@
     {
       "id": "animate-stagger",
       "name": "stagger",
+      "attribute": "stagger",
       "type": "number",
       "description": "Amount of time elements should be staggered by.",
+      "default": "0.15",
       "defaultValue": "0.15",
       "tags": []
     },
     {
       "id": "animate-target",
       "name": "target",
+      "attribute": "target",
       "type": "string",
       "description": "The target element that should be animated inside the component.",
+      "default": "'*'",
       "defaultValue": "'*'",
       "tags": []
     },
     {
       "id": "animate-viewport",
       "name": "viewport",
+      "attribute": "viewport",
       "type": "boolean",
       "description": "Starts animation when target is in the viewport.",
       "tags": []
@@ -96,6 +115,7 @@
     {
       "id": "animate-viewportMarginBottom",
       "name": "viewportMarginBottom",
+      "attribute": "viewport-margin-bottom",
       "type": "string",
       "description": "Adjust the root margin of the animation start.",
       "tags": []
@@ -103,6 +123,7 @@
     {
       "id": "animate-viewportMarginLeft",
       "name": "viewportMarginLeft",
+      "attribute": "viewport-margin-left",
       "type": "string",
       "description": "Adjust the root margin of the animation start.",
       "tags": []
@@ -110,6 +131,7 @@
     {
       "id": "animate-viewportMarginRight",
       "name": "viewportMarginRight",
+      "attribute": "viewport-margin-right",
       "type": "string",
       "description": "Adjust the root margin of the animation start.",
       "tags": []
@@ -117,6 +139,7 @@
     {
       "id": "animate-viewportMarginTop",
       "name": "viewportMarginTop",
+      "attribute": "viewport-margin-top",
       "type": "string",
       "description": "Adjust the root margin of the animation start.",
       "tags": []
@@ -124,28 +147,38 @@
     {
       "id": "animate-x",
       "name": "x",
+      "attribute": "x",
       "type": "number",
       "description": "X position the animation starts from.",
+      "default": "0",
       "defaultValue": "0",
       "tags": []
     },
     {
       "id": "animate-y",
       "name": "y",
+      "attribute": "y",
       "type": "number",
       "description": "Y position the animation starts from.",
+      "default": "0",
       "defaultValue": "0",
       "tags": []
     },
     {
       "id": "animate-yoyo",
       "name": "yoyo",
+      "attribute": "yoyo",
       "type": "boolean",
       "description": "Causes the animation to go back and forth, alternating backward and forward on each repeat.",
       "tags": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxAnimateDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [
     {
       "name": "play",

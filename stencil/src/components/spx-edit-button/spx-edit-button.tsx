@@ -11,8 +11,8 @@ import {
   State,
   Watch,
 } from '@stencil/core';
-import { css } from 'emotion';
-import * as c from '../../constants/style';
+import { css } from '@emotion/css';
+import * as s from '../../constants/style';
 import { position } from '../../constants/style';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
@@ -48,7 +48,7 @@ export class SpxEditButton {
 
   @Prop({ reflect: true }) border: string = 'none';
 
-  @Prop({ reflect: true }) borderRadius: string = c.borderRadius;
+  @Prop({ reflect: true }) borderRadius: string = s.borderRadius;
 
   @Prop({ reflect: true }) color: string = '#ffffff';
 
@@ -79,9 +79,9 @@ export class SpxEditButton {
 
   @Prop({ reflect: true }) editId: string;
 
-  @Prop({ reflect: true }) fontFamily: string = c.fontFamily;
+  @Prop({ reflect: true }) fontFamily: string = s.fontFamily;
 
-  @Prop({ reflect: true }) fontSize: string = c.fontSize;
+  @Prop({ reflect: true }) fontSize: string = s.fontSize;
 
   /**
    * Gap between the buttons.
@@ -99,7 +99,10 @@ export class SpxEditButton {
 
   @Prop({ reflect: true }) position: string = 'bottom-right';
 
-  /** CSS property position of button. */
+  /**
+   * CSS property position of button.
+   * @editor 'absolute'
+   */
 
   @Prop({ reflect: true }) positionCss:
     | 'fixed'
@@ -130,16 +133,19 @@ export class SpxEditButton {
     this.createPositionArray();
   }
 
-  /**
-   * Fires after pressing the discard button.
-   */
+  /** Fires after component has loaded. */
 
-  // prettier-ignore
-  @Event({eventName: "spxEditButtonDiscard"}) spxEditButtonDiscard: EventEmitter;
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxEditButtonDidLoad' })
+  spxEditButtonDidLoad: EventEmitter;
 
-  /**
-   * Fires after pressing the save button.
-   */
+  /** Fires after pressing the discard button. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxEditButtonDiscard' })
+  spxEditButtonDiscard: EventEmitter;
+
+  /** Fires after pressing the save button. */
 
   @Event({ eventName: 'spxEditButtonSave' }) spxEditButtonSave: EventEmitter;
 
@@ -149,6 +155,8 @@ export class SpxEditButton {
 
   componentDidLoad() {
     globalComponentDidLoad(this.el);
+
+    this.spxEditButtonDidLoad.emit({ target: 'document' });
   }
 
   private createPositionArray() {
@@ -204,6 +212,8 @@ export class SpxEditButton {
     /** Emit save event to document. */
 
     const getBodyString = () => {
+      /** Create the body string to be sent off to the AJAX call. */
+
       const string = Math.random().toString(36).substr(2, 9);
       const bodyStringArray = [];
       const elements = document.querySelectorAll('spx-edit');
@@ -216,8 +226,6 @@ export class SpxEditButton {
         const final = '&' + encoded;
         bodyStringArray.push(final.replace(string, '='));
       });
-
-      console.log(bodyStringArray.toString().replace(/,&/g, '&'));
 
       return bodyStringArray.toString().replace(/,&/g, '&');
     };
@@ -292,7 +300,7 @@ export class SpxEditButton {
         this.distanceX,
         this.distanceY
       ),
-      fontFamily: c.fontFamily,
+      fontFamily: s.fontFamily,
       fontSize: setVar(tag, 'font-size', this.fontSize),
       display: 'grid',
       gridGap: setVar(tag, 'gap', this.gap),

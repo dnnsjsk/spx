@@ -1,4 +1,4 @@
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { has } from 'lodash-es';
 import { removeClasses } from './removeClasses';
 
@@ -32,13 +32,15 @@ export const setSectionVar = (el) => {
 
   const callback = (mutationsList) => {
     mutationsList.forEach((mutation) => {
+      const attribute = mutation.attributeName.replace('c-', '');
+
       if (
-        has(objParent, mutation.attributeName) &&
-        mutation.attributeName !== 'class'
+        mutation.attributeName.startsWith('c-') &&
+        has(objParent, attribute)
       ) {
-        style[
-          '--spx-container-' + mutation.attributeName + ''
-        ] = el.getAttribute(mutation.attributeName);
+        style['--spx-container-' + attribute + ''] = el.getAttribute(
+          mutation.attributeName
+        );
         const styleCSS = css({ ...style, label: 'container' });
         removeClasses(el, 'container');
         el.classList.add(styleCSS);
@@ -53,8 +55,10 @@ export const setSectionVar = (el) => {
   /** Set up styles for start. */
 
   Object.keys(objEl).forEach((item) => {
-    if (has(objParent, item) && item !== 'class') {
-      style['--spx-container-' + item + ''] = el.getAttribute(item);
+    const attribute = item.replace('c-', '');
+
+    if (item.startsWith('c-') && has(objParent, attribute)) {
+      style['--spx-container-' + attribute + ''] = el.getAttribute(item);
       const styleCSS = css({ ...style, label: 'container' });
       removeClasses(el, 'container');
       el.classList.add(styleCSS);

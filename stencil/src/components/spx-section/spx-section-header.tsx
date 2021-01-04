@@ -7,13 +7,16 @@ import {
   Prop,
   Listen,
   State,
+  Event,
+  EventEmitter,
 } from '@stencil/core';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
-import * as c from '../../constants/style';
+import * as s from '../../constants/style';
 import state from '../../stores/container';
 import { setSectionVar } from '../../utils/setSectionVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
+import { setClamp } from '../../utils/setClamp';
 
 const tag = 'spx-section-header';
 
@@ -65,16 +68,19 @@ export class SpxSectionHeader {
 
   @Prop({ reflect: true }) position: 'fixed' | 'static';
 
-  /**
-   * Distance to the edge of the viewport on the y-axis.
-   * @CSS
-   */
+  @Prop({ reflect: true }) paddingYMin: number = 0.8;
 
-  @Prop({ reflect: true }) spaceX: string = 'var(--spx-space-md)';
+  @Prop({ reflect: true }) paddingYMax: number = 1;
 
   @Prop({ reflect: true }) wrapper: boolean;
 
   @Prop({ reflect: true }) zIndex: number = 102;
+
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxSectionHeaderDidLoad' })
+  spxSectionHeaderDidLoad: EventEmitter;
 
   @Listen('scroll', { target: 'window' })
   onScroll() {
@@ -87,9 +93,13 @@ export class SpxSectionHeader {
     globalComponentDidLoad(this.el);
     this.onScroll();
     setSectionVar(this.el);
+
+    this.spxSectionHeaderDidLoad.emit({ target: 'document' });
   }
 
   render() {
+    /** Image styles. */
+
     const styleImg = css({
       maxHeight: setVar(tag, 'logo-max-height', this.logoMaxHeight),
       width: 'auto !important',
@@ -98,6 +108,7 @@ export class SpxSectionHeader {
     /** Host styles. */
 
     const styleHost = css({
+      maxWidth: '2560px',
       background:
         this.backgroundScroll && !this.bgScroll
           ? 'none'
@@ -113,18 +124,22 @@ export class SpxSectionHeader {
       gridTemplateColumns: '160px 1fr 160px',
       alignItems: 'center',
       padding:
-        '' + setVar(tag, 'padding', this.spaceX) + ' ' + state.spaceXsm + '',
+        '' +
+        setClamp(tag, 'padding-y', this.paddingYMin, this.paddingYMax) +
+        ' ' +
+        state.paddingXsm +
+        '',
       zIndex: this.zIndex,
       transitionProperty: 'background',
       transitionDuration: setVar(
         tag,
         'transition-duration',
-        c.transitionDuration
+        s.transitionDuration
       ),
       transitionTimingFunction: setVar(
         tag,
         'transition-timing-function',
-        c.transitionTimingFunction
+        s.transitionTimingFunction
       ),
 
       '*': {
@@ -137,9 +152,9 @@ export class SpxSectionHeader {
     const styleNavigation = css({
       justifySelf: 'center',
       marginLeft: state.bpMobile
-        ? 'var(--spx-space-md)'
+        ? '16px'
         : this.navigationAlign === 'right' && !state.bpMobile && 'auto',
-      marginRight: this.navigationAlign === 'right' && 'var(--spx-space-xl)',
+      marginRight: this.navigationAlign === 'right' && '32px',
     });
 
     /** Button styles. */

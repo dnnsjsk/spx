@@ -8,7 +8,7 @@ import {
   Prop,
   Listen,
 } from '@stencil/core';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 import { startCase, kebabCase, some, filter } from 'lodash-es';
 import tippy from 'tippy.js';
@@ -113,6 +113,7 @@ export class SpxEditor {
       animate: animate,
       'class-toggle': classToggle,
       code: code,
+      // document: document,
       'edit-button': editButton,
       group: group,
       iframe: iframe,
@@ -155,7 +156,7 @@ export class SpxEditor {
 
     /** Check if query string is there and use it's data instead. */
 
-    if (this.query === true) {
+    if (this.query) {
       this.createQueryComponent();
     } else {
       /** Otherwise create accordion. */
@@ -170,6 +171,8 @@ export class SpxEditor {
 
     this.removeStringFirstLast();
   }
+
+  /** Creates the URL query string. */
 
   private createQueryString() {
     const controls = {};
@@ -197,6 +200,8 @@ export class SpxEditor {
     );
   }
 
+  /** Creates an object from the string. */
+
   private createQueryObject() {
     const URL = decodeURIComponent(location.search.substring(1));
 
@@ -209,8 +214,10 @@ export class SpxEditor {
     this.current = this.queryObj['id'];
   }
 
+  /** Create the component based on the query string. */
+
   private createQueryComponent() {
-    /** Create component and set correct value. */
+    /** Set correct value. */
 
     this.createComponent(this.queryObj['id']);
     const component = this.el.querySelector('#component') as HTMLInputElement;
@@ -222,6 +229,7 @@ export class SpxEditor {
 
     /** Set individual values. */
 
+    // eslint-disable-next-line array-callback-return
     Object.entries(this.queryObj).map((key) => {
       /** Get constants. */
 
@@ -253,24 +261,9 @@ export class SpxEditor {
     });
   }
 
-  private setDefault = (attr, value) => {
-    const create = () => {
-      if (this.controls.querySelector('[data-attr="' + attr + '"]')) {
-        const input = this.controls.querySelector(
-          '[data-attr="' + attr + '"]'
-        ) as HTMLInputElement;
-        input.value = value;
-        this.comp.setAttribute(attr, value);
-      } else {
-        setTimeout(create, 0);
-      }
-    };
-    create();
-  };
+  /** Creates the component. */
 
   private createComponent(component) {
-    this.adjustedValues = {};
-
     /** Images. */
 
     const img =
@@ -310,16 +303,16 @@ export class SpxEditor {
 
     if (component === 'animate') {
       this.comp.innerHTML =
-        '<h1>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h1>' +
-        '<h1>Sed vel ante nec urna iaculis faucibus.</h1>' +
-        '<h1>Nam bibendum, erat vel ultricies finibus, justo risus elementum dui, at egestas diam justo nec turpis.</h1>' +
-        '<h1>Sed imperdiet neque lorem, eget semper ante vehicula ac.</h1>' +
-        '<h1>Quisque a maximus risus.</h1>' +
-        '<h1>Morbi facilisis elit sed ex pellentesque suscipit.</h1>' +
-        '<h1>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</h1>' +
-        '<h1>Sed tincidunt eros non libero ultricies, volutpat mollis erat ultricies.</h1>' +
-        '<h1>Integer ut nisl ut tellus tincidunt ultrices nec eget elit.</h1>' +
-        '<h1>Proin malesuada augue dolor, ut laoreet libero fringilla vel.</h1>';
+        '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>' +
+        '<p>Sed vel ante nec urna iaculis faucibus.</>' +
+        '<p>Nam bibendum, erat vel ultricies finibus, justo risus elementum dui, at egestas diam justo nec turpis.</>' +
+        '<p>Sed imperdiet neque lorem, eget semper ante vehicula ac.</>' +
+        '<p>Quisque a maximus risus.</>' +
+        '<p>Morbi facilisis elit sed ex pellentesque suscipit.</>' +
+        '<p>Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;</>' +
+        '<p>Sed tincidunt eros non libero ultricies, volutpat mollis erat ultricies.</>' +
+        '<p>Integer ut nisl ut tellus tincidunt ultrices nec eget elit.</>' +
+        '<p>Proin malesuada augue dolor, ut laoreet libero fringilla vel.</>';
     }
 
     /** Class Toggle. */
@@ -335,7 +328,6 @@ export class SpxEditor {
     /** Code. */
 
     if (component === 'code') {
-      this.comp.setAttribute('type', 'css');
       this.comp.innerHTML =
         '' +
         'my-card {\n' +
@@ -345,8 +337,9 @@ export class SpxEditor {
         '}';
     }
 
+    /** Edit button. */
+
     if (component === 'edit-button') {
-      this.comp.setAttribute('position-css', 'absolute');
       this.comp.setAttribute('test', '');
       const h1 = document.createElement('h1');
       h1.setAttribute('data-spx-edit', 'test');
@@ -354,14 +347,20 @@ export class SpxEditor {
       this.component.appendChild(h1);
     }
 
+    /** Group. */
+
     if (component === 'group') {
       this.comp.innerHTML =
         '<spx-accordion/>' + '<spx-accordion/>' + '<spx-accordion/>';
     }
 
+    /** Masonry/Lightbox. */
+
     if (component === 'masonry' || component === 'lightbox') {
       this.comp.innerHTML = img;
     }
+
+    /** Notation. */
 
     if (component === 'notation') {
       this.comp.innerHTML =
@@ -372,6 +371,8 @@ export class SpxEditor {
         })
       );
     }
+
+    /** Offset. */
 
     if (component === 'offset') {
       const style = css({
@@ -403,17 +404,13 @@ export class SpxEditor {
       header2.classList.add(style);
       header2.innerHTML = '.header2';
 
-      this.setDefault('target', '.header1');
       this.comp.innerHTML = '<p>Adjusting my distance to an element height</p>';
 
       this.component.appendChild(header1);
       this.component.appendChild(header2);
     }
 
-    if (component === 'slider') {
-      this.comp.setAttribute('max-height', '500px');
-      this.comp.setAttribute('max-width', '500px');
-    }
+    /** Slider/Slideshow. */
 
     if (component === 'slider' || component === 'slideshow') {
       this.comp.classList.add(
@@ -427,15 +424,24 @@ export class SpxEditor {
       this.comp.innerHTML = img;
     }
 
-    if (component === 'snackbar') {
-      this.comp.setAttribute('target', '#components');
-      this.comp.setAttribute('identifier', 'components');
-      this.comp.setAttribute('fixed', '');
-      this.comp.setAttribute('position-css', 'absolute');
-    }
+    /** Append component. */
 
     this.component.appendChild(this.comp);
+
+    /** Set default values for components. */
+
+    this.ar[component]['properties'].forEach((item) => {
+      if (some(item['tags'], { name: 'editor' })) {
+        const attribute = filter(item['tags'], { name: 'editor' })[0]['text'];
+        this.comp.setAttribute(
+          item['attribute'],
+          attribute.replaceAll("'", '')
+        );
+      }
+    });
   }
+
+  /** Creates the component selector. */
 
   private createComponentControl() {
     /** On select component. */
@@ -470,9 +476,9 @@ export class SpxEditor {
 
     /** Render select. */
 
-    // eslint-disable-next-line react/jsx-no-bind
     return [
       <select
+        // eslint-disable-next-line react/jsx-no-bind
         onChange={(event) => onSelect(event)}
         name="components"
         id="component"
@@ -514,8 +520,8 @@ export class SpxEditor {
         {/* eslint-disable-next-line react/jsx-no-bind */}
         <button onClick={() => onReset()}>Reset</button>
         {(this.current === 'animate' || this.current === 'notation') && (
-          /* eslint-disable-next-line react/jsx-no-bind */
           <button
+            /* eslint-disable-next-line react/jsx-no-bind */
             onClick={() =>
               // @ts-ignore
               this.component.querySelector('spx-' + this.current + '').reload()
@@ -528,6 +534,8 @@ export class SpxEditor {
     ];
   }
 
+  /** Removes first and last quote. */
+
   private removeStringFirstLast() {
     this.el.querySelectorAll('input').forEach((item) => {
       if (item.value.slice(-1) === "'") {
@@ -536,6 +544,8 @@ export class SpxEditor {
       }
     });
   }
+
+  /** Create all sidebar controls. */
 
   private createControls() {
     /** Update attributes on pressing enter. */
@@ -570,7 +580,7 @@ export class SpxEditor {
 
     const onChange = (event, attr, type) => {
       if (type === 'boolean') {
-        if (event.target.checked === true) {
+        if (event.target.checked) {
           this.component
             .querySelector(':scope ' + this.ar[this.current]['name'] + '')
             .setAttribute(attr, '');
@@ -597,25 +607,39 @@ export class SpxEditor {
 
     /** Render props. */
 
+    // eslint-disable-next-line array-callback-return
     return Object.values(this.ar[component]['properties']).map((object) => {
       const attribute = kebabCase(object['name']);
 
-      const defaultValue =
-        some(object['tags'], { name: 'editor' }) === true
-          ? filter(object['tags'], { name: 'editor' })[0]['text']
-          : object['defaultValue'];
+      const defaultValue = some(object['tags'], { name: 'editor' })
+        ? filter(object['tags'], { name: 'editor' })[0]['text']
+        : object['defaultValue'];
 
       const noControl = [
         '' + this.current + '-display',
+        'accordion-link',
+        'accordion-linkType',
+        'accordion-openState',
+        'accordion-indicatorIconType',
         'animate-viewportMarginTop',
         'animate-viewportMarginRight',
         'animate-viewportMarginBottom',
         'animate-viewportMarginLeft',
         'accordion-indicatorIcon',
+        'code-type',
+        'code-theme',
+        'code-lineNumbers',
         'edit-button-test',
         'edit-button-type',
         'edit-button-editId',
         'edit-button-positionCss',
+        'iframe-documentBorder',
+        'iframe-documentBorderRadius',
+        'iframe-documentHeight',
+        'iframe-documentWidth',
+        'iframe-fit',
+        'iframe-lazy',
+        'iframe-type',
         'masonry-imageSize',
         'masonry-images',
         'masonry-imagesSrc',
@@ -630,6 +654,10 @@ export class SpxEditor {
         'slider-images',
         'slider-imagesSrc',
         'slider-imagesSize',
+        'slideshow-imageSize',
+        'slideshow-images',
+        'slideshow-imagesSrc',
+        'slideshow-overflow',
         'snackbar-fixed',
         'snackbar-positionCss',
         'typewriter-autoStart',
@@ -687,7 +715,7 @@ export class SpxEditor {
                   transition: 'left 0.25s ease',
                 },
                 'input[type="checkbox"]:checked + label::before': {
-                  backgroundColor: 'var(--spx-color-primary-A700)',
+                  backgroundColor: 'var(--spx-color-primary-600)',
                 },
                 'input[type="checkbox"]:checked + label::after': {
                   left: '24px',
@@ -753,6 +781,8 @@ export class SpxEditor {
     });
   }
 
+  /** Export code. */
+
   private exportCode = () => {
     const el = this.component.querySelector('spx-' + this.current + '');
     this.export.setAttribute(
@@ -773,8 +803,10 @@ export class SpxEditor {
     document.body.appendChild(snackbar);
   };
 
+  /** Fullscreen function. */
+
   private goFullscreen = () => {
-    if (this.fullscreen === false) {
+    if (!this.fullscreen) {
       this.fullscreen = true;
       disableBodyScroll(this.el);
     } else {
@@ -817,6 +849,7 @@ export class SpxEditor {
 
       'p.mobile': {
         display: !this.mobile && 'none',
+        margin: '20px !important',
       },
     });
 
@@ -824,15 +857,17 @@ export class SpxEditor {
 
     const styleHeader = css({
       gridArea: 'header',
-      padding: '16px 32px',
+      padding: '16px 32px 20px 32px',
       borderBottom: '1px solid var(--spx-color-gray-200)',
+      display: 'flex',
+      flexDirection: 'column',
 
-      h1: {
+      'span:nth-child(1)': {
         fontSize: 'clamp(20px, 3vw, 36px)',
         fontWeight: 500,
       },
 
-      h2: {
+      'span:nth-child(2)': {
         marginTop: '4px',
         color: 'var(--spx-color-gray-700)',
         fontWeight: 450,
@@ -886,7 +921,7 @@ export class SpxEditor {
       },
 
       'h1 + h1': {
-        marginTop: 'var(--spx-space-sm)',
+        marginTop: '24px',
       },
     });
 
@@ -897,12 +932,16 @@ export class SpxEditor {
       gridArea: 'sidebar',
       display: 'grid',
       gridGap: '24px',
-      overflow: 'scroll',
+      overflowY: 'scroll',
       borderLeft: '1px solid var(--spx-color-gray-200)',
 
       '& > div > div:nth-child(2)': {
         display: 'grid',
         gridGap: '24px',
+
+        '&:last-child': {
+          marginBottom: '48px',
+        },
       },
     });
 
@@ -970,6 +1009,8 @@ export class SpxEditor {
       },
     });
 
+    /** Fullscreen styles. */
+
     const styleFullscreen = css({
       position: 'absolute',
       left: '0',
@@ -983,10 +1024,10 @@ export class SpxEditor {
         {/** Header. */}
 
         <div class={styleHeader}>
-          <h1>{titleCase(this.current.replaceAll('-', ' '))}</h1>
-          <h2 title={this.ar[this.current]['description']}>
+          <span>{titleCase(this.current.replaceAll('-', ' '))}</span>
+          <span title={this.ar[this.current]['description']}>
             {this.ar[this.current]['description']}
-          </h2>
+          </span>
         </div>
 
         {/** Component. */}

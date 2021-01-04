@@ -5,14 +5,17 @@
     {
       "id": "editor-fullscreen",
       "name": "fullscreen",
+      "attribute": "fullscreen",
       "type": "boolean",
       "description": "",
+      "default": "false",
       "defaultValue": "false",
       "tags": []
     },
     {
       "id": "editor-location",
       "name": "location",
+      "attribute": "location",
       "type": "string",
       "description": "",
       "tags": []

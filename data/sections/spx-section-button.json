@@ -5,20 +5,51 @@
     {
       "id": "section-button-href",
       "name": "href",
+      "attribute": "href",
       "type": "string",
       "description": "Link href.",
       "tags": []
     },
     {
-      "id": "section-button-reverseColor",
-      "name": "reverseColor",
+      "id": "section-button-icon",
+      "name": "icon",
+      "attribute": "icon",
+      "type": "string",
+      "description": "Icon.",
+      "tags": []
+    },
+    {
+      "id": "section-button-iconGapMax",
+      "name": "iconGapMax",
+      "attribute": "icon-gap-max",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "section-button-iconGapMin",
+      "name": "iconGapMin",
+      "attribute": "icon-gap-min",
+      "type": "number",
+      "description": "",
+      "default": "0.4",
+      "defaultValue": "0.4",
+      "tags": []
+    },
+    {
+      "id": "section-button-reverse",
+      "name": "reverse",
+      "attribute": "reverse",
       "type": "boolean",
-      "description": "Reverse text color.",
+      "description": "Link href.",
       "tags": []
     },
     {
       "id": "section-button-target",
       "name": "target",
+      "attribute": "target",
       "type": "string",
       "description": "Target.",
       "tags": []
@@ -26,24 +57,30 @@
     {
       "id": "section-button-transitionDuration",
       "name": "transitionDuration",
+      "attribute": "transition-duration",
       "type": "string",
       "description": "",
+      "default": "s.transitionDuration",
       "defaultValue": "'var(--spx-transition-duration)'",
       "tags": []
     },
     {
       "id": "section-button-transitionTimingFunction",
       "name": "transitionTimingFunction",
+      "attribute": "transition-timing-function",
       "type": "string",
       "description": "",
+      "default": "s.transitionTimingFunction",
       "defaultValue": "'var(--spx-transition-timing-function)'",
       "tags": []
     },
     {
       "id": "section-button-type",
       "name": "type",
+      "attribute": "type",
       "type": "string",
       "description": "Button type.",
+      "default": "'primary'",
       "defaultValue": "'primary'",
       "tags": [
         {
@@ -53,7 +90,12 @@
       ]
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxSectionButtonDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [],
   "slots": []
 }

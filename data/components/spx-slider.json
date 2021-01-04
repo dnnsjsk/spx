@@ -5,38 +5,47 @@
     {
       "id": "slider-autoheight",
       "name": "autoheight",
+      "attribute": "autoheight",
       "type": "boolean",
       "description": "Automatically adjusts height of slider.",
+      "default": "false",
       "defaultValue": "false",
       "tags": []
     },
     {
       "id": "slider-autoplay",
       "name": "autoplay",
+      "attribute": "autoplay",
       "type": "boolean",
       "description": "Starts navigating to the next slide when page is loaded.",
+      "default": "false",
       "defaultValue": "false",
       "tags": []
     },
     {
       "id": "slider-autoplayDelay",
       "name": "autoplayDelay",
+      "attribute": "autoplay-delay",
       "type": "number",
       "description": "Autoplay delay.",
+      "default": "6000",
       "defaultValue": "6000",
       "tags": []
     },
     {
       "id": "slider-autoplayDisableOnInteraction",
       "name": "autoplayDisableOnInteraction",
+      "attribute": "autoplay-disable-on-interaction",
       "type": "boolean",
       "description": "Disable autoplay after interaction with slides.",
+      "default": "false",
       "defaultValue": "false",
       "tags": []
     },
     {
       "id": "slider-bpTabs",
       "name": "bpTabs",
+      "attribute": "bp-tabs",
       "type": "string",
       "description": "Starts navigating to the next slide when page is loaded.",
       "tags": []
@@ -44,16 +53,20 @@
     {
       "id": "slider-centeredSlides",
       "name": "centeredSlides",
+      "attribute": "centered-slides",
       "type": "boolean",
       "description": "Centers slides in viewport.",
+      "default": "false",
       "defaultValue": "false",
       "tags": []
     },
     {
       "id": "slider-direction",
       "name": "direction",
+      "attribute": "direction",
       "type": "string",
       "description": "Slider direction.",
+      "default": "'horizontal'",
       "defaultValue": "'horizontal'",
       "tags": [
         {
@@ -65,8 +78,10 @@
     {
       "id": "slider-effect",
       "name": "effect",
+      "attribute": "effect",
       "type": "string",
       "description": "Slider effect.",
+      "default": "'slide'",
       "defaultValue": "'slide'",
       "tags": [
         {
@@ -78,8 +93,10 @@
     {
       "id": "slider-imageObjectFit",
       "name": "imageObjectFit",
+      "attribute": "image-object-fit",
       "type": "string",
       "description": "Image object-fit.",
+      "default": "'cover'",
       "defaultValue": "'cover'",
       "tags": [
         {
@@ -91,6 +108,7 @@
     {
       "id": "slider-imageSize",
       "name": "imageSize",
+      "attribute": "image-size",
       "type": "string",
       "description": "WordPress media size when using the helper function..",
       "tags": []
@@ -98,6 +116,7 @@
     {
       "id": "slider-images",
       "name": "images",
+      "attribute": "images",
       "type": "string",
       "description": "Gets images from an ACF or Metabox field.",
       "tags": [
@@ -110,6 +129,7 @@
     {
       "id": "slider-imagesSrc",
       "name": "imagesSrc",
+      "attribute": "images-src",
       "type": "string",
       "description": "Gets images from an ACF or Metabox field.",
       "tags": [
@@ -122,16 +142,20 @@
     {
       "id": "slider-loop",
       "name": "loop",
+      "attribute": "loop",
       "type": "boolean",
       "description": "Loops all slides infinitely.",
+      "default": "false",
       "defaultValue": "false",
       "tags": []
     },
     {
       "id": "slider-maxHeight",
       "name": "maxHeight",
+      "attribute": "max-height",
       "type": "string",
       "description": "Max height.",
+      "default": "'100%'",
       "defaultValue": "'100%'",
       "tags": [
         {
@@ -143,8 +167,10 @@
     {
       "id": "slider-maxWidth",
       "name": "maxWidth",
+      "attribute": "max-width",
       "type": "string",
       "description": "Max width.",
+      "default": "'100%'",
       "defaultValue": "'100%'",
       "tags": [
         {
@@ -156,6 +182,7 @@
     {
       "id": "slider-navigation",
       "name": "navigation",
+      "attribute": "navigation",
       "type": "boolean",
       "description": "",
       "tags": []
@@ -163,32 +190,40 @@
     {
       "id": "slider-navigationBackground",
       "name": "navigationBackground",
+      "attribute": "navigation-background",
       "type": "string",
       "description": "",
+      "default": "'rgba(0,0,0,0.7)'",
       "defaultValue": "'rgba(0,0,0,0.7)'",
       "tags": []
     },
     {
       "id": "slider-navigationBorderRadius",
       "name": "navigationBorderRadius",
+      "attribute": "navigation-border-radius",
       "type": "string",
       "description": "",
+      "default": "s.borderRadius",
       "defaultValue": "'var(--spx-border-radius)'",
       "tags": []
     },
     {
       "id": "slider-navigationColor",
       "name": "navigationColor",
+      "attribute": "navigation-color",
       "type": "string",
       "description": "",
+      "default": "'#ffffff'",
       "defaultValue": "'#ffffff'",
       "tags": []
     },
     {
       "id": "slider-navigationDistanceX",
       "name": "navigationDistanceX",
+      "attribute": "navigation-distance-x",
       "type": "string",
       "description": "Navigation distance.",
+      "default": "'12px'",
       "defaultValue": "'12px'",
       "tags": [
         {
@@ -199,40 +234,50 @@
     {
       "id": "slider-navigationIconNext",
       "name": "navigationIconNext",
+      "attribute": "navigation-icon-next",
       "type": "string",
       "description": "Navigation icon type.",
+      "default": "'arrow-forward'",
       "defaultValue": "'arrow-forward'",
       "tags": []
     },
     {
       "id": "slider-navigationIconPrev",
       "name": "navigationIconPrev",
+      "attribute": "navigation-icon-prev",
       "type": "string",
       "description": "Navigation icon type.",
+      "default": "'arrow-back'",
       "defaultValue": "'arrow-back'",
       "tags": []
     },
     {
       "id": "slider-navigationIconType",
       "name": "navigationIconType",
+      "attribute": "navigation-icon-type",
       "type": "string",
       "description": "Navigation icon type.",
+      "default": "'ionicons'",
       "defaultValue": "'ionicons'",
       "tags": []
     },
     {
       "id": "slider-navigationPadding",
       "name": "navigationPadding",
+      "attribute": "navigation-padding",
       "type": "string",
       "description": "",
+      "default": "'12px'",
       "defaultValue": "'12px'",
       "tags": []
     },
     {
       "id": "slider-navigationSize",
       "name": "navigationSize",
+      "attribute": "navigation-size",
       "type": "string",
       "description": "Navigation size.",
+      "default": "'20px'",
       "defaultValue": "'20px'",
       "tags": [
         {
@@ -243,8 +288,10 @@
     {
       "id": "slider-pagination",
       "name": "pagination",
+      "attribute": "pagination",
       "type": "string",
       "description": "Pagination type.",
+      "default": "'bullets'",
       "defaultValue": "'bullets'",
       "tags": [
         {
@@ -256,22 +303,27 @@
     {
       "id": "slider-paginationBulletsBackground",
       "name": "paginationBulletsBackground",
+      "attribute": "pagination-bullets-background",
       "type": "string",
       "description": "",
+      "default": "'var(--spx-color-gray-300)'",
       "defaultValue": "'var(--spx-color-gray-300)'",
       "tags": []
     },
     {
       "id": "slider-paginationBulletsBackgroundActive",
       "name": "paginationBulletsBackgroundActive",
+      "attribute": "pagination-bullets-background-active",
       "type": "string",
       "description": "",
-      "defaultValue": "'var(--spx-color-primary-A700)'",
+      "default": "'var(--spx-color-gray-900)'",
+      "defaultValue": "'var(--spx-color-gray-900)'",
       "tags": []
     },
     {
       "id": "slider-paginationBulletsClickable",
       "name": "paginationBulletsClickable",
+      "attribute": "pagination-bullets-clickable",
       "type": "boolean",
       "description": "Make bullets clickable.",
       "tags": []
@@ -279,6 +331,7 @@
     {
       "id": "slider-paginationBulletsDynamic",
       "name": "paginationBulletsDynamic",
+      "attribute": "pagination-bullets-dynamic",
       "type": "boolean",
       "description": "Will only keep a selected amount of bullets visible.",
       "tags": []
@@ -286,16 +339,20 @@
     {
       "id": "slider-paginationBulletsDynamicAmount",
       "name": "paginationBulletsDynamicAmount",
+      "attribute": "pagination-bullets-dynamic-amount",
       "type": "number",
       "description": "Amount of dynamic bullets.",
+      "default": "5",
       "defaultValue": "5",
       "tags": []
     },
     {
       "id": "slider-paginationBulletsSize",
       "name": "paginationBulletsSize",
+      "attribute": "pagination-bullets-size",
       "type": "string",
       "description": "Size of the bullets.",
+      "default": "'8px'",
       "defaultValue": "'8px'",
       "tags": [
         {
@@ -306,8 +363,10 @@
     {
       "id": "slider-paginationBulletsSpaceBetween",
       "name": "paginationBulletsSpaceBetween",
+      "attribute": "pagination-bullets-space-between",
       "type": "string",
       "description": "Space between the bullets.",
+      "default": "'4px'",
       "defaultValue": "'4px'",
       "tags": [
         {
@@ -316,32 +375,119 @@
       ]
     },
     {
+      "id": "slider-paginationTabsGapMax",
+      "name": "paginationTabsGapMax",
+      "attribute": "pagination-tabs-gap-max",
+      "type": "number",
+      "description": "",
+      "default": "1.8",
+      "defaultValue": "1.8",
+      "tags": []
+    },
+    {
+      "id": "slider-paginationTabsGapMin",
+      "name": "paginationTabsGapMin",
+      "attribute": "pagination-tabs-gap-min",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "slider-paginationTabsInnerGapMax",
+      "name": "paginationTabsInnerGapMax",
+      "attribute": "pagination-tabs-inner-gap-max",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "slider-paginationTabsInnerGapMin",
+      "name": "paginationTabsInnerGapMin",
+      "attribute": "pagination-tabs-inner-gap-min",
+      "type": "number",
+      "description": "",
+      "default": "0.8",
+      "defaultValue": "0.8",
+      "tags": []
+    },
+    {
+      "id": "slider-paginationTabsMarginBottomMax",
+      "name": "paginationTabsMarginBottomMax",
+      "attribute": "pagination-tabs-margin-bottom-max",
+      "type": "number",
+      "description": "",
+      "default": "2.6",
+      "defaultValue": "2.6",
+      "tags": []
+    },
+    {
+      "id": "slider-paginationTabsMarginBottomMin",
+      "name": "paginationTabsMarginBottomMin",
+      "attribute": "pagination-tabs-margin-bottom-min",
+      "type": "number",
+      "description": "",
+      "default": "1.4",
+      "defaultValue": "1.4",
+      "tags": []
+    },
+    {
       "id": "slider-paginationTabsMaxWidth",
       "name": "paginationTabsMaxWidth",
+      "attribute": "pagination-tabs-max-width",
       "type": "string",
       "description": "",
+      "default": "'320px'",
       "defaultValue": "'320px'",
+      "tags": []
+    },
+    {
+      "id": "slider-paginationTabsPaddingMax",
+      "name": "paginationTabsPaddingMax",
+      "attribute": "pagination-tabs-padding-max",
+      "type": "number",
+      "description": "",
+      "default": "1.4",
+      "defaultValue": "1.4",
+      "tags": []
+    },
+    {
+      "id": "slider-paginationTabsPaddingMin",
+      "name": "paginationTabsPaddingMin",
+      "attribute": "pagination-tabs-padding-min",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
       "tags": []
     },
     {
       "id": "slider-paginationTransitionDuration",
       "name": "paginationTransitionDuration",
+      "attribute": "pagination-transition-duration",
       "type": "string",
       "description": "",
+      "default": "s.transitionDuration",
       "defaultValue": "'var(--spx-transition-duration)'",
       "tags": []
     },
     {
       "id": "slider-paginationTransitionTimingFunction",
       "name": "paginationTransitionTimingFunction",
+      "attribute": "pagination-transition-timing-function",
       "type": "string",
       "description": "",
+      "default": "s.transitionTimingFunction",
       "defaultValue": "'var(--spx-transition-timing-function)'",
       "tags": []
     },
     {
       "id": "slider-prevNextFilter",
       "name": "prevNextFilter",
+      "attribute": "prev-next-filter",
       "type": "string",
       "description": "Filter property for the previous and next elements.",
       "tags": []
@@ -349,61 +495,80 @@
     {
       "id": "slider-slideMessageFirst",
       "name": "slideMessageFirst",
+      "attribute": "slide-message-first",
       "type": "string",
       "description": "Screen reader message for first slide.",
+      "default": "'This is the first slide'",
       "defaultValue": "'This is the first slide'",
       "tags": []
     },
     {
       "id": "slider-slideMessageLast",
       "name": "slideMessageLast",
+      "attribute": "slide-message-last",
       "type": "string",
       "description": "Screen reader message for last slide.",
+      "default": "'This is the last slide'",
       "defaultValue": "'This is the last slide'",
       "tags": []
     },
     {
       "id": "slider-slideMessageNext",
       "name": "slideMessageNext",
+      "attribute": "slide-message-next",
       "type": "string",
       "description": "Screen reader message for next slide.",
+      "default": "'Next slide'",
       "defaultValue": "'Next slide'",
       "tags": []
     },
     {
       "id": "slider-slideMessagePrevious",
       "name": "slideMessagePrevious",
+      "attribute": "slide-message-previous",
       "type": "string",
       "description": "Screen reader message for previous slide.",
+      "default": "'Previous slide'",
       "defaultValue": "'Previous slide'",
       "tags": []
     },
     {
       "id": "slider-slidesPerView",
       "name": "slidesPerView",
+      "attribute": "slides-per-view",
       "type": "number",
       "description": "Amount of slides shown at once.",
+      "default": "1",
       "defaultValue": "1",
       "tags": []
     },
     {
       "id": "slider-spaceBetween",
       "name": "spaceBetween",
+      "attribute": "space-between",
       "type": "number",
       "description": "Space between slides.",
+      "default": "0",
       "defaultValue": "0",
       "tags": []
     },
     {
       "id": "slider-speed",
       "name": "speed",
+      "attribute": "speed",
       "type": "number",
       "description": "Sliding speed.",
+      "default": "1000",
       "defaultValue": "1000",
       "tags": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "name": "spxSliderDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
   "methods": [
     {
       "name": "reload",

@@ -7,17 +7,19 @@ import {
   Prop,
   Watch,
   Listen,
+  Event,
+  EventEmitter,
 } from '@stencil/core';
-import { css } from 'emotion';
+import { css } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
 import { merge } from 'lodash-es';
 import * as s from '../../constants/style';
 import * as c from '../../constants/container';
-import { setFontSize } from '../../utils/setSize';
 import state from '../../stores/container';
 import { offsetHeader } from '../../utils/offsetHeader';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 import { watchMobile } from '../../utils/watchMobile';
+import { setClamp } from '../../utils/setClamp';
 
 const tag = 'spx-container';
 
@@ -39,35 +41,60 @@ export class SpxContainer {
 
   @Prop({ reflect: true }) bpMobile: number = c.bpMobileWidth;
 
+  @Prop({ reflect: true }) buttonBackgroundPrimary: number =
+    c.buttonBackgroundPrimary;
+
+  @Prop({ reflect: true }) buttonBackgroundSecondary: number =
+    c.buttonBackgroundSecondary;
+
   @Prop({ reflect: true }) buttonBorderRadius: string = s.borderRadius;
 
-  @Prop({ reflect: true }) buttonFontSizeMultiplier: number = 1;
+  @Prop({ reflect: true }) buttonColorPrimary: number = c.buttonColorPrimary;
+
+  @Prop({ reflect: true }) buttonColorSecondary: number =
+    c.buttonColorSecondary;
+
+  @Prop({ reflect: true }) buttonFontSizeMin = 1;
+
+  @Prop({ reflect: true }) buttonFontSizeMax = 1.3;
 
   @Prop({ reflect: true }) buttonFontWeight: string = 'bold';
 
-  @Prop({ reflect: true }) buttonMarginX: string = 'var(--spx-space-sm)';
+  @Prop({ reflect: true }) buttonMarginXMin: number = 0.5;
 
-  @Prop({ reflect: true }) buttonMarginTop: string = 'var(--spx-space-lg)';
+  @Prop({ reflect: true }) buttonMarginXMax: number = 1;
 
-  /**
-   * Reverse color of buttons.
-   * @choice 'all', 'primary', 'secondary'
-   */
+  @Prop({ reflect: true }) buttonMarginTopMin: number = 1;
 
-  @Prop({ reflect: true }) buttonReverseColor: string = c.buttonReverseColor;
+  @Prop({ reflect: true }) buttonMarginTopMax: number = 2;
+
+  @Prop({ reflect: true }) buttonPaddingXMin: number = 1;
+
+  @Prop({ reflect: true }) buttonPaddingXMax: number = 2;
+
+  @Prop({ reflect: true }) buttonPaddingYMin: number = 1;
+
+  @Prop({ reflect: true }) buttonPaddingYMax: number = 1.5;
 
   @Prop({ reflect: true }) buttonTextTransform: string = 'uppercase';
 
   /**
+   * Gray color which will be used for sections and pages.
+   * @choice 'blue-gray', 'cool-gray', 'gray', 'true-gray', 'warm-gray', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'light-blue', 'blue', 'indigo', 'violet', 'purple'; 'fuchsia', 'pink', 'rose'
+   */
+
+  @Prop({ reflect: true }) colorGray: string = c.colorGray;
+
+  /**
    * Primary color which will be used for sections and pages.
-   * @choice 'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'
+   * @choice 'blue-gray', 'cool-gray', 'gray', 'true-gray', 'warm-gray', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'light-blue', 'blue', 'indigo', 'violet', 'purple'; 'fuchsia', 'pink', 'rose'
    */
 
   @Prop({ reflect: true }) colorPrimary: string = c.colorPrimary;
 
   /**
    * Secondary color which will be used for sections and pages.
-   * @choice 'red', 'pink', 'purple', 'deep purple', 'indigo', 'blue', 'light blue', 'cyan', 'teal', 'green', 'light green', 'lime', 'yellow', 'amber', 'orange', 'deep orange', 'brown'
+   * @choice 'blue-gray', 'cool-gray', 'gray', 'true-gray', 'warm-gray', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'light-blue', 'blue', 'indigo', 'violet', 'purple'; 'fuchsia', 'pink', 'rose'
    */
 
   @Prop({ reflect: true }) colorSecondary: string = c.colorSecondary;
@@ -77,7 +104,7 @@ export class SpxContainer {
   @Prop({ reflect: true }) disableColors: boolean;
 
   @Prop({ reflect: true }) focusColor: string =
-    'var(--spx-color-secondary-A400)';
+    'var(--spx-color-secondary-600)';
 
   /** Primary font-family. */
 
@@ -89,21 +116,67 @@ export class SpxContainer {
 
   @Prop({ reflect: true }) imageMaxWidth: string = 'none';
 
+  /** Linear scaling root number. */
+
+  @Prop({ reflect: true }) linearBase: number = c.linearBase;
+
+  /** Linear scaling minimum width. */
+
+  @Prop({ reflect: true }) linearMinW: number = c.linearMinW;
+
+  /** Linear scaling maximum width. */
+
+  @Prop({ reflect: true }) linearMaxW: number = c.linearMaxW;
+
+  /** Section max-width. */
+
+  @Prop({ reflect: true }) maxWidth: string = c.maxWidth;
+
   /** Section max-width on mobile. */
 
-  @Prop({ reflect: true }) maxWidth: string = '500px';
+  @Prop({ reflect: true }) maxWidthMobile: string = c.maxWidthMobile;
 
   /** Offsets first section to the height of the header. */
 
   @Prop({ reflect: true }) offsetHeader: boolean;
 
-  @Prop({ reflect: true }) preTitleBackground: string = 'none';
+  /**
+   * Space between content and outer edge of the viewport.
+   * @CSS
+   */
 
-  @Prop({ reflect: true }) preTitleBorderRadius: string = 'none';
+  @Prop({ reflect: true }) paddingX: string = c.paddingX;
 
-  @Prop({ reflect: true }) preTitleColor: string = 'var(--spx-color-black)';
+  /**
+   * Space between content and outer edge of the viewport.
+   * @CSS
+   */
 
-  @Prop({ reflect: true }) preTitleFontSizeMultiplier: number = 1;
+  @Prop({ reflect: true }) paddingXSm: string = c.paddingXSm;
+
+  @Prop({ reflect: true }) paddingYMin: number = 3;
+
+  @Prop({ reflect: true }) paddingYMax: number = 10;
+
+  @Prop({ reflect: true }) paddingYFirstMin: number = 2;
+
+  @Prop({ reflect: true }) paddingYFirstMax: number = 8;
+
+  @Prop({ reflect: true }) paddingYMaxWidth: number = 2560;
+
+  @Prop({ reflect: true }) paddingYMultiplier: number = 1.5;
+
+  @Prop({ reflect: true }) preTitleBackground: string =
+    'var(--spx-color-secondary-50)';
+
+  @Prop({ reflect: true }) preTitleBorderRadius: string = '9999px';
+
+  @Prop({ reflect: true }) preTitleColor: string =
+    'var(--spx-color-secondary-900)';
+
+  @Prop({ reflect: true }) preTitleFontSizeMin = 0.6;
+
+  @Prop({ reflect: true }) preTitleFontSizeMax = 0.7;
 
   @Prop({ reflect: true }) preTitleFontWeight: string = '400';
 
@@ -111,53 +184,27 @@ export class SpxContainer {
 
   @Prop({ reflect: true }) preTitleLineHeight: string = '1.6';
 
-  @Prop({ reflect: true }) preTitleMarginBottom: string = 'var(--spx-space-md)';
+  @Prop({ reflect: true }) preTitleMarginBottomMin: number = 1;
 
-  @Prop({ reflect: true }) preTitlePadding: string = '0';
+  @Prop({ reflect: true }) preTitleMarginBottomMax: number = 2.5;
 
-  @Prop({ reflect: true }) preTitleTextTransform: string = 'default';
+  @Prop({ reflect: true }) preTitlePaddingXMin: number = 0.8;
 
-  /**
-   * Space between content and outer edge of the viewport.
-   * @CSS
-   */
+  @Prop({ reflect: true }) preTitlePaddingXMax: number = 1.2;
 
-  @Prop({ reflect: true }) spaceX: string = c.spaceX;
+  @Prop({ reflect: true }) preTitlePaddingYMin: number = 0.3;
 
-  /**
-   * Space between content and outer edge of the viewport.
-   * @CSS
-   */
+  @Prop({ reflect: true }) preTitlePaddingYMax: number = 0.4;
 
-  @Prop({ reflect: true }) spaceXSm: string = c.spaceXSm;
+  @Prop({ reflect: true }) preTitleTextTransform: string = 'uppercase';
 
-  /**
-   * Space between the sections.
-   * @CSS
-   */
+  @Prop({ reflect: true }) tabsMarginTopMin: number = 0.5;
 
-  @Prop({ reflect: true }) spaceY: string = 'var(--spx-space-3xl)';
+  @Prop({ reflect: true }) tabsMarginTopMax: number = 1;
 
-  /**
-   * Space base for space-scale.
-   * @CSS
-   */
+  @Prop({ reflect: true }) tabsFirstMarginTopMin: number = 1;
 
-  @Prop({ reflect: true }) spacing: string = 'clamp(0.8em, 1vw, 1em)';
-
-  /**
-   * Margin between tab items.
-   * @CSS
-   */
-
-  @Prop({ reflect: true }) tabsMarginBetween: string = 'var(--spx-space-sm)';
-
-  /**
-   * Top margin for first tab item.
-   * @CSS
-   */
-
-  @Prop({ reflect: true }) tabsMarginFirst: string = 'var(--spx-space-md)';
+  @Prop({ reflect: true }) tabsFirstMarginTopMax: number = 2;
 
   /**
    * Tabs opacity.
@@ -168,7 +215,9 @@ export class SpxContainer {
 
   @Prop({ reflect: true }) textColor: string = 'var(--spx-color-gray-600)';
 
-  @Prop({ reflect: true }) textFontSizeMultiplier: number = 1;
+  @Prop({ reflect: true }) textFontSizeMin = 1;
+
+  @Prop({ reflect: true }) textFontSizeMax = 1.8;
 
   @Prop({ reflect: true }) textFontWeight: string = '400';
 
@@ -176,7 +225,15 @@ export class SpxContainer {
 
   @Prop({ reflect: true }) textLineHeight: string = '1.6';
 
-  @Prop({ reflect: true }) textMarginTop: string = 'var(--spx-space-sm)';
+  @Prop({ reflect: true }) textLinkDecorationColor: string =
+    'var(--spx-color-primary-400)';
+
+  @Prop({ reflect: true }) textLinkDecorationColorHover: string =
+    'var(--spx-color-primary-500)';
+
+  @Prop({ reflect: true }) textMarginTopMin: number = 1;
+
+  @Prop({ reflect: true }) textMarginTopMax: number = 1.8;
 
   @Prop({ reflect: true }) textMaxWidth: string = '800px';
 
@@ -184,7 +241,9 @@ export class SpxContainer {
 
   @Prop({ reflect: true }) titleColor: string = 'var(--spx-color-black)';
 
-  @Prop({ reflect: true }) titleFontSizeMultiplier: number = 1;
+  @Prop({ reflect: true }) titleFontSizeMin = 1.7;
+
+  @Prop({ reflect: true }) titleFontSizeMax = 3;
 
   @Prop({ reflect: true }) titleFontWeight: number = 500;
 
@@ -196,21 +255,37 @@ export class SpxContainer {
 
   @Prop({ reflect: true }) titleTextTransform: string = 'default';
 
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxContainerDidLoad' })
+  spxContainerDidLoad: EventEmitter;
+
   @Watch('bpMobile')
   bpMobileChanged() {
     state.bpMobileWidth = this.bpMobile;
   }
 
-  @Watch('buttonReverseColor')
-  buttonReverseColorChanged() {
-    state.buttonReverseColor = this.buttonReverseColor;
+  /** Watch all attributes that have a store value and update it changes. */
+
+  @Watch('buttonBackgroundPrimary')
+  @Watch('buttonBackgroundSecondary')
+  @Watch('buttonColorPrimary')
+  @Watch('buttonColorSecondary')
+  buttonColorsChanged() {
+    state.buttonBackgroundPrimary = this.buttonBackgroundPrimary;
+    state.buttonBackgroundSecondary = this.buttonBackgroundSecondary;
+    state.buttonColorPrimary = this.buttonColorPrimary;
+    state.buttonColorSecondary = this.buttonColorSecondary;
   }
 
   @Watch('colorSecondary')
   @Watch('colorPrimary')
+  @Watch('colorGray')
   colorChanged() {
     state.colorPrimary = this.colorPrimary;
     state.colorSecondary = this.colorSecondary;
+    state.colorGray = this.colorGray;
   }
 
   @Watch('fontFamilySecondary')
@@ -221,15 +296,26 @@ export class SpxContainer {
   }
 
   @Watch('maxWidth')
+  @Watch('maxWidthMobile')
   maxWidthChanged() {
     state.bpMaxWidth = this.maxWidth;
+    state.bpMaxWidthMobile = this.maxWidthMobile;
   }
 
-  @Watch('spaceXSm')
-  @Watch('spaceX')
+  @Watch('paddingXSm')
+  @Watch('paddingX')
   spaceChanged() {
-    state.spaceX = this.spaceX;
-    state.spaceXsm = this.spaceXSm;
+    state.paddingX = this.paddingX;
+    state.paddingXsm = this.paddingXSm;
+  }
+
+  @Watch('linearBase')
+  @Watch('linearMinW')
+  @Watch('linearMaxW')
+  linearChanged() {
+    state.linearBase = this.linearBase;
+    state.linearMinW = this.linearMinW;
+    state.linearMaxW = this.linearMaxW;
   }
 
   @Listen('resize', { target: 'window' })
@@ -245,18 +331,28 @@ export class SpxContainer {
   }
 
   connectedCallback() {
+    /** Set initial settings. */
+
     state.bpMaxWidth = this.maxWidth || c.maxWidth;
+    state.bpMaxWidthMobile = this.maxWidthMobile || c.maxWidthMobile;
     state.bpMobileWidth = this.bpMobile || c.bpMobileWidth;
-    state.buttonReverseColor = this.buttonReverseColor || c.buttonReverseColor;
+    state.buttonBackgroundPrimary =
+      this.buttonBackgroundPrimary || c.buttonBackgroundPrimary;
+    state.buttonBackgroundSecondary =
+      this.buttonBackgroundSecondary || c.buttonBackgroundSecondary;
+    state.buttonColorPrimary = this.buttonColorPrimary || c.buttonColorPrimary;
+    state.buttonColorSecondary =
+      this.buttonColorSecondary || c.buttonColorSecondary;
     if (!this.disableColors) {
-      state.colorPrimary = this.colorPrimary || 'teal';
+      state.colorPrimary = this.colorPrimary || 'red';
       state.colorSecondary = this.colorSecondary || 'pink';
+      state.colorGray = this.colorGray || 'gray';
     }
     state.fontFamilyPrimary = this.fontFamilyPrimary || c.fontFamilyPrimary;
     state.fontFamilySecondary =
       this.fontFamilySecondary || c.fontFamilySecondary;
-    state.spaceX = this.spaceX || c.spaceX;
-    state.spaceXsm = this.spaceXSm || c.spaceXSm;
+    state.paddingX = this.paddingX || c.paddingX;
+    state.paddingXsm = this.paddingXSm || c.paddingXSm;
   }
 
   componentDidLoad() {
@@ -272,14 +368,22 @@ export class SpxContainer {
         item.nextElementSibling.tagName === 'SPX-SECTION-BUTTON'
       ) {
         const style = css({
-          marginLeft: setVar(tag, 'button-margin-x', this.buttonMarginX),
-          marginRight: setVar(tag, 'button-margin-x', this.buttonMarginX),
+          margin:
+            '0 ' +
+            setClamp(
+              'tag',
+              'button-margin-x',
+              this.buttonMarginXMin,
+              this.buttonMarginXMax
+            ),
         });
 
         item.classList.add(style);
         item.nextElementSibling.classList.add(style);
       }
     });
+
+    this.spxContainerDidLoad.emit({ target: 'document' });
   }
 
   componentDidRender() {
@@ -287,16 +391,16 @@ export class SpxContainer {
   }
 
   render() {
+    /** Text styles. */
+
     const styleText = {
-      '[slot="pre-title"]:not(.spx)': {
+      '[slot="pre-title"]:not(.spx-e)': {
         ...s.text(
           tag,
           'pre-title',
           this.preTitleColor,
-          '16px',
-          '1.8vw',
-          '24px',
-          this.preTitleFontSizeMultiplier,
+          this.preTitleFontSizeMin,
+          this.preTitleFontSizeMax,
           this.preTitleFontWeight,
           this.preTitleLetterSpacing,
           this.preTitleLineHeight,
@@ -307,16 +411,30 @@ export class SpxContainer {
           'pre-title-background',
           this.preTitleBackground
         ),
-        padding: setVar(tag, 'pre-title-padding', this.preTitlePadding),
+        padding:
+          setClamp(
+            tag,
+            'pre-title-padding-y',
+            this.preTitlePaddingYMin,
+            this.preTitlePaddingYMax
+          ) +
+          ' ' +
+          setClamp(
+            tag,
+            'pre-title-padding-x',
+            this.preTitlePaddingXMin,
+            this.preTitlePaddingXMax
+          ),
         borderRadius: setVar(
           tag,
           'pre-title-border-radius',
           this.preTitleBorderRadius
         ),
-        marginBottom: setVar(
+        marginBottom: setClamp(
           tag,
           'pre-title-margin-bottom',
-          this.preTitleMarginBottom
+          this.preTitleMarginBottomMin,
+          this.preTitleMarginBottomMax
         ),
         fontFamily: setVar(
           tag,
@@ -325,15 +443,13 @@ export class SpxContainer {
         ),
       },
 
-      'h1:not(.spx), h1 span:not(.spx), h2:not(.spx), h2 span:not(.spx)': {
+      'h1:not(.spx-e), h1 span:not(.spx-e), h2:not(.spx-e), h2 span:not(.spx-e)': {
         ...s.text(
           tag,
           'title',
           this.titleColor,
-          '32px',
-          '5vw',
-          '80px',
-          this.titleFontSizeMultiplier,
+          this.titleFontSizeMin,
+          this.titleFontSizeMax,
           this.titleFontWeight,
           this.titleLetterSpacing,
           this.titleLineHeight,
@@ -344,15 +460,13 @@ export class SpxContainer {
         fontFamily: setVar(tag, 'title-font-family', state.fontFamilyPrimary),
       },
 
-      'p:not(.spx), [data-spx-tabs-header]:not(.spx)': {
+      'p:not(.spx-e), [data-spx-tabs-header]:not(.spx-e)': {
         ...s.text(
           tag,
           'text',
           this.textColor,
-          '18px',
-          '2vw',
-          '32px',
-          this.textFontSizeMultiplier,
+          this.textFontSizeMin,
+          this.textFontSizeMax,
           this.textFontWeight,
           this.textLetterSpacing,
           this.textLineHeight,
@@ -360,59 +474,155 @@ export class SpxContainer {
         ),
         background: 'none',
         maxWidth: setVar(tag, 'text-max-width', this.textMaxWidth),
-        marginTop: setVar(tag, 'text-margin-top', this.textMarginTop),
+        marginTop: setClamp(
+          tag,
+          'text-margin-top',
+          this.textMarginTopMin,
+          this.textMarginTopMax
+        ),
         fontFamily: setVar(tag, 'text-font-family', state.fontFamilySecondary),
+      },
+
+      'p a': {
+        fontFamily: setVar(tag, 'text-font-family', state.fontFamilySecondary),
+        textDecoration: 'underline',
+        textDecorationColor: setVar(
+          tag,
+          'text-link-decoration-color',
+          this.textLinkDecorationColor
+        ),
+
+        '&:hover': {
+          textDecorationColor: setVar(
+            tag,
+            'text-link-decoration-color-hover',
+            this.textLinkDecorationColorHover
+          ),
+        },
       },
     };
 
     /** Style base. */
 
     const styleBase = {
-      ...c.spaceScale(setVar('spx', 'space-unit', this.spacing)),
       display: 'flex',
       flexDirection: 'column',
+      margin: '0 auto',
       // height: this.el.querySelector('spx-page-docs') && '100vh',
 
-      '& > spx-section-text-media, & > spx-section-footer > div:not([data-spx-no-styles]) > div': {
-        paddingTop: setVar(tag, 'space-y', this.spaceY),
-        paddingBottom: setVar(tag, 'space-y', this.spaceY),
+      '& > spx-section-two-column, & > spx-section-footer > div:not([data-spx-no-styles]) > div': {
+        paddingTop: setClamp(
+          tag,
+          'padding-y',
+          this.paddingYMin,
+          this.paddingYMax,
+          state.linearBase,
+          state.linearMinW,
+          this.paddingYMaxWidth
+        ),
+        paddingBottom: setClamp(
+          tag,
+          'padding-y',
+          this.paddingYMin,
+          this.paddingYMax,
+          state.linearBase,
+          state.linearMinW,
+          this.paddingYMaxWidth
+        ),
       },
 
-      '& > spx-section-text-media:not([full]):not([media-full]) > div, & > spx-section-footer > div:not([data-spx-no-styles]) > div': {
+      '& > spx-section-two-column:not([background]) ~ spx-section-two-column[background]': {
+        marginTop: setClamp(
+          tag,
+          'padding-y',
+          this.paddingYMin / 2,
+          this.paddingYMax / 2,
+          state.linearBase,
+          state.linearMinW,
+          this.paddingYMaxWidth
+        ),
+      },
+
+      '& > spx-section-two-column[background]': {
+        paddingTop: setClamp(
+          tag,
+          'padding-y',
+          this.paddingYMin * this.paddingYMultiplier,
+          this.paddingYMax * this.paddingYMultiplier,
+          state.linearBase,
+          state.linearMinW,
+          this.paddingYMaxWidth
+        ),
+        paddingBottom: setClamp(
+          tag,
+          'padding-y',
+          this.paddingYMin * this.paddingYMultiplier,
+          this.paddingYMax * this.paddingYMultiplier,
+          state.linearBase,
+          state.linearMinW,
+          this.paddingYMaxWidth
+        ),
+
+        '& + spx-section-two-column[background]': {
+          marginTop: 0,
+        },
+
+        '& + spx-section-two-column:not([background])': {
+          paddingTop: setClamp(
+            tag,
+            'padding-y',
+            this.paddingYMin * this.paddingYMultiplier,
+            this.paddingYMax * this.paddingYMultiplier,
+            state.linearBase,
+            state.linearMinW,
+            this.paddingYMaxWidth
+          ),
+        },
+      },
+
+      '& > spx-section-two-column:not([full-width]):not([media-full-width]) > *, & > spx-section-footer > div:not([data-spx-no-styles]) > div': {
         width: '100%',
-        maxWidth: state.bpMobile && setVar(tag, 'max-width', this.maxWidth),
+        maxWidth: state.bpMobile
+          ? setVar(tag, 'max-width-mobile', this.maxWidthMobile)
+          : setVar(tag, 'max-width', this.maxWidth),
         marginLeft: state.bpMobile && 'auto',
         marginRight: state.bpMobile && 'auto',
       },
 
-      '& > spx-section-text-media:not([full]):not([media-full]), & > spx-section-footer > div:not([data-spx-no-styles])': {
-        paddingLeft: this.spaceX,
-        paddingRight: this.spaceX,
+      '& > spx-section-two-column:not([full-width]):not([media-full-width]) > * > div': {
+        maxWidth:
+          state.bpMobile &&
+          setVar(tag, 'max-width-mobile', this.maxWidthMobile),
       },
 
-      '& > spx-section-text-media[media-full-mobile-fix] > div': {
-        paddingLeft: state.bpMobile && this.spaceX,
-        paddingRight: state.bpMobile && this.spaceX,
+      '& > spx-section-two-column:not([full-width]):not([media-full-width]), & > spx-section-footer > div:not([data-spx-no-styles])': {
+        paddingLeft: this.paddingX,
+        paddingRight: this.paddingX,
       },
 
-      '& > *[background]:not(spx-section-header):not(spx-section-footer)': {
-        marginTop:
-          'calc(' + setVar(tag, 'padding-between', this.spaceY) + '/2)',
-
-        '& + [background]': {
-          marginTop: 0,
-        },
-
-        '& + *:not([background]):not([no-margin-top])': {
-          marginTop:
-            'calc(' + setVar(tag, 'padding-between', this.spaceY) + '/2)',
-        },
+      '& > spx-section-two-column[media-full-width-mobile-fix] > div': {
+        paddingLeft: state.bpMobile && this.paddingX,
+        paddingRight: state.bpMobile && this.paddingX,
       },
 
       /** Button. */
 
+      'p + [data-spx-section-two-column-buttons], [data-spx-tabs-header] + [data-spx-section-two-column-buttons]': {
+        marginTop: setClamp(
+          tag,
+          'button-margin-top',
+          this.buttonMarginTopMin,
+          this.buttonMarginTopMax
+        ),
+      },
+
       'spx-section-button': {
-        marginTop: setVar(tag, 'button-margin-top', this.buttonMarginTop),
+        marginTop: setClamp(
+          tag,
+          'button-margin-x',
+          this.buttonMarginXMin,
+          this.buttonMarginXMax
+        ),
       },
 
       'spx-section-button a': {
@@ -421,18 +631,25 @@ export class SpxContainer {
           'button-border-radius',
           this.buttonBorderRadius
         ),
-        padding: setVar(
+        padding:
+          setClamp(
+            tag,
+            'button-padding-y',
+            this.buttonPaddingYMin,
+            this.buttonPaddingYMax
+          ) +
+          ' ' +
+          setClamp(
+            tag,
+            'button-padding-x',
+            this.buttonPaddingXMin,
+            this.buttonPaddingXMax
+          ),
+        fontSize: setClamp(
           tag,
-          'button-padding',
-          'clamp(0.8em, 3.2vw, 0.95em) clamp(1em, 4vw, 1.4em)'
-        ),
-        fontSize: setFontSize(
-          tag,
-          'button',
-          '16px',
-          '1.3vw',
-          '24px',
-          this.buttonFontSizeMultiplier
+          'button-font-size',
+          this.buttonFontSizeMin,
+          this.buttonFontSizeMax
         ),
         fontFamily: setVar(
           tag,
@@ -449,20 +666,36 @@ export class SpxContainer {
 
       /** Text Media styles. */
 
-      'spx-section-text-media': {
+      'spx-section-two-column': {
         '*': {
           fontFamily: setVar(tag, 'font-family', state.fontFamilyPrimary),
         },
 
         '&:first-of-type': {
-          paddingTop: setVar(tag, 'space-y', 'calc(' + this.spaceY + ' / 2)'),
+          paddingTop: setClamp(
+            tag,
+            'padding-y',
+            this.paddingYFirstMin,
+            this.paddingYFirstMax,
+            state.linearBase,
+            state.linearMinW,
+            this.paddingYMaxWidth
+          ),
         },
 
         '&:first-of-type[first]': {
           paddingTop:
             'calc(' +
-            setVar(tag, 'space-y', this.spaceY) +
-            ' / 2 + var(--spx-offset))',
+            setClamp(
+              tag,
+              'padding-y-first',
+              this.paddingYFirstMin,
+              this.paddingYFirstMax,
+              state.linearBase,
+              state.linearMinW,
+              this.paddingYMaxWidth
+            ) +
+            ' + var(--spx-offset))',
         },
 
         img: {
@@ -470,17 +703,11 @@ export class SpxContainer {
           maxWidth: setVar(tag, 'image-max-width', this.imageMaxWidth),
         },
 
-        '& > div > div': {
+        '& > * > div': {
           ...styleText,
         },
 
         '&[type="tabs"]': {
-          '& > div:first-of-type': {
-            ...c.spaceScale(
-              setVar(tag, 'space-unit', 'clamp(0.8em, 1.4vw, 2em)')
-            ),
-          },
-
           '[data-spx-tabs-header]': {
             maxWidth: 'max-content',
             opacity: setVar(tag, 'tabs-opacity', this.tabsOpacity),
@@ -496,14 +723,20 @@ export class SpxContainer {
             },
 
             '&:first-of-type': {
-              marginTop: setVar(tag, 'tabs-margin-first', this.tabsMarginFirst),
+              marginTop: setClamp(
+                tag,
+                'tabs-first-margin-top',
+                this.tabsFirstMarginTopMin,
+                this.tabsFirstMarginTopMax
+              ),
             },
 
             '& + [data-spx-tabs-header]': {
-              marginTop: setVar(
+              marginTop: setClamp(
                 tag,
-                'tabs-margin-between',
-                this.tabsMarginBetween
+                'tabs-margin-top',
+                this.tabsMarginTopMin,
+                this.tabsMarginTopMax
               ),
             },
           },

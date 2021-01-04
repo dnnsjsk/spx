@@ -1,11 +1,23 @@
 // eslint-disable-next-line no-unused-vars
-import { Component, Element, h, Host, Prop, State, Watch } from '@stencil/core';
-import { css } from 'emotion';
-import * as c from '../../constants/style';
+import {
+  Component,
+  Element,
+  Event,
+  EventEmitter,
+  h,
+  Host,
+  Prop,
+  State,
+  Watch,
+} from '@stencil/core';
+import { css } from '@emotion/css';
+import * as s from '../../constants/style';
+import * as c from '../../constants/container';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 import { merge } from 'lodash-es';
 import state from '../../stores/container';
+import { setClamp } from '../../utils/setClamp';
 
 const tag = 'spx-page-single';
 
@@ -30,7 +42,9 @@ export class SpxPageSingle {
 
   @Prop({ reflect: true }) authorFontFamily: string = state.fontFamilyPrimary;
 
-  @Prop({ reflect: true }) authorFontSizeMultiplier: number = 1;
+  @Prop({ reflect: true }) authorFontSizeMin = 0.9;
+
+  @Prop({ reflect: true }) authorFontSizeMax = 1.2;
 
   @Prop({ reflect: true }) authorFontWeight: string = '500';
 
@@ -38,16 +52,20 @@ export class SpxPageSingle {
 
   @Prop({ reflect: true }) authorLineHeight: string = '1.25';
 
-  @Prop({ reflect: true }) authorMarginTop: string = 'var(--spx-space-lg)';
+  @Prop({ reflect: true }) authorMarginTopMin: number = 1;
+
+  @Prop({ reflect: true }) authorMarginTopMax: number = 2;
 
   @Prop({ reflect: true }) authorTextTransform: string = 'uppercase';
 
-  @Prop({ reflect: true }) contentMarginTop: string = 'var(--spx-space-xl)';
+  @Prop({ reflect: true }) contentMarginTopMin: number = 3;
+
+  @Prop({ reflect: true }) contentMarginTopMax: number = 4;
 
   @Prop({ reflect: true }) contentMaxWidth: string = '700px';
 
-  @Prop({ reflect: true }) contentSpaceX: string =
-    'var(--spx-container-space-x)';
+  @Prop({ reflect: true }) contentPaddingX: string =
+    'var(--spx-container-padding-x)';
 
   /** Display date. */
 
@@ -57,7 +75,9 @@ export class SpxPageSingle {
 
   @Prop({ reflect: true }) dateFontFamily: string = state.fontFamilyPrimary;
 
-  @Prop({ reflect: true }) dateFontSizeMultiplier: number = 1;
+  @Prop({ reflect: true }) dateFontSizeMin = 0.9;
+
+  @Prop({ reflect: true }) dateFontSizeMax = 0.9;
 
   @Prop({ reflect: true }) dateFontWeight: string = '500';
 
@@ -65,11 +85,15 @@ export class SpxPageSingle {
 
   @Prop({ reflect: true }) dateLineHeight: string = '1.25';
 
-  @Prop({ reflect: true }) dateMarginTop: string = 'var(--spx-space-sm)';
+  @Prop({ reflect: true }) dateMarginTopMin: number = 1.5;
+
+  @Prop({ reflect: true }) dateMarginTopMax: number = 2;
 
   @Prop({ reflect: true }) dateTextTransform: string = 'default';
 
-  @Prop({ reflect: true }) headerPaddingBottom: string = 'var(--spx-space-xl)';
+  @Prop({ reflect: true }) headerPaddingBottomMin: number = 1;
+
+  @Prop({ reflect: true }) headerPaddingBottomMax: number = 2;
 
   @Prop({ reflect: true }) headerBorderBottom: string =
     '1px solid var(--spx-color-gray-200)';
@@ -78,20 +102,22 @@ export class SpxPageSingle {
 
   @Prop({ reflect: true }) image: boolean = true;
 
-  @Prop({ reflect: true }) imageBorderRadius: string = c.borderRadius;
+  @Prop({ reflect: true }) imageBorderRadius: string = s.borderRadius;
 
   @Prop({ reflect: true }) imageHeight: string = 'clamp(200px, 50vh, 600px)';
 
   @Prop({ reflect: true }) imageObjectPosition: string = '50% 50%';
 
-  @Prop({ reflect: true }) imageSpaceX: string =
-    'var(--spx-container-space-x-sm)';
+  @Prop({ reflect: true }) imagePaddingX: string =
+    'var(--spx-container-padding-x-sm)';
 
-  @Prop({ reflect: true }) imageSpaceY: string = 'var(--spx-space-md)';
+  @Prop({ reflect: true }) imageSpaceYMin: number = 1;
+
+  @Prop({ reflect: true }) imageSpaceYMax: number = 2;
 
   /** Mobile breakpoint. */
 
-  @Prop({ reflect: true }) mobile: number = c.mobileBpWidth;
+  @Prop({ reflect: true }) mobile: number = c.bpMobileWidth;
 
   /**
    * Gets a WordPress post to render.
@@ -106,7 +132,9 @@ export class SpxPageSingle {
 
   @Prop({ reflect: true }) titleFontFamily: string = state.fontFamilyPrimary;
 
-  @Prop({ reflect: true }) titleFontSizeMultiplier: number = 1;
+  @Prop({ reflect: true }) titleFontSizeMin = 2.7;
+
+  @Prop({ reflect: true }) titleFontSizeMax = 4;
 
   @Prop({ reflect: true }) titleFontWeight: string = '500';
 
@@ -114,9 +142,17 @@ export class SpxPageSingle {
 
   @Prop({ reflect: true }) titleLineHeight: string = '1.25';
 
-  @Prop({ reflect: true }) titleMarginTop: string = 'var(--spx-space-md)';
+  @Prop({ reflect: true }) titleMarginTopMin: number = 1;
+
+  @Prop({ reflect: true }) titleMarginTopMax: number = 2;
 
   @Prop({ reflect: true }) titleTextTransform: string = 'default';
+
+  /** Fires after component has loaded. */
+
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxPageSingleDidLoad' })
+  spxPageSingleDidLoad: EventEmitter;
 
   /** Watch post prop and parse to iteratable array. */
 
@@ -149,29 +185,41 @@ export class SpxPageSingle {
     if (this.content) {
       this.postContentContainer.innerHTML = this.postContent.body.innerHTML;
     }
+
+    this.spxPageSingleDidLoad.emit({ target: 'document' });
   }
 
   render() {
-    /** Style host. */
+    /** Host styles. */
 
     const styleHost = css({
-      fontSize: c.fontSize,
+      fontSize: s.fontSize,
       display: 'block',
     });
+
+    /** Outer styles. */
 
     const styleOuter = css({
       display: 'block',
       gridGap: '40px',
-      padding: '0 ' + setVar(tag, 'content-space-x', this.contentSpaceX) + '',
+      padding:
+        '0 ' + setVar(tag, 'content-padding-x', this.contentPaddingX) + '',
     });
+
+    /** Image styles. */
 
     const styleImage = css({
       maxWidth: '100%',
       padding:
         '' +
-        setVar(tag, 'image-space-y', this.imageSpaceY) +
+        setClamp(
+          tag,
+          'image-space-y',
+          this.imageSpaceYMin,
+          this.imageSpaceYMax
+        ) +
         ' ' +
-        setVar(tag, 'image-space-x', this.imageSpaceX) +
+        setVar(tag, 'image-padding-x', this.imagePaddingX) +
         '',
 
       img: {
@@ -192,13 +240,16 @@ export class SpxPageSingle {
       },
     });
 
+    /** Header container styles. */
+
     const styleHeaderContainer = css({
       maxWidth: 'var(--spx-text-max-width)',
       margin: '0 auto',
-      paddingBottom: setVar(
+      paddingBottom: setClamp(
         tag,
         'header-padding-bottom',
-        this.headerPaddingBottom
+        this.headerPaddingBottomMin,
+        this.headerPaddingBottomMax
       ),
       borderBottom: setVar(
         tag,
@@ -207,22 +258,27 @@ export class SpxPageSingle {
       ),
     });
 
+    /** Author styles. */
+
     const styleAuthor = css(
       merge({
         display: 'flex',
         alignItems: 'center',
-        marginTop: setVar(tag, 'author-margin-top', this.authorMarginTop),
+        marginTop: setClamp(
+          tag,
+          'author-margin-top',
+          this.authorMarginTopMin,
+          this.authorMarginTopMax
+        ),
 
         span: {
-          marginLeft: 'var(--spx-space-sm)',
-          ...c.text(
+          marginLeft: '12px',
+          ...s.text(
             tag,
             'title',
             this.authorColor,
-            '12px',
-            '12px',
-            '12px',
-            this.authorFontSizeMultiplier,
+            this.authorFontSizeMin,
+            this.authorFontSizeMax,
             this.authorFontWeight,
             this.authorLetterSpacing,
             this.authorLineHeight,
@@ -233,43 +289,50 @@ export class SpxPageSingle {
       {}
     );
 
+    /** Author image styles. */
+
     const styleAuthorImg = css({
       height: '30px',
       width: '30px',
       borderRadius: '9999px',
     });
 
+    /** Title styles. */
+
     const styleTitle = css(
       merge({
-        ...c.text(
+        ...s.text(
           tag,
           'title',
           this.titleColor,
-          '24px',
-          '4vw',
-          '48px',
-          this.titleFontSizeMultiplier,
+          this.titleFontSizeMin,
+          this.titleFontSizeMax,
           this.titleFontWeight,
           this.titleLetterSpacing,
           this.titleLineHeight,
           this.titleTextTransform
         ),
         fontFamily: setVar(tag, 'title-font-family', this.titleFontFamily),
-        marginTop: setVar(tag, 'title-margin-top', this.titleMarginTop),
+        marginTop: setClamp(
+          tag,
+          'title-margin-top',
+          this.titleMarginTopMin,
+          this.titleMarginTopMax
+        ),
       }),
       {}
     );
 
+    /** Date styles. */
+
     const styleDate = css(
       merge({
-        ...c.text(
+        ...s.text(
           tag,
           'date',
           this.dateColor,
-          '14px',
-          '3vw',
-          '18px',
-          this.dateFontSizeMultiplier,
+          this.dateFontSizeMin,
+          this.dateFontSizeMax,
           this.dateFontWeight,
           this.dateLetterSpacing,
           this.dateLineHeight,
@@ -277,15 +340,26 @@ export class SpxPageSingle {
         ),
         display: 'block',
         fontFamily: setVar(tag, 'date-font-family', this.dateFontFamily),
-        marginTop: setVar(tag, 'date-margin-top', this.dateMarginTop),
+        marginTop: setClamp(
+          tag,
+          'date-margin-top',
+          this.dateMarginTopMin,
+          this.dateMarginTopMax
+        ),
       }),
       {}
     );
 
+    /** Content styles. */
+
     const styleContent = css({
       marginTop:
-        setVar(tag, 'content-margin-top', this.contentMarginTop) +
-        ' !important',
+        setClamp(
+          tag,
+          'content-margin-top',
+          this.contentMarginTopMin,
+          this.contentMarginTopMax
+        ) + ' !important',
     });
 
     return (
