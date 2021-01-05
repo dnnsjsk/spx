@@ -83,6 +83,26 @@
       "tags": []
     },
     {
+      "id": "code-clipboardButtonText",
+      "name": "clipboardButtonText",
+      "attribute": "clipboard-button-text",
+      "type": "string",
+      "description": "",
+      "default": "'Copy'",
+      "defaultValue": "'Copy'",
+      "tags": []
+    },
+    {
+      "id": "code-clipboardButtonTextCopied",
+      "name": "clipboardButtonTextCopied",
+      "attribute": "clipboard-button-text-copied",
+      "type": "string",
+      "description": "",
+      "default": "'Copied!'",
+      "defaultValue": "'Copied!'",
+      "tags": []
+    },
+    {
       "id": "code-clipboardButtonTextTransform",
       "name": "clipboardButtonTextTransform",
       "attribute": "clipboard-button-text-transform",

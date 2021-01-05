@@ -15,6 +15,10 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 3.0.1 =
+* Code: add 'clipboard-button-text' attribute
+* Code: add 'clipboard-button-text-copied' attribute
+
 = 3.0.0 =
 * Accordion: add 'close' method
 * Accordion: add 'disable-animation' attribute - this is necessary when the accordion is starting as hidden

@@ -201,6 +201,8 @@ export namespace Components {
         "clipboardButtonFontSize": string;
         "clipboardButtonFontWeight": any;
         "clipboardButtonPadding": string;
+        "clipboardButtonText": string;
+        "clipboardButtonTextCopied": string;
         "clipboardButtonTextTransform": string;
         "display": string;
         "fontSize": string;
@@ -1856,6 +1858,8 @@ declare namespace LocalJSX {
         "clipboardButtonFontSize"?: string;
         "clipboardButtonFontWeight"?: any;
         "clipboardButtonPadding"?: string;
+        "clipboardButtonText"?: string;
+        "clipboardButtonTextCopied"?: string;
         "clipboardButtonTextTransform"?: string;
         "display"?: string;
         "fontSize"?: string;

@@ -59,6 +59,10 @@ export class SpxCode {
 
   @Prop({ reflect: true }) clipboardButtonPadding: string = '6px 12px';
 
+  @Prop({ reflect: true }) clipboardButtonText: string = 'Copy';
+
+  @Prop({ reflect: true }) clipboardButtonTextCopied: string = 'Copied!';
+
   @Prop({ reflect: true }) clipboardButtonTextTransform: string = 'uppercase';
 
   @Prop({ reflect: true }) display: string = 'block';
@@ -132,17 +136,17 @@ export class SpxCode {
   }
 
   private onClickClipboard = () => {
-    /** Copy the code to the data-attribute and change button text.. */
+    /** Copy the code to the data-attribute and change button text. */
 
     this.clipboardButton.setAttribute(
       'data-clipboard-text',
       this.el.querySelector('pre').innerText
     );
 
-    this.clipboardButton.innerText = 'Copied!';
+    this.clipboardButton.innerText = this.clipboardButtonTextCopied;
 
     setTimeout(() => {
-      this.clipboardButton.innerText = 'Copy';
+      this.clipboardButton.innerText = this.clipboardButtonText;
     }, 5000);
   };
 
@@ -268,7 +272,7 @@ export class SpxCode {
             class={styleClipboard}
             onClick={this.onClickClipboard}
           >
-            Copy
+            {this.clipboardButtonText}
           </button>
         )}
       </Host>

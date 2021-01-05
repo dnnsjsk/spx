@@ -16398,6 +16398,8 @@ const SpxCode = class extends HTMLElement {
     this.clipboardButtonFontSize = '12px';
     this.clipboardButtonFontWeight = 600;
     this.clipboardButtonPadding = '6px 12px';
+    this.clipboardButtonText = 'Copy';
+    this.clipboardButtonTextCopied = 'Copied!';
     this.clipboardButtonTextTransform = 'uppercase';
     this.display = 'block';
     this.fontSize = 'clamp(12px, 1.6vw, 16px)';
@@ -16421,11 +16423,11 @@ const SpxCode = class extends HTMLElement {
      */
     this.type = 'markup';
     this.onClickClipboard = () => {
-      /** Copy the code to the data-attribute and change button text.. */
+      /** Copy the code to the data-attribute and change button text. */
       this.clipboardButton.setAttribute('data-clipboard-text', this.el.querySelector('pre').innerText);
-      this.clipboardButton.innerText = 'Copied!';
+      this.clipboardButton.innerText = this.clipboardButtonTextCopied;
       setTimeout(() => {
-        this.clipboardButton.innerText = 'Copy';
+        this.clipboardButton.innerText = this.clipboardButtonText;
       }, 5000);
     };
   }
@@ -16510,7 +16512,7 @@ const SpxCode = class extends HTMLElement {
       borderBottomLeftRadius: setVar(tag$3, 'border-radius', this.borderRadius),
       borderTopRightRadius: setVar(tag$3, 'border-radius', this.borderRadius),
     });
-    return (h$1(Host, { class: styleHost }, h$1("pre", { class: this.lineNumbers && 'line-numbers' }, h$1("code", { class: 'language-' + this.type }, h$1("slot", null))), this.clipboard && (h$1("button", { ref: (el) => (this.clipboardButton = el), class: styleClipboard, onClick: this.onClickClipboard }, "Copy"))));
+    return (h$1(Host, { class: styleHost }, h$1("pre", { class: this.lineNumbers && 'line-numbers' }, h$1("code", { class: 'language-' + this.type }, h$1("slot", null))), this.clipboard && (h$1("button", { ref: (el) => (this.clipboardButton = el), class: styleClipboard, onClick: this.onClickClipboard }, this.clipboardButtonText))));
   }
   get el() { return this; }
   static get style() { return {
@@ -21177,6 +21179,28 @@ const properties$3 = [
 		description: "",
 		"default": "'6px 12px'",
 		defaultValue: "'6px 12px'",
+		tags: [
+		]
+	},
+	{
+		id: "code-clipboardButtonText",
+		name: "clipboardButtonText",
+		attribute: "clipboard-button-text",
+		type: "string",
+		description: "",
+		"default": "'Copy'",
+		defaultValue: "'Copy'",
+		tags: [
+		]
+	},
+	{
+		id: "code-clipboardButtonTextCopied",
+		name: "clipboardButtonTextCopied",
+		attribute: "clipboard-button-text-copied",
+		type: "string",
+		description: "",
+		"default": "'Copied!'",
+		defaultValue: "'Copied!'",
 		tags: [
 		]
 	},
@@ -37493,7 +37517,7 @@ const IonIcon = /*@__PURE__*/proxyCustomElement(Icon, [1,"ion-icon",{"mode":[102
 const SpxAccordion$1 = /*@__PURE__*/proxyCustomElement(SpxAccordion, [4,"spx-accordion",{"contentColor":[513,"content-color"],"contentText":[513,"content-text"],"contentTextTag":[513,"content-text-tag"],"contentTransitionDuration":[513,"content-transition-duration"],"contentTransitionTimingFunction":[513,"content-transition-timing-function"],"disableAnimation":[516,"disable-animation"],"fontSize":[513,"font-size"],"gap":[513],"headerColor":[513,"header-color"],"headerGap":[513,"header-gap"],"headerText":[513,"header-text"],"headerTextOpen":[513,"header-text-open"],"headerTextTag":[513,"header-text-tag"],"indicatorIcon":[513,"indicator-icon"],"indicatorIconType":[513,"indicator-icon-type"],"indicatorIconTransform":[513,"indicator-icon-transform"],"link":[513],"linkType":[513,"link-type"],"openState":[516,"open"],"reverse":[516],"contentCustom":[32],"headerCustom":[32],"headerHeight":[32]},[[0,"keydown","onKeydown"]]]);
 const SpxAnimate$1 = /*@__PURE__*/proxyCustomElement(SpxAnimate, [4,"spx-animate",{"delay":[2],"duration":[2],"ease":[1],"once":[4],"opacity":[2],"repeat":[2],"repeatDelay":[2,"repeat-delay"],"reverse":[4],"stagger":[2],"target":[1],"viewport":[4],"viewportMarginBottom":[1,"viewport-margin-bottom"],"viewportMarginLeft":[1,"viewport-margin-left"],"viewportMarginRight":[1,"viewport-margin-right"],"viewportMarginTop":[1,"viewport-margin-top"],"x":[2],"y":[2],"yoyo":[4],"display":[513],"elements":[32],"tl":[32]}]);
 const SpxClassToggle$1 = /*@__PURE__*/proxyCustomElement(SpxClassToggle, [4,"spx-class-toggle",{"display":[513],"local":[513],"target":[513],"toggle":[513],"classesArray":[32],"toggled":[32]}]);
-const SpxCode$1 = /*@__PURE__*/proxyCustomElement(SpxCode, [36,"spx-code",{"background":[513],"borderRadius":[513,"border-radius"],"clipboard":[516],"clipboardButtonBackground":[513,"clipboard-button-background"],"clipboardButtonColor":[513,"clipboard-button-color"],"clipboardButtonFontSize":[513,"clipboard-button-font-size"],"clipboardButtonFontWeight":[520,"clipboard-button-font-weight"],"clipboardButtonPadding":[513,"clipboard-button-padding"],"clipboardButtonTextTransform":[513,"clipboard-button-text-transform"],"display":[513],"fontSize":[513,"font-size"],"height":[513],"hideScrollbar":[516,"hide-scrollbar"],"lineNumbers":[516,"line-numbers"],"lineNumbersBackground":[513,"line-numbers-background"],"lineNumbersColor":[513,"line-numbers-color"],"maxWidth":[513,"max-width"],"overflow":[513],"padding":[513],"theme":[513],"type":[513]}]);
+const SpxCode$1 = /*@__PURE__*/proxyCustomElement(SpxCode, [36,"spx-code",{"background":[513],"borderRadius":[513,"border-radius"],"clipboard":[516],"clipboardButtonBackground":[513,"clipboard-button-background"],"clipboardButtonColor":[513,"clipboard-button-color"],"clipboardButtonFontSize":[513,"clipboard-button-font-size"],"clipboardButtonFontWeight":[520,"clipboard-button-font-weight"],"clipboardButtonPadding":[513,"clipboard-button-padding"],"clipboardButtonText":[513,"clipboard-button-text"],"clipboardButtonTextCopied":[513,"clipboard-button-text-copied"],"clipboardButtonTextTransform":[513,"clipboard-button-text-transform"],"display":[513],"fontSize":[513,"font-size"],"height":[513],"hideScrollbar":[516,"hide-scrollbar"],"lineNumbers":[516,"line-numbers"],"lineNumbersBackground":[513,"line-numbers-background"],"lineNumbersColor":[513,"line-numbers-color"],"maxWidth":[513,"max-width"],"overflow":[513],"padding":[513],"theme":[513],"type":[513]}]);
 const SpxContainer$1 = /*@__PURE__*/proxyCustomElement(SpxContainer, [0,"spx-container",{"bpMobile":[514,"bp-mobile"],"buttonBackgroundPrimary":[514,"button-background-primary"],"buttonBackgroundSecondary":[514,"button-background-secondary"],"buttonBorderRadius":[513,"button-border-radius"],"buttonColorPrimary":[514,"button-color-primary"],"buttonColorSecondary":[514,"button-color-secondary"],"buttonFontSizeMin":[514,"button-font-size-min"],"buttonFontSizeMax":[514,"button-font-size-max"],"buttonFontWeight":[513,"button-font-weight"],"buttonMarginXMin":[514,"button-margin-x-min"],"buttonMarginXMax":[514,"button-margin-x-max"],"buttonMarginTopMin":[514,"button-margin-top-min"],"buttonMarginTopMax":[514,"button-margin-top-max"],"buttonPaddingXMin":[514,"button-padding-x-min"],"buttonPaddingXMax":[514,"button-padding-x-max"],"buttonPaddingYMin":[514,"button-padding-y-min"],"buttonPaddingYMax":[514,"button-padding-y-max"],"buttonTextTransform":[513,"button-text-transform"],"colorGray":[513,"color-gray"],"colorPrimary":[513,"color-primary"],"colorSecondary":[513,"color-secondary"],"disableColors":[516,"disable-colors"],"focusColor":[513,"focus-color"],"fontFamilyPrimary":[513,"font-family-primary"],"fontFamilySecondary":[513,"font-family-secondary"],"imageMaxWidth":[513,"image-max-width"],"linearBase":[514,"linear-base"],"linearMinW":[514,"linear-min-w"],"linearMaxW":[514,"linear-max-w"],"maxWidth":[513,"max-width"],"maxWidthMobile":[513,"max-width-mobile"],"offsetHeader":[516,"offset-header"],"paddingX":[513,"padding-x"],"paddingXSm":[513,"padding-x-sm"],"paddingYMin":[514,"padding-y-min"],"paddingYMax":[514,"padding-y-max"],"paddingYFirstMin":[514,"padding-y-first-min"],"paddingYFirstMax":[514,"padding-y-first-max"],"paddingYMaxWidth":[514,"padding-y-max-width"],"paddingYMultiplier":[514,"padding-y-multiplier"],"preTitleBackground":[513,"pre-title-background"],"preTitleBorderRadius":[513,"pre-title-border-radius"],"preTitleColor":[513,"pre-title-color"],"preTitleFontSizeMin":[514,"pre-title-font-size-min"],"preTitleFontSizeMax":[514,"pre-title-font-size-max"],"preTitleFontWeight":[513,"pre-title-font-weight"],"preTitleLetterSpacing":[513,"pre-title-letter-spacing"],"preTitleLineHeight":[513,"pre-title-line-height"],"preTitleMarginBottomMin":[514,"pre-title-margin-bottom-min"],"preTitleMarginBottomMax":[514,"pre-title-margin-bottom-max"],"preTitlePaddingXMin":[514,"pre-title-padding-x-min"],"preTitlePaddingXMax":[514,"pre-title-padding-x-max"],"preTitlePaddingYMin":[514,"pre-title-padding-y-min"],"preTitlePaddingYMax":[514,"pre-title-padding-y-max"],"preTitleTextTransform":[513,"pre-title-text-transform"],"tabsMarginTopMin":[514,"tabs-margin-top-min"],"tabsMarginTopMax":[514,"tabs-margin-top-max"],"tabsFirstMarginTopMin":[514,"tabs-first-margin-top-min"],"tabsFirstMarginTopMax":[514,"tabs-first-margin-top-max"],"tabsOpacity":[514,"tabs-opacity"],"textColor":[513,"text-color"],"textFontSizeMin":[514,"text-font-size-min"],"textFontSizeMax":[514,"text-font-size-max"],"textFontWeight":[513,"text-font-weight"],"textLetterSpacing":[513,"text-letter-spacing"],"textLineHeight":[513,"text-line-height"],"textLinkDecorationColor":[513,"text-link-decoration-color"],"textLinkDecorationColorHover":[513,"text-link-decoration-color-hover"],"textMarginTopMin":[514,"text-margin-top-min"],"textMarginTopMax":[514,"text-margin-top-max"],"textMaxWidth":[513,"text-max-width"],"textTransform":[513,"text-transform"],"titleColor":[513,"title-color"],"titleFontSizeMin":[514,"title-font-size-min"],"titleFontSizeMax":[514,"title-font-size-max"],"titleFontWeight":[514,"title-font-weight"],"titleLetterSpacing":[513,"title-letter-spacing"],"titleLineHeight":[513,"title-line-height"],"titleMaxWidth":[513,"title-max-width"],"titleTextTransform":[513,"title-text-transform"]},[[9,"resize","onResize"]]]);
 const SpxEdit$1 = /*@__PURE__*/proxyCustomElement(SpxEdit, [4,"spx-edit",{"display":[513],"name":[513],"outline":[513],"outlineFocus":[513,"outline-focus"],"placeholder":[513],"placeholderColor":[513,"placeholder-color"],"placeholderOpacity":[513,"placeholder-opacity"],"subfield":[516],"type":[513],"editable":[516],"originalText":[32],"subfieldArray":[32]},[[0,"keydown","onClickEnter"],[4,"spxEditButtonDiscard","onClickDiscard"],[4,"spxEditButtonSave","onClickSave"],[0,"keyup","onClickKeyup"]]]);
 const SpxEditButton$1 = /*@__PURE__*/proxyCustomElement(SpxEditButton, [4,"spx-edit-button",{"test":[4],"background":[513],"backgroundDiscard":[513,"background-discard"],"border":[513],"borderRadius":[513,"border-radius"],"color":[513],"colorDiscard":[513,"color-discard"],"distanceX":[513,"distance-x"],"distanceY":[513,"distance-y"],"editId":[513,"edit-id"],"fontFamily":[513,"font-family"],"fontSize":[513,"font-size"],"gap":[513],"padding":[513],"position":[513],"positionCss":[513,"position-css"],"textDiscard":[513,"text-discard"],"textEdit":[513,"text-edit"],"textSave":[513,"text-save"],"textSuccess":[513,"text-success"],"zIndex":[514,"z-index"],"loading":[32],"open":[32],"positionArray":[32]}]);

@@ -17,6 +17,8 @@
 | `clipboardButtonFontSize`      | `clipboard-button-font-size`      |                                      | `string`  | `'12px'`                      |
 | `clipboardButtonFontWeight`    | `clipboard-button-font-weight`    |                                      | `any`     | `600`                         |
 | `clipboardButtonPadding`       | `clipboard-button-padding`        |                                      | `string`  | `'6px 12px'`                  |
+| `clipboardButtonText`          | `clipboard-button-text`           |                                      | `string`  | `'Copy'`                      |
+| `clipboardButtonTextCopied`    | `clipboard-button-text-copied`    |                                      | `string`  | `'Copied!'`                   |
 | `clipboardButtonTextTransform` | `clipboard-button-text-transform` |                                      | `string`  | `'uppercase'`                 |
 | `display`                      | `display`                         |                                      | `string`  | `'block'`                     |
 | `fontSize`                     | `font-size`                       |                                      | `string`  | `'clamp(12px, 1.6vw, 16px)'`  |
