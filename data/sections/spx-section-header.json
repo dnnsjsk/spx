@@ -39,6 +39,14 @@
       "tags": []
     },
     {
+      "id": "section-header-hasScrolled",
+      "name": "hasScrolled",
+      "attribute": "has-scrolled",
+      "type": "boolean",
+      "description": "",
+      "tags": []
+    },
+    {
       "id": "section-header-logoLink",
       "name": "logoLink",
       "attribute": "logo-link",
@@ -113,14 +121,6 @@
       "attribute": "position",
       "type": "\"fixed\" | \"static\"",
       "description": "Component positioning.",
-      "tags": []
-    },
-    {
-      "id": "section-header-wrapper",
-      "name": "wrapper",
-      "attribute": "wrapper",
-      "type": "boolean",
-      "description": "",
       "tags": []
     },
     {

@@ -112,6 +112,12 @@ export class SpxSectionButton {
     /** Host styles. */
 
     const styleHost = css({
+      display: 'block',
+    });
+
+    /** Link styles. */
+
+    const styleLink = css({
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -154,8 +160,8 @@ export class SpxSectionButton {
     });
 
     return (
-      <Host>
-        <a class={styleHost} href={this.href} target={this.target}>
+      <Host class={styleHost}>
+        <a class={styleLink} href={this.href} target={this.target}>
           {/** Icon. */}
           {this.icon && <spx-icon class={styleIcon} icon={this.icon} />}
 

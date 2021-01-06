@@ -964,6 +964,7 @@ export namespace Components {
          */
         "backgroundScroll": number;
         "borderBottom": string;
+        "hasScrolled": boolean;
         /**
           * URL the logo links to.
          */
@@ -988,7 +989,6 @@ export namespace Components {
           * Component positioning.
          */
         "position": 'fixed' | 'static';
-        "wrapper": boolean;
         "zIndex": number;
     }
     interface SpxSectionTwoColumn {
@@ -2677,6 +2677,7 @@ declare namespace LocalJSX {
          */
         "backgroundScroll"?: number;
         "borderBottom"?: string;
+        "hasScrolled"?: boolean;
         /**
           * URL the logo links to.
          */
@@ -2705,7 +2706,6 @@ declare namespace LocalJSX {
           * Component positioning.
          */
         "position"?: 'fixed' | 'static';
-        "wrapper"?: boolean;
         "zIndex"?: number;
     }
     interface SpxSectionTwoColumn {

@@ -19,9 +19,6 @@ spx-code {
     z-index: 0;
     width: 3.5em; /* works for line-numbers below 1000 lines */
     letter-spacing: -1px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
   }
 
@@ -41,18 +38,12 @@ spx-code {
   code[class*="language-"],
   pre[class*="language-"] {
     color: #a9b7c6;
-    direction: ltr;
     text-align: left;
     white-space: pre;
     word-spacing: normal;
     word-break: normal;
     line-height: 1.5;
-    -moz-tab-size: 4;
-    -o-tab-size: 4;
     tab-size: 4;
-    -webkit-hyphens: none;
-    -moz-hyphens: none;
-    -ms-hyphens: none;
     hyphens: none;
 
     * {
@@ -60,15 +51,18 @@ spx-code {
     }
   }
 
-  pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
-  code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
-    color: inherit;
-    background: rgba(33, 66, 131, .85);
+  pre[class*="language-"] code {
+    display: block;
+    position: relative;
   }
 
-  pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
-  code[class*="language-"]::selection, code[class*="language-"] ::selection {
-    color: inherit;
-    background: rgba(33, 66, 131, .85);
+  pre[class*="language-"] code:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
   }
 }

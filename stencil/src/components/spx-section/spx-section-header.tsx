@@ -6,7 +6,6 @@ import {
   Host,
   Prop,
   Listen,
-  State,
   Event,
   EventEmitter,
 } from '@stencil/core';
@@ -31,8 +30,6 @@ export class SpxSectionHeader {
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxSectionHeaderElement;
 
-  @State() bgScroll;
-
   @Prop({ reflect: true }) backdropFilter: string = 'blur(10px)';
 
   @Prop({ reflect: true }) background: string = 'rgba(255,255,255,0.85)';
@@ -42,6 +39,8 @@ export class SpxSectionHeader {
   @Prop({ reflect: true }) backgroundScroll: number;
 
   @Prop({ reflect: true }) borderBottom: string;
+
+  @Prop({ reflect: true }) hasScrolled: boolean;
 
   /** URL the logo links to. */
 
@@ -72,8 +71,6 @@ export class SpxSectionHeader {
 
   @Prop({ reflect: true }) paddingYMax: number = 1;
 
-  @Prop({ reflect: true }) wrapper: boolean;
-
   @Prop({ reflect: true }) zIndex: number = 102;
 
   /** Fires after component has loaded. */
@@ -85,7 +82,7 @@ export class SpxSectionHeader {
   @Listen('scroll', { target: 'window' })
   onScroll() {
     if (this.backgroundScroll) {
-      this.bgScroll = window.scrollY > this.backgroundScroll;
+      this.hasScrolled = window.scrollY > this.backgroundScroll;
     }
   }
 
@@ -110,11 +107,11 @@ export class SpxSectionHeader {
     const styleHost = css({
       maxWidth: '2560px',
       background:
-        this.backgroundScroll && !this.bgScroll
+        this.backgroundScroll && !this.hasScrolled
           ? 'none'
           : setVar(tag, 'background', this.background),
       backdropFilter:
-        this.backgroundScroll && !this.bgScroll
+        this.backgroundScroll && !this.hasScrolled
           ? 'none'
           : setVar(tag, 'backdrop-filter', this.backdropFilter),
       position: this.position,
@@ -154,7 +151,8 @@ export class SpxSectionHeader {
       marginLeft: state.bpMobile
         ? '16px'
         : this.navigationAlign === 'right' && !state.bpMobile && 'auto',
-      marginRight: this.navigationAlign === 'right' && '32px',
+      marginRight:
+        this.navigationAlign === 'right' && 'clamp(48px, 2.4vw, 80px)',
     });
 
     /** Button styles. */
@@ -162,6 +160,16 @@ export class SpxSectionHeader {
     const styleButtons = css({
       justifySelf: 'end',
       marginLeft: state.bpMobile && 'auto',
+
+      '*': {
+        marginTop: '0 !important',
+      },
+    });
+
+    /** Logo wrap styles. */
+
+    const styleLogoWrap = css({
+      position: 'relative',
     });
 
     /** Logo styles. */
@@ -169,27 +177,31 @@ export class SpxSectionHeader {
     const styleLogo = css({
       display: 'block',
       maxWidth: 'max-content',
+      cursor: 'pointer',
     });
 
     return (
-      <Host class={!this.wrapper && styleHost}>
-        {!this.wrapper && [
-          <div>
-            <a href={this.logoLink} class={styleLogo}>
-              {state.bpMobile && this.logoSrcMobile ? (
-                <img class={styleImg} src={this.logoSrcMobile} alt="logo" />
-              ) : (
-                <img class={styleImg} src={this.logoSrc} alt="logo" />
-              )}
-            </a>
-          </div>,
-          <div class={styleNavigation}>
-            <slot name="navigation" />
-          </div>,
-          <div class={styleButtons}>
-            <slot name="buttons" />
-          </div>,
-        ]}
+      <Host class={styleHost}>
+        <div class={styleLogoWrap}>
+          <a href={this.logoLink} class={styleLogo}>
+            {state.bpMobile && this.logoSrcMobile ? (
+              <img
+                class={styleImg}
+                src={this.logoSrcMobile}
+                alt="logo-mobile"
+              />
+            ) : (
+              <img class={styleImg} src={this.logoSrc} alt="logo" />
+            )}
+          </a>
+          <slot name="logo-after" />
+        </div>
+        <div class={styleNavigation}>
+          <slot name="navigation" />
+        </div>
+        <div class={styleButtons}>
+          <slot name="buttons" />
+        </div>
         <slot />
       </Host>
     );

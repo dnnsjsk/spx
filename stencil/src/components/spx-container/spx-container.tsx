@@ -460,7 +460,7 @@ export class SpxContainer {
         fontFamily: setVar(tag, 'title-font-family', state.fontFamilyPrimary),
       },
 
-      'p:not(.spx-e), [data-spx-tabs-header]:not(.spx-e)': {
+      'p:not(.spx-e), [data-spx-tabs-header]:not(.spx-e), ul': {
         ...s.text(
           tag,
           'text',
@@ -474,13 +474,8 @@ export class SpxContainer {
         ),
         background: 'none',
         maxWidth: setVar(tag, 'text-max-width', this.textMaxWidth),
-        marginTop: setClamp(
-          tag,
-          'text-margin-top',
-          this.textMarginTopMin,
-          this.textMarginTopMax
-        ),
         fontFamily: setVar(tag, 'text-font-family', state.fontFamilySecondary),
+        listStyleType: 'circle',
       },
 
       'p a': {
@@ -499,6 +494,19 @@ export class SpxContainer {
             this.textLinkDecorationColorHover
           ),
         },
+      },
+
+      'h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p, p + p, ul + p, p + ul': {
+        marginTop: setClamp(
+          tag,
+          'text-margin-top',
+          this.textMarginTopMin,
+          this.textMarginTopMax
+        ),
+      },
+
+      ul: {
+        marginLeft: '1em',
       },
     };
 
