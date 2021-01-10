@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 3.0.3 =
+* Fix: plugin version
+
 = 3.0.2 =
 * Fix: make 'tested up to version' 5.6
 * Image comparison: add lazy load functionality
