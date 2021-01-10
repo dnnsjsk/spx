@@ -16489,7 +16489,7 @@ const SpxCode = class extends HTMLElement {
             position: 'absolute',
             left: 0,
             width: '100%',
-            height: 'calc(100% + 4px)',
+            height: 'calc(100% + 2px)',
             zIndex: -1,
             background: setVar(tag$3, 'line-numbers-background', this.lineNumbersBackground),
           },
@@ -16538,7 +16538,7 @@ const offsetHeader = (el, target) => {
   }
 };
 
-const spxContainerCss = "spx-container *{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;box-sizing:border-box}spx-container blockquote,spx-container dl,spx-container dd,spx-container h1,spx-container h2,spx-container h3,spx-container h4,spx-container h5,spx-container h6,spx-container figure,spx-container p,spx-container pre,spx-container form{margin:0}spx-container fieldset,spx-container legend{border:none;margin:0;padding:0}spx-container button{border:none}spx-container h1,spx-container h2,spx-container h3,spx-container h4,spx-container h5,spx-container h6{font-size:inherit;font-weight:inherit}spx-container a{color:inherit;text-decoration:inherit}spx-container ol,spx-container ul{list-style:none;margin:0;padding:0}spx-container img,spx-container svg,spx-container video,spx-container canvas,spx-container audio,spx-container iframe,spx-container embed,spx-container object{display:block;vertical-align:middle}";
+const spxContainerCss = "spx-container *{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;box-sizing:border-box}spx-container body{margin:0}spx-container blockquote,spx-container dl,spx-container dd,spx-container h1,spx-container h2,spx-container h3,spx-container h4,spx-container h5,spx-container h6,spx-container figure,spx-container p,spx-container pre,spx-container form{margin:0}spx-container fieldset,spx-container legend{border:none;margin:0;padding:0}spx-container button{border:none}spx-container h1,spx-container h2,spx-container h3,spx-container h4,spx-container h5,spx-container h6{font-size:inherit;font-weight:inherit}spx-container a{color:inherit;text-decoration:inherit}spx-container ol,spx-container ul{list-style:none;margin:0;padding:0}spx-container img,spx-container svg,spx-container video,spx-container canvas,spx-container audio,spx-container iframe,spx-container embed,spx-container object{display:block;vertical-align:middle}";
 
 const tag$4 = 'spx-container';
 const SpxContainer = class extends HTMLElement {
@@ -21943,6 +21943,15 @@ const properties$7 = [
 		]
 	},
 	{
+		id: "image-comparison-loading",
+		name: "loading",
+		attribute: "loading",
+		type: "\"auto\" | \"eager\" | \"lazy\"",
+		description: "Lazy load attribute.",
+		tags: [
+		]
+	},
+	{
 		id: "image-comparison-srcAfter",
 		name: "srcAfter",
 		attribute: "src-after",
@@ -25126,9 +25135,9 @@ const SpxImageComparison = class extends HTMLElement {
     });
     return (h$1(Host, { class: styleHost }, this.srcBefore &&
       this.srcAfter /** Before. */ && [
-      h$1("div", { ref: (el) => (this.container = el), class: styleContainer }, h$1("img", { class: styleImage, src: this.srcBefore, alt: "before" })),
+      h$1("div", { ref: (el) => (this.container = el), class: styleContainer }, h$1("img", { loading: this.loading, class: styleImage, src: this.srcBefore, alt: "before" })),
       /** After. */
-      h$1("div", { ref: (el) => (this.imageAfter = el), class: css([styleContainer, styleImageAfter]) }, h$1("img", { class: styleImage, src: this.srcAfter, alt: "after" })),
+      h$1("div", { ref: (el) => (this.imageAfter = el), class: css([styleContainer, styleImageAfter]) }, h$1("img", { loading: this.loading, class: styleImage, src: this.srcAfter, alt: "after" })),
       /** Scroller. */
       h$1("div", { ref: (el) => (this.scroller = el), class: styleScroller }, h$1("div", { class: styleThumb }, h$1("spx-icon", { icon: "resize", size: "32px", color: this.iconColor }))),
     ]));
@@ -37539,7 +37548,7 @@ const SpxEditor$1 = /*@__PURE__*/proxyCustomElement(SpxEditor, [0,"spx-editor",{
 const SpxGroup$1 = /*@__PURE__*/proxyCustomElement(SpxGroup, [4,"spx-group",{"display":[513],"target":[513]}]);
 const SpxIcon$1 = /*@__PURE__*/proxyCustomElement(SpxIcon, [0,"spx-icon",{"color":[513],"icon":[513],"type":[513],"size":[513]}]);
 const SpxIframe$1 = /*@__PURE__*/proxyCustomElement(SpxIframe, [4,"spx-iframe",{"display":[513],"documentBorder":[513,"document-border"],"documentBorderRadius":[513,"document-border-radius"],"documentHeight":[513,"document-height"],"documentWidth":[513,"document-width"],"fit":[4],"lazy":[4],"size":[1],"src":[1],"type":[1],"height":[32],"loaded":[32],"parent":[32],"parentHeight":[32],"width":[32]},[[9,"resize","onResize"]]]);
-const SpxImageComparison$1 = /*@__PURE__*/proxyCustomElement(SpxImageComparison, [0,"spx-image-comparison",{"color":[513],"height":[513],"iconColor":[513,"icon-color"],"srcAfter":[513,"src-after"],"srcBefore":[513,"src-before"],"start":[514],"active":[32],"width":[32]},[[9,"resize","onResize"]]]);
+const SpxImageComparison$1 = /*@__PURE__*/proxyCustomElement(SpxImageComparison, [0,"spx-image-comparison",{"color":[513],"height":[513],"iconColor":[513,"icon-color"],"loading":[513],"srcAfter":[513,"src-after"],"srcBefore":[513,"src-before"],"start":[514],"active":[32],"width":[32]},[[9,"resize","onResize"]]]);
 const SpxLightbox$1 = /*@__PURE__*/proxyCustomElement(SpxLightbox, [0,"spx-lightbox",{"display":[513],"height":[513],"overlayColor":[513,"overlay-color"],"width":[513]}]);
 const SpxLoader$1 = /*@__PURE__*/proxyCustomElement(SpxLoader, [0,"spx-loader",{"color":[513],"speed":[513]}]);
 const SpxMasonry$1 = /*@__PURE__*/proxyCustomElement(SpxMasonry, [4,"spx-masonry",{"bpColumns":[513,"bp-columns"],"columns":[514],"gap":[513],"imageSize":[513,"image-size"],"images":[513],"imagesSrc":[513,"images-src"],"bpColumnsObject":[32],"imagesArray":[32],"macyState":[32]}]);

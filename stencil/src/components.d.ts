@@ -515,6 +515,10 @@ export namespace Components {
         "color": string;
         "height": string;
         "iconColor": string;
+        /**
+          * Lazy load attribute.
+         */
+        "loading": 'auto' | 'lazy' | 'eager';
         "reload": () => Promise<void>;
         /**
           * Image URL of the before image.
@@ -2200,6 +2204,10 @@ declare namespace LocalJSX {
         "color"?: string;
         "height"?: string;
         "iconColor"?: string;
+        /**
+          * Lazy load attribute.
+         */
+        "loading"?: 'auto' | 'lazy' | 'eager';
         /**
           * Fires after component has loaded.
          */

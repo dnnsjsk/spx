@@ -41,6 +41,10 @@ export class SpxImageComparison {
 
   @Prop({ reflect: true }) iconColor: string = 'var(--spx-color-gray-900)';
 
+  /** Lazy load attribute. */
+
+  @Prop({ reflect: true }) loading: 'auto' | 'lazy' | 'eager';
+
   /** Image URL of the before image. */
 
   @Prop({ reflect: true }) srcAfter: string =
@@ -261,7 +265,12 @@ export class SpxImageComparison {
               ref={(el) => (this.container = el as HTMLElement)}
               class={styleContainer}
             >
-              <img class={styleImage} src={this.srcBefore} alt="before" />
+              <img
+                loading={this.loading}
+                class={styleImage}
+                src={this.srcBefore}
+                alt="before"
+              />
             </div>,
 
             /** After. */
@@ -270,7 +279,12 @@ export class SpxImageComparison {
               ref={(el) => (this.imageAfter = el as HTMLElement)}
               class={css([styleContainer, styleImageAfter])}
             >
-              <img class={styleImage} src={this.srcAfter} alt="after" />
+              <img
+                loading={this.loading}
+                class={styleImage}
+                src={this.srcAfter}
+                alt="after"
+              />
             </div>,
 
             /** Scroller. */

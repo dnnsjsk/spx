@@ -1,7 +1,7 @@
 === spx ===
 Contributors: dnnsjsk
 Requires at least: 5.0
-Tested up to: 5.5.3
+Tested up to: 5.6
 Requires PHP: 7.0
 Stable tag: 2.0
 License: GPLv2 or later
@@ -14,6 +14,10 @@ A web component page builder for WordPress developers like you!
 Supercharge your workflow using handy components for the next project. Works with any theme, browser and existing code.
 
 == Changelog ==
+
+= 3.0.2 =
+* Fix: make 'tested up to version' 5.6
+* Image comparison: add lazy load functionality
 
 = 3.0.1 =
 * Code: add 'clipboard-button-text' attribute

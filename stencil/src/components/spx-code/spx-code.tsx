@@ -204,7 +204,7 @@ export class SpxCode {
             position: 'absolute',
             left: 0,
             width: '100%',
-            height: 'calc(100% + 4px)',
+            height: 'calc(100% + 2px)',
             zIndex: -1,
             background: setVar(
               tag,

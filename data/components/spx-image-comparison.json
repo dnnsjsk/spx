@@ -33,6 +33,14 @@
       "tags": []
     },
     {
+      "id": "image-comparison-loading",
+      "name": "loading",
+      "attribute": "loading",
+      "type": "\"auto\" | \"eager\" | \"lazy\"",
+      "description": "Lazy load attribute.",
+      "tags": []
+    },
+    {
       "id": "image-comparison-srcAfter",
       "name": "srcAfter",
       "attribute": "src-after",
