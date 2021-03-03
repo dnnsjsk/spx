@@ -1,4 +1,3 @@
-import { resizeObserver } from './resizeObserver';
 import { mutationObserver } from './mutationObserver';
 
 /**
@@ -6,8 +5,6 @@ import { mutationObserver } from './mutationObserver';
  */
 
 export const globalComponentDidLoad = (el) => {
-  resizeObserver(el);
-
   /** Mark that component has been loaded. */
 
   el.setAttribute('has-loaded', '');
@@ -18,7 +15,8 @@ export const globalComponentDidLoad = (el) => {
     el.tagName !== 'SPX-TYPEWRITER' &&
     el.tagName !== 'SPX-ANIMATE' &&
     el.tagName !== 'SPX-LIGHTBOX' &&
-    el.tagName !== 'SPX-PAGE-DOCS'
+    el.tagName !== 'SPX-DOCS' &&
+    el.tagName !== 'SPX-CODE'
   ) {
     mutationObserver(
       el,

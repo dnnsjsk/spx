@@ -22,6 +22,16 @@
 
 ## Methods
 
+### `recalc() => Promise<void>`
+
+Recalculate distance.
+
+#### Returns
+
+Type: `Promise<void>`
+
+
+
 ### `reload() => Promise<void>`
 
 

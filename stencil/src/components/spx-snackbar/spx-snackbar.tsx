@@ -16,6 +16,7 @@ import * as s from '../../constants/style';
 import { position } from '../../constants/style';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
+import { setVarOrClamp } from '../../utils/setVarOrClamp';
 
 const tag = 'spx-snackbar';
 
@@ -36,10 +37,18 @@ export class SpxSnackbar {
   @State() positionArray;
 
   @Prop({ reflect: true }) animationDelay: string = '200ms';
+
   @Prop({ reflect: true }) animationDuration: string = '2000ms';
+
   @Prop({ reflect: true }) background: string = 'var(--spx-color-gray-900)';
+
   @Prop({ reflect: true }) border: string;
+
   @Prop({ reflect: true }) borderRadius: string = s.borderRadius;
+
+  @Prop({ reflect: true }) classButton: string;
+
+  @Prop({ reflect: true }) classText: string;
 
   /** Adds option to close snackbar after its creation. */
 
@@ -70,6 +79,10 @@ export class SpxSnackbar {
 
   @Prop({ reflect: true }) fontSize: string = '18px';
 
+  @Prop({ reflect: true }) fontSizeMin: number = 1;
+
+  @Prop({ reflect: true }) fontSizeMax: number = 1.6;
+
   /**
    * Unique identifier for snackbar instance.
    * @editor '#components'
@@ -78,6 +91,10 @@ export class SpxSnackbar {
   @Prop({ reflect: true }) identifier: string = 'primary';
 
   @Prop({ reflect: true }) padding: string = '1em';
+
+  @Prop({ reflect: true }) paddingMin: number = 1;
+
+  @Prop({ reflect: true }) paddingMax: number = 1.4;
 
   /**
    * Component position in page.
@@ -104,6 +121,13 @@ export class SpxSnackbar {
   /** Space between snackbars. */
 
   @Prop({ reflect: true }) spaceBetween: string = '12px';
+
+  /**
+   * Styling.
+   * @choice 'default', 'fluid', 'headless'
+   */
+
+  @Prop({ reflect: true }) styling: string = 'default';
 
   /**
    * Element where snackbars should be created in.
@@ -257,55 +281,98 @@ export class SpxSnackbar {
 
     /** Host styles. */
 
-    const styleHost = css({
-      display: 'flex',
-      flexDirection: !this.reverse ? 'row-reverse' : 'row',
-      alignItems: 'center',
-      userSelect: 'none',
-      paddingTop: setVar(tag, 'padding', this.padding),
-      paddingRight:
-        (this.reverse || !this.closeable) &&
-        setVar(tag, 'padding', this.padding),
-      paddingBottom: setVar(tag, 'padding', this.padding),
-      paddingLeft:
-        this.closeable && this.reverse
-          ? 0
-          : setVar(tag, 'padding', this.padding),
-      opacity: 0,
-      color: setVar(tag, 'color', this.color),
-      background: setVar(tag, 'background', this.background),
-      border: setVar(tag, 'border', this.border),
-      borderRadius: setVar(tag, 'border-radius', this.borderRadius),
-      animation: !this.fixed ? kfOut : kfIn,
-      animationDelay: setVar(tag, 'animation-delay', this.animationDelay),
-      animationDuration: setVar(
-        tag,
-        'animation-duration',
-        this.animationDuration
-      ),
-      animationFillMode: 'forwards',
-    });
+    const styleHost =
+      (this.styling === 'default' || this.styling === 'fluid') &&
+      css({
+        display: 'flex',
+        flexDirection: !this.reverse ? 'row-reverse' : 'row',
+        alignItems: 'center',
+        userSelect: 'none',
+        paddingTop: setVarOrClamp(
+          tag,
+          'padding',
+          this.padding,
+          this.paddingMin,
+          this.paddingMax,
+          this.styling
+        ),
+        paddingRight:
+          (this.reverse || !this.closeable) &&
+          setVarOrClamp(
+            tag,
+            'padding',
+            this.padding,
+            this.paddingMin,
+            this.paddingMax,
+            this.styling
+          ),
+        paddingBottom: setVarOrClamp(
+          tag,
+          'padding',
+          this.padding,
+          this.paddingMin,
+          this.paddingMax,
+          this.styling
+        ),
+        paddingLeft:
+          this.closeable && this.reverse
+            ? 0
+            : setVarOrClamp(
+                tag,
+                'padding',
+                this.padding,
+                this.paddingMin,
+                this.paddingMax,
+                this.styling
+              ),
+        opacity: 0,
+        color: setVar(tag, 'color', this.color),
+        background: setVar(tag, 'background', this.background),
+        border: setVar(tag, 'border', this.border),
+        borderRadius: setVar(tag, 'border-radius', this.borderRadius),
+        animation: !this.fixed ? kfOut : kfIn,
+        animationDelay: setVar(tag, 'animation-delay', this.animationDelay),
+        animationDuration: setVar(
+          tag,
+          'animation-duration',
+          this.animationDuration
+        ),
+        animationFillMode: 'forwards',
+      });
 
     /** Button styles. */
 
-    const styleButton = css({
-      padding: '0 ' + setVar(tag, 'padding', this.padding) + '',
-      width: '0.7em',
-      opacity: '0.3',
-      boxSizing: 'content-box',
-      cursor: 'pointer',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-    });
+    const styleButton =
+      this.styling === 'default' || this.styling === 'fluid'
+        ? css({
+            padding: '0 ' + setVar(tag, 'padding', this.padding) + '',
+            width: '0.7em',
+            opacity: '0.3',
+            boxSizing: 'content-box',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          })
+        : this.classButton;
 
     /** Text styles. */
 
-    const styleText = css({
-      whiteSpace: 'nowrap',
-      fontFamily: s.fontFamily,
-      fontSize: setVar(tag, 'font-size', this.fontSize),
-    });
+    const styleText =
+      this.styling === 'default' || this.styling === 'fluid'
+        ? css({
+            whiteSpace: 'nowrap',
+            fontFamily: s.fontFamily,
+            fontSize: setVarOrClamp(
+              tag,
+              'font-size',
+              this.fontSize,
+              this.fontSizeMin,
+              this.fontSizeMax,
+              this.styling
+            ),
+          })
+        : this.classText;
 
     return (
       <Host class={styleHost}>

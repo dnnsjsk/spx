@@ -153,7 +153,7 @@ export class SpxMasonry {
     });
   }
 
-  /** Recalculate grid. */
+  /** Recalculates grid. */
 
   @Method()
   async recalc() {

@@ -16,7 +16,6 @@ import { css, keyframes } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
 import * as s from '../../constants/style';
 import { startsWith, fromPairs, mapKeys, camelCase } from 'lodash-es';
-import { mq } from '../../utils/mq';
 import { getGallery } from '../../utils/getGallery';
 import { setClamp } from '../../utils/setClamp';
 
@@ -487,7 +486,7 @@ export class SpxScrollspy {
             animationTimingFunction: s.transitionTimingFunction,
           },
 
-          [mq(this.bpTabs)]: {
+          [this.mq(this.bpTabs)]: {
             display: 'none',
           },
 
@@ -500,7 +499,7 @@ export class SpxScrollspy {
             background: 'var(--spx-color-primary-50)',
             border: '1px solid var(--spx-color-primary-200)',
 
-            [mq(this.bpTabs)]: {
+            [this.mq(this.bpTabs)]: {
               display: 'grid',
             },
           },
@@ -583,6 +582,10 @@ export class SpxScrollspy {
     this.el
       .querySelector('[data-spx-slider-tab-index="' + index + '"]')
       .setAttribute('data-spx-slider-tab-active', '');
+  }
+
+  private mq(value, type = 'max') {
+    return '@media (' + type + '-width: ' + value + 'px)';
   }
 
   @Method()

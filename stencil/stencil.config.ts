@@ -27,25 +27,13 @@ const toKebabCase = (str) => {
 /** Generate custom documentation. */
 
 async function generateCustomElementsJSON(docsData: JsonDocs) {
-  async function generate(
-    dir,
-    dirGlobal,
-    dirComponents,
-    dirSections,
-    dirPages
-  ) {
+  async function generate(dir, dirComponents) {
     /** Delete and create dir. */
 
     await fs.rmdir(dir, { recursive: true });
     await fs.mkdir(dir);
-    await fs.rmdir(dirGlobal, { recursive: true });
-    await fs.mkdir(dirGlobal);
     await fs.rmdir(dirComponents, { recursive: true });
     await fs.mkdir(dirComponents);
-    await fs.rmdir(dirSections, { recursive: true });
-    await fs.mkdir(dirSections);
-    await fs.rmdir(dirPages, { recursive: true });
-    await fs.mkdir(dirPages);
 
     /** Create file for each component. */
 
@@ -75,40 +63,6 @@ async function generateCustomElementsJSON(docsData: JsonDocs) {
               ? "'var(--spx-transition-duration-2)'"
               : prop.default === 's.transitionTimingFunction'
               ? "'var(--spx-transition-timing-function)'"
-              : prop.default === 'c.bpMobileWidth'
-              ? 1024
-              : prop.default === 'c.buttonBackgroundPrimary'
-              ? 500
-              : prop.default === 'c.buttonBackgroundSecondary'
-              ? 100
-              : prop.default === 'c.buttonColorPrimary'
-              ? 50
-              : prop.default === 'c.buttonColorSecondary'
-              ? 600
-              : prop.default === 'c.colorGray'
-              ? "'blue-gray'"
-              : prop.default === 'c.colorPrimary'
-              ? "'teal'"
-              : prop.default === 'c.colorSecondary'
-              ? "'pink'"
-              : prop.default === 'c.fontFamilyPrimary'
-              ? "'var(--spx-font-family-primary)'"
-              : prop.default === 'c.fontFamilySecondary'
-              ? "'var(--spx-font-family-secondary)'"
-              : prop.default === 'c.linearBase'
-              ? 16
-              : prop.default === 'c.linearMinW'
-              ? 320
-              : prop.default === 'c.linearMaxW'
-              ? 1440
-              : prop.default === 'c.maxWidth'
-              ? "'1440px'"
-              : prop.default === 'c.maxWidthMobile'
-              ? "'500px'"
-              : prop.default === 'c.paddingX'
-              ? "'var(--spx-container-padding-x)'"
-              : prop.default === 'c.paddingXSm'
-              ? "'var(--spx-container-padding-x-sm)'"
               : prop.default,
           tags: prop.docsTags,
         })),
@@ -131,45 +85,18 @@ async function generateCustomElementsJSON(docsData: JsonDocs) {
       };
 
       /** Write files. */
-
-      if (component.tag.startsWith('spx-section')) {
-        fs.writeFile(
-          dirSections + component.tag + '.json',
-          JSON.stringify(data, null, 2)
-        );
-      } else if (component.tag.startsWith('spx-page')) {
-        fs.writeFile(
-          dirPages + component.tag + '.json',
-          JSON.stringify(data, null, 2)
-        );
-      } else if (component.tag.startsWith('spx-container')) {
-        fs.writeFile(
-          dirGlobal + component.tag + '.json',
-          JSON.stringify(data, null, 2)
-        );
-      } else {
-        fs.writeFile(
-          dirComponents + component.tag + '.json',
-          JSON.stringify(data, null, 2)
-        );
-      }
+      fs.writeFile(
+        dirComponents + component.tag + '.json',
+        JSON.stringify(data, null, 2)
+      );
     });
   }
 
-  await generate(
-    './../data/',
-    './../data/global/',
-    './../data/components/',
-    './../data/sections/',
-    './../data/pages/'
-  );
+  await generate('./../data/', './../data/components/');
 
   await generate(
     './../../../themes/spx-child/documentation/',
-    './../../../themes/spx-child/documentation/global/',
-    './../../../themes/spx-child/documentation/components/',
-    './../../../themes/spx-child/documentation/sections/',
-    './../../../themes/spx-child/documentation/pages/'
+    './../../../themes/spx-child/documentation/components/'
   );
 }
 

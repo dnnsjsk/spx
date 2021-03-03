@@ -31,6 +31,41 @@
       "tags": []
     },
     {
+      "id": "icon-sizeMax",
+      "name": "sizeMax",
+      "attribute": "size-max",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "icon-sizeMin",
+      "name": "sizeMin",
+      "attribute": "size-min",
+      "type": "number",
+      "description": "",
+      "default": "0.8",
+      "defaultValue": "0.8",
+      "tags": []
+    },
+    {
+      "id": "icon-styling",
+      "name": "styling",
+      "attribute": "styling",
+      "type": "string",
+      "description": "Styling.",
+      "default": "'default'",
+      "defaultValue": "'default'",
+      "tags": [
+        {
+          "text": "'default', 'fluid'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
       "id": "icon-type",
       "name": "type",
       "attribute": "type",

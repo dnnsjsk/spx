@@ -3,6 +3,150 @@
   "description": "The classic method to show and hide elements on your website.\nCan be used with custom markup for the header and/or content section.",
   "properties": [
     {
+      "id": "accordion-classContent",
+      "name": "classContent",
+      "attribute": "class-content",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classContentActive",
+      "name": "classContentActive",
+      "attribute": "class-content-active",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classContentInactive",
+      "name": "classContentInactive",
+      "attribute": "class-content-inactive",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classContentText",
+      "name": "classContentText",
+      "attribute": "class-content-text",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classContentTextActive",
+      "name": "classContentTextActive",
+      "attribute": "class-content-text-active",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classContentTextInactive",
+      "name": "classContentTextInactive",
+      "attribute": "class-content-text-inactive",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classHeader",
+      "name": "classHeader",
+      "attribute": "class-header",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classHeaderActive",
+      "name": "classHeaderActive",
+      "attribute": "class-header-active",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classHeaderIcon",
+      "name": "classHeaderIcon",
+      "attribute": "class-header-icon",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classHeaderIconActive",
+      "name": "classHeaderIconActive",
+      "attribute": "class-header-icon-active",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classHeaderIconContainer",
+      "name": "classHeaderIconContainer",
+      "attribute": "class-header-icon-container",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classHeaderIconContainerActive",
+      "name": "classHeaderIconContainerActive",
+      "attribute": "class-header-icon-container-active",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classHeaderIconContainerInactive",
+      "name": "classHeaderIconContainerInactive",
+      "attribute": "class-header-icon-container-inactive",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classHeaderIconInactive",
+      "name": "classHeaderIconInactive",
+      "attribute": "class-header-icon-inactive",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classHeaderInactive",
+      "name": "classHeaderInactive",
+      "attribute": "class-header-inactive",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classHeaderText",
+      "name": "classHeaderText",
+      "attribute": "class-header-text",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classHeaderTextActive",
+      "name": "classHeaderTextActive",
+      "attribute": "class-header-text-active",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "accordion-classHeaderTextInactive",
+      "name": "classHeaderTextInactive",
+      "attribute": "class-header-text-inactive",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
       "id": "accordion-contentColor",
       "name": "contentColor",
       "attribute": "content-color",
@@ -71,6 +215,26 @@
       "tags": []
     },
     {
+      "id": "accordion-fontSizeMax",
+      "name": "fontSizeMax",
+      "attribute": "font-size-max",
+      "type": "number",
+      "description": "",
+      "default": "1.2",
+      "defaultValue": "1.2",
+      "tags": []
+    },
+    {
+      "id": "accordion-fontSizeMin",
+      "name": "fontSizeMin",
+      "attribute": "font-size-min",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
       "id": "accordion-gap",
       "name": "gap",
       "attribute": "gap",
@@ -83,6 +247,26 @@
           "name": "CSS"
         }
       ]
+    },
+    {
+      "id": "accordion-gapMax",
+      "name": "gapMax",
+      "attribute": "gap-max",
+      "type": "number",
+      "description": "",
+      "default": "1.2",
+      "defaultValue": "1.2",
+      "tags": []
+    },
+    {
+      "id": "accordion-gapMin",
+      "name": "gapMin",
+      "attribute": "gap-min",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
     },
     {
       "id": "accordion-headerColor",
@@ -107,6 +291,26 @@
           "name": "CSS"
         }
       ]
+    },
+    {
+      "id": "accordion-headerGapMax",
+      "name": "headerGapMax",
+      "attribute": "header-gap-max",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "accordion-headerGapMin",
+      "name": "headerGapMin",
+      "attribute": "header-gap-min",
+      "type": "number",
+      "description": "",
+      "default": "0.6",
+      "defaultValue": "0.6",
+      "tags": []
     },
     {
       "id": "accordion-headerText",
@@ -204,6 +408,21 @@
       "type": "boolean",
       "description": "Reverse icon positioning.",
       "tags": []
+    },
+    {
+      "id": "accordion-styling",
+      "name": "styling",
+      "attribute": "styling",
+      "type": "string",
+      "description": "Styling.",
+      "default": "'default'",
+      "defaultValue": "'default'",
+      "tags": [
+        {
+          "text": "'default', 'fluid', 'headless'",
+          "name": "choice"
+        }
+      ]
     }
   ],
   "events": [

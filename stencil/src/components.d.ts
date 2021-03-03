@@ -7,6 +7,24 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface SpxAccordion {
+        "classContent": string;
+        "classContentActive": string;
+        "classContentInactive": string;
+        "classContentText": string;
+        "classContentTextActive": string;
+        "classContentTextInactive": string;
+        "classHeader": string;
+        "classHeaderActive": string;
+        "classHeaderIcon": string;
+        "classHeaderIconActive": string;
+        "classHeaderIconContainer": string;
+        "classHeaderIconContainerActive": string;
+        "classHeaderIconContainerInactive": string;
+        "classHeaderIconInactive": string;
+        "classHeaderInactive": string;
+        "classHeaderText": string;
+        "classHeaderTextActive": string;
+        "classHeaderTextInactive": string;
         /**
           * Closes the accordion.
          */
@@ -27,17 +45,23 @@ export namespace Components {
          */
         "disableAnimation": boolean;
         "fontSize": string;
+        "fontSizeMax": number;
+        "fontSizeMin": number;
         /**
           * Space between header and content.
           * @CSS
          */
         "gap": string;
+        "gapMax": number;
+        "gapMin": number;
         "headerColor": string;
         /**
           * Gap between header text and icon.
           * @CSS
          */
         "headerGap": string;
+        "headerGapMax": number;
+        "headerGapMin": number;
         /**
           * Header text.
          */
@@ -84,6 +108,11 @@ export namespace Components {
           * Reverse icon positioning.
          */
         "reverse": boolean;
+        /**
+          * Styling.
+          * @choice 'default', 'fluid', 'headless'
+         */
+        "styling": string;
         /**
           * Toggles the accordion.
          */
@@ -208,19 +237,27 @@ export namespace Components {
         "fontSize": string;
         "height": string;
         /**
-          * Hide scrollbar.
+          * Load component when it enters the viewport.
          */
-        "hideScrollbar": boolean;
+        "lazy": boolean;
         /**
           * Enable line numbers.
          */
         "lineNumbers": boolean;
         "lineNumbersBackground": string;
         "lineNumbersColor": string;
+        /**
+          * Start of line number.
+         */
+        "lineNumbersStart": number;
         "maxWidth": string;
         "overflow": string;
         "padding": string;
         "reload": () => Promise<void>;
+        /**
+          * Hide scrollbar.
+         */
+        "scrollbar": boolean;
         /**
           * Colour theme.
           * @choice 'default', 'dracula'
@@ -233,141 +270,49 @@ export namespace Components {
          */
         "type": string;
     }
-    interface SpxContainer {
-        /**
-          * Mobile breakpoint width.
-         */
+    interface SpxDocs {
         "bpMobile": number;
-        "buttonBackgroundPrimary": number;
-        "buttonBackgroundSecondary": number;
-        "buttonBorderRadius": string;
-        "buttonColorPrimary": number;
-        "buttonColorSecondary": number;
-        "buttonFontSizeMax": number;
-        "buttonFontSizeMin": number;
-        "buttonFontWeight": string;
-        "buttonMarginTopMax": number;
-        "buttonMarginTopMin": number;
-        "buttonMarginXMax": number;
-        "buttonMarginXMin": number;
-        "buttonPaddingXMax": number;
-        "buttonPaddingXMin": number;
-        "buttonPaddingYMax": number;
-        "buttonPaddingYMin": number;
-        "buttonTextTransform": string;
+        "contentPadding": string;
+        "contentPaddingYMax": number;
+        "contentPaddingYMin": number;
+        "gap": string;
+        "navigationBackground": string;
+        "navigationGap": string;
+        "navigationGapMax": number;
+        "navigationGapMin": number;
+        "navigationHeadingTag": string;
+        "navigationHeightAdjust": string;
+        "navigationLinkColor": string;
+        "navigationLinkColorActive": string;
+        "navigationLinkFontSize": any;
+        "navigationLinkFontSizeMax": number;
+        "navigationLinkFontSizeMin": number;
+        "navigationLinkFontWeight": string;
+        "navigationLinkLetterSpacing": string;
+        "navigationLinkLineHeight": string;
+        "navigationLinkTextTransform": string;
+        "navigationPaddingY": string;
+        "navigationPaddingYMax": number;
+        "navigationPaddingYMin": number;
+        "navigationTitleColor": string;
+        "navigationTitleFontSize": any;
+        "navigationTitleFontSizeMax": number;
+        "navigationTitleFontSizeMin": number;
+        "navigationTitleFontWeight": string;
+        "navigationTitleLetterSpacing": string;
+        "navigationTitleLineHeight": string;
+        "navigationTitleMarginBottom": number;
+        "navigationTitleMarginBottomMax": number;
+        "navigationTitleMarginBottomMin": number;
+        "navigationTitleTextTransform": string;
+        "navigationTop": string;
+        "offsetMarginTop": string;
         /**
-          * Gray color which will be used for sections and pages.
-          * @choice 'blue-gray', 'cool-gray', 'gray', 'true-gray', 'warm-gray', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'light-blue', 'blue', 'indigo', 'violet', 'purple'; 'fuchsia', 'pink', 'rose'
+          * Styling.
+          * @choice 'default', 'fluid'
          */
-        "colorGray": string;
-        /**
-          * Primary color which will be used for sections and pages.
-          * @choice 'blue-gray', 'cool-gray', 'gray', 'true-gray', 'warm-gray', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'light-blue', 'blue', 'indigo', 'violet', 'purple'; 'fuchsia', 'pink', 'rose'
-         */
-        "colorPrimary": string;
-        /**
-          * Secondary color which will be used for sections and pages.
-          * @choice 'blue-gray', 'cool-gray', 'gray', 'true-gray', 'warm-gray', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'light-blue', 'blue', 'indigo', 'violet', 'purple'; 'fuchsia', 'pink', 'rose'
-         */
-        "colorSecondary": string;
-        /**
-          * Disable color generation.
-         */
-        "disableColors": boolean;
-        "focusColor": string;
-        /**
-          * Primary font-family.
-         */
-        "fontFamilyPrimary": string;
-        /**
-          * Secondary font-family.
-         */
-        "fontFamilySecondary": string;
-        "imageMaxWidth": string;
-        /**
-          * Linear scaling root number.
-         */
-        "linearBase": number;
-        /**
-          * Linear scaling maximum width.
-         */
-        "linearMaxW": number;
-        /**
-          * Linear scaling minimum width.
-         */
-        "linearMinW": number;
-        /**
-          * Section max-width.
-         */
-        "maxWidth": string;
-        /**
-          * Section max-width on mobile.
-         */
-        "maxWidthMobile": string;
-        /**
-          * Offsets first section to the height of the header.
-         */
-        "offsetHeader": boolean;
-        /**
-          * Space between content and outer edge of the viewport.
-          * @CSS
-         */
-        "paddingX": string;
-        /**
-          * Space between content and outer edge of the viewport.
-          * @CSS
-         */
-        "paddingXSm": string;
-        "paddingYFirstMax": number;
-        "paddingYFirstMin": number;
-        "paddingYMax": number;
-        "paddingYMaxWidth": number;
-        "paddingYMin": number;
-        "paddingYMultiplier": number;
-        "preTitleBackground": string;
-        "preTitleBorderRadius": string;
-        "preTitleColor": string;
-        "preTitleFontSizeMax": number;
-        "preTitleFontSizeMin": number;
-        "preTitleFontWeight": string;
-        "preTitleLetterSpacing": string;
-        "preTitleLineHeight": string;
-        "preTitleMarginBottomMax": number;
-        "preTitleMarginBottomMin": number;
-        "preTitlePaddingXMax": number;
-        "preTitlePaddingXMin": number;
-        "preTitlePaddingYMax": number;
-        "preTitlePaddingYMin": number;
-        "preTitleTextTransform": string;
-        "tabsFirstMarginTopMax": number;
-        "tabsFirstMarginTopMin": number;
-        "tabsMarginTopMax": number;
-        "tabsMarginTopMin": number;
-        /**
-          * Tabs opacity.
-          * @CSS
-         */
-        "tabsOpacity": number;
-        "textColor": string;
-        "textFontSizeMax": number;
-        "textFontSizeMin": number;
-        "textFontWeight": string;
-        "textLetterSpacing": string;
-        "textLineHeight": string;
-        "textLinkDecorationColor": string;
-        "textLinkDecorationColorHover": string;
-        "textMarginTopMax": number;
-        "textMarginTopMin": number;
-        "textMaxWidth": string;
-        "textTransform": string;
-        "titleColor": string;
-        "titleFontSizeMax": number;
-        "titleFontSizeMin": number;
-        "titleFontWeight": number;
-        "titleLetterSpacing": string;
-        "titleLineHeight": string;
-        "titleMaxWidth": string;
-        "titleTextTransform": string;
+        "styling": string;
+        "uniqueId": boolean;
     }
     interface SpxEdit {
         "display": string;
@@ -393,12 +338,19 @@ export namespace Components {
         "backgroundDiscard": string;
         "border": string;
         "borderRadius": string;
+        "classButton": string;
+        "classButtonDiscard": string;
+        "classLoader": string;
         "color": string;
         /**
           * Discard button color.
           * @CSS
          */
         "colorDiscard": string;
+        /**
+          * Discard changes.
+         */
+        "discard": () => Promise<void>;
         /**
           * Distance to the edge of the viewport on the x-axis.
           * @CSS
@@ -410,17 +362,27 @@ export namespace Components {
          */
         "distanceY": string;
         /**
+          * Enable editing.
+         */
+        "edit": () => Promise<void>;
+        /**
           * Corresponding ID for editable fields. This property is needed when multiple edit-button components are used on the page. Simply apply a "data-spx-edit-id" attribute with the same value to editable elements.
          */
         "editId": string;
         "fontFamily": string;
         "fontSize": string;
+        "fontSizeMax": number;
+        "fontSizeMin": number;
         /**
           * Gap between the buttons.
           * @CSS
          */
         "gap": string;
         "padding": string;
+        "paddingXMax": number;
+        "paddingXMin": number;
+        "paddingYMax": number;
+        "paddingYMin": number;
         /**
           * Component position in page.
           * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
@@ -435,6 +397,15 @@ export namespace Components {
     | 'relative'
     | 'static';
         "reload": () => Promise<void>;
+        /**
+          * Save changes.
+         */
+        "save": () => Promise<void>;
+        /**
+          * Styling.
+          * @choice 'default', 'fluid', 'headless'
+         */
+        "styling": string;
         "test": boolean;
         /**
           * Discard button text.
@@ -454,10 +425,6 @@ export namespace Components {
         "textSuccess": string;
         "zIndex": number;
     }
-    interface SpxEditor {
-        "fullscreen": boolean;
-        "location": string;
-    }
     interface SpxGroup {
         "display": string;
         "reload": () => Promise<void>;
@@ -476,6 +443,13 @@ export namespace Components {
           * Icon size.
          */
         "size": string;
+        "sizeMax": number;
+        "sizeMin": number;
+        /**
+          * Styling.
+          * @choice 'default', 'fluid'
+         */
+        "styling": string;
         /**
           * Icon type.
           * @choice 'ionicons', 'caret'
@@ -507,7 +481,7 @@ export namespace Components {
         "src": string;
         /**
           * Screen size of the site shown inside the iframe.
-          * @choice 'resize', 'document', 'type'
+          * @choice 'resize', 'document', 'default'
          */
         "type": string;
     }
@@ -573,7 +547,7 @@ export namespace Components {
          */
         "imagesSrc": string;
         /**
-          * Recalculate grid.
+          * Recalculates grid.
          */
         "recalc": () => Promise<void>;
         "reload": () => Promise<void>;
@@ -768,113 +742,16 @@ export namespace Components {
     }
     interface SpxOffset {
         "display": string;
+        /**
+          * Recalculate distance.
+         */
+        "recalc": () => Promise<void>;
         "reload": () => Promise<void>;
         /**
           * Target element.
           * @editor '.header1'
          */
         "target": string;
-    }
-    interface SpxPageDocs {
-        "bpMobile": number;
-        "contentHeadingFontFamily": string;
-        "navigationBackground": string;
-        "navigationFontFamily": string;
-        "navigationGapMax": number;
-        "navigationGapMin": number;
-        "navigationHeadingTag": string;
-        "navigationHeightAdjust": string;
-        "navigationLinkColor": string;
-        "navigationLinkColorActive": string;
-        "navigationLinkFontWeight": string;
-        "navigationLinkLetterSpacing": string;
-        "navigationLinkLineHeight": string;
-        "navigationLinkTextTransform": string;
-        "navigationSpaceYMax": number;
-        "navigationSpaceYMin": number;
-        "navigationTitleColor": string;
-        "navigationTitleFontWeight": string;
-        "navigationTitleLetterSpacing": string;
-        "navigationTitleLineHeight": string;
-        "navigationTitleMarginBottomMax": number;
-        "navigationTitleMarginBottomMin": number;
-        "navigationTitleTextTransform": string;
-        "navigationTop": string;
-        "offsetMarginTopMax": number;
-        "offsetMarginTopMin": number;
-        /**
-          * Distance to the edge of the viewport on the x-axis.
-          * @CSS
-         */
-        "paddingX": string;
-        "paddingYMax": number;
-        "paddingYMin": number;
-        "uniqueId": boolean;
-    }
-    interface SpxPageSingle {
-        "authorColor": string;
-        "authorFontFamily": string;
-        "authorFontSizeMax": number;
-        "authorFontSizeMin": number;
-        "authorFontWeight": string;
-        "authorLetterSpacing": string;
-        "authorLineHeight": string;
-        "authorMarginTopMax": number;
-        "authorMarginTopMin": number;
-        "authorTextTransform": string;
-        "contentMarginTopMax": number;
-        "contentMarginTopMin": number;
-        "contentMaxWidth": string;
-        "contentPaddingX": string;
-        /**
-          * Display date.
-         */
-        "date": boolean;
-        "dateColor": string;
-        "dateFontFamily": string;
-        "dateFontSizeMax": number;
-        "dateFontSizeMin": number;
-        "dateFontWeight": string;
-        "dateLetterSpacing": string;
-        "dateLineHeight": string;
-        "dateMarginTopMax": number;
-        "dateMarginTopMin": number;
-        "dateTextTransform": string;
-        "headerBorderBottom": string;
-        "headerPaddingBottomMax": number;
-        "headerPaddingBottomMin": number;
-        /**
-          * Display image.
-         */
-        "image": boolean;
-        "imageBorderRadius": string;
-        "imageHeight": string;
-        "imageObjectPosition": string;
-        "imagePaddingX": string;
-        "imageSpaceYMax": number;
-        "imageSpaceYMin": number;
-        /**
-          * Mobile breakpoint.
-         */
-        "mobile": number;
-        /**
-          * Gets a WordPress post to render.
-          * @helper &lt;?php spx\Get::post($postId, $dateFormat, $imageSize) ?>
-         */
-        "post": string;
-        /**
-          * Space to edge of the viewport.
-         */
-        "titleColor": string;
-        "titleFontFamily": string;
-        "titleFontSizeMax": number;
-        "titleFontSizeMin": number;
-        "titleFontWeight": string;
-        "titleLetterSpacing": string;
-        "titleLineHeight": string;
-        "titleMarginTopMax": number;
-        "titleMarginTopMin": number;
-        "titleTextTransform": string;
     }
     interface SpxScrollspy {
         /**
@@ -908,169 +785,11 @@ export namespace Components {
          */
         "urlChange": boolean;
     }
-    interface SpxSectionButton {
-        /**
-          * Link href.
-         */
-        "href": string;
-        /**
-          * Icon.
-         */
-        "icon": string;
-        "iconGapMax": number;
-        "iconGapMin": number;
-        /**
-          * Link href.
-         */
-        "reverse": boolean;
-        /**
-          * Target.
-         */
-        "target": string;
-        "transitionDuration": string;
-        "transitionTimingFunction": string;
-        /**
-          * Button type.
-          * @choice 'primary', 'secondary'
-         */
-        "type": string;
-    }
-    interface SpxSectionFooter {
-        "background": string;
-        /**
-          * Gap between columns.
-          * @CSS
-         */
-        "gap": string;
-        "imageMaxHeight": string;
-        "justifyContent": string;
-        "maxWidth": string;
-        "paddingYMax": number;
-        "paddingYMin": number;
-        "spaceBeforeMax": number;
-        "spaceBeforeMin": number;
-        "textColor": string;
-        "textFontSizeMax": number;
-        "textFontSizeMin": number;
-        "textMarginTopMax": number;
-        "textMarginTopMin": number;
-        "textMaxWidth": string;
-        "titleFontSizeMax": number;
-        "titleFontSizeMin": number;
-        "titleMarginBottomMax": number;
-        "titleMarginBottomMin": number;
-    }
-    interface SpxSectionHeader {
-        "backdropFilter": string;
-        "background": string;
-        /**
-          * Turns on background after scroll.
-         */
-        "backgroundScroll": number;
-        "borderBottom": string;
-        "hasScrolled": boolean;
-        /**
-          * URL the logo links to.
-         */
-        "logoLink": string;
-        "logoMaxHeight": string;
-        /**
-          * Logo src.
-         */
-        "logoSrc": string;
-        /**
-          * Logo mobile src.
-         */
-        "logoSrcMobile": string;
-        /**
-          * Where the navigation should be aligned to.
-          * @choice 'center', 'right'
-         */
-        "navigationAlign": string;
-        "paddingYMax": number;
-        "paddingYMin": number;
-        /**
-          * Component positioning.
-         */
-        "position": 'fixed' | 'static';
-        "zIndex": number;
-    }
-    interface SpxSectionTwoColumn {
-        "background": string;
-        "backgroundImage": string;
-        /**
-          * Column size.
-          * @CSS
-         */
-        "columnSize": string;
-        /**
-          * If set, component will transform the header offset to the top-padding value.
-         */
-        "first": boolean;
-        "gapMax": number;
-        "gapMin": number;
-        /**
-          * Hides the media column.
-         */
-        "hideMedia": boolean;
-        "imagesGapMax": number;
-        "imagesGapMin": number;
-        /**
-          * Layout of the section.
-          * @choice 'horizontal', 'vertical'
-         */
-        "layout": string;
-        /**
-          * Background color for the media column.
-          * @CSS
-         */
-        "mediaBackground": string;
-        /**
-          * Overlaps the background with the media column.
-         */
-        "mediaBackgroundOverlap": boolean;
-        /**
-          * Removes the outer spacing for the media column.
-         */
-        "mediaFull": boolean;
-        /**
-          * Adds padding to the media column on mobile.
-         */
-        "mediaFullMobileFix": boolean;
-        "mediaMargin": string;
-        "mediaPaddingMax": number;
-        "mediaPaddingMin": number;
-        /**
-          * Reverses the column order.
-         */
-        "reverse": boolean;
-        /**
-          * Reverses the column order on mobile.
-         */
-        "reverseMobile": boolean;
-        "tabsAnimation": boolean;
-        "tabsAnimationColor": string;
-        "tabsAnimationDuration": number;
-        /**
-          * Alignment for the inner text wrapper.
-         */
-        "textAlignInner": 'left' | 'center' | 'right';
-        /**
-          * Alignment for the outer text wrapper.
-         */
-        "textAlignOuter": 'left' | 'center' | 'right';
-        /**
-          * Background color for the text column.
-          * @CSS
-         */
-        "textBackground": string;
-        /**
-          * Overlaps the background with the text column.
-         */
-        "textBackgroundOverlap": boolean;
-    }
     interface SpxShare {
+        "classItem": string;
         "fontSize": string;
+        "fontSizeMax": number;
+        "fontSizeMin": number;
         "itemBackground": string;
         "itemBorderRadius": string;
         /**
@@ -1088,11 +807,22 @@ export namespace Components {
           * @CSS
          */
         "itemGap": string;
+        "itemGapMax": number;
+        "itemGapMin": number;
         "itemPadding": string;
+        "itemPaddingMax": number;
+        "itemPaddingMin": number;
         "itemSize": string;
+        "itemSizeMax": number;
+        "itemSizeMin": number;
         "itemTransitionDuration": string;
         "itemTransitionTimingFunction": string;
         "reload": () => Promise<void>;
+        /**
+          * Styling.
+          * @choice 'default', 'fluid', 'headless'
+         */
+        "styling": string;
         /**
           * Button href target.
          */
@@ -1319,6 +1049,8 @@ export namespace Components {
         "background": string;
         "border": string;
         "borderRadius": string;
+        "classButton": string;
+        "classText": string;
         /**
           * Adds option to close snackbar after its creation.
          */
@@ -1340,12 +1072,16 @@ export namespace Components {
          */
         "fixed": boolean;
         "fontSize": string;
+        "fontSizeMax": number;
+        "fontSizeMin": number;
         /**
           * Unique identifier for snackbar instance.
           * @editor '#components'
          */
         "identifier": string;
         "padding": string;
+        "paddingMax": number;
+        "paddingMin": number;
         /**
           * Component position in page.
           * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
@@ -1369,6 +1105,11 @@ export namespace Components {
          */
         "spaceBetween": string;
         /**
+          * Styling.
+          * @choice 'default', 'fluid', 'headless'
+         */
+        "styling": string;
+        /**
           * Element where snackbars should be created in.
           * @editor '#components'
          */
@@ -1378,44 +1119,6 @@ export namespace Components {
          */
         "text": string;
         "zIndex": number;
-    }
-    interface SpxText {
-        "h1FontSizeMax": number;
-        "h1FontSizeMin": number;
-        "h2FontSizeMax": number;
-        "h2FontSizeMin": number;
-        "h3FontSizeMax": number;
-        "h3FontSizeMin": number;
-        "h4FontSizeMax": number;
-        "h4FontSizeMin": number;
-        "headingColor": string;
-        "headingFontFamily": string;
-        "headingFontWeight": string;
-        "headingLetterSpacing": string;
-        "headingLineHeight": string;
-        "headingTextTransform": string;
-        "linkDecorationColor": string;
-        /**
-          * Parse markdown.
-         */
-        "markdown": boolean;
-        "maxWidth": string;
-        "paddingFigureMax": number;
-        "paddingFigureMin": number;
-        "spaceBeforeH1Max": number;
-        "spaceBeforeH1Min": number;
-        "spaceBetweenMax": number;
-        "spaceBetweenMin": number;
-        "spaceBetweenPMax": number;
-        "spaceBetweenPMin": number;
-        "textColor": string;
-        "textFontFamily": string;
-        "textFontSizeMax": number;
-        "textFontSizeMin": number;
-        "textFontWeight": string;
-        "textLetterSpacing": string;
-        "textLineHeight": string;
-        "textTextTransform": string;
     }
     interface SpxTypewriter {
         /**
@@ -1474,11 +1177,11 @@ declare global {
         prototype: HTMLSpxCodeElement;
         new (): HTMLSpxCodeElement;
     };
-    interface HTMLSpxContainerElement extends Components.SpxContainer, HTMLStencilElement {
+    interface HTMLSpxDocsElement extends Components.SpxDocs, HTMLStencilElement {
     }
-    var HTMLSpxContainerElement: {
-        prototype: HTMLSpxContainerElement;
-        new (): HTMLSpxContainerElement;
+    var HTMLSpxDocsElement: {
+        prototype: HTMLSpxDocsElement;
+        new (): HTMLSpxDocsElement;
     };
     interface HTMLSpxEditElement extends Components.SpxEdit, HTMLStencilElement {
     }
@@ -1491,12 +1194,6 @@ declare global {
     var HTMLSpxEditButtonElement: {
         prototype: HTMLSpxEditButtonElement;
         new (): HTMLSpxEditButtonElement;
-    };
-    interface HTMLSpxEditorElement extends Components.SpxEditor, HTMLStencilElement {
-    }
-    var HTMLSpxEditorElement: {
-        prototype: HTMLSpxEditorElement;
-        new (): HTMLSpxEditorElement;
     };
     interface HTMLSpxGroupElement extends Components.SpxGroup, HTMLStencilElement {
     }
@@ -1564,47 +1261,11 @@ declare global {
         prototype: HTMLSpxOffsetElement;
         new (): HTMLSpxOffsetElement;
     };
-    interface HTMLSpxPageDocsElement extends Components.SpxPageDocs, HTMLStencilElement {
-    }
-    var HTMLSpxPageDocsElement: {
-        prototype: HTMLSpxPageDocsElement;
-        new (): HTMLSpxPageDocsElement;
-    };
-    interface HTMLSpxPageSingleElement extends Components.SpxPageSingle, HTMLStencilElement {
-    }
-    var HTMLSpxPageSingleElement: {
-        prototype: HTMLSpxPageSingleElement;
-        new (): HTMLSpxPageSingleElement;
-    };
     interface HTMLSpxScrollspyElement extends Components.SpxScrollspy, HTMLStencilElement {
     }
     var HTMLSpxScrollspyElement: {
         prototype: HTMLSpxScrollspyElement;
         new (): HTMLSpxScrollspyElement;
-    };
-    interface HTMLSpxSectionButtonElement extends Components.SpxSectionButton, HTMLStencilElement {
-    }
-    var HTMLSpxSectionButtonElement: {
-        prototype: HTMLSpxSectionButtonElement;
-        new (): HTMLSpxSectionButtonElement;
-    };
-    interface HTMLSpxSectionFooterElement extends Components.SpxSectionFooter, HTMLStencilElement {
-    }
-    var HTMLSpxSectionFooterElement: {
-        prototype: HTMLSpxSectionFooterElement;
-        new (): HTMLSpxSectionFooterElement;
-    };
-    interface HTMLSpxSectionHeaderElement extends Components.SpxSectionHeader, HTMLStencilElement {
-    }
-    var HTMLSpxSectionHeaderElement: {
-        prototype: HTMLSpxSectionHeaderElement;
-        new (): HTMLSpxSectionHeaderElement;
-    };
-    interface HTMLSpxSectionTwoColumnElement extends Components.SpxSectionTwoColumn, HTMLStencilElement {
-    }
-    var HTMLSpxSectionTwoColumnElement: {
-        prototype: HTMLSpxSectionTwoColumnElement;
-        new (): HTMLSpxSectionTwoColumnElement;
     };
     interface HTMLSpxShareElement extends Components.SpxShare, HTMLStencilElement {
     }
@@ -1630,12 +1291,6 @@ declare global {
         prototype: HTMLSpxSnackbarElement;
         new (): HTMLSpxSnackbarElement;
     };
-    interface HTMLSpxTextElement extends Components.SpxText, HTMLStencilElement {
-    }
-    var HTMLSpxTextElement: {
-        prototype: HTMLSpxTextElement;
-        new (): HTMLSpxTextElement;
-    };
     interface HTMLSpxTypewriterElement extends Components.SpxTypewriter, HTMLStencilElement {
     }
     var HTMLSpxTypewriterElement: {
@@ -1647,10 +1302,9 @@ declare global {
         "spx-animate": HTMLSpxAnimateElement;
         "spx-class-toggle": HTMLSpxClassToggleElement;
         "spx-code": HTMLSpxCodeElement;
-        "spx-container": HTMLSpxContainerElement;
+        "spx-docs": HTMLSpxDocsElement;
         "spx-edit": HTMLSpxEditElement;
         "spx-edit-button": HTMLSpxEditButtonElement;
-        "spx-editor": HTMLSpxEditorElement;
         "spx-group": HTMLSpxGroupElement;
         "spx-icon": HTMLSpxIconElement;
         "spx-iframe": HTMLSpxIframeElement;
@@ -1662,23 +1316,34 @@ declare global {
         "spx-navigation": HTMLSpxNavigationElement;
         "spx-notation": HTMLSpxNotationElement;
         "spx-offset": HTMLSpxOffsetElement;
-        "spx-page-docs": HTMLSpxPageDocsElement;
-        "spx-page-single": HTMLSpxPageSingleElement;
         "spx-scrollspy": HTMLSpxScrollspyElement;
-        "spx-section-button": HTMLSpxSectionButtonElement;
-        "spx-section-footer": HTMLSpxSectionFooterElement;
-        "spx-section-header": HTMLSpxSectionHeaderElement;
-        "spx-section-two-column": HTMLSpxSectionTwoColumnElement;
         "spx-share": HTMLSpxShareElement;
         "spx-slider": HTMLSpxSliderElement;
         "spx-slideshow": HTMLSpxSlideshowElement;
         "spx-snackbar": HTMLSpxSnackbarElement;
-        "spx-text": HTMLSpxTextElement;
         "spx-typewriter": HTMLSpxTypewriterElement;
     }
 }
 declare namespace LocalJSX {
     interface SpxAccordion {
+        "classContent"?: string;
+        "classContentActive"?: string;
+        "classContentInactive"?: string;
+        "classContentText"?: string;
+        "classContentTextActive"?: string;
+        "classContentTextInactive"?: string;
+        "classHeader"?: string;
+        "classHeaderActive"?: string;
+        "classHeaderIcon"?: string;
+        "classHeaderIconActive"?: string;
+        "classHeaderIconContainer"?: string;
+        "classHeaderIconContainerActive"?: string;
+        "classHeaderIconContainerInactive"?: string;
+        "classHeaderIconInactive"?: string;
+        "classHeaderInactive"?: string;
+        "classHeaderText"?: string;
+        "classHeaderTextActive"?: string;
+        "classHeaderTextInactive"?: string;
         "contentColor"?: string;
         /**
           * Content text.
@@ -1695,17 +1360,23 @@ declare namespace LocalJSX {
          */
         "disableAnimation"?: boolean;
         "fontSize"?: string;
+        "fontSizeMax"?: number;
+        "fontSizeMin"?: number;
         /**
           * Space between header and content.
           * @CSS
          */
         "gap"?: string;
+        "gapMax"?: number;
+        "gapMin"?: number;
         "headerColor"?: string;
         /**
           * Gap between header text and icon.
           * @CSS
          */
         "headerGap"?: string;
+        "headerGapMax"?: number;
+        "headerGapMin"?: number;
         /**
           * Header text.
          */
@@ -1751,6 +1422,11 @@ declare namespace LocalJSX {
           * Reverse icon positioning.
          */
         "reverse"?: boolean;
+        /**
+          * Styling.
+          * @choice 'default', 'fluid', 'headless'
+         */
+        "styling"?: string;
     }
     interface SpxAnimate {
         /**
@@ -1869,15 +1545,19 @@ declare namespace LocalJSX {
         "fontSize"?: string;
         "height"?: string;
         /**
-          * Hide scrollbar.
+          * Load component when it enters the viewport.
          */
-        "hideScrollbar"?: boolean;
+        "lazy"?: boolean;
         /**
           * Enable line numbers.
          */
         "lineNumbers"?: boolean;
         "lineNumbersBackground"?: string;
         "lineNumbersColor"?: string;
+        /**
+          * Start of line number.
+         */
+        "lineNumbersStart"?: number;
         "maxWidth"?: string;
         /**
           * Fires after component has loaded.
@@ -1885,6 +1565,10 @@ declare namespace LocalJSX {
         "onSpxCodeDidLoad"?: (event: CustomEvent<any>) => void;
         "overflow"?: string;
         "padding"?: string;
+        /**
+          * Hide scrollbar.
+         */
+        "scrollbar"?: boolean;
         /**
           * Colour theme.
           * @choice 'default', 'dracula'
@@ -1897,145 +1581,53 @@ declare namespace LocalJSX {
          */
         "type"?: string;
     }
-    interface SpxContainer {
-        /**
-          * Mobile breakpoint width.
-         */
+    interface SpxDocs {
         "bpMobile"?: number;
-        "buttonBackgroundPrimary"?: number;
-        "buttonBackgroundSecondary"?: number;
-        "buttonBorderRadius"?: string;
-        "buttonColorPrimary"?: number;
-        "buttonColorSecondary"?: number;
-        "buttonFontSizeMax"?: number;
-        "buttonFontSizeMin"?: number;
-        "buttonFontWeight"?: string;
-        "buttonMarginTopMax"?: number;
-        "buttonMarginTopMin"?: number;
-        "buttonMarginXMax"?: number;
-        "buttonMarginXMin"?: number;
-        "buttonPaddingXMax"?: number;
-        "buttonPaddingXMin"?: number;
-        "buttonPaddingYMax"?: number;
-        "buttonPaddingYMin"?: number;
-        "buttonTextTransform"?: string;
-        /**
-          * Gray color which will be used for sections and pages.
-          * @choice 'blue-gray', 'cool-gray', 'gray', 'true-gray', 'warm-gray', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'light-blue', 'blue', 'indigo', 'violet', 'purple'; 'fuchsia', 'pink', 'rose'
-         */
-        "colorGray"?: string;
-        /**
-          * Primary color which will be used for sections and pages.
-          * @choice 'blue-gray', 'cool-gray', 'gray', 'true-gray', 'warm-gray', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'light-blue', 'blue', 'indigo', 'violet', 'purple'; 'fuchsia', 'pink', 'rose'
-         */
-        "colorPrimary"?: string;
-        /**
-          * Secondary color which will be used for sections and pages.
-          * @choice 'blue-gray', 'cool-gray', 'gray', 'true-gray', 'warm-gray', 'red', 'orange', 'amber', 'yellow', 'lime', 'green', 'emerald', 'teal', 'cyan', 'light-blue', 'blue', 'indigo', 'violet', 'purple'; 'fuchsia', 'pink', 'rose'
-         */
-        "colorSecondary"?: string;
-        /**
-          * Disable color generation.
-         */
-        "disableColors"?: boolean;
-        "focusColor"?: string;
-        /**
-          * Primary font-family.
-         */
-        "fontFamilyPrimary"?: string;
-        /**
-          * Secondary font-family.
-         */
-        "fontFamilySecondary"?: string;
-        "imageMaxWidth"?: string;
-        /**
-          * Linear scaling root number.
-         */
-        "linearBase"?: number;
-        /**
-          * Linear scaling maximum width.
-         */
-        "linearMaxW"?: number;
-        /**
-          * Linear scaling minimum width.
-         */
-        "linearMinW"?: number;
-        /**
-          * Section max-width.
-         */
-        "maxWidth"?: string;
-        /**
-          * Section max-width on mobile.
-         */
-        "maxWidthMobile"?: string;
-        /**
-          * Offsets first section to the height of the header.
-         */
-        "offsetHeader"?: boolean;
+        "contentPadding"?: string;
+        "contentPaddingYMax"?: number;
+        "contentPaddingYMin"?: number;
+        "gap"?: string;
+        "navigationBackground"?: string;
+        "navigationGap"?: string;
+        "navigationGapMax"?: number;
+        "navigationGapMin"?: number;
+        "navigationHeadingTag"?: string;
+        "navigationHeightAdjust"?: string;
+        "navigationLinkColor"?: string;
+        "navigationLinkColorActive"?: string;
+        "navigationLinkFontSize"?: any;
+        "navigationLinkFontSizeMax"?: number;
+        "navigationLinkFontSizeMin"?: number;
+        "navigationLinkFontWeight"?: string;
+        "navigationLinkLetterSpacing"?: string;
+        "navigationLinkLineHeight"?: string;
+        "navigationLinkTextTransform"?: string;
+        "navigationPaddingY"?: string;
+        "navigationPaddingYMax"?: number;
+        "navigationPaddingYMin"?: number;
+        "navigationTitleColor"?: string;
+        "navigationTitleFontSize"?: any;
+        "navigationTitleFontSizeMax"?: number;
+        "navigationTitleFontSizeMin"?: number;
+        "navigationTitleFontWeight"?: string;
+        "navigationTitleLetterSpacing"?: string;
+        "navigationTitleLineHeight"?: string;
+        "navigationTitleMarginBottom"?: number;
+        "navigationTitleMarginBottomMax"?: number;
+        "navigationTitleMarginBottomMin"?: number;
+        "navigationTitleTextTransform"?: string;
+        "navigationTop"?: string;
+        "offsetMarginTop"?: string;
         /**
           * Fires after component has loaded.
          */
-        "onSpxContainerDidLoad"?: (event: CustomEvent<any>) => void;
+        "onSpxDocsDidLoad"?: (event: CustomEvent<any>) => void;
         /**
-          * Space between content and outer edge of the viewport.
-          * @CSS
+          * Styling.
+          * @choice 'default', 'fluid'
          */
-        "paddingX"?: string;
-        /**
-          * Space between content and outer edge of the viewport.
-          * @CSS
-         */
-        "paddingXSm"?: string;
-        "paddingYFirstMax"?: number;
-        "paddingYFirstMin"?: number;
-        "paddingYMax"?: number;
-        "paddingYMaxWidth"?: number;
-        "paddingYMin"?: number;
-        "paddingYMultiplier"?: number;
-        "preTitleBackground"?: string;
-        "preTitleBorderRadius"?: string;
-        "preTitleColor"?: string;
-        "preTitleFontSizeMax"?: number;
-        "preTitleFontSizeMin"?: number;
-        "preTitleFontWeight"?: string;
-        "preTitleLetterSpacing"?: string;
-        "preTitleLineHeight"?: string;
-        "preTitleMarginBottomMax"?: number;
-        "preTitleMarginBottomMin"?: number;
-        "preTitlePaddingXMax"?: number;
-        "preTitlePaddingXMin"?: number;
-        "preTitlePaddingYMax"?: number;
-        "preTitlePaddingYMin"?: number;
-        "preTitleTextTransform"?: string;
-        "tabsFirstMarginTopMax"?: number;
-        "tabsFirstMarginTopMin"?: number;
-        "tabsMarginTopMax"?: number;
-        "tabsMarginTopMin"?: number;
-        /**
-          * Tabs opacity.
-          * @CSS
-         */
-        "tabsOpacity"?: number;
-        "textColor"?: string;
-        "textFontSizeMax"?: number;
-        "textFontSizeMin"?: number;
-        "textFontWeight"?: string;
-        "textLetterSpacing"?: string;
-        "textLineHeight"?: string;
-        "textLinkDecorationColor"?: string;
-        "textLinkDecorationColorHover"?: string;
-        "textMarginTopMax"?: number;
-        "textMarginTopMin"?: number;
-        "textMaxWidth"?: string;
-        "textTransform"?: string;
-        "titleColor"?: string;
-        "titleFontSizeMax"?: number;
-        "titleFontSizeMin"?: number;
-        "titleFontWeight"?: number;
-        "titleLetterSpacing"?: string;
-        "titleLineHeight"?: string;
-        "titleMaxWidth"?: string;
-        "titleTextTransform"?: string;
+        "styling"?: string;
+        "uniqueId"?: boolean;
     }
     interface SpxEdit {
         "display"?: string;
@@ -2061,6 +1653,9 @@ declare namespace LocalJSX {
         "backgroundDiscard"?: string;
         "border"?: string;
         "borderRadius"?: string;
+        "classButton"?: string;
+        "classButtonDiscard"?: string;
+        "classLoader"?: string;
         "color"?: string;
         /**
           * Discard button color.
@@ -2083,6 +1678,8 @@ declare namespace LocalJSX {
         "editId"?: string;
         "fontFamily"?: string;
         "fontSize"?: string;
+        "fontSizeMax"?: number;
+        "fontSizeMin"?: number;
         /**
           * Gap between the buttons.
           * @CSS
@@ -2101,6 +1698,10 @@ declare namespace LocalJSX {
          */
         "onSpxEditButtonSave"?: (event: CustomEvent<any>) => void;
         "padding"?: string;
+        "paddingXMax"?: number;
+        "paddingXMin"?: number;
+        "paddingYMax"?: number;
+        "paddingYMin"?: number;
         /**
           * Component position in page.
           * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
@@ -2114,6 +1715,11 @@ declare namespace LocalJSX {
     | 'absolute'
     | 'relative'
     | 'static';
+        /**
+          * Styling.
+          * @choice 'default', 'fluid', 'headless'
+         */
+        "styling"?: string;
         "test"?: boolean;
         /**
           * Discard button text.
@@ -2132,10 +1738,6 @@ declare namespace LocalJSX {
          */
         "textSuccess"?: string;
         "zIndex"?: number;
-    }
-    interface SpxEditor {
-        "fullscreen"?: boolean;
-        "location"?: string;
     }
     interface SpxGroup {
         "display"?: string;
@@ -2162,6 +1764,13 @@ declare namespace LocalJSX {
           * Icon size.
          */
         "size"?: string;
+        "sizeMax"?: number;
+        "sizeMin"?: number;
+        /**
+          * Styling.
+          * @choice 'default', 'fluid'
+         */
+        "styling"?: string;
         /**
           * Icon type.
           * @choice 'ionicons', 'caret'
@@ -2185,7 +1794,7 @@ declare namespace LocalJSX {
         /**
           * Fires after component has loaded.
          */
-        "onSpxIFrameDidLoad"?: (event: CustomEvent<any>) => void;
+        "onSpxIframeDidLoad"?: (event: CustomEvent<any>) => void;
         /**
           * Screen size of the site shown inside the iframe.
          */
@@ -2196,7 +1805,7 @@ declare namespace LocalJSX {
         "src"?: string;
         /**
           * Screen size of the site shown inside the iframe.
-          * @choice 'resize', 'document', 'type'
+          * @choice 'resize', 'document', 'default'
          */
         "type"?: string;
     }
@@ -2473,115 +2082,6 @@ declare namespace LocalJSX {
          */
         "target"?: string;
     }
-    interface SpxPageDocs {
-        "bpMobile"?: number;
-        "contentHeadingFontFamily"?: string;
-        "navigationBackground"?: string;
-        "navigationFontFamily"?: string;
-        "navigationGapMax"?: number;
-        "navigationGapMin"?: number;
-        "navigationHeadingTag"?: string;
-        "navigationHeightAdjust"?: string;
-        "navigationLinkColor"?: string;
-        "navigationLinkColorActive"?: string;
-        "navigationLinkFontWeight"?: string;
-        "navigationLinkLetterSpacing"?: string;
-        "navigationLinkLineHeight"?: string;
-        "navigationLinkTextTransform"?: string;
-        "navigationSpaceYMax"?: number;
-        "navigationSpaceYMin"?: number;
-        "navigationTitleColor"?: string;
-        "navigationTitleFontWeight"?: string;
-        "navigationTitleLetterSpacing"?: string;
-        "navigationTitleLineHeight"?: string;
-        "navigationTitleMarginBottomMax"?: number;
-        "navigationTitleMarginBottomMin"?: number;
-        "navigationTitleTextTransform"?: string;
-        "navigationTop"?: string;
-        "offsetMarginTopMax"?: number;
-        "offsetMarginTopMin"?: number;
-        /**
-          * Fires after component has loaded.
-         */
-        "onSpxPageDocsDidLoad"?: (event: CustomEvent<any>) => void;
-        /**
-          * Distance to the edge of the viewport on the x-axis.
-          * @CSS
-         */
-        "paddingX"?: string;
-        "paddingYMax"?: number;
-        "paddingYMin"?: number;
-        "uniqueId"?: boolean;
-    }
-    interface SpxPageSingle {
-        "authorColor"?: string;
-        "authorFontFamily"?: string;
-        "authorFontSizeMax"?: number;
-        "authorFontSizeMin"?: number;
-        "authorFontWeight"?: string;
-        "authorLetterSpacing"?: string;
-        "authorLineHeight"?: string;
-        "authorMarginTopMax"?: number;
-        "authorMarginTopMin"?: number;
-        "authorTextTransform"?: string;
-        "contentMarginTopMax"?: number;
-        "contentMarginTopMin"?: number;
-        "contentMaxWidth"?: string;
-        "contentPaddingX"?: string;
-        /**
-          * Display date.
-         */
-        "date"?: boolean;
-        "dateColor"?: string;
-        "dateFontFamily"?: string;
-        "dateFontSizeMax"?: number;
-        "dateFontSizeMin"?: number;
-        "dateFontWeight"?: string;
-        "dateLetterSpacing"?: string;
-        "dateLineHeight"?: string;
-        "dateMarginTopMax"?: number;
-        "dateMarginTopMin"?: number;
-        "dateTextTransform"?: string;
-        "headerBorderBottom"?: string;
-        "headerPaddingBottomMax"?: number;
-        "headerPaddingBottomMin"?: number;
-        /**
-          * Display image.
-         */
-        "image"?: boolean;
-        "imageBorderRadius"?: string;
-        "imageHeight"?: string;
-        "imageObjectPosition"?: string;
-        "imagePaddingX"?: string;
-        "imageSpaceYMax"?: number;
-        "imageSpaceYMin"?: number;
-        /**
-          * Mobile breakpoint.
-         */
-        "mobile"?: number;
-        /**
-          * Fires after component has loaded.
-         */
-        "onSpxPageSingleDidLoad"?: (event: CustomEvent<any>) => void;
-        /**
-          * Gets a WordPress post to render.
-          * @helper &lt;?php spx\Get::post($postId, $dateFormat, $imageSize) ?>
-         */
-        "post"?: string;
-        /**
-          * Space to edge of the viewport.
-         */
-        "titleColor"?: string;
-        "titleFontFamily"?: string;
-        "titleFontSizeMax"?: number;
-        "titleFontSizeMin"?: number;
-        "titleFontWeight"?: string;
-        "titleLetterSpacing"?: string;
-        "titleLineHeight"?: string;
-        "titleMarginTopMax"?: number;
-        "titleMarginTopMin"?: number;
-        "titleTextTransform"?: string;
-    }
     interface SpxScrollspy {
         /**
           * Applied class to active content element.
@@ -2617,185 +2117,11 @@ declare namespace LocalJSX {
          */
         "urlChange"?: boolean;
     }
-    interface SpxSectionButton {
-        /**
-          * Link href.
-         */
-        "href"?: string;
-        /**
-          * Icon.
-         */
-        "icon"?: string;
-        "iconGapMax"?: number;
-        "iconGapMin"?: number;
-        /**
-          * Fires after component has loaded.
-         */
-        "onSpxSectionButtonDidLoad"?: (event: CustomEvent<any>) => void;
-        /**
-          * Link href.
-         */
-        "reverse"?: boolean;
-        /**
-          * Target.
-         */
-        "target"?: string;
-        "transitionDuration"?: string;
-        "transitionTimingFunction"?: string;
-        /**
-          * Button type.
-          * @choice 'primary', 'secondary'
-         */
-        "type"?: string;
-    }
-    interface SpxSectionFooter {
-        "background"?: string;
-        /**
-          * Gap between columns.
-          * @CSS
-         */
-        "gap"?: string;
-        "imageMaxHeight"?: string;
-        "justifyContent"?: string;
-        "maxWidth"?: string;
-        /**
-          * Fires after component has loaded.
-         */
-        "onSpxSectionFooterDidLoad"?: (event: CustomEvent<any>) => void;
-        "paddingYMax"?: number;
-        "paddingYMin"?: number;
-        "spaceBeforeMax"?: number;
-        "spaceBeforeMin"?: number;
-        "textColor"?: string;
-        "textFontSizeMax"?: number;
-        "textFontSizeMin"?: number;
-        "textMarginTopMax"?: number;
-        "textMarginTopMin"?: number;
-        "textMaxWidth"?: string;
-        "titleFontSizeMax"?: number;
-        "titleFontSizeMin"?: number;
-        "titleMarginBottomMax"?: number;
-        "titleMarginBottomMin"?: number;
-    }
-    interface SpxSectionHeader {
-        "backdropFilter"?: string;
-        "background"?: string;
-        /**
-          * Turns on background after scroll.
-         */
-        "backgroundScroll"?: number;
-        "borderBottom"?: string;
-        "hasScrolled"?: boolean;
-        /**
-          * URL the logo links to.
-         */
-        "logoLink"?: string;
-        "logoMaxHeight"?: string;
-        /**
-          * Logo src.
-         */
-        "logoSrc"?: string;
-        /**
-          * Logo mobile src.
-         */
-        "logoSrcMobile"?: string;
-        /**
-          * Where the navigation should be aligned to.
-          * @choice 'center', 'right'
-         */
-        "navigationAlign"?: string;
-        /**
-          * Fires after component has loaded.
-         */
-        "onSpxSectionHeaderDidLoad"?: (event: CustomEvent<any>) => void;
-        "paddingYMax"?: number;
-        "paddingYMin"?: number;
-        /**
-          * Component positioning.
-         */
-        "position"?: 'fixed' | 'static';
-        "zIndex"?: number;
-    }
-    interface SpxSectionTwoColumn {
-        "background"?: string;
-        "backgroundImage"?: string;
-        /**
-          * Column size.
-          * @CSS
-         */
-        "columnSize"?: string;
-        /**
-          * If set, component will transform the header offset to the top-padding value.
-         */
-        "first"?: boolean;
-        "gapMax"?: number;
-        "gapMin"?: number;
-        /**
-          * Hides the media column.
-         */
-        "hideMedia"?: boolean;
-        "imagesGapMax"?: number;
-        "imagesGapMin"?: number;
-        /**
-          * Layout of the section.
-          * @choice 'horizontal', 'vertical'
-         */
-        "layout"?: string;
-        /**
-          * Background color for the media column.
-          * @CSS
-         */
-        "mediaBackground"?: string;
-        /**
-          * Overlaps the background with the media column.
-         */
-        "mediaBackgroundOverlap"?: boolean;
-        /**
-          * Removes the outer spacing for the media column.
-         */
-        "mediaFull"?: boolean;
-        /**
-          * Adds padding to the media column on mobile.
-         */
-        "mediaFullMobileFix"?: boolean;
-        "mediaMargin"?: string;
-        "mediaPaddingMax"?: number;
-        "mediaPaddingMin"?: number;
-        /**
-          * Fires after component has loaded.
-         */
-        "onSpxSectionTwoColumnDidLoad"?: (event: CustomEvent<any>) => void;
-        /**
-          * Reverses the column order.
-         */
-        "reverse"?: boolean;
-        /**
-          * Reverses the column order on mobile.
-         */
-        "reverseMobile"?: boolean;
-        "tabsAnimation"?: boolean;
-        "tabsAnimationColor"?: string;
-        "tabsAnimationDuration"?: number;
-        /**
-          * Alignment for the inner text wrapper.
-         */
-        "textAlignInner"?: 'left' | 'center' | 'right';
-        /**
-          * Alignment for the outer text wrapper.
-         */
-        "textAlignOuter"?: 'left' | 'center' | 'right';
-        /**
-          * Background color for the text column.
-          * @CSS
-         */
-        "textBackground"?: string;
-        /**
-          * Overlaps the background with the text column.
-         */
-        "textBackgroundOverlap"?: boolean;
-    }
     interface SpxShare {
+        "classItem"?: string;
         "fontSize"?: string;
+        "fontSizeMax"?: number;
+        "fontSizeMin"?: number;
         "itemBackground"?: string;
         "itemBorderRadius"?: string;
         /**
@@ -2813,14 +2139,25 @@ declare namespace LocalJSX {
           * @CSS
          */
         "itemGap"?: string;
+        "itemGapMax"?: number;
+        "itemGapMin"?: number;
         "itemPadding"?: string;
+        "itemPaddingMax"?: number;
+        "itemPaddingMin"?: number;
         "itemSize"?: string;
+        "itemSizeMax"?: number;
+        "itemSizeMin"?: number;
         "itemTransitionDuration"?: string;
         "itemTransitionTimingFunction"?: string;
         /**
           * Fires after component has loaded.
          */
         "onSpxShareDidLoad"?: (event: CustomEvent<any>) => void;
+        /**
+          * Styling.
+          * @choice 'default', 'fluid', 'headless'
+         */
+        "styling"?: string;
         /**
           * Button href target.
          */
@@ -3054,6 +2391,8 @@ declare namespace LocalJSX {
         "background"?: string;
         "border"?: string;
         "borderRadius"?: string;
+        "classButton"?: string;
+        "classText"?: string;
         /**
           * Adds option to close snackbar after its creation.
          */
@@ -3075,6 +2414,8 @@ declare namespace LocalJSX {
          */
         "fixed"?: boolean;
         "fontSize"?: string;
+        "fontSizeMax"?: number;
+        "fontSizeMin"?: number;
         /**
           * Unique identifier for snackbar instance.
           * @editor '#components'
@@ -3085,6 +2426,8 @@ declare namespace LocalJSX {
          */
         "onSpxSnackbarDidLoad"?: (event: CustomEvent<any>) => void;
         "padding"?: string;
+        "paddingMax"?: number;
+        "paddingMin"?: number;
         /**
           * Component position in page.
           * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
@@ -3107,6 +2450,11 @@ declare namespace LocalJSX {
          */
         "spaceBetween"?: string;
         /**
+          * Styling.
+          * @choice 'default', 'fluid', 'headless'
+         */
+        "styling"?: string;
+        /**
           * Element where snackbars should be created in.
           * @editor '#components'
          */
@@ -3116,48 +2464,6 @@ declare namespace LocalJSX {
          */
         "text"?: string;
         "zIndex"?: number;
-    }
-    interface SpxText {
-        "h1FontSizeMax"?: number;
-        "h1FontSizeMin"?: number;
-        "h2FontSizeMax"?: number;
-        "h2FontSizeMin"?: number;
-        "h3FontSizeMax"?: number;
-        "h3FontSizeMin"?: number;
-        "h4FontSizeMax"?: number;
-        "h4FontSizeMin"?: number;
-        "headingColor"?: string;
-        "headingFontFamily"?: string;
-        "headingFontWeight"?: string;
-        "headingLetterSpacing"?: string;
-        "headingLineHeight"?: string;
-        "headingTextTransform"?: string;
-        "linkDecorationColor"?: string;
-        /**
-          * Parse markdown.
-         */
-        "markdown"?: boolean;
-        "maxWidth"?: string;
-        /**
-          * Fires after component has loaded.
-         */
-        "onSpxTextDidLoad"?: (event: CustomEvent<any>) => void;
-        "paddingFigureMax"?: number;
-        "paddingFigureMin"?: number;
-        "spaceBeforeH1Max"?: number;
-        "spaceBeforeH1Min"?: number;
-        "spaceBetweenMax"?: number;
-        "spaceBetweenMin"?: number;
-        "spaceBetweenPMax"?: number;
-        "spaceBetweenPMin"?: number;
-        "textColor"?: string;
-        "textFontFamily"?: string;
-        "textFontSizeMax"?: number;
-        "textFontSizeMin"?: number;
-        "textFontWeight"?: string;
-        "textLetterSpacing"?: string;
-        "textLineHeight"?: string;
-        "textTextTransform"?: string;
     }
     interface SpxTypewriter {
         /**
@@ -3191,10 +2497,9 @@ declare namespace LocalJSX {
         "spx-animate": SpxAnimate;
         "spx-class-toggle": SpxClassToggle;
         "spx-code": SpxCode;
-        "spx-container": SpxContainer;
+        "spx-docs": SpxDocs;
         "spx-edit": SpxEdit;
         "spx-edit-button": SpxEditButton;
-        "spx-editor": SpxEditor;
         "spx-group": SpxGroup;
         "spx-icon": SpxIcon;
         "spx-iframe": SpxIframe;
@@ -3206,18 +2511,11 @@ declare namespace LocalJSX {
         "spx-navigation": SpxNavigation;
         "spx-notation": SpxNotation;
         "spx-offset": SpxOffset;
-        "spx-page-docs": SpxPageDocs;
-        "spx-page-single": SpxPageSingle;
         "spx-scrollspy": SpxScrollspy;
-        "spx-section-button": SpxSectionButton;
-        "spx-section-footer": SpxSectionFooter;
-        "spx-section-header": SpxSectionHeader;
-        "spx-section-two-column": SpxSectionTwoColumn;
         "spx-share": SpxShare;
         "spx-slider": SpxSlider;
         "spx-slideshow": SpxSlideshow;
         "spx-snackbar": SpxSnackbar;
-        "spx-text": SpxText;
         "spx-typewriter": SpxTypewriter;
     }
 }
@@ -3229,10 +2527,9 @@ declare module "@stencil/core" {
             "spx-animate": LocalJSX.SpxAnimate & JSXBase.HTMLAttributes<HTMLSpxAnimateElement>;
             "spx-class-toggle": LocalJSX.SpxClassToggle & JSXBase.HTMLAttributes<HTMLSpxClassToggleElement>;
             "spx-code": LocalJSX.SpxCode & JSXBase.HTMLAttributes<HTMLSpxCodeElement>;
-            "spx-container": LocalJSX.SpxContainer & JSXBase.HTMLAttributes<HTMLSpxContainerElement>;
+            "spx-docs": LocalJSX.SpxDocs & JSXBase.HTMLAttributes<HTMLSpxDocsElement>;
             "spx-edit": LocalJSX.SpxEdit & JSXBase.HTMLAttributes<HTMLSpxEditElement>;
             "spx-edit-button": LocalJSX.SpxEditButton & JSXBase.HTMLAttributes<HTMLSpxEditButtonElement>;
-            "spx-editor": LocalJSX.SpxEditor & JSXBase.HTMLAttributes<HTMLSpxEditorElement>;
             "spx-group": LocalJSX.SpxGroup & JSXBase.HTMLAttributes<HTMLSpxGroupElement>;
             "spx-icon": LocalJSX.SpxIcon & JSXBase.HTMLAttributes<HTMLSpxIconElement>;
             "spx-iframe": LocalJSX.SpxIframe & JSXBase.HTMLAttributes<HTMLSpxIframeElement>;
@@ -3244,18 +2541,11 @@ declare module "@stencil/core" {
             "spx-navigation": LocalJSX.SpxNavigation & JSXBase.HTMLAttributes<HTMLSpxNavigationElement>;
             "spx-notation": LocalJSX.SpxNotation & JSXBase.HTMLAttributes<HTMLSpxNotationElement>;
             "spx-offset": LocalJSX.SpxOffset & JSXBase.HTMLAttributes<HTMLSpxOffsetElement>;
-            "spx-page-docs": LocalJSX.SpxPageDocs & JSXBase.HTMLAttributes<HTMLSpxPageDocsElement>;
-            "spx-page-single": LocalJSX.SpxPageSingle & JSXBase.HTMLAttributes<HTMLSpxPageSingleElement>;
             "spx-scrollspy": LocalJSX.SpxScrollspy & JSXBase.HTMLAttributes<HTMLSpxScrollspyElement>;
-            "spx-section-button": LocalJSX.SpxSectionButton & JSXBase.HTMLAttributes<HTMLSpxSectionButtonElement>;
-            "spx-section-footer": LocalJSX.SpxSectionFooter & JSXBase.HTMLAttributes<HTMLSpxSectionFooterElement>;
-            "spx-section-header": LocalJSX.SpxSectionHeader & JSXBase.HTMLAttributes<HTMLSpxSectionHeaderElement>;
-            "spx-section-two-column": LocalJSX.SpxSectionTwoColumn & JSXBase.HTMLAttributes<HTMLSpxSectionTwoColumnElement>;
             "spx-share": LocalJSX.SpxShare & JSXBase.HTMLAttributes<HTMLSpxShareElement>;
             "spx-slider": LocalJSX.SpxSlider & JSXBase.HTMLAttributes<HTMLSpxSliderElement>;
             "spx-slideshow": LocalJSX.SpxSlideshow & JSXBase.HTMLAttributes<HTMLSpxSlideshowElement>;
             "spx-snackbar": LocalJSX.SpxSnackbar & JSXBase.HTMLAttributes<HTMLSpxSnackbarElement>;
-            "spx-text": LocalJSX.SpxText & JSXBase.HTMLAttributes<HTMLSpxTextElement>;
             "spx-typewriter": LocalJSX.SpxTypewriter & JSXBase.HTMLAttributes<HTMLSpxTypewriterElement>;
         }
     }

@@ -43,12 +43,12 @@ Type: `Promise<void>`
 
 ### Used by
 
- - [spx-page-docs](../spx-page)
+ - [spx-docs](../spx-docs)
 
 ### Graph
 ```mermaid
 graph TD;
-  spx-page-docs --> spx-scrollspy
+  spx-docs --> spx-scrollspy
   style spx-scrollspy fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

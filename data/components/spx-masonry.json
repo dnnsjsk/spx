@@ -78,7 +78,7 @@
   "methods": [
     {
       "name": "recalc",
-      "description": "Recalculate grid.",
+      "description": "Recalculates grid.",
       "signature": "recalc() => Promise<void>"
     },
     {

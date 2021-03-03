@@ -1,17 +1,18 @@
-// eslint-disable-next-line no-unused-vars
 import {
   Component,
   Element,
   Event,
   EventEmitter,
+  // eslint-disable-next-line no-unused-vars
   h,
   Host,
   Prop,
 } from '@stencil/core';
 import { css } from '@emotion/css';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
-import 'ionicons/dist/ionicons.js';
+import 'ionicons/dist/index';
 import { setVar } from '../../utils/setVar';
+import { setVarOrClamp } from '../../utils/setVarOrClamp';
 
 const tag = 'spx-icon';
 
@@ -43,6 +44,17 @@ export class SpxIcon {
 
   @Prop({ reflect: true }) size: string = '1em';
 
+  @Prop({ reflect: true }) sizeMin: number = 0.8;
+
+  @Prop({ reflect: true }) sizeMax: number = 1;
+
+  /**
+   * Styling.
+   * @choice 'default', 'fluid'
+   */
+
+  @Prop({ reflect: true }) styling: string = 'default';
+
   /** Fires after component has loaded. */
 
   // eslint-disable-next-line @stencil/decorators-style
@@ -68,7 +80,14 @@ export class SpxIcon {
 
     const styleIonicon = css({
       color: setVar(tag, 'color', this.color),
-      fontSize: setVar(tag, 'size', this.size),
+      fontSize: setVarOrClamp(
+        tag,
+        'size',
+        this.size,
+        this.sizeMin,
+        this.sizeMax,
+        this.styling
+      ),
     });
 
     /** Caret styles. */

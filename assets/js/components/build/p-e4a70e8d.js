@@ -1,0 +1,1 @@
+import{s}from"./p-6c77ad03.js";const a=async()=>{s((s=>s.theme||s.getAttribute("theme")||"default"))};export{a as g}

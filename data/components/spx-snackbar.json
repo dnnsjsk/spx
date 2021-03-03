@@ -51,6 +51,22 @@
       "tags": []
     },
     {
+      "id": "snackbar-classButton",
+      "name": "classButton",
+      "attribute": "class-button",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "snackbar-classText",
+      "name": "classText",
+      "attribute": "class-text",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
       "id": "snackbar-closeable",
       "name": "closeable",
       "attribute": "closeable",
@@ -120,6 +136,26 @@
       "tags": []
     },
     {
+      "id": "snackbar-fontSizeMax",
+      "name": "fontSizeMax",
+      "attribute": "font-size-max",
+      "type": "number",
+      "description": "",
+      "default": "1.6",
+      "defaultValue": "1.6",
+      "tags": []
+    },
+    {
+      "id": "snackbar-fontSizeMin",
+      "name": "fontSizeMin",
+      "attribute": "font-size-min",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
       "id": "snackbar-identifier",
       "name": "identifier",
       "attribute": "identifier",
@@ -142,6 +178,26 @@
       "description": "",
       "default": "'1em'",
       "defaultValue": "'1em'",
+      "tags": []
+    },
+    {
+      "id": "snackbar-paddingMax",
+      "name": "paddingMax",
+      "attribute": "padding-max",
+      "type": "number",
+      "description": "",
+      "default": "1.4",
+      "defaultValue": "1.4",
+      "tags": []
+    },
+    {
+      "id": "snackbar-paddingMin",
+      "name": "paddingMin",
+      "attribute": "padding-min",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
       "tags": []
     },
     {
@@ -191,6 +247,21 @@
       "default": "'12px'",
       "defaultValue": "'12px'",
       "tags": []
+    },
+    {
+      "id": "snackbar-styling",
+      "name": "styling",
+      "attribute": "styling",
+      "type": "string",
+      "description": "Styling.",
+      "default": "'default'",
+      "defaultValue": "'default'",
+      "tags": [
+        {
+          "text": "'default', 'fluid', 'headless'",
+          "name": "choice"
+        }
+      ]
     },
     {
       "id": "snackbar-target",

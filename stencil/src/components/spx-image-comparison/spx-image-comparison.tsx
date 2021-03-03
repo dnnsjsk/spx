@@ -192,6 +192,7 @@ export class SpxImageComparison {
 
     const styleImage = css({
       height: '100%',
+      maxWidth: 'none !important',
     });
 
     /** Image after styles. */

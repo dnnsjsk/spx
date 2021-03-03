@@ -3,6 +3,14 @@
   "description": "Social share buttons. Currently includes Facebook, Twitter, Whatsapp and E-Mail.",
   "properties": [
     {
+      "id": "share-classItem",
+      "name": "classItem",
+      "attribute": "class-item",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
       "id": "share-fontSize",
       "name": "fontSize",
       "attribute": "font-size",
@@ -10,6 +18,26 @@
       "description": "",
       "default": "s.fontSize",
       "defaultValue": "'var(--spx-font-size)'",
+      "tags": []
+    },
+    {
+      "id": "share-fontSizeMax",
+      "name": "fontSizeMax",
+      "attribute": "font-size-max",
+      "type": "number",
+      "description": "",
+      "default": "1.4",
+      "defaultValue": "1.4",
+      "tags": []
+    },
+    {
+      "id": "share-fontSizeMin",
+      "name": "fontSizeMin",
+      "attribute": "font-size-min",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
       "tags": []
     },
     {
@@ -71,6 +99,26 @@
       ]
     },
     {
+      "id": "share-itemGapMax",
+      "name": "itemGapMax",
+      "attribute": "item-gap-max",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "share-itemGapMin",
+      "name": "itemGapMin",
+      "attribute": "item-gap-min",
+      "type": "number",
+      "description": "",
+      "default": "0.4",
+      "defaultValue": "0.4",
+      "tags": []
+    },
+    {
       "id": "share-itemPadding",
       "name": "itemPadding",
       "attribute": "item-padding",
@@ -81,6 +129,26 @@
       "tags": []
     },
     {
+      "id": "share-itemPaddingMax",
+      "name": "itemPaddingMax",
+      "attribute": "item-padding-max",
+      "type": "number",
+      "description": "",
+      "default": "1.2",
+      "defaultValue": "1.2",
+      "tags": []
+    },
+    {
+      "id": "share-itemPaddingMin",
+      "name": "itemPaddingMin",
+      "attribute": "item-padding-min",
+      "type": "number",
+      "description": "",
+      "default": "0.5",
+      "defaultValue": "0.5",
+      "tags": []
+    },
+    {
       "id": "share-itemSize",
       "name": "itemSize",
       "attribute": "item-size",
@@ -88,6 +156,26 @@
       "description": "",
       "default": "'1em'",
       "defaultValue": "'1em'",
+      "tags": []
+    },
+    {
+      "id": "share-itemSizeMax",
+      "name": "itemSizeMax",
+      "attribute": "item-size-max",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "share-itemSizeMin",
+      "name": "itemSizeMin",
+      "attribute": "item-size-min",
+      "type": "number",
+      "description": "",
+      "default": "0.7",
+      "defaultValue": "0.7",
       "tags": []
     },
     {
@@ -109,6 +197,21 @@
       "default": "s.transitionTimingFunction",
       "defaultValue": "'var(--spx-transition-timing-function)'",
       "tags": []
+    },
+    {
+      "id": "share-styling",
+      "name": "styling",
+      "attribute": "styling",
+      "type": "string",
+      "description": "Styling.",
+      "default": "'default'",
+      "defaultValue": "'default'",
+      "tags": [
+        {
+          "text": "'default', 'fluid', 'headless'",
+          "name": "choice"
+        }
+      ]
     },
     {
       "id": "share-target",

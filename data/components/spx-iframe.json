@@ -98,7 +98,7 @@
       "defaultValue": "'resize'",
       "tags": [
         {
-          "text": "'resize', 'document', 'type'",
+          "text": "'resize', 'document', 'default'",
           "name": "choice"
         }
       ]
@@ -106,7 +106,7 @@
   ],
   "events": [
     {
-      "name": "spxIFrameDidLoad",
+      "name": "spxIframeDidLoad",
       "description": "Fires after component has loaded."
     }
   ],

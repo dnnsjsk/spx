@@ -1,7 +1,7 @@
 === spx ===
 Contributors: dnnsjsk
 Requires at least: 5.0
-Tested up to: 5.6
+Tested up to: 5.6.2
 Requires PHP: 7.0
 Stable tag: 2.0
 License: GPLv2 or later
@@ -14,6 +14,36 @@ A web component page builder for WordPress developers like you!
 Supercharge your workflow using handy components for the next project. Works with any theme, browser and existing code.
 
 == Changelog ==
+
+= 3.1.0 =
+* Accordion: add 'fluid' styling mode
+* Accordion: add 'headless' styling mode
+* Code: add 'lazy' attribute to highlight component when it comes into viewport
+* Code: add 'line-numbers-start' attribute
+* Code: enhance performance
+* Code: fix scrollbar
+* Docs: add default mode
+* Docs: combine 'offset-margin-top' into a single attribute
+* Docs: fix grid blowout
+* Docs: make 'offset-margin-top' work with all tags
+* Docs: make component standalone
+* Docs: remove default colors
+* Docs: remove font family
+* Docs: rename 'space-y' to 'content-padding-y'
+* Docs: rename to 'spx-docs'
+* Edit Button: add 'fluid' styling mode
+* Edit Button: add 'headless' styling mode
+* Edit Button: add methods for 'discard', 'edit' and 'save'
+* Fix: remove container, single, text and section components
+* Fix: remove margin entry from CSS
+* Icon: add 'fluid' styling mode
+* Image Comparison: force 'max-width: none' to images to prevent stretching under all circumstances
+* Offset: add 'recalculate' method
+* Share: add 'fluid' styling mode
+* Share: add 'headless' styling mode
+* Share: fix wrong CSS variable for 'item-size'
+* Snackbar: add 'fluid' styling mode
+* Stencil: update to 2.4.0
 
 = 3.0.3 =
 * Fix: plugin version

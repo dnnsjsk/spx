@@ -143,11 +143,11 @@
       "tags": []
     },
     {
-      "id": "code-hideScrollbar",
-      "name": "hideScrollbar",
-      "attribute": "hide-scrollbar",
+      "id": "code-lazy",
+      "name": "lazy",
+      "attribute": "lazy",
       "type": "boolean",
-      "description": "Hide scrollbar.",
+      "description": "Load component when it enters the viewport.",
       "tags": []
     },
     {
@@ -181,6 +181,14 @@
       "tags": []
     },
     {
+      "id": "code-lineNumbersStart",
+      "name": "lineNumbersStart",
+      "attribute": "line-numbers-start",
+      "type": "number",
+      "description": "Start of line number.",
+      "tags": []
+    },
+    {
       "id": "code-maxWidth",
       "name": "maxWidth",
       "attribute": "max-width",
@@ -208,6 +216,16 @@
       "description": "",
       "default": "'clamp(20px, 2.4vw, 40px)'",
       "defaultValue": "'clamp(20px, 2.4vw, 40px)'",
+      "tags": []
+    },
+    {
+      "id": "code-scrollbar",
+      "name": "scrollbar",
+      "attribute": "scrollbar",
+      "type": "boolean",
+      "description": "Hide scrollbar.",
+      "default": "true",
+      "defaultValue": "true",
       "tags": []
     },
     {

@@ -47,6 +47,30 @@
       "tags": []
     },
     {
+      "id": "edit-button-classButton",
+      "name": "classButton",
+      "attribute": "class-button",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "edit-button-classButtonDiscard",
+      "name": "classButtonDiscard",
+      "attribute": "class-button-discard",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "edit-button-classLoader",
+      "name": "classLoader",
+      "attribute": "class-loader",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
       "id": "edit-button-color",
       "name": "color",
       "attribute": "color",
@@ -127,6 +151,26 @@
       "tags": []
     },
     {
+      "id": "edit-button-fontSizeMax",
+      "name": "fontSizeMax",
+      "attribute": "font-size-max",
+      "type": "number",
+      "description": "",
+      "default": "1.2",
+      "defaultValue": "1.2",
+      "tags": []
+    },
+    {
+      "id": "edit-button-fontSizeMin",
+      "name": "fontSizeMin",
+      "attribute": "font-size-min",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
       "id": "edit-button-gap",
       "name": "gap",
       "attribute": "gap",
@@ -148,6 +192,46 @@
       "description": "",
       "default": "'0.8em 1.2em'",
       "defaultValue": "'0.8em 1.2em'",
+      "tags": []
+    },
+    {
+      "id": "edit-button-paddingXMax",
+      "name": "paddingXMax",
+      "attribute": "padding-x-max",
+      "type": "number",
+      "description": "",
+      "default": "1.4",
+      "defaultValue": "1.4",
+      "tags": []
+    },
+    {
+      "id": "edit-button-paddingXMin",
+      "name": "paddingXMin",
+      "attribute": "padding-x-min",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "edit-button-paddingYMax",
+      "name": "paddingYMax",
+      "attribute": "padding-y-max",
+      "type": "number",
+      "description": "",
+      "default": "1.2",
+      "defaultValue": "1.2",
+      "tags": []
+    },
+    {
+      "id": "edit-button-paddingYMin",
+      "name": "paddingYMin",
+      "attribute": "padding-y-min",
+      "type": "number",
+      "description": "",
+      "default": "0.7",
+      "defaultValue": "0.7",
       "tags": []
     },
     {
@@ -177,6 +261,21 @@
         {
           "text": "'absolute'",
           "name": "editor"
+        }
+      ]
+    },
+    {
+      "id": "edit-button-styling",
+      "name": "styling",
+      "attribute": "styling",
+      "type": "string",
+      "description": "Styling.",
+      "default": "'default'",
+      "defaultValue": "'default'",
+      "tags": [
+        {
+          "text": "'default', 'fluid', 'headless'",
+          "name": "choice"
         }
       ]
     },
@@ -257,9 +356,24 @@
   ],
   "methods": [
     {
+      "name": "discard",
+      "description": "Discard changes.",
+      "signature": "discard() => Promise<void>"
+    },
+    {
+      "name": "edit",
+      "description": "Enable editing.",
+      "signature": "edit() => Promise<void>"
+    },
+    {
       "name": "reload",
       "description": "",
       "signature": "reload() => Promise<void>"
+    },
+    {
+      "name": "save",
+      "description": "Save changes.",
+      "signature": "save() => Promise<void>"
     }
   ],
   "slots": []

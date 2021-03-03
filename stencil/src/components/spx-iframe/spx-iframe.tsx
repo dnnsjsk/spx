@@ -68,7 +68,7 @@ export class SpxIframe {
 
   /**
    * Screen size of the site shown inside the iframe.
-   * @choice 'resize', 'document', 'type'
+   * @choice 'resize', 'document', 'default'
    */
 
   @Prop() type: string = 'resize';
@@ -76,7 +76,7 @@ export class SpxIframe {
   /** Fires after component has loaded. */
 
   // eslint-disable-next-line @stencil/decorators-style
-  @Event({ eventName: 'spxIFrameDidLoad' })
+  @Event({ eventName: 'spxIframeDidLoad' })
   spxIframeDidLoad: EventEmitter;
 
   @Listen('resize', { target: 'window' })
@@ -230,6 +230,10 @@ export class SpxIframe {
       height: this.type === 'resize' ? '100%' : 'auto',
       width: '100%',
       position: 'relative',
+
+      iframe: {
+        width: this.type === 'default' && '100%',
+      },
     });
 
     /** Iframe resize styles. */

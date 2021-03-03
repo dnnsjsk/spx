@@ -16,6 +16,8 @@ import * as s from '../../constants/style';
 import { position } from '../../constants/style';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
+import { setVarOrClamp } from '../../utils/setVarOrClamp';
+import { setClamp } from '../../utils/setClamp';
 
 const tag = 'spx-edit-button';
 
@@ -50,6 +52,12 @@ export class SpxEditButton {
 
   @Prop({ reflect: true }) borderRadius: string = s.borderRadius;
 
+  @Prop({ reflect: true }) classButton: string;
+
+  @Prop({ reflect: true }) classButtonDiscard: string;
+
+  @Prop({ reflect: true }) classLoader: string;
+
   @Prop({ reflect: true }) color: string = '#ffffff';
 
   /**
@@ -83,6 +91,10 @@ export class SpxEditButton {
 
   @Prop({ reflect: true }) fontSize: string = s.fontSize;
 
+  @Prop({ reflect: true }) fontSizeMin: number = 1;
+
+  @Prop({ reflect: true }) fontSizeMax: number = 1.2;
+
   /**
    * Gap between the buttons.
    * @CSS
@@ -91,6 +103,14 @@ export class SpxEditButton {
   @Prop({ reflect: true }) gap: string = '0.4em';
 
   @Prop({ reflect: true }) padding: string = '0.8em 1.2em';
+
+  @Prop({ reflect: true }) paddingXMin: number = 1;
+
+  @Prop({ reflect: true }) paddingXMax: number = 1.4;
+
+  @Prop({ reflect: true }) paddingYMin: number = 0.7;
+
+  @Prop({ reflect: true }) paddingYMax: number = 1.2;
 
   /**
    * Component position in page.
@@ -109,6 +129,13 @@ export class SpxEditButton {
     | 'absolute'
     | 'relative'
     | 'static' = 'fixed';
+
+  /**
+   * Styling.
+   * @choice 'default', 'fluid', 'headless'
+   */
+
+  @Prop({ reflect: true }) styling: string = 'default';
 
   /** Discard button text. */
 
@@ -285,58 +312,115 @@ export class SpxEditButton {
     }
   };
 
+  /** Discard changes. */
+
+  @Method()
+  async discard() {
+    this.clickDiscard();
+  }
+
+  /** Enable editing. */
+
+  @Method()
+  async edit() {
+    this.clickEdit();
+  }
+
   @Method()
   async reload() {
     this.componentWillLoad();
   }
 
+  /** Save changes. */
+
+  @Method()
+  async save() {
+    this.clickSave();
+  }
+
   render() {
     /** Host styles. */
 
-    const styleHost = css({
-      ...position(
-        'edit-button',
-        this.positionArray,
-        this.distanceX,
-        this.distanceY
-      ),
-      fontFamily: s.fontFamily,
-      fontSize: setVar(tag, 'font-size', this.fontSize),
-      display: 'grid',
-      gridGap: setVar(tag, 'gap', this.gap),
-      position: this.positionCss,
-      zIndex: this.zIndex,
-    });
+    const styleHost =
+      (this.styling === 'default' || this.styling === 'fluid') &&
+      css({
+        ...position(
+          'edit-button',
+          this.positionArray,
+          this.distanceX,
+          this.distanceY
+        ),
+        fontFamily: s.fontFamily,
+        fontSize: setVarOrClamp(
+          tag,
+          'font-size',
+          this.fontSize,
+          this.fontSizeMin,
+          this.fontSizeMax,
+          this.styling
+        ),
+        display: 'grid',
+        gridGap: setVar(tag, 'gap', this.gap),
+        position: this.positionCss,
+        zIndex: this.zIndex,
+      });
 
     /** Button styles. */
 
-    const styleButton = css({
-      fontFamily: setVar(tag, 'font-family', this.fontFamily),
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      textAlign: 'center',
-      cursor: 'pointer',
-      fontSize: '1em',
-      padding: setVar(tag, 'padding', this.padding),
-      color: setVar(tag, 'color', this.color),
-      background: setVar(tag, 'background', this.background),
-      border: setVar(tag, 'border', this.border),
-      borderRadius: setVar(tag, 'border-radius', this.borderRadius),
-    });
+    const styleButton =
+      this.styling === 'default' || this.styling === 'fluid'
+        ? css({
+            fontFamily: setVar(tag, 'font-family', this.fontFamily),
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            textAlign: 'center',
+            cursor: 'pointer',
+            fontSize: '1em',
+            padding:
+              this.styling === 'default' &&
+              setVar(tag, 'padding', this.padding),
+            paddingLeft:
+              this.styling === 'fluid' &&
+              setClamp(tag, 'padding-x', this.paddingXMin, this.paddingXMax),
+            paddingRight:
+              this.styling === 'fluid' &&
+              setClamp(tag, 'padding-x', this.paddingXMin, this.paddingXMax),
+            paddingTop:
+              this.styling === 'fluid' &&
+              setClamp(tag, 'padding-x', this.paddingYMin, this.paddingYMax),
+            paddingBottom:
+              this.styling === 'fluid' &&
+              setClamp(tag, 'padding-x', this.paddingYMin, this.paddingYMax),
+            color: setVar(tag, 'color', this.color),
+            background: setVar(tag, 'background', this.background),
+            border: setVar(tag, 'border', this.border),
+            borderRadius: setVar(tag, 'border-radius', this.borderRadius),
+          })
+        : this.classButton;
 
     /** Discard button styles. */
 
-    const styleButtonDiscard = css({
-      color: setVar(tag, 'color-discard', this.colorDiscard),
-      background: setVar(tag, 'background-discard', this.backgroundDiscard),
-    });
+    const styleButtonDiscard =
+      this.styling === 'default' || this.styling === 'fluid'
+        ? css({
+            color: setVar(tag, 'color-discard', this.colorDiscard),
+            background: setVar(
+              tag,
+              'background-discard',
+              this.backgroundDiscard
+            ),
+          })
+        : this.classButtonDiscard;
 
     /** Loader styles. */
 
-    const styleLoader = css({
-      paddingRight: '8px',
-    });
+    const styleLoader =
+      this.styling === 'default' || this.styling === 'fluid'
+        ? css({
+            paddingRight: '0.25em',
+          })
+        : this.classLoader;
 
     return (
       <Host class={styleHost}>

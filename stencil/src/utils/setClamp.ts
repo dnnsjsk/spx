@@ -2,16 +2,14 @@
  * Set clamp.
  */
 
-import state from '../stores/container';
-
 export const setClamp = (
   tag,
   type,
   minValue,
   maxValue,
-  base = state.linearBase,
-  minWidthPx = state.linearMinW,
-  maxWidthPx = state.linearMaxW
+  base = 16,
+  minWidthPx = 640,
+  maxWidthPx = 1536
 ) => {
   const pixelsPerRem = base;
 

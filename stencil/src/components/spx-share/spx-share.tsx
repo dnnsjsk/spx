@@ -14,6 +14,7 @@ import { css } from '@emotion/css';
 import * as s from '../../constants/style';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
+import { setVarOrClamp } from '../../utils/setVarOrClamp';
 
 const tag = 'spx-share';
 
@@ -30,7 +31,13 @@ export class SpxShare {
 
   @State() location;
 
+  @Prop({ reflect: true }) classItem: string;
+
   @Prop({ reflect: true }) fontSize: string = s.fontSize;
+
+  @Prop({ reflect: true }) fontSizeMin: number = 1;
+
+  @Prop({ reflect: true }) fontSizeMax: number = 1.4;
 
   @Prop({ reflect: true }) itemBackground: string;
 
@@ -58,15 +65,34 @@ export class SpxShare {
 
   @Prop({ reflect: true }) itemGap: string = '0.5em';
 
+  @Prop({ reflect: true }) itemGapMin: number = 0.4;
+
+  @Prop({ reflect: true }) itemGapMax: number = 1;
+
   @Prop({ reflect: true }) itemPadding: string = '0.5em';
 
+  @Prop({ reflect: true }) itemPaddingMin: number = 0.5;
+
+  @Prop({ reflect: true }) itemPaddingMax: number = 1.2;
+
   @Prop({ reflect: true }) itemSize: string = '1em';
+
+  @Prop({ reflect: true }) itemSizeMin: number = 0.7;
+
+  @Prop({ reflect: true }) itemSizeMax: number = 1;
 
   @Prop({ reflect: true }) itemTransitionDuration: string =
     s.transitionDuration;
 
   @Prop({ reflect: true }) itemTransitionTimingFunction: string =
     s.transitionTimingFunction;
+
+  /**
+   * Styling.
+   * @choice 'default', 'fluid', 'headless'
+   */
+
+  @Prop({ reflect: true }) styling: string = 'default';
 
   /** Button href target. */
 
@@ -105,49 +131,86 @@ export class SpxShare {
   render() {
     /** Host styles. */
 
-    const styleHost = css({
-      fontSize: setVar(tag, 'font-size', this.fontSize),
-      display: 'grid',
-      gridAutoFlow: this.vertical ? 'row' : 'column',
-      gridAutoColumns: !this.vertical && 'max-content',
-      gridAutoRows: this.vertical && 'max-content',
-      gridGap: setVar(tag, 'item-gap', this.itemGap),
-    });
+    const styleHost =
+      (this.styling === 'default' || this.styling === 'fluid') &&
+      css({
+        fontSize: setVar(tag, 'font-size', this.fontSize),
+        display: 'grid',
+        gridAutoFlow: this.vertical ? 'row' : 'column',
+        gridAutoColumns: !this.vertical && 'max-content',
+        gridAutoRows: this.vertical && 'max-content',
+        gridGap: setVarOrClamp(
+          tag,
+          'item-gap',
+          this.itemGap,
+          this.itemGapMin,
+          this.itemGapMax,
+          this.styling
+        ),
+      });
 
     /** Link styles. */
 
-    const styleLink = css({
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      boxSizing: 'content-box',
-      cursor: 'pointer',
-      width: setVar(tag, 'item-size', this.itemSize),
-      height: setVar(tag, 'item-gap', this.itemSize),
-      padding: setVar(tag, 'item-padding', this.itemPadding),
-      borderRadius: setVar(tag, 'item-border-radius', this.itemBorderRadius),
-      color: setVar(tag, 'item-color', this.itemColor),
-      background: setVar(tag, 'item-background', this.itemBackground),
-      transitionProperty: 'filter',
-      transitionDuration: setVar(
-        tag,
-        'item-transition-duration',
-        this.itemTransitionDuration
-      ),
-      transitionTimingFunction: setVar(
-        tag,
-        'item-transition-timing-function',
-        this.itemTransitionTimingFunction
-      ),
+    const styleItem =
+      this.styling === 'default' || this.styling === 'fluid'
+        ? css({
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            boxSizing: 'content-box',
+            cursor: 'pointer',
+            width: setVarOrClamp(
+              tag,
+              'item-size',
+              this.itemSize,
+              this.itemSizeMin,
+              this.itemSizeMax,
+              this.styling
+            ),
+            height: setVarOrClamp(
+              tag,
+              'item-size',
+              this.itemSize,
+              this.itemSizeMin,
+              this.itemSizeMax,
+              this.styling
+            ),
+            padding: setVarOrClamp(
+              tag,
+              'item-padding',
+              this.itemPadding,
+              this.itemPaddingMin,
+              this.itemPaddingMax,
+              this.styling
+            ),
+            borderRadius: setVar(
+              tag,
+              'item-border-radius',
+              this.itemBorderRadius
+            ),
+            color: setVar(tag, 'item-color', this.itemColor),
+            background: setVar(tag, 'item-background', this.itemBackground),
+            transitionProperty: 'filter',
+            transitionDuration: setVar(
+              tag,
+              'item-transition-duration',
+              this.itemTransitionDuration
+            ),
+            transitionTimingFunction: setVar(
+              tag,
+              'item-transition-timing-function',
+              this.itemTransitionTimingFunction
+            ),
 
-      '&:hover': {
-        filter: setVar(tag, 'item-filter-hover', this.itemFilterHover),
-      },
+            '&:hover': {
+              filter: setVar(tag, 'item-filter-hover', this.itemFilterHover),
+            },
 
-      svg: {
-        height: '100%',
-      },
-    });
+            svg: {
+              height: '100%',
+            },
+          })
+        : this.classItem;
 
     /** Facebook styles. */
 
@@ -226,7 +289,7 @@ export class SpxShare {
         {/** Facebook. */}
 
         <a
-          class={css([styleLink, styleFacebook])}
+          class={css([styleItem, styleFacebook])}
           target={this.target}
           href={
             'https://www.facebook.com/sharer/sharer.php?u=' + this.location + ''
@@ -238,7 +301,7 @@ export class SpxShare {
         {/** Twitter. */}
 
         <a
-          class={css([styleLink, styleTwitter])}
+          class={css([styleItem, styleTwitter])}
           target={this.target}
           href={'http://www.twitter.com/share?url=' + this.location + ''}
         >
@@ -248,7 +311,7 @@ export class SpxShare {
         {/** WhatsApp. */}
 
         <a
-          class={css([styleLink, styleWhatsapp])}
+          class={css([styleItem, styleWhatsapp])}
           target={this.target}
           href={'https://web.whatsapp.com/send?text=' + this.location + ''}
         >
@@ -258,7 +321,7 @@ export class SpxShare {
         {/** Email. */}
 
         <a
-          class={css([styleLink, styleEmail])}
+          class={css([styleItem, styleEmail])}
           target={this.target}
           href={'mailto:?body=' + this.location + ''}
         >

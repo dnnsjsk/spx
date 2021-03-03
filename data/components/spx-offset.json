@@ -36,6 +36,11 @@
   ],
   "methods": [
     {
+      "name": "recalc",
+      "description": "Recalculate distance.",
+      "signature": "recalc() => Promise<void>"
+    },
+    {
       "name": "reload",
       "description": "",
       "signature": "reload() => Promise<void>"

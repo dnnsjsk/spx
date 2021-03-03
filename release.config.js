@@ -42,6 +42,13 @@ module.exports = {
           from: path.resolve(__dirname, "readme.txt"),
           to: path.resolve(__dirname, "../../../../../releases/spx-release"),
         },
+        {
+          from: path.resolve(__dirname, "readme.txt"),
+          to: path.resolve(
+            __dirname,
+            "../../themes/blocks/releases/spx-release"
+          ),
+        },
       ],
     }),
     new CleanWebpackPlugin({

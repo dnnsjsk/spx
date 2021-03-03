@@ -25,7 +25,7 @@
 
 | Event              | Description                       | Type               |
 | ------------------ | --------------------------------- | ------------------ |
-| `spxIFrameDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+| `spxIframeDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
 
 
 ## Methods

@@ -28,7 +28,7 @@
 
 ### `recalc() => Promise<void>`
 
-Recalculate grid.
+Recalculates grid.
 
 #### Returns
 

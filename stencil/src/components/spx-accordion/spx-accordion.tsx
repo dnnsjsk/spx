@@ -16,6 +16,7 @@ import * as s from '../../constants/style';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 import { tagSelector } from '../../utils/tagSelector';
+import { setVarOrClamp } from '../../utils/setVarOrClamp';
 
 const tag = 'spx-accordion';
 
@@ -37,6 +38,42 @@ export class SpxAccordion {
   @State() contentCustom: boolean;
   @State() headerCustom: boolean;
   @State() headerHeight;
+
+  @Prop({ reflect: true }) classContent: string;
+
+  @Prop({ reflect: true }) classContentActive: string;
+
+  @Prop({ reflect: true }) classContentInactive: string;
+
+  @Prop({ reflect: true }) classContentText: string;
+
+  @Prop({ reflect: true }) classContentTextActive: string;
+
+  @Prop({ reflect: true }) classContentTextInactive: string;
+
+  @Prop({ reflect: true }) classHeader: string;
+
+  @Prop({ reflect: true }) classHeaderActive: string;
+
+  @Prop({ reflect: true }) classHeaderInactive: string;
+
+  @Prop({ reflect: true }) classHeaderText: string;
+
+  @Prop({ reflect: true }) classHeaderTextActive: string;
+
+  @Prop({ reflect: true }) classHeaderTextInactive: string;
+
+  @Prop({ reflect: true }) classHeaderIcon: string;
+
+  @Prop({ reflect: true }) classHeaderIconActive: string;
+
+  @Prop({ reflect: true }) classHeaderIconInactive: string;
+
+  @Prop({ reflect: true }) classHeaderIconContainer: string;
+
+  @Prop({ reflect: true }) classHeaderIconContainerActive: string;
+
+  @Prop({ reflect: true }) classHeaderIconContainerInactive: string;
 
   @Prop({ reflect: true }) contentColor: string = 'var(--spx-color-gray-900)';
 
@@ -63,12 +100,20 @@ export class SpxAccordion {
 
   @Prop({ reflect: true }) fontSize: string = s.fontSize;
 
+  @Prop({ reflect: true }) fontSizeMin: number = 1;
+
+  @Prop({ reflect: true }) fontSizeMax: number = 1.2;
+
   /**
    * Space between header and content.
    * @CSS
    */
 
   @Prop({ reflect: true }) gap: string = '0.4em';
+
+  @Prop({ reflect: true }) gapMin: number = 1;
+
+  @Prop({ reflect: true }) gapMax: number = 1.2;
 
   @Prop({ reflect: true }) headerColor: string = 'var(--spx-color-gray-900)';
 
@@ -78,6 +123,10 @@ export class SpxAccordion {
    */
 
   @Prop({ reflect: true }) headerGap: string = '0.4em';
+
+  @Prop({ reflect: true }) headerGapMin: number = 0.6;
+
+  @Prop({ reflect: true }) headerGapMax: number = 1;
 
   /** Header text. */
 
@@ -122,6 +171,13 @@ export class SpxAccordion {
   /** Reverse icon positioning. */
 
   @Prop({ reflect: true }) reverse: boolean;
+
+  /**
+   * Styling.
+   * @choice 'default', 'fluid', 'headless'
+   */
+
+  @Prop({ reflect: true }) styling: string = 'default';
 
   /** Fires after component has loaded. */
 
@@ -231,74 +287,118 @@ export class SpxAccordion {
   render() {
     /** Host styles. */
 
-    const styleHost = css({
-      fontFamily: s.fontFamily,
-      fontSize: setVar(tag, 'font-size', this.fontSize),
-      display: 'flex',
-      flexDirection: 'column',
-    });
+    const styleHost =
+      (this.styling === 'default' || this.styling === 'fluid') &&
+      css({
+        fontFamily: s.fontFamily,
+        fontSize: setVarOrClamp(
+          tag,
+          'font-size',
+          this.fontSize,
+          this.fontSizeMin,
+          this.fontSizeMax,
+          this.styling
+        ),
+        display: 'flex',
+        flexDirection: 'column',
+      });
 
     /** Header styles. */
 
-    const styleHeader = css({
-      display: 'grid',
-      gridAutoFlow: 'column',
-      gridTemplateColumns: this.reverse ? '1fr auto' : 'auto 1fr',
-      alignItems: 'center',
-      gridColumnGap: setVar(tag, 'header-gap', this.headerGap),
-      cursor: 'pointer',
+    const styleHeader =
+      this.styling === 'default' || this.styling === 'fluid'
+        ? css({
+            display: 'grid',
+            gridAutoFlow: 'column',
+            gridTemplateColumns: this.reverse ? '1fr auto' : 'auto 1fr',
+            alignItems: 'center',
+            gridColumnGap: setVarOrClamp(
+              tag,
+              'header-gap',
+              this.headerGap,
+              this.headerGapMin,
+              this.headerGapMax,
+              this.styling
+            ),
+            cursor: 'pointer',
 
-      'h1, h2, h3, h4, h5, h6, p, span': {
-        color: setVar(tag, 'header-color', this.headerColor),
-      },
+            'h1, h2, h3, h4, h5, h6, p, span': {
+              color: setVar(tag, 'header-color', this.headerColor),
+            },
 
-      '*:not([slot])': {
-        margin: '0',
-      },
-    });
+            '*:not([slot])': {
+              margin: '0',
+            },
+          })
+        : this.openState
+        ? this.classHeader + ' ' + this.classHeaderActive
+        : this.classHeader + ' ' + this.classHeaderInactive;
 
     /** Header custom styles. */
 
-    const styleHeaderIcon = css({
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      transformOrigin: 'center center',
-      gridColumn: this.reverse && '2',
-      transform:
-        this.openState &&
-        setVar(tag, 'indicator-icon-transform', this.indicatorIconTransform),
-      color: setVar(tag, 'header-color', this.headerColor),
-    });
+    const styleHeaderIcon =
+      this.styling === 'default' || this.styling === 'fluid'
+        ? css({
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            transformOrigin: 'center center',
+            gridColumn: this.reverse && '2',
+            transform:
+              this.openState &&
+              setVar(
+                tag,
+                'indicator-icon-transform',
+                this.indicatorIconTransform
+              ),
+            color: setVar(tag, 'header-color', this.headerColor),
+          })
+        : this.openState
+        ? this.classHeaderIcon + ' ' + this.classHeaderIconActive
+        : this.classHeaderIcon + ' ' + this.classHeaderIconInactive;
 
     /** Content styles. */
 
-    const styleContent = css({
-      display:
-        this.disableAnimation && this.openState
-          ? 'block'
-          : this.disableAnimation && !this.openState && 'none',
-      marginTop: this.openState ? setVar(tag, 'gap', this.gap) : 0,
-      maxHeight: this.disableAnimation ? 'none' : '0',
-      overflow: 'hidden',
-      height: this.disableAnimation && 'auto',
-      transitionProperty: 'max-height, margin-top',
-      willChange: 'max-height, margin-top',
-      transitionDuration: setVar(
-        tag,
-        'transition-duration',
-        this.contentTransitionDuration
-      ),
-      transitionTimingFunction: setVar(
-        tag,
-        'transition-timing-function',
-        this.contentTransitionTimingFunction
-      ),
+    const styleContent =
+      this.styling === 'default' || this.styling === 'fluid'
+        ? css({
+            display:
+              this.disableAnimation && this.openState
+                ? 'block'
+                : this.disableAnimation && !this.openState && 'none',
+            marginTop: this.openState
+              ? setVarOrClamp(
+                  tag,
+                  'gap',
+                  this.gap,
+                  this.gapMin,
+                  this.gapMax,
+                  this.styling
+                )
+              : 0,
+            maxHeight: this.disableAnimation ? 'none' : '0',
+            overflow: 'hidden',
+            height: this.disableAnimation && 'auto',
+            transitionProperty: 'max-height, margin-top',
+            willChange: 'max-height, margin-top',
+            transitionDuration: setVar(
+              tag,
+              'transition-duration',
+              this.contentTransitionDuration
+            ),
+            transitionTimingFunction: setVar(
+              tag,
+              'transition-timing-function',
+              this.contentTransitionTimingFunction
+            ),
 
-      'h1, h2, h3, h4, h5, h6, p, span:not(.token)': {
-        color: setVar(tag, 'content-color', this.contentColor),
-      },
-    });
+            'h1, h2, h3, h4, h5, h6, p, span:not(.token)': {
+              color: setVar(tag, 'content-color', this.contentColor),
+            },
+          })
+        : this.openState
+        ? this.classContent + ' ' + this.classContentActive
+        : this.classContentActive + ' ' + this.classContentInactive;
 
     return (
       <Host class={styleHost}>
@@ -328,13 +428,21 @@ export class SpxAccordion {
                 !this.headerCustom,
                 this.headerTextTag,
                 this.headerTextOpen,
-                'header'
+                'header',
+                this.styling === 'headless' && this.openState
+                  ? this.classHeaderText + ' ' + this.classHeaderTextActive
+                  : this.styling === 'headless' &&
+                      this.classHeaderText + ' ' + this.classHeaderTextInactive
               )
             : tagSelector(
                 !this.headerCustom,
                 this.headerTextTag,
                 this.headerText,
-                'header'
+                'header',
+                this.styling === 'headless' && this.openState
+                  ? this.classHeaderText + ' ' + this.classHeaderTextActive
+                  : this.styling === 'headless' &&
+                      this.classHeaderText + ' ' + this.classHeaderTextInactive
               )}
         </div>
 
@@ -348,7 +456,11 @@ export class SpxAccordion {
             !this.contentCustom,
             this.contentTextTag,
             this.contentText,
-            'content'
+            'content',
+            this.styling === 'headless' && this.openState
+              ? this.classContentText + ' ' + this.classContentTextActive
+              : this.styling === 'headless' &&
+                  this.classContentText + ' ' + this.classContentTextInactive
           )}
         </div>
       </Host>

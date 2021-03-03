@@ -63,6 +63,13 @@ export class SpxOffset {
     this.onResize();
   }
 
+  /** Recalculate distance. */
+
+  @Method()
+  async recalc() {
+    this.onResize();
+  }
+
   @Method()
   async reload() {
     this.componentDidLoad();

@@ -20,6 +20,7 @@ import { css } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 import Clipboard from 'clipboard';
+import { intersectionObserver } from '../../utils/intersectionObserver';
 
 const tag = 'spx-code';
 
@@ -37,6 +38,7 @@ const tag = 'spx-code';
 export class SpxCode {
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxCodeElement;
+  private code: HTMLElement;
   private clipboardButton: HTMLElement;
 
   @Prop({ reflect: true }) background: string = 'var(--spx-color-gray-900)';
@@ -71,9 +73,9 @@ export class SpxCode {
 
   @Prop({ reflect: true }) height: string = 'auto';
 
-  /** Hide scrollbar. */
+  /** Load component when it enters the viewport. */
 
-  @Prop({ reflect: true }) hideScrollbar: boolean;
+  @Prop({ reflect: true }) lazy: boolean;
 
   /** Enable line numbers. */
 
@@ -85,11 +87,19 @@ export class SpxCode {
   @Prop({ reflect: true }) lineNumbersColor: string =
     'var(--spx-color-gray-400)';
 
+  /** Start of line number. */
+
+  @Prop({ reflect: true }) lineNumbersStart: number;
+
   @Prop({ reflect: true }) maxWidth: string = '100%';
 
   @Prop({ reflect: true }) overflow: string = 'auto';
 
   @Prop({ reflect: true }) padding: string = 'clamp(20px, 2.4vw, 40px)';
+
+  /** Hide scrollbar. */
+
+  @Prop({ reflect: true }) scrollbar: boolean = true;
 
   /**
    * Colour theme.
@@ -117,13 +127,11 @@ export class SpxCode {
 
     /** Highlight code. */
 
-    Prism.highlightAll();
-    Prism.plugins.NormalizeWhitespace.setDefaults({
-      'remove-trailing': true,
-      'remove-indent': true,
-      'left-trim': true,
-      'right-trim': true,
-    });
+    if (this.lazy) {
+      intersectionObserver(this.el, this.highlightCode);
+    } else {
+      this.highlightCode();
+    }
 
     /** Setup clipboard button. */
 
@@ -148,6 +156,17 @@ export class SpxCode {
     setTimeout(() => {
       this.clipboardButton.innerText = this.clipboardButtonText;
     }, 5000);
+  };
+
+  private highlightCode = () => {
+    Prism.plugins.NormalizeWhitespace.setDefaults({
+      'remove-trailing': true,
+      'remove-indent': true,
+      'left-trim': true,
+      'right-trim': true,
+    });
+
+    Prism.highlightElement(this.code);
   };
 
   @Method()
@@ -175,17 +194,17 @@ export class SpxCode {
 
       pre: {
         overflow: setVar(tag, 'overflow', this.overflow),
-        background: setVar(tag, 'background', this.background),
+        background: setVar(tag, 'background', this.background) + '!important',
         padding: setVar(tag, 'padding', this.padding),
         height: setVar(tag, 'height', this.height),
-        msOverflowStyle: this.hideScrollbar ? 'none' : 'auto',
-        scrollbarWidth: this.hideScrollbar ? 'none' : 'auto',
+        msOverflowStyle: !this.scrollbar ? 'none' : 'auto',
+        scrollbarWidth: !this.scrollbar ? 'none' : 'auto',
         '::-webkit-scrollbar': {
-          display: this.hideScrollbar && 'none',
+          display: !this.scrollbar && 'none',
         },
 
         '.line-numbers-rows': {
-          top: 'calc(' + setVar(tag, 'padding', this.padding) + ' * -1 - 2px)',
+          top: 'calc(' + setVar(tag, 'padding', this.padding) + ' * -1)',
           paddingTop: setVar(tag, 'padding', this.padding),
           height: 'calc(' + setVar(tag, 'padding', this.padding) + ' + 100%)',
           background: setVar(
@@ -204,7 +223,7 @@ export class SpxCode {
             position: 'absolute',
             left: 0,
             width: '100%',
-            height: 'calc(100% + 2px)',
+            height: '100%',
             zIndex: -1,
             background: setVar(
               tag,
@@ -258,8 +277,14 @@ export class SpxCode {
       <Host class={styleHost}>
         {/** Code. */}
 
-        <pre class={this.lineNumbers && 'line-numbers'}>
-          <code class={'language-' + this.type}>
+        <pre
+          data-start={this.lineNumbers && this.lineNumbersStart}
+          class={this.lineNumbers && 'line-numbers'}
+        >
+          <code
+            ref={(el) => (this.code = el as HTMLElement)}
+            class={'language-' + this.type}
+          >
             <slot />
           </code>
         </pre>
