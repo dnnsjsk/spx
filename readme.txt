@@ -43,7 +43,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Share: add 'headless' styling mode
 * Share: fix wrong CSS variable for 'item-size'
 * Snackbar: add 'fluid' styling mode
-* Stencil: update to 2.4.0
+* StencilJS: update to 2.4.0
 
 = 3.0.3 =
 * Fix: plugin version
