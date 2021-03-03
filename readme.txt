@@ -34,6 +34,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Edit Button: add 'fluid' styling mode
 * Edit Button: add 'headless' styling mode
 * Edit Button: add methods for 'discard', 'edit' and 'save'
+* Fix: make 'tested up to version' 5.6.2
 * Fix: remove container, single, text and section components
 * Fix: remove margin entry from CSS
 * Icon: add 'fluid' styling mode
