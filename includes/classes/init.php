@@ -11,7 +11,7 @@ namespace spx;
 
 class Init {
 
-	function script() {
+	public function script() {
 
 		global $post;
 
@@ -73,21 +73,17 @@ class Init {
 
 	public static function css() {
 
-		add_action( 'wp_head', function () {
+		$str = file_get_contents( SPX_DIR . '/assets/css/spx.min.css' );
 
-			echo '
-				<style id="spx-css">
-				' . file_get_contents( SPX_DIR . '/assets/css/spx.css' ) . '
-				</style>';
+		add_action( 'wp_head', function () use ( &$str ) {
+
+			echo '<style id="spx-css">' . $str . '</style>';
 
 		} );
 
-		add_action( 'admin_head', function () {
+		add_action( 'admin_head', function () use ( &$str ) {
 
-			echo '
-				<style id="spx-css">
-				' . file_get_contents( SPX_DIR . '/assets/css/spx.css' ) . '
-				</style>';
+			echo '<style id="spx-css">' . $str . '</style>';
 
 		} );
 

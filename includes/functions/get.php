@@ -31,19 +31,3 @@ function spxGetGallery( $field, $type ) {
 function spxGetNavigation( $name ) {
 	Get::navigation( $name );
 }
-
-/**
- * Get post.
- *
- * @date    28/07/2020
- * @since   1.0.0
- *
- * @param null $dateFormat
- * @param null $size
- *
- * @param      $id
- */
-
-function spxGetPost( $id = NULL, $dateFormat = NULL, $size = NULL ) {
-	Get::post( $id, $dateFormat, $size );
-}

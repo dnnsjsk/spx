@@ -56,36 +56,4 @@ class Get {
 
 	}
 
-	/**
-	 * Post.
-	 *
-	 * @date    20/10/2020
-	 * @since   1.1.9
-	 *
-	 * @param null $dateFormat
-	 * @param null $size
-	 *
-	 * @param      $id
-	 */
-
-	public static function post( $id = NULL, $dateFormat = NULL, $size = NULL ) {
-
-		$idCheck = $id === NULL ? get_the_ID() : $id;
-
-		$avatar = get_user_meta( get_the_author_meta( 'id' ), 'simple_local_avatar' );
-
-		$object = (object) [
-			'title'             => get_the_title( $idCheck ),
-			'author_first_name' => get_the_author_meta( 'first_name' ),
-			'author_last_name'  => get_the_author_meta( 'last_name' ),
-			'author_image'      => $avatar[0]['full'],
-			'date'              => get_the_date( $dateFormat, $idCheck ),
-			'image'             => get_the_post_thumbnail_url( $idCheck, $size === NULL ? 'original' : $size ),
-			'content'           => do_blocks( get_the_content( $idCheck ) )
-		];
-
-		prepare::JSON( $object );
-
-	}
-
 }

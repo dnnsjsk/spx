@@ -23,9 +23,11 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Code: enhance performance
 * Code: fix scrollbar
 * Docs: add default mode
+* Docs: check if DOM exists before scrolling into view
 * Docs: combine 'offset-margin-top' into a single attribute
 * Docs: fix grid blowout
 * Docs: make 'offset-margin-top' work with all tags
+* Docs: make ID generator less error prone
 * Docs: make component standalone
 * Docs: remove default colors
 * Docs: remove font family
@@ -34,9 +36,11 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Edit Button: add 'fluid' styling mode
 * Edit Button: add 'headless' styling mode
 * Edit Button: add methods for 'discard', 'edit' and 'save'
+* Enhancement: minify inline css
 * Fix: make 'tested up to version' 5.6.2
 * Fix: remove container, single, text and section components
 * Fix: remove margin entry from CSS
+* Fix: remove post helpers
 * Icon: add 'fluid' styling mode
 * Image Comparison: force 'max-width: none' to images to prevent stretching under all circumstances
 * Offset: add 'recalculate' method

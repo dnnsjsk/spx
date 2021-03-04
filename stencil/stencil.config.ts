@@ -5,12 +5,6 @@ import { sass } from '@stencil/sass';
 import { JsonDocs } from '@stencil/core/internal';
 import { promises as fs } from 'fs';
 
-/*
-import linaria from 'linaria/rollup'
-import path from 'path'
-import css from 'rollup-plugin-css-only'
- */
-
 /** KebabCase helper. */
 
 const toKebabCase = (str) => {
@@ -122,16 +116,6 @@ export const config: Config = {
     },
   ],
   plugins: [sass()],
-  /*
-      rollupPlugins: {
-        after: [
-          linaria(),
-          css({
-            output: '../assets/css/spx.css'
-          })
-        ]
-      },
-       */
   devServer: {
     openBrowser: false,
   },

@@ -1,0 +1,10 @@
+body{--spx-color-black:#000000;--spx-color-white:#ffffff;--spx-color-gray-50:#fafafa;--spx-color-gray-100:#f4f4f5;--spx-color-gray-200:#e4e4e7;--spx-color-gray-300:#d4d4d8;--spx-color-gray-400:#a1a1aa;--spx-color-gray-500:#71717a;--spx-color-gray-600:#52525b;--spx-color-gray-700:#3f3f46;--spx-color-gray-800:#27272a;--spx-color-gray-900:#18181b;--spx-font-family:var(
+    --spx-token-font-family,
+    helvetica,
+    segoe,
+    arial,
+    sans-serif
+  );--spx-font-size:var(--spx-token-font-size, 16px);--spx-border-radius:var(--spx-token-border-radius, 0.375rem);--spx-transition-duration:var(--spx-token-transition-duration, 150ms);--spx-transition-duration-2:var(--spx-token-transition-duration-2, 500ms);--spx-transition-timing-function:var(
+    --spx-token-transition-timing-function,
+    cubic-bezier(0.4, 0, 0.2, 1)
+  )}

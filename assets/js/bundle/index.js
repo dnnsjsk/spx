@@ -14928,7 +14928,9 @@ const SpxDocs = class extends HTMLElement {
     globalComponentDidLoad(this.el);
     this.createNavigation();
     if (window.location.hash) {
-      document.querySelector(window.location.hash).scrollIntoView();
+      if (document.querySelector(window.location.hash)) {
+        document.querySelector(window.location.hash).scrollIntoView();
+      }
     }
     this.spxDocsDidLoad.emit({ target: 'document' });
   }
@@ -14940,8 +14942,11 @@ const SpxDocs = class extends HTMLElement {
         .querySelectorAll(this.navigationHeadingTag + ':not([data-spx-docs-no-navigation])')
         .forEach((item, index) => {
         const link = item.innerHTML
+          .replace(/[^-]+-$/, '')
+          .replace(/[^-]/, '')
           .replace(/[^A-Z0-9]/gi, '-')
           .replace(/--/g, '-')
+          .replace(/^-|-$/g, '')
           .toLowerCase();
         const id = this.uniqueId ? link + '-' + index : link;
         const a = document.createElement('a');
