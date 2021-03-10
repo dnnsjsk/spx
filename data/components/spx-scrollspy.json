@@ -46,18 +46,8 @@
       "id": "scrollspy-scrolling",
       "name": "scrolling",
       "attribute": "scrolling",
-      "type": "boolean",
-      "description": "Automatically scroll to the active element",
-      "tags": []
-    },
-    {
-      "id": "scrollspy-scrollingOffset",
-      "name": "scrollingOffset",
-      "attribute": "scrolling-offset",
       "type": "number",
-      "description": "Scrolling offset from the top.",
-      "default": "50",
-      "defaultValue": "50",
+      "description": "Activates automatic navigation scrolling and sets the offset.",
       "tags": []
     },
     {

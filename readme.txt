@@ -15,6 +15,11 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 3.1.1 (unreleased) =
+* Docs: add 'separator' attribute
+* Docs: add 'scrolling' attribute
+* Docs: make regex to create IDs more robust
+
 = 3.1.0 =
 * Accordion: add 'fluid' styling mode
 * Accordion: add 'headless' styling mode

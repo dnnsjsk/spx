@@ -343,6 +343,22 @@
       "tags": []
     },
     {
+      "id": "docs-scrolling",
+      "name": "scrolling",
+      "attribute": "scrolling",
+      "type": "number",
+      "description": "Activates automatic navigation scrolling and sets the offset.",
+      "tags": []
+    },
+    {
+      "id": "docs-separator",
+      "name": "separator",
+      "attribute": "separator",
+      "type": "string",
+      "description": "Create a separator between sections.",
+      "tags": []
+    },
+    {
       "id": "docs-styling",
       "name": "styling",
       "attribute": "styling",

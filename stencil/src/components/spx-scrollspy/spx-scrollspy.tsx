@@ -47,13 +47,9 @@ export class SpxScrollspy {
 
   @Prop({ reflect: true }) offset: any = 0;
 
-  /** Automatically scroll to the active element */
+  /** Activates automatic navigation scrolling and sets the offset. */
 
-  @Prop({ reflect: true }) scrolling: boolean;
-
-  /** Scrolling offset from the top. */
-
-  @Prop({ reflect: true }) scrollingOffset: number = 50;
+  @Prop({ reflect: true }) scrolling: number;
 
   /** Target element. Can take any querySelector value. (id, class, tag etc.) */
 
@@ -82,7 +78,7 @@ export class SpxScrollspy {
         top:
           this.el.querySelector(
             'a[href="' + event.detail.link.getAttribute('href') + '"]'
-          )['offsetTop'] - this.scrollingOffset,
+          )['offsetTop'] - this.scrolling,
         behavior: 'smooth',
       });
     }

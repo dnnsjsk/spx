@@ -308,6 +308,14 @@ export namespace Components {
         "navigationTop": string;
         "offsetMarginTop": string;
         /**
+          * Activates automatic navigation scrolling and sets the offset.
+         */
+        "scrolling": number;
+        /**
+          * Create a separator between sections.
+         */
+        "separator": string;
+        /**
           * Styling.
           * @choice 'default', 'fluid'
          */
@@ -769,13 +777,9 @@ export namespace Components {
         "offset": any;
         "reload": () => Promise<void>;
         /**
-          * Automatically scroll to the active element
+          * Activates automatic navigation scrolling and sets the offset.
          */
-        "scrolling": boolean;
-        /**
-          * Scrolling offset from the top.
-         */
-        "scrollingOffset": number;
+        "scrolling": number;
         /**
           * Target element. Can take any querySelector value. (id, class, tag etc.)
          */
@@ -1623,6 +1627,14 @@ declare namespace LocalJSX {
          */
         "onSpxDocsDidLoad"?: (event: CustomEvent<any>) => void;
         /**
+          * Activates automatic navigation scrolling and sets the offset.
+         */
+        "scrolling"?: number;
+        /**
+          * Create a separator between sections.
+         */
+        "separator"?: string;
+        /**
           * Styling.
           * @choice 'default', 'fluid'
          */
@@ -2101,13 +2113,9 @@ declare namespace LocalJSX {
          */
         "onSpxScrollspyDidLoad"?: (event: CustomEvent<any>) => void;
         /**
-          * Automatically scroll to the active element
+          * Activates automatic navigation scrolling and sets the offset.
          */
-        "scrolling"?: boolean;
-        /**
-          * Scrolling offset from the top.
-         */
-        "scrollingOffset"?: number;
+        "scrolling"?: number;
         /**
           * Target element. Can take any querySelector value. (id, class, tag etc.)
          */

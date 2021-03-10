@@ -18,6 +18,7 @@ import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 import { wrap } from '../../utils/wrap';
 import { setClamp } from '../../utils/setClamp';
 import { setVarOrClamp } from '../../utils/setVarOrClamp';
+import { insertBefore } from '../../utils/insertBefore';
 
 const tag = 'spx-docs';
 
@@ -110,6 +111,14 @@ export class SpxDocs {
 
   @Prop({ reflect: true }) offsetMarginTop: string = '';
 
+  /** Create a separator between sections. */
+
+  @Prop({ reflect: true }) separator: string;
+
+  /** Activates automatic navigation scrolling and sets the offset. */
+
+  @Prop({ reflect: true }) scrolling: number;
+
   /**
    * Styling.
    * @choice 'default', 'fluid'
@@ -153,7 +162,7 @@ export class SpxDocs {
 
   private createNavigation() {
     if (this.content.innerHTML !== '') {
-      /** Create links from ags. */
+      /** Create links from IDs. */
 
       this.content
         .querySelectorAll(
@@ -161,12 +170,10 @@ export class SpxDocs {
         )
         .forEach((item, index) => {
           const link = item.innerHTML
-            .replace(/[^-]+-$/, '')
-            .replace(/[^-]/, '')
-            .replace(/[^A-Z0-9]/gi, '-')
-            .replace(/--/g, '-')
-            .replace(/^-|-$/g, '')
-            .toLowerCase();
+            .toLowerCase()
+            .replace(/ /g, '-')
+            .replace(/[^\w-]+/g, '')
+            .replace(/^([-=\s]*)([a-zA-Z0-9])/gm, '$2');
           const id = this.uniqueId ? link + '-' + index : link;
           const a = document.createElement('a');
           item.setAttribute('data-spx-docs-index', String(index));
@@ -178,7 +185,7 @@ export class SpxDocs {
           wrap(a, document.createElement('li'));
         });
 
-      /** Create headings. */
+      /** Create headings and separators. */
 
       this.content
         .querySelectorAll(
@@ -193,6 +200,18 @@ export class SpxDocs {
           ).parentElement;
           span.innerHTML = item.getAttribute('data-spx-docs-heading');
           this.navigation.insertBefore(span, el);
+
+          if (this.separator) {
+            const span = document.createElement(this.separator);
+            span.setAttribute('data-spx-docs-separator', '');
+            span.setAttribute(
+              'data-spx-docs-content',
+              item.getAttribute('data-spx-docs-heading')
+            );
+            span.innerHTML = item.getAttribute('data-spx-docs-heading');
+            this.content.appendChild(span);
+            insertBefore(span, item);
+          }
         });
 
       this.el.querySelector('spx-scrollspy').reload();
@@ -394,8 +413,7 @@ export class SpxDocs {
           <spx-scrollspy
             display="grid"
             url-change={true}
-            offset="100"
-            scrolling={true}
+            scrolling={this.scrolling}
             class={styleNavigationMerge}
           >
             <ul ref={(el) => (this.navigation = el as HTMLElement)} />

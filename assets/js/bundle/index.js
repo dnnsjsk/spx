@@ -14879,6 +14879,13 @@ const wrap$1 = (el, wrapper) => {
   wrapper.appendChild(el);
 };
 
+/**
+ *  Insert element before another one.
+ */
+function insertBefore(newNode, existingNode) {
+  existingNode.parentNode.insertBefore(newNode, existingNode);
+}
+
 const tag$4 = 'spx-docs';
 const SpxDocs = class extends HTMLElement {
   constructor() {
@@ -14937,17 +14944,15 @@ const SpxDocs = class extends HTMLElement {
   /** Generates the navigation. */
   createNavigation() {
     if (this.content.innerHTML !== '') {
-      /** Create links from ags. */
+      /** Create links from IDs. */
       this.content
         .querySelectorAll(this.navigationHeadingTag + ':not([data-spx-docs-no-navigation])')
         .forEach((item, index) => {
         const link = item.innerHTML
-          .replace(/[^-]+-$/, '')
-          .replace(/[^-]/, '')
-          .replace(/[^A-Z0-9]/gi, '-')
-          .replace(/--/g, '-')
-          .replace(/^-|-$/g, '')
-          .toLowerCase();
+          .toLowerCase()
+          .replace(/ /g, '-')
+          .replace(/[^\w-]+/g, '')
+          .replace(/^([-=\s]*)([a-zA-Z0-9])/gm, '$2');
         const id = this.uniqueId ? link + '-' + index : link;
         const a = document.createElement('a');
         item.setAttribute('data-spx-docs-index', String(index));
@@ -14958,7 +14963,7 @@ const SpxDocs = class extends HTMLElement {
         this.navigation.appendChild(a);
         wrap$1(a, document.createElement('li'));
       });
-      /** Create headings. */
+      /** Create headings and separators. */
       this.content
         .querySelectorAll(this.navigationHeadingTag +
         '[data-spx-docs-heading]:not([data-spx-docs-no-navigation])')
@@ -14968,6 +14973,14 @@ const SpxDocs = class extends HTMLElement {
         const el = this.navigation.querySelector('[data-spx-docs-index="' + index + '"]').parentElement;
         span.innerHTML = item.getAttribute('data-spx-docs-heading');
         this.navigation.insertBefore(span, el);
+        if (this.separator) {
+          const span = document.createElement(this.separator);
+          span.setAttribute('data-spx-docs-separator', '');
+          span.setAttribute('data-spx-docs-content', item.getAttribute('data-spx-docs-heading'));
+          span.innerHTML = item.getAttribute('data-spx-docs-heading');
+          this.content.appendChild(span);
+          insertBefore(span, item);
+        }
       });
       this.el.querySelector('spx-scrollspy').reload();
     }
@@ -15033,7 +15046,7 @@ const SpxDocs = class extends HTMLElement {
     };
     /** Merge content objects to avoid emotion error. */
     const styleContentMerge = css(merge$1(styleContent, {}));
-    return (h$1(Host, { class: styleHost }, h$1("div", { class: styleNavigationWrap }, h$1("spx-scrollspy", { display: "grid", "url-change": true, offset: "100", scrolling: true, class: styleNavigationMerge }, h$1("ul", { ref: (el) => (this.navigation = el) }))), h$1("div", { ref: (el) => (this.content = el), class: styleContentMerge }, h$1("slot", null))));
+    return (h$1(Host, { class: styleHost }, h$1("div", { class: styleNavigationWrap }, h$1("spx-scrollspy", { display: "grid", "url-change": true, scrolling: this.scrolling, class: styleNavigationMerge }, h$1("ul", { ref: (el) => (this.navigation = el) }))), h$1("div", { ref: (el) => (this.content = el), class: styleContentMerge }, h$1("slot", null))));
   }
   get el() { return this; }
 };
@@ -19198,8 +19211,6 @@ const SpxScrollspy = class extends HTMLElement {
     this.navClass = 'spx-scrollspy__nav--active';
     /** Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated. */
     this.offset = 0;
-    /** Scrolling offset from the top. */
-    this.scrollingOffset = 50;
     /** Target element. Can take any querySelector value. (id, class, tag etc.) */
     this.target = 'a';
     /** Appends the currently active link to the end of the URL. */
@@ -19212,7 +19223,7 @@ const SpxScrollspy = class extends HTMLElement {
     }
     if (this.scrolling) {
       this.el.scroll({
-        top: this.el.querySelector('a[href="' + event.detail.link.getAttribute('href') + '"]')['offsetTop'] - this.scrollingOffset,
+        top: this.el.querySelector('a[href="' + event.detail.link.getAttribute('href') + '"]')['offsetTop'] - this.scrolling,
         behavior: 'smooth',
       });
     }
@@ -26527,7 +26538,7 @@ const SpxAccordion$1 = /*@__PURE__*/proxyCustomElement(SpxAccordion, [4,"spx-acc
 const SpxAnimate$1 = /*@__PURE__*/proxyCustomElement(SpxAnimate, [4,"spx-animate",{"delay":[2],"duration":[2],"ease":[1],"once":[4],"opacity":[2],"repeat":[2],"repeatDelay":[2,"repeat-delay"],"reverse":[4],"stagger":[2],"target":[1],"viewport":[4],"viewportMarginBottom":[1,"viewport-margin-bottom"],"viewportMarginLeft":[1,"viewport-margin-left"],"viewportMarginRight":[1,"viewport-margin-right"],"viewportMarginTop":[1,"viewport-margin-top"],"x":[2],"y":[2],"yoyo":[4],"display":[513],"elements":[32],"tl":[32]}]);
 const SpxClassToggle$1 = /*@__PURE__*/proxyCustomElement(SpxClassToggle, [4,"spx-class-toggle",{"display":[513],"local":[513],"target":[513],"toggle":[513],"classesArray":[32],"toggled":[32]}]);
 const SpxCode$1 = /*@__PURE__*/proxyCustomElement(SpxCode, [36,"spx-code",{"background":[513],"borderRadius":[513,"border-radius"],"clipboard":[516],"clipboardButtonBackground":[513,"clipboard-button-background"],"clipboardButtonColor":[513,"clipboard-button-color"],"clipboardButtonFontSize":[513,"clipboard-button-font-size"],"clipboardButtonFontWeight":[520,"clipboard-button-font-weight"],"clipboardButtonPadding":[513,"clipboard-button-padding"],"clipboardButtonText":[513,"clipboard-button-text"],"clipboardButtonTextCopied":[513,"clipboard-button-text-copied"],"clipboardButtonTextTransform":[513,"clipboard-button-text-transform"],"display":[513],"fontSize":[513,"font-size"],"height":[513],"lazy":[516],"lineNumbers":[516,"line-numbers"],"lineNumbersBackground":[513,"line-numbers-background"],"lineNumbersColor":[513,"line-numbers-color"],"lineNumbersStart":[514,"line-numbers-start"],"maxWidth":[513,"max-width"],"overflow":[513],"padding":[513],"scrollbar":[516],"theme":[513],"type":[513]}]);
-const SpxDocs$1 = /*@__PURE__*/proxyCustomElement(SpxDocs, [4,"spx-docs",{"bpMobile":[514,"bp-mobile"],"gap":[513],"contentPadding":[513,"content-padding"],"contentPaddingYMin":[514,"content-padding-y-min"],"contentPaddingYMax":[514,"content-padding-y-max"],"navigationBackground":[513,"navigation-background"],"navigationGap":[513,"navigation-gap"],"navigationGapMin":[514,"navigation-gap-min"],"navigationGapMax":[514,"navigation-gap-max"],"navigationHeadingTag":[513,"navigation-heading-tag"],"navigationHeightAdjust":[513,"navigation-height-adjust"],"navigationLinkColor":[513,"navigation-link-color"],"navigationLinkColorActive":[513,"navigation-link-color-active"],"navigationLinkFontSize":[520,"navigation-link-font-size"],"navigationLinkFontSizeMin":[514,"navigation-link-font-size-min"],"navigationLinkFontSizeMax":[514,"navigation-link-font-size-max"],"navigationLinkFontWeight":[513,"navigation-link-font-weight"],"navigationLinkLetterSpacing":[513,"navigation-link-letter-spacing"],"navigationLinkLineHeight":[513,"navigation-link-line-height"],"navigationLinkTextTransform":[513,"navigation-link-text-transform"],"navigationPaddingY":[513,"navigation-padding-y"],"navigationPaddingYMin":[514,"navigation-padding-y-min"],"navigationPaddingYMax":[514,"navigation-padding-y-max"],"navigationTitleColor":[513,"navigation-title-color"],"navigationTitleFontSize":[520,"navigation-title-font-size"],"navigationTitleFontSizeMin":[514,"navigation-title-font-size-min"],"navigationTitleFontSizeMax":[514,"navigation-title-font-size-max"],"navigationTitleFontWeight":[513,"navigation-title-font-weight"],"navigationTitleLetterSpacing":[513,"navigation-title-letter-spacing"],"navigationTitleLineHeight":[513,"navigation-title-line-height"],"navigationTitleTextTransform":[513,"navigation-title-text-transform"],"navigationTitleMarginBottom":[514,"navigation-title-margin-bottom"],"navigationTitleMarginBottomMin":[514,"navigation-title-margin-bottom-min"],"navigationTitleMarginBottomMax":[514,"navigation-title-margin-bottom-max"],"navigationTop":[513,"navigation-top"],"offsetMarginTop":[513,"offset-margin-top"],"styling":[513],"uniqueId":[516,"unique-id"],"mobile":[32]},[[9,"resize","onResize"]]]);
+const SpxDocs$1 = /*@__PURE__*/proxyCustomElement(SpxDocs, [4,"spx-docs",{"bpMobile":[514,"bp-mobile"],"gap":[513],"contentPadding":[513,"content-padding"],"contentPaddingYMin":[514,"content-padding-y-min"],"contentPaddingYMax":[514,"content-padding-y-max"],"navigationBackground":[513,"navigation-background"],"navigationGap":[513,"navigation-gap"],"navigationGapMin":[514,"navigation-gap-min"],"navigationGapMax":[514,"navigation-gap-max"],"navigationHeadingTag":[513,"navigation-heading-tag"],"navigationHeightAdjust":[513,"navigation-height-adjust"],"navigationLinkColor":[513,"navigation-link-color"],"navigationLinkColorActive":[513,"navigation-link-color-active"],"navigationLinkFontSize":[520,"navigation-link-font-size"],"navigationLinkFontSizeMin":[514,"navigation-link-font-size-min"],"navigationLinkFontSizeMax":[514,"navigation-link-font-size-max"],"navigationLinkFontWeight":[513,"navigation-link-font-weight"],"navigationLinkLetterSpacing":[513,"navigation-link-letter-spacing"],"navigationLinkLineHeight":[513,"navigation-link-line-height"],"navigationLinkTextTransform":[513,"navigation-link-text-transform"],"navigationPaddingY":[513,"navigation-padding-y"],"navigationPaddingYMin":[514,"navigation-padding-y-min"],"navigationPaddingYMax":[514,"navigation-padding-y-max"],"navigationTitleColor":[513,"navigation-title-color"],"navigationTitleFontSize":[520,"navigation-title-font-size"],"navigationTitleFontSizeMin":[514,"navigation-title-font-size-min"],"navigationTitleFontSizeMax":[514,"navigation-title-font-size-max"],"navigationTitleFontWeight":[513,"navigation-title-font-weight"],"navigationTitleLetterSpacing":[513,"navigation-title-letter-spacing"],"navigationTitleLineHeight":[513,"navigation-title-line-height"],"navigationTitleTextTransform":[513,"navigation-title-text-transform"],"navigationTitleMarginBottom":[514,"navigation-title-margin-bottom"],"navigationTitleMarginBottomMin":[514,"navigation-title-margin-bottom-min"],"navigationTitleMarginBottomMax":[514,"navigation-title-margin-bottom-max"],"navigationTop":[513,"navigation-top"],"offsetMarginTop":[513,"offset-margin-top"],"separator":[513],"scrolling":[514],"styling":[513],"uniqueId":[516,"unique-id"],"mobile":[32]},[[9,"resize","onResize"]]]);
 const SpxEdit$1 = /*@__PURE__*/proxyCustomElement(SpxEdit, [4,"spx-edit",{"display":[513],"name":[513],"outline":[513],"outlineFocus":[513,"outline-focus"],"placeholder":[513],"placeholderColor":[513,"placeholder-color"],"placeholderOpacity":[513,"placeholder-opacity"],"subfield":[516],"type":[513],"editable":[516],"originalText":[32],"subfieldArray":[32]},[[0,"keydown","onClickEnter"],[4,"spxEditButtonDiscard","onClickDiscard"],[4,"spxEditButtonSave","onClickSave"],[0,"keyup","onClickKeyup"]]]);
 const SpxEditButton$1 = /*@__PURE__*/proxyCustomElement(SpxEditButton, [4,"spx-edit-button",{"test":[4],"background":[513],"backgroundDiscard":[513,"background-discard"],"border":[513],"borderRadius":[513,"border-radius"],"classButton":[513,"class-button"],"classButtonDiscard":[513,"class-button-discard"],"classLoader":[513,"class-loader"],"color":[513],"colorDiscard":[513,"color-discard"],"distanceX":[513,"distance-x"],"distanceY":[513,"distance-y"],"editId":[513,"edit-id"],"fontFamily":[513,"font-family"],"fontSize":[513,"font-size"],"fontSizeMin":[514,"font-size-min"],"fontSizeMax":[514,"font-size-max"],"gap":[513],"padding":[513],"paddingXMin":[514,"padding-x-min"],"paddingXMax":[514,"padding-x-max"],"paddingYMin":[514,"padding-y-min"],"paddingYMax":[514,"padding-y-max"],"position":[513],"positionCss":[513,"position-css"],"styling":[513],"textDiscard":[513,"text-discard"],"textEdit":[513,"text-edit"],"textSave":[513,"text-save"],"textSuccess":[513,"text-success"],"zIndex":[514,"z-index"],"loading":[32],"open":[32],"positionArray":[32]}]);
 const SpxGroup$1 = /*@__PURE__*/proxyCustomElement(SpxGroup, [4,"spx-group",{"display":[513],"target":[513]}]);
@@ -26541,7 +26552,7 @@ const SpxMockup$1 = /*@__PURE__*/proxyCustomElement(SpxMockup, [4,"spx-mockup",{
 const SpxNavigation$1 = /*@__PURE__*/proxyCustomElement(SpxNavigation, [0,"spx-navigation",{"childBorder":[513,"child-border"],"childBorderRadius":[513,"child-border-radius"],"childBoxShadow":[513,"child-box-shadow"],"childChildGap":[513,"child-child-gap"],"childGap":[513,"child-gap"],"childIcon":[513,"child-icon"],"childIconType":[513,"child-icon-type"],"childIndicatorGap":[513,"child-indicator-gap"],"childItemBackground":[513,"child-item-background"],"childItemBackgroundHover":[513,"child-item-background-hover"],"childItemColor":[513,"child-item-color"],"childItemColorHover":[513,"child-item-color-hover"],"childItemPadding":[513,"child-item-padding"],"childPlacement":[513,"child-placement"],"fontSize":[513,"font-size"],"itemTransitionDuration":[513,"item-transition-duration"],"itemTransitionTimingFunction":[513,"item-transition-timing-function"],"itemUnderline":[516,"item-underline"],"itemUnderlineHover":[516,"item-underline-hover"],"menu":[513],"mobile":[514],"mobileIcon":[513,"mobile-icon"],"mobileIconType":[513,"mobile-icon-type"],"mobileItemBackground":[513,"mobile-item-background"],"mobileItemBackgroundHover":[513,"mobile-item-background-hover"],"mobileItemColor":[513,"mobile-item-color"],"mobileItemColorHover":[513,"mobile-item-color-hover"],"mobileItemNestedMarginLeft":[513,"mobile-item-nested-margin-left"],"mobileItemPadding":[513,"mobile-item-padding"],"mobilePlacement":[513,"mobile-placement"],"parentItemBackground":[513,"parent-item-background"],"parentItemBackgroundHover":[513,"parent-item-background-hover"],"parentItemColor":[513,"parent-item-color"],"parentItemColorHover":[513,"parent-item-color-hover"],"parentItemGap":[513,"parent-item-gap"],"parentItemPadding":[513,"parent-item-padding"],"vertical":[516],"menuArray":[32],"mobileBp":[32]},[[0,"ontouchstart","onClick"],[1,"mouseenter","onClick"],[0,"focusin","onClick"],[9,"resize","onResize"]]]);
 const SpxNotation$1 = /*@__PURE__*/proxyCustomElement(SpxNotation, [4,"spx-notation",{"animation":[516],"animationDuration":[514,"animation-duration"],"color":[513],"display":[513],"iterations":[514],"multiline":[516],"strokeWidth":[514,"stroke-width"],"type":[513],"annotation":[32]}]);
 const SpxOffset$1 = /*@__PURE__*/proxyCustomElement(SpxOffset, [4,"spx-offset",{"display":[513],"target":[513]},[[9,"resize","onResize"]]]);
-const SpxScrollspy$2 = /*@__PURE__*/proxyCustomElement(SpxScrollspy, [0,"spx-scrollspy",{"contentClass":[513,"content-class"],"display":[513],"navClass":[513,"nav-class"],"offset":[520],"scrolling":[516],"scrollingOffset":[514,"scrolling-offset"],"target":[513],"urlChange":[516,"url-change"],"myGumshoe":[32]},[[4,"gumshoeActivate","onLinkChange"]]]);
+const SpxScrollspy$2 = /*@__PURE__*/proxyCustomElement(SpxScrollspy, [0,"spx-scrollspy",{"contentClass":[513,"content-class"],"display":[513],"navClass":[513,"nav-class"],"offset":[520],"scrolling":[514],"target":[513],"urlChange":[516,"url-change"],"myGumshoe":[32]},[[4,"gumshoeActivate","onLinkChange"]]]);
 const SpxShare$1 = /*@__PURE__*/proxyCustomElement(SpxShare, [0,"spx-share",{"classItem":[513,"class-item"],"fontSize":[513,"font-size"],"fontSizeMin":[514,"font-size-min"],"fontSizeMax":[514,"font-size-max"],"itemBackground":[513,"item-background"],"itemBorderRadius":[513,"item-border-radius"],"itemColor":[513,"item-color"],"itemFilterHover":[513,"item-filter-hover"],"itemGap":[513,"item-gap"],"itemGapMin":[514,"item-gap-min"],"itemGapMax":[514,"item-gap-max"],"itemPadding":[513,"item-padding"],"itemPaddingMin":[514,"item-padding-min"],"itemPaddingMax":[514,"item-padding-max"],"itemSize":[513,"item-size"],"itemSizeMin":[514,"item-size-min"],"itemSizeMax":[514,"item-size-max"],"itemTransitionDuration":[513,"item-transition-duration"],"itemTransitionTimingFunction":[513,"item-transition-timing-function"],"styling":[513],"target":[513],"theme":[513],"vertical":[516],"location":[32]}]);
 const SpxSlider = /*@__PURE__*/proxyCustomElement(SpxScrollspy$1, [4,"spx-slider",{"autoheight":[516],"autoplay":[516],"autoplayDelay":[514,"autoplay-delay"],"autoplayDisableOnInteraction":[516,"autoplay-disable-on-interaction"],"bpTabs":[513,"bp-tabs"],"centeredSlides":[516,"centered-slides"],"direction":[513],"effect":[513],"imageObjectFit":[513,"image-object-fit"],"imageSize":[513,"image-size"],"images":[513],"imagesSrc":[513,"images-src"],"loop":[516],"maxHeight":[513,"max-height"],"maxWidth":[513,"max-width"],"navigation":[516],"navigationBackground":[513,"navigation-background"],"navigationBorderRadius":[513,"navigation-border-radius"],"navigationColor":[513,"navigation-color"],"navigationDistanceX":[513,"navigation-distance-x"],"navigationIconNext":[513,"navigation-icon-next"],"navigationIconPrev":[513,"navigation-icon-prev"],"navigationIconType":[513,"navigation-icon-type"],"navigationPadding":[513,"navigation-padding"],"navigationSize":[513,"navigation-size"],"pagination":[513],"paginationBulletsBackground":[513,"pagination-bullets-background"],"paginationBulletsBackgroundActive":[513,"pagination-bullets-background-active"],"paginationBulletsClickable":[516,"pagination-bullets-clickable"],"paginationBulletsDynamic":[516,"pagination-bullets-dynamic"],"paginationBulletsDynamicAmount":[514,"pagination-bullets-dynamic-amount"],"paginationBulletsSize":[513,"pagination-bullets-size"],"paginationBulletsSpaceBetween":[513,"pagination-bullets-space-between"],"paginationTabsGapMin":[514,"pagination-tabs-gap-min"],"paginationTabsGapMax":[514,"pagination-tabs-gap-max"],"paginationTabsMarginBottomMin":[514,"pagination-tabs-margin-bottom-min"],"paginationTabsMarginBottomMax":[514,"pagination-tabs-margin-bottom-max"],"paginationTabsMaxWidth":[513,"pagination-tabs-max-width"],"paginationTabsInnerGapMin":[514,"pagination-tabs-inner-gap-min"],"paginationTabsInnerGapMax":[514,"pagination-tabs-inner-gap-max"],"paginationTabsPaddingMin":[514,"pagination-tabs-padding-min"],"paginationTabsPaddingMax":[514,"pagination-tabs-padding-max"],"paginationTransitionDuration":[513,"pagination-transition-duration"],"paginationTransitionTimingFunction":[513,"pagination-transition-timing-function"],"prevNextFilter":[513,"prev-next-filter"],"slideMessageFirst":[513,"slide-message-first"],"slideMessageLast":[513,"slide-message-last"],"slideMessageNext":[513,"slide-message-next"],"slideMessagePrevious":[513,"slide-message-previous"],"slidesPerView":[514,"slides-per-view"],"spaceBetween":[514,"space-between"],"speed":[514],"imagesArray":[32],"mySwiper":[32],"mySwiperGallery":[32],"swiperBreakpoints":[32]}]);
 const SpxSlideshow$1 = /*@__PURE__*/proxyCustomElement(SpxSlideshow, [4,"spx-slideshow",{"display":[513],"duration":[513],"gap":[513],"images":[513],"imageSize":[513,"image-size"],"imagesSrc":[513,"images-src"],"maxWidth":[513,"max-width"],"overflow":[513],"imagesArray":[32],"offsetWidth":[32]},[[9,"resize","onResize"]]]);
