@@ -3,6 +3,14 @@
   "description": "Wrapper around GSAP that allows for staggered and scroll-based animation.",
   "properties": [
     {
+      "id": "animate-clipPath",
+      "name": "clipPath",
+      "attribute": "clip-path",
+      "type": "string",
+      "description": "Clip-path value the animation starts from.",
+      "tags": []
+    },
+    {
       "id": "animate-delay",
       "name": "delay",
       "attribute": "delay",
@@ -40,6 +48,14 @@
       "description": "Ease being used. Accepts all common GSAP options.",
       "default": "'power1.out'",
       "defaultValue": "'power1.out'",
+      "tags": []
+    },
+    {
+      "id": "animate-filter",
+      "name": "filter",
+      "attribute": "filter",
+      "type": "string",
+      "description": "Filter value the animation starts from.",
       "tags": []
     },
     {
@@ -148,7 +164,7 @@
       "id": "animate-x",
       "name": "x",
       "attribute": "x",
-      "type": "number",
+      "type": "any",
       "description": "X position the animation starts from.",
       "default": "0",
       "defaultValue": "0",
@@ -158,7 +174,7 @@
       "id": "animate-y",
       "name": "y",
       "attribute": "y",
-      "type": "number",
+      "type": "any",
       "description": "Y position the animation starts from.",
       "default": "0",
       "defaultValue": "0",

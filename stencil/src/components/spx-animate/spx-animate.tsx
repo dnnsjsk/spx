@@ -31,6 +31,10 @@ export class SpxAnimate {
   @State() elements;
   @State() tl;
 
+  /** Clip-path value the animation starts from. */
+
+  @Prop() clipPath: string;
+
   /** Delay before animation starts. */
 
   @Prop() delay: number = 0;
@@ -42,6 +46,10 @@ export class SpxAnimate {
   /** Ease being used. Accepts all common GSAP options. */
 
   @Prop() ease: string = 'power1.out';
+
+  /** Filter value the animation starts from. */
+
+  @Prop() filter: string;
 
   /** Determines if animation should only play once. (if viewport is true) */
 
@@ -93,11 +101,11 @@ export class SpxAnimate {
 
   /** X position the animation starts from. */
 
-  @Prop() x: number = 0;
+  @Prop() x: any = 0;
 
   /** Y position the animation starts from. */
 
-  @Prop() y: number = 0;
+  @Prop() y: any = 0;
 
   /** Causes the animation to go back and forth, alternating backward and forward on each repeat. */
 
@@ -133,14 +141,17 @@ export class SpxAnimate {
         });
 
         const options = {
-          duration: this.duration,
-          opacity: this.opacity,
-          x: this.x,
-          y: this.y,
+          clipPath: this.clipPath,
           delay: this.delay,
-          stagger: this.stagger,
+          duration: this.duration,
+          filter: this.filter,
+          webkitFilter: this.filter,
+          opacity: this.opacity,
           repeat: this.repeat,
           repeatDelay: this.repeatDelay,
+          stagger: this.stagger,
+          x: this.x,
+          y: this.y,
           yoyo: this.yoyo,
         };
 

@@ -120,6 +120,10 @@ export namespace Components {
     }
     interface SpxAnimate {
         /**
+          * Clip-path value the animation starts from.
+         */
+        "clipPath": string;
+        /**
           * Delay before animation starts.
          */
         "delay": number;
@@ -132,6 +136,10 @@ export namespace Components {
           * Ease being used. Accepts all common GSAP options.
          */
         "ease": string;
+        /**
+          * Filter value the animation starts from.
+         */
+        "filter": string;
         /**
           * Determines if animation should only play once. (if viewport is true)
          */
@@ -192,11 +200,11 @@ export namespace Components {
         /**
           * X position the animation starts from.
          */
-        "x": number;
+        "x": any;
         /**
           * Y position the animation starts from.
          */
-        "y": number;
+        "y": any;
         /**
           * Causes the animation to go back and forth, alternating backward and forward on each repeat.
          */
@@ -1434,6 +1442,10 @@ declare namespace LocalJSX {
     }
     interface SpxAnimate {
         /**
+          * Clip-path value the animation starts from.
+         */
+        "clipPath"?: string;
+        /**
           * Delay before animation starts.
          */
         "delay"?: number;
@@ -1446,6 +1458,10 @@ declare namespace LocalJSX {
           * Ease being used. Accepts all common GSAP options.
          */
         "ease"?: string;
+        /**
+          * Filter value the animation starts from.
+         */
+        "filter"?: string;
         /**
           * Fires after component has loaded.
          */
@@ -1501,11 +1517,11 @@ declare namespace LocalJSX {
         /**
           * X position the animation starts from.
          */
-        "x"?: number;
+        "x"?: any;
         /**
           * Y position the animation starts from.
          */
-        "y"?: number;
+        "y"?: any;
         /**
           * Causes the animation to go back and forth, alternating backward and forward on each repeat.
          */

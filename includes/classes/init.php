@@ -56,11 +56,49 @@ class Init {
 		add_filter( 'script_loader_tag', function ( $tag, $handle, $source ) {
 
 			if ( 'spx' === $handle ) {
-				$tag = '<script type="module" id="spx-js" src="' . $source . '"></script>';
+				if ( defined( 'SHOW_CT_BUILDER' ) ) {
+					$tag = '<script type="module" id="spx-js" src="' . $source . '"></script>';
+				} else {
+					$tag = '<script type="module" id="spx-js" data-src="' . $source . '"></script>';
+				}
 			}
 
 			return $tag;
 		}, 10, 3 );
+
+	}
+
+	/**
+	 * Remove assets if no components are found.
+	 *
+	 * @date    24/03/2021
+	 * @since   3.1.1
+	 */
+
+	private function lazyLoadAssets() {
+
+		add_filter( 'wp_footer', function () {
+
+			echo "<script id='spx-lazyload'>
+			function getAllTagMatches(regEx) {
+			  return Array.prototype.slice.call(document.body.querySelectorAll('*')).filter(function (el) { 
+			    return el.tagName.match(regEx);
+			  });
+			}
+			if (!document.body.classList.contains('oxygen-builder-body')) {
+				 if (getAllTagMatches(/^spx/i).length === 0) {
+				  document.querySelector('#spx-js').remove();
+				  document.querySelector('#spx-js-extra').remove();
+				  document.querySelector('#spx-css').remove();
+				} else {
+				  let src = document.querySelector('#spx-js').getAttribute('data-src');
+				  document.querySelector('#spx-js').src = src
+				}
+			}
+			document.querySelector('#spx-lazyload').remove();
+			</script>";
+
+		} );
 
 	}
 
@@ -167,6 +205,7 @@ class Init {
 	public function __construct() {
 		self::enqueueScripts();
 		self::addScriptTags();
+		self::lazyLoadAssets();
 		self::css();
 		self::shortcodes();
 	}

@@ -15,10 +15,13 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
-= 3.1.1 (unreleased) =
-* Docs: add 'separator' attribute
+= 3.1.1 =
+* Animate: 'x' and 'y' now also support strings (100% etc.)
+* Animate: add 'clip-path' attribute
 * Docs: add 'scrolling' attribute
+* Docs: add 'separator' attribute
 * Docs: make regex to create IDs more robust
+* Enhancement: don't load assets if no elements are on the page
 
 = 3.1.0 =
 * Accordion: add 'fluid' styling mode
