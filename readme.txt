@@ -1,7 +1,7 @@
 === spx ===
 Contributors: dnnsjsk
 Requires at least: 5.0
-Tested up to: 5.6.2
+Tested up to: 5.7
 Requires PHP: 7.0
 Stable tag: 2.0
 License: GPLv2 or later
@@ -14,6 +14,10 @@ A web component page builder for WordPress developers like you!
 Supercharge your workflow using handy components for the next project. Works with any theme, browser and existing code.
 
 == Changelog ==
+
+= 3.1.2 =
+* Fix: make 'tested up to version' 5.7
+* Fix: make asset lazy load handling more robust
 
 = 3.1.1 =
 * Animate: 'x' and 'y' now also support strings (100% etc.)

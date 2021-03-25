@@ -87,12 +87,17 @@ class Init {
 			}
 			if (!document.body.classList.contains('oxygen-builder-body')) {
 				 if (getAllTagMatches(/^spx/i).length === 0) {
-				  document.querySelector('#spx-js').remove();
-				  document.querySelector('#spx-js-extra').remove();
-				  document.querySelector('#spx-css').remove();
+				  if (document.querySelector('#spx-js')) {
+				    document.querySelector('#spx-js').remove();
+				  }
+				  if (document.querySelector('#spx-js-extra')) {
+				  	document.querySelector('#spx-js-extra').remove();
+				  }
+				  if (document.querySelector('#spx-js-extra')) {
+				  	document.querySelector('#spx-css').remove();
+				  }
 				} else {
-				  let src = document.querySelector('#spx-js').getAttribute('data-src');
-				  document.querySelector('#spx-js').src = src
+				  document.querySelector('#spx-js').src = document.querySelector('#spx-js').getAttribute('data-src');
 				}
 			}
 			document.querySelector('#spx-lazyload').remove();
