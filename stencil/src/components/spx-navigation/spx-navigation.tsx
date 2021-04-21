@@ -2,7 +2,6 @@ import {
   Component,
   // eslint-disable-next-line no-unused-vars
   h,
-  Host,
   Element,
   Prop,
   State,
@@ -12,11 +11,11 @@ import {
   EventEmitter,
   Method,
 } from '@stencil/core';
-import { css } from '@emotion/css';
 import * as s from '../../constants/style';
 import { createPopper } from '@popperjs/core';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
+import { emotion } from '../../utils/emotion';
 
 const tag = 'spx-navigation';
 
@@ -26,6 +25,7 @@ const tag = 'spx-navigation';
 
 @Component({
   tag: 'spx-navigation',
+  shadow: true,
 })
 export class SpxNavigation {
   // eslint-disable-next-line no-undef
@@ -312,7 +312,7 @@ export class SpxNavigation {
   /** Sort menu items depending on menu order. */
 
   private sortMenuItem() {
-    const dataItems = this.el.querySelectorAll('li');
+    const dataItems = this.el.shadowRoot.querySelectorAll('li');
     const dataArray = [];
     for (let i = 0; i < dataItems.length; ++i) {
       dataArray.push(dataItems[i]);
@@ -332,7 +332,7 @@ export class SpxNavigation {
     if (!this.vertical) {
       /** Init popper for parent menu. */
 
-      const parentMenu = this.el.querySelectorAll(
+      const parentMenu = this.el.shadowRoot.querySelectorAll(
         'nav > .spx-navigation--parent .spx-navigation__item--parent.spx-navigation__item--has-child'
       );
 
@@ -347,7 +347,7 @@ export class SpxNavigation {
 
       /** Init popper for child menu. */
 
-      const childMenus = this.el.querySelectorAll(
+      const childMenus = this.el.shadowRoot.querySelectorAll(
         'nav > .spx-navigation--parent .spx-navigation--child .spx-navigation__item--child.spx-navigation__item--has-child'
       );
 
@@ -416,7 +416,9 @@ export class SpxNavigation {
   /** Init Popper positioning for mobile. */
 
   private initPopperMobile() {
-    const mobileMenu = this.el.querySelector('.spx-navigation__mobile-button');
+    const mobileMenu = this.el.shadowRoot.querySelector(
+      '.spx-navigation__mobile-button'
+    );
 
     if (mobileMenu) {
       createPopper(
@@ -436,6 +438,8 @@ export class SpxNavigation {
   }
 
   render() {
+    const { css } = emotion(this.el.shadowRoot);
+
     /** Host styles. */
 
     const styleHost = css({
@@ -616,6 +620,7 @@ export class SpxNavigation {
       a: {
         display: 'inline-grid',
         gridAutoFlow: 'column',
+        alignItems: 'center',
         gridColumnGap: setVar(
           tag,
           'child-indicator-gap',
@@ -702,27 +707,21 @@ export class SpxNavigation {
     });
 
     return (
-      <Host class={styleHost}>
-        <nav>
-          {this.menu /** Render desktop menu. */ && [
-            this.renderMenu(this.menuArray, 'parent', false),
+      <nav class={styleHost}>
+        {this.menu /** Render desktop menu. */ && [
+          this.renderMenu(this.menuArray, 'parent', false),
 
-            /** Render mobile menu. */
+          /** Render mobile menu. */
 
-            <div
-              tabindex="0"
-              role="button"
-              class="spx-navigation__mobile-button"
-            >
-              {this.mobileIcon && (
-                <spx-icon type={this.mobileIconType} icon={this.mobileIcon} />
-              )}
-              <span>Menu</span>
-              {this.renderMenu(this.menuArray, 'parent', true)}
-            </div>,
-          ]}
-        </nav>
-      </Host>
+          <div tabindex="0" role="button" class="spx-navigation__mobile-button">
+            {this.mobileIcon && (
+              <spx-icon type={this.mobileIconType} icon={this.mobileIcon} />
+            )}
+            <span>Menu</span>
+            {this.renderMenu(this.menuArray, 'parent', true)}
+          </div>,
+        ]}
+      </nav>
     );
   }
 }

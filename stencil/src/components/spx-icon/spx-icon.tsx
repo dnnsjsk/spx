@@ -8,8 +8,8 @@ import {
   Host,
   Prop,
 } from '@stencil/core';
-import { css } from '@emotion/css';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
+import { css } from '@emotion/css';
 import 'ionicons/dist/index';
 import { setVar } from '../../utils/setVar';
 import { setVarOrClamp } from '../../utils/setVarOrClamp';

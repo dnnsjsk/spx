@@ -1,4 +1,4 @@
-<!doctype html><html dir="ltr" lang="en"><head> <meta charset="utf-8"> <title>Stencil Starter App</title> <meta name="Description" content="Welcome to the Stencil App Starter. You can use this starter to build entire apps all with web components using Stencil!"> <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"> <meta name="theme-color" content="#16161d"> <meta name="apple-mobile-web-app-capable" content="yes"> <meta http-equiv="x-ua-compatible" content="IE=Edge"> <link rel="modulepreload" href="/build/p-67b607e6.js"><script type="module" id="spx-js-module" src="/build/p-67b607e6.js" data-stencil data-resources-url="/build/" data-stencil-namespace="spx"></script> <script nomodule="" id="spx-js-nomodule" src="/build/spx.js" data-stencil></script> <link rel="stylesheet" id="harmoni-sites-css" href="https://spacepress.local/spx/wp-content/plugins/harmoni-sites/assets/css/styles.css?ver=1600471016" type="text/css" media="all"> <link rel="stylesheet" id="harmoni-child-style-css" href="https://spacepress.local/spx/wp-content/themes/spx-child/assets/css/style.css?ver=1600517648" type="text/css" media=""> <style id="harmoni-font-inter">@font-face {
+<!doctype html><html dir="ltr" lang="en"><head> <meta charset="utf-8"> <title>Stencil Starter App</title> <meta name="Description" content="Welcome to the Stencil App Starter. You can use this starter to build entire apps all with web components using Stencil!"> <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"> <meta name="theme-color" content="#16161d"> <meta name="apple-mobile-web-app-capable" content="yes"> <meta http-equiv="x-ua-compatible" content="IE=Edge"> <script type="module" id="spx-js-module" src="/build/spx.esm.js" data-stencil></script> <script nomodule="" id="spx-js-nomodule" src="/build/spx.js" data-stencil></script> <link rel="stylesheet" id="harmoni-sites-css" href="https://spacepress.local/spx/wp-content/plugins/harmoni-sites/assets/css/styles.css?ver=1600471016" type="text/css" media="all"> <link rel="stylesheet" id="harmoni-child-style-css" href="https://spacepress.local/spx/wp-content/themes/spx-child/assets/css/style.css?ver=1600517648" type="text/css" media=""> <style id="harmoni-font-inter">@font-face {
             font-family: inter;
             src: url(" https://spacepress.local/spx/wp-content/themes/harmoni/assets/fonts/inter.woff2") format( "woff2-variations" );
             font-weight: 1 999;}</style> <style>@font-face {
@@ -56,4 +56,13 @@
 
         * {
             font-family: Eina01, sans-serif
-        }</style> </head> <body class="page-editor"> <spx-container button-reverse-color="primary"> <spx-editor fullscreen="" location="http://localhost:3333"></spx-editor> </spx-container> </body></html>
+        }</style> </head> <body class="page-editor"> <spx-container button-reverse-color="primary"> <spx-editor fullscreen="" location="http://localhost:3333"></spx-editor> </spx-container> <script>
+if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+  // auto-unregister service worker during dev mode
+  navigator.serviceWorker.getRegistration().then(function(registration) {
+  if (registration) {
+    registration.unregister().then(function() { location.reload(true) });
+  }
+  });
+}
+</script></body></html>

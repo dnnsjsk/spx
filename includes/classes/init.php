@@ -77,30 +77,40 @@ class Init {
 
 	private function lazyLoadAssets() {
 
-		add_filter( 'wp_footer', function () {
+		$classes   = apply_filters( 'spx_lazyload_whitelist', [ 'oxygen-builder-body' ] );
+		$classesJS = implode( ',', $classes );
 
-			echo "<script id='spx-lazyload'>
+		add_filter( 'wp_footer', function () use ( &$classesJS ) {
+
+			echo "<script type='text/javascript' id='spx-lazyload'>
 			function getAllTagMatches(regEx) {
 			  return Array.prototype.slice.call(document.body.querySelectorAll('*')).filter(function (el) { 
 			    return el.tagName.match(regEx);
 			  });
 			}
-			if (!document.body.classList.contains('oxygen-builder-body')) {
-				 if (getAllTagMatches(/^spx/i).length === 0) {
-				  if (document.querySelector('#spx-js')) {
-				    document.querySelector('#spx-js').remove();
-				  }
-				  if (document.querySelector('#spx-js-extra')) {
-				  	document.querySelector('#spx-js-extra').remove();
-				  }
-				  if (document.querySelector('#spx-js-extra')) {
-				  	document.querySelector('#spx-css').remove();
-				  }
-				} else {
-				  document.querySelector('#spx-js').src = document.querySelector('#spx-js').getAttribute('data-src');
-				}
+		
+			const spxWhitelist = '$classesJS';
+			const spxWhiteListArray = spxWhitelist.replaceAll(' ', '').split(',');
+			let classNumber = 0;
+			spxWhiteListArray.forEach(item => {
+			  if (document.body.classList.contains(item)) {
+			    classNumber++;
+			  }
+		  	});
+		  	
+		  	if (getAllTagMatches(/^spx/i).length === 0 && classNumber === 0) {
+			  if (document.querySelector('#spx-js')) {
+			    document.querySelector('#spx-js').remove();
+			  }
+			  if (document.querySelector('#spx-js-extra')) {
+			    document.querySelector('#spx-js-extra').remove();
+			  }
+			  if (document.querySelector('#spx-js-extra')) {
+			    document.querySelector('#spx-css').remove();
+			  }
+			} else {
+			  document.querySelector('#spx-js').src = document.querySelector('#spx-js').getAttribute('data-src');
 			}
-			document.querySelector('#spx-lazyload').remove();
 			</script>";
 
 		} );

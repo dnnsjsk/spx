@@ -2,7 +2,6 @@ import {
   Component,
   // eslint-disable-next-line no-unused-vars
   h,
-  Host,
   Prop,
   State,
   Listen,
@@ -11,10 +10,10 @@ import {
   Event,
   EventEmitter,
 } from '@stencil/core';
-import { css, keyframes } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 import { getGallery } from '../../utils/getGallery';
+import { emotion } from '../../utils/emotion';
 
 const tag = 'spx-slideshow';
 
@@ -24,6 +23,7 @@ const tag = 'spx-slideshow';
 
 @Component({
   tag: 'spx-slideshow',
+  shadow: true,
 })
 export class SpxSlideshow {
   // eslint-disable-next-line no-undef
@@ -113,7 +113,7 @@ export class SpxSlideshow {
   }
 
   componentDidLoad() {
-    globalComponentDidLoad(this.el);
+    globalComponentDidLoad(this.el.shadowRoot);
 
     this.elements.querySelectorAll(':scope > *').forEach((item) => {
       const clone = item.cloneNode(true);
@@ -126,6 +126,8 @@ export class SpxSlideshow {
   }
 
   render() {
+    const { css, keyframes } = emotion(this.el.shadowRoot);
+
     /** Animation. */
 
     const kf = keyframes({
@@ -179,7 +181,7 @@ export class SpxSlideshow {
     });
 
     return (
-      <Host class={styleHost}>
+      <div class={styleHost}>
         <div class={styleWrap}>
           <div
             class={slideshowStyle}
@@ -197,7 +199,7 @@ export class SpxSlideshow {
             ref={(el) => (this.clone = el as HTMLElement)}
           />
         </div>
-      </Host>
+      </div>
     );
   }
 }

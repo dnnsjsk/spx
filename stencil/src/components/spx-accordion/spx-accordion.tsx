@@ -165,7 +165,6 @@ export class SpxAccordion {
 
   /** State of accordion. */
 
-  // prettier-ignore
   @Prop({ reflect: true, attribute: 'open' }) openState: boolean = false;
 
   /** Reverse icon positioning. */

@@ -18,6 +18,7 @@ import * as s from '../../constants/style';
 import { startsWith, fromPairs, mapKeys, camelCase } from 'lodash-es';
 import { getGallery } from '../../utils/getGallery';
 import { setClamp } from '../../utils/setClamp';
+import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 
 const tag = 'spx-slider';
 
@@ -284,6 +285,8 @@ export class SpxScrollspy {
   }
 
   componentDidLoad() {
+    globalComponentDidLoad(this.el);
+
     /** Add swiper class and duplicate slides for gallery. */
 
     this.el.querySelectorAll('.swiper-wrapper > *').forEach((item, index) => {
@@ -611,6 +614,11 @@ export class SpxScrollspy {
       maxWidth: setVar(tag, 'max-width', this.maxWidth),
 
       '.swiper-container:not(.swiper-gallery)': {
+        maxHeight: setVar(tag, 'max-height', this.maxHeight),
+        maxWidth: setVar(tag, 'max-width', this.maxWidth),
+      },
+
+      '.swiper-wrapper': {
         maxHeight: setVar(tag, 'max-height', this.maxHeight),
         maxWidth: setVar(tag, 'max-width', this.maxWidth),
       },

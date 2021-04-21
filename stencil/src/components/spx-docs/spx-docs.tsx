@@ -201,7 +201,7 @@ export class SpxDocs {
           span.innerHTML = item.getAttribute('data-spx-docs-heading');
           this.navigation.insertBefore(span, el);
 
-          if (this.separator) {
+          if (this.separator && index !== '0') {
             const span = document.createElement(this.separator);
             span.setAttribute('data-spx-docs-separator', '');
             span.setAttribute(

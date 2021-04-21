@@ -15,6 +15,14 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 3.1.3 (unreleased) =
+* Docs: don't create separator for first heading
+* Enhancement: add whitelist filter to allow asset loading even if no component are on the page
+* Fix: hide elements before they are loaded
+* Navigation: center icon properly
+* Navigation: convert to Shadow DOM
+* Slideshow: convert to Shadow DOM
+
 = 3.1.2 =
 * Fix: make 'tested up to version' 5.7
 * Fix: make asset lazy load handling more robust

@@ -62,5 +62,7 @@
     "vanilla-lazyload": "^17.3.1"
   },
   "license": "MIT",
-  "dependencies": {}
+  "dependencies": {
+    "goober": "^2.0.37"
+  }
 }
