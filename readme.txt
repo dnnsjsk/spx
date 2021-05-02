@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 3.1.4 =
+* Notation: fix notations being applied twice on groups
+
 = 3.1.3 =
 * Data API: add indicator if element is using Shadow DOM
 * Docs: don't create separator for first heading

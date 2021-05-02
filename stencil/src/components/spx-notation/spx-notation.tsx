@@ -89,10 +89,10 @@ export class SpxNotation {
     globalComponentDidLoad(this.el);
 
     if (
-      (this.el.querySelector(':scope > span > span') &&
-        this.el.querySelector(':scope > span > span').innerHTML.length > 0 &&
-        this.autoplay) ||
-      this.group
+      ((this.el.querySelector(':scope > span > span') &&
+        this.el.querySelector(':scope > span > span').innerHTML.length > 0) ||
+        this.group) &&
+      this.autoplay
     ) {
       this.annotate();
     }
