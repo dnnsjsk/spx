@@ -1,6 +1,7 @@
 {
   "name": "spx-loader",
   "description": "",
+  "shadow": false,
   "properties": [
     {
       "id": "loader-color",

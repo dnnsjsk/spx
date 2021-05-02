@@ -1,6 +1,7 @@
 {
   "name": "spx-masonry",
   "description": "Arrange images in a masonry layout.",
+  "shadow": false,
   "properties": [
     {
       "id": "masonry-bpColumns",

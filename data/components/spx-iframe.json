@@ -1,6 +1,7 @@
 {
   "name": "spx-iframe",
   "description": "A wrapper around a standard iframe element, which scales proportionally to its parent.\nGreat for showing desktop versions of a website on smaller screens or viewports.",
+  "shadow": false,
   "properties": [
     {
       "id": "iframe-display",

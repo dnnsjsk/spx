@@ -1,6 +1,7 @@
 {
   "name": "spx-accordion",
   "description": "The classic method to show and hide elements on your website.\nCan be used with custom markup for the header and/or content section.",
+  "shadow": false,
   "properties": [
     {
       "id": "accordion-classContent",

@@ -1,6 +1,7 @@
 {
   "name": "spx-mockup",
   "description": "Display device mockups around your content.",
+  "shadow": false,
   "properties": [
     {
       "id": "mockup-colorGalaxyS8",

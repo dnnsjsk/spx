@@ -1,6 +1,7 @@
 {
   "name": "spx-share",
   "description": "Social share buttons. Currently includes Facebook, Twitter, Whatsapp and E-Mail.",
+  "shadow": false,
   "properties": [
     {
       "id": "share-classItem",

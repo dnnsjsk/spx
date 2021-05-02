@@ -2,6 +2,7 @@ import {
   Component,
   // eslint-disable-next-line no-unused-vars
   h,
+  Host,
   Element,
   Prop,
   State,
@@ -15,6 +16,7 @@ import * as s from '../../constants/style';
 import { createPopper } from '@popperjs/core';
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
+import { css as cssHost } from '@emotion/css';
 import { emotion } from '../../utils/emotion';
 
 const tag = 'spx-navigation';
@@ -442,11 +444,16 @@ export class SpxNavigation {
 
     /** Host styles. */
 
-    const styleHost = css({
+    const styleHost = cssHost({
       display: 'block',
       fontFamily: s.fontFamily,
-      fontSize: setVar(tag, 'font-size', this.fontSize),
       zIndex: 999999,
+    });
+
+    /** Shadow Host styles. */
+
+    const styleShadowHost = css({
+      fontSize: setVar(tag, 'font-size', this.fontSize),
 
       'nav > .spx-navigation--parent': {
         display: this.mobileBp ? 'none' : 'grid',
@@ -707,21 +714,27 @@ export class SpxNavigation {
     });
 
     return (
-      <nav class={styleHost}>
-        {this.menu /** Render desktop menu. */ && [
-          this.renderMenu(this.menuArray, 'parent', false),
+      <Host class={styleHost}>
+        <nav class={styleShadowHost}>
+          {this.menu /** Render desktop menu. */ && [
+            this.renderMenu(this.menuArray, 'parent', false),
 
-          /** Render mobile menu. */
+            /** Render mobile menu. */
 
-          <div tabindex="0" role="button" class="spx-navigation__mobile-button">
-            {this.mobileIcon && (
-              <spx-icon type={this.mobileIconType} icon={this.mobileIcon} />
-            )}
-            <span>Menu</span>
-            {this.renderMenu(this.menuArray, 'parent', true)}
-          </div>,
-        ]}
-      </nav>
+            <div
+              tabindex="0"
+              role="button"
+              class="spx-navigation__mobile-button"
+            >
+              {this.mobileIcon && (
+                <spx-icon type={this.mobileIconType} icon={this.mobileIcon} />
+              )}
+              <span>Menu</span>
+              {this.renderMenu(this.menuArray, 'parent', true)}
+            </div>,
+          ]}
+        </nav>
+      </Host>
     );
   }
 }

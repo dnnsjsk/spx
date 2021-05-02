@@ -1,6 +1,7 @@
 {
   "name": "spx-image-comparison",
   "description": "Compare two images visually using a slider. Handy for showing subtle (or not so subtle) before/after differences.",
+  "shadow": false,
   "properties": [
     {
       "id": "image-comparison-color",

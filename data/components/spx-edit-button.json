@@ -1,6 +1,7 @@
 {
   "name": "spx-edit-button",
   "description": "Let your clients edit text on their site using this handy component.",
+  "shadow": false,
   "properties": [
     {
       "id": "edit-button-background",

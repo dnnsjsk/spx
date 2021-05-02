@@ -1,6 +1,7 @@
 {
   "name": "spx-offset",
   "description": "The component offsets itself to the height of a specified element.\nIt comes in handy when dealing with a fixed header and is used on this site.\nSimply wrap your main content container with it and select a target element. The distance will adjust on screen resize.",
+  "shadow": false,
   "properties": [
     {
       "id": "offset-display",

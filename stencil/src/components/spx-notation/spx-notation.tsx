@@ -12,7 +12,7 @@ import {
 } from '@stencil/core';
 import { css } from '@emotion/css';
 import { setVar } from '../../utils/setVar';
-import { annotate } from 'rough-notation';
+import { annotate, annotationGroup } from 'rough-notation';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 
 const tag = 'spx-notation';
@@ -38,9 +38,23 @@ export class SpxNotation {
 
   @Prop({ reflect: true }) animationDuration: number = 800;
 
-  @Prop({ reflect: true }) color: string = 'var(--spx-color-secondary-100)';
+  /** Autoplay. */
+
+  @Prop({ reflect: true }) autoplay: boolean = true;
+
+  /** Brackets. */
+
+  @Prop({ reflect: true }) brackets: string = 'left, right';
+
+  @Prop({ reflect: true }) color: string = 'var(--spx-color-gray-100)';
 
   @Prop({ reflect: true }) display: string = 'inline-block';
+
+  @Prop({ reflect: true }) delay: number;
+
+  /** Create a group on annotations by applying a "data-spx-annotation" to elements within. */
+
+  @Prop({ reflect: true }) group: boolean;
 
   /** Number of iterations. */
 
@@ -49,6 +63,10 @@ export class SpxNotation {
   /** Annotate multiline text. */
 
   @Prop({ reflect: true }) multiline: boolean = true;
+
+  /** Padding around notations. */
+
+  @Prop({ reflect: true }) padding: number;
 
   /** Stroke width. */
 
@@ -70,7 +88,12 @@ export class SpxNotation {
   componentDidLoad() {
     globalComponentDidLoad(this.el);
 
-    if (this.el.querySelector('span').innerHTML.length !== 0) {
+    if (
+      (this.el.querySelector(':scope > span > span') &&
+        this.el.querySelector(':scope > span > span').innerHTML.length > 0 &&
+        this.autoplay) ||
+      this.group
+    ) {
       this.annotate();
     }
 
@@ -78,7 +101,11 @@ export class SpxNotation {
   }
 
   private annotate() {
-    this.annotation = annotate(this.el.querySelector('span > *'), {
+    const groupArray = [];
+
+    /** Get options. */
+
+    const options = {
       animate: this.animation,
       animationDuration: this.animationDuration,
       type:
@@ -99,8 +126,52 @@ export class SpxNotation {
       strokeWidth: this.strokeWidth,
       multiline: this.multiline,
       iterations: this.iterations,
-    });
-    this.annotation.show();
+      padding: this.padding,
+      brackets: this.brackets,
+    };
+
+    /** Check if group is active. */
+
+    if (!this.group) {
+      this.annotation = annotate(
+        this.el.querySelector(':scope > span > span'),
+        // @ts-ignore
+        options
+      );
+    } else {
+      this.el.querySelectorAll('[data-spx-notation]').forEach((item) => {
+        const obj = {};
+        const string = item.getAttribute('data-spx-notation');
+        const arr = string.replaceAll(':', '').replaceAll(', ', ' ').split(' ');
+
+        for (let i = 0; i < arr.length; i += 2) {
+          obj[arr[i]] = isNaN(Number(arr[i + 1]))
+            ? arr[i + 1]
+            : Number(arr[i + 1]);
+        }
+
+        // @ts-ignore
+        groupArray.push(annotate(item as HTMLElement, { ...options, ...obj }));
+      });
+    }
+
+    /** Fire off animation. */
+
+    if (this.delay) {
+      setTimeout(() => {
+        if (!this.group) {
+          this.annotation.show();
+        } else {
+          annotationGroup(groupArray).show();
+        }
+      }, this.delay);
+    } else {
+      if (!this.group) {
+        this.annotation.show();
+      } else {
+        annotationGroup(groupArray).show();
+      }
+    }
   }
 
   /** Remove the annotation. */
@@ -119,15 +190,19 @@ export class SpxNotation {
 
   @Method()
   async reload() {
-    this.annotation.remove();
-    this.annotate();
+    if (this.annotation) {
+      this.annotation.remove();
+    }
+    if (!this.group) {
+      this.annotate();
+    }
   }
 
   /** Draws the annotation. */
 
   @Method()
   async show() {
-    this.annotation.show();
+    this.annotate();
   }
 
   render() {
@@ -135,13 +210,24 @@ export class SpxNotation {
 
     const styleHost = css({
       display: setVar(tag, 'display', this.display),
+      position: 'relative',
     });
+
+    /** Span styles. */
+
+    const styleSpan = css({ position: 'relative', display: 'inline-block' });
 
     return (
       <Host class={styleHost}>
-        <span>
+        {this.group ? (
           <slot />
-        </span>
+        ) : (
+          <span class={styleSpan}>
+            <span class={styleSpan}>
+              <slot />
+            </span>
+          </span>
+        )}
       </Host>
     );
   }

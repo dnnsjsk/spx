@@ -154,7 +154,7 @@ class Init {
 		$path  = SPX_DIR . '/data/components/';
 		$files = array_slice( scandir( $path ), 2 );
 
-		$element_array = [ 'spx-navigation', 'spx-group', 'spx-scrollspy', 'spx-snackbar' ];
+		$element_array = [ 'spx-navigation', 'spx-group', 'spx-scrollspy', 'spx-snackbar', 'spx-docs' ];
 
 		foreach ( $files as $file ) {
 
@@ -186,9 +186,7 @@ class Init {
 
 						// Setup output.
 
-						$output = '';
-
-						$output .= '<' . $name . ' ';
+						$output = '<' . $name . ' ';
 						foreach ( $a as $key => $value ) {
 							$output .= $key . '="' . $value . '" ';
 						}

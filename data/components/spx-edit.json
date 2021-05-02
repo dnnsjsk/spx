@@ -1,6 +1,7 @@
 {
   "name": "spx-edit",
   "description": "",
+  "shadow": false,
   "properties": [
     {
       "id": "edit-display",

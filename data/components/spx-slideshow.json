@@ -1,6 +1,7 @@
 {
   "name": "spx-slideshow",
   "description": "Continuously playing slideshow.",
+  "shadow": true,
   "properties": [
     {
       "id": "slideshow-display",

@@ -1,6 +1,7 @@
 {
   "name": "spx-code",
   "description": "Highlight a block of code similar to a code editor.",
+  "shadow": false,
   "properties": [
     {
       "id": "code-background",

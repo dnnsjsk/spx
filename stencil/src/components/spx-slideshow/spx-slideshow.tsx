@@ -2,6 +2,7 @@ import {
   Component,
   // eslint-disable-next-line no-unused-vars
   h,
+  Host,
   Prop,
   State,
   Listen,
@@ -13,6 +14,7 @@ import {
 import { setVar } from '../../utils/setVar';
 import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
 import { getGallery } from '../../utils/getGallery';
+import { css as cssHost } from '@emotion/css';
 import { emotion } from '../../utils/emotion';
 
 const tag = 'spx-slideshow';
@@ -113,7 +115,7 @@ export class SpxSlideshow {
   }
 
   componentDidLoad() {
-    globalComponentDidLoad(this.el.shadowRoot);
+    globalComponentDidLoad(this.el);
 
     this.elements.querySelectorAll(':scope > *').forEach((item) => {
       const clone = item.cloneNode(true);
@@ -146,8 +148,13 @@ export class SpxSlideshow {
 
     /** Host styles. */
 
-    const styleHost = css({
+    const styleHost = cssHost({
       display: setVar(tag, 'display', this.display),
+    });
+
+    /** Shadow Host styles. */
+
+    const styleShadowHost = css({
       overflow: setVar(tag, 'overflow', this.overflow),
     });
 
@@ -181,25 +188,27 @@ export class SpxSlideshow {
     });
 
     return (
-      <div class={styleHost}>
-        <div class={styleWrap}>
-          <div
-            class={slideshowStyle}
-            ref={(el) => (this.elements = el as HTMLElement)}
-          >
-            {getGallery(
-              this.images,
-              this.imagesSrc,
-              this.imagesArray,
-              this.imageSize
-            )}
+      <Host class={styleHost}>
+        <div class={styleShadowHost}>
+          <div class={styleWrap}>
+            <div
+              class={slideshowStyle}
+              ref={(el) => (this.elements = el as HTMLElement)}
+            >
+              {getGallery(
+                this.images,
+                this.imagesSrc,
+                this.imagesArray,
+                this.imageSize
+              )}
+            </div>
+            <div
+              class={slideshowStyle}
+              ref={(el) => (this.clone = el as HTMLElement)}
+            />
           </div>
-          <div
-            class={slideshowStyle}
-            ref={(el) => (this.clone = el as HTMLElement)}
-          />
         </div>
-      </div>
+      </Host>
     );
   }
 }

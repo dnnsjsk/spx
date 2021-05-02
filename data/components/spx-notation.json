@@ -1,6 +1,7 @@
 {
   "name": "spx-notation",
   "description": "Annotate letters, words or whole sentences.",
+  "shadow": false,
   "properties": [
     {
       "id": "notation-animation",
@@ -23,13 +24,41 @@
       "tags": []
     },
     {
+      "id": "notation-autoplay",
+      "name": "autoplay",
+      "attribute": "autoplay",
+      "type": "boolean",
+      "description": "Autoplay.",
+      "default": "true",
+      "defaultValue": "true",
+      "tags": []
+    },
+    {
+      "id": "notation-brackets",
+      "name": "brackets",
+      "attribute": "brackets",
+      "type": "string",
+      "description": "Brackets.",
+      "default": "'left, right'",
+      "defaultValue": "'left, right'",
+      "tags": []
+    },
+    {
       "id": "notation-color",
       "name": "color",
       "attribute": "color",
       "type": "string",
       "description": "",
-      "default": "'var(--spx-color-secondary-100)'",
-      "defaultValue": "'var(--spx-color-secondary-100)'",
+      "default": "'var(--spx-color-gray-100)'",
+      "defaultValue": "'var(--spx-color-gray-100)'",
+      "tags": []
+    },
+    {
+      "id": "notation-delay",
+      "name": "delay",
+      "attribute": "delay",
+      "type": "number",
+      "description": "",
       "tags": []
     },
     {
@@ -40,6 +69,14 @@
       "description": "",
       "default": "'inline-block'",
       "defaultValue": "'inline-block'",
+      "tags": []
+    },
+    {
+      "id": "notation-group",
+      "name": "group",
+      "attribute": "group",
+      "type": "boolean",
+      "description": "Create a group on annotations by applying a \"data-spx-annotation\" to elements within.",
       "tags": []
     },
     {
@@ -60,6 +97,14 @@
       "description": "Annotate multiline text.",
       "default": "true",
       "defaultValue": "true",
+      "tags": []
+    },
+    {
+      "id": "notation-padding",
+      "name": "padding",
+      "attribute": "padding",
+      "type": "number",
+      "description": "Padding around notations.",
       "tags": []
     },
     {

@@ -1,6 +1,7 @@
 {
   "name": "spx-lightbox",
   "description": "Overlay a gallery of images on top of the current page.",
+  "shadow": false,
   "properties": [
     {
       "id": "lightbox-display",

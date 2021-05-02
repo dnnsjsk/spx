@@ -35,6 +35,8 @@ async function generateCustomElementsJSON(docsData: JsonDocs) {
       const data = {
         name: component.tag,
         description: component.docs,
+        shadow:
+          ['spx-navigation', 'spx-slideshow'].includes(component.tag) && true,
         properties: component.props.map((prop) => ({
           id: component.tag.replace('spx-', '') + '-' + prop.name,
           name: prop.name,

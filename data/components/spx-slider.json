@@ -1,6 +1,7 @@
 {
   "name": "spx-slider",
   "description": "A slider is a revolving carousel that displays photos or other types of content.",
+  "shadow": false,
   "properties": [
     {
       "id": "slider-autoheight",

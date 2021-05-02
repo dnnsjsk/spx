@@ -1,6 +1,7 @@
 {
   "name": "spx-typewriter",
   "description": "Animates text like it is being written on a typewriter.",
+  "shadow": false,
   "properties": [
     {
       "id": "typewriter-autoStart",

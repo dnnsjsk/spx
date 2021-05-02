@@ -1,0 +1,57 @@
+{
+  "name": "spx-text-path",
+  "description": "Write text along a predefined path.",
+  "shadow": false,
+  "properties": [
+    {
+      "id": "text-path-text",
+      "name": "text",
+      "attribute": "text",
+      "type": "string",
+      "description": "Text to be shown.",
+      "tags": []
+    },
+    {
+      "id": "text-path-textColor",
+      "name": "textColor",
+      "attribute": "text-color",
+      "type": "string",
+      "description": "Text color.",
+      "tags": []
+    },
+    {
+      "id": "text-path-textRotate",
+      "name": "textRotate",
+      "attribute": "text-rotate",
+      "type": "number",
+      "description": "Text rotation amount.",
+      "tags": []
+    },
+    {
+      "id": "text-path-textRotationDuration",
+      "name": "textRotationDuration",
+      "attribute": "text-rotation-duration",
+      "type": "number",
+      "description": "Text rotation animation duration.",
+      "tags": []
+    },
+    {
+      "id": "text-path-textSize",
+      "name": "textSize",
+      "attribute": "text-size",
+      "type": "string",
+      "description": "Text size.",
+      "default": "'clamp(16px, 3vw, 24px)'",
+      "defaultValue": "'clamp(16px, 3vw, 24px)'",
+      "tags": []
+    }
+  ],
+  "events": [
+    {
+      "name": "spxTextCircleDidLoad",
+      "description": ""
+    }
+  ],
+  "methods": [],
+  "slots": []
+}

@@ -724,11 +724,24 @@ export namespace Components {
          */
         "animationDuration": number;
         /**
+          * Autoplay.
+         */
+        "autoplay": boolean;
+        /**
+          * Brackets.
+         */
+        "brackets": string;
+        /**
           * Remove the annotation.
          */
         "clear": () => Promise<void>;
         "color": string;
+        "delay": number;
         "display": string;
+        /**
+          * Create a group on annotations by applying a "data-spx-annotation" to elements within.
+         */
+        "group": boolean;
         /**
           * Hides the annotation. (non animated)
          */
@@ -741,6 +754,10 @@ export namespace Components {
           * Annotate multiline text.
          */
         "multiline": boolean;
+        /**
+          * Padding around notations.
+         */
+        "padding": number;
         "reload": () => Promise<void>;
         /**
           * Draws the annotation.
@@ -1132,6 +1149,28 @@ export namespace Components {
         "text": string;
         "zIndex": number;
     }
+    interface SpxTextPath {
+        /**
+          * Text to be shown.
+         */
+        "text": string;
+        /**
+          * Text color.
+         */
+        "textColor": string;
+        /**
+          * Text rotation amount.
+         */
+        "textRotate": number;
+        /**
+          * Text rotation animation duration.
+         */
+        "textRotationDuration": number;
+        /**
+          * Text size.
+         */
+        "textSize": string;
+    }
     interface SpxTypewriter {
         /**
           * Automatically starts writing.
@@ -1303,6 +1342,12 @@ declare global {
         prototype: HTMLSpxSnackbarElement;
         new (): HTMLSpxSnackbarElement;
     };
+    interface HTMLSpxTextPathElement extends Components.SpxTextPath, HTMLStencilElement {
+    }
+    var HTMLSpxTextPathElement: {
+        prototype: HTMLSpxTextPathElement;
+        new (): HTMLSpxTextPathElement;
+    };
     interface HTMLSpxTypewriterElement extends Components.SpxTypewriter, HTMLStencilElement {
     }
     var HTMLSpxTypewriterElement: {
@@ -1333,6 +1378,7 @@ declare global {
         "spx-slider": HTMLSpxSliderElement;
         "spx-slideshow": HTMLSpxSlideshowElement;
         "spx-snackbar": HTMLSpxSnackbarElement;
+        "spx-text-path": HTMLSpxTextPathElement;
         "spx-typewriter": HTMLSpxTypewriterElement;
     }
 }
@@ -2074,8 +2120,21 @@ declare namespace LocalJSX {
           * Animation duration.
          */
         "animationDuration"?: number;
+        /**
+          * Autoplay.
+         */
+        "autoplay"?: boolean;
+        /**
+          * Brackets.
+         */
+        "brackets"?: string;
         "color"?: string;
+        "delay"?: number;
         "display"?: string;
+        /**
+          * Create a group on annotations by applying a "data-spx-annotation" to elements within.
+         */
+        "group"?: boolean;
         /**
           * Number of iterations.
          */
@@ -2088,6 +2147,10 @@ declare namespace LocalJSX {
           * Fires after component has loaded.
          */
         "onSpxNotationDidLoad"?: (event: CustomEvent<any>) => void;
+        /**
+          * Padding around notations.
+         */
+        "padding"?: number;
         /**
           * Stroke width.
          */
@@ -2489,6 +2552,29 @@ declare namespace LocalJSX {
         "text"?: string;
         "zIndex"?: number;
     }
+    interface SpxTextPath {
+        "onSpxTextCircleDidLoad"?: (event: CustomEvent<any>) => void;
+        /**
+          * Text to be shown.
+         */
+        "text"?: string;
+        /**
+          * Text color.
+         */
+        "textColor"?: string;
+        /**
+          * Text rotation amount.
+         */
+        "textRotate"?: number;
+        /**
+          * Text rotation animation duration.
+         */
+        "textRotationDuration"?: number;
+        /**
+          * Text size.
+         */
+        "textSize"?: string;
+    }
     interface SpxTypewriter {
         /**
           * Automatically starts writing.
@@ -2540,6 +2626,7 @@ declare namespace LocalJSX {
         "spx-slider": SpxSlider;
         "spx-slideshow": SpxSlideshow;
         "spx-snackbar": SpxSnackbar;
+        "spx-text-path": SpxTextPath;
         "spx-typewriter": SpxTypewriter;
     }
 }
@@ -2570,6 +2657,7 @@ declare module "@stencil/core" {
             "spx-slider": LocalJSX.SpxSlider & JSXBase.HTMLAttributes<HTMLSpxSliderElement>;
             "spx-slideshow": LocalJSX.SpxSlideshow & JSXBase.HTMLAttributes<HTMLSpxSlideshowElement>;
             "spx-snackbar": LocalJSX.SpxSnackbar & JSXBase.HTMLAttributes<HTMLSpxSnackbarElement>;
+            "spx-text-path": LocalJSX.SpxTextPath & JSXBase.HTMLAttributes<HTMLSpxTextPathElement>;
             "spx-typewriter": LocalJSX.SpxTypewriter & JSXBase.HTMLAttributes<HTMLSpxTypewriterElement>;
         }
     }

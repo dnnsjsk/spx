@@ -2,7 +2,7 @@ import { setVar } from '../utils/setVar';
 import { setVarOrClamp } from '../utils/setVarOrClamp';
 
 /**
-  defaults.
+  Defaults.
  */
 
 export const bpMobileWidth = 768;

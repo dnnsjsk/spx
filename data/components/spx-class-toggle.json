@@ -1,6 +1,7 @@
 {
   "name": "spx-class-toggle",
   "description": "Toggle CSS classes on any element in the document.",
+  "shadow": false,
   "properties": [
     {
       "id": "class-toggle-display",

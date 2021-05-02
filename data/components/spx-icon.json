@@ -1,6 +1,7 @@
 {
   "name": "spx-icon",
   "description": "Wrapper component for different kinds of icon sets. Currently comes included with Ionicons.",
+  "shadow": false,
   "properties": [
     {
       "id": "icon-color",

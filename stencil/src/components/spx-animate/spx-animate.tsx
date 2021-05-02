@@ -153,6 +153,14 @@ export class SpxAnimate {
           x: this.x,
           y: this.y,
           yoyo: this.yoyo,
+          onComplete: () => {
+            const el = this.el.parentElement;
+
+            if (this.el.parentElement.tagName === 'SPX-NOTATION') {
+              // @ts-ignore
+              el.show();
+            }
+          },
         };
 
         if (this.reverse) {

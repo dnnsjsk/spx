@@ -1,6 +1,7 @@
 {
   "name": "spx-navigation",
   "description": "Render a complete WordPress menu with nested submenus and automatic positioning.",
+  "shadow": true,
   "properties": [
     {
       "id": "navigation-childBorder",

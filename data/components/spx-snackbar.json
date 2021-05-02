@@ -1,6 +1,7 @@
 {
   "name": "spx-snackbar",
   "description": "Notification bars with a variety of options.\nGreat for success or failure messages.\nIn default mode, the snackbar will fade out and remove itself from the DOM.",
+  "shadow": false,
   "properties": [
     {
       "id": "snackbar-animationDelay",

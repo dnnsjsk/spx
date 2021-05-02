@@ -1,6 +1,7 @@
 {
   "name": "spx-animate",
   "description": "Wrapper around GSAP that allows for staggered and scroll-based animation.",
+  "shadow": false,
   "properties": [
     {
       "id": "animate-clipPath",
