@@ -18,17 +18,18 @@ Supercharge your workflow using handy components for the next project. Works wit
 = 3.1.3 =
 * Data API: add indicator if element is using Shadow DOM
 * Docs: don't create separator for first heading
-* Enhancement: add whitelist filter to allow asset loading even if no components are on the page
 * Fix: hide elements before they are loaded
 * Fix: make 'tested up to version' 5.7.1
 * Navigation: center icon properly
 * Navigation: convert to Shadow DOM
+* New: whitelist filter to allow asset loading even if no components are on the page
 * Notation: add 'autoplay' attribute
 * Notation: add 'delay' attribute
 * Notation: add 'group' attribute
 * Notation: add 'padding' attribute
 * Notation: add extra checks to prevent console errors if component is reloaded manually, but hasn't been initialised yet
-* Notation: switch default color gray color scale.
+* Notation: switch default color to gray color scale.
+* Slider: switch default colors to gray color scale.
 * Slideshow: convert to Shadow DOM
 * StencilJS: update to 2.5.2
 

@@ -26178,7 +26178,7 @@ const SpxScrollspy$1 = class extends HTMLElement {
           left: '0',
           width: '100%',
           height: '3px',
-          background: 'var(--spx-color-primary-600)',
+          background: 'var(--spx-color-gray-600)',
           animation: kf,
           animationIterationCount: 1,
           animationDuration: this.autoplayDelay + 'ms',
@@ -26189,12 +26189,12 @@ const SpxScrollspy$1 = class extends HTMLElement {
           display: 'none',
         },
         '&:hover:not([data-spx-slider-tab-active])': {
-          background: 'var(--spx-color-primary-50)',
-          borderColor: 'var(--spx-color-primary-100)',
+          background: 'var(--spx-color-gray-50)',
+          borderColor: 'var(--spx-color-gray-100)',
         },
         '&[data-spx-slider-tab-active]': {
-          background: 'var(--spx-color-primary-50)',
-          border: '1px solid var(--spx-color-primary-200)',
+          background: 'var(--spx-color-gray-50)',
+          border: '1px solid var(--spx-color-gray-200)',
           [this.mq(this.bpTabs)]: {
             display: 'grid',
           },
@@ -26225,7 +26225,7 @@ const SpxScrollspy$1 = class extends HTMLElement {
       const title = document.createElement('span');
       title.classList.add(css$1({
         fontWeight: 500,
-        color: 'var(--spx-color-primary-600)',
+        color: 'var(--spx-color-gray-600)',
         fontSize: setClamp(tag$4, 'pagination-title-font-size', 1, 1.2),
       }));
       title.innerText = item.getAttribute('data-spx-slider-title');
