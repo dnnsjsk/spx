@@ -406,10 +406,10 @@ var StyleSheet = /*#__PURE__*/function () {
   return StyleSheet;
 }();
 
-var e$1="-ms-";var r$1="-moz-";var a$1="-webkit-";var c$1="comm";var n$1="rule";var t$1="decl";var i$1="@import";var p$1="@keyframes";var k=Math.abs;var d$1=String.fromCharCode;function m$1(e,r){return (((r<<2^z(e,0))<<2^z(e,1))<<2^z(e,2))<<2^z(e,3)}function g$1(e){return e.trim()}function x(e,r){return (e=r.exec(e))?e[0]:e}function y(e,r,a){return e.replace(r,a)}function j(e,r){return e.indexOf(r)}function z(e,r){return e.charCodeAt(r)|0}function C(e,r,a){return e.slice(r,a)}function A(e){return e.length}function M(e){return e.length}function O(e,r){return r.push(e),e}function S(e,r){return e.map(r).join("")}var q=1;var B=1;var D=0;var E=0;var F=0;var G="";function H(e,r,a,c,n,t,s){return {value:e,root:r,parent:a,type:c,props:n,children:t,line:q,column:B,length:s,return:""}}function I(e,r,a){return H(e,r.root,r.parent,a,r.props,r.children,0)}function J(){return F}function K(){F=E<D?z(G,E++):0;if(B++,F===10)B=1,q++;return F}function L(){return z(G,E)}function N(){return E}function P(e,r){return C(G,e,r)}function Q(e){switch(e){case 0:case 9:case 10:case 13:case 32:return 5;case 33:case 43:case 44:case 47:case 62:case 64:case 126:case 59:case 123:case 125:return 4;case 58:return 3;case 34:case 39:case 40:case 91:return 2;case 41:case 93:return 1}return 0}function R(e){return q=B=1,D=A(G=e),E=0,[]}function T(e){return G="",e}function U(e){return g$1(P(E-1,Y(e===91?e+2:e===40?e+1:e)))}function W(e){while(F=L())if(F<33)K();else break;return Q(e)>2||Q(F)>3?"":" "}function Y(e){while(K())switch(F){case e:return E;case 34:case 39:return Y(e===34||e===39?e:F);case 40:if(e===41)Y(e);break;case 92:K();break}return E}function Z(e,r){while(K())if(e+F===47+10)break;else if(e+F===42+42&&L()===47)break;return "/*"+P(r,E-1)+"*"+d$1(e===47?e:K())}function _$1(e){while(!Q(L()))K();return P(e,E)}function ee(e){return T(re("",null,null,null,[""],e=R(e),0,[0],e))}function re(e,r,a,c,n,t,s,u,i){var f=0;var o=0;var l=s;var v=0;var h=0;var p=0;var w=1;var b=1;var $=1;var k=0;var m="";var g=n;var x=t;var j=c;var z=m;while(b)switch(p=k,k=K()){case 34:case 39:case 91:case 40:z+=U(k);break;case 9:case 10:case 13:case 32:z+=W(p);break;case 47:switch(L()){case 42:case 47:O(ce(Z(K(),N()),r,a),i);break;default:z+="/";}break;case 123*w:u[f++]=A(z)*$;case 125*w:case 59:case 0:switch(k){case 0:case 125:b=0;case 59+o:if(h>0&&A(z)-l)O(h>32?ne(z+";",c,a,l-1):ne(y(z," ","")+";",c,a,l-2),i);break;case 59:z+=";";default:O(j=ae(z,r,a,f,o,n,u,m,g=[],x=[],l),t);if(k===123)if(o===0)re(z,r,j,j,g,t,l,u,x);else switch(v){case 100:case 109:case 115:re(e,j,j,c&&O(ae(e,j,j,0,0,n,u,m,n,g=[],l),x),n,x,l,u,c?g:x);break;default:re(z,j,j,j,[""],x,l,u,x);}}f=o=h=0,w=$=1,m=z="",l=s;break;case 58:l=1+A(z),h=p;default:switch(z+=d$1(k),k*w){case 38:$=o>0?1:(z+="\f",-1);break;case 44:u[f++]=(A(z)-1)*$,$=1;break;case 64:if(L()===45)z+=U(K());v=L(),o=A(m=z+=_$1(N())),k++;break;case 45:if(p===45&&A(z)==2)w=0;}}return t}function ae(e,r,a,c,t,s,u,i,f,o,l){var v=t-1;var h=t===0?s:[""];var p=M(h);for(var w=0,b=0,$=0;w<c;++w)for(var d=0,m=C(e,v+1,v=k(b=u[w])),x=e;d<p;++d)if(x=g$1(b>0?h[d]+" "+m:y(m,/&\f/g,h[d])))f[$++]=x;return H(e,r,a,t===0?n$1:i,f,o,l)}function ce(e,r,a){return H(e,r,a,c$1,d$1(J()),C(e,2,-2),0)}function ne(e,r,a,c){return H(e,r,a,t$1,C(e,0,c),C(e,c+1,-1),c)}function te(c,n){switch(m$1(c,n)){case 5737:case 4201:case 3177:case 3433:case 1641:case 4457:case 2921:case 5572:case 6356:case 5844:case 3191:case 6645:case 3005:case 6391:case 5879:case 5623:case 6135:case 4599:case 4855:case 4215:case 6389:case 5109:case 5365:case 5621:case 3829:return a$1+c+c;case 5349:case 4246:case 4810:case 6968:case 2756:return a$1+c+r$1+c+e$1+c+c;case 6828:case 4268:return a$1+c+e$1+c+c;case 6165:return a$1+c+e$1+"flex-"+c+c;case 5187:return a$1+c+y(c,/(\w+).+(:[^]+)/,a$1+"box-$1$2"+e$1+"flex-$1$2")+c;case 5443:return a$1+c+e$1+"flex-item-"+y(c,/flex-|-self/,"")+c;case 4675:return a$1+c+e$1+"flex-line-pack"+y(c,/align-content|flex-|-self/,"")+c;case 5548:return a$1+c+e$1+y(c,"shrink","negative")+c;case 5292:return a$1+c+e$1+y(c,"basis","preferred-size")+c;case 6060:return a$1+"box-"+y(c,"-grow","")+a$1+c+e$1+y(c,"grow","positive")+c;case 4554:return a$1+y(c,/([^-])(transform)/g,"$1"+a$1+"$2")+c;case 6187:return y(y(y(c,/(zoom-|grab)/,a$1+"$1"),/(image-set)/,a$1+"$1"),c,"")+c;case 5495:case 3959:return y(c,/(image-set\([^]*)/,a$1+"$1"+"$`$1");case 4968:return y(y(c,/(.+:)(flex-)?(.*)/,a$1+"box-pack:$3"+e$1+"flex-pack:$3"),/s.+-b[^;]+/,"justify")+a$1+c+c;case 4095:case 3583:case 4068:case 2532:return y(c,/(.+)-inline(.+)/,a$1+"$1$2")+c;case 8116:case 7059:case 5753:case 5535:case 5445:case 5701:case 4933:case 4677:case 5533:case 5789:case 5021:case 4765:if(A(c)-1-n>6)switch(z(c,n+1)){case 102:n=z(c,n+3);case 109:return y(c,/(.+:)(.+)-([^]+)/,"$1"+a$1+"$2-$3"+"$1"+r$1+(n==108?"$3":"$2-$3"))+c;case 115:return ~j(c,"stretch")?te(y(c,"stretch","fill-available"),n)+c:c}break;case 4949:if(z(c,n+1)!==115)break;case 6444:switch(z(c,A(c)-3-(~j(c,"!important")&&10))){case 107:case 111:return y(c,c,a$1+c)+c;case 101:return y(c,/(.+:)([^;!]+)(;|!.+)?/,"$1"+a$1+(z(c,14)===45?"inline-":"")+"box$3"+"$1"+a$1+"$2$3"+"$1"+e$1+"$2box$3")+c}break;case 5936:switch(z(c,n+11)){case 114:return a$1+c+e$1+y(c,/[svh]\w+-[tblr]{2}/,"tb")+c;case 108:return a$1+c+e$1+y(c,/[svh]\w+-[tblr]{2}/,"tb-rl")+c;case 45:return a$1+c+e$1+y(c,/[svh]\w+-[tblr]{2}/,"lr")+c}return a$1+c+e$1+c+c}return c}function se(e,r){var a="";var c=M(e);for(var n=0;n<c;n++)a+=r(e[n],n,e,r)||"";return a}function ue(e,r,a,s){switch(e.type){case i$1:case t$1:return e.return=e.return||e.value;case c$1:return "";case n$1:e.value=e.props.join(",");}return A(a=se(e.children,s))?e.return=e.value+"{"+a+"}":""}function ie(e){var r=M(e);return function(a,c,n,t){var s="";for(var u=0;u<r;u++)s+=e[u](a,c,n,t)||"";return s}}function fe(e){return function(r){if(!r.root)if(r=r.return)e(r);}}function oe(c,s,u,i){if(!c.return)switch(c.type){case t$1:c.return=te(c.value,c.length);break;case p$1:return se([I(y(c.value,"@","@"+a$1),c,"")],i);case n$1:if(c.length)return S(c.props,(function(n){switch(x(n,/(::plac\w+|:read-\w+)/)){case":read-only":case":read-write":return se([I(y(n,/:(read-\w+)/,":"+r$1+"$1"),c,"")],i);case"::placeholder":return se([I(y(n,/:(plac\w+)/,":"+a$1+"input-$1"),c,""),I(y(n,/:(plac\w+)/,":"+r$1+"$1"),c,""),I(y(n,/:(plac\w+)/,e$1+"input-$1"),c,"")],i)}return ""}))}}
+var e$1="-ms-";var r$1="-moz-";var a$1="-webkit-";var c$1="comm";var n$1="rule";var t$1="decl";var i$1="@import";var p$1="@keyframes";var k=Math.abs;var d$1=String.fromCharCode;function m$1(e,r){return (((r<<2^z(e,0))<<2^z(e,1))<<2^z(e,2))<<2^z(e,3)}function g$1(e){return e.trim()}function x(e,r){return (e=r.exec(e))?e[0]:e}function y(e,r,a){return e.replace(r,a)}function j(e,r){return e.indexOf(r)}function z(e,r){return e.charCodeAt(r)|0}function C(e,r,a){return e.slice(r,a)}function A(e){return e.length}function M(e){return e.length}function O(e,r){return r.push(e),e}function S(e,r){return e.map(r).join("")}var q=1;var B=1;var D=0;var E=0;var F=0;var G="";function H(e,r,a,c,n,t,s){return {value:e,root:r,parent:a,type:c,props:n,children:t,line:q,column:B,length:s,return:""}}function I(e,r,a){return H(e,r.root,r.parent,a,r.props,r.children,0)}function J(){return F}function K(){F=E>0?z(G,--E):0;if(B--,F===10)B=1,q--;return F}function L(){F=E<D?z(G,E++):0;if(B++,F===10)B=1,q++;return F}function N(){return z(G,E)}function P(){return E}function Q(e,r){return C(G,e,r)}function R(e){switch(e){case 0:case 9:case 10:case 13:case 32:return 5;case 33:case 43:case 44:case 47:case 62:case 64:case 126:case 59:case 123:case 125:return 4;case 58:return 3;case 34:case 39:case 40:case 91:return 2;case 41:case 93:return 1}return 0}function T(e){return q=B=1,D=A(G=e),E=0,[]}function U(e){return G="",e}function V(e){return g$1(Q(E-1,_$1(e===91?e+2:e===40?e+1:e)))}function X(e){while(F=N())if(F<33)L();else break;return R(e)>2||R(F)>3?"":" "}function Z(e,r){while(--r&&L())if(F<48||F>102||F>57&&F<65||F>70&&F<97)break;return Q(e,P()+(r<6&&N()==32&&L()==32))}function _$1(e){while(L())switch(F){case e:return E;case 34:case 39:return _$1(e===34||e===39?e:F);case 40:if(e===41)_$1(e);break;case 92:L();break}return E}function ee(e,r){while(L())if(e+F===47+10)break;else if(e+F===42+42&&N()===47)break;return "/*"+Q(r,E-1)+"*"+d$1(e===47?e:L())}function re(e){while(!R(N()))L();return Q(e,E)}function ae(e){return U(ce("",null,null,null,[""],e=T(e),0,[0],e))}function ce(e,r,a,c,n,t,s,u,i){var f=0;var o=0;var l=s;var v=0;var h=0;var p=0;var b=1;var w=1;var $=1;var k=0;var m="";var g=n;var x=t;var j=c;var z=m;while(w)switch(p=k,k=L()){case 34:case 39:case 91:case 40:z+=V(k);break;case 9:case 10:case 13:case 32:z+=X(p);break;case 92:z+=Z(P()-1,7);continue;case 47:switch(N()){case 42:case 47:O(te(ee(L(),P()),r,a),i);break;default:z+="/";}break;case 123*b:u[f++]=A(z)*$;case 125*b:case 59:case 0:switch(k){case 0:case 125:w=0;case 59+o:if(h>0&&A(z)-l)O(h>32?se(z+";",c,a,l-1):se(y(z," ","")+";",c,a,l-2),i);break;case 59:z+=";";default:O(j=ne(z,r,a,f,o,n,u,m,g=[],x=[],l),t);if(k===123)if(o===0)ce(z,r,j,j,g,t,l,u,x);else switch(v){case 100:case 109:case 115:ce(e,j,j,c&&O(ne(e,j,j,0,0,n,u,m,n,g=[],l),x),n,x,l,u,c?g:x);break;default:ce(z,j,j,j,[""],x,l,u,x);}}f=o=h=0,b=$=1,m=z="",l=s;break;case 58:l=1+A(z),h=p;default:if(b<1)if(k==123)--b;else if(k==125&&b++==0&&K()==125)continue;switch(z+=d$1(k),k*b){case 38:$=o>0?1:(z+="\f",-1);break;case 44:u[f++]=(A(z)-1)*$,$=1;break;case 64:if(N()===45)z+=V(L());v=N(),o=A(m=z+=re(P())),k++;break;case 45:if(p===45&&A(z)==2)b=0;}}return t}function ne(e,r,a,c,t,s,u,i,f,o,l){var v=t-1;var h=t===0?s:[""];var p=M(h);for(var b=0,w=0,$=0;b<c;++b)for(var d=0,m=C(e,v+1,v=k(w=u[b])),x=e;d<p;++d)if(x=g$1(w>0?h[d]+" "+m:y(m,/&\f/g,h[d])))f[$++]=x;return H(e,r,a,t===0?n$1:i,f,o,l)}function te(e,r,a){return H(e,r,a,c$1,d$1(J()),C(e,2,-2),0)}function se(e,r,a,c){return H(e,r,a,t$1,C(e,0,c),C(e,c+1,-1),c)}function ue(c,n){switch(m$1(c,n)){case 5103:return a$1+"print-"+c+c;case 5737:case 4201:case 3177:case 3433:case 1641:case 4457:case 2921:case 5572:case 6356:case 5844:case 3191:case 6645:case 3005:case 6391:case 5879:case 5623:case 6135:case 4599:case 4855:case 4215:case 6389:case 5109:case 5365:case 5621:case 3829:return a$1+c+c;case 5349:case 4246:case 4810:case 6968:case 2756:return a$1+c+r$1+c+e$1+c+c;case 6828:case 4268:return a$1+c+e$1+c+c;case 6165:return a$1+c+e$1+"flex-"+c+c;case 5187:return a$1+c+y(c,/(\w+).+(:[^]+)/,a$1+"box-$1$2"+e$1+"flex-$1$2")+c;case 5443:return a$1+c+e$1+"flex-item-"+y(c,/flex-|-self/,"")+c;case 4675:return a$1+c+e$1+"flex-line-pack"+y(c,/align-content|flex-|-self/,"")+c;case 5548:return a$1+c+e$1+y(c,"shrink","negative")+c;case 5292:return a$1+c+e$1+y(c,"basis","preferred-size")+c;case 6060:return a$1+"box-"+y(c,"-grow","")+a$1+c+e$1+y(c,"grow","positive")+c;case 4554:return a$1+y(c,/([^-])(transform)/g,"$1"+a$1+"$2")+c;case 6187:return y(y(y(c,/(zoom-|grab)/,a$1+"$1"),/(image-set)/,a$1+"$1"),c,"")+c;case 5495:case 3959:return y(c,/(image-set\([^]*)/,a$1+"$1"+"$`$1");case 4968:return y(y(c,/(.+:)(flex-)?(.*)/,a$1+"box-pack:$3"+e$1+"flex-pack:$3"),/s.+-b[^;]+/,"justify")+a$1+c+c;case 4095:case 3583:case 4068:case 2532:return y(c,/(.+)-inline(.+)/,a$1+"$1$2")+c;case 8116:case 7059:case 5753:case 5535:case 5445:case 5701:case 4933:case 4677:case 5533:case 5789:case 5021:case 4765:if(A(c)-1-n>6)switch(z(c,n+1)){case 109:if(z(c,n+4)!==45)break;case 102:return y(c,/(.+:)(.+)-([^]+)/,"$1"+a$1+"$2-$3"+"$1"+r$1+(z(c,n+3)==108?"$3":"$2-$3"))+c;case 115:return ~j(c,"stretch")?ue(y(c,"stretch","fill-available"),n)+c:c}break;case 4949:if(z(c,n+1)!==115)break;case 6444:switch(z(c,A(c)-3-(~j(c,"!important")&&10))){case 107:return y(c,":",":"+a$1)+c;case 101:return y(c,/(.+:)([^;!]+)(;|!.+)?/,"$1"+a$1+(z(c,14)===45?"inline-":"")+"box$3"+"$1"+a$1+"$2$3"+"$1"+e$1+"$2box$3")+c}break;case 5936:switch(z(c,n+11)){case 114:return a$1+c+e$1+y(c,/[svh]\w+-[tblr]{2}/,"tb")+c;case 108:return a$1+c+e$1+y(c,/[svh]\w+-[tblr]{2}/,"tb-rl")+c;case 45:return a$1+c+e$1+y(c,/[svh]\w+-[tblr]{2}/,"lr")+c}return a$1+c+e$1+c+c}return c}function ie(e,r){var a="";var c=M(e);for(var n=0;n<c;n++)a+=r(e[n],n,e,r)||"";return a}function fe(e,r,a,s){switch(e.type){case i$1:case t$1:return e.return=e.return||e.value;case c$1:return "";case n$1:e.value=e.props.join(",");}return A(a=ie(e.children,s))?e.return=e.value+"{"+a+"}":""}function oe(e){var r=M(e);return function(a,c,n,t){var s="";for(var u=0;u<r;u++)s+=e[u](a,c,n,t)||"";return s}}function le(e){return function(r){if(!r.root)if(r=r.return)e(r);}}function ve(c,s,u,i){if(!c.return)switch(c.type){case t$1:c.return=ue(c.value,c.length);break;case p$1:return ie([I(y(c.value,"@","@"+a$1),c,"")],i);case n$1:if(c.length)return S(c.props,(function(n){switch(x(n,/(::plac\w+|:read-\w+)/)){case":read-only":case":read-write":return ie([I(y(n,/:(read-\w+)/,":"+r$1+"$1"),c,"")],i);case"::placeholder":return ie([I(y(n,/:(plac\w+)/,":"+a$1+"input-$1"),c,""),I(y(n,/:(plac\w+)/,":"+r$1+"$1"),c,""),I(y(n,/:(plac\w+)/,e$1+"input-$1"),c,"")],i)}return ""}))}}
 
 function memoize$1(fn) {
-  var cache = {};
+  var cache = Object.create(null);
   return function (arg) {
     if (cache[arg] === undefined) cache[arg] = fn(arg);
     return cache[arg];
@@ -422,10 +422,10 @@ var toRules = function toRules(parsed, points) {
   var character = 44;
 
   do {
-    switch (Q(character)) {
+    switch (R(character)) {
       case 0:
         // &\f
-        if (character === 38 && L() === 12) {
+        if (character === 38 && N() === 12) {
           // this is not 100% correct, we don't account for literal sequences here - like for example quoted strings
           // stylis inserts \f after & to know when & where it should replace this sequence with the context selector
           // and when it should just concatenate the outer and inner selectors
@@ -433,18 +433,18 @@ var toRules = function toRules(parsed, points) {
           points[index] = 1;
         }
 
-        parsed[index] += _$1(E - 1);
+        parsed[index] += re(E - 1);
         break;
 
       case 2:
-        parsed[index] += U(character);
+        parsed[index] += V(character);
         break;
 
       case 4:
         // comma
         if (character === 44) {
           // colon
-          parsed[++index] = L() === 58 ? '&\f' : '';
+          parsed[++index] = N() === 58 ? '&\f' : '';
           points[index] = parsed[index].length;
           break;
         }
@@ -454,13 +454,13 @@ var toRules = function toRules(parsed, points) {
       default:
         parsed[index] += d$1(character);
     }
-  } while (character = K());
+  } while (character = L());
 
   return parsed;
 };
 
 var getRules = function getRules(value, points) {
-  return T(toRules(R(value), points));
+  return U(toRules(T(value), points));
 }; // WeakSet would be more appropriate, but only WeakMap is supported in IE11
 
 
@@ -518,16 +518,29 @@ var removeLabel = function removeLabel(element) {
   }
 };
 
-var defaultStylisPlugins = [oe];
+var defaultStylisPlugins = [ve];
 
 var createCache = function createCache(options) {
   var key = options.key;
 
   if ( key === 'css') {
     var ssrStyles = document.querySelectorAll("style[data-emotion]:not([data-s])"); // get SSRed styles out of the way of React's hydration
-    // document.head is a safe place to move them to
+    // document.head is a safe place to move them to(though note document.head is not necessarily the last place they will be)
+    // note this very very intentionally targets all style elements regardless of the key to ensure
+    // that creating a cache works inside of render of a React component
 
     Array.prototype.forEach.call(ssrStyles, function (node) {
+      // we want to only move elements which have a space in the data-emotion attribute value
+      // because that indicates that it is an Emotion 11 server-side rendered style elements
+      // while we will already ignore Emotion 11 client-side inserted styles because of the :not([data-s]) part in the selector
+      // Emotion 10 client-side inserted styles did not have data-s (but importantly did not have a space in their data-emotion attributes)
+      // so checking for the space ensures that loading Emotion 11 after Emotion 10 has inserted some styles
+      // will not result in the Emotion 10 styles being destroyed
+      var dataEmotionAttribute = node.getAttribute('data-emotion');
+
+      if (dataEmotionAttribute.indexOf(' ') === -1) {
+        return;
+      }
       document.head.appendChild(node);
       node.setAttribute('data-s', '');
     });
@@ -542,13 +555,10 @@ var createCache = function createCache(options) {
 
   {
     container = options.container || document.head;
-    Array.prototype.forEach.call(document.querySelectorAll("style[data-emotion]"), function (node) {
-      var attrib = node.getAttribute("data-emotion").split(' ');
-
-      if (attrib[0] !== key) {
-        return;
-      } // $FlowFixMe
-
+    Array.prototype.forEach.call( // this means we will ignore elements which don't have a space in them which
+    // means that the style elements we're looking at are only Emotion 11 server-rendered style elements
+    document.querySelectorAll("style[data-emotion^=\"" + key + " \"]"), function (node) {
+      var attrib = node.getAttribute("data-emotion").split(' '); // $FlowFixMe
 
       for (var i = 1; i < attrib.length; i++) {
         inserted[attrib[i]] = true;
@@ -564,13 +574,13 @@ var createCache = function createCache(options) {
 
   {
     var currentSheet;
-    var finalizingPlugins = [ue, fe(function (rule) {
+    var finalizingPlugins = [fe, le(function (rule) {
       currentSheet.insert(rule);
     })];
-    var serializer = ie(omnipresentPlugins.concat(stylisPlugins, finalizingPlugins));
+    var serializer = oe(omnipresentPlugins.concat(stylisPlugins, finalizingPlugins));
 
     var stylis = function stylis(styles) {
-      return se(ee(styles), serializer);
+      return ie(ae(styles), serializer);
     };
 
     _insert = function insert(selector, serialized, sheet, shouldCache) {
@@ -871,7 +881,7 @@ function createStringFromObject(mergedProps, registered, obj) {
   return string;
 }
 
-var labelPattern = /label:\s*([^\s;\n{]+)\s*;/g;
+var labelPattern = /label:\s*([^\s;\n{]+)\s*(;|$)/g;
 // keyframes are stored on the SerializedStyles object as a linked list
 
 
@@ -1141,7 +1151,7 @@ const setVarOrClamp = (tag, type, size, min, max, condition) => {
 };
 
 /**
-  Defaults.
+ * Defaults.
  */
 const bpMobileWidth = 768;
 const fontFamily = 'var(--spx-font-family)';
@@ -1196,9 +1206,13 @@ const mutationObserver = (element, options, functionToRun) => {
  * Global componentDidLoad function for all components.
  */
 const globalComponentDidLoad = (el) => {
-  /** Mark that component has been loaded. */
+  /**
+   * Mark that component has been loaded.
+   */
   el.setAttribute('has-loaded', '');
-  /** Setup mutation observer to check if child elements have been added and reload component. */
+  /**
+   * Setup mutation observer to check if child elements have been added and reload component.
+   */
   if (el.tagName !== 'SPX-TYPEWRITER' &&
     el.tagName !== 'SPX-ANIMATE' &&
     el.tagName !== 'SPX-LIGHTBOX' &&
@@ -1227,9 +1241,13 @@ const SpxAccordion$1 = class extends HTMLElement {
     this.__registerHost();
     this.spxAccordionDidLoad = createEvent(this, "spxAccordionDidLoad", 7);
     this.contentColor = 'var(--spx-color-gray-900)';
-    /** Content text. */
+    /**
+     * Content text.
+     */
     this.contentText = 'Default Content Text';
-    /** Content text tag. */
+    /**
+     * Content text tag.
+     */
     this.contentTextTag = 'span';
     this.contentTransitionDuration = transitionDuration;
     this.contentTransitionTimingFunction = transitionTimingFunction;
@@ -1251,31 +1269,49 @@ const SpxAccordion$1 = class extends HTMLElement {
     this.headerGap = '0.4em';
     this.headerGapMin = 0.6;
     this.headerGapMax = 1;
-    /** Header text. */
+    /**
+     * Header text.
+     */
     this.headerText = 'Default Header Text';
-    /** Header text tag. */
+    /**
+     * Header text tag.
+     */
     this.headerTextTag = 'span';
-    /** Indicator icon. */
+    /**
+     * Indicator icon.
+     */
     this.indicatorIcon = 'arrow-down';
-    /** Indicator icon type. */
+    /**
+     * Indicator icon type.
+     */
     this.indicatorIconType = 'ionicons';
-    /** Indicator icon transform. */
+    /**
+     * Indicator icon transform.
+     */
     this.indicatorIconTransform = 'rotate(180deg)';
-    /** State of accordion. */
+    /**
+     * State of accordion.
+     */
     this.openState = false;
     /**
      * Styling.
      * @choice 'default', 'fluid', 'headless'
      */
     this.styling = 'default';
-    /** Header is clicked. */
+    /**
+     * Header is clicked.
+     */
     this.clickHeader = () => {
-      /** Handle linked instances. */
+      /**
+       * Handle linked instances.
+       */
       if (this.link) {
         document
           .querySelectorAll('spx-accordion[link="' + this.link + '"]')
           .forEach((item) => {
-          /** Make sure not to toggle current element. */
+          /**
+           * Make sure not to toggle current element.
+           */
           if (item !== this.el) {
             if (this.linkType === 'open') {
               item.setAttribute('open', '');
@@ -1294,7 +1330,9 @@ const SpxAccordion$1 = class extends HTMLElement {
           }
         });
       }
-      /** Set the correct heights.. */
+      /**
+       * Set the correct heights.
+       */
       if (this.openState) {
         if (!this.disableAnimation) {
           this.content.style.maxHeight = null;
@@ -1315,7 +1353,9 @@ const SpxAccordion$1 = class extends HTMLElement {
     }
   }
   componentWillLoad() {
-    /** Turn animation off if linked, since height can't be calculated otherwise. */
+    /**
+     * Turn animation off if linked, since height can't be calculated otherwise.
+     */
     if (this.link) {
       this.disableAnimation = true;
     }
@@ -1330,23 +1370,31 @@ const SpxAccordion$1 = class extends HTMLElement {
     }
     this.spxAccordionDidLoad.emit({ target: 'document' });
   }
-  /** Closes the accordion. */
+  /**
+   * Closes the accordion.
+   */
   async close() {
     this.openState = false;
   }
-  /** Opens the accordion. */
+  /**
+   * Opens the accordion.
+   */
   async open() {
     this.openState = true;
   }
   async reload() {
     this.componentDidLoad();
   }
-  /** Toggles the accordion. */
+  /**
+   * Toggles the accordion.
+   */
   async toggle() {
     this.openState = !this.openState;
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = (this.styling === 'default' || this.styling === 'fluid') &&
       css$1({
         fontFamily: fontFamily,
@@ -1354,7 +1402,9 @@ const SpxAccordion$1 = class extends HTMLElement {
         display: 'flex',
         flexDirection: 'column',
       });
-    /** Header styles. */
+    /**
+     * Header styles.
+     */
     const styleHeader = this.styling === 'default' || this.styling === 'fluid'
       ? css$1({
         display: 'grid',
@@ -1373,7 +1423,9 @@ const SpxAccordion$1 = class extends HTMLElement {
       : this.openState
         ? this.classHeader + ' ' + this.classHeaderActive
         : this.classHeader + ' ' + this.classHeaderInactive;
-    /** Header custom styles. */
+    /**
+     * Header custom styles.
+     */
     const styleHeaderIcon = this.styling === 'default' || this.styling === 'fluid'
       ? css$1({
         display: 'flex',
@@ -1388,7 +1440,9 @@ const SpxAccordion$1 = class extends HTMLElement {
       : this.openState
         ? this.classHeaderIcon + ' ' + this.classHeaderIconActive
         : this.classHeaderIcon + ' ' + this.classHeaderIconInactive;
-    /** Content styles. */
+    /**
+     * Content styles.
+     */
     const styleContent = this.styling === 'default' || this.styling === 'fluid'
       ? css$1({
         display: this.disableAnimation && this.openState
@@ -6658,27 +6712,45 @@ const SpxAnimate$1 = class extends HTMLElement {
     super();
     this.__registerHost();
     this.spxAnimateDidLoad = createEvent(this, "spxAnimateDidLoad", 7);
-    /** Delay before animation starts. */
+    /**
+     * Delay before animation starts.
+     */
     this.delay = 0;
-    /** Animation duration. */
+    /**
+     * Animation duration.
+     */
     this.duration = 1;
-    /** Ease being used. Accepts all common GSAP options. */
+    /**
+     * Ease being used. Accepts all common GSAP options.
+     */
     this.ease = 'power1.out';
-    /** Opacity level the animation starts from. */
+    /**
+     * Opacity level the animation starts from.
+     */
     this.opacity = 0;
-    /** Amount of time elements should be staggered by. */
+    /**
+     * Amount of time elements should be staggered by.
+     */
     this.stagger = 0.15;
-    /** The target element that should be animated inside the component. */
+    /**
+     * The target element that should be animated inside the component.
+     */
     this.target = '*';
-    /** X position the animation starts from. */
+    /**
+     * X position the animation starts from.
+     */
     this.x = 0;
-    /** Y position the animation starts from. */
+    /**
+     * Y position the animation starts from.
+     */
     this.y = 0;
     this.display = 'block';
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
-    /** Init loop to make sure the component fires correctly in Oxygen. */
+    /**
+     * Init loop to make sure the component fires correctly in Oxygen.
+     */
     const init = () => {
       this.elements = this.el.querySelectorAll(this.target);
       if ((this.elements === undefined || this.elements.length === 0) &&
@@ -6719,11 +6791,15 @@ const SpxAnimate$1 = class extends HTMLElement {
         else {
           this.tl.from(this.elements, options);
         }
-        /** Play immediately when not in viewport. */
+        /**
+         * Play immediately when not in viewport.
+         */
         if (!this.viewport) {
           this.tl.play();
         }
-        /** Check viewport before playing. */
+        /**
+         * Check viewport before playing.
+         */
         if (this.viewport) {
           const options = {
             rootMargin: '' +
@@ -6759,19 +6835,25 @@ const SpxAnimate$1 = class extends HTMLElement {
     };
     init();
   }
-  /** Plays animation. */
+  /**
+   * Plays animation.
+   */
   async play(from = 0, suppressEvents = true) {
     this.tl.play(from, suppressEvents);
   }
   async reload() {
     this.componentDidLoad();
   }
-  /** Restarts animation. */
+  /**
+   * Restarts animation.
+   */
   async restart(includeDelay = false, suppressEvents = true) {
     this.tl.restart(includeDelay, suppressEvents);
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: setVar(tag$m, 'display', this.display),
     });
@@ -6787,13 +6869,19 @@ const SpxClassToggle$1 = class extends HTMLElement {
     this.__registerHost();
     this.spxClassToggleDidLoad = createEvent(this, "spxClassToggleDidLoad", 7);
     this.display = 'block';
-    /** List of classes that should be toggled. */
+    /**
+     * List of classes that should be toggled.
+     */
     this.toggle = 'spx-class-toggle--active';
-    /** Create an array of classes from the component attribute. */
+    /**
+     * Create an array of classes from the component attribute.
+     */
     this.createToggleArray = () => {
       this.classesArray = this.toggle.replace(/ /g, ',').split(',');
     };
-    /** Toggle classes. */
+    /**
+     * Toggle classes.
+     */
     this.toggleClasses = () => {
       this.classesArray.forEach((item) => {
         (this.target
@@ -6821,7 +6909,9 @@ const SpxClassToggle$1 = class extends HTMLElement {
   componentDidLoad() {
     globalComponentDidLoad(this.el);
     this.createToggleArray();
-    /** Check if local storage is set. */
+    /**
+     * Check if local storage is set.
+     */
     if (this.local) {
       if (localStorage.getItem(this.local)) {
         this.addClasses();
@@ -6829,7 +6919,9 @@ const SpxClassToggle$1 = class extends HTMLElement {
     }
     this.spxClassToggleDidLoad.emit({ target: 'document' });
   }
-  /** Add classes. */
+  /**
+   * Add classes.
+   */
   addClasses() {
     this.classesArray.forEach((item) => {
       (this.target
@@ -6848,7 +6940,9 @@ const SpxClassToggle$1 = class extends HTMLElement {
     this.componentDidLoad();
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: setVar(tag$l, 'display', this.display),
     });
@@ -9067,6 +9161,53 @@ Prism.languages.json = {
 
 Prism.languages.webmanifest = Prism.languages.json;
 
+Prism.languages.twig = {
+	'comment': /\{#[\s\S]*?#\}/,
+	'tag': {
+		pattern: /\{\{[\s\S]*?\}\}|\{%[\s\S]*?%\}/,
+		inside: {
+			'ld': {
+				pattern: /^(?:\{\{-?|\{%-?\s*\w+)/,
+				inside: {
+					'punctuation': /^(?:\{\{|\{%)-?/,
+					'keyword': /\w+/
+				}
+			},
+			'rd': {
+				pattern: /-?(?:%\}|\}\})$/,
+				inside: {
+					'punctuation': /.+/
+				}
+			},
+			'string': {
+				pattern: /("|')(?:\\.|(?!\1)[^\\\r\n])*\1/,
+				inside: {
+					'punctuation': /^['"]|['"]$/
+				}
+			},
+			'keyword': /\b(?:even|if|odd)\b/,
+			'boolean': /\b(?:true|false|null)\b/,
+			'number': /\b0x[\dA-Fa-f]+|(?:\b\d+(?:\.\d*)?|\B\.\d+)(?:[Ee][-+]?\d+)?/,
+			'operator': [
+				{
+					pattern: /(\s)(?:and|b-and|b-xor|b-or|ends with|in|is|matches|not|or|same as|starts with)(?=\s)/,
+					lookbehind: true
+				},
+				/[=<>]=?|!=|\*\*?|\/\/?|\?:?|[-+~%|]/
+			],
+			'property': /\b[a-zA-Z_]\w*\b/,
+			'punctuation': /[()\[\]{}:.,]/
+		}
+	},
+
+	// The rest can be parsed as HTML
+	'other': {
+		// We want non-blank matches
+		pattern: /\S(?:[\s\S]*\S)?/,
+		inside: Prism.languages.markup
+	}
+};
+
 createCommonjsModule(function (module) {
 (function() {
 
@@ -10486,7 +10627,9 @@ const SpxCode$1 = class extends HTMLElement {
     this.spxCodeDidLoad = createEvent(this, "spxCodeDidLoad", 7);
     this.background = 'var(--spx-color-gray-900)';
     this.borderRadius = borderRadius;
-    /** Enable clipboard button. */
+    /**
+     * Enable clipboard button.
+     */
     this.clipboard = true;
     this.clipboardButtonBackground = 'var(--spx-color-gray-800)';
     this.clipboardButtonColor = 'var(--spx-color-gray-400)';
@@ -10499,14 +10642,18 @@ const SpxCode$1 = class extends HTMLElement {
     this.display = 'block';
     this.fontSize = 'clamp(12px, 1.6vw, 16px)';
     this.height = 'auto';
-    /** Enable line numbers. */
+    /**
+     * Enable line numbers.
+     */
     this.lineNumbers = true;
     this.lineNumbersBackground = 'var(--spx-color-gray-800)';
     this.lineNumbersColor = 'var(--spx-color-gray-400)';
     this.maxWidth = '100%';
     this.overflow = 'auto';
     this.padding = 'clamp(20px, 2.4vw, 40px)';
-    /** Hide scrollbar. */
+    /**
+     * Hide scrollbar.
+     */
     this.scrollbar = true;
     /**
      * Colour theme.
@@ -10516,11 +10663,12 @@ const SpxCode$1 = class extends HTMLElement {
     /**
      * Determines the programming language.
      * @choice 'markup', 'css', 'php'
-     * @editor 'css'
      */
     this.type = 'markup';
     this.onClickClipboard = () => {
-      /** Copy the code to the data-attribute and change button text. */
+      /**
+       * Copy the code to the data-attribute and change button text.
+       */
       this.clipboardButton.setAttribute('data-clipboard-text', this.el.querySelector('pre').innerText);
       this.clipboardButton.innerText = this.clipboardButtonTextCopied;
       setTimeout(() => {
@@ -10539,14 +10687,18 @@ const SpxCode$1 = class extends HTMLElement {
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
-    /** Highlight code. */
+    /**
+     * Highlight code.
+     */
     if (this.lazy) {
       intersectionObserver(this.el, this.highlightCode);
     }
     else {
       this.highlightCode();
     }
-    /** Setup clipboard button. */
+    /**
+     * Setup clipboard button.
+     */
     if (this.clipboard) {
       // eslint-disable-next-line no-new
       new Clipboard(this.clipboardButton);
@@ -10557,7 +10709,9 @@ const SpxCode$1 = class extends HTMLElement {
     this.componentDidLoad();
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       position: 'relative',
       display: setVar(tag$k, 'display', this.display),
@@ -10601,7 +10755,9 @@ const SpxCode$1 = class extends HTMLElement {
         },
       },
     });
-    /** Clipboard styles. */
+    /**
+     * Clipboard styles.
+     */
     const styleClipboard = css$1({
       position: 'absolute',
       border: 'none',
@@ -14894,7 +15050,7 @@ const wrap = (el, wrapper) => {
 };
 
 /**
- *  Insert element before another one.
+ * Insert element before another one.
  */
 function insertBefore(newNode, existingNode) {
   existingNode.parentNode.insertBefore(newNode, existingNode);
@@ -14938,7 +15094,9 @@ const SpxDocs$1 = class extends HTMLElement {
      */
     this.styling = 'fluid';
   }
-  /** Listen to window resize. */
+  /**
+   * Listen to window resize.
+   */
   onResize() {
     this.mobile = window.innerWidth < this.bpMobile;
   }
@@ -14955,10 +15113,14 @@ const SpxDocs$1 = class extends HTMLElement {
     }
     this.spxDocsDidLoad.emit({ target: 'document' });
   }
-  /** Generates the navigation. */
+  /**
+   * Generates the navigation.
+   */
   createNavigation() {
     if (this.content.innerHTML !== '') {
-      /** Create links from IDs. */
+      /**
+       * Create links from IDs.
+       */
       this.content
         .querySelectorAll(this.navigationHeadingTag + ':not([data-spx-docs-no-navigation])')
         .forEach((item, index) => {
@@ -14977,7 +15139,9 @@ const SpxDocs$1 = class extends HTMLElement {
         this.navigation.appendChild(a);
         wrap(a, document.createElement('li'));
       });
-      /** Create headings and separators. */
+      /**
+       * Create headings and separators.
+       */
       this.content
         .querySelectorAll(this.navigationHeadingTag +
         '[data-spx-docs-heading]:not([data-spx-docs-no-navigation])')
@@ -15000,7 +15164,9 @@ const SpxDocs$1 = class extends HTMLElement {
     }
   }
   render() {
-    /** Host. */
+    /**
+     * Host.
+     */
     const styleHost = css$1({
       display: this.mobile ? 'block' : 'grid',
       gridTemplateColumns: !this.mobile && 'minmax(0, auto) minmax(0, 1fr)',
@@ -15011,7 +15177,9 @@ const SpxDocs$1 = class extends HTMLElement {
       display: this.mobile ? 'none' : 'block',
       background: setVar(tag$j, 'navigation-background', this.navigationBackground),
     });
-    /** Navigation. */
+    /**
+     * Navigation.
+     */
     const styleNavigation = {
       position: 'sticky',
       top: setVar(tag$j, 'navigation-top', this.navigationTop),
@@ -15085,30 +15253,42 @@ const SpxEdit$1 = class extends HTMLElement {
       this.el.removeAttribute('contenteditable');
     }
   }
-  /** Prevent enter key. */
+  /**
+   * Prevent enter key.
+   */
   onClickEnter(e) {
     if (e.key === 'Enter') {
       e.preventDefault();
     }
   }
-  /** Discard changes. */
+  /**
+   * Discard changes.
+   */
   onClickDiscard() {
     this.el.parentElement.innerHTML = this.originalText;
     this.editable = false;
   }
-  /** Save changes. */
+  /**
+   * Save changes.
+   */
   onClickSave() {
     this.editable = false;
   }
-  /** Sets the new body string correctly on key press. */
+  /**
+   * Sets the new body string correctly on key press.
+   */
   onClickKeyup() {
     this.typeText(this.el.innerText);
   }
   componentDidLoad() {
     this.watchEditable();
-    /** Set inner text as state. */
+    /**
+     * Set inner text as state.
+     */
     this.originalText = this.el.innerText;
-    /** Set original body string. */
+    /**
+     * Set original body string.
+     */
     this.typeText(this.originalText);
   }
   typeText(src) {
@@ -15124,7 +15304,9 @@ const SpxEdit$1 = class extends HTMLElement {
       (this.subfield ? 'parent' + this.type : this.type));
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: setVar(tag$i, 'display', this.display),
       position: 'relative',
@@ -15205,7 +15387,6 @@ const SpxEditButton$1 = class extends HTMLElement {
     this.position = 'bottom-right';
     /**
      * CSS property position of button.
-     * @editor 'absolute'
      */
     this.positionCss = 'fixed';
     /**
@@ -15213,18 +15394,28 @@ const SpxEditButton$1 = class extends HTMLElement {
      * @choice 'default', 'fluid', 'headless'
      */
     this.styling = 'default';
-    /** Discard button text. */
+    /**
+     * Discard button text.
+     */
     this.textDiscard = 'Discard';
-    /** Edit button text. */
+    /**
+     * Edit button text.
+     */
     this.textEdit = 'Edit site';
-    /** Save button text. */
+    /**
+     * Save button text.
+     */
     this.textSave = 'Save';
-    /** Success message. */
+    /**
+     * Success message.
+     */
     this.textSuccess = 'Save was successful';
     this.zIndex = 99;
     this.clickEdit = () => {
       this.open = true;
-      /** Generate edit components around text. */
+      /**
+       * Generate edit components around text.
+       */
       const elements = this.editId
         ? document.querySelectorAll('[data-spx-edit][data-spx-edit-id=' + this.editId + ']')
         : document.querySelectorAll('[data-spx-edit]');
@@ -15250,16 +15441,24 @@ const SpxEditButton$1 = class extends HTMLElement {
       });
     };
     this.clickDiscard = () => {
-      /** Close buttons again. */
+      /**
+       * Close buttons again.
+       */
       this.open = false;
-      /** Emit closing event to document. */
+      /**
+       * Emit closing event to document.
+       */
       this.spxEditButtonDiscard.emit({ target: 'document' });
     };
     this.clickSave = () => {
       this.loading = true;
-      /** Emit save event to document. */
+      /**
+       * Emit save event to document.
+       */
       const getBodyString = () => {
-        /** Create the body string to be sent off to the AJAX call. */
+        /**
+         * Create the body string to be sent off to the AJAX call.
+         */
         const string = Math.random().toString(36).substr(2, 9);
         const bodyStringArray = [];
         const elements = document.querySelectorAll('spx-edit');
@@ -15275,18 +15474,26 @@ const SpxEditButton$1 = class extends HTMLElement {
         return bodyStringArray.toString().replace(/,&/g, '&');
       };
       const afterSuccess = () => {
-        /** Insert snackbar. */
+        /**
+         * Insert snackbar.
+         */
         const snackbar = document.createElement('spx-snackbar');
         snackbar.setAttribute('text', this.textSuccess);
         document.body.appendChild(snackbar);
-        /** Remove edit components. */
+        /**
+         * Remove edit components.
+         */
         const elements = document.querySelectorAll('spx-edit');
         elements.forEach((item) => {
           item.parentElement.innerHTML = item.innerHTML;
         });
-        /** Save changes event. */
+        /**
+         * Save changes event.
+         */
         this.spxEditButtonSave.emit({ target: 'document' });
-        /** Remove loader and close on success. */
+        /**
+         * Remove loader and close on success.
+         */
         this.open = false;
         this.loading = false;
       };
@@ -15312,7 +15519,9 @@ const SpxEditButton$1 = class extends HTMLElement {
             afterSuccess();
           }
           else if (response.status === 500) {
-            /** Remove loader on fail. */
+            /**
+             * Remove loader on fail.
+             */
             this.loading = false;
           }
         });
@@ -15335,26 +15544,36 @@ const SpxEditButton$1 = class extends HTMLElement {
   createPositionArray() {
     this.positionArray = this.position.split('-');
   }
-  /** Discard changes. */
+  /**
+   * Discard changes.
+   */
   async discard() {
     this.clickDiscard();
   }
-  /** Enable editing. */
+  /**
+   * Enable editing.
+   */
   async edit() {
     this.clickEdit();
   }
   async reload() {
     this.componentWillLoad();
   }
-  /** Save changes. */
+  /**
+   * Save changes.
+   */
   async save() {
     this.clickSave();
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = (this.styling === 'default' || this.styling === 'fluid') &&
       css$1(Object.assign(Object.assign({}, position('edit-button', this.positionArray, this.distanceX, this.distanceY)), { fontFamily: fontFamily, fontSize: setVarOrClamp(tag$h, 'font-size', this.fontSize, this.fontSizeMin, this.fontSizeMax, this.styling), display: 'grid', gridGap: setVar(tag$h, 'gap', this.gap), position: this.positionCss, zIndex: this.zIndex }));
-    /** Button styles. */
+    /**
+     * Button styles.
+     */
     const styleButton = this.styling === 'default' || this.styling === 'fluid'
       ? css$1({
         fontFamily: setVar(tag$h, 'font-family', this.fontFamily),
@@ -15380,26 +15599,36 @@ const SpxEditButton$1 = class extends HTMLElement {
         borderRadius: setVar(tag$h, 'border-radius', this.borderRadius),
       })
       : this.classButton;
-    /** Discard button styles. */
+    /**
+     * Discard button styles.
+     */
     const styleButtonDiscard = this.styling === 'default' || this.styling === 'fluid'
       ? css$1({
         color: setVar(tag$h, 'color-discard', this.colorDiscard),
         background: setVar(tag$h, 'background-discard', this.backgroundDiscard),
       })
       : this.classButtonDiscard;
-    /** Loader styles. */
+    /**
+     * Loader styles.
+     */
     const styleLoader = this.styling === 'default' || this.styling === 'fluid'
       ? css$1({
         paddingRight: '0.25em',
       })
       : this.classLoader;
     return (h$1(Host, { class: styleHost }, !this.open ? (
-    /** Edit button. */
+    /**
+     * Edit button.
+     */
     h$1("button", { onClick: this.clickEdit, class: styleButton }, this.textEdit || h$1("slot", { name: "edit" }))) : (
-    /** Discard button. */
+    /**
+     * Discard button.
+     */
     [
       h$1("button", { onClick: this.clickDiscard, class: css$1([styleButton, styleButtonDiscard]) }, this.textDiscard || h$1("slot", { name: "discard" })),
-      /** Save button. */
+      /**
+       * Save button.
+       */
       h$1("button", { onClick: this.clickSave, class: styleButton }, this.loading && h$1("spx-loader", { class: styleLoader }), this.textSave || h$1("slot", { name: "save" })),
     ])));
   }
@@ -15420,7 +15649,9 @@ const SpxGroup$1 = class extends HTMLElement {
   componentDidLoad() {
     globalComponentDidLoad(this.el);
     this.forwardAttributes();
-    /** Set up mutation observer. */
+    /**
+     * Set up mutation observer.
+     */
     const observer = new MutationObserver((mutations) => {
       mutations.forEach(() => {
         this.forwardAttributes();
@@ -15432,7 +15663,9 @@ const SpxGroup$1 = class extends HTMLElement {
     this.spxGroupDidLoad.emit({ target: 'document' });
   }
   forwardAttributes() {
-    /** Function to filter elements. */
+    /**
+     * Function to filter elements.
+     */
     const getAllTagMatches = (regEx) => {
       return Array.prototype.slice
         .call(this.el.querySelectorAll('*'))
@@ -15440,11 +15673,15 @@ const SpxGroup$1 = class extends HTMLElement {
         return el.tagName.match(regEx);
       });
     };
-    /** Get all tag matches. */
+    /**
+     * Get all tag matches.
+     */
     const elements = this.target
       ? getAllTagMatches(new RegExp(this.target, 'i'))
       : getAllTagMatches(/^spx/i);
-    /** Loop matches. */
+    /**
+     * Loop matches.
+     */
     for (let att, i = 0, atts = this.el.attributes, n = atts.length; i < n; i++) {
       att = atts[i];
       if (startsWith(att.nodeName, 'g-')) {
@@ -15458,7 +15695,9 @@ const SpxGroup$1 = class extends HTMLElement {
     this.componentDidLoad();
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: setVar(tag$g, 'display', this.display),
     });
@@ -15479,7 +15718,9 @@ const SpxIcon$1 = class extends HTMLElement {
      * @choice 'ionicons', 'caret'
      */
     this.type = 'ionicons';
-    /** Icon size. */
+    /**
+     * Icon size.
+     */
     this.size = '1em';
     this.sizeMin = 0.8;
     this.sizeMax = 1;
@@ -15494,18 +15735,24 @@ const SpxIcon$1 = class extends HTMLElement {
     this.spxIconDidLoad.emit({ target: 'document' });
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: 'inline-flex',
       alignItems: 'center',
       justifyContent: 'center',
     });
-    /** Ionicon styles. */
+    /**
+     * Ionicon styles.
+     */
     const styleIonicon = css$1({
       color: setVar(tag$f, 'color', this.color),
       fontSize: setVarOrClamp(tag$f, 'size', this.size, this.sizeMin, this.sizeMax, this.styling),
     });
-    /** Caret styles. */
+    /**
+     * Caret styles.
+     */
     const styleIcon = css$1({
       fontSize: '0.7em',
     });
@@ -15529,9 +15776,13 @@ const SpxIframe$1 = class extends HTMLElement {
     this.documentBorderRadius = 'none';
     this.documentHeight = 'auto';
     this.documentWidth = '100%';
-    /** Screen size of the site shown inside the iframe. */
+    /**
+     * Screen size of the site shown inside the iframe.
+     */
     this.size = '1440px';
-    /** Source for the iframe. */
+    /**
+     * Source for the iframe.
+     */
     this.src = 'https://spx.dev';
     /**
      * Screen size of the site shown inside the iframe.
@@ -15549,7 +15800,9 @@ const SpxIframe$1 = class extends HTMLElement {
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
-    /** Setup lazy loading. */
+    /**
+     * Setup lazy loading.
+     */
     if (this.lazy) {
       // @ts-ignore
       // eslint-disable-next-line no-unused-vars
@@ -15570,10 +15823,14 @@ const SpxIframe$1 = class extends HTMLElement {
       }, this.el.querySelectorAll('[data-src]'));
     }
     if (this.type === 'resize') {
-      /** Assign states. */
+      /**
+       * Assign states.
+       */
       this.iframe = this.el.querySelector('iframe');
       this.parent = this.el;
-      /** Wait for Iframe to load before showing content. */
+      /**
+       * Wait for Iframe to load before showing content.
+       */
       this.el.querySelector('iframe').onload = () => {
         this.loaded = true;
         if (!this.lazy) {
@@ -15598,7 +15855,9 @@ const SpxIframe$1 = class extends HTMLElement {
       this.createIframeContent();
     }
   }
-  /** Fit function. */
+  /**
+   * Fit function.
+   */
   setHeight() {
     const set = () => {
       if (this.el.querySelector('iframe').contentWindow.document.body ===
@@ -15614,7 +15873,9 @@ const SpxIframe$1 = class extends HTMLElement {
     };
     set();
   }
-  /** Set up mutation observer. */
+  /**
+   * Set up mutation observer.
+   */
   setUpMutationObserver() {
     mutationObserver(this.el.querySelector('iframe').contentWindow.document.body, {
       attributes: true,
@@ -15625,7 +15886,9 @@ const SpxIframe$1 = class extends HTMLElement {
       setTimeout(() => this.setHeight(), 500);
     });
   }
-  /** Type: resize - function to keep src element in proportion. */
+  /**
+   * Type: resize - function to keep src element in proportion.
+   */
   handleResize() {
     if (this.parent && this.iframe) {
       const ratio = this.parent.offsetWidth / this.iframe.offsetWidth;
@@ -15634,7 +15897,9 @@ const SpxIframe$1 = class extends HTMLElement {
       this.iframe.style.height = this.parentHeight / ratio + 'px';
     }
   }
-  /** Type: document - add all slot elements to iframe. */
+  /**
+   * Type: document - add all slot elements to iframe.
+   */
   createIframeContent() {
     const doc = this.iframe.contentDocument;
     this.content.querySelectorAll('*').forEach((item) => {
@@ -15646,7 +15911,9 @@ const SpxIframe$1 = class extends HTMLElement {
     this.componentDidLoad();
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: setVar(tag$e, 'display', this.display),
       height: this.type === 'resize' ? '100%' : 'auto',
@@ -15656,7 +15923,9 @@ const SpxIframe$1 = class extends HTMLElement {
         width: this.type === 'default' && '100%',
       },
     });
-    /** Iframe resize styles. */
+    /**
+     * Iframe resize styles.
+     */
     const styleIframeResize = css$1({
       border: 'none',
       width: this.size,
@@ -15664,18 +15933,24 @@ const SpxIframe$1 = class extends HTMLElement {
       transformOrigin: 'left top',
       position: 'absolute',
     });
-    /** Iframe document styles. */
+    /**
+     * Iframe document styles.
+     */
     const styleIframeDocument = css$1({
       border: setVar(tag$e, 'document-border', this.documentBorder),
       borderRadius: setVar(tag$e, 'document-border-radius', this.documentBorderRadius),
       width: setVar(tag$e, 'document-width', this.documentWidth),
       height: setVar(tag$e, 'document-height', this.documentHeight),
     });
-    /** Iframe styles. */
+    /**
+     * Iframe styles.
+     */
     const styleIframe = this.type === 'resize'
       ? styleIframeResize
       : this.type === 'document' && styleIframeDocument;
-    /** Loader styles. */
+    /**
+     * Loader styles.
+     */
     const styleLoader = css$1({
       padding: '0.8em',
       borderRadius: borderRadius,
@@ -15699,11 +15974,17 @@ const SpxImageComparison$1 = class extends HTMLElement {
     this.color = '#ffffff';
     this.height = '100%';
     this.iconColor = 'var(--spx-color-gray-900)';
-    /** Image URL of the before image. */
+    /**
+     * Image URL of the before image.
+     */
     this.srcAfter = 'https://source.unsplash.com/random/1200x300';
-    /** Image URL of the after image. */
+    /**
+     * Image URL of the after image.
+     */
     this.srcBefore = 'https://source.unsplash.com/random/1201x300';
-    /** Opening state in pixels. */
+    /**
+     * Opening state in pixels.
+     */
     this.start = 150;
   }
   onResize() {
@@ -15712,40 +15993,60 @@ const SpxImageComparison$1 = class extends HTMLElement {
     }
   }
   startChanged(x) {
-    /** Show image in start. */
+    /**
+     * Show image in start.
+     */
     const transform = Math.max(0, Math.min(x, this.container.offsetWidth));
     this.imageAfter.style.width = transform + 2 + 'px';
     this.scroller.style.left = transform - 25 + 'px';
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
-    /** Set starting width */
+    /**
+     * Set starting width.
+     */
     this.width = this.el.offsetWidth;
-    /** Disable for Oxygen */
+    /**
+     * Disable for Oxygen.
+     */
     if (document.body.classList.contains('oxygen-builder-body')) {
       this.scroller.style.pointerEvents = 'none';
     }
-    /** Use boolean to know when it is being used */
+    /**
+     * Use boolean to know when it is being used.
+     */
     this.active = false;
-    /** Watch for clicks on scroller */
+    /**
+     * Watch for clicks on scroller.
+     */
     this.scroller.addEventListener('mousedown', () => {
       this.active = true;
     });
-    /** Add scrolling class to the scroller so it has full opacity while active */
+    /**
+     * Add scrolling class to the scroller so it has full opacity while active.
+     */
     document.body.addEventListener('mouseup', () => {
       this.active = false;
     });
-    /** Watch body for changes to the state */
+    /**
+     * Watch body for changes to the state.
+     */
     document.body.addEventListener('mouseleave', () => {
       this.active = false;
     });
-    /** Figure out where the mouse is */
+    /**
+     * Figure out where the mouse is.
+     */
     document.body.addEventListener('mousemove', (e) => {
       this.mover(e);
     });
-    /** Set starting width */
+    /**
+     * Set starting width.
+     */
     this.startChanged(this.start);
-    /** Repeat for touch events */
+    /**
+     * Repeat for touch events.
+     */
     this.scroller.addEventListener('touchstart', () => {
       this.active = true;
     });
@@ -15760,7 +16061,9 @@ const SpxImageComparison$1 = class extends HTMLElement {
     });
     this.spxImageComparisonDidLoad.emit({ target: 'document' });
   }
-  /** Thumb mover function. */
+  /**
+   * Thumb mover function.
+   */
   mover(e) {
     if (!this.active)
       return;
@@ -15772,7 +16075,9 @@ const SpxImageComparison$1 = class extends HTMLElement {
     this.componentDidLoad();
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: 'block',
       position: 'relative',
@@ -15780,7 +16085,9 @@ const SpxImageComparison$1 = class extends HTMLElement {
       width: '100%',
       overflow: 'hidden',
     });
-    /** Container styles. */
+    /**
+     * Container styles.
+     */
     const styleContainer = css$1({
       width: '100%',
       height: setVar(tag$d, 'height', this.height),
@@ -15795,16 +16102,22 @@ const SpxImageComparison$1 = class extends HTMLElement {
       overflow: 'hidden',
       userSelect: 'none',
     });
-    /** Image styles. */
+    /**
+     * Image styles.
+     */
     const styleImage = css$1({
       height: '100%',
       maxWidth: 'none !important',
     });
-    /** Image after styles. */
+    /**
+     * Image after styles.
+     */
     const styleImageAfter = css$1({
       width: '125px',
     });
-    /** Scroller styles. */
+    /**
+     * Scroller styles.
+     */
     const styleScroller = css$1({
       width: '50px',
       height: '50px',
@@ -15841,7 +16154,9 @@ const SpxImageComparison$1 = class extends HTMLElement {
         bottom: '100%',
       },
     });
-    /** Thumb styles. */
+    /**
+     * Thumb styles.
+     */
     const styleThumb = css$1({
       height: '100%',
       width: '100%',
@@ -15855,9 +16170,13 @@ const SpxImageComparison$1 = class extends HTMLElement {
     return (h$1(Host, { class: styleHost }, this.srcBefore &&
       this.srcAfter /** Before. */ && [
       h$1("div", { ref: (el) => (this.container = el), class: styleContainer }, h$1("img", { loading: this.loading, class: styleImage, src: this.srcBefore, alt: "before" })),
-      /** After. */
+      /**
+       * After.
+       */
       h$1("div", { ref: (el) => (this.imageAfter = el), class: css$1([styleContainer, styleImageAfter]) }, h$1("img", { loading: this.loading, class: styleImage, src: this.srcAfter, alt: "after" })),
-      /** Scroller. */
+      /**
+       * Scroller.
+       */
       h$1("div", { ref: (el) => (this.scroller = el), class: styleScroller }, h$1("div", { class: styleThumb }, h$1("spx-icon", { icon: "resize", size: "32px", color: this.iconColor }))),
     ]));
   }
@@ -16074,9 +16393,13 @@ const SpxLightbox$1 = class extends HTMLElement {
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
-    /** Generate random string as gallery ID. */
+    /**
+     * Generate random string as gallery ID.
+     */
     const random = '_' + Math.random().toString(36).substr(2, 9);
-    /** Wrap elements in <a> element. */
+    /**
+     * Wrap elements in <a> element.
+     */
     const elements = this.el.querySelectorAll('img, video, iframe');
     elements.forEach((item) => {
       const src = item.getAttribute('src');
@@ -16087,7 +16410,9 @@ const SpxLightbox$1 = class extends HTMLElement {
       item.parentElement.classList.add('spx-lightbox__item');
       item.parentElement.setAttribute('data-gallery', random);
     });
-    /** Create lightbox. */
+    /**
+     * Create lightbox.
+     */
     // eslint-disable-next-line no-new
     new glightbox_min({
       selector: '.spx-lightbox__item',
@@ -16149,7 +16474,9 @@ const SpxLightbox$1 = class extends HTMLElement {
     this.componentDidLoad();
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: setVar(tag$c, 'display', this.display),
       img: {
@@ -16176,7 +16503,9 @@ const SpxLoader$1 = class extends HTMLElement {
     this.spxLoaderDidLoad.emit({ target: 'document' });
   }
   render() {
-    /** Animation. */
+    /**
+     * Animation.
+     */
     const kf = keyframes({
       from: {
         transform: 'rotate(0deg)',
@@ -16185,7 +16514,9 @@ const SpxLoader$1 = class extends HTMLElement {
         transform: 'rotate(360deg)',
       },
     });
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: 'block',
       width: 'max-content',
@@ -16211,12 +16542,16 @@ var macy = createCommonjsModule(function (module, exports) {
 
 // eslint-disable-next-line no-unused-vars
 /**
- *  Render elements from images prop.
+ * Render elements from images prop.
  */
 const getGallery = (images, imagesSrc, imagesArray, imageSize) => {
   return images && !imagesSrc ? (
-  /** Iterate through ACF array if prop was set. */
-  imagesArray.map((el) => (h$1("img", { src: imageSize ? el['sizes'][imageSize] : el['url'] })))) : /** Iterate through MB array if prop was set. */
+  /**
+   * Iterate through ACF array if prop was set.
+   */
+  imagesArray.map((el) => (h$1("img", { src: imageSize ? el['sizes'][imageSize] : el['url'] })))) : /**
+   * Iterate through MB array if prop was set.
+   */
     images && imagesSrc === 'mb' ? (Object.values(imagesArray).map((el) => (h$1("img", { src: imageSize ? el['sizes'][imageSize].url : el['full_url'] })))) : (h$1("slot", null));
 };
 
@@ -16225,7 +16560,9 @@ const SpxMasonry$1 = class extends HTMLElement {
     super();
     this.__registerHost();
     this.spxMasonryDidLoad = createEvent(this, "spxMasonryDidLoad", 7);
-    /** Number of columns. */
+    /**
+     * Number of columns.
+     */
     this.columns = 4;
     /**
      * Gap between images.
@@ -16233,47 +16570,67 @@ const SpxMasonry$1 = class extends HTMLElement {
      */
     this.gap = '10px';
   }
-  /** Watch images prop and parse to iteratable array. */
+  /**
+   * Watch images prop and parse to iteratable array.
+   */
   imagesChanged(newValue) {
     if (newValue)
       this.imagesArray = JSON.parse(newValue);
   }
-  /** Watch columns and restart Macy. */
+  /**
+   * Watch columns and restart Macy.
+   */
   columnsChanged() {
     this.macyState.remove();
     this.initMacy();
   }
   componentWillLoad() {
-    /** If image prop is set. */
+    /**
+     * If image prop is set.
+     */
     if (this.images) {
       this.imagesChanged(this.images);
     }
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
-    /** Create object for breakpoint attribute. */
+    /**
+     * Create object for breakpoint attribute.
+     */
     if (this.bpColumns) {
       this.bpColumnsObject = JSON.parse('{' + this.bpColumns.replace(/([0-9]+)/g, '"$1"') + '}');
     }
-    /** Init Macy. */
+    /**
+     * Init Macy.
+     */
     this.initMacy();
-    /** Wrap all children in div. */
+    /**
+     * Wrap all children in div.
+     */
     Array.from(this.container.children).forEach((item) => {
       wrap(item, document.createElement('div'));
     });
-    /** Emit event to document when Masonry finished loading. */
+    /**
+     * Emit event to document when Masonry finished loading.
+     */
     this.spxMasonryDidLoad.emit({ target: 'document' });
   }
-  /** After update lifecycle. */
+  /**
+   * After update lifecycle.
+   */
   componentDidUpdate() {
     this.reload();
     this.recalc();
   }
-  /** Remove Macy on disconnect. */
+  /**
+   * Remove Macy on disconnect.
+   */
   disconnectedCallback() {
     this.macyState.remove();
   }
-  /** Init Macy. */
+  /**
+   * Init Macy.
+   */
   initMacy() {
     this.macyState = macy({
       container: this.container,
@@ -16296,10 +16653,14 @@ const SpxMasonry$1 = class extends HTMLElement {
     this.macyState.reInit();
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: 'block',
-      /** Convert gap to correct padding for elements. */
+      /**
+       * Convert gap to correct padding for elements.
+       */
       'div > div': {
         padding: 'var(--spx-masonry-gap, ' +
           this.gap +
@@ -16318,9 +16679,13 @@ const SpxMasonry$1 = class extends HTMLElement {
         },
       },
     });
-    /** Container styles. */
+    /**
+     * Container styles.
+     */
     const styleContainer = css$1({
-      /** Adjust container margin to make up for element paddings. */
+      /**
+       * Adjust container margin to make up for element paddings.
+       */
       margin: 'calc(var(--spx-masonry-gap, ' +
         this.gap +
         ') * -1) calc(var(--spx-masonry-gap, ' +
@@ -16378,7 +16743,9 @@ const SpxMockup$1 = class extends HTMLElement {
     this.colorMacbookPro = 'silver';
     this.display = 'inline-block';
     this.imagePosition = '50% 50%';
-    /** Image src if no inner slot is used. */
+    /**
+     * Image src if no inner slot is used.
+     */
     this.src = 'https://picsum.photos/400/1200';
     /**
      * Device type.
@@ -16391,17 +16758,23 @@ const SpxMockup$1 = class extends HTMLElement {
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
-    /** Assign states. */
+    /**
+     * Assign states.
+     */
     this.mockup = this.el.querySelector('.spx-mockup');
     this.parent = this.el.querySelector('.spx-mockup-wrap');
-    /** Resize mockup. */
+    /**
+     * Resize mockup.
+     */
     this.handleResize();
     this.spxMockupDidLoad.emit({ target: 'document' });
   }
   componentDidUpdate() {
     this.handleResize();
   }
-  /** Resize function to keep src element in proportion. */
+  /**
+   * Resize function to keep src element in proportion.
+   */
   handleResize() {
     const ratio = this.parent.offsetWidth / this.mockup.offsetWidth;
     this.mockup.style.transform = 'scale(calc((' + ratio + '))';
@@ -16412,7 +16785,9 @@ const SpxMockup$1 = class extends HTMLElement {
     this.componentDidLoad();
   }
   render() {
-    /** Set the correct color. */
+    /**
+     * Set the correct color.
+     */
     const color = this.type === 'galaxy-s8'
       ? this.colorGalaxyS8
       : this.type === 'google-pixel'
@@ -16426,13 +16801,17 @@ const SpxMockup$1 = class extends HTMLElement {
               : this.type === 'macbook-pro'
                 ? this.colorMacbookPro
                 : null;
-    /** Hist styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       position: 'relative',
       display: setVar(tag$a, 'display', this.display),
       maxWidth: '100%',
     });
-    /** Image styles. */
+    /**
+     * Image styles.
+     */
     const styleImg = css$1({
       width: '100%',
       height: '100%',
@@ -18156,7 +18535,7 @@ var createPopper = /*#__PURE__*/popperGenerator({
 }); // eslint-disable-next-line import/no-unused-modules
 
 /**
- *  Create custom Emotion instance.
+ * Create custom Emotion instance.
  */
 const emotion = (el) => createEmotion({
   key: 'spx',
@@ -18191,9 +18570,13 @@ const SpxNavigation$1 = class extends HTMLElement {
      * @CSS
      */
     this.childGap = '0.5em';
-    /** Indicator icon.. */
+    /**
+     * Indicator icon.
+     */
     this.childIcon = 'arrow-down';
-    /** Indicator icon type. */
+    /**
+     * Indicator icon type.
+     */
     this.childIconType = 'ionicons';
     /**
      * Gap between child menu indicator and text.
@@ -18214,9 +18597,13 @@ const SpxNavigation$1 = class extends HTMLElement {
     this.fontSize = 'clamp(18px, 1.6vw, 20px)';
     this.itemTransitionDuration = transitionDuration;
     this.itemTransitionTimingFunction = transitionTimingFunction;
-    /** Mobile breakpoint. */
+    /**
+     * Mobile breakpoint.
+     */
     this.mobile = bpMobileWidth;
-    /** Mobile button icon type. */
+    /**
+     * Mobile button icon type.
+     */
     this.mobileIconType = 'ionicons';
     this.mobileItemBackground = '#ffffff';
     this.mobileItemBackgroundHover = 'var(--spx-color-gray-100)';
@@ -18241,12 +18628,16 @@ const SpxNavigation$1 = class extends HTMLElement {
     this.parentItemGap = '0.4em';
     this.parentItemPadding = '0.6em';
   }
-  /** Watch menu prop and parse to iteratable array. */
+  /**
+   * Watch menu prop and parse to iteratable array.
+   */
   navigationChanged(newValue) {
     if (newValue)
       this.menuArray = JSON.parse(newValue);
   }
-  /** Init popper on mouse/touch enter. */
+  /**
+   * Init popper on mouse/touch enter.
+   */
   onClick() {
     if (this.mobileBp) {
       this.initPopperMobile();
@@ -18256,27 +18647,39 @@ const SpxNavigation$1 = class extends HTMLElement {
       this.initPopperDesktop();
     }
   }
-  /** Listen to window resize. */
+  /**
+   * Listen to window resize.
+   */
   onResize() {
     this.mobileBp = window.innerWidth < this.mobile;
   }
   componentWillLoad() {
-    /** Check if is mobile view. */
+    /**
+     * Check if is mobile view.
+     */
     this.onResize();
-    /** If menu prop is set. */
+    /**
+     * If menu prop is set.
+     */
     this.navigationChanged(this.menu);
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
-    /** Sort menu items. */
+    /**
+     * Sort menu items.
+     */
     this.sortMenuItem();
-    /** Emit event after render. */
+    /**
+     * Emit event after render.
+     */
     this.spxNavigationDidLoad.emit({ target: 'document' });
   }
   componentDidUpdate() {
     this.sortMenuItem();
   }
-  /** Render menu function. */
+  /**
+   * Render menu function.
+   */
   renderMenu(obj, type, mobile) {
     function checkMobile() {
       if (mobile) {
@@ -18310,7 +18713,9 @@ const SpxNavigation$1 = class extends HTMLElement {
         this.renderMenu(object['spxChildren'], 'child', true)));
     }))));
   }
-  /** Sort menu items depending on menu order. */
+  /**
+   * Sort menu items depending on menu order.
+   */
   sortMenuItem() {
     const dataItems = this.el.shadowRoot.querySelectorAll('li');
     const dataArray = [];
@@ -18324,10 +18729,14 @@ const SpxNavigation$1 = class extends HTMLElement {
       e.closest('ul').appendChild(e);
     });
   }
-  /** Init Popper positioning for desktop. */
+  /**
+   * Init Popper positioning for desktop.
+   */
   initPopperDesktop() {
     if (!this.vertical) {
-      /** Init popper for parent menu. */
+      /**
+       * Init popper for parent menu.
+       */
       const parentMenu = this.el.shadowRoot.querySelectorAll('nav > .spx-navigation--parent .spx-navigation__item--parent.spx-navigation__item--has-child');
       if (parentMenu) {
         parentMenu.forEach((item) => {
@@ -18337,7 +18746,9 @@ const SpxNavigation$1 = class extends HTMLElement {
           });
         });
       }
-      /** Init popper for child menu. */
+      /**
+       * Init popper for child menu.
+       */
       const childMenus = this.el.shadowRoot.querySelectorAll('nav > .spx-navigation--parent .spx-navigation--child .spx-navigation__item--child.spx-navigation__item--has-child');
       if (childMenus) {
         childMenus.forEach((item) => {
@@ -18351,7 +18762,9 @@ const SpxNavigation$1 = class extends HTMLElement {
                   fallbackPlacements: ['left-start'],
                 },
               },
-              /** Calculate offset depending on parent padding/margin. */
+              /**
+               * Calculate offset depending on parent padding/margin.
+               */
               {
                 name: 'offset',
                 options: {
@@ -18375,7 +18788,9 @@ const SpxNavigation$1 = class extends HTMLElement {
                   },
                 },
               },
-              /** Make fixed position work properly. */
+              /**
+               * Make fixed position work properly.
+               */
               {
                 name: 'preventOverflow',
                 options: {
@@ -18389,7 +18804,9 @@ const SpxNavigation$1 = class extends HTMLElement {
       }
     }
   }
-  /** Init Popper positioning for mobile. */
+  /**
+   * Init Popper positioning for mobile.
+   */
   initPopperMobile() {
     const mobileMenu = this.el.shadowRoot.querySelector('.spx-navigation__mobile-button');
     if (mobileMenu) {
@@ -18404,13 +18821,17 @@ const SpxNavigation$1 = class extends HTMLElement {
   }
   render() {
     const { css } = emotion(this.el.shadowRoot);
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: 'block',
       fontFamily: fontFamily,
       zIndex: 999999,
     });
-    /** Shadow Host styles. */
+    /**
+     * Shadow Host styles.
+     */
     const styleShadowHost = css({
       fontSize: setVar(tag$9, 'font-size', this.fontSize),
       'nav > .spx-navigation--parent': {
@@ -18574,9 +18995,15 @@ const SpxNavigation$1 = class extends HTMLElement {
         },
       },
     });
-    return (h$1(Host, { class: styleHost }, h$1("nav", { class: styleShadowHost }, this.menu /** Render desktop menu. */ && [
+    return (h$1(Host, { class: styleHost }, h$1("nav", { class: styleShadowHost }, 
+    /**
+     * Render desktop menu.
+     */
+    this.menu && [
       this.renderMenu(this.menuArray, 'parent', false),
-      /** Render mobile menu. */
+      /**
+       * Render mobile menu.
+       */
       h$1("div", { tabindex: "0", role: "button", class: "spx-navigation__mobile-button" }, this.mobileIcon && (h$1("spx-icon", { type: this.mobileIconType, icon: this.mobileIcon })), h$1("span", null, "Menu"), this.renderMenu(this.menuArray, 'parent', true)),
     ])));
   }
@@ -18594,21 +19021,35 @@ const SpxNotation$1 = class extends HTMLElement {
     super();
     this.__registerHost();
     this.spxNotationDidLoad = createEvent(this, "spxNotationDidLoad", 7);
-    /** Turn animation on or off when animation. */
+    /**
+     * Turn animation on or off when animation.
+     */
     this.animation = true;
-    /** Animation duration. */
+    /**
+     * Animation duration.
+     */
     this.animationDuration = 800;
-    /** Autoplay. */
+    /**
+     * Autoplay.
+     */
     this.autoplay = true;
-    /** Brackets. */
+    /**
+     * Brackets.
+     */
     this.brackets = 'left, right';
     this.color = 'var(--spx-color-gray-100)';
     this.display = 'inline-block';
-    /** Number of iterations. */
+    /**
+     * Number of iterations.
+     */
     this.iterations = 1;
-    /** Annotate multiline text. */
+    /**
+     * Annotate multiline text.
+     */
     this.multiline = true;
-    /** Stroke width. */
+    /**
+     * Stroke width.
+     */
     this.strokeWidth = 1;
     /**
      * Type of notation.
@@ -18628,7 +19069,9 @@ const SpxNotation$1 = class extends HTMLElement {
   }
   annotate() {
     const groupArray = [];
-    /** Get options. */
+    /**
+     * Get options.
+     */
     const options = {
       animate: this.animation,
       animationDuration: this.animationDuration,
@@ -18652,7 +19095,9 @@ const SpxNotation$1 = class extends HTMLElement {
       padding: this.padding,
       brackets: this.brackets,
     };
-    /** Check if group is active. */
+    /**
+     * Check if group is active.
+     */
     if (!this.group) {
       this.annotation = _(this.el.querySelector(':scope > span > span'), 
       // @ts-ignore
@@ -18672,7 +19117,9 @@ const SpxNotation$1 = class extends HTMLElement {
         groupArray.push(_(item, Object.assign(Object.assign({}, options), obj)));
       });
     }
-    /** Fire off animation. */
+    /**
+     * Fire off animation.
+     */
     if (this.delay) {
       setTimeout(() => {
         if (!this.group) {
@@ -18692,11 +19139,15 @@ const SpxNotation$1 = class extends HTMLElement {
       }
     }
   }
-  /** Remove the annotation. */
+  /**
+   * Remove the annotation.
+   */
   async clear() {
     this.annotation.remove();
   }
-  /** Hides the annotation. (non animated) */
+  /**
+   * Hides the annotation. (non animated)
+   */
   async hide() {
     this.annotation.hide();
   }
@@ -18708,17 +19159,23 @@ const SpxNotation$1 = class extends HTMLElement {
       this.annotate();
     }
   }
-  /** Draws the annotation. */
+  /**
+   * Draws the annotation.
+   */
   async show() {
     this.annotate();
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: setVar(tag$8, 'display', this.display),
       position: 'relative',
     });
-    /** Span styles. */
+    /**
+     * Span styles.
+     */
     const styleSpan = css$1({ position: 'relative', display: 'inline-block' });
     return (h$1(Host, { class: styleHost }, this.group ? (h$1("slot", null)) : (h$1("span", { class: styleSpan }, h$1("span", { class: styleSpan }, h$1("slot", null))))));
   }
@@ -18729,11 +19186,17 @@ const SpxNotation$1 = class extends HTMLElement {
  * Offset something to header.
  */
 const offsetHeader = (el, target) => {
-  /** Get height of target element. */
+  /**
+   * Get height of target element.
+   */
   const value = document.querySelector(target).getBoundingClientRect().height + 'px';
-  /** Set root. */
+  /**
+   * Set root.
+   */
   document.body.style.setProperty('--spx-offset', value);
-  /** Apply values as top property and variable. */
+  /**
+   * Apply values as top property and variable.
+   */
   if (el.parentElement.classList.contains('oxy-offset')) {
     el.parentElement.style.marginTop = value;
   }
@@ -18751,11 +19214,12 @@ const SpxOffset$1 = class extends HTMLElement {
     this.display = 'block';
     /**
      * Target element.
-     * @editor '.header1'
      */
     this.target = 'header';
   }
-  /** Listen to window resize. */
+  /**
+   * Listen to window resize.
+   */
   onResize() {
     offsetHeader(this.el, this.target);
   }
@@ -18767,7 +19231,9 @@ const SpxOffset$1 = class extends HTMLElement {
   componentDidUpdate() {
     this.onResize();
   }
-  /** Recalculate distance. */
+  /**
+   * Recalculate distance.
+   */
   async recalc() {
     this.onResize();
   }
@@ -18775,7 +19241,9 @@ const SpxOffset$1 = class extends HTMLElement {
     this.componentDidLoad();
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: setVar(tag$7, 'display', this.display),
     });
@@ -19284,19 +19752,31 @@ const SpxScrollspy$2 = class extends HTMLElement {
     super();
     this.__registerHost();
     this.spxScrollspyDidLoad = createEvent(this, "spxScrollspyDidLoad", 7);
-    /** Applied class to active content element. */
+    /**
+     * Applied class to active content element.
+     */
     this.contentClass = 'spx-scrollspy__content--active';
     this.display = 'block';
-    /** Applied class to active navigation element. */
+    /**
+     * Applied class to active navigation element.
+     */
     this.navClass = 'spx-scrollspy__nav--active';
-    /** Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated. */
+    /**
+     * Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated.
+     */
     this.offset = 0;
-    /** Target element. Can take any querySelector value. (id, class, tag etc.) */
+    /**
+     * Target element. Can take any querySelector value. (id, class, tag etc.)
+     */
     this.target = 'a';
-    /** Appends the currently active link to the end of the URL. */
+    /**
+     * Appends the currently active link to the end of the URL.
+     */
     this.urlChange = false;
   }
-  /** Replace state of URL bar . */
+  /**
+   * Replace state of URL bar.
+   */
   onLinkChange(event) {
     if (this.urlChange) {
       history.replaceState(null, null, event.detail.link.getAttribute('href'));
@@ -19310,7 +19790,9 @@ const SpxScrollspy$2 = class extends HTMLElement {
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
-    /** Init Gumshoe. */
+    /**
+     * Init Gumshoe.
+     */
     // eslint-disable-next-line no-new
     this.myGumshoe = new gumshoe(':scope ' + this.target + '', {
       reflow: true,
@@ -19318,18 +19800,24 @@ const SpxScrollspy$2 = class extends HTMLElement {
       contentClass: this.contentClass,
       events: true,
       offset: () => {
-        /** Check if prop is a number otherwise look for querySelector. */
+        /**
+         * Check if prop is a number otherwise look for querySelector.
+         */
         return offset$1(this.offset);
       },
     });
-    /** Emit event after render. */
+    /**
+     * Emit event after render.
+     */
     this.spxScrollspyDidLoad.emit({ target: 'document' });
   }
   async reload() {
     this.myGumshoe.setup();
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: setVar(tag$6, 'display', this.display),
     });
@@ -19373,7 +19861,9 @@ const SpxShare$1 = class extends HTMLElement {
      * @choice 'default', 'fluid', 'headless'
      */
     this.styling = 'default';
-    /** Button href target. */
+    /**
+     * Button href target.
+     */
     this.target = '_blank';
     /**
      * Button theme.
@@ -19390,7 +19880,9 @@ const SpxShare$1 = class extends HTMLElement {
     this.componentDidLoad();
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = (this.styling === 'default' || this.styling === 'fluid') &&
       css$1({
         fontSize: setVar(tag$5, 'font-size', this.fontSize),
@@ -19400,7 +19892,9 @@ const SpxShare$1 = class extends HTMLElement {
         gridAutoRows: this.vertical && 'max-content',
         gridGap: setVarOrClamp(tag$5, 'item-gap', this.itemGap, this.itemGapMin, this.itemGapMax, this.styling),
       });
-    /** Link styles. */
+    /**
+     * Link styles.
+     */
     const styleItem = this.styling === 'default' || this.styling === 'fluid'
       ? css$1({
         display: 'flex',
@@ -19425,7 +19919,9 @@ const SpxShare$1 = class extends HTMLElement {
         },
       })
       : this.classItem;
-    /** Facebook styles. */
+    /**
+     * Facebook styles.
+     */
     const styleFacebook = css$1({
       background: this.theme === 'default' && !this.itemBackground
         ? '#1877F2'
@@ -19439,7 +19935,9 @@ const SpxShare$1 = class extends HTMLElement {
           : null,
       border: this.theme === 'outline' && '1px solid #1877F2',
     });
-    /** Twitter styles. */
+    /**
+     * Twitter styles.
+     */
     const styleTwitter = css$1({
       background: this.theme === 'default' && !this.itemBackground
         ? '#1DA1F2'
@@ -19453,7 +19951,9 @@ const SpxShare$1 = class extends HTMLElement {
           : null,
       border: this.theme === 'outline' && '1px solid #1DA1F2',
     });
-    /** Email styles. */
+    /**
+     * Email styles.
+     */
     const styleEmail = css$1({
       background: this.theme === 'default' && !this.itemBackground
         ? '#c6c6c6'
@@ -19467,7 +19967,9 @@ const SpxShare$1 = class extends HTMLElement {
           : null,
       border: this.theme === 'outline' && '1px solid #c6c6c6',
     });
-    /** WhatsApp styles. */
+    /**
+     * WhatsApp styles.
+     */
     const styleWhatsapp = css$1({
       background: this.theme === 'default' && !this.itemBackground
         ? '#25D366'
@@ -21253,7 +21755,7 @@ function updateSize() {
 function updateSlides() {
   var swiper = this;
 
-  var getDirectionLabel = function getDirectionLabel(property) {
+  function getDirectionLabel(property) {
     if (swiper.isHorizontal()) {
       return property;
     } // prettier-ignore
@@ -21269,11 +21771,11 @@ function updateSlides() {
       'padding-right': 'padding-bottom',
       'marginRight': 'marginBottom'
     }[property];
-  };
+  }
 
-  var getDirectionPropertyValue = function getDirectionPropertyValue(node, label) {
+  function getDirectionPropertyValue(node, label) {
     return parseFloat(node.getPropertyValue(getDirectionLabel(label)) || 0);
-  };
+  }
 
   var params = swiper.params;
   var $wrapperEl = swiper.$wrapperEl,
@@ -21287,17 +21789,6 @@ function updateSlides() {
   var snapGrid = [];
   var slidesGrid = [];
   var slidesSizesGrid = [];
-
-  function slidesForMargin(slideEl, slideIndex) {
-    if (!params.cssMode) return true;
-
-    if (slideIndex === slides.length - 1) {
-      return false;
-    }
-
-    return true;
-  }
-
   var offsetBefore = params.slidesOffsetBefore;
 
   if (typeof offsetBefore === 'function') {
@@ -21539,7 +22030,15 @@ function updateSlides() {
     var _slides$filter$css;
 
     var key = swiper.isHorizontal() && rtl ? 'marginLeft' : getDirectionLabel('marginRight');
-    slides.filter(slidesForMargin).css((_slides$filter$css = {}, _slides$filter$css[key] = spaceBetween + "px", _slides$filter$css));
+    slides.filter(function (_, slideIndex) {
+      if (!params.cssMode) return true;
+
+      if (slideIndex === slides.length - 1) {
+        return false;
+      }
+
+      return true;
+    }).css((_slides$filter$css = {}, _slides$filter$css[key] = spaceBetween + "px", _slides$filter$css));
   }
 
   if (params.centeredSlides && params.centeredSlidesBounds) {
@@ -21602,6 +22101,7 @@ function updateSlides() {
 function updateAutoHeight(speed) {
   var swiper = this;
   var activeSlides = [];
+  var isVirtual = swiper.virtual && swiper.params.virtual.enabled;
   var newHeight = 0;
   var i;
 
@@ -21609,7 +22109,17 @@ function updateAutoHeight(speed) {
     swiper.setTransition(speed);
   } else if (speed === true) {
     swiper.setTransition(swiper.params.speed);
-  } // Find slides currently in view
+  }
+
+  var getSlideByIndex = function getSlideByIndex(index) {
+    if (isVirtual) {
+      return swiper.slides.filter(function (el) {
+        return parseInt(el.getAttribute('data-swiper-slide-index'), 10) === index;
+      })[0];
+    }
+
+    return swiper.slides.eq(index)[0];
+  }; // Find slides currently in view
 
 
   if (swiper.params.slidesPerView !== 'auto' && swiper.params.slidesPerView > 1) {
@@ -21620,12 +22130,12 @@ function updateAutoHeight(speed) {
     } else {
       for (i = 0; i < Math.ceil(swiper.params.slidesPerView); i += 1) {
         var index = swiper.activeIndex + i;
-        if (index > swiper.slides.length) break;
-        activeSlides.push(swiper.slides.eq(index)[0]);
+        if (index > swiper.slides.length && !isVirtual) break;
+        activeSlides.push(getSlideByIndex(index));
       }
     }
   } else {
-    activeSlides.push(swiper.slides.eq(swiper.activeIndex)[0]);
+    activeSlides.push(getSlideByIndex(swiper.activeIndex));
   } // Find new height from highest slide in view
 
 
@@ -22190,7 +22700,7 @@ const transition = {
   transitionEnd: transitionEnd
 };
 
-function slideTo(index, speed, runCallbacks, internal) {
+function slideTo(index, speed, runCallbacks, internal, initial) {
   if (index === void 0) {
     index = 0;
   }
@@ -22239,9 +22749,10 @@ function slideTo(index, speed, runCallbacks, internal) {
       previousIndex = swiper.previousIndex,
       activeIndex = swiper.activeIndex,
       rtl = swiper.rtlTranslate,
-      wrapperEl = swiper.wrapperEl;
+      wrapperEl = swiper.wrapperEl,
+      enabled = swiper.enabled;
 
-  if (swiper.animating && params.preventInteractionOnTransition) {
+  if (swiper.animating && params.preventInteractionOnTransition || !enabled && !internal && !initial) {
     return false;
   }
 
@@ -22408,7 +22919,9 @@ function slideNext(speed, runCallbacks, internal) {
 
   var swiper = this;
   var params = swiper.params,
-      animating = swiper.animating;
+      animating = swiper.animating,
+      enabled = swiper.enabled;
+  if (!enabled) return swiper;
   var increment = swiper.activeIndex < params.slidesPerGroupSkip ? 1 : params.slidesPerGroup;
 
   if (params.loop) {
@@ -22436,7 +22949,9 @@ function slidePrev(speed, runCallbacks, internal) {
       animating = swiper.animating,
       snapGrid = swiper.snapGrid,
       slidesGrid = swiper.slidesGrid,
-      rtlTranslate = swiper.rtlTranslate;
+      rtlTranslate = swiper.rtlTranslate,
+      enabled = swiper.enabled;
+  if (!enabled) return swiper;
 
   if (params.loop) {
     if (animating && params.loopPreventsSlide) return false;
@@ -22909,7 +23424,9 @@ function onTouchStart(event) {
   var window = getWindow();
   var data = swiper.touchEventsData;
   var params = swiper.params,
-      touches = swiper.touches;
+      touches = swiper.touches,
+      enabled = swiper.enabled;
+  if (!enabled) return;
 
   if (swiper.animating && params.preventInteractionOnTransition) {
     return;
@@ -22998,7 +23515,9 @@ function onTouchMove(event) {
   var data = swiper.touchEventsData;
   var params = swiper.params,
       touches = swiper.touches,
-      rtl = swiper.rtlTranslate;
+      rtl = swiper.rtlTranslate,
+      enabled = swiper.enabled;
+  if (!enabled) return;
   var e = event;
   if (e.originalEvent) e = e.originalEvent;
 
@@ -23227,7 +23746,9 @@ function onTouchEnd(event) {
       rtl = swiper.rtlTranslate,
       $wrapperEl = swiper.$wrapperEl,
       slidesGrid = swiper.slidesGrid,
-      snapGrid = swiper.snapGrid;
+      snapGrid = swiper.snapGrid,
+      enabled = swiper.enabled;
+  if (!enabled) return;
   var e = event;
   if (e.originalEvent) e = e.originalEvent;
 
@@ -23583,6 +24104,7 @@ function onResize() {
 
 function onClick(e) {
   var swiper = this;
+  if (!swiper.enabled) return;
 
   if (!swiper.allowClick) {
     if (swiper.params.preventClicks) e.preventDefault();
@@ -23597,7 +24119,9 @@ function onClick(e) {
 function onScroll() {
   var swiper = this;
   var wrapperEl = swiper.wrapperEl,
-      rtlTranslate = swiper.rtlTranslate;
+      rtlTranslate = swiper.rtlTranslate,
+      enabled = swiper.enabled;
+  if (!enabled) return;
   swiper.previousTranslate = swiper.translate;
 
   if (swiper.isHorizontal()) {
@@ -23772,67 +24296,74 @@ function setBreakpoint() {
   if (!breakpoints || breakpoints && Object.keys(breakpoints).length === 0) return; // Get breakpoint for window width and update parameters
 
   var breakpoint = swiper.getBreakpoint(breakpoints, swiper.params.breakpointsBase, swiper.el);
+  if (!breakpoint || swiper.currentBreakpoint === breakpoint) return;
+  var breakpointOnlyParams = breakpoint in breakpoints ? breakpoints[breakpoint] : undefined;
 
-  if (breakpoint && swiper.currentBreakpoint !== breakpoint) {
-    var breakpointOnlyParams = breakpoint in breakpoints ? breakpoints[breakpoint] : undefined;
+  if (breakpointOnlyParams) {
+    ['slidesPerView', 'spaceBetween', 'slidesPerGroup', 'slidesPerGroupSkip', 'slidesPerColumn'].forEach(function (param) {
+      var paramValue = breakpointOnlyParams[param];
+      if (typeof paramValue === 'undefined') return;
 
-    if (breakpointOnlyParams) {
-      ['slidesPerView', 'spaceBetween', 'slidesPerGroup', 'slidesPerGroupSkip', 'slidesPerColumn'].forEach(function (param) {
-        var paramValue = breakpointOnlyParams[param];
-        if (typeof paramValue === 'undefined') return;
-
-        if (param === 'slidesPerView' && (paramValue === 'AUTO' || paramValue === 'auto')) {
-          breakpointOnlyParams[param] = 'auto';
-        } else if (param === 'slidesPerView') {
-          breakpointOnlyParams[param] = parseFloat(paramValue);
-        } else {
-          breakpointOnlyParams[param] = parseInt(paramValue, 10);
-        }
-      });
-    }
-
-    var breakpointParams = breakpointOnlyParams || swiper.originalParams;
-    var wasMultiRow = params.slidesPerColumn > 1;
-    var isMultiRow = breakpointParams.slidesPerColumn > 1;
-
-    if (wasMultiRow && !isMultiRow) {
-      $el.removeClass(params.containerModifierClass + "multirow " + params.containerModifierClass + "multirow-column");
-      swiper.emitContainerClasses();
-    } else if (!wasMultiRow && isMultiRow) {
-      $el.addClass(params.containerModifierClass + "multirow");
-
-      if (breakpointParams.slidesPerColumnFill === 'column') {
-        $el.addClass(params.containerModifierClass + "multirow-column");
+      if (param === 'slidesPerView' && (paramValue === 'AUTO' || paramValue === 'auto')) {
+        breakpointOnlyParams[param] = 'auto';
+      } else if (param === 'slidesPerView') {
+        breakpointOnlyParams[param] = parseFloat(paramValue);
+      } else {
+        breakpointOnlyParams[param] = parseInt(paramValue, 10);
       }
-
-      swiper.emitContainerClasses();
-    }
-
-    var directionChanged = breakpointParams.direction && breakpointParams.direction !== params.direction;
-    var needsReLoop = params.loop && (breakpointParams.slidesPerView !== params.slidesPerView || directionChanged);
-
-    if (directionChanged && initialized) {
-      swiper.changeDirection();
-    }
-
-    extend(swiper.params, breakpointParams);
-    extend(swiper, {
-      allowTouchMove: swiper.params.allowTouchMove,
-      allowSlideNext: swiper.params.allowSlideNext,
-      allowSlidePrev: swiper.params.allowSlidePrev
     });
-    swiper.currentBreakpoint = breakpoint;
-    swiper.emit('_beforeBreakpoint', breakpointParams);
+  }
 
-    if (needsReLoop && initialized) {
-      swiper.loopDestroy();
-      swiper.loopCreate();
-      swiper.updateSlides();
-      swiper.slideTo(activeIndex - loopedSlides + swiper.loopedSlides, 0, false);
+  var breakpointParams = breakpointOnlyParams || swiper.originalParams;
+  var wasMultiRow = params.slidesPerColumn > 1;
+  var isMultiRow = breakpointParams.slidesPerColumn > 1;
+  var wasEnabled = params.enabled;
+
+  if (wasMultiRow && !isMultiRow) {
+    $el.removeClass(params.containerModifierClass + "multirow " + params.containerModifierClass + "multirow-column");
+    swiper.emitContainerClasses();
+  } else if (!wasMultiRow && isMultiRow) {
+    $el.addClass(params.containerModifierClass + "multirow");
+
+    if (breakpointParams.slidesPerColumnFill === 'column') {
+      $el.addClass(params.containerModifierClass + "multirow-column");
     }
 
-    swiper.emit('breakpoint', breakpointParams);
+    swiper.emitContainerClasses();
   }
+
+  var directionChanged = breakpointParams.direction && breakpointParams.direction !== params.direction;
+  var needsReLoop = params.loop && (breakpointParams.slidesPerView !== params.slidesPerView || directionChanged);
+
+  if (directionChanged && initialized) {
+    swiper.changeDirection();
+  }
+
+  extend(swiper.params, breakpointParams);
+  var isEnabled = swiper.params.enabled;
+  extend(swiper, {
+    allowTouchMove: swiper.params.allowTouchMove,
+    allowSlideNext: swiper.params.allowSlideNext,
+    allowSlidePrev: swiper.params.allowSlidePrev
+  });
+
+  if (wasEnabled && !isEnabled) {
+    swiper.disable();
+  } else if (!wasEnabled && isEnabled) {
+    swiper.enable();
+  }
+
+  swiper.currentBreakpoint = breakpoint;
+  swiper.emit('_beforeBreakpoint', breakpointParams);
+
+  if (needsReLoop && initialized) {
+    swiper.loopDestroy();
+    swiper.loopCreate();
+    swiper.updateSlides();
+    swiper.slideTo(activeIndex - loopedSlides + swiper.loopedSlides, 0, false);
+  }
+
+  swiper.emit('breakpoint', breakpointParams);
 }
 
 function getBreakpoint(breakpoints, base, containerEl) {
@@ -24042,6 +24573,7 @@ const defaults = {
   updateOnWindowResize: true,
   resizeObserver: false,
   nested: false,
+  enabled: true,
   // Overrides
   width: null,
   height: null,
@@ -24274,6 +24806,7 @@ var Swiper = /*#__PURE__*/function () {
     swiper.$ = $; // Extend Swiper
 
     extend(swiper, {
+      enabled: swiper.params.enabled,
       el: el,
       // Classes
       classNames: [],
@@ -24374,6 +24907,30 @@ var Swiper = /*#__PURE__*/function () {
   }
 
   var _proto = Swiper.prototype;
+
+  _proto.enable = function enable() {
+    var swiper = this;
+    if (swiper.enabled) return;
+    swiper.enabled = true;
+
+    if (swiper.params.grabCursor) {
+      swiper.setGrabCursor();
+    }
+
+    swiper.emit('enable');
+  };
+
+  _proto.disable = function disable() {
+    var swiper = this;
+    if (!swiper.enabled) return;
+    swiper.enabled = false;
+
+    if (swiper.params.grabCursor) {
+      swiper.unsetGrabCursor();
+    }
+
+    swiper.emit('disable');
+  };
 
   _proto.setProgress = function setProgress(progress, speed) {
     var swiper = this;
@@ -24605,7 +25162,7 @@ var Swiper = /*#__PURE__*/function () {
     } // Set Grab Cursor
 
 
-    if (swiper.params.grabCursor) {
+    if (swiper.params.grabCursor && swiper.enabled) {
       swiper.setGrabCursor();
     }
 
@@ -24615,9 +25172,9 @@ var Swiper = /*#__PURE__*/function () {
 
 
     if (swiper.params.loop) {
-      swiper.slideTo(swiper.params.initialSlide + swiper.loopedSlides, 0, swiper.params.runCallbacksOnInit);
+      swiper.slideTo(swiper.params.initialSlide + swiper.loopedSlides, 0, swiper.params.runCallbacksOnInit, false, true);
     } else {
-      swiper.slideTo(swiper.params.initialSlide, 0, swiper.params.runCallbacksOnInit);
+      swiper.slideTo(swiper.params.initialSlide, 0, swiper.params.runCallbacksOnInit, false, true);
     } // Attach events
 
 
@@ -24752,7 +25309,9 @@ var Navigation = {
         toggleEl($prevEl, false);
       }
 
-      $prevEl[swiper.params.watchOverflow && swiper.isLocked ? 'addClass' : 'removeClass'](params.lockClass);
+      if (swiper.params.watchOverflow && swiper.enabled) {
+        $prevEl[swiper.isLocked ? 'addClass' : 'removeClass'](params.lockClass);
+      }
     }
 
     if ($nextEl && $nextEl.length > 0) {
@@ -24762,7 +25321,9 @@ var Navigation = {
         toggleEl($nextEl, false);
       }
 
-      $nextEl[swiper.params.watchOverflow && swiper.isLocked ? 'addClass' : 'removeClass'](params.lockClass);
+      if (swiper.params.watchOverflow && swiper.enabled) {
+        $nextEl[swiper.isLocked ? 'addClass' : 'removeClass'](params.lockClass);
+      }
     }
   },
   onPrevClick: function onPrevClick(e) {
@@ -24814,6 +25375,11 @@ var Navigation = {
       $prevEl: $prevEl,
       prevEl: $prevEl && $prevEl[0]
     });
+
+    if (!swiper.enabled) {
+      if ($nextEl) $nextEl.addClass(params.lockClass);
+      if ($prevEl) $prevEl.addClass(params.lockClass);
+    }
   },
   destroy: function destroy() {
     var swiper = this;
@@ -24864,10 +25430,23 @@ const Navigation$1 = {
     destroy: function destroy(swiper) {
       swiper.navigation.destroy();
     },
-    click: function click(swiper, e) {
+    'enable disable': function enableDisable(swiper) {
       var _swiper$navigation3 = swiper.navigation,
           $nextEl = _swiper$navigation3.$nextEl,
           $prevEl = _swiper$navigation3.$prevEl;
+
+      if ($nextEl) {
+        $nextEl[swiper.enabled ? 'removeClass' : 'addClass'](swiper.params.navigation.lockClass);
+      }
+
+      if ($prevEl) {
+        $prevEl[swiper.enabled ? 'removeClass' : 'addClass'](swiper.params.navigation.lockClass);
+      }
+    },
+    click: function click(swiper, e) {
+      var _swiper$navigation4 = swiper.navigation,
+          $nextEl = _swiper$navigation4.$nextEl,
+          $prevEl = _swiper$navigation4.$prevEl;
       var targetEl = e.target;
 
       if (swiper.params.navigation.hideOnClick && !$(targetEl).is($prevEl) && !$(targetEl).is($nextEl)) {
@@ -25051,7 +25630,9 @@ var Pagination = {
       swiper.emit('paginationUpdate', $el[0]);
     }
 
-    $el[swiper.params.watchOverflow && swiper.isLocked ? 'addClass' : 'removeClass'](params.lockClass);
+    if (swiper.params.watchOverflow && swiper.enabled) {
+      $el[swiper.isLocked ? 'addClass' : 'removeClass'](params.lockClass);
+    }
   },
   render: function render() {
     // Render Container
@@ -25148,6 +25729,10 @@ var Pagination = {
       $el: $el,
       el: $el[0]
     });
+
+    if (!swiper.enabled) {
+      $el.addClass(params.lockClass);
+    }
   },
   destroy: function destroy() {
     var swiper = this;
@@ -25240,6 +25825,13 @@ const Pagination$1 = {
     },
     destroy: function destroy(swiper) {
       swiper.pagination.destroy();
+    },
+    'enable disable': function enableDisable(swiper) {
+      var $el = swiper.pagination.$el;
+
+      if ($el) {
+        $el[swiper.enabled ? 'removeClass' : 'addClass'](swiper.params.pagination.lockClass);
+      }
     },
     click: function click(swiper, e) {
       var targetEl = e.target;
@@ -25631,8 +26223,9 @@ var Autoplay = {
       swiper.autoplay.paused = false;
       swiper.autoplay.run();
     } else {
-      swiper.$wrapperEl[0].addEventListener('transitionend', swiper.autoplay.onTransitionEnd);
-      swiper.$wrapperEl[0].addEventListener('webkitTransitionEnd', swiper.autoplay.onTransitionEnd);
+      ['transitionend', 'webkitTransitionEnd'].forEach(function (event) {
+        swiper.$wrapperEl[0].addEventListener(event, swiper.autoplay.onTransitionEnd);
+      });
     }
   },
   onVisibilityChange: function onVisibilityChange() {
@@ -25652,8 +26245,9 @@ var Autoplay = {
     var swiper = this;
     if (!swiper || swiper.destroyed || !swiper.$wrapperEl) return;
     if (e.target !== swiper.$wrapperEl[0]) return;
-    swiper.$wrapperEl[0].removeEventListener('transitionend', swiper.autoplay.onTransitionEnd);
-    swiper.$wrapperEl[0].removeEventListener('webkitTransitionEnd', swiper.autoplay.onTransitionEnd);
+    ['transitionend', 'webkitTransitionEnd'].forEach(function (event) {
+      swiper.$wrapperEl[0].removeEventListener(event, swiper.autoplay.onTransitionEnd);
+    });
     swiper.autoplay.paused = false;
 
     if (!swiper.autoplay.running) {
@@ -25661,6 +26255,30 @@ var Autoplay = {
     } else {
       swiper.autoplay.run();
     }
+  },
+  onMouseEnter: function onMouseEnter() {
+    var swiper = this;
+    swiper.autoplay.pause();
+    ['transitionend', 'webkitTransitionEnd'].forEach(function (event) {
+      swiper.$wrapperEl[0].removeEventListener(event, swiper.autoplay.onTransitionEnd);
+    });
+  },
+  onMouseLeave: function onMouseLeave() {
+    var swiper = this;
+    swiper.autoplay.run();
+  },
+  attachMouseEvents: function attachMouseEvents() {
+    var swiper = this;
+
+    if (swiper.params.autoplay.pauseOnMouseEnter) {
+      swiper.$el.on('mouseenter', swiper.autoplay.onMouseEnter);
+      swiper.$el.on('mouseleave', swiper.autoplay.onMouseLeave);
+    }
+  },
+  detachMouseEvents: function detachMouseEvents() {
+    var swiper = this;
+    swiper.$el.off('mouseenter', swiper.autoplay.onMouseEnter);
+    swiper.$el.off('mouseleave', swiper.autoplay.onMouseLeave);
   }
 };
 const Autoplay$1 = {
@@ -25672,7 +26290,8 @@ const Autoplay$1 = {
       waitForTransition: true,
       disableOnInteraction: true,
       stopOnLastSlide: false,
-      reverseDirection: false
+      reverseDirection: false,
+      pauseOnMouseEnter: false
     }
   },
   create: function create() {
@@ -25690,6 +26309,7 @@ const Autoplay$1 = {
         swiper.autoplay.start();
         var document = getDocument();
         document.addEventListener('visibilitychange', swiper.autoplay.onVisibilityChange);
+        swiper.autoplay.attachMouseEvents();
       }
     },
     beforeTransitionStart: function beforeTransitionStart(swiper, speed, internal) {
@@ -25716,6 +26336,8 @@ const Autoplay$1 = {
       }
     },
     destroy: function destroy(swiper) {
+      swiper.autoplay.detachMouseEvents();
+
       if (swiper.autoplay.running) {
         swiper.autoplay.stop();
       }
@@ -25934,15 +26556,25 @@ const SpxScrollspy$1 = class extends HTMLElement {
     super();
     this.__registerHost();
     this.spxSliderDidLoad = createEvent(this, "spxSliderDidLoad", 7);
-    /** Automatically adjusts height of slider. */
+    /**
+     * Automatically adjusts height of slider.
+     */
     this.autoheight = false;
-    /** Starts navigating to the next slide when page is loaded. */
+    /**
+     * Starts navigating to the next slide when page is loaded.
+     */
     this.autoplay = false;
-    /** Autoplay delay. */
+    /**
+     * Autoplay delay.
+     */
     this.autoplayDelay = 6000;
-    /** Disable autoplay after interaction with slides. */
+    /**
+     * Disable autoplay after interaction with slides.
+     */
     this.autoplayDisableOnInteraction = false;
-    /** Centers slides in viewport. */
+    /**
+     * Centers slides in viewport.
+     */
     this.centeredSlides = false;
     /**
      * Slider direction.
@@ -25959,16 +26591,16 @@ const SpxScrollspy$1 = class extends HTMLElement {
      * @choice 'fill', 'contain', 'cover', 'scale-down', 'none'
      */
     this.imageObjectFit = 'cover';
-    /** Loops all slides infinitely. */
+    /**
+     * Loops all slides infinitely.
+     */
     this.loop = false;
     /**
      * Max height.
-     * @editor '500px'
      */
     this.maxHeight = '100%';
     /**
      * Max width.
-     * @editor '500px'
      */
     this.maxWidth = '100%';
     this.navigationBackground = 'rgba(0,0,0,0.7)';
@@ -25979,11 +26611,17 @@ const SpxScrollspy$1 = class extends HTMLElement {
      * @CSS
      */
     this.navigationDistanceX = '12px';
-    /** Navigation icon type. */
+    /**
+     * Navigation icon type.
+     */
     this.navigationIconNext = 'arrow-forward';
-    /** Navigation icon type. */
+    /**
+     * Navigation icon type.
+     */
     this.navigationIconPrev = 'arrow-back';
-    /** Navigation icon type. */
+    /**
+     * Navigation icon type.
+     */
     this.navigationIconType = 'ionicons';
     this.navigationPadding = '12px';
     /**
@@ -25998,7 +26636,9 @@ const SpxScrollspy$1 = class extends HTMLElement {
     this.pagination = 'bullets';
     this.paginationBulletsBackground = 'var(--spx-color-gray-300)';
     this.paginationBulletsBackgroundActive = 'var(--spx-color-gray-900)';
-    /** Amount of dynamic bullets. */
+    /**
+     * Amount of dynamic bullets.
+     */
     this.paginationBulletsDynamicAmount = 5;
     /**
      * Size of the bullets.
@@ -26021,28 +26661,46 @@ const SpxScrollspy$1 = class extends HTMLElement {
     this.paginationTabsPaddingMax = 1.4;
     this.paginationTransitionDuration = transitionDuration;
     this.paginationTransitionTimingFunction = transitionTimingFunction;
-    /** Screen reader message for first slide. */
+    /**
+     * Screen reader message for first slide.
+     */
     this.slideMessageFirst = 'This is the first slide';
-    /** Screen reader message for last slide. */
+    /**
+     * Screen reader message for last slide.
+     */
     this.slideMessageLast = 'This is the last slide';
-    /** Screen reader message for next slide. */
+    /**
+     * Screen reader message for next slide.
+     */
     this.slideMessageNext = 'Next slide';
-    /** Screen reader message for previous slide. */
+    /**
+     * Screen reader message for previous slide.
+     */
     this.slideMessagePrevious = 'Previous slide';
-    /** Amount of slides shown at once. */
+    /**
+     * Amount of slides shown at once.
+     */
     this.slidesPerView = 1;
-    /** Space between slides. */
+    /**
+     * Space between slides.
+     */
     this.spaceBetween = 0;
-    /** Sliding speed. */
+    /**
+     * Sliding speed.
+     */
     this.speed = 1000;
   }
-  /** Watch images prop and parse to array. */
+  /**
+   * Watch images prop and parse to array.
+   */
   imagesChanged(newValue) {
     if (newValue)
       this.imagesArray = JSON.parse(newValue);
   }
   componentWillLoad() {
-    /** If image prop is set. */
+    /**
+     * If image prop is set.
+     */
     if (this.images) {
       this.imagesChanged(this.images);
     }
@@ -26052,12 +26710,16 @@ const SpxScrollspy$1 = class extends HTMLElement {
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
-    /** Add swiper class and duplicate slides for gallery. */
+    /**
+     * Add swiper class and duplicate slides for gallery.
+     */
     this.el.querySelectorAll('.swiper-wrapper > *').forEach((item, index) => {
       item.classList.add('swiper-slide');
       item.setAttribute('data-spx-slider-index', String(index));
     });
-    /** Create breakpoint values. */
+    /**
+     * Create breakpoint values.
+     */
     const createBPs = () => {
       for (let att, i = 0, atts = this.el.attributes, n = atts.length; i < n; i++) {
         att = atts[i];
@@ -26077,9 +26739,13 @@ const SpxScrollspy$1 = class extends HTMLElement {
         }
       }
     };
-    /** Use modules so autoplay works in build mode. */
+    /**
+     * Use modules so autoplay works in build mode.
+     */
     Swiper.use([Autoplay$1, Navigation$1, Pagination$1, A11y$1, Thumbs$1]);
-    /** Create swiper. */
+    /**
+     * Create swiper.
+     */
     this.mySwiper = new Swiper(this.container, {
       a11y: {
         firstSlideMessage: this.slideMessageFirst,
@@ -26118,7 +26784,9 @@ const SpxScrollspy$1 = class extends HTMLElement {
     this.mySwiper.on('observerUpdate', () => {
       this.mySwiper.update();
     });
-    /** Create tabs and set appropriate event listeners. */
+    /**
+     * Create tabs and set appropriate event listeners.
+     */
     if (this.pagination === 'tabs') {
       this.createTabs();
       this.mySwiper.on('slideChangeTransitionStart', () => {
@@ -26129,14 +26797,20 @@ const SpxScrollspy$1 = class extends HTMLElement {
     }
     this.spxSliderDidLoad.emit({ target: 'document' });
   }
-  /** Creates tab pagination from data-attributes. */
+  /**
+   * Creates tab pagination from data-attributes.
+   */
   createTabs() {
     this.paginationTabs.innerHTML = '';
     const slides = this.el.querySelectorAll('.swiper-wrapper > *.swiper-slide:not(.swiper-slide-duplicate)');
-    /** Create slides. */
+    /**
+     * Create slides.
+     */
     slides.forEach((item, index) => {
       const indexInner = item.getAttribute('data-spx-slider-index');
-      /** Animation. */
+      /**
+       * Animation.
+       */
       const kf = keyframes({
         from: {
           width: '0',
@@ -26145,7 +26819,9 @@ const SpxScrollspy$1 = class extends HTMLElement {
           width: '100%',
         },
       });
-      /** Outer wrap. */
+      /**
+       * Outer wrap.
+       */
       const slide = document.createElement('div');
       slide.setAttribute('tabindex', '0');
       slide.classList.add(css$1({
@@ -26201,27 +26877,37 @@ const SpxScrollspy$1 = class extends HTMLElement {
         },
       }));
       slide.setAttribute('role', 'button');
-      /** Set according slide index. */
+      /**
+       * Set according slide index.
+       */
       slide.setAttribute('data-spx-slider-tab-index', indexInner);
       const tabClick = () => {
         this.mySwiper.slideToLoop(parseInt(indexInner), this.speed);
         this.reloadTabsActive(indexInner);
       };
-      /** Click listener. */
+      /**
+       * Click listener.
+       */
       slide.addEventListener('click', () => {
         tabClick();
       });
-      /** Enter listener. */
+      /**
+       * Enter listener.
+       */
       slide.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           tabClick();
         }
       });
-      /** Set active to first slide. */
+      /**
+       * Set active to first slide.
+       */
       if (index === 0) {
         slide.setAttribute('data-spx-slider-tab-active', '');
       }
-      /** Title. */
+      /**
+       * Title.
+       */
       const title = document.createElement('span');
       title.classList.add(css$1({
         fontWeight: 500,
@@ -26229,13 +26915,17 @@ const SpxScrollspy$1 = class extends HTMLElement {
         fontSize: setClamp(tag$4, 'pagination-title-font-size', 1, 1.2),
       }));
       title.innerText = item.getAttribute('data-spx-slider-title');
-      /** Description. */
+      /**
+       * Description.
+       */
       const description = document.createElement('span');
       description.classList.add(css$1({
         fontSize: setClamp(tag$4, 'pagination-description-font-size', 0.8, 0.9),
       }));
       description.innerText = item.getAttribute('data-spx-slider-description');
-      /** Loader. */
+      /**
+       * Loader.
+       */
       const loader = document.createElement('div');
       /** Append it all. */
       slide.appendChild(title);
@@ -26244,7 +26934,9 @@ const SpxScrollspy$1 = class extends HTMLElement {
       this.paginationTabs.appendChild(slide);
     });
   }
-  /** Reload tabs when necessary. */
+  /**
+   * Reload tabs when necessary.
+   */
   reloadTabsActive(index) {
     this.paginationTabs.querySelectorAll(':scope > div').forEach((item) => {
       item.removeAttribute('data-spx-slider-tab-active');
@@ -26265,7 +26957,9 @@ const SpxScrollspy$1 = class extends HTMLElement {
     this.componentDidLoad();
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: 'block',
       width: '100%',
@@ -26300,13 +26994,17 @@ const SpxScrollspy$1 = class extends HTMLElement {
         objectFit: setVar(tag$4, 'image-object-fit', this.imageObjectFit),
       },
     });
-    /** Pagination styles. */
+    /**
+     * Pagination styles.
+     */
     const stylePagination = css$1({
       display: 'flex',
       alignItems: 'center',
       marginBottom: setClamp(tag$4, 'pagination-tabs-margin-bottom', this.paginationTabsMarginBottomMin, this.paginationTabsMarginBottomMax),
     });
-    /** Tab styles. */
+    /**
+     * Tab styles.
+     */
     const stylePaginationTabs = css$1({
       margin: '0 auto',
       display: 'grid',
@@ -26314,7 +27012,9 @@ const SpxScrollspy$1 = class extends HTMLElement {
       gridAutoColumns: setVar(tag$4, 'pagination-tabs-max-width', this.paginationTabsMaxWidth),
       gridGap: setClamp(tag$4, 'pagination-tabs-gap', this.paginationTabsGapMin, this.paginationTabsGapMax),
     });
-    /** Bullet styles. */
+    /**
+     * Bullet styles.
+     */
     const stylePaginationBullets = css$1({
       display: 'grid',
       gridAutoFlow: this.direction === 'horizontal' ? 'column' : 'row',
@@ -26336,7 +27036,9 @@ const SpxScrollspy$1 = class extends HTMLElement {
         : 'translateY(-50%) !important',
       gridGap: setVar(tag$4, 'pagination-bullets-space-between', this.paginationBulletsSpaceBetween),
     });
-    /** Navigation. */
+    /**
+     * Navigation.
+     */
     const styleNavigation = css$1({
       display: this.navigation ? 'flex' : 'none',
       position: 'absolute',
@@ -26361,11 +27063,15 @@ const SpxScrollspy$1 = class extends HTMLElement {
         },
       },
     });
-    /** Navigation prev. */
+    /**
+     * Navigation prev.
+     */
     const styleNavigationPrev = css$1({
       marginLeft: setVar(tag$4, 'navigation-distance', this.navigationDistanceX),
     });
-    /** Navigation prev. */
+    /**
+     * Navigation prev.
+     */
     const styleNavigationNext = css$1({
       marginRight: setVar(tag$4, 'navigation-distance', this.navigationDistanceX),
     });
@@ -26402,7 +27108,9 @@ const SpxSlideshow$1 = class extends HTMLElement {
      */
     this.maxWidth = '350px';
   }
-  /** Watch images prop and parse to array. */
+  /**
+   * Watch images prop and parse to array.
+   */
   imagesChanged(newValue) {
     if (newValue)
       this.imagesArray = JSON.parse(newValue);
@@ -26413,7 +27121,9 @@ const SpxSlideshow$1 = class extends HTMLElement {
     }
   }
   componentWillLoad() {
-    /** If image prop is set. */
+    /**
+     * If image prop is set.
+     */
     if (this.images) {
       this.imagesChanged(this.images);
     }
@@ -26429,7 +27139,9 @@ const SpxSlideshow$1 = class extends HTMLElement {
   }
   render() {
     const { css, keyframes } = emotion(this.el.shadowRoot);
-    /** Animation. */
+    /**
+     * Animation.
+     */
     const kf = keyframes({
       '0%': {
         transform: 'translate3d(0px, 0px, 0px)',
@@ -26442,15 +27154,21 @@ const SpxSlideshow$1 = class extends HTMLElement {
           '), 0px, 0px)',
       },
     });
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: setVar(tag$3, 'display', this.display),
     });
-    /** Shadow Host styles. */
+    /**
+     * Shadow Host styles.
+     */
     const styleShadowHost = css({
       overflow: setVar(tag$3, 'overflow', this.overflow),
     });
-    /** Wrap styles. */
+    /**
+     * Wrap styles.
+     */
     const styleWrap = css({
       animationName: kf,
       animationDuration: setVar(tag$3, 'speed', this.duration),
@@ -26466,7 +27184,9 @@ const SpxSlideshow$1 = class extends HTMLElement {
         marginLeft: setVar(tag$3, 'gap', this.gap),
       },
     });
-    /** Slideshow style. */
+    /**
+     * Slideshow style.
+     */
     const slideshowStyle = css({
       display: 'grid',
       gridAutoFlow: 'column',
@@ -26507,7 +27227,6 @@ const SpxSnackbar$1 = class extends HTMLElement {
     this.fontSizeMax = 1.6;
     /**
      * Unique identifier for snackbar instance.
-     * @editor '#components'
      */
     this.identifier = 'primary';
     this.padding = '1em';
@@ -26520,10 +27239,11 @@ const SpxSnackbar$1 = class extends HTMLElement {
     this.position = 'bottom-right';
     /**
      * CSS property position of button.
-     * @editor 'absolute'
      */
     this.positionCss = 'fixed';
-    /** Space between snackbars. */
+    /**
+     * Space between snackbars.
+     */
     this.spaceBetween = '12px';
     /**
      * Styling.
@@ -26532,10 +27252,11 @@ const SpxSnackbar$1 = class extends HTMLElement {
     this.styling = 'default';
     /**
      * Element where snackbars should be created in.
-     * @editor '#components'
      */
     this.target = 'body';
-    /** Text inside snackbar. */
+    /**
+     * Text inside snackbar.
+     */
     this.text = "Hello, I'm a snackbar.";
     this.zIndex = 103;
     this.removeItem = () => {
@@ -26560,7 +27281,9 @@ const SpxSnackbar$1 = class extends HTMLElement {
   }
   componentWillLoad() {
     this.createPositionArray();
-    /** Load into container if more than one snackbar are on screen. */
+    /**
+     * Load into container if more than one snackbar are on screen.
+     */
     if (!document.querySelector('[data-spx-id="' + this.identifier + '"]')) {
       const div = document.createElement('div');
       this.containerClass = {};
@@ -26587,7 +27310,9 @@ const SpxSnackbar$1 = class extends HTMLElement {
       const el = this.el;
       el.remove();
     };
-    /** Remove snackbar from dom after 5 seconds. */
+    /**
+     * Remove snackbar from dom after 5 seconds.
+     */
     if (!this.fixed) {
       setTimeout(removeItem, parseInt(this.animationDuration.replace('ms', '')));
     }
@@ -26599,7 +27324,9 @@ const SpxSnackbar$1 = class extends HTMLElement {
     this.componentDidLoad();
   }
   render() {
-    /** Animation in and out. */
+    /**
+     * Animation in and out.
+     */
     const kfOut = keyframes({
       '0%, 100%': {
         opacity: 0,
@@ -26608,7 +27335,9 @@ const SpxSnackbar$1 = class extends HTMLElement {
         opacity: 1,
       },
     });
-    /** Animation in. */
+    /**
+     * Animation in.
+     */
     const kfIn = keyframes({
       '0%': {
         opacity: 0,
@@ -26617,7 +27346,9 @@ const SpxSnackbar$1 = class extends HTMLElement {
         opacity: 1,
       },
     });
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = (this.styling === 'default' || this.styling === 'fluid') &&
       css$1({
         display: 'flex',
@@ -26641,7 +27372,9 @@ const SpxSnackbar$1 = class extends HTMLElement {
         animationDuration: setVar(tag$2, 'animation-duration', this.animationDuration),
         animationFillMode: 'forwards',
       });
-    /** Button styles. */
+    /**
+     * Button styles.
+     */
     const styleButton = this.styling === 'default' || this.styling === 'fluid'
       ? css$1({
         padding: '0 ' + setVar(tag$2, 'padding', this.padding) + '',
@@ -26654,7 +27387,9 @@ const SpxSnackbar$1 = class extends HTMLElement {
         justifyContent: 'center',
       })
       : this.classButton;
-    /** Text styles. */
+    /**
+     * Text styles.
+     */
     const styleText = this.styling === 'default' || this.styling === 'fluid'
       ? css$1({
         whiteSpace: 'nowrap',
@@ -26678,7 +27413,9 @@ const SpxTextPath$1 = class extends HTMLElement {
     super();
     this.__registerHost();
     this.spxTextCircleDidLoad = createEvent(this, "spxTextCircleDidLoad", 7);
-    /** Text size. */
+    /**
+     * Text size.
+     */
     this.textSize = 'clamp(16px, 3vw, 24px)';
   }
   componentDidLoad() {
@@ -26694,19 +27431,25 @@ const SpxTextPath$1 = class extends HTMLElement {
     });
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: 'block',
       position: 'relative',
     });
-    /** Slot styles. */
+    /**
+     * Slot styles.
+     */
     const styleSlot = css$1({
       display: 'relative',
       height: '100%',
       width: '100%',
       clipPath: 'path("M 150, 150 m -120, 0 a 120,120 0 0,1 240,0 a 120,120 0 0,1 -240,0")',
     });
-    /** Slot styles. */
+    /**
+     * Slot styles.
+     */
     const styleTextPath = css$1({
       transform: 'var(--text-transform)',
       transformOrigin: 'center',
@@ -26732,21 +27475,33 @@ const SpxTypewriter$1 = class extends HTMLElement {
     super();
     this.__registerHost();
     this.spxTypewriterDidLoad = createEvent(this, "spxTypewriterDidLoad", 7);
-    /** Automatically starts writing. */
+    /**
+     * Automatically starts writing.
+     */
     this.autoStart = true;
-    /** Writing delay in ms. Also accepts 'natural' value. */
+    /**
+     * Writing delay in ms. Also accepts 'natural' value.
+     */
     this.delay = 'natural';
-    /** Delete delay in ms. Also accepts 'natural' value. */
+    /**
+     * Delete delay in ms. Also accepts 'natural' value.
+     */
     this.deleteSpeed = 'natural';
     this.display = 'block';
-    /** Text that should be written. */
+    /**
+     * Text that should be written.
+     */
     this.text = "I'm a typewriter";
   }
   componentDidLoad() {
     globalComponentDidLoad(this.el);
-    /** Define elements. */
+    /**
+     * Define elements.
+     */
     const el = this.el.querySelector('h1, h2, h3, h4, h5, h6, p, span') || this.el;
-    /** Init Typewriter. */
+    /**
+     * Init Typewriter.
+     */
     this.typewriter = new Typewriter(el, {
       strings: this.text[0] === '['
         ? this.text
@@ -26765,17 +27520,23 @@ const SpxTypewriter$1 = class extends HTMLElement {
     });
     this.spxTypewriterDidLoad.emit({ target: 'document' });
   }
-  /** Start animation. */
+  /**
+   * Start animation.
+   */
   async play() {
     this.typewriter.typeString(this.text);
     this.typewriter.start();
   }
-  /** Stop animation. */
+  /**
+   * Stop animation.
+   */
   async stop() {
     this.typewriter.stop();
   }
   render() {
-    /** Host styles. */
+    /**
+     * Host styles.
+     */
     const styleHost = css$1({
       display: setVar(tag, 'display', this.display),
     });

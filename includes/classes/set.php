@@ -1,14 +1,13 @@
 <?php
 
+namespace spx;
+
 /**
  * Sets global settings.
  *
  * @date  22/09/2020
  * @since 2.0
  */
-
-namespace spx;
-
 class Set {
 
 	/**
@@ -21,7 +20,6 @@ class Set {
 	 *
 	 * @param $type
 	 */
-
 	public static function color( $color, $type ) {
 
 		if ( $color === get_field( $color ) ) {

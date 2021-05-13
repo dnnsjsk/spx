@@ -6,7 +6,6 @@
  * @date    28/07/2020
  * @since   1.0.0
  */
-
 namespace spx;
 
 class Init {
@@ -37,7 +36,6 @@ class Init {
 	 * @date    28/07/2020
 	 * @since   1.0.0
 	 */
-
 	private function enqueueScripts() {
 
 		add_action( 'wp_enqueue_scripts', [ $this, 'script' ] );
@@ -50,7 +48,6 @@ class Init {
 	 * @date    28/07/2020
 	 * @since   1.0.0
 	 */
-
 	private function addScriptTags() {
 
 		add_filter( 'script_loader_tag', function ( $tag, $handle, $source ) {
@@ -74,7 +71,6 @@ class Init {
 	 * @date    24/03/2021
 	 * @since   3.1.1
 	 */
-
 	private function lazyLoadAssets() {
 
 		$classes   = apply_filters( 'spx_lazyload_whitelist', [ 'oxygen-builder-body' ] );
@@ -123,7 +119,6 @@ class Init {
 	 * @date    22/09/2020
 	 * @since   2.0.4
 	 */
-
 	public static function css() {
 
 		$str = file_get_contents( SPX_DIR . '/assets/css/spx.min.css' );
@@ -148,7 +143,6 @@ class Init {
 	 * @date    06/12/2020
 	 * @since   3.0.0
 	 */
-
 	public static function shortcodes() {
 
 		$path  = SPX_DIR . '/data/components/';
@@ -214,7 +208,6 @@ class Init {
 	 * @date    22/09/2020
 	 * @since   2.0.5
 	 */
-
 	public function __construct() {
 		self::enqueueScripts();
 		self::addScriptTags();

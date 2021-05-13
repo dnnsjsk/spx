@@ -14,7 +14,7 @@
 | `childBoxShadow`               | `child-box-shadow`                | Child menu box-shadow.                            | `string`  | `'0 3px 10px 0 rgba(0,0,0,0.05)'`       |
 | `childChildGap`                | `child-child-gap`                 | Gap between nested child menus.                   | `string`  | `'0.8em'`                               |
 | `childGap`                     | `child-gap`                       | Gap between top level menu items and child menus. | `string`  | `'0.5em'`                               |
-| `childIcon`                    | `child-icon`                      | Indicator icon..                                  | `string`  | `'arrow-down'`                          |
+| `childIcon`                    | `child-icon`                      | Indicator icon.                                   | `string`  | `'arrow-down'`                          |
 | `childIconType`                | `child-icon-type`                 | Indicator icon type.                              | `string`  | `'ionicons'`                            |
 | `childIndicatorGap`            | `child-indicator-gap`             | Gap between child menu indicator and text.        | `string`  | `'0.2em'`                               |
 | `childItemBackground`          | `child-item-background`           |                                                   | `string`  | `'#ffffff'`                             |

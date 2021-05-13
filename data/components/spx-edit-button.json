@@ -258,12 +258,7 @@
       "description": "CSS property position of button.",
       "default": "'fixed'",
       "defaultValue": "'fixed'",
-      "tags": [
-        {
-          "text": "'absolute'",
-          "name": "editor"
-        }
-      ]
+      "tags": []
     },
     {
       "id": "edit-button-styling",

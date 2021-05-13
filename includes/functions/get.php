@@ -12,7 +12,6 @@ use spx\Get;
  * @param $type
  *
  */
-
 function spxGetGallery( $field, $type ) {
 	Get::gallery( $field, $type );
 }
@@ -26,8 +25,6 @@ function spxGetGallery( $field, $type ) {
  * @param $name
  *
  */
-
-
 function spxGetNavigation( $name ) {
 	Get::navigation( $name );
 }

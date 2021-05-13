@@ -1,13 +1,12 @@
 <?php
 
+namespace spx;
+
 /**
  * Gets data to be prepared for use in data-attributes.
  *
  * @since 1.0
  */
-
-namespace spx;
-
 class Get {
 
 	/**
@@ -20,7 +19,6 @@ class Get {
 	 *
 	 * @param $field
 	 */
-
 	public static function gallery( $field, $type ) {
 
 		if ( $type === 'acf' ) {
@@ -48,7 +46,6 @@ class Get {
 	 * @param $name
 	 *
 	 */
-
 	public static function navigation( $name ) {
 
 		$items = wp_get_nav_menu_items( $name );

@@ -74,7 +74,7 @@
       "name": "childIcon",
       "attribute": "child-icon",
       "type": "string",
-      "description": "Indicator icon..",
+      "description": "Indicator icon.",
       "default": "'arrow-down'",
       "defaultValue": "'arrow-down'",
       "tags": []

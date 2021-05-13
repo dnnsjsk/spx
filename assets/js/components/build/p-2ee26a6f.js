@@ -1,0 +1,1 @@
+import{s as a}from"./p-79d12ad3.js";const r=(a,r,m,s,$=16,e=640,o=1536)=>{const t=e/$,d=(s-m)/(o/$-t);return`clamp(var(--${a}-${r}-min, ${m}rem), ${-t*d+m}rem + ${100*d}vw, var(--${a}-${r}-max, ${s}rem))`},m=(m,s,$,e,o,t)=>"default"===t?a(m,s,$):"fluid"===t?r(m,s,e,o):void 0;export{r as a,m as s}

@@ -13,6 +13,7 @@ import Prism from 'prismjs';
 import 'prismjs/components/prism-markup-templating.js';
 import 'prismjs/components/prism-php.js';
 import 'prismjs/components/prism-json.js';
+import 'prismjs/components/prism-twig.js';
 import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js';
 import 'prismjs/plugins/line-numbers/prism-line-numbers.js';
 import * as s from '../../constants/style';
@@ -27,7 +28,6 @@ const tag = 'spx-code';
 /**
  * Highlight a block of code similar to a code editor.
  */
-
 @Component({
   tag: 'spx-code',
   styleUrls: {
@@ -45,8 +45,9 @@ export class SpxCode {
 
   @Prop({ reflect: true }) borderRadius: string = s.borderRadius;
 
-  /** Enable clipboard button. */
-
+  /**
+   * Enable clipboard button.
+   */
   @Prop({ reflect: true }) clipboard: boolean = true;
 
   @Prop({ reflect: true }) clipboardButtonBackground: string =
@@ -73,12 +74,14 @@ export class SpxCode {
 
   @Prop({ reflect: true }) height: string = 'auto';
 
-  /** Load component when it enters the viewport. */
-
+  /**
+   * Load component when it enters the viewport.
+   */
   @Prop({ reflect: true }) lazy: boolean;
 
-  /** Enable line numbers. */
-
+  /**
+   * Enable line numbers.
+   */
   @Prop({ reflect: true }) lineNumbers: boolean = true;
 
   @Prop({ reflect: true }) lineNumbersBackground: string =
@@ -87,8 +90,9 @@ export class SpxCode {
   @Prop({ reflect: true }) lineNumbersColor: string =
     'var(--spx-color-gray-400)';
 
-  /** Start of line number. */
-
+  /**
+   * Start of line number.
+   */
   @Prop({ reflect: true }) lineNumbersStart: number;
 
   @Prop({ reflect: true }) maxWidth: string = '100%';
@@ -97,27 +101,26 @@ export class SpxCode {
 
   @Prop({ reflect: true }) padding: string = 'clamp(20px, 2.4vw, 40px)';
 
-  /** Hide scrollbar. */
-
+  /**
+   * Hide scrollbar.
+   */
   @Prop({ reflect: true }) scrollbar: boolean = true;
 
   /**
    * Colour theme.
    * @choice 'default', 'dracula'
    */
-
   @Prop({ reflect: true }) theme: string = 'default';
 
   /**
    * Determines the programming language.
    * @choice 'markup', 'css', 'php'
-   * @editor 'css'
    */
-
   @Prop({ reflect: true }) type: string = 'markup';
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxCodeDidLoad' })
   spxCodeDidLoad: EventEmitter;
@@ -125,16 +128,18 @@ export class SpxCode {
   componentDidLoad() {
     globalComponentDidLoad(this.el);
 
-    /** Highlight code. */
-
+    /**
+     * Highlight code.
+     */
     if (this.lazy) {
       intersectionObserver(this.el, this.highlightCode);
     } else {
       this.highlightCode();
     }
 
-    /** Setup clipboard button. */
-
+    /**
+     * Setup clipboard button.
+     */
     if (this.clipboard) {
       // eslint-disable-next-line no-new
       new Clipboard(this.clipboardButton);
@@ -144,8 +149,9 @@ export class SpxCode {
   }
 
   private onClickClipboard = () => {
-    /** Copy the code to the data-attribute and change button text. */
-
+    /**
+     * Copy the code to the data-attribute and change button text.
+     */
     this.clipboardButton.setAttribute(
       'data-clipboard-text',
       this.el.querySelector('pre').innerText
@@ -175,8 +181,9 @@ export class SpxCode {
   }
 
   render() {
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost = css({
       position: 'relative',
       display: setVar(tag, 'display', this.display),
@@ -235,8 +242,9 @@ export class SpxCode {
       },
     });
 
-    /** Clipboard styles. */
-
+    /**
+     * Clipboard styles.
+     */
     const styleClipboard = css({
       position: 'absolute',
       border: 'none',
@@ -275,8 +283,9 @@ export class SpxCode {
 
     return (
       <Host class={styleHost}>
-        {/** Code. */}
-
+        {/**
+         * Code.
+         */}
         <pre
           data-start={this.lineNumbers && this.lineNumbersStart}
           class={this.lineNumbers && 'line-numbers'}
@@ -289,8 +298,9 @@ export class SpxCode {
           </code>
         </pre>
 
-        {/** Clipboard. */}
-
+        {/**
+         * Clipboard.
+         */}
         {this.clipboard && (
           <button
             ref={(el) => (this.clipboardButton = el as HTMLElement)}

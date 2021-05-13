@@ -25,7 +25,6 @@ const tag = 'spx-snackbar';
  * Great for success or failure messages.
  * In default mode, the snackbar will fade out and remove itself from the DOM.
  */
-
 @Component({
   tag: 'spx-snackbar',
 })
@@ -50,8 +49,9 @@ export class SpxSnackbar {
 
   @Prop({ reflect: true }) classText: string;
 
-  /** Adds option to close snackbar after its creation. */
-
+  /**
+   * Adds option to close snackbar after its creation.
+   */
   @Prop({ reflect: true }) closeable: boolean;
 
   @Prop({ reflect: true }) color: string = '#ffffff';
@@ -60,21 +60,17 @@ export class SpxSnackbar {
    * Distance to the edge of the viewport on the x-axis.
    * @CSS
    */
-
   @Prop({ reflect: true }) distanceX: string = '1em';
 
   /**
    * Distance to the edge of the viewport on the y-axis.
    * @CSS
    */
-
   @Prop({ reflect: true }) distanceY: string = '1em';
 
   /**
    * Makes snackbar not removable.
-   * @editor '#components'
    */
-
   @Prop({ reflect: true }) fixed: boolean;
 
   @Prop({ reflect: true }) fontSize: string = '18px';
@@ -85,9 +81,7 @@ export class SpxSnackbar {
 
   /**
    * Unique identifier for snackbar instance.
-   * @editor '#components'
    */
-
   @Prop({ reflect: true }) identifier: string = 'primary';
 
   @Prop({ reflect: true }) padding: string = '1em';
@@ -100,50 +94,48 @@ export class SpxSnackbar {
    * Component position in page.
    * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
    */
-
   @Prop({ reflect: true }) position: string = 'bottom-right';
 
   /**
    * CSS property position of button.
-   * @editor 'absolute'
    */
-
   @Prop({ reflect: true }) positionCss:
     | 'fixed'
     | 'absolute'
     | 'relative'
     | 'static' = 'fixed';
 
-  /** Reverses the close button if "closable" prop is true. */
-
+  /**
+   * Reverses the close button if "closable" prop is true.
+   */
   @Prop({ reflect: true }) reverse: boolean;
 
-  /** Space between snackbars. */
-
+  /**
+   * Space between snackbars.
+   */
   @Prop({ reflect: true }) spaceBetween: string = '12px';
 
   /**
    * Styling.
    * @choice 'default', 'fluid', 'headless'
    */
-
   @Prop({ reflect: true }) styling: string = 'default';
 
   /**
    * Element where snackbars should be created in.
-   * @editor '#components'
    */
-
   @Prop({ reflect: true }) target: string = 'body';
 
-  /** Text inside snackbar. */
-
+  /**
+   * Text inside snackbar.
+   */
   @Prop({ reflect: true }) text: string = "Hello, I'm a snackbar.";
 
   @Prop({ reflect: true }) zIndex: number = 103;
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxSnackbarDidLoad' })
   spxSnackbarDidLoad: EventEmitter;
@@ -181,8 +173,9 @@ export class SpxSnackbar {
   componentWillLoad() {
     this.createPositionArray();
 
-    /** Load into container if more than one snackbar are on screen. */
-
+    /**
+     * Load into container if more than one snackbar are on screen.
+     */
     if (!document.querySelector('[data-spx-id="' + this.identifier + '"]')) {
       const div = document.createElement('div');
       this.containerClass = {};
@@ -227,8 +220,9 @@ export class SpxSnackbar {
       el.remove();
     };
 
-    /** Remove snackbar from dom after 5 seconds. */
-
+    /**
+     * Remove snackbar from dom after 5 seconds.
+     */
     if (!this.fixed) {
       setTimeout(
         removeItem,
@@ -257,8 +251,9 @@ export class SpxSnackbar {
   }
 
   render() {
-    /** Animation in and out. */
-
+    /**
+     * Animation in and out.
+     */
     const kfOut = keyframes({
       '0%, 100%': {
         opacity: 0,
@@ -268,8 +263,9 @@ export class SpxSnackbar {
       },
     });
 
-    /** Animation in. */
-
+    /**
+     * Animation in.
+     */
     const kfIn = keyframes({
       '0%': {
         opacity: 0,
@@ -279,8 +275,9 @@ export class SpxSnackbar {
       },
     });
 
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost =
       (this.styling === 'default' || this.styling === 'fluid') &&
       css({
@@ -340,8 +337,9 @@ export class SpxSnackbar {
         animationFillMode: 'forwards',
       });
 
-    /** Button styles. */
-
+    /**
+     * Button styles.
+     */
     const styleButton =
       this.styling === 'default' || this.styling === 'fluid'
         ? css({
@@ -356,8 +354,9 @@ export class SpxSnackbar {
           })
         : this.classButton;
 
-    /** Text styles. */
-
+    /**
+     * Text styles.
+     */
     const styleText =
       this.styling === 'default' || this.styling === 'fluid'
         ? css({
@@ -376,16 +375,18 @@ export class SpxSnackbar {
 
     return (
       <Host class={styleHost}>
-        {/** Close button. */}
-
+        {/**
+         * Close button.
+         */}
         {this.closeable && (
           <div role="button" onClick={this.removeItem} class={styleButton}>
             <spx-icon icon="close" />
           </div>
         )}
 
-        {/** Text. */}
-
+        {/**
+         * Text.
+         */}
         <span class={styleText}>{this.text ? this.text : <slot />}</span>
       </Host>
     );

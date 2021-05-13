@@ -24,7 +24,6 @@ const tag = 'spx-iframe';
  * A wrapper around a standard iframe element, which scales proportionally to its parent.
  * Great for showing desktop versions of a website on smaller screens or viewports.
  */
-
 @Component({
   tag: 'spx-iframe',
 })
@@ -50,31 +49,35 @@ export class SpxIframe {
 
   @Prop({ reflect: true }) documentWidth: string = '100%';
 
-  /** Automatically resize iframe to fit content. */
-
+  /**
+   * Automatically resize iframe to fit content.
+   */
   @Prop() fit: boolean;
 
-  /** Lazy load content. */
-
+  /**
+   * Lazy load content.
+   */
   @Prop() lazy: boolean;
 
-  /** Screen size of the site shown inside the iframe. */
-
+  /**
+   * Screen size of the site shown inside the iframe.
+   */
   @Prop() size: string = '1440px';
 
-  /** Source for the iframe. */
-
+  /**
+   * Source for the iframe.
+   */
   @Prop() src: string = 'https://spx.dev';
 
   /**
    * Screen size of the site shown inside the iframe.
    * @choice 'resize', 'document', 'default'
    */
-
   @Prop() type: string = 'resize';
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxIframeDidLoad' })
   spxIframeDidLoad: EventEmitter;
@@ -93,8 +96,9 @@ export class SpxIframe {
   componentDidLoad() {
     globalComponentDidLoad(this.el);
 
-    /** Setup lazy loading. */
-
+    /**
+     * Setup lazy loading.
+     */
     if (this.lazy) {
       // @ts-ignore
       // eslint-disable-next-line no-unused-vars
@@ -119,13 +123,15 @@ export class SpxIframe {
     }
 
     if (this.type === 'resize') {
-      /** Assign states. */
-
+      /**
+       * Assign states.
+       */
       this.iframe = this.el.querySelector('iframe');
       this.parent = this.el;
 
-      /** Wait for Iframe to load before showing content. */
-
+      /**
+       * Wait for Iframe to load before showing content.
+       */
       this.el.querySelector('iframe').onload = () => {
         this.loaded = true;
 
@@ -157,8 +163,9 @@ export class SpxIframe {
     }
   }
 
-  /** Fit function. */
-
+  /**
+   * Fit function.
+   */
   private setHeight() {
     const set = () => {
       if (
@@ -177,8 +184,9 @@ export class SpxIframe {
     set();
   }
 
-  /** Set up mutation observer. */
-
+  /**
+   * Set up mutation observer.
+   */
   private setUpMutationObserver() {
     mutationObserver(
       this.el.querySelector('iframe').contentWindow.document.body,
@@ -194,8 +202,9 @@ export class SpxIframe {
     );
   }
 
-  /** Type: resize - function to keep src element in proportion. */
-
+  /**
+   * Type: resize - function to keep src element in proportion.
+   */
   private handleResize() {
     if (this.parent && this.iframe) {
       const ratio = this.parent.offsetWidth / this.iframe.offsetWidth;
@@ -205,8 +214,9 @@ export class SpxIframe {
     }
   }
 
-  /** Type: document - add all slot elements to iframe. */
-
+  /**
+   * Type: document - add all slot elements to iframe.
+   */
   private createIframeContent() {
     const doc = this.iframe.contentDocument;
 
@@ -223,8 +233,9 @@ export class SpxIframe {
   }
 
   render() {
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost = css({
       display: setVar(tag, 'display', this.display),
       height: this.type === 'resize' ? '100%' : 'auto',
@@ -236,8 +247,9 @@ export class SpxIframe {
       },
     });
 
-    /** Iframe resize styles. */
-
+    /**
+     * Iframe resize styles.
+     */
     const styleIframeResize = css({
       border: 'none',
       width: this.size,
@@ -246,8 +258,9 @@ export class SpxIframe {
       position: 'absolute',
     });
 
-    /** Iframe document styles. */
-
+    /**
+     * Iframe document styles.
+     */
     const styleIframeDocument = css({
       border: setVar(tag, 'document-border', this.documentBorder),
       borderRadius: setVar(
@@ -259,15 +272,17 @@ export class SpxIframe {
       height: setVar(tag, 'document-height', this.documentHeight),
     });
 
-    /** Iframe styles. */
-
+    /**
+     * Iframe styles.
+     */
     const styleIframe =
       this.type === 'resize'
         ? styleIframeResize
         : this.type === 'document' && styleIframeDocument;
 
-    /** Loader styles. */
-
+    /**
+     * Loader styles.
+     */
     const styleLoader = css({
       padding: '0.8em',
       borderRadius: s.borderRadius,
@@ -280,7 +295,9 @@ export class SpxIframe {
 
     return (
       <Host class={styleHost}>
-        {/** Slot for document. */}
+        {/**
+         * Slot for document.
+         */}
 
         {this.type === 'document' && (
           <div ref={(el) => (this.content = el as HTMLElement)}>
@@ -288,8 +305,9 @@ export class SpxIframe {
           </div>
         )}
 
-        {/** Iframes. */}
-
+        {/**
+         * Iframes.
+         */}
         {this.type === 'resize' || this.type === 'default' ? (
           <iframe
             class={styleIframe}
@@ -306,8 +324,9 @@ export class SpxIframe {
           />
         )}
 
-        {/** Loader. */}
-
+        {/**
+         * Loader.
+         */}
         {this.type === 'resize' && !this.loaded && (
           <div class={styleLoader}>
             <spx-loader />

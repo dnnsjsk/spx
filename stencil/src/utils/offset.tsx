@@ -1,7 +1,6 @@
 /**
  * Get offset number or calculate element height.
  */
-
 export const offset = (element) => {
   if (element && !isNaN(element)) {
     return element;

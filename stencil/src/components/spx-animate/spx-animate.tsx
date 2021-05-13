@@ -20,7 +20,6 @@ const tag = 'spx-animate';
 /**
  * Wrapper around GSAP that allows for staggered and scroll-based animation.
  */
-
 @Component({
   tag: 'spx-animate',
 })
@@ -31,90 +30,111 @@ export class SpxAnimate {
   @State() elements;
   @State() tl;
 
-  /** Clip-path value the animation starts from. */
-
+  /**
+   * Clip-path value the animation starts from.
+   */
   @Prop() clipPath: string;
 
-  /** Delay before animation starts. */
-
+  /**
+   * Delay before animation starts.
+   */
   @Prop() delay: number = 0;
 
-  /** Animation duration. */
-
+  /**
+   * Animation duration.
+   */
   @Prop() duration: number = 1;
 
-  /** Ease being used. Accepts all common GSAP options. */
-
+  /**
+   * Ease being used. Accepts all common GSAP options.
+   */
   @Prop() ease: string = 'power1.out';
 
-  /** Filter value the animation starts from. */
-
+  /**
+   * Filter value the animation starts from.
+   */
   @Prop() filter: string;
 
-  /** Determines if animation should only play once. (if viewport is true) */
-
+  /**
+   * Determines if animation should only play once. (if viewport is true)
+   */
   @Prop() once: boolean;
 
-  /** Opacity level the animation starts from. */
-
+  /**
+   * Opacity level the animation starts from.
+   */
   @Prop() opacity: number = 0;
 
-  /** Repeats the animation. -1 to repeat indefinitely. */
-
+  /**
+   * Repeats the animation. -1 to repeat indefinitely.
+   */
   @Prop() repeat: number;
 
-  /** Time to wait between repetitions. */
-
+  /**
+   * Time to wait between repetitions.
+   */
   @Prop() repeatDelay: number;
 
-  /** Reverses the animation. */
-
+  /**
+   * Reverses the animation.
+   */
   @Prop() reverse: boolean;
 
-  /** Amount of time elements should be staggered by. */
-
+  /**
+   * Amount of time elements should be staggered by.
+   */
   @Prop() stagger: number = 0.15;
 
-  /** The target element that should be animated inside the component. */
-
+  /**
+   * The target element that should be animated inside the component.
+   */
   @Prop() target: string = '*';
 
-  /** Starts animation when target is in the viewport. */
-
+  /**
+   * Starts animation when target is in the viewport.
+   */
   @Prop() viewport: boolean;
 
-  /** Adjust the root margin of the animation start. */
-
+  /**
+   * Adjust the root margin of the animation start.
+   */
   @Prop() viewportMarginBottom: string;
 
-  /** Adjust the root margin of the animation start. */
-
+  /**
+   * Adjust the root margin of the animation start.
+   */
   @Prop() viewportMarginLeft: string;
 
-  /** Adjust the root margin of the animation start. */
-
+  /**
+   * Adjust the root margin of the animation start.
+   */
   @Prop() viewportMarginRight: string;
 
-  /** Adjust the root margin of the animation start. */
-
+  /**
+   * Adjust the root margin of the animation start.
+   */
   @Prop() viewportMarginTop: string;
 
-  /** X position the animation starts from. */
-
+  /**
+   * X position the animation starts from.
+   */
   @Prop() x: any = 0;
 
-  /** Y position the animation starts from. */
-
+  /**
+   * Y position the animation starts from.
+   */
   @Prop() y: any = 0;
 
-  /** Causes the animation to go back and forth, alternating backward and forward on each repeat. */
-
+  /**
+   * Causes the animation to go back and forth, alternating backward and forward on each repeat.
+   */
   @Prop() yoyo: boolean;
 
   @Prop({ reflect: true }) display: string = 'block';
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxAnimateDidLoad' })
   spxAnimateDidLoad: EventEmitter;
@@ -122,8 +142,9 @@ export class SpxAnimate {
   componentDidLoad() {
     globalComponentDidLoad(this.el);
 
-    /** Init loop to make sure the component fires correctly in Oxygen. */
-
+    /**
+     * Init loop to make sure the component fires correctly in Oxygen.
+     */
     const init = () => {
       this.elements = this.el.querySelectorAll(this.target);
 
@@ -169,14 +190,16 @@ export class SpxAnimate {
           this.tl.from(this.elements, options);
         }
 
-        /** Play immediately when not in viewport. */
-
+        /**
+         * Play immediately when not in viewport.
+         */
         if (!this.viewport) {
           this.tl.play();
         }
 
-        /** Check viewport before playing. */
-
+        /**
+         * Check viewport before playing.
+         */
         if (this.viewport) {
           const options = {
             rootMargin:
@@ -216,8 +239,9 @@ export class SpxAnimate {
     init();
   }
 
-  /** Plays animation. */
-
+  /**
+   * Plays animation.
+   */
   @Method()
   async play(from = 0, suppressEvents = true) {
     this.tl.play(from, suppressEvents);
@@ -228,16 +252,18 @@ export class SpxAnimate {
     this.componentDidLoad();
   }
 
-  /** Restarts animation. */
-
+  /**
+   * Restarts animation.
+   */
   @Method()
   async restart(includeDelay = false, suppressEvents = true) {
     this.tl.restart(includeDelay, suppressEvents);
   }
 
   render() {
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost = css({
       display: setVar(tag, 'display', this.display),
     });

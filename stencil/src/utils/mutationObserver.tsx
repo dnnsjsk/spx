@@ -1,7 +1,6 @@
 /**
  * Set up a mutation observer.
  */
-
 export const mutationObserver = (element, options, functionToRun) => {
   const callback = (mutationsList) => {
     mutationsList.forEach(() => {

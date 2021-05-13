@@ -21,12 +21,7 @@
       "description": "Target element.",
       "default": "'header'",
       "defaultValue": "'header'",
-      "tags": [
-        {
-          "text": "'.header1'",
-          "name": "editor"
-        }
-      ]
+      "tags": []
     }
   ],
   "events": [

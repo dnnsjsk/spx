@@ -43,8 +43,9 @@ export class SpxEdit {
 
   @Prop({ reflect: true }) type: string;
 
-  /** Watch editable state. */
-
+  /**
+   * Watch editable state.
+   */
   @Prop({ reflect: true }) editable: boolean;
 
   @Watch('editable')
@@ -56,8 +57,9 @@ export class SpxEdit {
     }
   }
 
-  /** Prevent enter key. */
-
+  /**
+   * Prevent enter key.
+   */
   @Listen('keydown')
   onClickEnter(e) {
     if (e.key === 'Enter') {
@@ -65,23 +67,26 @@ export class SpxEdit {
     }
   }
 
-  /** Discard changes. */
-
+  /**
+   * Discard changes.
+   */
   @Listen('spxEditButtonDiscard', { target: 'document' })
   onClickDiscard() {
     this.el.parentElement.innerHTML = this.originalText;
     this.editable = false;
   }
 
-  /** Save changes. */
-
+  /**
+   * Save changes.
+   */
   @Listen('spxEditButtonSave', { target: 'document' })
   onClickSave() {
     this.editable = false;
   }
 
-  /** Sets the new body string correctly on key press. */
-
+  /**
+   * Sets the new body string correctly on key press.
+   */
   @Listen('keyup')
   onClickKeyup() {
     this.typeText(this.el.innerText);
@@ -90,12 +95,14 @@ export class SpxEdit {
   componentDidLoad() {
     this.watchEditable();
 
-    /** Set inner text as state. */
-
+    /**
+     * Set inner text as state.
+     */
     this.originalText = this.el.innerText;
 
-    /** Set original body string. */
-
+    /**
+     * Set original body string.
+     */
     this.typeText(this.originalText);
   }
 
@@ -104,7 +111,6 @@ export class SpxEdit {
      * Update body string with a special identifier.
      * Is used to distinguish between content types in the AJAX call.
      */
-
     this.el.setAttribute(
       'body-string',
       '&' +
@@ -117,8 +123,9 @@ export class SpxEdit {
   }
 
   render() {
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost = css({
       display: setVar(tag, 'display', this.display),
       position: 'relative',

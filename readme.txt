@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 3.1.6 (unreleased) =
+* Code: add support for Twig files
+
 = 3.1.5 =
 * Notation: add possibility for animation to play after Animate is completed
 

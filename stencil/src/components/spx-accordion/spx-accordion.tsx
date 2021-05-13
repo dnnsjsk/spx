@@ -26,7 +26,6 @@ const tag = 'spx-accordion';
  * @slot content - Slot for the content.
  * @slot header - Slot for the header.
  */
-
 @Component({
   tag: 'spx-accordion',
 })
@@ -77,12 +76,14 @@ export class SpxAccordion {
 
   @Prop({ reflect: true }) contentColor: string = 'var(--spx-color-gray-900)';
 
-  /** Content text. */
-
+  /**
+   * Content text.
+   */
   @Prop({ reflect: true }) contentText: string = 'Default Content Text';
 
-  /** Content text tag. */
-
+  /**
+   * Content text tag.
+   */
   @Prop({ reflect: true }) contentTextTag: string = 'span';
 
   @Prop({ reflect: true }) contentTransitionDuration: string =
@@ -95,7 +96,6 @@ export class SpxAccordion {
    * Disables the animation.
    * Set this attribute if the accordion is starting hidden in the DOM.
    */
-
   @Prop({ reflect: true }) disableAnimation: boolean;
 
   @Prop({ reflect: true }) fontSize: string = s.fontSize;
@@ -108,7 +108,6 @@ export class SpxAccordion {
    * Space between header and content.
    * @CSS
    */
-
   @Prop({ reflect: true }) gap: string = '0.4em';
 
   @Prop({ reflect: true }) gapMin: number = 1;
@@ -121,65 +120,73 @@ export class SpxAccordion {
    * Gap between header text and icon.
    * @CSS
    */
-
   @Prop({ reflect: true }) headerGap: string = '0.4em';
 
   @Prop({ reflect: true }) headerGapMin: number = 0.6;
 
   @Prop({ reflect: true }) headerGapMax: number = 1;
 
-  /** Header text. */
-
+  /**
+   * Header text.
+   */
   @Prop({ reflect: true }) headerText: string = 'Default Header Text';
 
-  /** Header text when component is closed. */
+  /**
+   * Header text when component is closed.
+   */
 
   @Prop({ reflect: true }) headerTextOpen: string;
 
-  /** Header text tag. */
-
+  /**
+   * Header text tag.
+   */
   @Prop({ reflect: true }) headerTextTag: string = 'span';
 
-  /** Indicator icon. */
-
+  /**
+   * Indicator icon.
+   */
   @Prop({ reflect: true }) indicatorIcon: string = 'arrow-down';
 
-  /** Indicator icon type. */
-
+  /**
+   * Indicator icon type.
+   */
   @Prop({ reflect: true }) indicatorIconType: string = 'ionicons';
 
-  /** Indicator icon transform. */
-
+  /**
+   * Indicator icon transform.
+   */
   @Prop({ reflect: true }) indicatorIconTransform: string = 'rotate(180deg)';
 
-  /** Sets the ID to link different accordions together. */
-
+  /**
+   * Sets the ID to link different accordions together.
+   */
   @Prop({ reflect: true }) link: string;
 
   /**
    * Sets the type of link.
    * @choice 'open', 'close', 'toggle'
    */
-
   @Prop({ reflect: true }) linkType: string;
 
-  /** State of accordion. */
-
+  /**
+   * State of accordion.
+   */
   @Prop({ reflect: true, attribute: 'open' }) openState: boolean = false;
 
-  /** Reverse icon positioning. */
-
+  /**
+   * Reverse icon positioning.
+   */
   @Prop({ reflect: true }) reverse: boolean;
 
   /**
    * Styling.
    * @choice 'default', 'fluid', 'headless'
    */
-
   @Prop({ reflect: true }) styling: string = 'default';
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxAccordionDidLoad' })
   spxAccordionDidLoad: EventEmitter;
@@ -192,8 +199,9 @@ export class SpxAccordion {
   }
 
   componentWillLoad() {
-    /** Turn animation off if linked, since height can't be calculated otherwise. */
-
+    /**
+     * Turn animation off if linked, since height can't be calculated otherwise.
+     */
     if (this.link) {
       this.disableAnimation = true;
     }
@@ -213,17 +221,20 @@ export class SpxAccordion {
     this.spxAccordionDidLoad.emit({ target: 'document' });
   }
 
-  /** Header is clicked. */
-
+  /**
+   * Header is clicked.
+   */
   private clickHeader = () => {
-    /** Handle linked instances. */
-
+    /**
+     * Handle linked instances.
+     */
     if (this.link) {
       document
         .querySelectorAll('spx-accordion[link="' + this.link + '"]')
         .forEach((item) => {
-          /** Make sure not to toggle current element. */
-
+          /**
+           * Make sure not to toggle current element.
+           */
           if (item !== this.el) {
             if (this.linkType === 'open') {
               item.setAttribute('open', '');
@@ -242,8 +253,9 @@ export class SpxAccordion {
         });
     }
 
-    /** Set the correct heights.. */
-
+    /**
+     * Set the correct heights.
+     */
     if (this.openState) {
       if (!this.disableAnimation) {
         this.content.style.maxHeight = null;
@@ -257,15 +269,17 @@ export class SpxAccordion {
     }
   };
 
-  /** Closes the accordion. */
-
+  /**
+   * Closes the accordion.
+   */
   @Method()
   async close() {
     this.openState = false;
   }
 
-  /** Opens the accordion. */
-
+  /**
+   * Opens the accordion.
+   */
   @Method()
   async open() {
     this.openState = true;
@@ -276,16 +290,18 @@ export class SpxAccordion {
     this.componentDidLoad();
   }
 
-  /** Toggles the accordion. */
-
+  /**
+   * Toggles the accordion.
+   */
   @Method()
   async toggle() {
     this.openState = !this.openState;
   }
 
   render() {
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost =
       (this.styling === 'default' || this.styling === 'fluid') &&
       css({
@@ -302,8 +318,9 @@ export class SpxAccordion {
         flexDirection: 'column',
       });
 
-    /** Header styles. */
-
+    /**
+     * Header styles.
+     */
     const styleHeader =
       this.styling === 'default' || this.styling === 'fluid'
         ? css({
@@ -333,8 +350,9 @@ export class SpxAccordion {
         ? this.classHeader + ' ' + this.classHeaderActive
         : this.classHeader + ' ' + this.classHeaderInactive;
 
-    /** Header custom styles. */
-
+    /**
+     * Header custom styles.
+     */
     const styleHeaderIcon =
       this.styling === 'default' || this.styling === 'fluid'
         ? css({
@@ -356,8 +374,9 @@ export class SpxAccordion {
         ? this.classHeaderIcon + ' ' + this.classHeaderIconActive
         : this.classHeaderIcon + ' ' + this.classHeaderIconInactive;
 
-    /** Content styles. */
-
+    /**
+     * Content styles.
+     */
     const styleContent =
       this.styling === 'default' || this.styling === 'fluid'
         ? css({
@@ -401,8 +420,9 @@ export class SpxAccordion {
 
     return (
       <Host class={styleHost}>
-        {/** Header. */}
-
+        {/**
+         * Header.
+         */}
         <div
           tabindex="0"
           role="button"
@@ -410,8 +430,9 @@ export class SpxAccordion {
           onClick={this.clickHeader}
           class={!this.headerCustom && styleHeader}
         >
-          {/** Header custom. */}
-
+          {/**
+           * Header custom.
+           */}
           {!this.headerCustom && (
             <div class={styleHeaderIcon}>
               {this.indicatorIcon && this.indicatorIconType && (
@@ -445,8 +466,9 @@ export class SpxAccordion {
               )}
         </div>
 
-        {/** Content. */}
-
+        {/**
+         * Content.
+         */}
         <div
           class={styleContent}
           ref={(el) => (this.content = el as HTMLElement)}

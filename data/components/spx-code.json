@@ -256,10 +256,6 @@
         {
           "text": "'markup', 'css', 'php'",
           "name": "choice"
-        },
-        {
-          "text": "'css'",
-          "name": "editor"
         }
       ]
     }

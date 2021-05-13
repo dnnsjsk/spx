@@ -32,7 +32,6 @@ class spxPlugin {
 	 *
 	 * @since 1.0
 	 */
-
 	static function updater() {
 
 		$license_key = trim( get_option( self::$prefix . 'license_key' ) );
@@ -58,7 +57,6 @@ class spxPlugin {
 	 *
 	 * @since 1.0
 	 */
-
 	static function menu() {
 		add_submenu_page(
 			'tools.php',
@@ -77,7 +75,6 @@ class spxPlugin {
 	 *
 	 * @since 1.0
 	 */
-
 	static function page() {
 		$license = get_option( self::$prefix . 'license_key' );
 		$status  = get_option( self::$prefix . 'license_status' );
@@ -139,7 +136,6 @@ class spxPlugin {
 	 *
 	 * @since 1.0
 	 */
-
 	static function option() {
 		register_setting( self::$prefix . 'license', self::$prefix . 'license_key', array( __CLASS__, 'sanitize' ) );
 	}
@@ -149,7 +145,6 @@ class spxPlugin {
 	 *
 	 * @since 1.0
 	 */
-
 	function sanitize( $new ) {
 		$old = get_option( self::$prefix . 'license_key' );
 		if ( $old && $old != $new ) {
@@ -164,7 +159,6 @@ class spxPlugin {
 	 *
 	 * @since 1.0
 	 */
-
 	static function activate() {
 
 		// listen for our activate button to be clicked
@@ -282,7 +276,6 @@ class spxPlugin {
 	 *
 	 * @since 1.0
 	 */
-
 	static function deactivate() {
 
 		// listen for our activate button to be clicked
@@ -354,7 +347,6 @@ class spxPlugin {
 	 *
 	 * @since 1.0
 	 */
-
 	static function check() {
 
 		global $wp_version;
@@ -397,7 +389,6 @@ class spxPlugin {
 	 *
 	 * @since 1.0
 	 */
-
 	static function notice() {
 	if ( isset( $_GET['sl_activation'] ) && ! empty( $_GET['message'] ) ) {
 

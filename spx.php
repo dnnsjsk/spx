@@ -5,7 +5,7 @@
  * Plugin URI: https://spx.dev
  * Description: An ever growing collection of flexible web components to supercharge your workflow.
  * Author: Fabrikat
- * Version: 3.1.5
+ * Version: 3.1.6
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */
@@ -25,7 +25,6 @@ define( 'SPX_LICENSE_PAGE', 'spx-license' );
  * @date    15/07/2020
  * @since   1.0.0
  */
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
@@ -36,7 +35,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @date    15/07/2020
  * @since   1.0.0
  */
-
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/build.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/prepare.php';
 require_once plugin_dir_path( __FILE__ ) . 'includes/classes/get.php';
@@ -64,5 +62,4 @@ spxPlugin::init( 'spx_', SPX_ITEM_NAME, SPX_STORE_URL, SPX_ITEM_ID, SPX_LICENSE_
  * @date    15/07/2020
  * @since   1.0.0
  */
-
 new Init();

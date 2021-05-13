@@ -1,7 +1,6 @@
 /**
  * Make every first letter from string uppercase.
  */
-
 export const titleCase = (str) => {
   const splitStr = str.toLowerCase().split(' ');
   for (let i = 0; i < splitStr.length; i++) {

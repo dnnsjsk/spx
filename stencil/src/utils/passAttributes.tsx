@@ -3,7 +3,6 @@ import { startsWith } from 'lodash-es';
 /**
  * Pass attributes to nested components.
  */
-
 export const passAttributes = (selector, element, component) => {
   const elements = selector.querySelectorAll(component);
 

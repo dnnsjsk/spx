@@ -20,7 +20,6 @@ import { getGallery } from '../../utils/getGallery';
 /**
  * Arrange images in a masonry layout.
  */
-
 @Component({
   tag: 'spx-masonry',
 })
@@ -33,56 +32,57 @@ export class SpxMasonry {
   @State() imagesArray: Array<string>;
   @State() macyState;
 
-  /** Columns for different screen sizes. Example value: 1000:3;600:2 - this will switch to a three column layout when the screen size is under 1000px and to a two column layout under 600px. */
-
+  /**
+   * Columns for different screen sizes. Example value: 1000:3;600:2 - this will switch to a three column layout when the screen size is under 1000px and to a two column layout under 600px.
+   */
   @Prop({ reflect: true }) bpColumns: string;
 
-  /** Number of columns. */
-
+  /**
+   * Number of columns.
+   */
   @Prop({ reflect: true }) columns: number = 4;
 
   /**
    * Gap between images.
    * @CSS
    */
-
   @Prop({ reflect: true }) gap: string = '10px';
 
   /**
    * WordPress media size when using the helper function..
    */
-
   @Prop({ reflect: true }) imageSize: string;
 
   /**
    * Gets images from an ACF or Metabox field.
    * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
    */
-
   @Prop({ reflect: true }) images: string;
 
   /**
    * Gets images from an ACF or Metabox field.
    * @choice 'acf', 'mb'
    */
-
   @Prop({ reflect: true }) imagesSrc: string;
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxMasonryDidLoad' })
   spxMasonryDidLoad: EventEmitter;
 
-  /** Watch images prop and parse to iteratable array. */
-
+  /**
+   * Watch images prop and parse to iteratable array.
+   */
   @Watch('images')
   imagesChanged(newValue: string) {
     if (newValue) this.imagesArray = JSON.parse(newValue);
   }
 
-  /** Watch columns and restart Macy. */
-
+  /**
+   * Watch columns and restart Macy.
+   */
   @Watch('columns')
   columnsChanged() {
     this.macyState.remove();
@@ -90,8 +90,9 @@ export class SpxMasonry {
   }
 
   componentWillLoad() {
-    /** If image prop is set. */
-
+    /**
+     * If image prop is set.
+     */
     if (this.images) {
       this.imagesChanged(this.images);
     }
@@ -100,44 +101,51 @@ export class SpxMasonry {
   componentDidLoad() {
     globalComponentDidLoad(this.el);
 
-    /** Create object for breakpoint attribute. */
-
+    /**
+     * Create object for breakpoint attribute.
+     */
     if (this.bpColumns) {
       this.bpColumnsObject = JSON.parse(
         '{' + this.bpColumns.replace(/([0-9]+)/g, '"$1"') + '}'
       );
     }
 
-    /** Init Macy. */
-
+    /**
+     * Init Macy.
+     */
     this.initMacy();
 
-    /** Wrap all children in div. */
-
+    /**
+     * Wrap all children in div.
+     */
     Array.from(this.container.children).forEach((item) => {
       wrap(item, document.createElement('div'));
     });
 
-    /** Emit event to document when Masonry finished loading. */
-
+    /**
+     * Emit event to document when Masonry finished loading.
+     */
     this.spxMasonryDidLoad.emit({ target: 'document' });
   }
 
-  /** After update lifecycle. */
-
+  /**
+   * After update lifecycle.
+   */
   componentDidUpdate() {
     this.reload();
     this.recalc();
   }
 
-  /** Remove Macy on disconnect. */
-
+  /**
+   * Remove Macy on disconnect.
+   */
   disconnectedCallback() {
     this.macyState.remove();
   }
 
-  /** Init Macy. */
-
+  /**
+   * Init Macy.
+   */
   private initMacy() {
     this.macyState = Macy({
       container: this.container,
@@ -166,13 +174,15 @@ export class SpxMasonry {
   }
 
   render() {
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost = css({
       display: 'block',
 
-      /** Convert gap to correct padding for elements. */
-
+      /**
+       * Convert gap to correct padding for elements.
+       */
       'div > div': {
         padding:
           'var(--spx-masonry-gap, ' +
@@ -195,11 +205,13 @@ export class SpxMasonry {
       },
     });
 
-    /** Container styles. */
-
+    /**
+     * Container styles.
+     */
     const styleContainer = css({
-      /** Adjust container margin to make up for element paddings. */
-
+      /**
+       * Adjust container margin to make up for element paddings.
+       */
       margin:
         'calc(var(--spx-masonry-gap, ' +
         this.gap +

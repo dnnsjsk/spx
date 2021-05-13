@@ -20,7 +20,6 @@ const tag = 'spx-class-toggle';
 /**
  * Toggle CSS classes on any element in the document.
  */
-
 @Component({
   tag: 'spx-class-toggle',
 })
@@ -33,20 +32,24 @@ export class SpxClassToggle {
 
   @Prop({ reflect: true }) display: string = 'block';
 
-  /** Specify a local storage item, so the toggle state will be remembered when the user visits the site again. */
-
+  /**
+   * Specify a local storage item, so the toggle state will be remembered when the user visits the site again.
+   */
   @Prop({ reflect: true }) local: string;
 
-  /** Target element. Can take any querySelector value. (id, class, tag etc.) If none is set it will default to the first element inside. */
-
+  /**
+   * Target element. Can take any querySelector value. (id, class, tag etc.) If none is set it will default to the first element inside.
+   */
   @Prop({ reflect: true }) target: string;
 
-  /** List of classes that should be toggled. */
-
+  /**
+   * List of classes that should be toggled.
+   */
   @Prop({ reflect: true }) toggle: string = 'spx-class-toggle--active';
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxClassToggleDidLoad' })
   spxClassToggleDidLoad: EventEmitter;
@@ -61,8 +64,9 @@ export class SpxClassToggle {
 
     this.createToggleArray();
 
-    /** Check if local storage is set. */
-
+    /**
+     * Check if local storage is set.
+     */
     if (this.local) {
       if (localStorage.getItem(this.local)) {
         this.addClasses();
@@ -72,14 +76,16 @@ export class SpxClassToggle {
     this.spxClassToggleDidLoad.emit({ target: 'document' });
   }
 
-  /** Create an array of classes from the component attribute. */
-
+  /**
+   * Create an array of classes from the component attribute.
+   */
   private createToggleArray = () => {
     this.classesArray = this.toggle.replace(/ /g, ',').split(',');
   };
 
-  /** Toggle classes. */
-
+  /**
+   * Toggle classes.
+   */
   private toggleClasses = () => {
     this.classesArray.forEach((item) => {
       (this.target
@@ -101,8 +107,9 @@ export class SpxClassToggle {
     });
   };
 
-  /** Add classes. */
-
+  /**
+   * Add classes.
+   */
   private addClasses() {
     this.classesArray.forEach((item) => {
       (this.target
@@ -124,8 +131,9 @@ export class SpxClassToggle {
   }
 
   render() {
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost = css({
       display: setVar(tag, 'display', this.display),
     });

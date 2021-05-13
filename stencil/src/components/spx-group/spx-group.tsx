@@ -20,7 +20,6 @@ const tag = 'spx-group';
  * Pass attributes to all inner (spx) child elements.
  * All attributes that start with g-* will be passed on to child elements.
  */
-
 @Component({
   tag: 'spx-group',
 })
@@ -30,12 +29,14 @@ export class SpxGroup {
 
   @Prop({ reflect: true }) display: string = 'block';
 
-  /** Specifies a target element. */
-
+  /**
+   * Specifies a target element.
+   */
   @Prop({ reflect: true }) target: string;
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxGroupDidLoad' })
   spxGroupDidLoad: EventEmitter;
@@ -45,8 +46,9 @@ export class SpxGroup {
 
     this.forwardAttributes();
 
-    /** Set up mutation observer. */
-
+    /**
+     * Set up mutation observer.
+     */
     const observer = new MutationObserver((mutations) => {
       mutations.forEach(() => {
         this.forwardAttributes();
@@ -61,8 +63,9 @@ export class SpxGroup {
   }
 
   private forwardAttributes() {
-    /** Function to filter elements. */
-
+    /**
+     * Function to filter elements.
+     */
     const getAllTagMatches = (regEx) => {
       return Array.prototype.slice
         .call(this.el.querySelectorAll('*'))
@@ -71,14 +74,16 @@ export class SpxGroup {
         });
     };
 
-    /** Get all tag matches. */
-
+    /**
+     * Get all tag matches.
+     */
     const elements = this.target
       ? getAllTagMatches(new RegExp(this.target, 'i'))
       : getAllTagMatches(/^spx/i);
 
-    /** Loop matches. */
-
+    /**
+     * Loop matches.
+     */
     for (
       let att, i = 0, atts = this.el.attributes, n = atts.length;
       i < n;
@@ -99,8 +104,9 @@ export class SpxGroup {
   }
 
   render() {
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost = css({
       display: setVar(tag, 'display', this.display),
     });

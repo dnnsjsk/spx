@@ -1,1 +1,0 @@
-import{a}from"./p-9403a412.js";const o=o=>a({key:"spx",container:o});export{o as e}

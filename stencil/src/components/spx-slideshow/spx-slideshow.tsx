@@ -22,7 +22,6 @@ const tag = 'spx-slideshow';
 /**
  * Continuously playing slideshow.
  */
-
 @Component({
   tag: 'spx-slideshow',
   shadow: true,
@@ -42,58 +41,53 @@ export class SpxSlideshow {
    * Duration of slideshow to complete one cycle.
    * @CSS
    */
-
   @Prop({ reflect: true }) duration: string = '60s';
 
   /**
    * Gap between inner elements.
    * @CSS
    */
-
   @Prop({ reflect: true }) gap: string = '1em';
 
   /**
    * Gets images from an ACF or Metabox field.
    * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
    */
-
   @Prop({ reflect: true }) images: string;
 
   /**
    * WordPress media size when using the helper function..
    */
-
   @Prop({ reflect: true }) imageSize: string;
 
   /**
    * Gets images from an ACF or Metabox field.
    * @choice 'acf', 'mb'
    */
-
   @Prop({ reflect: true }) imagesSrc: string;
 
   /**
    * Max width of inner elements.
    * @CSS
    */
-
   @Prop({ reflect: true }) maxWidth: string = '350px';
 
   /**
    * If not set with this attribute, overflow should be set on the parent element.
    * @CSS
    */
-
   @Prop({ reflect: true }) overflow: string;
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxSlideshowDidLoad' })
   spxSlideshowDidLoad: EventEmitter;
 
-  /** Watch images prop and parse to array. */
-
+  /**
+   * Watch images prop and parse to array.
+   */
   @Watch('images')
   imagesChanged(newValue: string) {
     if (newValue) this.imagesArray = JSON.parse(newValue);
@@ -107,8 +101,9 @@ export class SpxSlideshow {
   }
 
   componentWillLoad() {
-    /** If image prop is set. */
-
+    /**
+     * If image prop is set.
+     */
     if (this.images) {
       this.imagesChanged(this.images);
     }
@@ -130,8 +125,9 @@ export class SpxSlideshow {
   render() {
     const { css, keyframes } = emotion(this.el.shadowRoot);
 
-    /** Animation. */
-
+    /**
+     * Animation.
+     */
     const kf = keyframes({
       '0%': {
         transform: 'translate3d(0px, 0px, 0px)',
@@ -146,20 +142,23 @@ export class SpxSlideshow {
       },
     });
 
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost = cssHost({
       display: setVar(tag, 'display', this.display),
     });
 
-    /** Shadow Host styles. */
-
+    /**
+     * Shadow Host styles.
+     */
     const styleShadowHost = css({
       overflow: setVar(tag, 'overflow', this.overflow),
     });
 
-    /** Wrap styles. */
-
+    /**
+     * Wrap styles.
+     */
     const styleWrap = css({
       animationName: kf,
       animationDuration: setVar(tag, 'speed', this.duration),
@@ -178,8 +177,9 @@ export class SpxSlideshow {
       },
     });
 
-    /** Slideshow style. */
-
+    /**
+     * Slideshow style.
+     */
     const slideshowStyle = css({
       display: 'grid',
       gridAutoFlow: 'column',

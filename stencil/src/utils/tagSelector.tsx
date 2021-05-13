@@ -4,7 +4,6 @@ import { h } from '@stencil/core';
 /**
  * Tag selector.
  */
-
 export const tagSelector = (condition, tag, text, slot, style = null) => {
   return condition ? (
     tag === 'h1' ? (

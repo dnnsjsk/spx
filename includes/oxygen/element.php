@@ -6,7 +6,6 @@
  * @date  22/09/2020
  * @since 2.0
  */
-
 if ( ! class_exists( 'spxOxyEl' ) ) {
 
 	class spxOxyEl extends OxyEl {

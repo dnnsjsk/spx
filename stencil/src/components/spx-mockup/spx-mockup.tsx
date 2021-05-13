@@ -20,7 +20,6 @@ const tag = 'spx-mockup';
 /**
  * Display device mockups around your content.
  */
-
 @Component({
   tag: 'spx-mockup',
   styleUrl: 'spx-mockup.css',
@@ -41,61 +40,56 @@ export class SpxMockup {
    * Samsung S8 color.
    * @choice 'black', 'blue'
    */
-
   @Prop({ reflect: true }) colorGalaxyS8: string = 'black';
 
   /**
    * Google Pixel color.
    * @choice 'silver', 'black', 'blue'
    */
-
   @Prop({ reflect: true }) colorGooglePixel: string = 'silver';
 
   /**
    * iPad Pro color.
    * @choice 'silver', 'gold', 'rosegold', 'spacegray'
    */
-
   @Prop({ reflect: true }) colorIpadPro: string = 'silver';
 
   /**
    * iPhone 8 color.
    * @choice 'silver', 'gold', 'spacegray'
    */
-
   @Prop({ reflect: true }) colorIphone8: string = 'silver';
 
   /**
    * MacBook color.
    * @choice 'silver', 'gold', 'rosegold', 'spacegray'
    */
-
   @Prop({ reflect: true }) colorMacbook: string = 'silver';
 
   /**
    * MacBook Pro color.
    * @choice 'silver', 'spacegray'
    */
-
   @Prop({ reflect: true }) colorMacbookPro: string = 'silver';
 
   @Prop({ reflect: true }) display: string = 'inline-block';
 
   @Prop({ reflect: true }) imagePosition: string = '50% 50%';
 
-  /** Image src if no inner slot is used. */
-
+  /**
+   * Image src if no inner slot is used.
+   */
   @Prop({ reflect: true }) src: string = 'https://picsum.photos/400/1200';
 
   /**
    * Device type.
    * @choice 'iphone-8', 'iphone-x', 'google-pixel-2-xl', 'google-pixel', 'galaxy-s8', 'ipad-pro', 'surface-pro', 'surface-book', 'macbook', 'macbook-pro', 'surface-studio', 'imac-pro', 'apple-watch'
    */
-
   @Prop({ reflect: true }) type: string = 'iphone-8';
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxMockupDidLoad' })
   spxMockupDidLoad: EventEmitter;
@@ -108,13 +102,15 @@ export class SpxMockup {
   componentDidLoad() {
     globalComponentDidLoad(this.el);
 
-    /** Assign states. */
-
+    /**
+     * Assign states.
+     */
     this.mockup = this.el.querySelector('.spx-mockup');
     this.parent = this.el.querySelector('.spx-mockup-wrap');
 
-    /** Resize mockup. */
-
+    /**
+     * Resize mockup.
+     */
     this.handleResize();
 
     this.spxMockupDidLoad.emit({ target: 'document' });
@@ -124,8 +120,9 @@ export class SpxMockup {
     this.handleResize();
   }
 
-  /** Resize function to keep src element in proportion. */
-
+  /**
+   * Resize function to keep src element in proportion.
+   */
   private handleResize() {
     const ratio = this.parent.offsetWidth / this.mockup.offsetWidth;
     this.mockup.style.transform = 'scale(calc((' + ratio + '))';
@@ -139,8 +136,9 @@ export class SpxMockup {
   }
 
   render() {
-    /** Set the correct color. */
-
+    /**
+     * Set the correct color.
+     */
     const color =
       this.type === 'galaxy-s8'
         ? this.colorGalaxyS8
@@ -156,16 +154,18 @@ export class SpxMockup {
         ? this.colorMacbookPro
         : null;
 
-    /** Hist styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost = css({
       position: 'relative',
       display: setVar(tag, 'display', this.display),
       maxWidth: '100%',
     });
 
-    /** Image styles. */
-
+    /**
+     * Image styles.
+     */
     const styleImg = css({
       width: '100%',
       height: '100%',

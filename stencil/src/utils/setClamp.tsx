@@ -1,7 +1,6 @@
 /**
  * Set clamp.
  */
-
 export const setClamp = (
   tag,
   type,

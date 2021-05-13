@@ -19,7 +19,6 @@ const tag = 'spx-text-path';
 /**
  * Write text along a predefined path.
  */
-
 @Component({
   tag: 'spx-text-path',
 })
@@ -27,24 +26,29 @@ export class SpxTextPath {
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxTextPathElement;
 
-  /** Text rotation amount. */
-
+  /**
+   * Text rotation amount.
+   */
   @Prop({ reflect: true }) textRotate: number;
 
-  /** Text rotation animation duration. */
-
+  /**
+   * Text rotation animation duration.
+   */
   @Prop({ reflect: true }) textRotationDuration: number;
 
-  /** Text to be shown. */
-
+  /**
+   * Text to be shown.
+   */
   @Prop({ reflect: true }) text: string;
 
-  /** Text color. */
-
+  /**
+   * Text color.
+   */
   @Prop({ reflect: true }) textColor: string;
 
-  /** Text size. */
-
+  /**
+   * Text size.
+   */
   @Prop({ reflect: true }) textSize: string = 'clamp(16px, 3vw, 24px)';
 
   // eslint-disable-next-line @stencil/decorators-style
@@ -68,15 +72,17 @@ export class SpxTextPath {
   }
 
   render() {
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost = css({
       display: 'block',
       position: 'relative',
     });
 
-    /** Slot styles. */
-
+    /**
+     * Slot styles.
+     */
     const styleSlot = css({
       display: 'relative',
       height: '100%',
@@ -85,8 +91,9 @@ export class SpxTextPath {
         'path("M 150, 150 m -120, 0 a 120,120 0 0,1 240,0 a 120,120 0 0,1 -240,0")',
     });
 
-    /** Slot styles. */
-
+    /**
+     * Slot styles.
+     */
     const styleTextPath = css({
       transform: 'var(--text-transform)',
       transformOrigin: 'center',

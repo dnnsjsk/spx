@@ -21,7 +21,6 @@ const tag = 'spx-share';
 /**
  * Social share buttons. Currently includes Facebook, Twitter, Whatsapp and E-Mail.
  */
-
 @Component({
   tag: 'spx-share',
 })
@@ -47,14 +46,12 @@ export class SpxShare {
    * Gap between buttons.
    * @CSS
    */
-
   @Prop({ reflect: true }) itemColor: string;
 
   /**
    * Filter hover.
    * @CSS
    */
-
   @Prop({ reflect: true }) itemFilterHover: string =
     'brightness(110%) saturate(120%)';
 
@@ -62,7 +59,6 @@ export class SpxShare {
    * Gap between buttons.
    * @CSS
    */
-
   @Prop({ reflect: true }) itemGap: string = '0.5em';
 
   @Prop({ reflect: true }) itemGapMin: number = 0.4;
@@ -91,26 +87,27 @@ export class SpxShare {
    * Styling.
    * @choice 'default', 'fluid', 'headless'
    */
-
   @Prop({ reflect: true }) styling: string = 'default';
 
-  /** Button href target. */
-
+  /**
+   * Button href target.
+   */
   @Prop({ reflect: true }) target: string = '_blank';
 
   /**
    * Button theme.
    * @choice 'default', 'outline', 'minimal'
    */
-
   @Prop({ reflect: true }) theme: string = 'default';
 
-  /** Render buttons vertically. */
-
+  /**
+   * Render buttons vertically.
+   */
   @Prop({ reflect: true }) vertical: boolean;
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxShareDidLoad' })
   spxShareDidLoad: EventEmitter;
@@ -129,8 +126,9 @@ export class SpxShare {
   }
 
   render() {
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost =
       (this.styling === 'default' || this.styling === 'fluid') &&
       css({
@@ -149,8 +147,9 @@ export class SpxShare {
         ),
       });
 
-    /** Link styles. */
-
+    /**
+     * Link styles.
+     */
     const styleItem =
       this.styling === 'default' || this.styling === 'fluid'
         ? css({
@@ -212,8 +211,9 @@ export class SpxShare {
           })
         : this.classItem;
 
-    /** Facebook styles. */
-
+    /**
+     * Facebook styles.
+     */
     const styleFacebook = css({
       background:
         this.theme === 'default' && !this.itemBackground
@@ -230,8 +230,9 @@ export class SpxShare {
       border: this.theme === 'outline' && '1px solid #1877F2',
     });
 
-    /** Twitter styles. */
-
+    /**
+     * Twitter styles.
+     */
     const styleTwitter = css({
       background:
         this.theme === 'default' && !this.itemBackground
@@ -248,8 +249,9 @@ export class SpxShare {
       border: this.theme === 'outline' && '1px solid #1DA1F2',
     });
 
-    /** Email styles. */
-
+    /**
+     * Email styles.
+     */
     const styleEmail = css({
       background:
         this.theme === 'default' && !this.itemBackground
@@ -266,8 +268,9 @@ export class SpxShare {
       border: this.theme === 'outline' && '1px solid #c6c6c6',
     });
 
-    /** WhatsApp styles. */
-
+    /**
+     * WhatsApp styles.
+     */
     const styleWhatsapp = css({
       background:
         this.theme === 'default' && !this.itemBackground
@@ -286,8 +289,9 @@ export class SpxShare {
 
     return (
       <Host class={styleHost}>
-        {/** Facebook. */}
-
+        {/**
+         * Facebook.
+         */}
         <a
           class={css([styleItem, styleFacebook])}
           target={this.target}
@@ -298,8 +302,9 @@ export class SpxShare {
           <spx-icon icon="logo-facebook" />
         </a>
 
-        {/** Twitter. */}
-
+        {/**
+         * Twitter.
+         */}
         <a
           class={css([styleItem, styleTwitter])}
           target={this.target}
@@ -308,8 +313,9 @@ export class SpxShare {
           <spx-icon icon="logo-twitter" />
         </a>
 
-        {/** WhatsApp. */}
-
+        {/**
+         * WhatsApp.
+         */}
         <a
           class={css([styleItem, styleWhatsapp])}
           target={this.target}
@@ -318,8 +324,9 @@ export class SpxShare {
           <spx-icon icon="logo-whatsapp" />
         </a>
 
-        {/** Email. */}
-
+        {/**
+         * Email.
+         */}
         <a
           class={css([styleItem, styleEmail])}
           target={this.target}

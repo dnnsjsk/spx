@@ -22,7 +22,6 @@ const tag = 'spx-offset';
  * It comes in handy when dealing with a fixed header and is used on this site.
  * Simply wrap your main content container with it and select a target element. The distance will adjust on screen resize.
  */
-
 @Component({
   tag: 'spx-offset',
 })
@@ -34,19 +33,20 @@ export class SpxOffset {
 
   /**
    * Target element.
-   * @editor '.header1'
    */
-
   @Prop({ reflect: true }) target: string = 'header';
 
-  /** Fires after component has loaded. */
+  /**
+   * Fires after component has loaded.
+   */
 
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxOffsetDidLoad' })
   spxOffsetDidLoad: EventEmitter;
 
-  /** Listen to window resize. */
-
+  /**
+   * Listen to window resize.
+   */
   @Listen('resize', { target: 'window' })
   onResize() {
     offsetHeader(this.el, this.target);
@@ -63,8 +63,9 @@ export class SpxOffset {
     this.onResize();
   }
 
-  /** Recalculate distance. */
-
+  /**
+   * Recalculate distance.
+   */
   @Method()
   async recalc() {
     this.onResize();
@@ -76,8 +77,9 @@ export class SpxOffset {
   }
 
   render() {
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost = css({
       display: setVar(tag, 'display', this.display),
     });

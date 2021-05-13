@@ -19,7 +19,6 @@ const tag = 'spx-icon';
 /**
  * Wrapper component for different kinds of icon sets. Currently comes included with Ionicons.
  */
-
 @Component({
   tag: 'spx-icon',
 })
@@ -29,19 +28,20 @@ export class SpxIcon {
 
   @Prop({ reflect: true }) color: string = 'inherit';
 
-  /** Icon code. */
-
+  /**
+   * Icon code.
+   */
   @Prop({ reflect: true }) icon: string;
 
   /**
    * Icon type.
    * @choice 'ionicons', 'caret'
    */
-
   @Prop({ reflect: true }) type: string = 'ionicons';
 
-  /** Icon size. */
-
+  /**
+   * Icon size.
+   */
   @Prop({ reflect: true }) size: string = '1em';
 
   @Prop({ reflect: true }) sizeMin: number = 0.8;
@@ -52,11 +52,11 @@ export class SpxIcon {
    * Styling.
    * @choice 'default', 'fluid'
    */
-
   @Prop({ reflect: true }) styling: string = 'default';
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxIconDidLoad' })
   spxIconDidLoad: EventEmitter;
@@ -68,16 +68,18 @@ export class SpxIcon {
   }
 
   render() {
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost = css({
       display: 'inline-flex',
       alignItems: 'center',
       justifyContent: 'center',
     });
 
-    /** Ionicon styles. */
-
+    /**
+     * Ionicon styles.
+     */
     const styleIonicon = css({
       color: setVar(tag, 'color', this.color),
       fontSize: setVarOrClamp(
@@ -90,8 +92,9 @@ export class SpxIcon {
       ),
     });
 
-    /** Caret styles. */
-
+    /**
+     * Caret styles.
+     */
     const styleIcon = css({
       fontSize: '0.7em',
     });

@@ -25,8 +25,9 @@ export class SpxLoader {
 
   @Prop({ reflect: true }) speed: string = '1.5s';
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxLoaderDidLoad' })
   spxLoaderDidLoad: EventEmitter;
@@ -38,8 +39,9 @@ export class SpxLoader {
   }
 
   render() {
-    /** Animation. */
-
+    /**
+     * Animation.
+     */
     const kf = keyframes({
       from: {
         transform: 'rotate(0deg)',
@@ -49,8 +51,9 @@ export class SpxLoader {
       },
     });
 
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost = css({
       display: 'block',
       width: 'max-content',

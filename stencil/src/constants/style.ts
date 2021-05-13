@@ -2,9 +2,8 @@ import { setVar } from '../utils/setVar';
 import { setVarOrClamp } from '../utils/setVarOrClamp';
 
 /**
-  Defaults.
+ * Defaults.
  */
-
 export const bpMobileWidth = 768;
 export const fontFamily = 'var(--spx-font-family)';
 export const fontSize = 'var(--spx-font-size)';
@@ -16,7 +15,6 @@ export const transitionTimingFunction = 'var(--spx-transition-timing-function)';
 /**
  * Positioning properties.
  */
-
 export const position = (component, array, distanceX, distanceY) => ({
   top:
     array[0] === 'top' &&
@@ -40,7 +38,6 @@ export const position = (component, array, distanceX, distanceY) => ({
 /**
  * Text constants.
  */
-
 export const text = (
   tag,
   type,

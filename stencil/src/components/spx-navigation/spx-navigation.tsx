@@ -24,7 +24,6 @@ const tag = 'spx-navigation';
 /**
  * Render a complete WordPress menu with nested submenus and automatic positioning.
  */
-
 @Component({
   tag: 'spx-navigation',
   shadow: true,
@@ -43,14 +42,12 @@ export class SpxNavigation {
    * Child menu border-radius.
    * @CSS
    */
-
   @Prop({ reflect: true }) childBorderRadius: string = s.borderRadius;
 
   /**
    * Child menu box-shadow.
    * @CSS
    */
-
   @Prop({ reflect: true }) childBoxShadow: string =
     '0 3px 10px 0 rgba(0,0,0,0.05)';
 
@@ -58,29 +55,28 @@ export class SpxNavigation {
    * Gap between nested child menus.
    * @CSS
    */
-
   @Prop({ reflect: true }) childChildGap: string = '0.8em';
 
   /**
    * Gap between top level menu items and child menus.
    * @CSS
    */
-
   @Prop({ reflect: true }) childGap: string = '0.5em';
 
-  /** Indicator icon.. */
-
+  /**
+   * Indicator icon.
+   */
   @Prop({ reflect: true }) childIcon: string = 'arrow-down';
 
-  /** Indicator icon type. */
-
+  /**
+   * Indicator icon type.
+   */
   @Prop({ reflect: true }) childIconType: string = 'ionicons';
 
   /**
    * Gap between child menu indicator and text.
    * @CSS
    */
-
   @Prop({ reflect: true }) childIndicatorGap: string = '0.2em';
 
   @Prop({ reflect: true }) childItemBackground: string = '#ffffff';
@@ -100,7 +96,6 @@ export class SpxNavigation {
    * @CSS
    * @choice 'start', 'end'
    */
-
   @Prop({ reflect: true }) childPlacement: string = 'start';
 
   @Prop({ reflect: true }) fontSize: string = 'clamp(18px, 1.6vw, 20px)';
@@ -111,31 +106,35 @@ export class SpxNavigation {
   @Prop({ reflect: true }) itemTransitionTimingFunction: string =
     s.transitionTimingFunction;
 
-  /** Underlines all links. */
-
+  /**
+   * Underlines all links.
+   */
   @Prop({ reflect: true }) itemUnderline: boolean;
 
-  /** Underlines all links on hover. */
-
+  /**
+   * Underlines all links on hover.
+   */
   @Prop({ reflect: true }) itemUnderlineHover: boolean;
 
   /**
    * Renders a WordPress menu.
    * @helper &lt;?php spx\Get::navigation("myMenu") ?>
    */
-
   @Prop({ reflect: true }) menu: string;
 
-  /** Mobile breakpoint. */
-
+  /**
+   * Mobile breakpoint.
+   */
   @Prop({ reflect: true }) mobile: number = s.bpMobileWidth;
 
-  /** Mobile button icon. */
-
+  /**
+   * Mobile button icon.
+   */
   @Prop({ reflect: true }) mobileIcon: string;
 
-  /** Mobile button icon type. */
-
+  /**
+   * Mobile button icon type.
+   */
   @Prop({ reflect: true }) mobileIconType: string = 'ionicons';
 
   @Prop({ reflect: true }) mobileItemBackground: string = '#ffffff';
@@ -158,7 +157,6 @@ export class SpxNavigation {
    * @CSS
    * @choice 'start', 'end'
    */
-
   @Prop({ reflect: true }) mobilePlacement: string = 'start';
 
   @Prop({ reflect: true }) parentItemBackground: string = '#ffffff';
@@ -176,30 +174,34 @@ export class SpxNavigation {
    * Gap between parent menu items.
    * @CSS
    */
-
   @Prop({ reflect: true }) parentItemGap: string = '0.4em';
 
   @Prop({ reflect: true }) parentItemPadding: string = '0.6em';
 
-  /** Renders menu vertically. */
+  /**
+   * Renders menu vertically.
+   */
 
   @Prop({ reflect: true }) vertical: boolean;
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxNavigationDidLoad' })
   spxNavigationDidLoad: EventEmitter;
 
-  /** Watch menu prop and parse to iteratable array. */
-
+  /**
+   * Watch menu prop and parse to iteratable array.
+   */
   @Watch('menu')
   navigationChanged(newValue: string) {
     if (newValue) this.menuArray = JSON.parse(newValue);
   }
 
-  /** Init popper on mouse/touch enter. */
-
+  /**
+   * Init popper on mouse/touch enter.
+   */
   @Listen('ontouchstart')
   @Listen('mouseenter')
   @Listen('focusin')
@@ -212,32 +214,37 @@ export class SpxNavigation {
     }
   }
 
-  /** Listen to window resize. */
-
+  /**
+   * Listen to window resize.
+   */
   @Listen('resize', { target: 'window' })
   onResize() {
     this.mobileBp = window.innerWidth < this.mobile;
   }
 
   componentWillLoad() {
-    /** Check if is mobile view. */
-
+    /**
+     * Check if is mobile view.
+     */
     this.onResize();
 
-    /** If menu prop is set. */
-
+    /**
+     * If menu prop is set.
+     */
     this.navigationChanged(this.menu);
   }
 
   componentDidLoad() {
     globalComponentDidLoad(this.el);
 
-    /** Sort menu items. */
-
+    /**
+     * Sort menu items.
+     */
     this.sortMenuItem();
 
-    /** Emit event after render. */
-
+    /**
+     * Emit event after render.
+     */
     this.spxNavigationDidLoad.emit({ target: 'document' });
   }
 
@@ -245,8 +252,9 @@ export class SpxNavigation {
     this.sortMenuItem();
   }
 
-  /** Render menu function. */
-
+  /**
+   * Render menu function.
+   */
   private renderMenu(obj, type, mobile) {
     function checkMobile() {
       if (mobile) {
@@ -311,8 +319,9 @@ export class SpxNavigation {
     );
   }
 
-  /** Sort menu items depending on menu order. */
-
+  /**
+   * Sort menu items depending on menu order.
+   */
   private sortMenuItem() {
     const dataItems = this.el.shadowRoot.querySelectorAll('li');
     const dataArray = [];
@@ -328,12 +337,14 @@ export class SpxNavigation {
     });
   }
 
-  /** Init Popper positioning for desktop. */
-
+  /**
+   * Init Popper positioning for desktop.
+   */
   private initPopperDesktop() {
     if (!this.vertical) {
-      /** Init popper for parent menu. */
-
+      /**
+       * Init popper for parent menu.
+       */
       const parentMenu = this.el.shadowRoot.querySelectorAll(
         'nav > .spx-navigation--parent .spx-navigation__item--parent.spx-navigation__item--has-child'
       );
@@ -347,8 +358,9 @@ export class SpxNavigation {
         });
       }
 
-      /** Init popper for child menu. */
-
+      /**
+       * Init popper for child menu.
+       */
       const childMenus = this.el.shadowRoot.querySelectorAll(
         'nav > .spx-navigation--parent .spx-navigation--child .spx-navigation__item--child.spx-navigation__item--has-child'
       );
@@ -366,8 +378,9 @@ export class SpxNavigation {
                 },
               },
 
-              /** Calculate offset depending on parent padding/margin. */
-
+              /**
+               * Calculate offset depending on parent padding/margin.
+               */
               {
                 name: 'offset',
                 options: {
@@ -399,8 +412,9 @@ export class SpxNavigation {
                 },
               },
 
-              /** Make fixed position work properly. */
-
+              /**
+               * Make fixed position work properly.
+               */
               {
                 name: 'preventOverflow',
                 options: {
@@ -415,8 +429,9 @@ export class SpxNavigation {
     }
   }
 
-  /** Init Popper positioning for mobile. */
-
+  /**
+   * Init Popper positioning for mobile.
+   */
   private initPopperMobile() {
     const mobileMenu = this.el.shadowRoot.querySelector(
       '.spx-navigation__mobile-button'
@@ -442,16 +457,18 @@ export class SpxNavigation {
   render() {
     const { css } = emotion(this.el.shadowRoot);
 
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost = cssHost({
       display: 'block',
       fontFamily: s.fontFamily,
       zIndex: 999999,
     });
 
-    /** Shadow Host styles. */
-
+    /**
+     * Shadow Host styles.
+     */
     const styleShadowHost = css({
       fontSize: setVar(tag, 'font-size', this.fontSize),
 
@@ -716,23 +733,29 @@ export class SpxNavigation {
     return (
       <Host class={styleHost}>
         <nav class={styleShadowHost}>
-          {this.menu /** Render desktop menu. */ && [
-            this.renderMenu(this.menuArray, 'parent', false),
+          {
+            /**
+             * Render desktop menu.
+             */
+            this.menu && [
+              this.renderMenu(this.menuArray, 'parent', false),
 
-            /** Render mobile menu. */
-
-            <div
-              tabindex="0"
-              role="button"
-              class="spx-navigation__mobile-button"
-            >
-              {this.mobileIcon && (
-                <spx-icon type={this.mobileIconType} icon={this.mobileIcon} />
-              )}
-              <span>Menu</span>
-              {this.renderMenu(this.menuArray, 'parent', true)}
-            </div>,
-          ]}
+              /**
+               * Render mobile menu.
+               */
+              <div
+                tabindex="0"
+                role="button"
+                class="spx-navigation__mobile-button"
+              >
+                {this.mobileIcon && (
+                  <spx-icon type={this.mobileIconType} icon={this.mobileIcon} />
+                )}
+                <span>Menu</span>
+                {this.renderMenu(this.menuArray, 'parent', true)}
+              </div>,
+            ]
+          }
         </nav>
       </Host>
     );

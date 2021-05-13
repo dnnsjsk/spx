@@ -1,5 +1,7 @@
 <?php
 
+namespace spx;
+
 /**
  * Build a tree from a flat array.
  *
@@ -11,9 +13,6 @@
  *
  * @return array
  */
-
-namespace spx;
-
 class Build {
 
 	public static function navTree( array &$elements, $parentId = 0 ) {

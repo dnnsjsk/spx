@@ -27,7 +27,6 @@ const tag = 'spx-docs';
  * Every heading tag becomes a navigation entry, while navigation headings get created by applying
  * the "data-spx-docs-heading" attribute to the first h1 of a new section.
  */
-
 @Component({
   tag: 'spx-docs',
 })
@@ -111,32 +110,35 @@ export class SpxDocs {
 
   @Prop({ reflect: true }) offsetMarginTop: string = '';
 
-  /** Create a separator between sections. */
-
+  /**
+   * Create a separator between sections.
+   */
   @Prop({ reflect: true }) separator: string;
 
-  /** Activates automatic navigation scrolling and sets the offset. */
-
+  /**
+   * Activates automatic navigation scrolling and sets the offset.
+   */
   @Prop({ reflect: true }) scrolling: number;
 
   /**
    * Styling.
    * @choice 'default', 'fluid'
    */
-
   @Prop({ reflect: true }) styling: string = 'fluid';
 
   @Prop({ reflect: true }) uniqueId: boolean;
 
-  /** Listen to window resize. */
-
+  /**
+   * Listen to window resize.
+   */
   @Listen('resize', { target: 'window' })
   onResize() {
     this.mobile = window.innerWidth < this.bpMobile;
   }
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxDocsDidLoad' })
   spxDocsDidLoad: EventEmitter;
@@ -158,12 +160,14 @@ export class SpxDocs {
     this.spxDocsDidLoad.emit({ target: 'document' });
   }
 
-  /** Generates the navigation. */
-
+  /**
+   * Generates the navigation.
+   */
   private createNavigation() {
     if (this.content.innerHTML !== '') {
-      /** Create links from IDs. */
-
+      /**
+       * Create links from IDs.
+       */
       this.content
         .querySelectorAll(
           this.navigationHeadingTag + ':not([data-spx-docs-no-navigation])'
@@ -185,8 +189,9 @@ export class SpxDocs {
           wrap(a, document.createElement('li'));
         });
 
-      /** Create headings and separators. */
-
+      /**
+       * Create headings and separators.
+       */
       this.content
         .querySelectorAll(
           this.navigationHeadingTag +
@@ -219,8 +224,9 @@ export class SpxDocs {
   }
 
   render() {
-    /** Host. */
-
+    /**
+     * Host.
+     */
     const styleHost = css({
       display: this.mobile ? 'block' : 'grid',
       gridTemplateColumns: !this.mobile && 'minmax(0, auto) minmax(0, 1fr)',
@@ -237,8 +243,9 @@ export class SpxDocs {
       ),
     });
 
-    /** Navigation. */
-
+    /**
+     * Navigation.
+     */
     const styleNavigation = {
       position: 'sticky',
       top: setVar(tag, 'navigation-top', this.navigationTop),
@@ -407,8 +414,9 @@ export class SpxDocs {
 
     return (
       <Host class={styleHost}>
-        {/** Navigation. */}
-
+        {/**
+         * Navigation.
+         */}
         <div class={styleNavigationWrap}>
           <spx-scrollspy
             display="grid"
@@ -420,8 +428,9 @@ export class SpxDocs {
           </spx-scrollspy>
         </div>
 
-        {/** Content. */}
-
+        {/**
+         * Content.
+         */}
         <div
           ref={(el) => (this.content = el as HTMLElement)}
           class={styleContentMerge}

@@ -5,10 +5,10 @@ import { removeClasses } from './removeClasses';
 /**
  * Overwrite container settings as variables.
  */
-
 export const setSectionVar = (el) => {
-  /** Get prop lists. */
-
+  /**
+   * Get prop lists.
+   */
   const objParent = {};
   Array.prototype.slice
     .call(el.closest('spx-container').attributes)
@@ -21,12 +21,14 @@ export const setSectionVar = (el) => {
     objEl[item.name] = item.value;
   });
 
-  /** Add class. */
-
+  /**
+   * Add class.
+   */
   const style = {};
 
-  /** Set up mutation observer. */
-
+  /**
+   * Set up mutation observer.
+   */
   const targetNode = el;
   const config = { attributes: true };
 
@@ -52,8 +54,9 @@ export const setSectionVar = (el) => {
 
   observer.observe(targetNode, config);
 
-  /** Set up styles for start. */
-
+  /**
+   * Set up styles for start.
+   */
   Object.keys(objEl).forEach((item) => {
     const attribute = item.replace('c-', '');
 

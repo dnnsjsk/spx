@@ -6,12 +6,12 @@
  * @date    28/07/2020
  * @since   1.0.0
  */
-
 function spxEditButtonAjaxHandler() {
 	if ( current_user_can( 'manage_options' ) ) {
 
-		/** Get post ID. */
-
+		/**
+		 * Get post ID.
+		 */
 		$post_id = $_POST['post_id'];
 
 		foreach ( $_POST as $key => $value ) {
@@ -38,8 +38,9 @@ function spxEditButtonAjaxHandler() {
 			}
 		}
 
-		/** Create hook. */
-
+		/**
+		 * Create hook.
+		 */
 		do_action( 'spxEditButtonAjax' );
 
 		die();

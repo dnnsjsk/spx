@@ -1,7 +1,6 @@
 /**
  * Check if component is in view.
  */
-
 export const intersectionObserver = (el, functionToRun) => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {

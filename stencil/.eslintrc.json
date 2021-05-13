@@ -1,27 +1,25 @@
 {
-    "rules": {
-        "dot-notation": 0,
-        "no-return-assign": 0,
-        "@stencil/required-jsdoc": 0,
-        "@stencil/strict-boolean-conditions": 0,
-        "@stencil/prefer-vdom-listener": 0,
-        "@stencil/async-methods": 0
-    },
-    "env": {
-        "browser": true,
-        "es2020": true
-    },
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 11,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "@typescript-eslint"
-    ],
-    "extends": [
-        "standard",
-        "plugin:@stencil/recommended",
-        "plugin:prettier/recommended"
-    ]
+  "rules": {
+    "dot-notation": 0,
+    "no-return-assign": 0,
+    "@stencil/required-jsdoc": 0,
+    "@stencil/strict-boolean-conditions": 0,
+    "@stencil/prefer-vdom-listener": 0,
+    "@stencil/async-methods": 0
+  },
+  "env": {
+    "browser": true,
+    "es2020": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 11,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint", "jsdoc"],
+  "extends": [
+    "standard",
+    "plugin:@stencil/recommended",
+    "plugin:prettier/recommended"
+  ]
 }

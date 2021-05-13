@@ -21,7 +21,6 @@ const tag = 'spx-image-comparison';
 /**
  * Compare two images visually using a slider. Handy for showing subtle (or not so subtle) before/after differences.
  */
-
 @Component({
   tag: 'spx-image-comparison',
 })
@@ -41,17 +40,20 @@ export class SpxImageComparison {
 
   @Prop({ reflect: true }) iconColor: string = 'var(--spx-color-gray-900)';
 
-  /** Lazy load attribute. */
-
+  /**
+   * Lazy load attribute.
+   */
   @Prop({ reflect: true }) loading: 'auto' | 'lazy' | 'eager';
 
-  /** Image URL of the before image. */
-
+  /**
+   * Image URL of the before image.
+   */
   @Prop({ reflect: true }) srcAfter: string =
     'https://source.unsplash.com/random/1200x300';
 
-  /** Image URL of the after image. */
-
+  /**
+   * Image URL of the after image.
+   */
   @Prop({ reflect: true }) srcBefore: string =
     'https://source.unsplash.com/random/1201x300';
 
@@ -62,21 +64,24 @@ export class SpxImageComparison {
     }
   }
 
-  /** Opening state in pixels. */
-
+  /**
+   * Opening state in pixels.
+   */
   @Prop({ reflect: true }) start: number = 150;
 
   @Watch('start')
   startChanged(x) {
-    /** Show image in start. */
-
+    /**
+     * Show image in start.
+     */
     const transform = Math.max(0, Math.min(x, this.container.offsetWidth));
     this.imageAfter.style.width = transform + 2 + 'px';
     this.scroller.style.left = transform - 25 + 'px';
   }
 
-  /** Fires after component has loaded. */
-
+  /**
+   * Fires after component has loaded.
+   */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxImageComparisonDidLoad' })
   spxImageComparisonDidLoad: EventEmitter;
@@ -84,49 +89,59 @@ export class SpxImageComparison {
   componentDidLoad() {
     globalComponentDidLoad(this.el);
 
-    /** Set starting width */
-
+    /**
+     * Set starting width.
+     */
     this.width = this.el.offsetWidth;
 
-    /** Disable for Oxygen */
-
+    /**
+     * Disable for Oxygen.
+     */
     if (document.body.classList.contains('oxygen-builder-body')) {
       this.scroller.style.pointerEvents = 'none';
     }
 
-    /** Use boolean to know when it is being used */
-
+    /**
+     * Use boolean to know when it is being used.
+     */
     this.active = false;
 
-    /** Watch for clicks on scroller */
-
+    /**
+     * Watch for clicks on scroller.
+     */
     this.scroller.addEventListener('mousedown', () => {
       this.active = true;
     });
 
-    /** Add scrolling class to the scroller so it has full opacity while active */
-
+    /**
+     * Add scrolling class to the scroller so it has full opacity while active.
+     */
     document.body.addEventListener('mouseup', () => {
       this.active = false;
     });
 
-    /** Watch body for changes to the state */
-
+    /**
+     * Watch body for changes to the state.
+     */
     document.body.addEventListener('mouseleave', () => {
       this.active = false;
     });
 
-    /** Figure out where the mouse is */
-
+    /**
+     * Figure out where the mouse is.
+     */
     document.body.addEventListener('mousemove', (e) => {
       this.mover(e);
     });
 
-    /** Set starting width */
+    /**
+     * Set starting width.
+     */
     this.startChanged(this.start);
 
-    /** Repeat for touch events */
-
+    /**
+     * Repeat for touch events.
+     */
     this.scroller.addEventListener('touchstart', () => {
       this.active = true;
     });
@@ -146,8 +161,9 @@ export class SpxImageComparison {
     this.spxImageComparisonDidLoad.emit({ target: 'document' });
   }
 
-  /** Thumb mover function. */
-
+  /**
+   * Thumb mover function.
+   */
   private mover(e) {
     if (!this.active) return;
     let x = e.pageX;
@@ -161,8 +177,9 @@ export class SpxImageComparison {
   }
 
   render() {
-    /** Host styles. */
-
+    /**
+     * Host styles.
+     */
     const styleHost = css({
       display: 'block',
       position: 'relative',
@@ -171,8 +188,9 @@ export class SpxImageComparison {
       overflow: 'hidden',
     });
 
-    /** Container styles. */
-
+    /**
+     * Container styles.
+     */
     const styleContainer = css({
       width: '100%',
       height: setVar(tag, 'height', this.height),
@@ -188,21 +206,24 @@ export class SpxImageComparison {
       userSelect: 'none',
     });
 
-    /** Image styles. */
-
+    /**
+     * Image styles.
+     */
     const styleImage = css({
       height: '100%',
       maxWidth: 'none !important',
     });
 
-    /** Image after styles. */
-
+    /**
+     * Image after styles.
+     */
     const styleImageAfter = css({
       width: '125px',
     });
 
-    /** Scroller styles. */
-
+    /**
+     * Scroller styles.
+     */
     const styleScroller = css({
       width: '50px',
       height: '50px',
@@ -244,8 +265,9 @@ export class SpxImageComparison {
       },
     });
 
-    /** Thumb styles. */
-
+    /**
+     * Thumb styles.
+     */
     const styleThumb = css({
       height: '100%',
       width: '100%',
@@ -274,8 +296,9 @@ export class SpxImageComparison {
               />
             </div>,
 
-            /** After. */
-
+            /**
+             * After.
+             */
             <div
               ref={(el) => (this.imageAfter = el as HTMLElement)}
               class={css([styleContainer, styleImageAfter])}
@@ -288,8 +311,9 @@ export class SpxImageComparison {
               />
             </div>,
 
-            /** Scroller. */
-
+            /**
+             * Scroller.
+             */
             <div
               ref={(el) => (this.scroller = el as HTMLElement)}
               class={styleScroller}

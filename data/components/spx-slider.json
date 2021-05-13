@@ -111,7 +111,7 @@
       "name": "imageSize",
       "attribute": "image-size",
       "type": "string",
-      "description": "WordPress media size when using the helper function..",
+      "description": "WordPress media size when using the helper function.",
       "tags": []
     },
     {
@@ -158,12 +158,7 @@
       "description": "Max height.",
       "default": "'100%'",
       "defaultValue": "'100%'",
-      "tags": [
-        {
-          "text": "'500px'",
-          "name": "editor"
-        }
-      ]
+      "tags": []
     },
     {
       "id": "slider-maxWidth",
@@ -173,12 +168,7 @@
       "description": "Max width.",
       "default": "'100%'",
       "defaultValue": "'100%'",
-      "tags": [
-        {
-          "text": "'500px'",
-          "name": "editor"
-        }
-      ]
+      "tags": []
     },
     {
       "id": "slider-navigation",

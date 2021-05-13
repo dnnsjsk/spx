@@ -274,7 +274,6 @@ export namespace Components {
         /**
           * Determines the programming language.
           * @choice 'markup', 'css', 'php'
-          * @editor 'css'
          */
         "type": string;
     }
@@ -406,7 +405,6 @@ export namespace Components {
         "position": string;
         /**
           * CSS property position of button.
-          * @editor 'absolute'
          */
         "positionCss": | 'fixed'
     | 'absolute'
@@ -635,7 +633,7 @@ export namespace Components {
          */
         "childGap": string;
         /**
-          * Indicator icon..
+          * Indicator icon.
          */
         "childIcon": string;
         /**
@@ -782,7 +780,6 @@ export namespace Components {
         "reload": () => Promise<void>;
         /**
           * Target element.
-          * @editor '.header1'
          */
         "target": string;
     }
@@ -907,7 +904,7 @@ export namespace Components {
          */
         "imageObjectFit": string;
         /**
-          * WordPress media size when using the helper function..
+          * WordPress media size when using the helper function.
          */
         "imageSize": string;
         /**
@@ -926,12 +923,10 @@ export namespace Components {
         "loop": boolean;
         /**
           * Max height.
-          * @editor '500px'
          */
         "maxHeight": string;
         /**
           * Max width.
-          * @editor '500px'
          */
         "maxWidth": string;
         "navigation": boolean;
@@ -1097,7 +1092,6 @@ export namespace Components {
         "distanceY": string;
         /**
           * Makes snackbar not removable.
-          * @editor '#components'
          */
         "fixed": boolean;
         "fontSize": string;
@@ -1105,7 +1099,6 @@ export namespace Components {
         "fontSizeMin": number;
         /**
           * Unique identifier for snackbar instance.
-          * @editor '#components'
          */
         "identifier": string;
         "padding": string;
@@ -1118,7 +1111,6 @@ export namespace Components {
         "position": string;
         /**
           * CSS property position of button.
-          * @editor 'absolute'
          */
         "positionCss": | 'fixed'
     | 'absolute'
@@ -1140,7 +1132,6 @@ export namespace Components {
         "styling": string;
         /**
           * Element where snackbars should be created in.
-          * @editor '#components'
          */
         "target": string;
         /**
@@ -1643,7 +1634,6 @@ declare namespace LocalJSX {
         /**
           * Determines the programming language.
           * @choice 'markup', 'css', 'php'
-          * @editor 'css'
          */
         "type"?: string;
     }
@@ -1783,7 +1773,6 @@ declare namespace LocalJSX {
         "position"?: string;
         /**
           * CSS property position of button.
-          * @editor 'absolute'
          */
         "positionCss"?: | 'fixed'
     | 'absolute'
@@ -2029,7 +2018,7 @@ declare namespace LocalJSX {
          */
         "childGap"?: string;
         /**
-          * Indicator icon..
+          * Indicator icon.
          */
         "childIcon"?: string;
         /**
@@ -2169,7 +2158,6 @@ declare namespace LocalJSX {
         "onSpxOffsetDidLoad"?: (event: CustomEvent<any>) => void;
         /**
           * Target element.
-          * @editor '.header1'
          */
         "target"?: string;
     }
@@ -2300,7 +2288,7 @@ declare namespace LocalJSX {
          */
         "imageObjectFit"?: string;
         /**
-          * WordPress media size when using the helper function..
+          * WordPress media size when using the helper function.
          */
         "imageSize"?: string;
         /**
@@ -2319,12 +2307,10 @@ declare namespace LocalJSX {
         "loop"?: boolean;
         /**
           * Max height.
-          * @editor '500px'
          */
         "maxHeight"?: string;
         /**
           * Max width.
-          * @editor '500px'
          */
         "maxWidth"?: string;
         "navigation"?: boolean;
@@ -2497,7 +2483,6 @@ declare namespace LocalJSX {
         "distanceY"?: string;
         /**
           * Makes snackbar not removable.
-          * @editor '#components'
          */
         "fixed"?: boolean;
         "fontSize"?: string;
@@ -2505,7 +2490,6 @@ declare namespace LocalJSX {
         "fontSizeMin"?: number;
         /**
           * Unique identifier for snackbar instance.
-          * @editor '#components'
          */
         "identifier"?: string;
         /**
@@ -2522,7 +2506,6 @@ declare namespace LocalJSX {
         "position"?: string;
         /**
           * CSS property position of button.
-          * @editor 'absolute'
          */
         "positionCss"?: | 'fixed'
     | 'absolute'
@@ -2543,7 +2526,6 @@ declare namespace LocalJSX {
         "styling"?: string;
         /**
           * Element where snackbars should be created in.
-          * @editor '#components'
          */
         "target"?: string;
         /**
