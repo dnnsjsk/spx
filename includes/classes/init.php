@@ -114,12 +114,12 @@ class Init {
 	}
 
 	/**
-	 * Initialise CSS without theme.
+	 * Inline CSS.
 	 *
 	 * @date    22/09/2020
 	 * @since   2.0.4
 	 */
-	public static function css() {
+	public static function addCss() {
 
 		$str = file_get_contents( SPX_DIR . '/assets/css/spx.min.css' );
 
@@ -211,8 +211,8 @@ class Init {
 	public function __construct() {
 		self::enqueueScripts();
 		self::addScriptTags();
+		self::addCss();
 		self::lazyLoadAssets();
-		self::css();
 		self::shortcodes();
 	}
 
