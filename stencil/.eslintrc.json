@@ -16,7 +16,7 @@
     "ecmaVersion": 11,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "jsdoc"],
+  "plugins": ["@typescript-eslint"],
   "extends": [
     "standard",
     "plugin:@stencil/recommended",

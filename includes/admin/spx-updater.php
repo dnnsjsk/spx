@@ -93,7 +93,8 @@ class spxPlugin {
                     </th>
                     <td style="display: flex; align-items: center;">
                         <input id="<?php echo self::$prefix . 'license_key'; ?>"
-                               name="<?php echo self::$prefix . 'license_key'; ?>" type="text"
+                               name="<?php echo self::$prefix . 'license_key'; ?>"
+                               type="<?php echo $status !== FALSE && $status == 'valid' ? 'password' : 'text'; ?>"
                                class="regular-text"
                                value="<?php esc_attr_e( $license ); ?>"/>
                         <label style="margin-left: 20px;" class="description"
