@@ -11,21 +11,26 @@ import {
   State,
 } from '@stencil/core';
 import { css } from '@emotion/css';
-import { setVar } from '../../utils/setVar';
+import { setVar } from '../../utils/cssVariables/setVar';
 import * as s from '../../constants/style';
 import { merge } from 'lodash-es';
-import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
-import { wrap } from '../../utils/wrap';
-import { setClamp } from '../../utils/setClamp';
-import { setVarOrClamp } from '../../utils/setVarOrClamp';
-import { insertBefore } from '../../utils/insertBefore';
+import { globalComponentDidLoad } from '../../utils/global/globalComponentDidLoad';
+import { wrap } from '../../utils/dom/wrap';
+import { setClamp } from '../../utils/cssVariables/setClamp';
+import { setStyle } from '../../utils/cssVariables/setStyle';
+import { insertBefore } from '../../utils/dom/insertBefore';
+import { globalComponentWillUpdate } from '../../utils/global/globalComponentWillUpdate';
+import { slugify } from '../../utils/strings/slugify';
 
 const tag = 'spx-docs';
 
 /**
- * Renders a documentation page similar to the one you are currently seeing here.
- * Every heading tag becomes a navigation entry, while navigation headings get created by applying
- * the "data-spx-docs-heading" attribute to the first h1 of a new section.
+ * Renders a documentation page similar to the one you are currently seeing
+ * here. Every heading tag becomes a navigation entry, while navigation headings
+ * get created by applying the "data-spx-docs-heading" attribute to the first h1
+ * of a new section.
+ *
+ * @slot inner - Slot (between HTML tags).
  */
 @Component({
   tag: 'spx-docs',
@@ -40,7 +45,7 @@ export class SpxDocs {
 
   @Prop({ reflect: true }) bpMobile: number = 1024;
 
-  @Prop({ reflect: true }) gap: string = '3rem';
+  @Prop({ reflect: true }) gap: string = '3em';
 
   @Prop({ reflect: true }) contentPadding: string;
 
@@ -110,35 +115,28 @@ export class SpxDocs {
 
   @Prop({ reflect: true }) offsetMarginTop: string = '';
 
-  /**
-   * Create a separator between sections.
-   */
+  /** Create a separator between sections. */
   @Prop({ reflect: true }) separator: string;
 
-  /**
-   * Activates automatic navigation scrolling and sets the offset.
-   */
+  /** Activates automatic navigation scrolling and sets the offset. */
   @Prop({ reflect: true }) scrolling: number;
 
   /**
    * Styling.
+   *
    * @choice 'default', 'fluid'
    */
   @Prop({ reflect: true }) styling: string = 'fluid';
 
   @Prop({ reflect: true }) uniqueId: boolean;
 
-  /**
-   * Listen to window resize.
-   */
+  /** Listen to window resize. */
   @Listen('resize', { target: 'window' })
   onResize() {
     this.mobile = window.innerWidth < this.bpMobile;
   }
 
-  /**
-   * Fires after component has loaded.
-   */
+  /** Fires after component has loaded. */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxDocsDidLoad' })
   spxDocsDidLoad: EventEmitter;
@@ -148,7 +146,7 @@ export class SpxDocs {
   }
 
   componentDidLoad() {
-    globalComponentDidLoad(this.el);
+    globalComponentDidLoad({ el: this.el });
     this.createNavigation();
 
     if (window.location.hash) {
@@ -160,24 +158,20 @@ export class SpxDocs {
     this.spxDocsDidLoad.emit({ target: 'document' });
   }
 
-  /**
-   * Generates the navigation.
-   */
-  private createNavigation() {
+  componentWillUpdate() {
+    globalComponentWillUpdate(this.el);
+  }
+
+  /** Generates the navigation. */
+  private createNavigation = () => {
     if (this.content.innerHTML !== '') {
-      /**
-       * Create links from IDs.
-       */
+      /** Create links from IDs. */
       this.content
         .querySelectorAll(
           this.navigationHeadingTag + ':not([data-spx-docs-no-navigation])'
         )
         .forEach((item, index) => {
-          const link = item.innerHTML
-            .toLowerCase()
-            .replace(/ /g, '-')
-            .replace(/[^\w-]+/g, '')
-            .replace(/^([-=\s]*)([a-zA-Z0-9])/gm, '$2');
+          const link = slugify(item.innerHTML);
           const id = this.uniqueId ? link + '-' + index : link;
           const a = document.createElement('a');
           item.setAttribute('data-spx-docs-index', String(index));
@@ -189,9 +183,7 @@ export class SpxDocs {
           wrap(a, document.createElement('li'));
         });
 
-      /**
-       * Create headings and separators.
-       */
+      /** Create headings and separators. */
       this.content
         .querySelectorAll(
           this.navigationHeadingTag +
@@ -221,12 +213,10 @@ export class SpxDocs {
 
       this.el.querySelector('spx-scrollspy').reload();
     }
-  }
+  };
 
   render() {
-    /**
-     * Host.
-     */
+    /** Host. */
     const styleHost = css({
       display: this.mobile ? 'block' : 'grid',
       gridTemplateColumns: !this.mobile && 'minmax(0, auto) minmax(0, 1fr)',
@@ -243,15 +233,13 @@ export class SpxDocs {
       ),
     });
 
-    /**
-     * Navigation.
-     */
+    /** Navigation. */
     const styleNavigation = {
       position: 'sticky',
       top: setVar(tag, 'navigation-top', this.navigationTop),
       gridAutoRows: 'max-content',
       height: 'calc(100vh - ' + this.navigationTop + ')',
-      paddingTop: setVarOrClamp(
+      paddingTop: setStyle(
         tag,
         'navigation-padding-y',
         this.navigationPaddingY,
@@ -259,7 +247,7 @@ export class SpxDocs {
         this.navigationPaddingYMax,
         this.styling
       ),
-      paddingBottom: setVarOrClamp(
+      paddingBottom: setStyle(
         tag,
         'navigation-padding-y',
         this.navigationPaddingY,
@@ -271,7 +259,7 @@ export class SpxDocs {
 
       ul: {
         display: 'grid',
-        gridGap: setVarOrClamp(
+        gridGap: setStyle(
           tag,
           'navigation-gap',
           this.navigationGap,
@@ -311,7 +299,7 @@ export class SpxDocs {
 
       li: {
         '&:last-of-type': {
-          marginBottom: setVarOrClamp(
+          marginBottom: setStyle(
             tag,
             'navigation-padding-y',
             this.navigationPaddingY,
@@ -348,7 +336,7 @@ export class SpxDocs {
 
       'li + span': {
         display: 'block',
-        marginTop: setVarOrClamp(
+        marginTop: setStyle(
           tag,
           'navigation-title-margin-bottom',
           this.navigationTitleMarginBottom,
@@ -360,11 +348,9 @@ export class SpxDocs {
     };
 
     /** Merge navigation objects to avoid emotion error. */
-
     const styleNavigationMerge = css(merge(styleNavigation, {}));
 
     /** Content. */
-
     const styleContent = {
       paddingTop: setVar(
         tag,
@@ -409,14 +395,11 @@ export class SpxDocs {
     };
 
     /** Merge content objects to avoid emotion error. */
-
     const styleContentMerge = css(merge(styleContent, {}));
 
     return (
       <Host class={styleHost}>
-        {/**
-         * Navigation.
-         */}
+        {/** Navigation. */}
         <div class={styleNavigationWrap}>
           <spx-scrollspy
             display="grid"
@@ -428,9 +411,7 @@ export class SpxDocs {
           </spx-scrollspy>
         </div>
 
-        {/**
-         * Content.
-         */}
+        {/** Content. */}
         <div
           ref={(el) => (this.content = el as HTMLElement)}
           class={styleContentMerge}

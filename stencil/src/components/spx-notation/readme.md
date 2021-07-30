@@ -1,7 +1,5 @@
 # spx-notation
 
-
-
 <!-- Auto Generated Below -->
 
 
@@ -53,9 +51,9 @@ Type: `Promise<void>`
 
 
 
-### `reload() => Promise<void>`
+### `redraw() => Promise<void>`
 
-
+Redraw the animation.
 
 #### Returns
 

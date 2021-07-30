@@ -1,7 +1,5 @@
 # spx-navigation
 
-
-
 <!-- Auto Generated Below -->
 
 
@@ -10,7 +8,7 @@
 | Property                       | Attribute                         | Description                                       | Type      | Default                                 |
 | ------------------------------ | --------------------------------- | ------------------------------------------------- | --------- | --------------------------------------- |
 | `childBorder`                  | `child-border`                    |                                                   | `string`  | `'1px solid var(--spx-color-gray-200)'` |
-| `childBorderRadius`            | `child-border-radius`             | Child menu border-radius.                         | `string`  | `s.borderRadius`                        |
+| `childBorderRadius`            | `child-border-radius`             | Child menu border-radius.                         | `string`  | `'0'`                                   |
 | `childBoxShadow`               | `child-box-shadow`                | Child menu box-shadow.                            | `string`  | `'0 3px 10px 0 rgba(0,0,0,0.05)'`       |
 | `childChildGap`                | `child-child-gap`                 | Gap between nested child menus.                   | `string`  | `'0.8em'`                               |
 | `childGap`                     | `child-gap`                       | Gap between top level menu items and child menus. | `string`  | `'0.5em'`                               |
@@ -23,6 +21,7 @@
 | `childItemColorHover`          | `child-item-color-hover`          |                                                   | `string`  | `'var(--spx-color-gray-900)'`           |
 | `childItemPadding`             | `child-item-padding`              |                                                   | `string`  | `'0.6em 0.8em'`                         |
 | `childPlacement`               | `child-placement`                 | Child menu placement.                             | `string`  | `'start'`                               |
+| `display`                      | `display`                         |                                                   | `string`  | `s.display`                             |
 | `fontSize`                     | `font-size`                       |                                                   | `string`  | `'clamp(18px, 1.6vw, 20px)'`            |
 | `itemTransitionDuration`       | `item-transition-duration`        |                                                   | `string`  | `s.transitionDuration`                  |
 | `itemTransitionTimingFunction` | `item-transition-timing-function` |                                                   | `string`  | `s.transitionTimingFunction`            |
@@ -53,19 +52,6 @@
 | Event                  | Description                       | Type               |
 | ---------------------- | --------------------------------- | ------------------ |
 | `spxNavigationDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
-
-
-## Methods
-
-### `reload() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
 
 
 ## Dependencies

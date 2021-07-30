@@ -1,16 +1,14 @@
 # spx-offset
 
-
-
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-| Property  | Attribute | Description     | Type     | Default    |
-| --------- | --------- | --------------- | -------- | ---------- |
-| `display` | `display` |                 | `string` | `'block'`  |
-| `target`  | `target`  | Target element. | `string` | `'header'` |
+| Property  | Attribute | Description     | Type     | Default     |
+| --------- | --------- | --------------- | -------- | ----------- |
+| `display` | `display` |                 | `string` | `s.display` |
+| `target`  | `target`  | Target element. | `string` | `'header'`  |
 
 
 ## Events
@@ -32,15 +30,12 @@ Type: `Promise<void>`
 
 
 
-### `reload() => Promise<void>`
 
+## Slots
 
-
-#### Returns
-
-Type: `Promise<void>`
-
-
+| Slot      | Description               |
+| --------- | ------------------------- |
+| `"inner"` | Slot (between HTML tags). |
 
 
 ----------------------------------------------

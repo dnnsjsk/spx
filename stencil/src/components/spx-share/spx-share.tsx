@@ -6,23 +6,24 @@ import {
   Element,
   Prop,
   State,
-  Method,
   Event,
   EventEmitter,
 } from '@stencil/core';
-import { css } from '@emotion/css';
+import { css as cssHost } from '@emotion/css';
 import * as s from '../../constants/style';
-import { setVar } from '../../utils/setVar';
-import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
-import { setVarOrClamp } from '../../utils/setVarOrClamp';
+import { setVar } from '../../utils/cssVariables/setVar';
+import { globalComponentDidLoad } from '../../utils/global/globalComponentDidLoad';
+import { setStyle } from '../../utils/cssVariables/setStyle';
+import { globalComponentWillUpdate } from '../../utils/global/globalComponentWillUpdate';
+import { cssEmotion } from '../../utils/css/cssEmotion';
+import { Button } from '../../utils/elements/button';
 
 const tag = 'spx-share';
 
-/**
- * Social share buttons. Currently includes Facebook, Twitter, Whatsapp and E-Mail.
- */
+/** Social share buttons. Currently includes Facebook, Twitter, Whatsapp and E-Mail. */
 @Component({
   tag: 'spx-share',
+  shadow: true,
 })
 export class SpxShare {
   // eslint-disable-next-line no-undef
@@ -31,6 +32,8 @@ export class SpxShare {
   @State() location;
 
   @Prop({ reflect: true }) classItem: string;
+
+  @Prop({ reflect: true }) display: string = s.display;
 
   @Prop({ reflect: true }) fontSize: string = s.fontSize;
 
@@ -44,12 +47,14 @@ export class SpxShare {
 
   /**
    * Gap between buttons.
+   *
    * @CSS
    */
   @Prop({ reflect: true }) itemColor: string;
 
   /**
    * Filter hover.
+   *
    * @CSS
    */
   @Prop({ reflect: true }) itemFilterHover: string =
@@ -57,6 +62,7 @@ export class SpxShare {
 
   /**
    * Gap between buttons.
+   *
    * @CSS
    */
   @Prop({ reflect: true }) itemGap: string = '0.5em';
@@ -85,51 +91,49 @@ export class SpxShare {
 
   /**
    * Styling.
+   *
    * @choice 'default', 'fluid', 'headless'
    */
   @Prop({ reflect: true }) styling: string = 'default';
 
-  /**
-   * Button href target.
-   */
+  /** Button href target. */
   @Prop({ reflect: true }) target: string = '_blank';
 
   /**
    * Button theme.
+   *
    * @choice 'default', 'outline', 'minimal'
    */
   @Prop({ reflect: true }) theme: string = 'default';
 
-  /**
-   * Render buttons vertically.
-   */
+  /** Render buttons vertically. */
   @Prop({ reflect: true }) vertical: boolean;
 
-  /**
-   * Fires after component has loaded.
-   */
+  /** Fires after component has loaded. */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxShareDidLoad' })
   spxShareDidLoad: EventEmitter;
 
   componentDidLoad() {
-    globalComponentDidLoad(this.el);
-
-    this.location = location.href;
+    globalComponentDidLoad({ el: this.el });
 
     this.spxShareDidLoad.emit({ target: 'document' });
   }
 
-  @Method()
-  async reload() {
-    this.componentDidLoad();
+  componentWillUpdate() {
+    globalComponentWillUpdate(this.el);
   }
 
   render() {
-    /**
-     * Host styles.
-     */
-    const styleHost =
+    const { css } = cssEmotion(this.el.shadowRoot);
+
+    /** Host styles. */
+    const styleHost = cssHost({
+      display: setVar(tag, 'display', this.display),
+    });
+
+    /** Shadow Host styles. */
+    const styleShadowHost =
       (this.styling === 'default' || this.styling === 'fluid') &&
       css({
         fontSize: setVar(tag, 'font-size', this.fontSize),
@@ -137,7 +141,7 @@ export class SpxShare {
         gridAutoFlow: this.vertical ? 'row' : 'column',
         gridAutoColumns: !this.vertical && 'max-content',
         gridAutoRows: this.vertical && 'max-content',
-        gridGap: setVarOrClamp(
+        gridGap: setStyle(
           tag,
           'item-gap',
           this.itemGap,
@@ -147,9 +151,7 @@ export class SpxShare {
         ),
       });
 
-    /**
-     * Link styles.
-     */
+    /** Link styles. */
     const styleItem =
       this.styling === 'default' || this.styling === 'fluid'
         ? css({
@@ -158,7 +160,7 @@ export class SpxShare {
             justifyContent: 'center',
             boxSizing: 'content-box',
             cursor: 'pointer',
-            width: setVarOrClamp(
+            width: setStyle(
               tag,
               'item-size',
               this.itemSize,
@@ -166,7 +168,7 @@ export class SpxShare {
               this.itemSizeMax,
               this.styling
             ),
-            height: setVarOrClamp(
+            height: setStyle(
               tag,
               'item-size',
               this.itemSize,
@@ -174,7 +176,7 @@ export class SpxShare {
               this.itemSizeMax,
               this.styling
             ),
-            padding: setVarOrClamp(
+            padding: setStyle(
               tag,
               'item-padding',
               this.itemPadding,
@@ -189,7 +191,7 @@ export class SpxShare {
             ),
             color: setVar(tag, 'item-color', this.itemColor),
             background: setVar(tag, 'item-background', this.itemBackground),
-            transitionProperty: 'filter',
+            transitionProperty: 'filter, box-shadow',
             transitionDuration: setVar(
               tag,
               'item-transition-duration',
@@ -208,12 +210,12 @@ export class SpxShare {
             svg: {
               height: '100%',
             },
+
+            ...s.focus,
           })
         : this.classItem;
 
-    /**
-     * Facebook styles.
-     */
+    /** Facebook styles. */
     const styleFacebook = css({
       background:
         this.theme === 'default' && !this.itemBackground
@@ -230,9 +232,7 @@ export class SpxShare {
       border: this.theme === 'outline' && '1px solid #1877F2',
     });
 
-    /**
-     * Twitter styles.
-     */
+    /** Twitter styles. */
     const styleTwitter = css({
       background:
         this.theme === 'default' && !this.itemBackground
@@ -249,9 +249,7 @@ export class SpxShare {
       border: this.theme === 'outline' && '1px solid #1DA1F2',
     });
 
-    /**
-     * Email styles.
-     */
+    /** Email styles. */
     const styleEmail = css({
       background:
         this.theme === 'default' && !this.itemBackground
@@ -268,9 +266,7 @@ export class SpxShare {
       border: this.theme === 'outline' && '1px solid #c6c6c6',
     });
 
-    /**
-     * WhatsApp styles.
-     */
+    /** WhatsApp styles. */
     const styleWhatsapp = css({
       background:
         this.theme === 'default' && !this.itemBackground
@@ -289,51 +285,41 @@ export class SpxShare {
 
     return (
       <Host class={styleHost}>
-        {/**
-         * Facebook.
-         */}
-        <a
-          class={css([styleItem, styleFacebook])}
-          target={this.target}
-          href={
-            'https://www.facebook.com/sharer/sharer.php?u=' + this.location + ''
-          }
-        >
-          <spx-icon icon="logo-facebook" />
-        </a>
-
-        {/**
-         * Twitter.
-         */}
-        <a
-          class={css([styleItem, styleTwitter])}
-          target={this.target}
-          href={'http://www.twitter.com/share?url=' + this.location + ''}
-        >
-          <spx-icon icon="logo-twitter" />
-        </a>
-
-        {/**
-         * WhatsApp.
-         */}
-        <a
-          class={css([styleItem, styleWhatsapp])}
-          target={this.target}
-          href={'https://web.whatsapp.com/send?text=' + this.location + ''}
-        >
-          <spx-icon icon="logo-whatsapp" />
-        </a>
-
-        {/**
-         * Email.
-         */}
-        <a
-          class={css([styleItem, styleEmail])}
-          target={this.target}
-          href={'mailto:?body=' + this.location + ''}
-        >
-          <spx-icon icon="mail" />
-        </a>
+        <div class={styleShadowHost}>
+          {[
+            {
+              className: styleFacebook,
+              href: 'https://www.facebook.com/sharer/sharer.php?u=',
+              icon: 'logo-facebook',
+            },
+            {
+              className: styleTwitter,
+              href: 'https://www.twitter.com/share?url=',
+              icon: 'logo-twitter',
+            },
+            {
+              className: styleWhatsapp,
+              href: 'https://web.whatsapp.com/send?text=',
+              icon: 'logo-whatsapp',
+            },
+            {
+              className: styleEmail,
+              href: 'mailto:?body=',
+              icon: 'mail',
+            },
+          ].map((item) => {
+            return (
+              <Button
+                tag="a"
+                class={css([styleItem, item.className])}
+                href={item.href + window.location.href}
+                target={this.target}
+              >
+                <spx-icon icon={item.icon} />
+              </Button>
+            );
+          })}
+        </div>
       </Host>
     );
   }

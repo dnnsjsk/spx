@@ -151,9 +151,9 @@
       "signature": "hide() => Promise<void>"
     },
     {
-      "name": "reload",
-      "description": "",
-      "signature": "reload() => Promise<void>"
+      "name": "redraw",
+      "description": "Redraw the animation.",
+      "signature": "redraw() => Promise<void>"
     },
     {
       "name": "show",

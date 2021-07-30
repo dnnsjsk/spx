@@ -27,8 +27,8 @@
       "attribute": "display",
       "type": "string",
       "description": "",
-      "default": "'block'",
-      "defaultValue": "'block'",
+      "default": "s.display",
+      "defaultValue": "s.display",
       "tags": []
     },
     {
@@ -186,7 +186,7 @@
       "name": "yoyo",
       "attribute": "yoyo",
       "type": "boolean",
-      "description": "Causes the animation to go back and forth, alternating backward and forward on each repeat.",
+      "description": "Causes the animation to go back and forth, alternating backward and forward\non each repeat.",
       "tags": []
     }
   ],
@@ -203,15 +203,15 @@
       "signature": "play(from?: number, suppressEvents?: boolean) => Promise<void>"
     },
     {
-      "name": "reload",
-      "description": "",
-      "signature": "reload() => Promise<void>"
-    },
-    {
       "name": "restart",
       "description": "Restarts animation.",
       "signature": "restart(includeDelay?: boolean, suppressEvents?: boolean) => Promise<void>"
     }
   ],
-  "slots": []
+  "slots": [
+    {
+      "name": "inner",
+      "description": "Slot (between HTML tags)."
+    }
+  ]
 }

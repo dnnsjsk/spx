@@ -1,6 +1,6 @@
 {
   "name": "spx-snackbar",
-  "description": "Notification bars with a variety of options.\nGreat for success or failure messages.\nIn default mode, the snackbar will fade out and remove itself from the DOM.",
+  "description": "Notification bars with a variety of options. Great for success or failure\nmessages. In default mode, the snackbar will fade out and remove itself from the DOM.",
   "shadow": false,
   "properties": [
     {
@@ -52,6 +52,46 @@
       "tags": []
     },
     {
+      "id": "snackbar-buttonBackground",
+      "name": "buttonBackground",
+      "attribute": "button-background",
+      "type": "string",
+      "description": "",
+      "default": "'var(--spx-color-gray-700)'",
+      "defaultValue": "'var(--spx-color-gray-700)'",
+      "tags": []
+    },
+    {
+      "id": "snackbar-buttonBackgroundHover",
+      "name": "buttonBackgroundHover",
+      "attribute": "button-background-hover",
+      "type": "string",
+      "description": "",
+      "default": "'var(--spx-color-gray-800)'",
+      "defaultValue": "'var(--spx-color-gray-800)'",
+      "tags": []
+    },
+    {
+      "id": "snackbar-buttonTransitionDuration",
+      "name": "buttonTransitionDuration",
+      "attribute": "button-transition-duration",
+      "type": "string",
+      "description": "",
+      "default": "s.transitionDuration",
+      "defaultValue": "'var(--spx-transition-duration)'",
+      "tags": []
+    },
+    {
+      "id": "snackbar-buttonTransitionTimingFunction",
+      "name": "buttonTransitionTimingFunction",
+      "attribute": "button-transition-timing-function",
+      "type": "string",
+      "description": "",
+      "default": "s.transitionTimingFunction",
+      "defaultValue": "'var(--spx-transition-timing-function)'",
+      "tags": []
+    },
+    {
       "id": "snackbar-classButton",
       "name": "classButton",
       "attribute": "class-button",
@@ -83,6 +123,16 @@
       "description": "",
       "default": "'#ffffff'",
       "defaultValue": "'#ffffff'",
+      "tags": []
+    },
+    {
+      "id": "snackbar-display",
+      "name": "display",
+      "attribute": "display",
+      "type": "string",
+      "description": "",
+      "default": "s.display",
+      "defaultValue": "s.display",
       "tags": []
     },
     {
@@ -167,8 +217,8 @@
       "attribute": "padding",
       "type": "string",
       "description": "",
-      "default": "'1em'",
-      "defaultValue": "'1em'",
+      "default": "'0.8em'",
+      "defaultValue": "'0.8em'",
       "tags": []
     },
     {
@@ -286,12 +336,6 @@
       "description": "Fires after component has loaded."
     }
   ],
-  "methods": [
-    {
-      "name": "reload",
-      "description": "",
-      "signature": "reload() => Promise<void>"
-    }
-  ],
+  "methods": [],
   "slots": []
 }

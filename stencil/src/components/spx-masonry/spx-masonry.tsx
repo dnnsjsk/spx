@@ -6,22 +6,31 @@ import {
   Element,
   Prop,
   State,
-  Method,
   Watch,
   Event,
   EventEmitter,
 } from '@stencil/core';
-import { css } from '@emotion/css';
+import { css as cssHost } from '@emotion/css';
 import Macy from 'macy';
-import { wrap } from '../../utils/wrap';
-import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
-import { getGallery } from '../../utils/getGallery';
+import { wrap } from '../../utils/dom/wrap';
+import { globalComponentDidLoad } from '../../utils/global/globalComponentDidLoad';
+import { globalComponentWillUpdate } from '../../utils/global/globalComponentWillUpdate';
+import { cssEmotion } from '../../utils/css/cssEmotion';
+import { setVar } from '../../utils/cssVariables/setVar';
+import * as s from '../../constants/style';
+import { helperImagesOrInner } from '../../utils/helper/helperImagesOrInner';
+import { lazy } from '../../utils/3rd/lazy';
+
+const tag = 'spx-masonry';
 
 /**
  * Arrange images in a masonry layout.
+ *
+ * @slot inner - Slot (between HTML tags).
  */
 @Component({
   tag: 'spx-masonry',
+  shadow: true,
 })
 export class SpxMasonry {
   // eslint-disable-next-line no-undef
@@ -29,124 +38,109 @@ export class SpxMasonry {
   private container: HTMLElement;
 
   @State() bpColumnsObject: object;
+  @State() content;
   @State() imagesArray: Array<string>;
   @State() macyState;
 
   /**
-   * Columns for different screen sizes. Example value: 1000:3;600:2 - this will switch to a three column layout when the screen size is under 1000px and to a two column layout under 600px.
+   * Columns for different screen sizes. Example value: 1000:3;600:2 - this will
+   * switch to a three column layout when the screen size is under 1000px and to
+   * a two column layout under 600px.
    */
   @Prop({ reflect: true }) bpColumns: string;
 
-  /**
-   * Number of columns.
-   */
+  /** Number of columns. */
   @Prop({ reflect: true }) columns: number = 4;
+
+  @Prop({ reflect: true }) display: string = s.display;
 
   /**
    * Gap between images.
+   *
    * @CSS
    */
   @Prop({ reflect: true }) gap: string = '10px';
 
   /**
-   * WordPress media size when using the helper function..
+   * Gets images from an ACF or Metabox field.
+   *
+   * @helper &lt;?php spx\Get::images($fieldName, $type) ?>
    */
+  @Prop({ reflect: true }) images: string;
+
+  /** WordPress media size when using the helper function.. */
   @Prop({ reflect: true }) imageSize: string;
 
   /**
    * Gets images from an ACF or Metabox field.
-   * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
-   */
-  @Prop({ reflect: true }) images: string;
-
-  /**
-   * Gets images from an ACF or Metabox field.
+   *
    * @choice 'acf', 'mb'
    */
-  @Prop({ reflect: true }) imagesSrc: string;
+  @Prop({ reflect: true }) imageSrc: string;
 
-  /**
-   * Fires after component has loaded.
-   */
+  /** Lazy load images. */
+  @Prop({ reflect: true }) lazy: boolean;
+
+  /** Fires after component has loaded. */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxMasonryDidLoad' })
   spxMasonryDidLoad: EventEmitter;
 
   /**
-   * Watch images prop and parse to iteratable array.
+   * Watch images.
+   *
+   * @param {string} newValue Array string.
    */
   @Watch('images')
   imagesChanged(newValue: string) {
     if (newValue) this.imagesArray = JSON.parse(newValue);
   }
 
-  /**
-   * Watch columns and restart Macy.
-   */
-  @Watch('columns')
-  columnsChanged() {
-    this.macyState.remove();
-    this.initMacy();
-  }
-
   componentWillLoad() {
-    /**
-     * If image prop is set.
-     */
+    this.content = this.el.innerHTML;
+
+    /** If image prop is set. */
     if (this.images) {
       this.imagesChanged(this.images);
     }
   }
 
   componentDidLoad() {
-    globalComponentDidLoad(this.el);
+    globalComponentDidLoad({ el: this.el, lazy: this.lazy, cb: this.update });
 
-    /**
-     * Create object for breakpoint attribute.
-     */
+    /** Create object for breakpoint attribute. */
     if (this.bpColumns) {
       this.bpColumnsObject = JSON.parse(
         '{' + this.bpColumns.replace(/([0-9]+)/g, '"$1"') + '}'
       );
     }
 
-    /**
-     * Init Macy.
-     */
+    /** Init Macy. */
     this.initMacy();
 
-    /**
-     * Wrap all children in div.
-     */
-    Array.from(this.container.children).forEach((item) => {
-      wrap(item, document.createElement('div'));
-    });
-
-    /**
-     * Emit event to document when Masonry finished loading.
-     */
+    /** Emit event to document when Masonry finished loading. */
     this.spxMasonryDidLoad.emit({ target: 'document' });
   }
 
-  /**
-   * After update lifecycle.
-   */
-  componentDidUpdate() {
-    this.reload();
-    this.recalc();
+  componentWillUpdate() {
+    globalComponentWillUpdate(this.el);
   }
 
-  /**
-   * Remove Macy on disconnect.
-   */
+  componentDidUpdate() {
+    this.macyState.reInit();
+  }
+
   disconnectedCallback() {
     this.macyState.remove();
   }
 
-  /**
-   * Init Macy.
-   */
-  private initMacy() {
+  /** Init Macy. */
+  private initMacy = () => {
+    /** Wrap all children in div. */
+    Array.from(this.container.children).forEach((item) => {
+      wrap(item, document.createElement('div'));
+    });
+
     this.macyState = Macy({
       container: this.container,
       margin: 0,
@@ -159,31 +153,43 @@ export class SpxMasonry {
             9999: this.columns ? this.columns : 4,
           },
     });
-  }
+  };
 
-  /** Recalculates grid. */
-
-  @Method()
-  async recalc() {
-    this.macyState.recalculate();
-  }
-
-  @Method()
-  async reload() {
-    this.macyState.reInit();
-  }
+  /** Update. */
+  private update = () => {
+    this.macyState.remove();
+    this.container.innerHTML = '';
+    this.content = this.el.innerHTML;
+    setTimeout(() => {
+      lazy({
+        el: this.el,
+        condition: this.lazy,
+      });
+      this.initMacy();
+    }, 100);
+  };
 
   render() {
-    /**
-     * Host styles.
-     */
-    const styleHost = css({
-      display: 'block',
+    const { css } = cssEmotion(this.el.shadowRoot);
 
-      /**
-       * Convert gap to correct padding for elements.
-       */
-      'div > div': {
+    /** Host styles. */
+    const styleHost = cssHost({
+      display: setVar(tag, 'display', this.display),
+    });
+
+    /** Shadow Host styles. */
+    const styleShadowHost = css({
+      /** Adjust container margin to make up for element paddings. */
+      margin:
+        'calc(var(--spx-masonry-gap, ' +
+        this.gap +
+        ') * -1) calc(var(--spx-masonry-gap, ' +
+        this.gap +
+        ') / 2 * -1) 0 calc(var(--spx-masonry-gap, ' +
+        this.gap +
+        ') / 2 * -1)',
+      /** Convert gap to correct padding for elements. */
+      '& > div': {
         padding:
           'var(--spx-masonry-gap, ' +
           this.gap +
@@ -205,36 +211,23 @@ export class SpxMasonry {
       },
     });
 
-    /**
-     * Container styles.
-     */
-    const styleContainer = css({
-      /**
-       * Adjust container margin to make up for element paddings.
-       */
-      margin:
-        'calc(var(--spx-masonry-gap, ' +
-        this.gap +
-        ') * -1) calc(var(--spx-masonry-gap, ' +
-        this.gap +
-        ') / 2 * -1) 0 calc(var(--spx-masonry-gap, ' +
-        this.gap +
-        ') / 2 * -1)',
-    });
-
     return (
       <Host class={styleHost}>
-        <div
-          ref={(el) => (this.container = el as HTMLElement)}
-          class={styleContainer}
-        >
-          {getGallery(
-            this.images,
-            this.imagesSrc,
-            this.imagesArray,
-            this.imageSize
-          )}
-        </div>
+        {helperImagesOrInner({
+          class: styleShadowHost,
+          condition: this.images,
+          content: this.content,
+          el: this.el,
+          ref: (el) => (this.container = el as HTMLElement),
+          helper: {
+            array: this.imagesArray,
+            el: this.el,
+            images: this.images,
+            lazy: this.lazy,
+            size: this.imageSize,
+            src: this.imageSrc,
+          },
+        })}
       </Host>
     );
   }

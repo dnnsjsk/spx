@@ -6,27 +6,30 @@ import {
   Prop,
   Element,
   State,
-  Method,
   Watch,
   Event,
   EventEmitter,
 } from '@stencil/core';
-import { css, keyframes } from '@emotion/css';
+import { css as cssHost } from '@emotion/css';
 import * as s from '../../constants/style';
 import { position } from '../../constants/style';
-import { setVar } from '../../utils/setVar';
-import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
-import { setVarOrClamp } from '../../utils/setVarOrClamp';
+import { setVar } from '../../utils/cssVariables/setVar';
+import { globalComponentDidLoad } from '../../utils/global/globalComponentDidLoad';
+import { setStyle } from '../../utils/cssVariables/setStyle';
+import { globalComponentWillUpdate } from '../../utils/global/globalComponentWillUpdate';
+import { cssEmotion } from '../../utils/css/cssEmotion';
+import { cssTw } from '../../utils/css/cssTw';
+import { Button } from '../../utils/elements/button';
 
 const tag = 'spx-snackbar';
 
 /**
- * Notification bars with a variety of options.
- * Great for success or failure messages.
- * In default mode, the snackbar will fade out and remove itself from the DOM.
+ * Notification bars with a variety of options. Great for success or failure
+ * messages. In default mode, the snackbar will fade out and remove itself from the DOM.
  */
 @Component({
   tag: 'spx-snackbar',
+  shadow: true,
 })
 export class SpxSnackbar {
   // eslint-disable-next-line no-undef
@@ -45,25 +48,39 @@ export class SpxSnackbar {
 
   @Prop({ reflect: true }) borderRadius: string = s.borderRadius;
 
+  @Prop({ reflect: true }) buttonBackground: string =
+    'var(--spx-color-gray-700)';
+
+  @Prop({ reflect: true }) buttonBackgroundHover: string =
+    'var(--spx-color-gray-800)';
+
+  @Prop({ reflect: true }) buttonTransitionDuration: string =
+    s.transitionDuration;
+
+  @Prop({ reflect: true }) buttonTransitionTimingFunction: string =
+    s.transitionTimingFunction;
+
   @Prop({ reflect: true }) classButton: string;
 
   @Prop({ reflect: true }) classText: string;
 
-  /**
-   * Adds option to close snackbar after its creation.
-   */
+  /** Adds option to close snackbar after its creation. */
   @Prop({ reflect: true }) closeable: boolean;
 
   @Prop({ reflect: true }) color: string = '#ffffff';
 
+  @Prop({ reflect: true }) display: string = s.display;
+
   /**
    * Distance to the edge of the viewport on the x-axis.
+   *
    * @CSS
    */
   @Prop({ reflect: true }) distanceX: string = '1em';
 
   /**
    * Distance to the edge of the viewport on the y-axis.
+   *
    * @CSS
    */
   @Prop({ reflect: true }) distanceY: string = '1em';
@@ -84,7 +101,7 @@ export class SpxSnackbar {
    */
   @Prop({ reflect: true }) identifier: string = 'primary';
 
-  @Prop({ reflect: true }) padding: string = '1em';
+  @Prop({ reflect: true }) padding: string = '0.8em';
 
   @Prop({ reflect: true }) paddingMin: number = 1;
 
@@ -92,50 +109,40 @@ export class SpxSnackbar {
 
   /**
    * Component position in page.
+   *
    * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
    */
   @Prop({ reflect: true }) position: string = 'bottom-right';
 
-  /**
-   * CSS property position of button.
-   */
+  /** CSS property position of button. */
   @Prop({ reflect: true }) positionCss:
     | 'fixed'
     | 'absolute'
     | 'relative'
     | 'static' = 'fixed';
 
-  /**
-   * Reverses the close button if "closable" prop is true.
-   */
+  /** Reverses the close button if "closable" prop is true. */
   @Prop({ reflect: true }) reverse: boolean;
 
-  /**
-   * Space between snackbars.
-   */
+  /** Space between snackbars. */
   @Prop({ reflect: true }) spaceBetween: string = '12px';
 
   /**
    * Styling.
+   *
    * @choice 'default', 'fluid', 'headless'
    */
   @Prop({ reflect: true }) styling: string = 'default';
 
-  /**
-   * Element where snackbars should be created in.
-   */
+  /** Element where snackbars should be created in. */
   @Prop({ reflect: true }) target: string = 'body';
 
-  /**
-   * Text inside snackbar.
-   */
+  /** Text inside snackbar. */
   @Prop({ reflect: true }) text: string = "Hello, I'm a snackbar.";
 
   @Prop({ reflect: true }) zIndex: number = 103;
 
-  /**
-   * Fires after component has loaded.
-   */
+  /** Fires after component has loaded. */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxSnackbarDidLoad' })
   spxSnackbarDidLoad: EventEmitter;
@@ -151,7 +158,7 @@ export class SpxSnackbar {
     document
       .querySelector('[data-spx-id="' + this.identifier + '"]')
       .classList.add(
-        css({
+        cssHost({
           ...position(
             'snackbar',
             this.positionArray,
@@ -173,14 +180,12 @@ export class SpxSnackbar {
   componentWillLoad() {
     this.createPositionArray();
 
-    /**
-     * Load into container if more than one snackbar are on screen.
-     */
+    /** Load into container if more than one snackbar are on screen. */
     if (!document.querySelector('[data-spx-id="' + this.identifier + '"]')) {
       const div = document.createElement('div');
       this.containerClass = {};
       div.classList.add(
-        css({
+        cssHost({
           ...position(
             'snackbar',
             this.positionArray,
@@ -209,7 +214,7 @@ export class SpxSnackbar {
   }
 
   componentDidLoad() {
-    globalComponentDidLoad(this.el);
+    globalComponentDidLoad({ el: this.el });
 
     this.spxSnackbarDidLoad.emit({ target: 'document' });
   }
@@ -220,9 +225,7 @@ export class SpxSnackbar {
       el.remove();
     };
 
-    /**
-     * Remove snackbar from dom after 5 seconds.
-     */
+    /** Remove snackbar from dom after 5 seconds. */
     if (!this.fixed) {
       setTimeout(
         removeItem,
@@ -231,9 +234,13 @@ export class SpxSnackbar {
     }
   }
 
-  private createPositionArray() {
-    this.positionArray = this.position.split('-');
+  componentWillUpdate() {
+    globalComponentWillUpdate(this.el);
   }
+
+  private createPositionArray = () => {
+    this.positionArray = this.position.split('-');
+  };
 
   private removeItem = () => {
     const container = document.querySelector('#spx-snackbar-container');
@@ -245,15 +252,11 @@ export class SpxSnackbar {
     }
   };
 
-  @Method()
-  async reload() {
-    this.componentDidLoad();
-  }
-
   render() {
-    /**
-     * Animation in and out.
-     */
+    const { css, keyframes } = cssEmotion(this.el.shadowRoot);
+    const tw = cssTw(this.el.shadowRoot);
+
+    /** Animation in and out. */
     const kfOut = keyframes({
       '0%, 100%': {
         opacity: 0,
@@ -263,9 +266,7 @@ export class SpxSnackbar {
       },
     });
 
-    /**
-     * Animation in.
-     */
+    /** Animation in. */
     const kfIn = keyframes({
       '0%': {
         opacity: 0,
@@ -275,53 +276,21 @@ export class SpxSnackbar {
       },
     });
 
-    /**
-     * Host styles.
-     */
-    const styleHost =
+    /** Host styles. */
+    const styleHost = cssHost({
+      display: setVar(tag, 'display', this.display),
+    });
+
+    /** Shadow Host styles. */
+    const styleShadowHost =
       (this.styling === 'default' || this.styling === 'fluid') &&
       css({
-        display: 'flex',
-        flexDirection: !this.reverse ? 'row-reverse' : 'row',
+        overflow: 'hidden',
+        display: 'grid',
+        gridAutoFlow: 'column',
+        gridAutoColumns: 'max-content',
         alignItems: 'center',
         userSelect: 'none',
-        paddingTop: setVarOrClamp(
-          tag,
-          'padding',
-          this.padding,
-          this.paddingMin,
-          this.paddingMax,
-          this.styling
-        ),
-        paddingRight:
-          (this.reverse || !this.closeable) &&
-          setVarOrClamp(
-            tag,
-            'padding',
-            this.padding,
-            this.paddingMin,
-            this.paddingMax,
-            this.styling
-          ),
-        paddingBottom: setVarOrClamp(
-          tag,
-          'padding',
-          this.padding,
-          this.paddingMin,
-          this.paddingMax,
-          this.styling
-        ),
-        paddingLeft:
-          this.closeable && this.reverse
-            ? 0
-            : setVarOrClamp(
-                tag,
-                'padding',
-                this.padding,
-                this.paddingMin,
-                this.paddingMax,
-                this.styling
-              ),
         opacity: 0,
         color: setVar(tag, 'color', this.color),
         background: setVar(tag, 'background', this.background),
@@ -337,32 +306,60 @@ export class SpxSnackbar {
         animationFillMode: 'forwards',
       });
 
-    /**
-     * Button styles.
-     */
+    /** Button styles. */
     const styleButton =
       this.styling === 'default' || this.styling === 'fluid'
         ? css({
+            gridColumn: this.reverse && '1',
             padding: '0 ' + setVar(tag, 'padding', this.padding) + '',
-            width: '0.7em',
-            opacity: '0.3',
+            background: setVar(tag, 'button-background', this.buttonBackground),
+            width: '1em',
             boxSizing: 'content-box',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-          })
-        : this.classButton;
+            height: '100%',
+            borderBottomLeftRadius:
+              this.reverse && setVar(tag, 'border-radius', this.borderRadius),
+            borderTopLeftRadius:
+              this.reverse && setVar(tag, 'border-radius', this.borderRadius),
+            borderTopRightRadius:
+              !this.reverse && setVar(tag, 'border-radius', this.borderRadius),
+            borderBottomRightRadius:
+              !this.reverse && setVar(tag, 'border-radius', this.borderRadius),
+            transitionProperty: 'background, box-shadow',
+            transitionDuration: setVar(
+              tag,
+              'button-transition-duration',
+              this.buttonTransitionDuration
+            ),
+            transitionTimingFunction: setVar(
+              tag,
+              'button-transition-timing-function',
+              this.buttonTransitionTimingFunction
+            ),
 
-    /**
-     * Text styles.
-     */
+            '&:hover': {
+              background: setVar(
+                tag,
+                'button-background-hover',
+                this.buttonBackgroundHover
+              ),
+            },
+
+            ...s.focus,
+          })
+        : tw(this.classButton ?? '');
+
+    /** Text styles. */
     const styleText =
       this.styling === 'default' || this.styling === 'fluid'
         ? css({
+            gridColumn: this.reverse && '2',
             whiteSpace: 'nowrap',
             fontFamily: s.fontFamily,
-            fontSize: setVarOrClamp(
+            fontSize: setStyle(
               tag,
               'font-size',
               this.fontSize,
@@ -370,24 +367,30 @@ export class SpxSnackbar {
               this.fontSizeMax,
               this.styling
             ),
+            padding: setStyle(
+              tag,
+              'padding',
+              this.padding,
+              this.paddingMin,
+              this.paddingMax,
+              this.styling
+            ),
           })
-        : this.classText;
+        : tw(this.classText ?? '');
 
     return (
       <Host class={styleHost}>
-        {/**
-         * Close button.
-         */}
-        {this.closeable && (
-          <div role="button" onClick={this.removeItem} class={styleButton}>
-            <spx-icon icon="close" />
-          </div>
-        )}
+        <div class={styleShadowHost}>
+          {/** Text. */}
+          <span class={styleText}>{this.text ? this.text : <slot />}</span>
 
-        {/**
-         * Text.
-         */}
-        <span class={styleText}>{this.text ? this.text : <slot />}</span>
+          {/** Close button. */}
+          {this.closeable && (
+            <Button onClick={this.removeItem} class={styleButton}>
+              <spx-icon size="1.25em" icon="close" />
+            </Button>
+          )}
+        </div>
       </Host>
     );
   }

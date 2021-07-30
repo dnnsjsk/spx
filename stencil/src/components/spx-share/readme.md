@@ -1,7 +1,5 @@
 # spx-share
 
-
-
 <!-- Auto Generated Below -->
 
 
@@ -10,6 +8,7 @@
 | Property                       | Attribute                         | Description                | Type      | Default                             |
 | ------------------------------ | --------------------------------- | -------------------------- | --------- | ----------------------------------- |
 | `classItem`                    | `class-item`                      |                            | `string`  | `undefined`                         |
+| `display`                      | `display`                         |                            | `string`  | `s.display`                         |
 | `fontSize`                     | `font-size`                       |                            | `string`  | `s.fontSize`                        |
 | `fontSizeMax`                  | `font-size-max`                   |                            | `number`  | `1.4`                               |
 | `fontSizeMin`                  | `font-size-min`                   |                            | `number`  | `1`                                 |
@@ -39,19 +38,6 @@
 | Event             | Description                       | Type               |
 | ----------------- | --------------------------------- | ------------------ |
 | `spxShareDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
-
-
-## Methods
-
-### `reload() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
 
 
 ## Dependencies

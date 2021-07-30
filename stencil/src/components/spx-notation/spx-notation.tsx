@@ -11,15 +11,14 @@ import {
   EventEmitter,
 } from '@stencil/core';
 import { css } from '@emotion/css';
-import { setVar } from '../../utils/setVar';
+import { setVar } from '../../utils/cssVariables/setVar';
 import { annotate, annotationGroup } from 'rough-notation';
-import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
+import { globalComponentDidLoad } from '../../utils/global/globalComponentDidLoad';
+import { globalComponentWillUpdate } from '../../utils/global/globalComponentWillUpdate';
 
 const tag = 'spx-notation';
 
-/**
- * Annotate letters, words or whole sentences.
- */
+/** Annotate letters, words or whole sentences. */
 @Component({
   tag: 'spx-notation',
 })
@@ -29,24 +28,16 @@ export class SpxNotation {
 
   @State() annotation;
 
-  /**
-   * Turn animation on or off when animation.
-   */
+  /** Turn animation on or off when animation. */
   @Prop({ reflect: true }) animation: boolean = true;
 
-  /**
-   * Animation duration.
-   */
+  /** Animation duration. */
   @Prop({ reflect: true }) animationDuration: number = 800;
 
-  /**
-   * Autoplay.
-   */
+  /** Autoplay. */
   @Prop({ reflect: true }) autoplay: boolean = true;
 
-  /**
-   * Brackets.
-   */
+  /** Brackets. */
   @Prop({ reflect: true }) brackets: string = 'left, right';
 
   @Prop({ reflect: true }) color: string = 'var(--spx-color-gray-100)';
@@ -55,46 +46,35 @@ export class SpxNotation {
 
   @Prop({ reflect: true }) delay: number;
 
-  /**
-   * Create a group on annotations by applying a "data-spx-annotation" to elements within.
-   */
+  /** Create a group on annotations by applying a "data-spx-annotation" to elements within. */
   @Prop({ reflect: true }) group: boolean;
 
-  /**
-   * Number of iterations.
-   */
+  /** Number of iterations. */
   @Prop({ reflect: true }) iterations: number = 1;
 
-  /**
-   * Annotate multiline text.
-   */
+  /** Annotate multiline text. */
   @Prop({ reflect: true }) multiline: boolean = true;
 
-  /**
-   * Padding around notations.
-   */
+  /** Padding around notations. */
   @Prop({ reflect: true }) padding: number;
 
-  /**
-   * Stroke width.
-   */
+  /** Stroke width. */
   @Prop({ reflect: true }) strokeWidth: number = 1;
 
   /**
    * Type of notation.
+   *
    * @choice 'underline', 'box', 'circle', 'highlight', 'strike-through', 'crossed-off', 'bracket'
    */
   @Prop({ reflect: true }) type: string = 'underline';
 
-  /**
-   * Fires after component has loaded.
-   */
+  /** Fires after component has loaded. */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxNotationDidLoad' })
   spxNotationDidLoad: EventEmitter;
 
   componentDidLoad() {
-    globalComponentDidLoad(this.el);
+    globalComponentDidLoad({ el: this.el });
 
     if (
       ((this.el.querySelector(':scope > span > span') &&
@@ -108,12 +88,15 @@ export class SpxNotation {
     this.spxNotationDidLoad.emit({ target: 'document' });
   }
 
-  private annotate() {
+  componentWillUpdate() {
+    globalComponentWillUpdate(this.el);
+  }
+
+  /** Annotate. */
+  private annotate = () => {
     const groupArray = [];
 
-    /**
-     * Get options.
-     */
+    /** Get options. */
     const options = {
       animate: this.animation,
       animationDuration: this.animationDuration,
@@ -139,9 +122,7 @@ export class SpxNotation {
       brackets: this.brackets,
     };
 
-    /**
-     * Check if group is active.
-     */
+    /** Check if group is active. */
     if (!this.group) {
       this.annotation = annotate(
         this.el.querySelector(':scope > span > span'),
@@ -165,9 +146,7 @@ export class SpxNotation {
       });
     }
 
-    /**
-     * Fire off animation.
-     */
+    /** Fire off animation. */
     if (this.delay) {
       setTimeout(() => {
         if (!this.group) {
@@ -183,26 +162,23 @@ export class SpxNotation {
         annotationGroup(groupArray).show();
       }
     }
-  }
+  };
 
-  /**
-   * Remove the annotation.
-   */
+  /** Remove the annotation. */
   @Method()
   async clear() {
     this.annotation.remove();
   }
 
-  /**
-   * Hides the annotation. (non animated)
-   */
+  /** Hides the annotation. (non animated) */
   @Method()
   async hide() {
     this.annotation.hide();
   }
 
+  /** Redraw the animation. */
   @Method()
-  async reload() {
+  async redraw() {
     if (this.annotation) {
       this.annotation.remove();
     }
@@ -211,26 +187,20 @@ export class SpxNotation {
     }
   }
 
-  /**
-   * Draws the annotation.
-   */
+  /** Draws the annotation. */
   @Method()
   async show() {
     this.annotate();
   }
 
   render() {
-    /**
-     * Host styles.
-     */
+    /** Host styles. */
     const styleHost = css({
       display: setVar(tag, 'display', this.display),
       position: 'relative',
     });
 
-    /**
-     * Span styles.
-     */
+    /** Span styles. */
     const styleSpan = css({ position: 'relative', display: 'inline-block' });
 
     return (

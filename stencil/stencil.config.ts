@@ -5,8 +5,12 @@ import { sass } from '@stencil/sass';
 import { JsonDocs } from '@stencil/core/internal';
 import { promises as fs } from 'fs';
 
-/** KebabCase helper. */
-
+/**
+ * KebabCase helper.
+ *
+ * @param {string} str - String to convert.
+ * @returns {string} Returns converted string.
+ */
 const toKebabCase = (str) => {
   return str
     .split('')
@@ -18,9 +22,14 @@ const toKebabCase = (str) => {
     .join('');
 };
 
-/** Generate custom documentation. */
-
+/**
+ * @param {JsonDocs} docsData - JSON Docs.
+ */
 async function generateCustomElementsJSON(docsData: JsonDocs) {
+  /**
+   * @param {object} dir Directory.
+   * @param {object} dirComponents Directory.
+   */
   async function generate(dir, dirComponents) {
     /** Delete and create dir. */
 
@@ -29,8 +38,9 @@ async function generateCustomElementsJSON(docsData: JsonDocs) {
     await fs.rmdir(dirComponents, { recursive: true });
     await fs.mkdir(dirComponents);
 
-    /** Create file for each component. */
-
+    /**
+     * Create file for each component.
+     */
     await docsData.components.forEach((component) => {
       const data = {
         name: component.tag,
@@ -80,7 +90,9 @@ async function generateCustomElementsJSON(docsData: JsonDocs) {
         })),
       };
 
-      /** Write files. */
+      /**
+       * Write files.
+       */
       fs.writeFile(
         dirComponents + component.tag + '.json',
         JSON.stringify(data, null, 2)
@@ -98,7 +110,6 @@ async function generateCustomElementsJSON(docsData: JsonDocs) {
 
 export const config: Config = {
   namespace: 'spx',
-  globalScript: 'src/global/globalScript.ts',
   taskQueue: 'async',
   outputTargets: [
     {

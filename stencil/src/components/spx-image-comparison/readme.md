@@ -1,21 +1,21 @@
 # spx-image-comparison
 
-
-
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-| Property    | Attribute    | Description                    | Type                          | Default                                         |
-| ----------- | ------------ | ------------------------------ | ----------------------------- | ----------------------------------------------- |
-| `color`     | `color`      |                                | `string`                      | `'#ffffff'`                                     |
-| `height`    | `height`     |                                | `string`                      | `'100%'`                                        |
-| `iconColor` | `icon-color` |                                | `string`                      | `'var(--spx-color-gray-900)'`                   |
-| `loading`   | `loading`    | Lazy load attribute.           | `"auto" \| "eager" \| "lazy"` | `undefined`                                     |
-| `srcAfter`  | `src-after`  | Image URL of the before image. | `string`                      | `'https://source.unsplash.com/random/1200x300'` |
-| `srcBefore` | `src-before` | Image URL of the after image.  | `string`                      | `'https://source.unsplash.com/random/1201x300'` |
-| `start`     | `start`      | Opening state in pixels.       | `number`                      | `150`                                           |
+| Property    | Attribute    | Description                                       | Type      | Default                                         |
+| ----------- | ------------ | ------------------------------------------------- | --------- | ----------------------------------------------- |
+| `color`     | `color`      |                                                   | `string`  | `'#ffffff'`                                     |
+| `display`   | `display`    |                                                   | `string`  | `s.display`                                     |
+| `height`    | `height`     |                                                   | `string`  | `'100%'`                                        |
+| `iconColor` | `icon-color` |                                                   | `string`  | `'var(--spx-color-gray-900)'`                   |
+| `lazy`      | `lazy`       | Lazy load images.                                 | `boolean` | `undefined`                                     |
+| `srcAfter`  | `src-after`  | Image URL of the before image.                    | `string`  | `'https://source.unsplash.com/random/1200x300'` |
+| `srcBefore` | `src-before` | Image URL of the after image.                     | `string`  | `'https://source.unsplash.com/random/1201x300'` |
+| `start`     | `start`      | Opening state in pixels.                          | `number`  | `150`                                           |
+| `steps`     | `steps`      | Step amount when using component with arrow keys. | `number`  | `10`                                            |
 
 
 ## Events
@@ -23,19 +23,6 @@
 | Event                       | Description                       | Type               |
 | --------------------------- | --------------------------------- | ------------------ |
 | `spxImageComparisonDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
-
-
-## Methods
-
-### `reload() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
 
 
 ## Dependencies

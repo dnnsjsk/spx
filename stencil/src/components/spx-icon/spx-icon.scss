@@ -1,0 +1,20 @@
+:host {
+  @keyframes loader {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  div.loader {
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: loader;
+    animation-timing-function: linear;
+    transform-origin: center;
+  }
+}

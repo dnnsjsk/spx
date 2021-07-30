@@ -1,29 +1,29 @@
 .spx-typewriter__cursor {
-    -webkit-animation: cursor 1s infinite;
-    animation: cursor 1s infinite;
-    margin-left: 1px
+  -webkit-animation: cursor 1s infinite;
+  animation: cursor 1s infinite;
+  margin-left: 1px;
 }
 
 @-webkit-keyframes cursor {
-    0% {
-        opacity: 0
-    }
-    50% {
-        opacity: 1
-    }
-    100% {
-        opacity: 0
-    }
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 
 @keyframes cursor {
-    0% {
-        opacity: 0
-    }
-    50% {
-        opacity: 1
-    }
-    100% {
-        opacity: 0
-    }
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

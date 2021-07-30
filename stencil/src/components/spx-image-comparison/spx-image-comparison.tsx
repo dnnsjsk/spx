@@ -8,140 +8,127 @@ import {
   State,
   Watch,
   Listen,
-  Method,
   Event,
   EventEmitter,
 } from '@stencil/core';
-import { css } from '@emotion/css';
-import { setVar } from '../../utils/setVar';
-import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
+import { css as cssHost } from '@emotion/css';
+import { setVar } from '../../utils/cssVariables/setVar';
+import { globalComponentDidLoad } from '../../utils/global/globalComponentDidLoad';
+import { globalComponentWillUpdate } from '../../utils/global/globalComponentWillUpdate';
+import * as s from '../../constants/style';
+import { cssEmotion } from '../../utils/css/cssEmotion';
+import { Button } from '../../utils/elements/button';
 
 const tag = 'spx-image-comparison';
 
 /**
- * Compare two images visually using a slider. Handy for showing subtle (or not so subtle) before/after differences.
+ * Compare two images visually using a slider. Handy for showing subtle (or not
+ * so subtle) before/after differences.
  */
 @Component({
   tag: 'spx-image-comparison',
+  shadow: true,
 })
 export class SpxImageComparison {
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxImageComparisonElement;
+  private root: HTMLElement;
   private container: HTMLElement;
   private imageAfter: HTMLElement;
   private scroller: HTMLElement;
 
   @State() active: boolean;
   @State() width: number;
+  private x: number;
 
   @Prop({ reflect: true }) color: string = '#ffffff';
+
+  @Prop({ reflect: true }) display: string = s.display;
 
   @Prop({ reflect: true }) height: string = '100%';
 
   @Prop({ reflect: true }) iconColor: string = 'var(--spx-color-gray-900)';
 
-  /**
-   * Lazy load attribute.
-   */
-  @Prop({ reflect: true }) loading: 'auto' | 'lazy' | 'eager';
+  /** Lazy load images. */
+  @Prop({ reflect: true }) lazy: boolean;
 
-  /**
-   * Image URL of the before image.
-   */
+  /** Image URL of the before image. */
   @Prop({ reflect: true }) srcAfter: string =
     'https://source.unsplash.com/random/1200x300';
 
-  /**
-   * Image URL of the after image.
-   */
+  /** Image URL of the after image. */
   @Prop({ reflect: true }) srcBefore: string =
     'https://source.unsplash.com/random/1201x300';
+
+  /** Step amount when using component with arrow keys. */
+  @Prop({ reflect: true }) steps: number = 10;
 
   @Listen('resize', { target: 'window' })
   onResize() {
     if (this.el.offsetWidth !== this.width) {
-      this.startChanged(this.start);
+      this.move(this.start);
+      this.width = this.root.offsetWidth;
     }
   }
 
-  /**
-   * Opening state in pixels.
-   */
+  /** Opening state in pixels. */
   @Prop({ reflect: true }) start: number = 150;
 
   @Watch('start')
-  startChanged(x) {
-    /**
-     * Show image in start.
-     */
+  move(x) {
+    /** Show image in start. */
     const transform = Math.max(0, Math.min(x, this.container.offsetWidth));
     this.imageAfter.style.width = transform + 2 + 'px';
     this.scroller.style.left = transform - 25 + 'px';
+
+    if (x >= 2 && x <= this.width) {
+      this.x = x;
+    }
   }
 
-  /**
-   * Fires after component has loaded.
-   */
+  /** Fires after component has loaded. */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxImageComparisonDidLoad' })
   spxImageComparisonDidLoad: EventEmitter;
 
   componentDidLoad() {
-    globalComponentDidLoad(this.el);
+    globalComponentDidLoad({ el: this.el, lazy: this.lazy });
 
-    /**
-     * Set starting width.
-     */
-    this.width = this.el.offsetWidth;
+    /** Set starting width. */
+    this.width = this.root.offsetWidth;
 
-    /**
-     * Disable for Oxygen.
-     */
+    /** Disable for Oxygen. */
     if (document.body.classList.contains('oxygen-builder-body')) {
       this.scroller.style.pointerEvents = 'none';
     }
 
-    /**
-     * Use boolean to know when it is being used.
-     */
+    /** Use boolean to know when it is being used. */
     this.active = false;
 
-    /**
-     * Watch for clicks on scroller.
-     */
+    /** Watch for clicks on scroller. */
     this.scroller.addEventListener('mousedown', () => {
       this.active = true;
     });
 
-    /**
-     * Add scrolling class to the scroller so it has full opacity while active.
-     */
+    /** Add scrolling class to the scroller so it has full opacity while active. */
     document.body.addEventListener('mouseup', () => {
       this.active = false;
     });
 
-    /**
-     * Watch body for changes to the state.
-     */
+    /** Watch body for changes to the state. */
     document.body.addEventListener('mouseleave', () => {
       this.active = false;
     });
 
-    /**
-     * Figure out where the mouse is.
-     */
+    /** Figure out where the mouse is. */
     document.body.addEventListener('mousemove', (e) => {
       this.mover(e);
     });
 
-    /**
-     * Set starting width.
-     */
-    this.startChanged(this.start);
+    /** Set starting width. */
+    this.move(this.start);
 
-    /**
-     * Repeat for touch events.
-     */
+    /** Repeat for touch events. */
     this.scroller.addEventListener('touchstart', () => {
       this.active = true;
     });
@@ -161,26 +148,44 @@ export class SpxImageComparison {
     this.spxImageComparisonDidLoad.emit({ target: 'document' });
   }
 
+  componentWillUpdate() {
+    globalComponentWillUpdate(this.el);
+  }
+
   /**
    * Thumb mover function.
+   *
+   * @param {event} e Mover function.
    */
-  private mover(e) {
+  private mover = (e) => {
     if (!this.active) return;
     let x = e.pageX;
     x -= this.container.getBoundingClientRect().left;
-    this.startChanged(x);
-  }
+    this.move(x);
+  };
 
-  @Method()
-  async reload() {
-    this.componentDidLoad();
-  }
+  private moveLeft = () => {
+    if (this.x >= 2) {
+      this.move(this.x - this.steps);
+    }
+  };
+
+  private moveRight = () => {
+    if (this.x <= this.width) {
+      this.move(this.x + this.steps);
+    }
+  };
 
   render() {
-    /**
-     * Host styles.
-     */
-    const styleHost = css({
+    const { css } = cssEmotion(this.el.shadowRoot);
+
+    /** Host styles. */
+    const styleHost = cssHost({
+      display: setVar(tag, 'display', this.display),
+    });
+
+    /** Shadow Host styles. */
+    const styleShadowHost = css({
       display: 'block',
       position: 'relative',
       height: setVar(tag, 'height', this.height),
@@ -188,9 +193,7 @@ export class SpxImageComparison {
       overflow: 'hidden',
     });
 
-    /**
-     * Container styles.
-     */
+    /** Container styles. */
     const styleContainer = css({
       width: '100%',
       height: setVar(tag, 'height', this.height),
@@ -206,24 +209,18 @@ export class SpxImageComparison {
       userSelect: 'none',
     });
 
-    /**
-     * Image styles.
-     */
+    /** Image styles. */
     const styleImage = css({
       height: '100%',
       maxWidth: 'none !important',
     });
 
-    /**
-     * Image after styles.
-     */
+    /** Image after styles. */
     const styleImageAfter = css({
       width: '125px',
     });
 
-    /**
-     * Scroller styles.
-     */
+    /** Scroller styles. */
     const styleScroller = css({
       width: '50px',
       height: '50px',
@@ -238,6 +235,9 @@ export class SpxImageComparison {
       cursor: 'pointer',
       background: setVar(tag, 'color', this.color),
       border: '4px solid ' + setVar(tag, 'color', this.color) + '',
+      transitionProperty: 'box-shadow, opacity',
+      transitionDuration: s.transitionDuration,
+      transitionTimingFunction: s.transitionTimingFunction,
 
       '&:hover': {
         opacity: 1,
@@ -263,11 +263,11 @@ export class SpxImageComparison {
       '&:after': {
         bottom: '100%',
       },
+
+      ...s.focus,
     });
 
-    /**
-     * Thumb styles.
-     */
+    /** Thumb styles. */
     const styleThumb = css({
       height: '100%',
       width: '100%',
@@ -282,47 +282,49 @@ export class SpxImageComparison {
 
     return (
       <Host class={styleHost}>
-        {this.srcBefore &&
-          this.srcAfter /** Before. */ && [
-            <div
-              ref={(el) => (this.container = el as HTMLElement)}
-              class={styleContainer}
-            >
-              <img
-                loading={this.loading}
-                class={styleImage}
-                src={this.srcBefore}
-                alt="before"
-              />
-            </div>,
+        <div
+          ref={(el) => (this.root = el as HTMLElement)}
+          class={styleShadowHost}
+        >
+          {this.srcBefore &&
+            this.srcAfter && [
+              <div
+                ref={(el) => (this.container = el as HTMLElement)}
+                class={styleContainer}
+              >
+                <img
+                  class={styleImage}
+                  src={!this.lazy && this.srcBefore}
+                  data-src={this.lazy && this.srcBefore}
+                  alt="before"
+                />
+              </div>,
 
-            /**
-             * After.
-             */
-            <div
-              ref={(el) => (this.imageAfter = el as HTMLElement)}
-              class={css([styleContainer, styleImageAfter])}
-            >
-              <img
-                loading={this.loading}
-                class={styleImage}
-                src={this.srcAfter}
-                alt="after"
-              />
-            </div>,
+              <div
+                ref={(el) => (this.imageAfter = el as HTMLElement)}
+                class={css([styleContainer, styleImageAfter])}
+              >
+                <img
+                  class={styleImage}
+                  src={!this.lazy && this.srcAfter}
+                  data-src={this.lazy && this.srcAfter}
+                  alt="after"
+                />
+              </div>,
 
-            /**
-             * Scroller.
-             */
-            <div
-              ref={(el) => (this.scroller = el as HTMLElement)}
-              class={styleScroller}
-            >
-              <div class={styleThumb}>
-                <spx-icon icon="resize" size="32px" color={this.iconColor} />
-              </div>
-            </div>,
-          ]}
+              <Button
+                tag="button"
+                ref={(el) => (this.scroller = el as HTMLElement)}
+                class={styleScroller}
+                onArrowLeft={this.moveLeft}
+                onArrowRight={this.moveRight}
+              >
+                <div class={styleThumb}>
+                  <spx-icon icon="resize" size="32px" color={this.iconColor} />
+                </div>
+              </Button>,
+            ]}
+        </div>
       </Host>
     );
   }

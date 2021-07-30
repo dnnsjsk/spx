@@ -1,6 +1,6 @@
 {
   "name": "spx-image-comparison",
-  "description": "Compare two images visually using a slider. Handy for showing subtle (or not so subtle) before/after differences.",
+  "description": "Compare two images visually using a slider. Handy for showing subtle (or not\nso subtle) before/after differences.",
   "shadow": false,
   "properties": [
     {
@@ -11,6 +11,16 @@
       "description": "",
       "default": "'#ffffff'",
       "defaultValue": "'#ffffff'",
+      "tags": []
+    },
+    {
+      "id": "image-comparison-display",
+      "name": "display",
+      "attribute": "display",
+      "type": "string",
+      "description": "",
+      "default": "s.display",
+      "defaultValue": "s.display",
       "tags": []
     },
     {
@@ -34,11 +44,11 @@
       "tags": []
     },
     {
-      "id": "image-comparison-loading",
-      "name": "loading",
-      "attribute": "loading",
-      "type": "\"auto\" | \"eager\" | \"lazy\"",
-      "description": "Lazy load attribute.",
+      "id": "image-comparison-lazy",
+      "name": "lazy",
+      "attribute": "lazy",
+      "type": "boolean",
+      "description": "Lazy load images.",
       "tags": []
     },
     {
@@ -70,6 +80,16 @@
       "default": "150",
       "defaultValue": "150",
       "tags": []
+    },
+    {
+      "id": "image-comparison-steps",
+      "name": "steps",
+      "attribute": "steps",
+      "type": "number",
+      "description": "Step amount when using component with arrow keys.",
+      "default": "10",
+      "defaultValue": "10",
+      "tags": []
     }
   ],
   "events": [
@@ -78,12 +98,6 @@
       "description": "Fires after component has loaded."
     }
   ],
-  "methods": [
-    {
-      "name": "reload",
-      "description": "",
-      "signature": "reload() => Promise<void>"
-    }
-  ],
+  "methods": [],
   "slots": []
 }

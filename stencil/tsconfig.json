@@ -4,19 +4,19 @@
     "allowUnreachableCode": false,
     "declaration": false,
     "experimentalDecorators": true,
+    "jsx": "react",
+    "jsxFactory": "h",
     "lib": [
       "dom",
       "es2017",
       "esnext"
     ],
-    "moduleResolution": "node",
     "module": "esnext",
-    "target": "es2017",
+    "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "jsx": "react",
-    "jsxFactory": "h",
     "resolveJsonModule": true
+    "target": "es2017"
   },
   "include": [
     "src",

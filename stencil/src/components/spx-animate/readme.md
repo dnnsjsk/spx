@@ -1,7 +1,5 @@
 # spx-animate
 
-
-
 <!-- Auto Generated Below -->
 
 
@@ -11,7 +9,7 @@
 | ---------------------- | ------------------------ | ------------------------------------------------------------------------------------------- | --------- | -------------- |
 | `clipPath`             | `clip-path`              | Clip-path value the animation starts from.                                                  | `string`  | `undefined`    |
 | `delay`                | `delay`                  | Delay before animation starts.                                                              | `number`  | `0`            |
-| `display`              | `display`                |                                                                                             | `string`  | `'block'`      |
+| `display`              | `display`                |                                                                                             | `string`  | `s.display`    |
 | `duration`             | `duration`               | Animation duration.                                                                         | `number`  | `1`            |
 | `ease`                 | `ease`                   | Ease being used. Accepts all common GSAP options.                                           | `string`  | `'power1.out'` |
 | `filter`               | `filter`                 | Filter value the animation starts from.                                                     | `string`  | `undefined`    |
@@ -51,16 +49,6 @@ Type: `Promise<void>`
 
 
 
-### `reload() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
 ### `restart(includeDelay?: boolean, suppressEvents?: boolean) => Promise<void>`
 
 Restarts animation.
@@ -70,6 +58,13 @@ Restarts animation.
 Type: `Promise<void>`
 
 
+
+
+## Slots
+
+| Slot      | Description               |
+| --------- | ------------------------- |
+| `"inner"` | Slot (between HTML tags). |
 
 
 ----------------------------------------------

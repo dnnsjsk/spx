@@ -1,1 +1,0 @@
-const o=(o,s)=>{o.parentNode.insertBefore(s,o),s.appendChild(o)};export{o as w}

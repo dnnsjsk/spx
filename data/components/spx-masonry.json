@@ -8,7 +8,7 @@
       "name": "bpColumns",
       "attribute": "bp-columns",
       "type": "string",
-      "description": "Columns for different screen sizes. Example value: 1000:3;600:2 - this will switch to a three column layout when the screen size is under 1000px and to a two column layout under 600px.",
+      "description": "Columns for different screen sizes. Example value: 1000:3;600:2 - this will\nswitch to a three column layout when the screen size is under 1000px and to\na two column layout under 600px.",
       "tags": []
     },
     {
@@ -19,6 +19,16 @@
       "description": "Number of columns.",
       "default": "4",
       "defaultValue": "4",
+      "tags": []
+    },
+    {
+      "id": "masonry-display",
+      "name": "display",
+      "attribute": "display",
+      "type": "string",
+      "description": "",
+      "default": "s.display",
+      "defaultValue": "s.display",
       "tags": []
     },
     {
@@ -44,22 +54,9 @@
       "tags": []
     },
     {
-      "id": "masonry-images",
-      "name": "images",
-      "attribute": "images",
-      "type": "string",
-      "description": "Gets images from an ACF or Metabox field.",
-      "tags": [
-        {
-          "text": "&lt;?php spx\\Get::gallery($fieldName, $type) ?>",
-          "name": "helper"
-        }
-      ]
-    },
-    {
-      "id": "masonry-imagesSrc",
-      "name": "imagesSrc",
-      "attribute": "images-src",
+      "id": "masonry-imageSrc",
+      "name": "imageSrc",
+      "attribute": "image-src",
       "type": "string",
       "description": "Gets images from an ACF or Metabox field.",
       "tags": [
@@ -68,6 +65,27 @@
           "name": "choice"
         }
       ]
+    },
+    {
+      "id": "masonry-images",
+      "name": "images",
+      "attribute": "images",
+      "type": "string",
+      "description": "Gets images from an ACF or Metabox field.",
+      "tags": [
+        {
+          "text": "&lt;?php spx\\Get::images($fieldName, $type) ?>",
+          "name": "helper"
+        }
+      ]
+    },
+    {
+      "id": "masonry-lazy",
+      "name": "lazy",
+      "attribute": "lazy",
+      "type": "boolean",
+      "description": "Lazy load images.",
+      "tags": []
     }
   ],
   "events": [
@@ -76,17 +94,11 @@
       "description": "Fires after component has loaded."
     }
   ],
-  "methods": [
+  "methods": [],
+  "slots": [
     {
-      "name": "recalc",
-      "description": "Recalculates grid.",
-      "signature": "recalc() => Promise<void>"
-    },
-    {
-      "name": "reload",
-      "description": "",
-      "signature": "reload() => Promise<void>"
+      "name": "inner",
+      "description": "Slot (between HTML tags)."
     }
-  ],
-  "slots": []
+  ]
 }

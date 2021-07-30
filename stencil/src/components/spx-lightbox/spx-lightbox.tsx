@@ -6,20 +6,22 @@ import {
   // eslint-disable-next-line no-unused-vars
   h,
   Host,
-  Method,
   Prop,
 } from '@stencil/core';
 import GLightbox from 'glightbox';
-import { wrap } from '../../utils/wrap';
+import { wrap } from '../../utils/dom/wrap';
 import { css } from '@emotion/css';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
-import { setVar } from '../../utils/setVar';
-import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
+import { setVar } from '../../utils/cssVariables/setVar';
+import { globalComponentDidLoad } from '../../utils/global/globalComponentDidLoad';
+import { globalComponentWillUpdate } from '../../utils/global/globalComponentWillUpdate';
 
 const tag = 'spx-lightbox';
 
 /**
  * Overlay a gallery of images on top of the current page.
+ *
+ * @slot inner - Slot (between HTML tags).
  */
 @Component({
   tag: 'spx-lightbox',
@@ -37,24 +39,18 @@ export class SpxLightbox {
 
   @Prop({ reflect: true }) width: string = '100%';
 
-  /**
-   * Fires after component has loaded.
-   */
+  /** Fires after component has loaded. */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxLightboxDidLoad' })
   spxLightboxDidLoad: EventEmitter;
 
   componentDidLoad() {
-    globalComponentDidLoad(this.el);
+    globalComponentDidLoad({ el: this.el });
 
-    /**
-     * Generate random string as gallery ID.
-     */
+    /** Generate random string as gallery ID. */
     const random = '_' + Math.random().toString(36).substr(2, 9);
 
-    /**
-     * Wrap elements in <a> element.
-     */
+    /** Wrap elements in <a> element. */
     const elements = this.el.querySelectorAll('img, video, iframe');
 
     elements.forEach((item) => {
@@ -67,9 +63,7 @@ export class SpxLightbox {
       item.parentElement.setAttribute('data-gallery', random);
     });
 
-    /**
-     * Create lightbox.
-     */
+    /** Create lightbox. */
     // eslint-disable-next-line no-new
     new GLightbox({
       selector: '.spx-lightbox__item',
@@ -139,15 +133,12 @@ export class SpxLightbox {
     this.spxLightboxDidLoad.emit({ target: 'document' });
   }
 
-  @Method()
-  async reload() {
-    this.componentDidLoad();
+  componentWillUpdate() {
+    globalComponentWillUpdate(this.el);
   }
 
   render() {
-    /**
-     * Host styles.
-     */
+    /** Host styles. */
     const styleHost = css({
       display: setVar(tag, 'display', this.display),
 

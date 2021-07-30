@@ -96,6 +96,16 @@
       ]
     },
     {
+      "id": "edit-button-display",
+      "name": "display",
+      "attribute": "display",
+      "type": "string",
+      "description": "",
+      "default": "s.display",
+      "defaultValue": "s.display",
+      "tags": []
+    },
+    {
       "id": "edit-button-distanceX",
       "name": "distanceX",
       "attribute": "distance-x",
@@ -128,7 +138,7 @@
       "name": "editId",
       "attribute": "edit-id",
       "type": "string",
-      "description": "Corresponding ID for editable fields. This property is needed when multiple edit-button components are used on the page. Simply apply a \"data-spx-edit-id\" attribute with the same value to editable elements.",
+      "description": "Corresponding ID for editable fields. This property is needed when multiple\nedit-button components are used on the page. Simply apply a\n\"data-spx-edit-id\" attribute with the same value to editable elements.",
       "tags": []
     },
     {
@@ -186,13 +196,33 @@
       ]
     },
     {
+      "id": "edit-button-loaderColor",
+      "name": "loaderColor",
+      "attribute": "loader-color",
+      "type": "string",
+      "description": "",
+      "default": "'#ffffff'",
+      "defaultValue": "'#ffffff'",
+      "tags": []
+    },
+    {
+      "id": "edit-button-loaderGap",
+      "name": "loaderGap",
+      "attribute": "loader-gap",
+      "type": "string",
+      "description": "",
+      "default": "'0.5em'",
+      "defaultValue": "'0.5em'",
+      "tags": []
+    },
+    {
       "id": "edit-button-padding",
       "name": "padding",
       "attribute": "padding",
       "type": "string",
       "description": "",
-      "default": "'0.8em 1.2em'",
-      "defaultValue": "'0.8em 1.2em'",
+      "default": "'0.6em 1.2em'",
+      "defaultValue": "'0.6em 1.2em'",
       "tags": []
     },
     {
@@ -360,11 +390,6 @@
       "name": "edit",
       "description": "Enable editing.",
       "signature": "edit() => Promise<void>"
-    },
-    {
-      "name": "reload",
-      "description": "",
-      "signature": "reload() => Promise<void>"
     },
     {
       "name": "save",

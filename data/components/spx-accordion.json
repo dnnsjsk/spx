@@ -1,8 +1,16 @@
 {
   "name": "spx-accordion",
-  "description": "The classic method to show and hide elements on your website.\nCan be used with custom markup for the header and/or content section.",
+  "description": "The classic method to show and hide elements on your website. Can be used\nwith custom markup for the header and/or content section.",
   "shadow": false,
   "properties": [
+    {
+      "id": "accordion-animation",
+      "name": "animation",
+      "attribute": "animation",
+      "type": "boolean",
+      "description": "Disables the animation. Set this attribute if the accordion is starting\nhidden in the DOM.",
+      "tags": []
+    },
     {
       "id": "accordion-classContent",
       "name": "classContent",
@@ -198,11 +206,13 @@
       "tags": []
     },
     {
-      "id": "accordion-disableAnimation",
-      "name": "disableAnimation",
-      "attribute": "disable-animation",
-      "type": "boolean",
-      "description": "Disables the animation.\nSet this attribute if the accordion is starting hidden in the DOM.",
+      "id": "accordion-display",
+      "name": "display",
+      "attribute": "display",
+      "type": "string",
+      "description": "",
+      "default": "s.display",
+      "defaultValue": "s.display",
       "tags": []
     },
     {
@@ -442,11 +452,6 @@
       "name": "open",
       "description": "Opens the accordion.",
       "signature": "open() => Promise<void>"
-    },
-    {
-      "name": "reload",
-      "description": "",
-      "signature": "reload() => Promise<void>"
     },
     {
       "name": "toggle",

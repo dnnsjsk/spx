@@ -1,7 +1,5 @@
 # spx-edit-button
 
-
-
 <!-- Auto Generated Below -->
 
 
@@ -18,6 +16,7 @@
 | `classLoader`        | `class-loader`         |                                                                                                                                                                                                                | `string`                                          | `undefined`                   |
 | `color`              | `color`                |                                                                                                                                                                                                                | `string`                                          | `'#ffffff'`                   |
 | `colorDiscard`       | `color-discard`        | Discard button color.                                                                                                                                                                                          | `string`                                          | `'#ffffff'`                   |
+| `display`            | `display`              |                                                                                                                                                                                                                | `string`                                          | `s.display`                   |
 | `distanceX`          | `distance-x`           | Distance to the edge of the viewport on the x-axis.                                                                                                                                                            | `string`                                          | `'1em'`                       |
 | `distanceY`          | `distance-y`           | Distance to the edge of the viewport on the y-axis.                                                                                                                                                            | `string`                                          | `'1em'`                       |
 | `editId`             | `edit-id`              | Corresponding ID for editable fields. This property is needed when multiple edit-button components are used on the page. Simply apply a "data-spx-edit-id" attribute with the same value to editable elements. | `string`                                          | `undefined`                   |
@@ -26,7 +25,9 @@
 | `fontSizeMax`        | `font-size-max`        |                                                                                                                                                                                                                | `number`                                          | `1.2`                         |
 | `fontSizeMin`        | `font-size-min`        |                                                                                                                                                                                                                | `number`                                          | `1`                           |
 | `gap`                | `gap`                  | Gap between the buttons.                                                                                                                                                                                       | `string`                                          | `'0.4em'`                     |
-| `padding`            | `padding`              |                                                                                                                                                                                                                | `string`                                          | `'0.8em 1.2em'`               |
+| `loaderColor`        | `loader-color`         |                                                                                                                                                                                                                | `string`                                          | `'#ffffff'`                   |
+| `loaderGap`          | `loader-gap`           |                                                                                                                                                                                                                | `string`                                          | `'0.5em'`                     |
+| `padding`            | `padding`              |                                                                                                                                                                                                                | `string`                                          | `'0.6em 1.2em'`               |
 | `paddingXMax`        | `padding-x-max`        |                                                                                                                                                                                                                | `number`                                          | `1.4`                         |
 | `paddingXMin`        | `padding-x-min`        |                                                                                                                                                                                                                | `number`                                          | `1`                           |
 | `paddingYMax`        | `padding-y-max`        |                                                                                                                                                                                                                | `number`                                          | `1.2`                         |
@@ -73,16 +74,6 @@ Type: `Promise<void>`
 
 
 
-### `reload() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
 ### `save() => Promise<void>`
 
 Save changes.
@@ -100,14 +91,14 @@ Type: `Promise<void>`
 
 - [spx-edit](.)
 - [spx-snackbar](../spx-snackbar)
-- [spx-loader](../spx-loader)
+- [spx-icon](../spx-icon)
 
 ### Graph
 ```mermaid
 graph TD;
   spx-edit-button --> spx-edit
   spx-edit-button --> spx-snackbar
-  spx-edit-button --> spx-loader
+  spx-edit-button --> spx-icon
   spx-snackbar --> spx-icon
   spx-icon --> ion-icon
   style spx-edit-button fill:#f9f,stroke:#333,stroke-width:4px

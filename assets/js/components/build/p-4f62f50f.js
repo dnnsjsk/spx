@@ -1,1 +1,0 @@
-import{h as s}from"./p-dfe31926.js";const m=(m,o,r,t)=>m&&!o?r.map((m=>s("img",{src:t?m.sizes[t]:m.url}))):m&&"mb"===o?Object.values(r).map((m=>s("img",{src:t?m.sizes[t].url:m.full_url}))):s("slot",null);export{m as g}

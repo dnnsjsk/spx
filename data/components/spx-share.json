@@ -12,6 +12,16 @@
       "tags": []
     },
     {
+      "id": "share-display",
+      "name": "display",
+      "attribute": "display",
+      "type": "string",
+      "description": "",
+      "default": "s.display",
+      "defaultValue": "s.display",
+      "tags": []
+    },
+    {
       "id": "share-fontSize",
       "name": "fontSize",
       "attribute": "font-size",
@@ -254,12 +264,6 @@
       "description": "Fires after component has loaded."
     }
   ],
-  "methods": [
-    {
-      "name": "reload",
-      "description": "",
-      "signature": "reload() => Promise<void>"
-    }
-  ],
+  "methods": [],
   "slots": []
 }

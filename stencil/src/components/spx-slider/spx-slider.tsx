@@ -6,126 +6,121 @@ import {
   // eslint-disable-next-line no-unused-vars
   h,
   Host,
-  Method,
   Prop,
   State,
   Watch,
 } from '@stencil/core';
-import Swiper, { Autoplay, Navigation, Pagination, A11y, Thumbs } from 'swiper';
-import { css, keyframes } from '@emotion/css';
-import { setVar } from '../../utils/setVar';
+import Swiper, {
+  Autoplay,
+  Navigation,
+  Pagination,
+  A11y,
+  Thumbs,
+  Lazy,
+} from 'swiper';
+import { css as cssHost } from '@emotion/css';
+import { setVar } from '../../utils/cssVariables/setVar';
 import * as s from '../../constants/style';
 import { startsWith, fromPairs, mapKeys, camelCase } from 'lodash-es';
-import { getGallery } from '../../utils/getGallery';
-import { setClamp } from '../../utils/setClamp';
-import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
+import { globalComponentDidLoad } from '../../utils/global/globalComponentDidLoad';
+import { globalComponentWillUpdate } from '../../utils/global/globalComponentWillUpdate';
+import { cssEmotion } from '../../utils/css/cssEmotion';
+import { helperImagesOrInner } from '../../utils/helper/helperImagesOrInner';
+import { wrap } from '../../utils/dom/wrap';
+import { Button } from '../../utils/elements/button';
 
 const tag = 'spx-slider';
 
 /**
  * A slider is a revolving carousel that displays photos or other types of content.
+ *
+ * @slot inner - Slot (between HTML tags).
  */
 @Component({
   tag: 'spx-slider',
   styleUrl: 'spx-slider.scss',
+  shadow: true,
 })
 export class SpxScrollspy {
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxSliderElement;
   private container: HTMLElement;
   private next: HTMLElement;
-  private prev: HTMLElement;
-  private paginationTabs: HTMLElement;
   private paginationBullets: HTMLElement;
+  private prev: HTMLElement;
+  private swiperContainer: HTMLElement;
 
+  @State() content;
+  @State() counter = 0;
   @State() imagesArray: Array<string>;
-  @State() mySwiper;
-  @State() mySwiperGallery;
   @State() swiperBreakpoints;
+  @State() swiperStyle;
+  private mySwiper;
 
-  /**
-   * Automatically adjusts height of slider.
-   */
+  /** Automatically adjusts height of slider. */
   @Prop({ reflect: true }) autoheight: boolean = false;
 
-  /**
-   * Starts navigating to the next slide when page is loaded.
-   */
+  /** Starts navigating to the next slide when page is loaded. */
   @Prop({ reflect: true }) autoplay: boolean = false;
 
-  /**
-   * Autoplay delay.
-   */
+  /** Autoplay delay. */
   @Prop({ reflect: true }) autoplayDelay: number = 6000;
 
-  /**
-   * Disable autoplay after interaction with slides.
-   */
+  /** Disable autoplay after interaction with slides. */
   @Prop({ reflect: true }) autoplayDisableOnInteraction: boolean = false;
 
-  /**
-   * Starts navigating to the next slide when page is loaded.
-   */
-  @Prop({ reflect: true }) bpTabs: string;
-
-  /**
-   * Centers slides in viewport.
-   */
+  /** Centers slides in viewport. */
   @Prop({ reflect: true }) centeredSlides: boolean = false;
 
-  /**
-   * Slider direction.
-   * @choice 'horizontal', 'vertical'
-   */
-  @Prop({ reflect: true }) direction: string = 'horizontal';
+  @Prop({ reflect: true }) display: string = s.display;
 
   /**
    * Slider effect.
+   *
    * @choice 'slide', 'effect'
    */
   @Prop({ reflect: true }) effect: string = 'slide';
 
   /**
    * Image object-fit.
+   *
    * @choice 'fill', 'contain', 'cover', 'scale-down', 'none'
    */
   @Prop({ reflect: true }) imageObjectFit: string = 'cover';
 
   /**
-   * WordPress media size when using the helper function.
-   */
-  @Prop({ reflect: true }) imageSize: string;
-
-  /**
    * Gets images from an ACF or Metabox field.
+   *
    * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
    */
   @Prop({ reflect: true }) images: string;
 
+  /** WordPress media size when using the helper function. */
+  @Prop({ reflect: true }) imageSize: string;
+
   /**
    * Gets images from an ACF or Metabox field.
+   *
    * @choice 'acf', 'mb'
    */
-  @Prop({ reflect: true }) imagesSrc: string;
+  @Prop({ reflect: true }) imageSrc: string;
 
-  /**
-   * Loops all slides infinitely.
-   */
-  @Prop({ reflect: true }) loop: boolean = false;
+  /** Lazy load images. */
+  @Prop({ reflect: true }) lazy: boolean;
 
-  /**
-   * Max height.
-   */
-  @Prop({ reflect: true }) maxHeight: string = '100%';
+  /** Amount of images to to be preloaded when lazy is enabled. */
+  @Prop({ reflect: true }) lazyLoadPrevNext: number;
 
-  /**
-   * Max width.
-   */
-  @Prop({ reflect: true }) maxWidth: string = '100%';
+  /** Loops all slides infinitely. */
+  @Prop({ reflect: true }) loop: boolean;
+
+  @Prop({ reflect: true }) maxHeight: string;
 
   @Prop({ reflect: true }) navigation: boolean;
 
   @Prop({ reflect: true }) navigationBackground: string = 'rgba(0,0,0,0.7)';
+
+  @Prop({ reflect: true }) navigationBackgroundHover: string = 'rgba(0,0,0,1)';
 
   @Prop({ reflect: true }) navigationBorderRadius: string = s.borderRadius;
 
@@ -133,90 +128,71 @@ export class SpxScrollspy {
 
   /**
    * Navigation distance.
+   *
    * @CSS
    */
   @Prop({ reflect: true }) navigationDistanceX: string = '12px';
 
-  /**
-   * Navigation icon type.
-   */
+  /** Navigation icon type. */
   @Prop({ reflect: true }) navigationIconNext: string = 'arrow-forward';
 
-  /**
-   * Navigation icon type.
-   */
+  /** Navigation icon type. */
 
   @Prop({ reflect: true }) navigationIconPrev: string = 'arrow-back';
 
-  /**
-   * Navigation icon type.
-   */
+  /** Navigation icon type. */
   @Prop({ reflect: true }) navigationIconType: string = 'ionicons';
 
   @Prop({ reflect: true }) navigationPadding: string = '12px';
 
   /**
    * Navigation size.
+   *
    * @CSS
    */
   @Prop({ reflect: true }) navigationSize: string = '20px';
 
+  @Prop({ reflect: true }) navigationTransitionDuration: string =
+    s.transitionDuration;
+
+  @Prop({ reflect: true }) navigationTransitionTimingFunction: string =
+    s.transitionTimingFunction;
+
   /**
    * Pagination type.
-   * @choice 'bullets', 'tabs', 'none'
+   *
+   * @choice 'bullets', 'none'
    */
   @Prop({ reflect: true }) pagination: string = 'bullets';
 
   @Prop({ reflect: true }) paginationBulletsBackground: string =
-    'var(--spx-color-gray-300)';
+    'var(--spx-color-gray-400)';
 
   @Prop({ reflect: true }) paginationBulletsBackgroundActive: string =
     'var(--spx-color-gray-900)';
 
-  /**
-   * Make bullets clickable.
-   */
+  /** Make bullets clickable. */
   @Prop({ reflect: true }) paginationBulletsClickable: boolean;
 
-  /**
-   * Will only keep a selected amount of bullets visible.
-   */
+  /** Will only keep a selected amount of bullets visible. */
   @Prop({ reflect: true }) paginationBulletsDynamic: boolean;
 
-  /**
-   * Amount of dynamic bullets.
-   */
+  /** Amount of dynamic bullets. */
   @Prop({ reflect: true }) paginationBulletsDynamicAmount: number = 5;
 
   /**
    * Size of the bullets.
+   *
    * @CSS
    */
   @Prop({ reflect: true }) paginationBulletsSize: string = '8px';
 
   /**
    * Space between the bullets.
+   *
    * @CSS
    */
-  @Prop({ reflect: true }) paginationBulletsSpaceBetween: string = '4px';
-
-  @Prop({ reflect: true }) paginationTabsGapMin: number = 1;
-
-  @Prop({ reflect: true }) paginationTabsGapMax: number = 1.8;
-
-  @Prop({ reflect: true }) paginationTabsMarginBottomMin: number = 1.4;
-
-  @Prop({ reflect: true }) paginationTabsMarginBottomMax: number = 2.6;
-
-  @Prop({ reflect: true }) paginationTabsMaxWidth: string = '320px';
-
-  @Prop({ reflect: true }) paginationTabsInnerGapMin: number = 0.8;
-
-  @Prop({ reflect: true }) paginationTabsInnerGapMax: number = 1;
-
-  @Prop({ reflect: true }) paginationTabsPaddingMin: number = 1;
-
-  @Prop({ reflect: true }) paginationTabsPaddingMax: number = 1.4;
+  @Prop({ reflect: true }) paginationBulletsSpaceBetween: string = '8px';
 
   @Prop({ reflect: true }) paginationTransitionDuration: string =
     s.transitionDuration;
@@ -224,56 +200,40 @@ export class SpxScrollspy {
   @Prop({ reflect: true }) paginationTransitionTimingFunction: string =
     s.transitionTimingFunction;
 
-  /**
-   * Filter property for the previous and next elements.
-   */
+  /** Filter property for the previous and next elements. */
   @Prop({ reflect: true }) prevNextFilter: string;
 
-  /**
-   * Screen reader message for first slide.
-   */
+  /** Screen reader message for first slide. */
   @Prop({ reflect: true }) slideMessageFirst: string =
     'This is the first slide';
 
-  /**
-   * Screen reader message for last slide.
-   */
+  /** Screen reader message for last slide. */
   @Prop({ reflect: true }) slideMessageLast: string = 'This is the last slide';
 
-  /**
-   * Screen reader message for next slide.
-   */
+  /** Screen reader message for next slide. */
   @Prop({ reflect: true }) slideMessageNext: string = 'Next slide';
 
-  /**
-   * Screen reader message for previous slide.
-   */
+  /** Screen reader message for previous slide. */
   @Prop({ reflect: true }) slideMessagePrevious: string = 'Previous slide';
 
-  /**
-   * Amount of slides shown at once.
-   */
+  /** Amount of slides shown at once. */
   @Prop({ reflect: true }) slidesPerView: number = 1;
 
-  /**
-   * Space between slides.
-   */
+  /** Space between slides. */
   @Prop({ reflect: true }) spaceBetween: number = 0;
 
-  /**
-   * Sliding speed.
-   */
+  /** Sliding speed. */
   @Prop({ reflect: true }) speed: number = 1000;
 
-  /**
-   * Fires after component has loaded.
-   */
+  /** Fires after component has loaded. */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxSliderDidLoad' })
   spxSliderDidLoad: EventEmitter;
 
   /**
-   * Watch images prop and parse to array.
+   * Watch images.
+   *
+   * @param {string} newValue Array string.
    */
   @Watch('images')
   imagesChanged(newValue: string) {
@@ -281,67 +241,74 @@ export class SpxScrollspy {
   }
 
   componentWillLoad() {
-    /**
-     * If image prop is set.
-     */
+    this.content = this.el.innerHTML;
+
+    /** If image prop is set. */
     if (this.images) {
       this.imagesChanged(this.images);
     }
   }
 
-  componentWillUpdate() {
-    this.reload();
+  componentDidLoad() {
+    globalComponentDidLoad({ el: this.el, cb: this.update });
+
+    this.initSwiper();
+
+    this.spxSliderDidLoad.emit({ target: 'document' });
   }
 
-  componentDidLoad() {
-    globalComponentDidLoad(this.el);
+  componentWillUpdate() {
+    globalComponentWillUpdate(this.el);
+    this.mySwiper.destroy();
+    this.initSwiper();
+  }
 
-    /**
-     * Add swiper class and duplicate slides for gallery.
-     */
-    this.el.querySelectorAll('.swiper-wrapper > *').forEach((item, index) => {
-      item.classList.add('swiper-slide');
-      item.setAttribute('data-spx-slider-index', String(index));
+  /**
+   * Create breakpoint values.
+   *
+   * @returns {object} Object containing all breakpoints from properties.
+   */
+  private createBps = () => {
+    for (
+      let att, i = 0, atts = this.el.attributes, n = atts.length;
+      i < n;
+      i++
+    ) {
+      att = atts[i];
+      if (startsWith(att.nodeName, 'bp-')) {
+        const attribute = this.el.getAttribute(att.nodeName);
+        const array = attribute.split(';');
+        const pairsArray = [];
+        array.forEach((item) => {
+          pairsArray.push(item.replace(/ /g, '').replace(/"/g, '').split(':'));
+        });
+        const finalArray = fromPairs(pairsArray);
+        const camelCaseArray = mapKeys(finalArray, function (_value, key) {
+          return camelCase(key);
+        });
+        const breakpoint = att.nodeName.split('-')[1];
+        return { [breakpoint]: camelCaseArray };
+      }
+    }
+  };
+
+  /** Init swiper. */
+  private initSwiper = () => {
+    /** Wrap all children in div. */
+    this.container.querySelectorAll(':scope > *').forEach((item) => {
+      const div = document.createElement('div');
+      div.classList.add('swiper-slide');
+      wrap(item, div);
+      if (this.lazy) {
+        div.querySelector('img').classList.add('swiper-lazy');
+      }
     });
 
-    /**
-     * Create breakpoint values.
-     */
-    const createBPs = () => {
-      for (
-        let att, i = 0, atts = this.el.attributes, n = atts.length;
-        i < n;
-        i++
-      ) {
-        att = atts[i];
-        if (startsWith(att.nodeName, 'bp-')) {
-          const attribute = this.el.getAttribute(att.nodeName);
-          const array = attribute.split(';');
-          const pairsArray = [];
-          array.forEach((item) => {
-            pairsArray.push(
-              item.replace(/ /g, '').replace(/"/g, '').split(':')
-            );
-          });
-          const finalArray = fromPairs(pairsArray);
-          const camelCaseArray = mapKeys(finalArray, function (_value, key) {
-            return camelCase(key);
-          });
-          const breakpoint = att.nodeName.split('-')[1];
-          return { [breakpoint]: camelCaseArray };
-        }
-      }
-    };
+    /** Use modules so autoplay works in build mode. */
+    Swiper.use([Autoplay, Navigation, Pagination, A11y, Thumbs, Lazy]);
 
-    /**
-     * Use modules so autoplay works in build mode.
-     */
-    Swiper.use([Autoplay, Navigation, Pagination, A11y, Thumbs]);
-
-    /**
-     * Create swiper.
-     */
-    this.mySwiper = new Swiper(this.container, {
+    /** Create swiper. */
+    this.mySwiper = new Swiper(this.swiperContainer, {
       a11y: {
         firstSlideMessage: this.slideMessageFirst,
         lastSlideMessage: this.slideMessageLast,
@@ -353,10 +320,16 @@ export class SpxScrollspy {
         delay: this.autoplayDelay,
         disableOnInteraction: this.autoplayDisableOnInteraction,
       },
-      breakpoints: createBPs(),
+      breakpoints: this.createBps(),
       centeredSlides: this.centeredSlides,
-      direction: this.direction === 'horizontal' ? 'horizontal' : 'vertical',
+      direction: 'horizontal',
       effect: this.effect as 'slide' | 'fade',
+      lazy: this.lazy && {
+        checkInView: false,
+        loadOnTransitionStart: true,
+        loadPrevNext: this.lazyLoadPrevNext && true,
+        loadPrevNextAmount: this.lazyLoadPrevNext ?? 0,
+      },
       loop: this.loop,
       navigation: {
         prevEl: this.prev,
@@ -381,273 +354,49 @@ export class SpxScrollspy {
       this.mySwiper.update();
     });
 
-    /**
-     * Create tabs and set appropriate event listeners.
-     */
-    if (this.pagination === 'tabs') {
-      this.createTabs();
+    setTimeout(() => {
+      this.mySwiper.lazy.load();
+      this.mySwiper.lazy.loadInSlide(1);
+    }, 1000);
+  };
 
-      this.mySwiper.on('slideChangeTransitionStart', () => {
-        this.reloadTabsActive(
-          this.el
-            .querySelector('.swiper-slide-active')
-            .getAttribute('data-spx-slider-index')
-        );
-      });
-    }
-
-    this.spxSliderDidLoad.emit({ target: 'document' });
-  }
-
-  /**
-   * Creates tab pagination from data-attributes.
-   */
-  private createTabs() {
-    this.paginationTabs.innerHTML = '';
-
-    const slides = this.el.querySelectorAll(
-      '.swiper-wrapper > *.swiper-slide:not(.swiper-slide-duplicate)'
-    );
-
-    /**
-     * Create slides.
-     */
-    slides.forEach((item, index) => {
-      const indexInner = item.getAttribute('data-spx-slider-index');
-
-      /**
-       * Animation.
-       */
-      const kf = keyframes({
-        from: {
-          width: '0',
-        },
-        to: {
-          width: '100%',
-        },
-      });
-
-      /**
-       * Outer wrap.
-       */
-      const slide = document.createElement('div');
-      slide.setAttribute('tabindex', '0');
-      slide.classList.add(
-        css({
-          padding:
-            setClamp(
-              tag,
-              'pagination-tabs-padding',
-              this.paginationTabsPaddingMin,
-              this.paginationTabsPaddingMax
-            ) +
-            ' ' +
-            setClamp(
-              tag,
-              'pagination-tabs-padding',
-              this.paginationTabsPaddingMin,
-              this.paginationTabsPaddingMax
-            ) +
-            ' ' +
-            setClamp(
-              tag,
-              'pagination-tabs-padding',
-              this.paginationTabsPaddingMin * 2,
-              this.paginationTabsPaddingMax * 2
-            ) +
-            ' ' +
-            setClamp(
-              tag,
-              'pagination-tabs-padding',
-              this.paginationTabsPaddingMin,
-              this.paginationTabsPaddingMax
-            ),
-          background: 'var(--spx-color-gray-50)',
-          border: '1px solid var(--spx-color-gray-200)',
-          borderRadius: s.borderRadius,
-          cursor: 'pointer',
-          transitionProperty: 'background, border',
-          transitionDuration: setVar(
-            tag,
-            'pagination-transition-duration',
-            this.paginationTransitionDuration
-          ),
-          transitionTimingFunction: setVar(
-            tag,
-            'pagination-transition-timing-function',
-            this.paginationTransitionDuration
-          ),
-          overflow: 'hidden',
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-
-          'span:nth-child(2)': {
-            marginTop: setClamp(
-              tag,
-              'pagination-tabs-inner-gap',
-              this.paginationTabsInnerGapMin,
-              this.paginationTabsInnerGapMax
-            ),
-          },
-
-          '&[data-spx-slider-tab-active] div': {
-            content: '" "',
-            display: this.autoplay ? 'block' : 'none',
-            position: 'absolute',
-            bottom: '0',
-            left: '0',
-            width: '100%',
-            height: '3px',
-            background: 'var(--spx-color-gray-600)',
-            animation: kf,
-            animationIterationCount: 1,
-            animationDuration: this.autoplayDelay + 'ms',
-            animationFillMode: 'forwards',
-            animationTimingFunction: s.transitionTimingFunction,
-          },
-
-          [this.mq(this.bpTabs)]: {
-            display: 'none',
-          },
-
-          '&:hover:not([data-spx-slider-tab-active])': {
-            background: 'var(--spx-color-gray-50)',
-            borderColor: 'var(--spx-color-gray-100)',
-          },
-
-          '&[data-spx-slider-tab-active]': {
-            background: 'var(--spx-color-gray-50)',
-            border: '1px solid var(--spx-color-gray-200)',
-
-            [this.mq(this.bpTabs)]: {
-              display: 'grid',
-            },
-          },
-        })
-      );
-
-      slide.setAttribute('role', 'button');
-
-      /**
-       * Set according slide index.
-       */
-      slide.setAttribute('data-spx-slider-tab-index', indexInner);
-
-      const tabClick = () => {
-        this.mySwiper.slideToLoop(parseInt(indexInner), this.speed);
-        this.reloadTabsActive(indexInner);
-      };
-
-      /**
-       * Click listener.
-       */
-      slide.addEventListener('click', () => {
-        tabClick();
-      });
-
-      /**
-       * Enter listener.
-       */
-      slide.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-          tabClick();
-        }
-      });
-
-      /**
-       * Set active to first slide.
-       */
-      if (index === 0) {
-        slide.setAttribute('data-spx-slider-tab-active', '');
-      }
-
-      /**
-       * Title.
-       */
-      const title = document.createElement('span');
-      title.classList.add(
-        css({
-          fontWeight: 500,
-          color: 'var(--spx-color-gray-600)',
-          fontSize: setClamp(tag, 'pagination-title-font-size', 1, 1.2),
-        })
-      );
-      title.innerText = item.getAttribute('data-spx-slider-title');
-
-      /**
-       * Description.
-       */
-      const description = document.createElement('span');
-      description.classList.add(
-        css({
-          fontSize: setClamp(tag, 'pagination-description-font-size', 0.8, 0.9),
-        })
-      );
-      description.innerText = item.getAttribute('data-spx-slider-description');
-
-      /**
-       * Loader.
-       */
-      const loader = document.createElement('div');
-
-      /** Append it all. */
-
-      slide.appendChild(title);
-      slide.appendChild(description);
-      slide.appendChild(loader);
-
-      this.paginationTabs.appendChild(slide);
-    });
-  }
-
-  /**
-   * Reload tabs when necessary.
-   */
-  private reloadTabsActive(index) {
-    this.paginationTabs.querySelectorAll(':scope > div').forEach((item) => {
-      item.removeAttribute('data-spx-slider-tab-active');
-    });
-    this.el
-      .querySelector('[data-spx-slider-tab-index="' + index + '"]')
-      .setAttribute('data-spx-slider-tab-active', '');
-  }
-
-  private mq(value, type = 'max') {
-    return '@media (' + type + '-width: ' + value + 'px)';
-  }
-
-  @Method()
-  async reload() {
+  /** Update. */
+  private update = () => {
     this.mySwiper.destroy();
+    this.container.innerHTML = '';
+    this.content = this.el.innerHTML;
 
-    const bullets = this.el.querySelector('.swiper-pagination-bullets-dynamic');
-
-    if (bullets) {
-      bullets.classList.remove('swiper-pagination-bullets-dynamic');
-    }
-
-    this.componentDidLoad();
-  }
+    setTimeout(() => {
+      this.initSwiper();
+    }, 100);
+  };
 
   render() {
-    /**
-     * Host styles.
-     */
-    const styleHost = css({
-      display: 'block',
-      width: '100%',
-      maxHeight: setVar(tag, 'max-height', this.maxHeight),
-      maxWidth: setVar(tag, 'max-width', this.maxWidth),
+    const { css } = cssEmotion(this.el.shadowRoot);
 
-      '.swiper-container:not(.swiper-gallery)': {
-        maxHeight: setVar(tag, 'max-height', this.maxHeight),
-        maxWidth: setVar(tag, 'max-width', this.maxWidth),
+    /** Host styles. */
+    const styleHost = cssHost({
+      display: setVar(tag, 'display', this.display),
+      width: '100%',
+      height: '100%',
+    });
+
+    /** Shadow Host styles. */
+    const styleShadowHost = css({
+      width: '100%',
+      height: '100%',
+
+      '.swiper-container': {
+        height: !this.autoheight && '100%',
       },
 
       '.swiper-wrapper': {
         maxHeight: setVar(tag, 'max-height', this.maxHeight),
-        maxWidth: setVar(tag, 'max-width', this.maxWidth),
+      },
+
+      '.swiper-slide': {
+        height: 'auto',
+        width: '100%',
       },
 
       '.swiper-pagination-bullet': {
@@ -668,7 +417,12 @@ export class SpxScrollspy {
           'pagination-bullets-background',
           this.paginationBulletsBackground
         ),
-        margin: '0 !important',
+        margin: `0
+          calc(${setVar(
+            tag,
+            'pagination-bullets-space-between',
+            this.paginationBulletsSpaceBetween
+          )} / 2) !important`,
 
         '&.swiper-pagination-bullet-active': {
           background: setVar(
@@ -686,8 +440,8 @@ export class SpxScrollspy {
       },
 
       img: {
-        width: '100%',
-        height: 'auto',
+        width: '100% !important',
+        height: this.autoheight ? 'auto' : '100%' + '!important',
         objectFit: setVar(tag, 'image-object-fit', this.imageObjectFit) as
           | 'fill'
           | 'contain'
@@ -696,75 +450,7 @@ export class SpxScrollspy {
       },
     });
 
-    /**
-     * Pagination styles.
-     */
-    const stylePagination = css({
-      display: 'flex',
-      alignItems: 'center',
-      marginBottom: setClamp(
-        tag,
-        'pagination-tabs-margin-bottom',
-        this.paginationTabsMarginBottomMin,
-        this.paginationTabsMarginBottomMax
-      ),
-    });
-
-    /**
-     * Tab styles.
-     */
-    const stylePaginationTabs = css({
-      margin: '0 auto',
-      display: 'grid',
-      gridAutoFlow: 'column',
-      gridAutoColumns: setVar(
-        tag,
-        'pagination-tabs-max-width',
-        this.paginationTabsMaxWidth
-      ),
-      gridGap: setClamp(
-        tag,
-        'pagination-tabs-gap',
-        this.paginationTabsGapMin,
-        this.paginationTabsGapMax
-      ),
-    });
-
-    /**
-     * Bullet styles.
-     */
-    const stylePaginationBullets = css({
-      display: 'grid',
-      gridAutoFlow: this.direction === 'horizontal' ? 'column' : 'row',
-      gridAutoRows: this.direction === 'vertical' && 'max-content',
-      gridAutoColumns: this.direction === 'horizontal' && 'max-content',
-      height:
-        this.direction === 'horizontal'
-          ? setVar(tag, 'pagination-bullets-size', this.paginationBulletsSize) +
-            ' !important'
-          : 'auto' + ' !important',
-      width:
-        this.direction === 'vertical'
-          ? setVar(tag, 'pagination-bullets-size', this.paginationBulletsSize) +
-            ' !important'
-          : '100%' + ' !important',
-      maxWidth: 'max-content !important',
-      left: this.direction === 'horizontal' && '50% !important',
-      top: this.direction === 'vertical' && '50% !important',
-      transform:
-        this.direction === 'horizontal'
-          ? 'translateX(-50%) !important'
-          : 'translateY(-50%) !important',
-      gridGap: setVar(
-        tag,
-        'pagination-bullets-space-between',
-        this.paginationBulletsSpaceBetween
-      ),
-    });
-
-    /**
-     * Navigation.
-     */
+    /** Navigation. */
     const styleNavigation = css({
       display: this.navigation ? 'flex' : 'none',
       position: 'absolute',
@@ -776,10 +462,11 @@ export class SpxScrollspy {
       justifyContent: 'space-between',
       alignItems: 'center',
 
-      '& > div': {
+      '& > button': {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        border: 'none',
         background: setVar(
           tag,
           'navigation-background',
@@ -792,85 +479,100 @@ export class SpxScrollspy {
         ),
         padding: setVar(tag, 'navigation-padding', this.navigationPadding),
         cursor: 'pointer',
+        transitionProperty: 'background, box-shadow',
+        transitionDuration: setVar(
+          tag,
+          'navigation-transition-duration',
+          this.navigationTransitionDuration
+        ),
+        transitionTimingFunction: setVar(
+          tag,
+          'navigation-transition-timing-function',
+          this.navigationTransitionTimingFunction
+        ),
 
         '&[aria-disabled="true"]': {
           opacity: 0,
           pointerEvents: 'none',
         },
+
+        '&:hover': {
+          background: setVar(
+            tag,
+            'navigation-background-hover',
+            this.navigationBackgroundHover
+          ),
+        },
+
+        ...s.focus,
       },
     });
 
-    /**
-     * Navigation prev.
-     */
+    /** Navigation prev. */
     const styleNavigationPrev = css({
       marginLeft: setVar(tag, 'navigation-distance', this.navigationDistanceX),
     });
 
-    /**
-     * Navigation prev.
-     */
+    /** Navigation prev. */
     const styleNavigationNext = css({
       marginRight: setVar(tag, 'navigation-distance', this.navigationDistanceX),
     });
 
     return (
       <Host class={styleHost}>
-        {this.pagination === 'tabs' && (
-          <div class={stylePagination}>
-            <div
-              ref={(el) => (this.paginationTabs = el as HTMLElement)}
-              class={stylePaginationTabs}
-            />
-          </div>
-        )}
+        <div class={styleShadowHost}>
+          <div
+            ref={(el) => (this.swiperContainer = el as HTMLElement)}
+            class="swiper-container"
+          >
+            {helperImagesOrInner({
+              class: 'swiper-wrapper',
+              condition: this.images,
+              content: this.content,
+              el: this.el,
+              ref: (el) => (this.container = el as HTMLElement),
+              helper: {
+                array: this.imagesArray,
+                images: this.images,
+                lazy: this.lazy,
+                size: this.imageSize,
+                src: this.imageSrc,
+              },
+            })}
 
-        <div
-          ref={(el) => (this.container = el as HTMLElement)}
-          class="swiper-container"
-        >
-          <div class="swiper-wrapper">
-            {getGallery(
-              this.images,
-              this.imagesSrc,
-              this.imagesArray,
-              this.imageSize
+            {this.pagination === 'bullets' && (
+              <div
+                class={'swiper-pagination'}
+                ref={(el) => (this.paginationBullets = el as HTMLElement)}
+              />
             )}
-          </div>
 
-          {this.pagination === 'bullets' && (
-            <div
-              class={stylePaginationBullets + ' ' + 'swiper-pagination'}
-              ref={(el) => (this.paginationBullets = el as HTMLElement)}
-            />
-          )}
-
-          <div class={styleNavigation}>
-            <div
-              ref={(el) => (this.prev = el as HTMLElement)}
-              class={styleNavigationPrev}
-            >
-              <spx-icon
-                type={this.navigationIconType}
-                icon={this.navigationIconPrev}
-                color={setVar(tag, 'navigation-color', this.navigationColor)}
-                size={setVar(tag, 'navigation-size', this.navigationSize)}
-              />
-            </div>
-            <div
-              ref={(el) => (this.next = el as HTMLElement)}
-              class={styleNavigationNext}
-            >
-              <spx-icon
-                type={this.navigationIconType}
-                icon={this.navigationIconNext}
-                color={setVar(tag, 'navigation-color', this.navigationColor)}
-                size={setVar(tag, 'navigation-size', this.navigationSize)}
-              />
+            <div class={styleNavigation}>
+              <Button
+                ref={(el) => (this.prev = el as HTMLElement)}
+                class={styleNavigationPrev}
+              >
+                <spx-icon
+                  type={this.navigationIconType}
+                  icon={this.navigationIconPrev}
+                  color={setVar(tag, 'navigation-color', this.navigationColor)}
+                  size={setVar(tag, 'navigation-size', this.navigationSize)}
+                />
+              </Button>
+              <Button
+                ref={(el) => (this.next = el as HTMLElement)}
+                class={styleNavigationNext}
+              >
+                <spx-icon
+                  type={this.navigationIconType}
+                  icon={this.navigationIconNext}
+                  color={setVar(tag, 'navigation-color', this.navigationColor)}
+                  size={setVar(tag, 'navigation-size', this.navigationSize)}
+                />
+              </Button>
             </div>
           </div>
         </div>
-        <slot name="gallery" />
       </Host>
     );
   }

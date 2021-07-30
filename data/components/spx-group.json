@@ -1,16 +1,24 @@
 {
   "name": "spx-group",
-  "description": "Pass attributes to all inner (spx) child elements.\nAll attributes that start with g-* will be passed on to child elements.",
+  "description": "Pass attributes to all inner (spx) child elements. All attributes that start\nwith g-* will be passed on to child elements.",
   "shadow": false,
   "properties": [
+    {
+      "id": "group-content",
+      "name": "content",
+      "attribute": "content",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
     {
       "id": "group-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
       "description": "",
-      "default": "'block'",
-      "defaultValue": "'block'",
+      "default": "s.display",
+      "defaultValue": "s.display",
       "tags": []
     },
     {
@@ -28,12 +36,11 @@
       "description": "Fires after component has loaded."
     }
   ],
-  "methods": [
+  "methods": [],
+  "slots": [
     {
-      "name": "reload",
-      "description": "",
-      "signature": "reload() => Promise<void>"
+      "name": "inner",
+      "description": "Slot (between HTML tags)."
     }
-  ],
-  "slots": []
+  ]
 }

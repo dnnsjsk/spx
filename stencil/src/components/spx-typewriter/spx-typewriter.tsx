@@ -12,13 +12,17 @@ import {
 } from '@stencil/core';
 import Typewriter from 'typewriter-effect/dist/core';
 import { css } from '@emotion/css';
-import { setVar } from '../../utils/setVar';
-import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
+import { setVar } from '../../utils/cssVariables/setVar';
+import { globalComponentDidLoad } from '../../utils/global/globalComponentDidLoad';
+import { globalComponentWillUpdate } from '../../utils/global/globalComponentWillUpdate';
+import * as s from '../../constants/style';
 
 const tag = 'spx-typewriter';
 
 /**
  * Animates text like it is being written on a typewriter.
+ *
+ * @slot inner - Slot (between HTML tags).
  */
 @Component({
   tag: 'spx-typewriter',
@@ -30,51 +34,36 @@ export class SpxTypewriter {
 
   @State() typewriter;
 
-  /**
-   * Automatically starts writing.
-   */
+  /** Automatically starts writing. */
   @Prop({ reflect: true }) autoStart: boolean = true;
 
-  /**
-   * Writing delay in ms. Also accepts 'natural' value.
-   */
+  /** Writing delay in ms. Also accepts 'natural' value. */
   @Prop({ reflect: true }) delay: any = 'natural';
 
-  /**
-   * Delete delay in ms. Also accepts 'natural' value.
-   */
+  /** Delete delay in ms. Also accepts 'natural' value. */
   @Prop({ reflect: true }) deleteSpeed: any = 'natural';
-  @Prop({ reflect: true }) display: string = 'block';
 
-  /**
-   * Loops the animation.
-   */
+  @Prop({ reflect: true }) display: string = s.display;
+
+  /** Loops the animation. */
   @Prop({ reflect: true }) loop: boolean;
 
-  /**
-   * Text that should be written.
-   */
+  /** Text that should be written. */
   @Prop({ reflect: true }) text: string = "I'm a typewriter";
 
-  /**
-   * Fires after component has loaded.
-   */
+  /** Fires after component has loaded. */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxTypewriterDidLoad' })
   spxTypewriterDidLoad: EventEmitter;
 
   componentDidLoad() {
-    globalComponentDidLoad(this.el);
+    globalComponentDidLoad({ el: this.el });
 
-    /**
-     * Define elements.
-     */
+    /** Define elements. */
     const el =
       this.el.querySelector('h1, h2, h3, h4, h5, h6, p, span') || this.el;
 
-    /**
-     * Init Typewriter.
-     */
+    /** Init Typewriter. */
     this.typewriter = new Typewriter(el, {
       strings:
         this.text[0] === '['
@@ -96,27 +85,25 @@ export class SpxTypewriter {
     this.spxTypewriterDidLoad.emit({ target: 'document' });
   }
 
-  /**
-   * Start animation.
-   */
+  componentWillUpdate() {
+    globalComponentWillUpdate(this.el);
+  }
+
+  /** Start animation. */
   @Method()
   async play() {
     this.typewriter.typeString(this.text);
     this.typewriter.start();
   }
 
-  /**
-   * Stop animation.
-   */
+  /** Stop animation. */
   @Method()
   async stop() {
     this.typewriter.stop();
   }
 
   render() {
-    /**
-     * Host styles.
-     */
+    /** Host styles. */
     const styleHost = css({
       display: setVar(tag, 'display', this.display),
     });

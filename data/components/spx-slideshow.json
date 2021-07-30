@@ -42,12 +42,33 @@
       ]
     },
     {
+      "id": "slideshow-height",
+      "name": "height",
+      "attribute": "height",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
       "id": "slideshow-imageSize",
       "name": "imageSize",
       "attribute": "image-size",
       "type": "string",
       "description": "WordPress media size when using the helper function..",
       "tags": []
+    },
+    {
+      "id": "slideshow-imageSrc",
+      "name": "imageSrc",
+      "attribute": "image-src",
+      "type": "string",
+      "description": "Gets images from an ACF or Metabox field.",
+      "tags": [
+        {
+          "text": "'acf', 'mb'",
+          "name": "choice"
+        }
+      ]
     },
     {
       "id": "slideshow-images",
@@ -63,17 +84,12 @@
       ]
     },
     {
-      "id": "slideshow-imagesSrc",
-      "name": "imagesSrc",
-      "attribute": "images-src",
-      "type": "string",
-      "description": "Gets images from an ACF or Metabox field.",
-      "tags": [
-        {
-          "text": "'acf', 'mb'",
-          "name": "choice"
-        }
-      ]
+      "id": "slideshow-lazy",
+      "name": "lazy",
+      "attribute": "lazy",
+      "type": "boolean",
+      "description": "Lazy load images.",
+      "tags": []
     },
     {
       "id": "slideshow-maxWidth",
@@ -81,13 +97,23 @@
       "attribute": "max-width",
       "type": "string",
       "description": "Max width of inner elements.",
-      "default": "'350px'",
-      "defaultValue": "'350px'",
+      "default": "'300px'",
+      "defaultValue": "'300px'",
       "tags": [
         {
           "name": "CSS"
         }
       ]
+    },
+    {
+      "id": "slideshow-objectFit",
+      "name": "objectFit",
+      "attribute": "object-fit",
+      "type": "string",
+      "description": "",
+      "default": "'contain'",
+      "defaultValue": "'contain'",
+      "tags": []
     },
     {
       "id": "slideshow-overflow",
@@ -109,5 +135,10 @@
     }
   ],
   "methods": [],
-  "slots": []
+  "slots": [
+    {
+      "name": "inner",
+      "description": "Slot (between HTML tags)."
+    }
+  ]
 }

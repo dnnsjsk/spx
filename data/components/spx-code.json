@@ -69,8 +69,8 @@
       "attribute": "clipboard-button-font-weight",
       "type": "any",
       "description": "",
-      "default": "600",
-      "defaultValue": "600",
+      "default": "'600'",
+      "defaultValue": "'600'",
       "tags": []
     },
     {
@@ -114,13 +114,29 @@
       "tags": []
     },
     {
+      "id": "code-content",
+      "name": "content",
+      "attribute": "content",
+      "type": "string",
+      "description": "Can be used instead of the inner slot.",
+      "tags": []
+    },
+    {
       "id": "code-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
       "description": "",
-      "default": "'block'",
-      "defaultValue": "'block'",
+      "default": "s.display",
+      "defaultValue": "s.display",
+      "tags": []
+    },
+    {
+      "id": "code-filter",
+      "name": "filter",
+      "attribute": "filter",
+      "type": "string",
+      "description": "",
       "tags": []
     },
     {
@@ -254,10 +270,50 @@
       "defaultValue": "'markup'",
       "tags": [
         {
-          "text": "'markup', 'css', 'php'",
+          "text": "'markup', 'css', 'js', 'php', 'twig', 'json'",
           "name": "choice"
         }
       ]
+    },
+    {
+      "id": "code-whitespaceLeftTrim",
+      "name": "whitespaceLeftTrim",
+      "attribute": "whitespace-left-trim",
+      "type": "boolean",
+      "description": "Removes all whitespace from the top of the code block.",
+      "default": "true",
+      "defaultValue": "true",
+      "tags": []
+    },
+    {
+      "id": "code-whitespaceRemoveIndent",
+      "name": "whitespaceRemoveIndent",
+      "attribute": "whitespace-remove-indent",
+      "type": "boolean",
+      "description": "If the whole code block is indented too much it removes the extra indent.",
+      "default": "true",
+      "defaultValue": "true",
+      "tags": []
+    },
+    {
+      "id": "code-whitespaceRemoveTrailing",
+      "name": "whitespaceRemoveTrailing",
+      "attribute": "whitespace-remove-trailing",
+      "type": "boolean",
+      "description": "Removes trailing whitespace on all lines.",
+      "default": "true",
+      "defaultValue": "true",
+      "tags": []
+    },
+    {
+      "id": "code-whitespaceRightTrim",
+      "name": "whitespaceRightTrim",
+      "attribute": "whitespace-right-trim",
+      "type": "boolean",
+      "description": "Removes all whitespace from the bottom of the code block.",
+      "default": "true",
+      "defaultValue": "true",
+      "tags": []
     }
   ],
   "events": [
@@ -266,12 +322,11 @@
       "description": "Fires after component has loaded."
     }
   ],
-  "methods": [
+  "methods": [],
+  "slots": [
     {
-      "name": "reload",
-      "description": "",
-      "signature": "reload() => Promise<void>"
+      "name": "inner",
+      "description": "Slot (between HTML tags)."
     }
-  ],
-  "slots": []
+  ]
 }

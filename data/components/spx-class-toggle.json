@@ -9,8 +9,8 @@
       "attribute": "display",
       "type": "string",
       "description": "",
-      "default": "'block'",
-      "defaultValue": "'block'",
+      "default": "s.display",
+      "defaultValue": "s.display",
       "tags": []
     },
     {
@@ -18,7 +18,7 @@
       "name": "local",
       "attribute": "local",
       "type": "string",
-      "description": "Specify a local storage item, so the toggle state will be remembered when the user visits the site again.",
+      "description": "Specify a local storage item, so the toggle state will be remembered when\nthe user visits the site again.",
       "tags": []
     },
     {
@@ -26,7 +26,7 @@
       "name": "target",
       "attribute": "target",
       "type": "string",
-      "description": "Target element. Can take any querySelector value. (id, class, tag etc.) If none is set it will default to the first element inside.",
+      "description": "Target element. Can take any querySelector value. (id, class, tag etc.) If\nnone is set it will default to the first element inside.",
       "tags": []
     },
     {
@@ -46,12 +46,11 @@
       "description": "Fires after component has loaded."
     }
   ],
-  "methods": [
+  "methods": [],
+  "slots": [
     {
-      "name": "reload",
-      "description": "",
-      "signature": "reload() => Promise<void>"
+      "name": "inner",
+      "description": "Slot (between HTML tags)."
     }
-  ],
-  "slots": []
+  ]
 }

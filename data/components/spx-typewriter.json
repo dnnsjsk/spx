@@ -39,8 +39,8 @@
       "attribute": "display",
       "type": "string",
       "description": "",
-      "default": "'block'",
-      "defaultValue": "'block'",
+      "default": "s.display",
+      "defaultValue": "s.display",
       "tags": []
     },
     {
@@ -80,5 +80,10 @@
       "signature": "stop() => Promise<void>"
     }
   ],
-  "slots": []
+  "slots": [
+    {
+      "name": "inner",
+      "description": "Slot (between HTML tags)."
+    }
+  ]
 }

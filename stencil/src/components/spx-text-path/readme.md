@@ -1,7 +1,5 @@
 # spx-text-path
 
-
-
 <!-- Auto Generated Below -->
 
 

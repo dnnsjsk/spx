@@ -15,6 +15,76 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 4.0.0 =
+* Accordion: convert headless styling to constructable stylesheets
+* Accordion: convert to Shadow DOM
+* Accordion: prevent re-renders
+* Accordion: rename 'disable-animation' to 'animation'
+* Class Toggle: prevent re-renders
+* Code: add 'content' attribute
+* Code: add 'filter' attribute
+* Code: add 'whitespace-left-trim' attribute
+* Code: add 'whitespace-remove-indent' attribute
+* Code: add 'whitespace-remove-trailing' attribute
+* Code: add 'whitespace-right-trim' attribute
+* Code: add right padding if content is overflowing
+* Code: convert to Shadow DOM
+* Code: don't focus content
+* Code: make theme attribute reflect to changes
+* Code: prevent re-renders
+* Docs: make id generation more reliable
+* Edit Button: add 'loader-color' attribute
+* Edit Button: add 'loader-gap' attribute
+* Edit Button: convert to Shadow DOM
+* Edit Button: fix discard button not getting assigned correctly classes in headless mode
+* Enhancement: add unified ARIA properties and focus styles to all Buttons across components
+* Enhancement: rename 'gallery' helper to 'images'
+* Fix: don't create undefined fallback in CSS variables if no styles are set
+* Fix: prevent double style sheets in Shadow DOM
+* Group: convert to Shadow DOM
+* Icon: add 'loader' type to display a simple rotating loader
+* Icon: convert to Shadow DOM
+* Iframe: add 'loader-background' attribute
+* Iframe: add 'loader-border-radius' attribute
+* Iframe: add 'loader-color' attribute
+* Image Comparison: add 'steps' attribute
+* Image Comparison: change 'loading' attribute to 'lazy'
+* Image Comparison: convert to Shadow DOM
+* Image Comparison: enable usage with arrow keys
+* Masonry: add 'lazy' attribute
+* Masonry: convert to Shadow DOM
+* Masonry: rename attribute 'images-src' to 'image-src'
+* Mockup: add 'size' attribute
+* Mockup: add 'size-max' attribute
+* Mockup: add 'size-min' attribute
+* Mockup: convert to Shadow DOM
+* Mockup: make sure slot will be used if src is not present
+* Mockup: rework resizing mechanism
+* Navigation: add 'display' attribute
+* New: add global '--spx-color-focus' CSS variable
+* New: add global '--spx-display' CSS variable
+* New: add global '--spx-focus' CSS variable
+* Share: convert to Shadow DOM
+* Share: make sure to always share the current URL
+* Slider: add 'lazy' attribute
+* Slider: add 'lazy-load-prev-next' attribute
+* Slider: add 'navigation-background-hover' attribute
+* Slider: add 'navigation-transition-duration' attribute
+* Slider: add 'navigation-transition-timing-function' attribute
+* Slider: convert to Shadow DOM
+* Slider: fix dynamic bullets
+* Slider: make slides full width and height by default
+* Slider: remove 'max-width' attribute
+* Slider: remove 'tabs' pagination type
+* Slider: rename attribute 'images-src' to 'image-src'
+* Slideshow: add 'height' attribute
+* Slideshow: add 'lazy' attribute
+* Slideshow: add 'object-fit' attribute
+* Slideshow: rename attribute 'images-src' to 'image-src'
+* Snackbar: convert to Shadow DOM
+* Snackbar: rework closing button
+* Snackbar: add 'button-background' attribute
+
 = 3.1.6 =
 * Code: add support for Twig files
 * Enhancement: hide license once activated

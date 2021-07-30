@@ -1,7 +1,5 @@
 # spx-typewriter
 
-
-
 <!-- Auto Generated Below -->
 
 
@@ -12,7 +10,7 @@
 | `autoStart`   | `auto-start`   | Automatically starts writing.                      | `boolean` | `true`               |
 | `delay`       | `delay`        | Writing delay in ms. Also accepts 'natural' value. | `any`     | `'natural'`          |
 | `deleteSpeed` | `delete-speed` | Delete delay in ms. Also accepts 'natural' value.  | `any`     | `'natural'`          |
-| `display`     | `display`      |                                                    | `string`  | `'block'`            |
+| `display`     | `display`      |                                                    | `string`  | `s.display`          |
 | `loop`        | `loop`         | Loops the animation.                               | `boolean` | `undefined`          |
 | `text`        | `text`         | Text that should be written.                       | `string`  | `"I'm a typewriter"` |
 
@@ -45,6 +43,13 @@ Stop animation.
 Type: `Promise<void>`
 
 
+
+
+## Slots
+
+| Slot      | Description               |
+| --------- | ------------------------- |
+| `"inner"` | Slot (between HTML tags). |
 
 
 ----------------------------------------------

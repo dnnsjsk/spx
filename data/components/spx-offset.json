@@ -1,6 +1,6 @@
 {
   "name": "spx-offset",
-  "description": "The component offsets itself to the height of a specified element.\nIt comes in handy when dealing with a fixed header and is used on this site.\nSimply wrap your main content container with it and select a target element. The distance will adjust on screen resize.",
+  "description": "The component offsets itself to the height of a specified element. It comes\nin handy when dealing with a fixed header and is used on this site. Simply\nwrap your main content container with it and select a target element. The\ndistance will adjust on screen resize.",
   "shadow": false,
   "properties": [
     {
@@ -9,8 +9,8 @@
       "attribute": "display",
       "type": "string",
       "description": "",
-      "default": "'block'",
-      "defaultValue": "'block'",
+      "default": "s.display",
+      "defaultValue": "s.display",
       "tags": []
     },
     {
@@ -35,12 +35,12 @@
       "name": "recalc",
       "description": "Recalculate distance.",
       "signature": "recalc() => Promise<void>"
-    },
-    {
-      "name": "reload",
-      "description": "",
-      "signature": "reload() => Promise<void>"
     }
   ],
-  "slots": []
+  "slots": [
+    {
+      "name": "inner",
+      "description": "Slot (between HTML tags)."
+    }
+  ]
 }

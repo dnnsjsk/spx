@@ -1,6 +1,6 @@
 {
   "name": "spx-scrollspy",
-  "description": "Automatically add CSS classes to navigation items and content elements depending on the scroll position.",
+  "description": "Automatically add CSS classes to navigation items and content elements\ndepending on the scroll position.",
   "shadow": false,
   "properties": [
     {
@@ -19,8 +19,8 @@
       "attribute": "display",
       "type": "string",
       "description": "",
-      "default": "'block'",
-      "defaultValue": "'block'",
+      "default": "s.display",
+      "defaultValue": "s.display",
       "tags": []
     },
     {
@@ -38,7 +38,7 @@
       "name": "offset",
       "attribute": "offset",
       "type": "any",
-      "description": "Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated.",
+      "description": "Selects the height of an element (any querySelector value) or number that\nis used for offsetting how far from the top the next section is activated.",
       "default": "0",
       "defaultValue": "0",
       "tags": []
@@ -85,5 +85,10 @@
       "signature": "reload() => Promise<void>"
     }
   ],
-  "slots": []
+  "slots": [
+    {
+      "name": "inner",
+      "description": "Slot (between HTML tags)."
+    }
+  ]
 }

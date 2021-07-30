@@ -38,7 +38,7 @@
       "name": "colorIpadPro",
       "attribute": "color-ipad-pro",
       "type": "string",
-      "description": "iPad Pro color.",
+      "description": "IPad Pro color.",
       "default": "'silver'",
       "defaultValue": "'silver'",
       "tags": [
@@ -53,7 +53,7 @@
       "name": "colorIphone8",
       "attribute": "color-iphone-8",
       "type": "string",
-      "description": "iPhone 8 color.",
+      "description": "IPhone 8 color.",
       "default": "'silver'",
       "defaultValue": "'silver'",
       "tags": [
@@ -114,13 +114,39 @@
       "tags": []
     },
     {
+      "id": "mockup-size",
+      "name": "size",
+      "attribute": "size",
+      "type": "number",
+      "description": "Mockup size.",
+      "tags": []
+    },
+    {
+      "id": "mockup-sizeMax",
+      "name": "sizeMax",
+      "attribute": "size-max",
+      "type": "number",
+      "description": "Mockup size maximum.",
+      "default": "0.6",
+      "defaultValue": "0.6",
+      "tags": []
+    },
+    {
+      "id": "mockup-sizeMin",
+      "name": "sizeMin",
+      "attribute": "size-min",
+      "type": "number",
+      "description": "Mockup size minimum.",
+      "default": "0.3",
+      "defaultValue": "0.3",
+      "tags": []
+    },
+    {
       "id": "mockup-src",
       "name": "src",
       "attribute": "src",
       "type": "string",
       "description": "Image src if no inner slot is used.",
-      "default": "'https://picsum.photos/400/1200'",
-      "defaultValue": "'https://picsum.photos/400/1200'",
       "tags": []
     },
     {
@@ -145,12 +171,11 @@
       "description": "Fires after component has loaded."
     }
   ],
-  "methods": [
+  "methods": [],
+  "slots": [
     {
-      "name": "reload",
-      "description": "",
-      "signature": "reload() => Promise<void>"
+      "name": "inner",
+      "description": "Slot (between HTML tags)."
     }
-  ],
-  "slots": []
+  ]
 }

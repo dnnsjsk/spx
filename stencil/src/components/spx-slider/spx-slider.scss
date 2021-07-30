@@ -1,4 +1,12 @@
-@import 'node_modules/swiper/swiper';
-@import 'node_modules/swiper/components/a11y/a11y';
-@import 'node_modules/swiper/components/effect-fade/effect-fade';
-@import 'node_modules/swiper/components/pagination/pagination';
+@use "sass:meta";
+
+:host {
+  @include meta.load-css('node_modules/swiper/swiper');
+  @include meta.load-css('node_modules/swiper/components/a11y/a11y');
+  @include meta.load-css(
+    'node_modules/swiper/components/effect-fade/effect-fade'
+  );
+  @include meta.load-css(
+    'node_modules/swiper/components/pagination/pagination'
+  );
+}

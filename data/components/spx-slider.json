@@ -44,14 +44,6 @@
       "tags": []
     },
     {
-      "id": "slider-bpTabs",
-      "name": "bpTabs",
-      "attribute": "bp-tabs",
-      "type": "string",
-      "description": "Starts navigating to the next slide when page is loaded.",
-      "tags": []
-    },
-    {
       "id": "slider-centeredSlides",
       "name": "centeredSlides",
       "attribute": "centered-slides",
@@ -62,19 +54,14 @@
       "tags": []
     },
     {
-      "id": "slider-direction",
-      "name": "direction",
-      "attribute": "direction",
+      "id": "slider-display",
+      "name": "display",
+      "attribute": "display",
       "type": "string",
-      "description": "Slider direction.",
-      "default": "'horizontal'",
-      "defaultValue": "'horizontal'",
-      "tags": [
-        {
-          "text": "'horizontal', 'vertical'",
-          "name": "choice"
-        }
-      ]
+      "description": "",
+      "default": "s.display",
+      "defaultValue": "s.display",
+      "tags": []
     },
     {
       "id": "slider-effect",
@@ -115,6 +102,19 @@
       "tags": []
     },
     {
+      "id": "slider-imageSrc",
+      "name": "imageSrc",
+      "attribute": "image-src",
+      "type": "string",
+      "description": "Gets images from an ACF or Metabox field.",
+      "tags": [
+        {
+          "text": "'acf', 'mb'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
       "id": "slider-images",
       "name": "images",
       "attribute": "images",
@@ -128,17 +128,20 @@
       ]
     },
     {
-      "id": "slider-imagesSrc",
-      "name": "imagesSrc",
-      "attribute": "images-src",
-      "type": "string",
-      "description": "Gets images from an ACF or Metabox field.",
-      "tags": [
-        {
-          "text": "'acf', 'mb'",
-          "name": "choice"
-        }
-      ]
+      "id": "slider-lazy",
+      "name": "lazy",
+      "attribute": "lazy",
+      "type": "boolean",
+      "description": "Lazy load images.",
+      "tags": []
+    },
+    {
+      "id": "slider-lazyLoadPrevNext",
+      "name": "lazyLoadPrevNext",
+      "attribute": "lazy-load-prev-next",
+      "type": "number",
+      "description": "Amount of images to to be preloaded when lazy is enabled.",
+      "tags": []
     },
     {
       "id": "slider-loop",
@@ -146,8 +149,6 @@
       "attribute": "loop",
       "type": "boolean",
       "description": "Loops all slides infinitely.",
-      "default": "false",
-      "defaultValue": "false",
       "tags": []
     },
     {
@@ -155,19 +156,7 @@
       "name": "maxHeight",
       "attribute": "max-height",
       "type": "string",
-      "description": "Max height.",
-      "default": "'100%'",
-      "defaultValue": "'100%'",
-      "tags": []
-    },
-    {
-      "id": "slider-maxWidth",
-      "name": "maxWidth",
-      "attribute": "max-width",
-      "type": "string",
-      "description": "Max width.",
-      "default": "'100%'",
-      "defaultValue": "'100%'",
+      "description": "",
       "tags": []
     },
     {
@@ -186,6 +175,16 @@
       "description": "",
       "default": "'rgba(0,0,0,0.7)'",
       "defaultValue": "'rgba(0,0,0,0.7)'",
+      "tags": []
+    },
+    {
+      "id": "slider-navigationBackgroundHover",
+      "name": "navigationBackgroundHover",
+      "attribute": "navigation-background-hover",
+      "type": "string",
+      "description": "",
+      "default": "'rgba(0,0,0,1)'",
+      "defaultValue": "'rgba(0,0,0,1)'",
       "tags": []
     },
     {
@@ -277,6 +276,26 @@
       ]
     },
     {
+      "id": "slider-navigationTransitionDuration",
+      "name": "navigationTransitionDuration",
+      "attribute": "navigation-transition-duration",
+      "type": "string",
+      "description": "",
+      "default": "s.transitionDuration",
+      "defaultValue": "'var(--spx-transition-duration)'",
+      "tags": []
+    },
+    {
+      "id": "slider-navigationTransitionTimingFunction",
+      "name": "navigationTransitionTimingFunction",
+      "attribute": "navigation-transition-timing-function",
+      "type": "string",
+      "description": "",
+      "default": "s.transitionTimingFunction",
+      "defaultValue": "'var(--spx-transition-timing-function)'",
+      "tags": []
+    },
+    {
       "id": "slider-pagination",
       "name": "pagination",
       "attribute": "pagination",
@@ -286,7 +305,7 @@
       "defaultValue": "'bullets'",
       "tags": [
         {
-          "text": "'bullets', 'tabs', 'none'",
+          "text": "'bullets', 'none'",
           "name": "choice"
         }
       ]
@@ -297,8 +316,8 @@
       "attribute": "pagination-bullets-background",
       "type": "string",
       "description": "",
-      "default": "'var(--spx-color-gray-300)'",
-      "defaultValue": "'var(--spx-color-gray-300)'",
+      "default": "'var(--spx-color-gray-400)'",
+      "defaultValue": "'var(--spx-color-gray-400)'",
       "tags": []
     },
     {
@@ -357,103 +376,13 @@
       "attribute": "pagination-bullets-space-between",
       "type": "string",
       "description": "Space between the bullets.",
-      "default": "'4px'",
-      "defaultValue": "'4px'",
+      "default": "'8px'",
+      "defaultValue": "'8px'",
       "tags": [
         {
           "name": "CSS"
         }
       ]
-    },
-    {
-      "id": "slider-paginationTabsGapMax",
-      "name": "paginationTabsGapMax",
-      "attribute": "pagination-tabs-gap-max",
-      "type": "number",
-      "description": "",
-      "default": "1.8",
-      "defaultValue": "1.8",
-      "tags": []
-    },
-    {
-      "id": "slider-paginationTabsGapMin",
-      "name": "paginationTabsGapMin",
-      "attribute": "pagination-tabs-gap-min",
-      "type": "number",
-      "description": "",
-      "default": "1",
-      "defaultValue": "1",
-      "tags": []
-    },
-    {
-      "id": "slider-paginationTabsInnerGapMax",
-      "name": "paginationTabsInnerGapMax",
-      "attribute": "pagination-tabs-inner-gap-max",
-      "type": "number",
-      "description": "",
-      "default": "1",
-      "defaultValue": "1",
-      "tags": []
-    },
-    {
-      "id": "slider-paginationTabsInnerGapMin",
-      "name": "paginationTabsInnerGapMin",
-      "attribute": "pagination-tabs-inner-gap-min",
-      "type": "number",
-      "description": "",
-      "default": "0.8",
-      "defaultValue": "0.8",
-      "tags": []
-    },
-    {
-      "id": "slider-paginationTabsMarginBottomMax",
-      "name": "paginationTabsMarginBottomMax",
-      "attribute": "pagination-tabs-margin-bottom-max",
-      "type": "number",
-      "description": "",
-      "default": "2.6",
-      "defaultValue": "2.6",
-      "tags": []
-    },
-    {
-      "id": "slider-paginationTabsMarginBottomMin",
-      "name": "paginationTabsMarginBottomMin",
-      "attribute": "pagination-tabs-margin-bottom-min",
-      "type": "number",
-      "description": "",
-      "default": "1.4",
-      "defaultValue": "1.4",
-      "tags": []
-    },
-    {
-      "id": "slider-paginationTabsMaxWidth",
-      "name": "paginationTabsMaxWidth",
-      "attribute": "pagination-tabs-max-width",
-      "type": "string",
-      "description": "",
-      "default": "'320px'",
-      "defaultValue": "'320px'",
-      "tags": []
-    },
-    {
-      "id": "slider-paginationTabsPaddingMax",
-      "name": "paginationTabsPaddingMax",
-      "attribute": "pagination-tabs-padding-max",
-      "type": "number",
-      "description": "",
-      "default": "1.4",
-      "defaultValue": "1.4",
-      "tags": []
-    },
-    {
-      "id": "slider-paginationTabsPaddingMin",
-      "name": "paginationTabsPaddingMin",
-      "attribute": "pagination-tabs-padding-min",
-      "type": "number",
-      "description": "",
-      "default": "1",
-      "defaultValue": "1",
-      "tags": []
     },
     {
       "id": "slider-paginationTransitionDuration",
@@ -560,12 +489,11 @@
       "description": "Fires after component has loaded."
     }
   ],
-  "methods": [
+  "methods": [],
+  "slots": [
     {
-      "name": "reload",
-      "description": "",
-      "signature": "reload() => Promise<void>"
+      "name": "inner",
+      "description": "Slot (between HTML tags)."
     }
-  ],
-  "slots": []
+  ]
 }

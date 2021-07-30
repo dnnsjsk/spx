@@ -7,6 +7,10 @@
 import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface SpxAccordion {
+        /**
+          * Disables the animation. Set this attribute if the accordion is starting hidden in the DOM.
+         */
+        "animation": boolean;
         "classContent": string;
         "classContentActive": string;
         "classContentInactive": string;
@@ -40,10 +44,7 @@ export namespace Components {
         "contentTextTag": string;
         "contentTransitionDuration": string;
         "contentTransitionTimingFunction": string;
-        /**
-          * Disables the animation. Set this attribute if the accordion is starting hidden in the DOM.
-         */
-        "disableAnimation": boolean;
+        "display": string;
         "fontSize": string;
         "fontSizeMax": number;
         "fontSizeMin": number;
@@ -103,7 +104,6 @@ export namespace Components {
           * State of accordion.
          */
         "openState": boolean;
-        "reload": () => Promise<void>;
         /**
           * Reverse icon positioning.
          */
@@ -150,9 +150,10 @@ export namespace Components {
         "opacity": number;
         /**
           * Plays animation.
+          * @param from From where to play animation.
+          * @param suppressEvents Suppress events before playing.
          */
         "play": (from?: number, suppressEvents?: boolean) => Promise<void>;
-        "reload": () => Promise<void>;
         /**
           * Repeats the animation. -1 to repeat indefinitely.
          */
@@ -163,6 +164,8 @@ export namespace Components {
         "repeatDelay": number;
         /**
           * Restarts animation.
+          * @param includeDelay Include delay when restarting.
+          * @param suppressEvents Suppress events before playing.
          */
         "restart": (includeDelay?: boolean, suppressEvents?: boolean) => Promise<void>;
         /**
@@ -216,7 +219,6 @@ export namespace Components {
           * Specify a local storage item, so the toggle state will be remembered when the user visits the site again.
          */
         "local": string;
-        "reload": () => Promise<void>;
         /**
           * Target element. Can take any querySelector value. (id, class, tag etc.) If none is set it will default to the first element inside.
          */
@@ -241,7 +243,12 @@ export namespace Components {
         "clipboardButtonText": string;
         "clipboardButtonTextCopied": string;
         "clipboardButtonTextTransform": string;
+        /**
+          * Can be used instead of the inner slot.
+         */
+        "content": string;
         "display": string;
+        "filter": string;
         "fontSize": string;
         "height": string;
         /**
@@ -261,7 +268,6 @@ export namespace Components {
         "maxWidth": string;
         "overflow": string;
         "padding": string;
-        "reload": () => Promise<void>;
         /**
           * Hide scrollbar.
          */
@@ -273,9 +279,25 @@ export namespace Components {
         "theme": string;
         /**
           * Determines the programming language.
-          * @choice 'markup', 'css', 'php'
+          * @choice 'markup', 'css', 'js', 'php', 'twig', 'json'
          */
         "type": string;
+        /**
+          * Removes all whitespace from the top of the code block.
+         */
+        "whitespaceLeftTrim": boolean;
+        /**
+          * If the whole code block is indented too much it removes the extra indent.
+         */
+        "whitespaceRemoveIndent": boolean;
+        /**
+          * Removes trailing whitespace on all lines.
+         */
+        "whitespaceRemoveTrailing": boolean;
+        /**
+          * Removes all whitespace from the bottom of the code block.
+         */
+        "whitespaceRightTrim": boolean;
     }
     interface SpxDocs {
         "bpMobile": number;
@@ -366,6 +388,7 @@ export namespace Components {
           * Discard changes.
          */
         "discard": () => Promise<void>;
+        "display": string;
         /**
           * Distance to the edge of the viewport on the x-axis.
           * @CSS
@@ -393,6 +416,8 @@ export namespace Components {
           * @CSS
          */
         "gap": string;
+        "loaderColor": string;
+        "loaderGap": string;
         "padding": string;
         "paddingXMax": number;
         "paddingXMin": number;
@@ -410,7 +435,6 @@ export namespace Components {
     | 'absolute'
     | 'relative'
     | 'static';
-        "reload": () => Promise<void>;
         /**
           * Save changes.
          */
@@ -440,8 +464,8 @@ export namespace Components {
         "zIndex": number;
     }
     interface SpxGroup {
+        "content": string;
         "display": string;
-        "reload": () => Promise<void>;
         /**
           * Specifies a target element.
          */
@@ -449,6 +473,7 @@ export namespace Components {
     }
     interface SpxIcon {
         "color": string;
+        "display": string;
         /**
           * Icon code.
          */
@@ -484,7 +509,10 @@ export namespace Components {
           * Lazy load content.
          */
         "lazy": boolean;
-        "reload": () => Promise<void>;
+        "loaderBackground": string;
+        "loaderBorderRadius": string;
+        "loaderColor": string;
+        "minHeight": string;
         /**
           * Screen size of the site shown inside the iframe.
          */
@@ -495,19 +523,19 @@ export namespace Components {
         "src": string;
         /**
           * Screen size of the site shown inside the iframe.
-          * @choice 'resize', 'document', 'default'
+          * @choice 'resize', 'document'
          */
         "type": string;
     }
     interface SpxImageComparison {
         "color": string;
+        "display": string;
         "height": string;
         "iconColor": string;
         /**
-          * Lazy load attribute.
+          * Lazy load images.
          */
-        "loading": 'auto' | 'lazy' | 'eager';
-        "reload": () => Promise<void>;
+        "lazy": boolean;
         /**
           * Image URL of the before image.
          */
@@ -520,17 +548,16 @@ export namespace Components {
           * Opening state in pixels.
          */
         "start": number;
+        /**
+          * Step amount when using component with arrow keys.
+         */
+        "steps": number;
     }
     interface SpxLightbox {
         "display": string;
         "height": string;
         "overlayColor": string;
-        "reload": () => Promise<void>;
         "width": string;
-    }
-    interface SpxLoader {
-        "color": string;
-        "speed": string;
     }
     interface SpxMasonry {
         /**
@@ -541,6 +568,7 @@ export namespace Components {
           * Number of columns.
          */
         "columns": number;
+        "display": string;
         /**
           * Gap between images.
           * @CSS
@@ -552,19 +580,18 @@ export namespace Components {
         "imageSize": string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
+          * @choice 'acf', 'mb'
+         */
+        "imageSrc": string;
+        /**
+          * Gets images from an ACF or Metabox field.
+          * @helper &lt;?php spx\Get::images($fieldName, $type) ?>
          */
         "images": string;
         /**
-          * Gets images from an ACF or Metabox field.
-          * @choice 'acf', 'mb'
+          * Lazy load images.
          */
-        "imagesSrc": string;
-        /**
-          * Recalculates grid.
-         */
-        "recalc": () => Promise<void>;
-        "reload": () => Promise<void>;
+        "lazy": boolean;
     }
     interface SpxMockup {
         /**
@@ -578,12 +605,12 @@ export namespace Components {
          */
         "colorGooglePixel": string;
         /**
-          * iPad Pro color.
+          * IPad Pro color.
           * @choice 'silver', 'gold', 'rosegold', 'spacegray'
          */
         "colorIpadPro": string;
         /**
-          * iPhone 8 color.
+          * IPhone 8 color.
           * @choice 'silver', 'gold', 'spacegray'
          */
         "colorIphone8": string;
@@ -599,7 +626,18 @@ export namespace Components {
         "colorMacbookPro": string;
         "display": string;
         "imagePosition": string;
-        "reload": () => Promise<void>;
+        /**
+          * Mockup size.
+         */
+        "size": number;
+        /**
+          * Mockup size maximum.
+         */
+        "sizeMax": number;
+        /**
+          * Mockup size minimum.
+         */
+        "sizeMin": number;
         /**
           * Image src if no inner slot is used.
          */
@@ -656,6 +694,7 @@ export namespace Components {
           * @choice 'start', 'end'
          */
         "childPlacement": string;
+        "display": string;
         "fontSize": string;
         "itemTransitionDuration": string;
         "itemTransitionTimingFunction": string;
@@ -706,7 +745,6 @@ export namespace Components {
          */
         "parentItemGap": string;
         "parentItemPadding": string;
-        "reload": () => Promise<void>;
         /**
           * Renders menu vertically.
          */
@@ -756,7 +794,10 @@ export namespace Components {
           * Padding around notations.
          */
         "padding": number;
-        "reload": () => Promise<void>;
+        /**
+          * Redraw the animation.
+         */
+        "redraw": () => Promise<void>;
         /**
           * Draws the annotation.
          */
@@ -777,7 +818,6 @@ export namespace Components {
           * Recalculate distance.
          */
         "recalc": () => Promise<void>;
-        "reload": () => Promise<void>;
         /**
           * Target element.
          */
@@ -813,6 +853,7 @@ export namespace Components {
     }
     interface SpxShare {
         "classItem": string;
+        "display": string;
         "fontSize": string;
         "fontSizeMax": number;
         "fontSizeMin": number;
@@ -843,7 +884,6 @@ export namespace Components {
         "itemSizeMin": number;
         "itemTransitionDuration": string;
         "itemTransitionTimingFunction": string;
-        "reload": () => Promise<void>;
         /**
           * Styling.
           * @choice 'default', 'fluid', 'headless'
@@ -881,18 +921,10 @@ export namespace Components {
          */
         "autoplayDisableOnInteraction": boolean;
         /**
-          * Starts navigating to the next slide when page is loaded.
-         */
-        "bpTabs": string;
-        /**
           * Centers slides in viewport.
          */
         "centeredSlides": boolean;
-        /**
-          * Slider direction.
-          * @choice 'horizontal', 'vertical'
-         */
-        "direction": string;
+        "display": string;
         /**
           * Slider effect.
           * @choice 'slide', 'effect'
@@ -909,28 +941,30 @@ export namespace Components {
         "imageSize": string;
         /**
           * Gets images from an ACF or Metabox field.
+          * @choice 'acf', 'mb'
+         */
+        "imageSrc": string;
+        /**
+          * Gets images from an ACF or Metabox field.
           * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
          */
         "images": string;
         /**
-          * Gets images from an ACF or Metabox field.
-          * @choice 'acf', 'mb'
+          * Lazy load images.
          */
-        "imagesSrc": string;
+        "lazy": boolean;
+        /**
+          * Amount of images to to be preloaded when lazy is enabled.
+         */
+        "lazyLoadPrevNext": number;
         /**
           * Loops all slides infinitely.
          */
         "loop": boolean;
-        /**
-          * Max height.
-         */
         "maxHeight": string;
-        /**
-          * Max width.
-         */
-        "maxWidth": string;
         "navigation": boolean;
         "navigationBackground": string;
+        "navigationBackgroundHover": string;
         "navigationBorderRadius": string;
         "navigationColor": string;
         /**
@@ -956,9 +990,11 @@ export namespace Components {
           * @CSS
          */
         "navigationSize": string;
+        "navigationTransitionDuration": string;
+        "navigationTransitionTimingFunction": string;
         /**
           * Pagination type.
-          * @choice 'bullets', 'tabs', 'none'
+          * @choice 'bullets', 'none'
          */
         "pagination": string;
         "paginationBulletsBackground": string;
@@ -985,22 +1021,12 @@ export namespace Components {
           * @CSS
          */
         "paginationBulletsSpaceBetween": string;
-        "paginationTabsGapMax": number;
-        "paginationTabsGapMin": number;
-        "paginationTabsInnerGapMax": number;
-        "paginationTabsInnerGapMin": number;
-        "paginationTabsMarginBottomMax": number;
-        "paginationTabsMarginBottomMin": number;
-        "paginationTabsMaxWidth": string;
-        "paginationTabsPaddingMax": number;
-        "paginationTabsPaddingMin": number;
         "paginationTransitionDuration": string;
         "paginationTransitionTimingFunction": string;
         /**
           * Filter property for the previous and next elements.
          */
         "prevNextFilter": string;
-        "reload": () => Promise<void>;
         /**
           * Screen reader message for first slide.
          */
@@ -1042,25 +1068,31 @@ export namespace Components {
           * @CSS
          */
         "gap": string;
+        "height": string;
         /**
           * WordPress media size when using the helper function..
          */
         "imageSize": string;
         /**
           * Gets images from an ACF or Metabox field.
+          * @choice 'acf', 'mb'
+         */
+        "imageSrc": string;
+        /**
+          * Gets images from an ACF or Metabox field.
           * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
          */
         "images": string;
         /**
-          * Gets images from an ACF or Metabox field.
-          * @choice 'acf', 'mb'
+          * Lazy load images.
          */
-        "imagesSrc": string;
+        "lazy": boolean;
         /**
           * Max width of inner elements.
           * @CSS
          */
         "maxWidth": string;
+        "objectFit": string;
         /**
           * If not set with this attribute, overflow should be set on the parent element.
           * @CSS
@@ -1073,6 +1105,10 @@ export namespace Components {
         "background": string;
         "border": string;
         "borderRadius": string;
+        "buttonBackground": string;
+        "buttonBackgroundHover": string;
+        "buttonTransitionDuration": string;
+        "buttonTransitionTimingFunction": string;
         "classButton": string;
         "classText": string;
         /**
@@ -1080,6 +1116,7 @@ export namespace Components {
          */
         "closeable": boolean;
         "color": string;
+        "display": string;
         /**
           * Distance to the edge of the viewport on the x-axis.
           * @CSS
@@ -1116,7 +1153,6 @@ export namespace Components {
     | 'absolute'
     | 'relative'
     | 'static';
-        "reload": () => Promise<void>;
         /**
           * Reverses the close button if "closable" prop is true.
          */
@@ -1267,12 +1303,6 @@ declare global {
         prototype: HTMLSpxLightboxElement;
         new (): HTMLSpxLightboxElement;
     };
-    interface HTMLSpxLoaderElement extends Components.SpxLoader, HTMLStencilElement {
-    }
-    var HTMLSpxLoaderElement: {
-        prototype: HTMLSpxLoaderElement;
-        new (): HTMLSpxLoaderElement;
-    };
     interface HTMLSpxMasonryElement extends Components.SpxMasonry, HTMLStencilElement {
     }
     var HTMLSpxMasonryElement: {
@@ -1358,7 +1388,6 @@ declare global {
         "spx-iframe": HTMLSpxIframeElement;
         "spx-image-comparison": HTMLSpxImageComparisonElement;
         "spx-lightbox": HTMLSpxLightboxElement;
-        "spx-loader": HTMLSpxLoaderElement;
         "spx-masonry": HTMLSpxMasonryElement;
         "spx-mockup": HTMLSpxMockupElement;
         "spx-navigation": HTMLSpxNavigationElement;
@@ -1375,6 +1404,10 @@ declare global {
 }
 declare namespace LocalJSX {
     interface SpxAccordion {
+        /**
+          * Disables the animation. Set this attribute if the accordion is starting hidden in the DOM.
+         */
+        "animation"?: boolean;
         "classContent"?: string;
         "classContentActive"?: string;
         "classContentInactive"?: string;
@@ -1404,10 +1437,7 @@ declare namespace LocalJSX {
         "contentTextTag"?: string;
         "contentTransitionDuration"?: string;
         "contentTransitionTimingFunction"?: string;
-        /**
-          * Disables the animation. Set this attribute if the accordion is starting hidden in the DOM.
-         */
-        "disableAnimation"?: boolean;
+        "display"?: string;
         "fontSize"?: string;
         "fontSizeMax"?: number;
         "fontSizeMin"?: number;
@@ -1598,7 +1628,12 @@ declare namespace LocalJSX {
         "clipboardButtonText"?: string;
         "clipboardButtonTextCopied"?: string;
         "clipboardButtonTextTransform"?: string;
+        /**
+          * Can be used instead of the inner slot.
+         */
+        "content"?: string;
         "display"?: string;
+        "filter"?: string;
         "fontSize"?: string;
         "height"?: string;
         /**
@@ -1633,9 +1668,25 @@ declare namespace LocalJSX {
         "theme"?: string;
         /**
           * Determines the programming language.
-          * @choice 'markup', 'css', 'php'
+          * @choice 'markup', 'css', 'js', 'php', 'twig', 'json'
          */
         "type"?: string;
+        /**
+          * Removes all whitespace from the top of the code block.
+         */
+        "whitespaceLeftTrim"?: boolean;
+        /**
+          * If the whole code block is indented too much it removes the extra indent.
+         */
+        "whitespaceRemoveIndent"?: boolean;
+        /**
+          * Removes trailing whitespace on all lines.
+         */
+        "whitespaceRemoveTrailing"?: boolean;
+        /**
+          * Removes all whitespace from the bottom of the code block.
+         */
+        "whitespaceRightTrim"?: boolean;
     }
     interface SpxDocs {
         "bpMobile"?: number;
@@ -1726,6 +1777,7 @@ declare namespace LocalJSX {
           * @CSS
          */
         "colorDiscard"?: string;
+        "display"?: string;
         /**
           * Distance to the edge of the viewport on the x-axis.
           * @CSS
@@ -1749,6 +1801,8 @@ declare namespace LocalJSX {
           * @CSS
          */
         "gap"?: string;
+        "loaderColor"?: string;
+        "loaderGap"?: string;
         /**
           * Fires after component has loaded.
          */
@@ -1803,6 +1857,7 @@ declare namespace LocalJSX {
         "zIndex"?: number;
     }
     interface SpxGroup {
+        "content"?: string;
         "display"?: string;
         /**
           * Fires after component has loaded.
@@ -1815,6 +1870,7 @@ declare namespace LocalJSX {
     }
     interface SpxIcon {
         "color"?: string;
+        "display"?: string;
         /**
           * Icon code.
          */
@@ -1854,6 +1910,10 @@ declare namespace LocalJSX {
           * Lazy load content.
          */
         "lazy"?: boolean;
+        "loaderBackground"?: string;
+        "loaderBorderRadius"?: string;
+        "loaderColor"?: string;
+        "minHeight"?: string;
         /**
           * Fires after component has loaded.
          */
@@ -1868,18 +1928,19 @@ declare namespace LocalJSX {
         "src"?: string;
         /**
           * Screen size of the site shown inside the iframe.
-          * @choice 'resize', 'document', 'default'
+          * @choice 'resize', 'document'
          */
         "type"?: string;
     }
     interface SpxImageComparison {
         "color"?: string;
+        "display"?: string;
         "height"?: string;
         "iconColor"?: string;
         /**
-          * Lazy load attribute.
+          * Lazy load images.
          */
-        "loading"?: 'auto' | 'lazy' | 'eager';
+        "lazy"?: boolean;
         /**
           * Fires after component has loaded.
          */
@@ -1896,6 +1957,10 @@ declare namespace LocalJSX {
           * Opening state in pixels.
          */
         "start"?: number;
+        /**
+          * Step amount when using component with arrow keys.
+         */
+        "steps"?: number;
     }
     interface SpxLightbox {
         "display"?: string;
@@ -1907,14 +1972,6 @@ declare namespace LocalJSX {
         "overlayColor"?: string;
         "width"?: string;
     }
-    interface SpxLoader {
-        "color"?: string;
-        /**
-          * Fires after component has loaded.
-         */
-        "onSpxLoaderDidLoad"?: (event: CustomEvent<any>) => void;
-        "speed"?: string;
-    }
     interface SpxMasonry {
         /**
           * Columns for different screen sizes. Example value: 1000:3;600:2 - this will switch to a three column layout when the screen size is under 1000px and to a two column layout under 600px.
@@ -1924,6 +1981,7 @@ declare namespace LocalJSX {
           * Number of columns.
          */
         "columns"?: number;
+        "display"?: string;
         /**
           * Gap between images.
           * @CSS
@@ -1935,14 +1993,18 @@ declare namespace LocalJSX {
         "imageSize"?: string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
+          * @choice 'acf', 'mb'
+         */
+        "imageSrc"?: string;
+        /**
+          * Gets images from an ACF or Metabox field.
+          * @helper &lt;?php spx\Get::images($fieldName, $type) ?>
          */
         "images"?: string;
         /**
-          * Gets images from an ACF or Metabox field.
-          * @choice 'acf', 'mb'
+          * Lazy load images.
          */
-        "imagesSrc"?: string;
+        "lazy"?: boolean;
         /**
           * Fires after component has loaded.
          */
@@ -1960,12 +2022,12 @@ declare namespace LocalJSX {
          */
         "colorGooglePixel"?: string;
         /**
-          * iPad Pro color.
+          * IPad Pro color.
           * @choice 'silver', 'gold', 'rosegold', 'spacegray'
          */
         "colorIpadPro"?: string;
         /**
-          * iPhone 8 color.
+          * IPhone 8 color.
           * @choice 'silver', 'gold', 'spacegray'
          */
         "colorIphone8"?: string;
@@ -1985,6 +2047,18 @@ declare namespace LocalJSX {
           * Fires after component has loaded.
          */
         "onSpxMockupDidLoad"?: (event: CustomEvent<any>) => void;
+        /**
+          * Mockup size.
+         */
+        "size"?: number;
+        /**
+          * Mockup size maximum.
+         */
+        "sizeMax"?: number;
+        /**
+          * Mockup size minimum.
+         */
+        "sizeMin"?: number;
         /**
           * Image src if no inner slot is used.
          */
@@ -2041,6 +2115,7 @@ declare namespace LocalJSX {
           * @choice 'start', 'end'
          */
         "childPlacement"?: string;
+        "display"?: string;
         "fontSize"?: string;
         "itemTransitionDuration"?: string;
         "itemTransitionTimingFunction"?: string;
@@ -2194,6 +2269,7 @@ declare namespace LocalJSX {
     }
     interface SpxShare {
         "classItem"?: string;
+        "display"?: string;
         "fontSize"?: string;
         "fontSizeMax"?: number;
         "fontSizeMin"?: number;
@@ -2265,18 +2341,10 @@ declare namespace LocalJSX {
          */
         "autoplayDisableOnInteraction"?: boolean;
         /**
-          * Starts navigating to the next slide when page is loaded.
-         */
-        "bpTabs"?: string;
-        /**
           * Centers slides in viewport.
          */
         "centeredSlides"?: boolean;
-        /**
-          * Slider direction.
-          * @choice 'horizontal', 'vertical'
-         */
-        "direction"?: string;
+        "display"?: string;
         /**
           * Slider effect.
           * @choice 'slide', 'effect'
@@ -2293,28 +2361,30 @@ declare namespace LocalJSX {
         "imageSize"?: string;
         /**
           * Gets images from an ACF or Metabox field.
+          * @choice 'acf', 'mb'
+         */
+        "imageSrc"?: string;
+        /**
+          * Gets images from an ACF or Metabox field.
           * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
          */
         "images"?: string;
         /**
-          * Gets images from an ACF or Metabox field.
-          * @choice 'acf', 'mb'
+          * Lazy load images.
          */
-        "imagesSrc"?: string;
+        "lazy"?: boolean;
+        /**
+          * Amount of images to to be preloaded when lazy is enabled.
+         */
+        "lazyLoadPrevNext"?: number;
         /**
           * Loops all slides infinitely.
          */
         "loop"?: boolean;
-        /**
-          * Max height.
-         */
         "maxHeight"?: string;
-        /**
-          * Max width.
-         */
-        "maxWidth"?: string;
         "navigation"?: boolean;
         "navigationBackground"?: string;
+        "navigationBackgroundHover"?: string;
         "navigationBorderRadius"?: string;
         "navigationColor"?: string;
         /**
@@ -2340,13 +2410,15 @@ declare namespace LocalJSX {
           * @CSS
          */
         "navigationSize"?: string;
+        "navigationTransitionDuration"?: string;
+        "navigationTransitionTimingFunction"?: string;
         /**
           * Fires after component has loaded.
          */
         "onSpxSliderDidLoad"?: (event: CustomEvent<any>) => void;
         /**
           * Pagination type.
-          * @choice 'bullets', 'tabs', 'none'
+          * @choice 'bullets', 'none'
          */
         "pagination"?: string;
         "paginationBulletsBackground"?: string;
@@ -2373,15 +2445,6 @@ declare namespace LocalJSX {
           * @CSS
          */
         "paginationBulletsSpaceBetween"?: string;
-        "paginationTabsGapMax"?: number;
-        "paginationTabsGapMin"?: number;
-        "paginationTabsInnerGapMax"?: number;
-        "paginationTabsInnerGapMin"?: number;
-        "paginationTabsMarginBottomMax"?: number;
-        "paginationTabsMarginBottomMin"?: number;
-        "paginationTabsMaxWidth"?: string;
-        "paginationTabsPaddingMax"?: number;
-        "paginationTabsPaddingMin"?: number;
         "paginationTransitionDuration"?: string;
         "paginationTransitionTimingFunction"?: string;
         /**
@@ -2429,25 +2492,31 @@ declare namespace LocalJSX {
           * @CSS
          */
         "gap"?: string;
+        "height"?: string;
         /**
           * WordPress media size when using the helper function..
          */
         "imageSize"?: string;
         /**
           * Gets images from an ACF or Metabox field.
+          * @choice 'acf', 'mb'
+         */
+        "imageSrc"?: string;
+        /**
+          * Gets images from an ACF or Metabox field.
           * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
          */
         "images"?: string;
         /**
-          * Gets images from an ACF or Metabox field.
-          * @choice 'acf', 'mb'
+          * Lazy load images.
          */
-        "imagesSrc"?: string;
+        "lazy"?: boolean;
         /**
           * Max width of inner elements.
           * @CSS
          */
         "maxWidth"?: string;
+        "objectFit"?: string;
         /**
           * Fires after component has loaded.
          */
@@ -2464,6 +2533,10 @@ declare namespace LocalJSX {
         "background"?: string;
         "border"?: string;
         "borderRadius"?: string;
+        "buttonBackground"?: string;
+        "buttonBackgroundHover"?: string;
+        "buttonTransitionDuration"?: string;
+        "buttonTransitionTimingFunction"?: string;
         "classButton"?: string;
         "classText"?: string;
         /**
@@ -2471,6 +2544,7 @@ declare namespace LocalJSX {
          */
         "closeable"?: boolean;
         "color"?: string;
+        "display"?: string;
         /**
           * Distance to the edge of the viewport on the x-axis.
           * @CSS
@@ -2597,7 +2671,6 @@ declare namespace LocalJSX {
         "spx-iframe": SpxIframe;
         "spx-image-comparison": SpxImageComparison;
         "spx-lightbox": SpxLightbox;
-        "spx-loader": SpxLoader;
         "spx-masonry": SpxMasonry;
         "spx-mockup": SpxMockup;
         "spx-navigation": SpxNavigation;
@@ -2628,7 +2701,6 @@ declare module "@stencil/core" {
             "spx-iframe": LocalJSX.SpxIframe & JSXBase.HTMLAttributes<HTMLSpxIframeElement>;
             "spx-image-comparison": LocalJSX.SpxImageComparison & JSXBase.HTMLAttributes<HTMLSpxImageComparisonElement>;
             "spx-lightbox": LocalJSX.SpxLightbox & JSXBase.HTMLAttributes<HTMLSpxLightboxElement>;
-            "spx-loader": LocalJSX.SpxLoader & JSXBase.HTMLAttributes<HTMLSpxLoaderElement>;
             "spx-masonry": LocalJSX.SpxMasonry & JSXBase.HTMLAttributes<HTMLSpxMasonryElement>;
             "spx-mockup": LocalJSX.SpxMockup & JSXBase.HTMLAttributes<HTMLSpxMockupElement>;
             "spx-navigation": LocalJSX.SpxNavigation & JSXBase.HTMLAttributes<HTMLSpxNavigationElement>;

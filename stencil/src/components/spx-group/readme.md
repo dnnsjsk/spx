@@ -1,7 +1,5 @@
 # spx-group
 
-
-
 <!-- Auto Generated Below -->
 
 
@@ -9,7 +7,8 @@
 
 | Property  | Attribute | Description                 | Type     | Default     |
 | --------- | --------- | --------------------------- | -------- | ----------- |
-| `display` | `display` |                             | `string` | `'block'`   |
+| `content` | `content` |                             | `string` | `undefined` |
+| `display` | `display` |                             | `string` | `s.display` |
 | `target`  | `target`  | Specifies a target element. | `string` | `undefined` |
 
 
@@ -20,17 +19,11 @@
 | `spxGroupDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
 
 
-## Methods
+## Slots
 
-### `reload() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
+| Slot      | Description               |
+| --------- | ------------------------- |
+| `"inner"` | Slot (between HTML tags). |
 
 
 ----------------------------------------------

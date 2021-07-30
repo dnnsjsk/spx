@@ -1,6 +1,6 @@
 {
   "name": "spx-icon",
-  "description": "Wrapper component for different kinds of icon sets. Currently comes included with Ionicons.",
+  "description": "Wrapper component for different kinds of icon sets. Currently comes included\nwith Ionicons.",
   "shadow": false,
   "properties": [
     {
@@ -11,6 +11,16 @@
       "description": "",
       "default": "'inherit'",
       "defaultValue": "'inherit'",
+      "tags": []
+    },
+    {
+      "id": "icon-display",
+      "name": "display",
+      "attribute": "display",
+      "type": "string",
+      "description": "",
+      "default": "'inline-block'",
+      "defaultValue": "'inline-block'",
       "tags": []
     },
     {

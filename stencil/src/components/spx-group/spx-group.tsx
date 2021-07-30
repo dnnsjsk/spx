@@ -6,49 +6,49 @@ import {
   // eslint-disable-next-line no-unused-vars
   h,
   Host,
-  Method,
   Prop,
 } from '@stencil/core';
 import { startsWith } from 'lodash-es';
 import { css } from '@emotion/css';
-import { setVar } from '../../utils/setVar';
-import { globalComponentDidLoad } from '../../utils/globalComponentDidLoad';
+import * as s from '../../constants/style';
+import { setVar } from '../../utils/cssVariables/setVar';
+import { globalComponentDidLoad } from '../../utils/global/globalComponentDidLoad';
+import { globalComponentWillUpdate } from '../../utils/global/globalComponentWillUpdate';
 
 const tag = 'spx-group';
 
 /**
- * Pass attributes to all inner (spx) child elements.
- * All attributes that start with g-* will be passed on to child elements.
+ * Pass attributes to all inner (spx) child elements. All attributes that start
+ * with g-* will be passed on to child elements.
+ *
+ * @slot inner - Slot (between HTML tags).
  */
 @Component({
   tag: 'spx-group',
+  shadow: true,
 })
 export class SpxGroup {
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxGroupElement;
 
-  @Prop({ reflect: true }) display: string = 'block';
+  @Prop({ reflect: true }) content: string;
 
-  /**
-   * Specifies a target element.
-   */
+  @Prop({ reflect: true }) display: string = s.display;
+
+  /** Specifies a target element. */
   @Prop({ reflect: true }) target: string;
 
-  /**
-   * Fires after component has loaded.
-   */
+  /** Fires after component has loaded. */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxGroupDidLoad' })
   spxGroupDidLoad: EventEmitter;
 
   componentDidLoad() {
-    globalComponentDidLoad(this.el);
+    globalComponentDidLoad({ el: this.el });
 
     this.forwardAttributes();
 
-    /**
-     * Set up mutation observer.
-     */
+    /** Set up mutation observer. */
     const observer = new MutationObserver((mutations) => {
       mutations.forEach(() => {
         this.forwardAttributes();
@@ -62,28 +62,25 @@ export class SpxGroup {
     this.spxGroupDidLoad.emit({ target: 'document' });
   }
 
-  private forwardAttributes() {
-    /**
-     * Function to filter elements.
-     */
+  componentWillUpdate() {
+    globalComponentWillUpdate(this.el);
+  }
+
+  private forwardAttributes = () => {
     const getAllTagMatches = (regEx) => {
       return Array.prototype.slice
-        .call(this.el.querySelectorAll('*'))
+        .call(this.el.shadowRoot.querySelectorAll('*'))
         .filter(function (el) {
           return el.tagName.match(regEx);
         });
     };
 
-    /**
-     * Get all tag matches.
-     */
+    /** Get all tag matches. */
     const elements = this.target
       ? getAllTagMatches(new RegExp(this.target, 'i'))
       : getAllTagMatches(/^spx/i);
 
-    /**
-     * Loop matches.
-     */
+    /** Loop matches. */
     for (
       let att, i = 0, atts = this.el.attributes, n = atts.length;
       i < n;
@@ -96,24 +93,17 @@ export class SpxGroup {
         });
       }
     }
-  }
-
-  @Method()
-  async reload() {
-    this.componentDidLoad();
-  }
+  };
 
   render() {
-    /**
-     * Host styles.
-     */
+    /** Host styles. */
     const styleHost = css({
       display: setVar(tag, 'display', this.display),
     });
 
     return (
       <Host class={styleHost}>
-        <slot />
+        <div innerHTML={this.content ?? this.el.innerHTML} />
       </Host>
     );
   }

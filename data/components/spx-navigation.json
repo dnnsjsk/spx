@@ -19,8 +19,8 @@
       "attribute": "child-border-radius",
       "type": "string",
       "description": "Child menu border-radius.",
-      "default": "s.borderRadius",
-      "defaultValue": "'var(--spx-border-radius)'",
+      "default": "'0'",
+      "defaultValue": "'0'",
       "tags": [
         {
           "name": "CSS"
@@ -170,6 +170,16 @@
           "name": "choice"
         }
       ]
+    },
+    {
+      "id": "navigation-display",
+      "name": "display",
+      "attribute": "display",
+      "type": "string",
+      "description": "",
+      "default": "s.display",
+      "defaultValue": "s.display",
+      "tags": []
     },
     {
       "id": "navigation-fontSize",
@@ -415,12 +425,6 @@
       "description": "Fires after component has loaded."
     }
   ],
-  "methods": [
-    {
-      "name": "reload",
-      "description": "",
-      "signature": "reload() => Promise<void>"
-    }
-  ],
+  "methods": [],
   "slots": []
 }

@@ -1,7 +1,5 @@
 # spx-accordion
 
-
-
 <!-- Auto Generated Below -->
 
 
@@ -9,6 +7,7 @@
 
 | Property                           | Attribute                              | Description                                                                                | Type      | Default                       |
 | ---------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------ | --------- | ----------------------------- |
+| `animation`                        | `animation`                            | Disables the animation. Set this attribute if the accordion is starting hidden in the DOM. | `boolean` | `undefined`                   |
 | `classContent`                     | `class-content`                        |                                                                                            | `string`  | `undefined`                   |
 | `classContentActive`               | `class-content-active`                 |                                                                                            | `string`  | `undefined`                   |
 | `classContentInactive`             | `class-content-inactive`               |                                                                                            | `string`  | `undefined`                   |
@@ -32,7 +31,7 @@
 | `contentTextTag`                   | `content-text-tag`                     | Content text tag.                                                                          | `string`  | `'span'`                      |
 | `contentTransitionDuration`        | `content-transition-duration`          |                                                                                            | `string`  | `s.transitionDuration`        |
 | `contentTransitionTimingFunction`  | `content-transition-timing-function`   |                                                                                            | `string`  | `s.transitionTimingFunction`  |
-| `disableAnimation`                 | `disable-animation`                    | Disables the animation. Set this attribute if the accordion is starting hidden in the DOM. | `boolean` | `undefined`                   |
+| `display`                          | `display`                              |                                                                                            | `string`  | `s.display`                   |
 | `fontSize`                         | `font-size`                            |                                                                                            | `string`  | `s.fontSize`                  |
 | `fontSizeMax`                      | `font-size-max`                        |                                                                                            | `number`  | `1.2`                         |
 | `fontSizeMin`                      | `font-size-min`                        |                                                                                            | `number`  | `1`                           |
@@ -78,16 +77,6 @@ Type: `Promise<void>`
 ### `open() => Promise<void>`
 
 Opens the accordion.
-
-#### Returns
-
-Type: `Promise<void>`
-
-
-
-### `reload() => Promise<void>`
-
-
 
 #### Returns
 

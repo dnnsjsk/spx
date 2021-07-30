@@ -1,6 +1,6 @@
 {
   "name": "spx-docs",
-  "description": "Renders a documentation page similar to the one you are currently seeing here.\nEvery heading tag becomes a navigation entry, while navigation headings get created by applying\nthe \"data-spx-docs-heading\" attribute to the first h1 of a new section.",
+  "description": "Renders a documentation page similar to the one you are currently seeing\nhere. Every heading tag becomes a navigation entry, while navigation headings\nget created by applying the \"data-spx-docs-heading\" attribute to the first h1\nof a new section.",
   "shadow": false,
   "properties": [
     {
@@ -47,8 +47,8 @@
       "attribute": "gap",
       "type": "string",
       "description": "",
-      "default": "'3rem'",
-      "defaultValue": "'3rem'",
+      "default": "'3em'",
+      "defaultValue": "'3em'",
       "tags": []
     },
     {
@@ -390,5 +390,10 @@
     }
   ],
   "methods": [],
-  "slots": []
+  "slots": [
+    {
+      "name": "inner",
+      "description": "Slot (between HTML tags)."
+    }
+  ]
 }

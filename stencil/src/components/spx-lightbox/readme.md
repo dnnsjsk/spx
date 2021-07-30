@@ -1,7 +1,5 @@
 # spx-lightbox
 
-
-
 <!-- Auto Generated Below -->
 
 
@@ -22,17 +20,11 @@
 | `spxLightboxDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
 
 
-## Methods
+## Slots
 
-### `reload() => Promise<void>`
-
-
-
-#### Returns
-
-Type: `Promise<void>`
-
-
+| Slot      | Description               |
+| --------- | ------------------------- |
+| `"inner"` | Slot (between HTML tags). |
 
 
 ----------------------------------------------

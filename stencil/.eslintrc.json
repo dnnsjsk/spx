@@ -5,7 +5,9 @@
     "@stencil/required-jsdoc": 0,
     "@stencil/strict-boolean-conditions": 0,
     "@stencil/prefer-vdom-listener": 0,
-    "@stencil/async-methods": 0
+    "@stencil/async-methods": 0,
+    "jsdoc/check-tag-names": 0,
+    "jsdoc/check-alignment": 0
   },
   "env": {
     "browser": true,
@@ -16,10 +18,11 @@
     "ecmaVersion": 11,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": ["@typescript-eslint", "jsdoc"],
   "extends": [
     "standard",
     "plugin:@stencil/recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:jsdoc/recommended"
   ]
 }

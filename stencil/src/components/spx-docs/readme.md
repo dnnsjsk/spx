@@ -1,7 +1,5 @@
 # spx-docs
 
-
-
 <!-- Auto Generated Below -->
 
 
@@ -13,7 +11,7 @@
 | `contentPadding`                 | `content-padding`                    |                                                               | `string`  | `undefined`   |
 | `contentPaddingYMax`             | `content-padding-y-max`              |                                                               | `number`  | `0`           |
 | `contentPaddingYMin`             | `content-padding-y-min`              |                                                               | `number`  | `0`           |
-| `gap`                            | `gap`                                |                                                               | `string`  | `'3rem'`      |
+| `gap`                            | `gap`                                |                                                               | `string`  | `'3em'`       |
 | `navigationBackground`           | `navigation-background`              |                                                               | `string`  | `undefined`   |
 | `navigationGap`                  | `navigation-gap`                     |                                                               | `string`  | `undefined`   |
 | `navigationGapMax`               | `navigation-gap-max`                 |                                                               | `number`  | `0.4`         |
@@ -56,6 +54,13 @@
 | Event            | Description                       | Type               |
 | ---------------- | --------------------------------- | ------------------ |
 | `spxDocsDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+
+
+## Slots
+
+| Slot      | Description               |
+| --------- | ------------------------- |
+| `"inner"` | Slot (between HTML tags). |
 
 
 ## Dependencies
