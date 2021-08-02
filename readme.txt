@@ -33,6 +33,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Code: make theme attribute reflect to changes
 * Code: prevent re-renders
 * Docs: make id generation more reliable
+* Docs: remove component
 * Edit Button: add 'loader-color' attribute
 * Edit Button: add 'loader-gap' attribute
 * Edit Button: convert to Shadow DOM
@@ -41,7 +42,6 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Enhancement: rename 'gallery' helper to 'images'
 * Fix: don't create undefined fallback in CSS variables if no styles are set
 * Fix: prevent double style sheets in Shadow DOM
-* Group: convert to Shadow DOM
 * Icon: add 'loader' type to display a simple rotating loader
 * Icon: convert to Shadow DOM
 * Iframe: add 'loader-background' attribute
@@ -61,9 +61,12 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Mockup: make sure slot will be used if src is not present
 * Mockup: rework resizing mechanism
 * Navigation: add 'display' attribute
+* New: Text-Path component
+* New: add global '--spx-backdrop-filter' CSS variable
 * New: add global '--spx-color-focus' CSS variable
 * New: add global '--spx-display' CSS variable
 * New: add global '--spx-focus' CSS variable
+* Scrollspy: add 'spxScrollspyActivate' and 'spxScrollspyDeactivate' events
 * Share: convert to Shadow DOM
 * Share: make sure to always share the current URL
 * Slider: add 'lazy' attribute
@@ -71,6 +74,8 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Slider: add 'navigation-background-hover' attribute
 * Slider: add 'navigation-transition-duration' attribute
 * Slider: add 'navigation-transition-timing-function' attribute
+* Slider: add 'pagination-backdrop-filter' attribute
+* Slider: add 'pagination-background' attribute
 * Slider: convert to Shadow DOM
 * Slider: fix dynamic bullets
 * Slider: make slides full width and height by default
@@ -81,9 +86,10 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Slideshow: add 'lazy' attribute
 * Slideshow: add 'object-fit' attribute
 * Slideshow: rename attribute 'images-src' to 'image-src'
+* Snackbar: add 'button-background' attribute
 * Snackbar: convert to Shadow DOM
 * Snackbar: rework closing button
-* Snackbar: add 'button-background' attribute
+* StencilJS: update to 2.6.0
 
 = 3.1.6 =
 * Code: add support for Twig files

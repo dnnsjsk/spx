@@ -1,6 +1,6 @@
 {
   "name": "spx-scrollspy",
-  "description": "Automatically add CSS classes to navigation items and content elements\ndepending on the scroll position.",
+  "description": "Automatically add CSS classes to navigation items\nand content elements depending on the scroll position.",
   "shadow": false,
   "properties": [
     {
@@ -74,6 +74,14 @@
   ],
   "events": [
     {
+      "name": "spxScrollspyActivate",
+      "description": "Fires after a link is activated."
+    },
+    {
+      "name": "spxScrollspyDeactivate",
+      "description": "Fires after a link is deactivated."
+    },
+    {
       "name": "spxScrollspyDidLoad",
       "description": "Fires after component has loaded."
     }
@@ -81,7 +89,7 @@
   "methods": [
     {
       "name": "reload",
-      "description": "",
+      "description": "Reload the Scrollspy.",
       "signature": "reload() => Promise<void>"
     }
   ],

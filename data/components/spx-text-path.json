@@ -4,6 +4,36 @@
   "shadow": false,
   "properties": [
     {
+      "id": "text-path-display",
+      "name": "display",
+      "attribute": "display",
+      "type": "string",
+      "description": "",
+      "default": "'block'",
+      "defaultValue": "'block'",
+      "tags": []
+    },
+    {
+      "id": "text-path-spaceBetween",
+      "name": "spaceBetween",
+      "attribute": "space-between",
+      "type": "string",
+      "description": "Space between text and path.",
+      "default": "'-2%'",
+      "defaultValue": "'-2%'",
+      "tags": []
+    },
+    {
+      "id": "text-path-startOffset",
+      "name": "startOffset",
+      "attribute": "start-offset",
+      "type": "string",
+      "description": "Starting offset off the text.",
+      "default": "'25%'",
+      "defaultValue": "'25%'",
+      "tags": []
+    },
+    {
       "id": "text-path-text",
       "name": "text",
       "attribute": "text",
@@ -16,42 +46,49 @@
       "name": "textColor",
       "attribute": "text-color",
       "type": "string",
-      "description": "Text color.",
+      "description": "",
       "tags": []
     },
     {
-      "id": "text-path-textRotate",
-      "name": "textRotate",
-      "attribute": "text-rotate",
-      "type": "number",
-      "description": "Text rotation amount.",
-      "tags": []
-    },
-    {
-      "id": "text-path-textRotationDuration",
-      "name": "textRotationDuration",
-      "attribute": "text-rotation-duration",
-      "type": "number",
-      "description": "Text rotation animation duration.",
-      "tags": []
-    },
-    {
-      "id": "text-path-textSize",
-      "name": "textSize",
-      "attribute": "text-size",
+      "id": "text-path-textFontSize",
+      "name": "textFontSize",
+      "attribute": "text-font-size",
       "type": "string",
       "description": "Text size.",
-      "default": "'clamp(16px, 3vw, 24px)'",
-      "defaultValue": "'clamp(16px, 3vw, 24px)'",
+      "default": "'clamp(20px, 3vw, 24px)'",
+      "defaultValue": "'clamp(20px, 3vw, 24px)'",
+      "tags": []
+    },
+    {
+      "id": "text-path-textFontWeight",
+      "name": "textFontWeight",
+      "attribute": "text-font-weight",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "text-path-textTransform",
+      "name": "textTransform",
+      "attribute": "text-transform",
+      "type": "string",
+      "description": "Text transform.",
+      "default": "'default'",
+      "defaultValue": "'default'",
       "tags": []
     }
   ],
   "events": [
     {
-      "name": "spxTextCircleDidLoad",
-      "description": ""
+      "name": "spxTextPathDidLoad",
+      "description": "Fires after component has loaded."
     }
   ],
   "methods": [],
-  "slots": []
+  "slots": [
+    {
+      "name": "inner",
+      "description": "Slot (between HTML tags)."
+    }
+  ]
 }

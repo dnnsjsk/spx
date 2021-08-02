@@ -1,0 +1,399 @@
+{
+  "name": "spx-block-docs",
+  "description": "Renders a documentation page similar to the one you are currently seeing\nhere. Every heading tag becomes a navigation entry, while navigation headings\nget created by applying the \"data-spx-docs-heading\" attribute to the first h1\nof a new section.",
+  "shadow": false,
+  "properties": [
+    {
+      "id": "block-docs-bpMobile",
+      "name": "bpMobile",
+      "attribute": "bp-mobile",
+      "type": "number",
+      "description": "",
+      "default": "1024",
+      "defaultValue": "1024",
+      "tags": []
+    },
+    {
+      "id": "block-docs-contentPadding",
+      "name": "contentPadding",
+      "attribute": "content-padding",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "block-docs-contentPaddingYMax",
+      "name": "contentPaddingYMax",
+      "attribute": "content-padding-y-max",
+      "type": "number",
+      "description": "",
+      "default": "0",
+      "defaultValue": "0",
+      "tags": []
+    },
+    {
+      "id": "block-docs-contentPaddingYMin",
+      "name": "contentPaddingYMin",
+      "attribute": "content-padding-y-min",
+      "type": "number",
+      "description": "",
+      "default": "0",
+      "defaultValue": "0",
+      "tags": []
+    },
+    {
+      "id": "block-docs-gap",
+      "name": "gap",
+      "attribute": "gap",
+      "type": "string",
+      "description": "",
+      "default": "'3em'",
+      "defaultValue": "'3em'",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationBackground",
+      "name": "navigationBackground",
+      "attribute": "navigation-background",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationGap",
+      "name": "navigationGap",
+      "attribute": "navigation-gap",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationGapMax",
+      "name": "navigationGapMax",
+      "attribute": "navigation-gap-max",
+      "type": "number",
+      "description": "",
+      "default": "0.4",
+      "defaultValue": "0.4",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationGapMin",
+      "name": "navigationGapMin",
+      "attribute": "navigation-gap-min",
+      "type": "number",
+      "description": "",
+      "default": "0.2",
+      "defaultValue": "0.2",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationHeadingTag",
+      "name": "navigationHeadingTag",
+      "attribute": "navigation-heading-tag",
+      "type": "string",
+      "description": "",
+      "default": "'h1'",
+      "defaultValue": "'h1'",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationHeightAdjust",
+      "name": "navigationHeightAdjust",
+      "attribute": "navigation-height-adjust",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationLinkColor",
+      "name": "navigationLinkColor",
+      "attribute": "navigation-link-color",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationLinkColorActive",
+      "name": "navigationLinkColorActive",
+      "attribute": "navigation-link-color-active",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationLinkFontSize",
+      "name": "navigationLinkFontSize",
+      "attribute": "navigation-link-font-size",
+      "type": "any",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationLinkFontSizeMax",
+      "name": "navigationLinkFontSizeMax",
+      "attribute": "navigation-link-font-size-max",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationLinkFontSizeMin",
+      "name": "navigationLinkFontSizeMin",
+      "attribute": "navigation-link-font-size-min",
+      "type": "number",
+      "description": "",
+      "default": "0.8",
+      "defaultValue": "0.8",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationLinkFontWeight",
+      "name": "navigationLinkFontWeight",
+      "attribute": "navigation-link-font-weight",
+      "type": "string",
+      "description": "",
+      "default": "'500'",
+      "defaultValue": "'500'",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationLinkLetterSpacing",
+      "name": "navigationLinkLetterSpacing",
+      "attribute": "navigation-link-letter-spacing",
+      "type": "string",
+      "description": "",
+      "default": "'0'",
+      "defaultValue": "'0'",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationLinkLineHeight",
+      "name": "navigationLinkLineHeight",
+      "attribute": "navigation-link-line-height",
+      "type": "string",
+      "description": "",
+      "default": "'1.25'",
+      "defaultValue": "'1.25'",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationLinkTextTransform",
+      "name": "navigationLinkTextTransform",
+      "attribute": "navigation-link-text-transform",
+      "type": "string",
+      "description": "",
+      "default": "'default'",
+      "defaultValue": "'default'",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationPaddingY",
+      "name": "navigationPaddingY",
+      "attribute": "navigation-padding-y",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationPaddingYMax",
+      "name": "navigationPaddingYMax",
+      "attribute": "navigation-padding-y-max",
+      "type": "number",
+      "description": "",
+      "default": "0",
+      "defaultValue": "0",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationPaddingYMin",
+      "name": "navigationPaddingYMin",
+      "attribute": "navigation-padding-y-min",
+      "type": "number",
+      "description": "",
+      "default": "0",
+      "defaultValue": "0",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationTitleColor",
+      "name": "navigationTitleColor",
+      "attribute": "navigation-title-color",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationTitleFontSize",
+      "name": "navigationTitleFontSize",
+      "attribute": "navigation-title-font-size",
+      "type": "any",
+      "description": "",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationTitleFontSizeMax",
+      "name": "navigationTitleFontSizeMax",
+      "attribute": "navigation-title-font-size-max",
+      "type": "number",
+      "description": "",
+      "default": "0.9",
+      "defaultValue": "0.9",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationTitleFontSizeMin",
+      "name": "navigationTitleFontSizeMin",
+      "attribute": "navigation-title-font-size-min",
+      "type": "number",
+      "description": "",
+      "default": "0.8",
+      "defaultValue": "0.8",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationTitleFontWeight",
+      "name": "navigationTitleFontWeight",
+      "attribute": "navigation-title-font-weight",
+      "type": "string",
+      "description": "",
+      "default": "'500'",
+      "defaultValue": "'500'",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationTitleLetterSpacing",
+      "name": "navigationTitleLetterSpacing",
+      "attribute": "navigation-title-letter-spacing",
+      "type": "string",
+      "description": "",
+      "default": "'0'",
+      "defaultValue": "'0'",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationTitleLineHeight",
+      "name": "navigationTitleLineHeight",
+      "attribute": "navigation-title-line-height",
+      "type": "string",
+      "description": "",
+      "default": "'1.25'",
+      "defaultValue": "'1.25'",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationTitleMarginBottom",
+      "name": "navigationTitleMarginBottom",
+      "attribute": "navigation-title-margin-bottom",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationTitleMarginBottomMax",
+      "name": "navigationTitleMarginBottomMax",
+      "attribute": "navigation-title-margin-bottom-max",
+      "type": "number",
+      "description": "",
+      "default": "2",
+      "defaultValue": "2",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationTitleMarginBottomMin",
+      "name": "navigationTitleMarginBottomMin",
+      "attribute": "navigation-title-margin-bottom-min",
+      "type": "number",
+      "description": "",
+      "default": "1",
+      "defaultValue": "1",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationTitleTextTransform",
+      "name": "navigationTitleTextTransform",
+      "attribute": "navigation-title-text-transform",
+      "type": "string",
+      "description": "",
+      "default": "'uppercase'",
+      "defaultValue": "'uppercase'",
+      "tags": []
+    },
+    {
+      "id": "block-docs-navigationTop",
+      "name": "navigationTop",
+      "attribute": "navigation-top",
+      "type": "string",
+      "description": "",
+      "default": "'0'",
+      "defaultValue": "'0'",
+      "tags": []
+    },
+    {
+      "id": "block-docs-offsetMarginTop",
+      "name": "offsetMarginTop",
+      "attribute": "offset-margin-top",
+      "type": "string",
+      "description": "",
+      "default": "''",
+      "defaultValue": "''",
+      "tags": []
+    },
+    {
+      "id": "block-docs-scrolling",
+      "name": "scrolling",
+      "attribute": "scrolling",
+      "type": "number",
+      "description": "Activates automatic navigation scrolling and sets the offset.",
+      "tags": []
+    },
+    {
+      "id": "block-docs-separator",
+      "name": "separator",
+      "attribute": "separator",
+      "type": "string",
+      "description": "Create a separator between sections.",
+      "tags": []
+    },
+    {
+      "id": "block-docs-styling",
+      "name": "styling",
+      "attribute": "styling",
+      "type": "string",
+      "description": "Styling.",
+      "default": "'fluid'",
+      "defaultValue": "'fluid'",
+      "tags": [
+        {
+          "text": "'default', 'fluid'",
+          "name": "choice"
+        }
+      ]
+    },
+    {
+      "id": "block-docs-uniqueId",
+      "name": "uniqueId",
+      "attribute": "unique-id",
+      "type": "boolean",
+      "description": "",
+      "tags": []
+    }
+  ],
+  "events": [
+    {
+      "name": "spxDocsDidLoad",
+      "description": "Fires after component has loaded."
+    }
+  ],
+  "methods": [],
+  "slots": [
+    {
+      "name": "inner",
+      "description": "Slot (between HTML tags)."
+    }
+  ]
+}

@@ -221,8 +221,8 @@
       "attribute": "padding",
       "type": "string",
       "description": "",
-      "default": "'0.6em 1.2em'",
-      "defaultValue": "'0.6em 1.2em'",
+      "default": "'0.7em 1.2em'",
+      "defaultValue": "'0.7em 1.2em'",
       "tags": []
     },
     {

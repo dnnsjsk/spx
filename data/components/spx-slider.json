@@ -168,6 +168,16 @@
       "tags": []
     },
     {
+      "id": "slider-navigationBackdropFilter",
+      "name": "navigationBackdropFilter",
+      "attribute": "navigation-backdrop-filter",
+      "type": "string",
+      "description": "",
+      "default": "s.backdropFilter",
+      "defaultValue": "s.backdropFilter",
+      "tags": []
+    },
+    {
       "id": "slider-navigationBackground",
       "name": "navigationBackground",
       "attribute": "navigation-background",
@@ -311,13 +321,33 @@
       ]
     },
     {
+      "id": "slider-paginationBackdropFilter",
+      "name": "paginationBackdropFilter",
+      "attribute": "pagination-backdrop-filter",
+      "type": "string",
+      "description": "",
+      "default": "s.backdropFilter",
+      "defaultValue": "s.backdropFilter",
+      "tags": []
+    },
+    {
+      "id": "slider-paginationBackground",
+      "name": "paginationBackground",
+      "attribute": "pagination-background",
+      "type": "string",
+      "description": "",
+      "default": "'rgba(0,0,0,0.7)'",
+      "defaultValue": "'rgba(0,0,0,0.7)'",
+      "tags": []
+    },
+    {
       "id": "slider-paginationBulletsBackground",
       "name": "paginationBulletsBackground",
       "attribute": "pagination-bullets-background",
       "type": "string",
       "description": "",
-      "default": "'var(--spx-color-gray-400)'",
-      "defaultValue": "'var(--spx-color-gray-400)'",
+      "default": "'var(--spx-color-gray-500)'",
+      "defaultValue": "'var(--spx-color-gray-500)'",
       "tags": []
     },
     {
@@ -326,8 +356,8 @@
       "attribute": "pagination-bullets-background-active",
       "type": "string",
       "description": "",
-      "default": "'var(--spx-color-gray-900)'",
-      "defaultValue": "'var(--spx-color-gray-900)'",
+      "default": "'#ffffff'",
+      "defaultValue": "'#ffffff'",
       "tags": []
     },
     {
@@ -362,8 +392,8 @@
       "attribute": "pagination-bullets-size",
       "type": "string",
       "description": "Size of the bullets.",
-      "default": "'8px'",
-      "defaultValue": "'8px'",
+      "default": "'6px'",
+      "defaultValue": "'6px'",
       "tags": [
         {
           "name": "CSS"
@@ -376,8 +406,8 @@
       "attribute": "pagination-bullets-space-between",
       "type": "string",
       "description": "Space between the bullets.",
-      "default": "'8px'",
-      "defaultValue": "'8px'",
+      "default": "'6px'",
+      "defaultValue": "'6px'",
       "tags": [
         {
           "name": "CSS"

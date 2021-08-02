@@ -1,4 +1,5 @@
 body {
+  --spx-backdrop-filter: var(--spx-token-backdrop-filter, blur(4px));
   --spx-color-black: #000000;
   --spx-color-white: #ffffff;
   --spx-color-gray-50: #fafafa;

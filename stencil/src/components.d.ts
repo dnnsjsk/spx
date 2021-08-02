@@ -213,6 +213,58 @@ export namespace Components {
          */
         "yoyo": boolean;
     }
+    interface SpxBlockDocs {
+        "bpMobile": number;
+        "contentPadding": string;
+        "contentPaddingYMax": number;
+        "contentPaddingYMin": number;
+        "gap": string;
+        "navigationBackground": string;
+        "navigationGap": string;
+        "navigationGapMax": number;
+        "navigationGapMin": number;
+        "navigationHeadingTag": string;
+        "navigationHeightAdjust": string;
+        "navigationLinkColor": string;
+        "navigationLinkColorActive": string;
+        "navigationLinkFontSize": any;
+        "navigationLinkFontSizeMax": number;
+        "navigationLinkFontSizeMin": number;
+        "navigationLinkFontWeight": string;
+        "navigationLinkLetterSpacing": string;
+        "navigationLinkLineHeight": string;
+        "navigationLinkTextTransform": string;
+        "navigationPaddingY": string;
+        "navigationPaddingYMax": number;
+        "navigationPaddingYMin": number;
+        "navigationTitleColor": string;
+        "navigationTitleFontSize": any;
+        "navigationTitleFontSizeMax": number;
+        "navigationTitleFontSizeMin": number;
+        "navigationTitleFontWeight": string;
+        "navigationTitleLetterSpacing": string;
+        "navigationTitleLineHeight": string;
+        "navigationTitleMarginBottom": number;
+        "navigationTitleMarginBottomMax": number;
+        "navigationTitleMarginBottomMin": number;
+        "navigationTitleTextTransform": string;
+        "navigationTop": string;
+        "offsetMarginTop": string;
+        /**
+          * Activates automatic navigation scrolling and sets the offset.
+         */
+        "scrolling": number;
+        /**
+          * Create a separator between sections.
+         */
+        "separator": string;
+        /**
+          * Styling.
+          * @choice 'default', 'fluid'
+         */
+        "styling": string;
+        "uniqueId": boolean;
+    }
     interface SpxClassToggle {
         "display": string;
         /**
@@ -298,58 +350,6 @@ export namespace Components {
           * Removes all whitespace from the bottom of the code block.
          */
         "whitespaceRightTrim": boolean;
-    }
-    interface SpxDocs {
-        "bpMobile": number;
-        "contentPadding": string;
-        "contentPaddingYMax": number;
-        "contentPaddingYMin": number;
-        "gap": string;
-        "navigationBackground": string;
-        "navigationGap": string;
-        "navigationGapMax": number;
-        "navigationGapMin": number;
-        "navigationHeadingTag": string;
-        "navigationHeightAdjust": string;
-        "navigationLinkColor": string;
-        "navigationLinkColorActive": string;
-        "navigationLinkFontSize": any;
-        "navigationLinkFontSizeMax": number;
-        "navigationLinkFontSizeMin": number;
-        "navigationLinkFontWeight": string;
-        "navigationLinkLetterSpacing": string;
-        "navigationLinkLineHeight": string;
-        "navigationLinkTextTransform": string;
-        "navigationPaddingY": string;
-        "navigationPaddingYMax": number;
-        "navigationPaddingYMin": number;
-        "navigationTitleColor": string;
-        "navigationTitleFontSize": any;
-        "navigationTitleFontSizeMax": number;
-        "navigationTitleFontSizeMin": number;
-        "navigationTitleFontWeight": string;
-        "navigationTitleLetterSpacing": string;
-        "navigationTitleLineHeight": string;
-        "navigationTitleMarginBottom": number;
-        "navigationTitleMarginBottomMax": number;
-        "navigationTitleMarginBottomMin": number;
-        "navigationTitleTextTransform": string;
-        "navigationTop": string;
-        "offsetMarginTop": string;
-        /**
-          * Activates automatic navigation scrolling and sets the offset.
-         */
-        "scrolling": number;
-        /**
-          * Create a separator between sections.
-         */
-        "separator": string;
-        /**
-          * Styling.
-          * @choice 'default', 'fluid'
-         */
-        "styling": string;
-        "uniqueId": boolean;
     }
     interface SpxEdit {
         "display": string;
@@ -837,6 +837,9 @@ export namespace Components {
           * Selects the height of an element (any querySelector value) or number that is used for offsetting how far from the top the next section is activated.
          */
         "offset": any;
+        /**
+          * Reload the Scrollspy.
+         */
         "reload": () => Promise<void>;
         /**
           * Activates automatic navigation scrolling and sets the offset.
@@ -963,6 +966,7 @@ export namespace Components {
         "loop": boolean;
         "maxHeight": string;
         "navigation": boolean;
+        "navigationBackdropFilter": string;
         "navigationBackground": string;
         "navigationBackgroundHover": string;
         "navigationBorderRadius": string;
@@ -997,6 +1001,8 @@ export namespace Components {
           * @choice 'bullets', 'none'
          */
         "pagination": string;
+        "paginationBackdropFilter": string;
+        "paginationBackground": string;
         "paginationBulletsBackground": string;
         "paginationBulletsBackgroundActive": string;
         /**
@@ -1177,26 +1183,29 @@ export namespace Components {
         "zIndex": number;
     }
     interface SpxTextPath {
+        "display": string;
+        /**
+          * Space between text and path.
+         */
+        "spaceBetween": string;
+        /**
+          * Starting offset off the text.
+         */
+        "startOffset": string;
         /**
           * Text to be shown.
          */
         "text": string;
-        /**
-          * Text color.
-         */
         "textColor": string;
-        /**
-          * Text rotation amount.
-         */
-        "textRotate": number;
-        /**
-          * Text rotation animation duration.
-         */
-        "textRotationDuration": number;
         /**
           * Text size.
          */
-        "textSize": string;
+        "textFontSize": string;
+        "textFontWeight": string;
+        /**
+          * Text transform.
+         */
+        "textTransform": string;
     }
     interface SpxTypewriter {
         /**
@@ -1243,6 +1252,12 @@ declare global {
         prototype: HTMLSpxAnimateElement;
         new (): HTMLSpxAnimateElement;
     };
+    interface HTMLSpxBlockDocsElement extends Components.SpxBlockDocs, HTMLStencilElement {
+    }
+    var HTMLSpxBlockDocsElement: {
+        prototype: HTMLSpxBlockDocsElement;
+        new (): HTMLSpxBlockDocsElement;
+    };
     interface HTMLSpxClassToggleElement extends Components.SpxClassToggle, HTMLStencilElement {
     }
     var HTMLSpxClassToggleElement: {
@@ -1254,12 +1269,6 @@ declare global {
     var HTMLSpxCodeElement: {
         prototype: HTMLSpxCodeElement;
         new (): HTMLSpxCodeElement;
-    };
-    interface HTMLSpxDocsElement extends Components.SpxDocs, HTMLStencilElement {
-    }
-    var HTMLSpxDocsElement: {
-        prototype: HTMLSpxDocsElement;
-        new (): HTMLSpxDocsElement;
     };
     interface HTMLSpxEditElement extends Components.SpxEdit, HTMLStencilElement {
     }
@@ -1378,9 +1387,9 @@ declare global {
     interface HTMLElementTagNameMap {
         "spx-accordion": HTMLSpxAccordionElement;
         "spx-animate": HTMLSpxAnimateElement;
+        "spx-block-docs": HTMLSpxBlockDocsElement;
         "spx-class-toggle": HTMLSpxClassToggleElement;
         "spx-code": HTMLSpxCodeElement;
-        "spx-docs": HTMLSpxDocsElement;
         "spx-edit": HTMLSpxEditElement;
         "spx-edit-button": HTMLSpxEditButtonElement;
         "spx-group": HTMLSpxGroupElement;
@@ -1594,6 +1603,62 @@ declare namespace LocalJSX {
          */
         "yoyo"?: boolean;
     }
+    interface SpxBlockDocs {
+        "bpMobile"?: number;
+        "contentPadding"?: string;
+        "contentPaddingYMax"?: number;
+        "contentPaddingYMin"?: number;
+        "gap"?: string;
+        "navigationBackground"?: string;
+        "navigationGap"?: string;
+        "navigationGapMax"?: number;
+        "navigationGapMin"?: number;
+        "navigationHeadingTag"?: string;
+        "navigationHeightAdjust"?: string;
+        "navigationLinkColor"?: string;
+        "navigationLinkColorActive"?: string;
+        "navigationLinkFontSize"?: any;
+        "navigationLinkFontSizeMax"?: number;
+        "navigationLinkFontSizeMin"?: number;
+        "navigationLinkFontWeight"?: string;
+        "navigationLinkLetterSpacing"?: string;
+        "navigationLinkLineHeight"?: string;
+        "navigationLinkTextTransform"?: string;
+        "navigationPaddingY"?: string;
+        "navigationPaddingYMax"?: number;
+        "navigationPaddingYMin"?: number;
+        "navigationTitleColor"?: string;
+        "navigationTitleFontSize"?: any;
+        "navigationTitleFontSizeMax"?: number;
+        "navigationTitleFontSizeMin"?: number;
+        "navigationTitleFontWeight"?: string;
+        "navigationTitleLetterSpacing"?: string;
+        "navigationTitleLineHeight"?: string;
+        "navigationTitleMarginBottom"?: number;
+        "navigationTitleMarginBottomMax"?: number;
+        "navigationTitleMarginBottomMin"?: number;
+        "navigationTitleTextTransform"?: string;
+        "navigationTop"?: string;
+        "offsetMarginTop"?: string;
+        /**
+          * Fires after component has loaded.
+         */
+        "onSpxDocsDidLoad"?: (event: CustomEvent<any>) => void;
+        /**
+          * Activates automatic navigation scrolling and sets the offset.
+         */
+        "scrolling"?: number;
+        /**
+          * Create a separator between sections.
+         */
+        "separator"?: string;
+        /**
+          * Styling.
+          * @choice 'default', 'fluid'
+         */
+        "styling"?: string;
+        "uniqueId"?: boolean;
+    }
     interface SpxClassToggle {
         "display"?: string;
         /**
@@ -1687,62 +1752,6 @@ declare namespace LocalJSX {
           * Removes all whitespace from the bottom of the code block.
          */
         "whitespaceRightTrim"?: boolean;
-    }
-    interface SpxDocs {
-        "bpMobile"?: number;
-        "contentPadding"?: string;
-        "contentPaddingYMax"?: number;
-        "contentPaddingYMin"?: number;
-        "gap"?: string;
-        "navigationBackground"?: string;
-        "navigationGap"?: string;
-        "navigationGapMax"?: number;
-        "navigationGapMin"?: number;
-        "navigationHeadingTag"?: string;
-        "navigationHeightAdjust"?: string;
-        "navigationLinkColor"?: string;
-        "navigationLinkColorActive"?: string;
-        "navigationLinkFontSize"?: any;
-        "navigationLinkFontSizeMax"?: number;
-        "navigationLinkFontSizeMin"?: number;
-        "navigationLinkFontWeight"?: string;
-        "navigationLinkLetterSpacing"?: string;
-        "navigationLinkLineHeight"?: string;
-        "navigationLinkTextTransform"?: string;
-        "navigationPaddingY"?: string;
-        "navigationPaddingYMax"?: number;
-        "navigationPaddingYMin"?: number;
-        "navigationTitleColor"?: string;
-        "navigationTitleFontSize"?: any;
-        "navigationTitleFontSizeMax"?: number;
-        "navigationTitleFontSizeMin"?: number;
-        "navigationTitleFontWeight"?: string;
-        "navigationTitleLetterSpacing"?: string;
-        "navigationTitleLineHeight"?: string;
-        "navigationTitleMarginBottom"?: number;
-        "navigationTitleMarginBottomMax"?: number;
-        "navigationTitleMarginBottomMin"?: number;
-        "navigationTitleTextTransform"?: string;
-        "navigationTop"?: string;
-        "offsetMarginTop"?: string;
-        /**
-          * Fires after component has loaded.
-         */
-        "onSpxDocsDidLoad"?: (event: CustomEvent<any>) => void;
-        /**
-          * Activates automatic navigation scrolling and sets the offset.
-         */
-        "scrolling"?: number;
-        /**
-          * Create a separator between sections.
-         */
-        "separator"?: string;
-        /**
-          * Styling.
-          * @choice 'default', 'fluid'
-         */
-        "styling"?: string;
-        "uniqueId"?: boolean;
     }
     interface SpxEdit {
         "display"?: string;
@@ -2251,6 +2260,14 @@ declare namespace LocalJSX {
          */
         "offset"?: any;
         /**
+          * Fires after a link is activated.
+         */
+        "onSpxScrollspyActivate"?: (event: CustomEvent<any>) => void;
+        /**
+          * Fires after a link is deactivated.
+         */
+        "onSpxScrollspyDeactivate"?: (event: CustomEvent<any>) => void;
+        /**
           * Fires after component has loaded.
          */
         "onSpxScrollspyDidLoad"?: (event: CustomEvent<any>) => void;
@@ -2383,6 +2400,7 @@ declare namespace LocalJSX {
         "loop"?: boolean;
         "maxHeight"?: string;
         "navigation"?: boolean;
+        "navigationBackdropFilter"?: string;
         "navigationBackground"?: string;
         "navigationBackgroundHover"?: string;
         "navigationBorderRadius"?: string;
@@ -2421,6 +2439,8 @@ declare namespace LocalJSX {
           * @choice 'bullets', 'none'
          */
         "pagination"?: string;
+        "paginationBackdropFilter"?: string;
+        "paginationBackground"?: string;
         "paginationBulletsBackground"?: string;
         "paginationBulletsBackgroundActive"?: string;
         /**
@@ -2609,27 +2629,33 @@ declare namespace LocalJSX {
         "zIndex"?: number;
     }
     interface SpxTextPath {
-        "onSpxTextCircleDidLoad"?: (event: CustomEvent<any>) => void;
+        "display"?: string;
+        /**
+          * Fires after component has loaded.
+         */
+        "onSpxTextPathDidLoad"?: (event: CustomEvent<any>) => void;
+        /**
+          * Space between text and path.
+         */
+        "spaceBetween"?: string;
+        /**
+          * Starting offset off the text.
+         */
+        "startOffset"?: string;
         /**
           * Text to be shown.
          */
         "text"?: string;
-        /**
-          * Text color.
-         */
         "textColor"?: string;
-        /**
-          * Text rotation amount.
-         */
-        "textRotate"?: number;
-        /**
-          * Text rotation animation duration.
-         */
-        "textRotationDuration"?: number;
         /**
           * Text size.
          */
-        "textSize"?: string;
+        "textFontSize"?: string;
+        "textFontWeight"?: string;
+        /**
+          * Text transform.
+         */
+        "textTransform"?: string;
     }
     interface SpxTypewriter {
         /**
@@ -2661,9 +2687,9 @@ declare namespace LocalJSX {
     interface IntrinsicElements {
         "spx-accordion": SpxAccordion;
         "spx-animate": SpxAnimate;
+        "spx-block-docs": SpxBlockDocs;
         "spx-class-toggle": SpxClassToggle;
         "spx-code": SpxCode;
-        "spx-docs": SpxDocs;
         "spx-edit": SpxEdit;
         "spx-edit-button": SpxEditButton;
         "spx-group": SpxGroup;
@@ -2691,9 +2717,9 @@ declare module "@stencil/core" {
         interface IntrinsicElements {
             "spx-accordion": LocalJSX.SpxAccordion & JSXBase.HTMLAttributes<HTMLSpxAccordionElement>;
             "spx-animate": LocalJSX.SpxAnimate & JSXBase.HTMLAttributes<HTMLSpxAnimateElement>;
+            "spx-block-docs": LocalJSX.SpxBlockDocs & JSXBase.HTMLAttributes<HTMLSpxBlockDocsElement>;
             "spx-class-toggle": LocalJSX.SpxClassToggle & JSXBase.HTMLAttributes<HTMLSpxClassToggleElement>;
             "spx-code": LocalJSX.SpxCode & JSXBase.HTMLAttributes<HTMLSpxCodeElement>;
-            "spx-docs": LocalJSX.SpxDocs & JSXBase.HTMLAttributes<HTMLSpxDocsElement>;
             "spx-edit": LocalJSX.SpxEdit & JSXBase.HTMLAttributes<HTMLSpxEditElement>;
             "spx-edit-button": LocalJSX.SpxEditButton & JSXBase.HTMLAttributes<HTMLSpxEditButtonElement>;
             "spx-group": LocalJSX.SpxGroup & JSXBase.HTMLAttributes<HTMLSpxGroupElement>;

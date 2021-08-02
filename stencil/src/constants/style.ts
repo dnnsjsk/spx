@@ -2,6 +2,7 @@ import { setVar } from '../utils/cssVariables/setVar';
 import { setStyle } from '../utils/cssVariables/setStyle';
 
 /** Defaults. */
+export const backdropFilter = 'var(--spx-backdrop-filter)';
 export const borderRadius = 'var(--spx-border-radius)';
 export const bpMobileWidth = 768;
 export const display = 'var(--spx-display)';
