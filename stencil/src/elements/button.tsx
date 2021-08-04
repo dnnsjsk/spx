@@ -10,8 +10,8 @@ import { h } from '@stencil/core';
  */
 export function Button(obj, children) {
   const props = {
-    onKeyDown: (e) => {
-      if (obj.onEnter && e.key === 'enter') {
+    onKeyDown: function (e) {
+      if (obj.onEnter && (e.key === 'Enter' || e.key === 'enter')) {
         obj.onEnter();
       }
       if (obj.onArrowLeft && e.key === 'ArrowLeft') {
@@ -29,6 +29,15 @@ export function Button(obj, children) {
     <a style={{ textAlign: 'left' }} {...mergedProps}>
       {children}
     </a>
+  ) : obj.tag === 'div' ? (
+    <div
+      style={{ textAlign: 'left' }}
+      role="button"
+      tabindex="0"
+      {...mergedProps}
+    >
+      {children}
+    </div>
   ) : (
     <button style={{ textAlign: 'left' }} {...mergedProps}>
       {children}

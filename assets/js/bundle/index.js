@@ -3433,6 +3433,339 @@ var create = (config) => {
   };
 };
 
+(function () {
+
+    if ('adoptedStyleSheets' in document) { return; }
+
+    var hasShadyCss = 'ShadyCSS' in window && !ShadyCSS.nativeShadow;
+    var bootstrapper = document.implementation.createHTMLDocument('boot');
+    var closedShadowRootRegistry = new WeakMap();
+    var _DOMException = typeof DOMException === 'object' ? Error : DOMException;
+
+    var defineProperty = Object.defineProperty;
+    var forEach = Array.prototype.forEach;
+    var importPattern = /@import.+?;?$/gm;
+    function rejectImports(contents) {
+        var _contents = contents.replace(importPattern, '');
+        if (_contents !== contents) {
+            console.warn('@import rules are not allowed here. See https://github.com/WICG/construct-stylesheets/issues/119#issuecomment-588352418');
+        }
+        return _contents.trim();
+    }
+    function clearRules(sheet) {
+        for (var i = 0; i < sheet.cssRules.length; i++) {
+            sheet.deleteRule(0);
+        }
+    }
+    function insertAllRules(from, to) {
+        forEach.call(from.cssRules, function (rule, i) {
+            to.insertRule(rule.cssText, i);
+        });
+    }
+    function isElementConnected(element) {
+        return 'isConnected' in element
+            ? element.isConnected
+            : document.contains(element);
+    }
+    function unique(arr) {
+        return arr.filter(function (value, index) { return arr.indexOf(value) === index; });
+    }
+    function diff(arr1, arr2) {
+        return arr1.filter(function (value) { return arr2.indexOf(value) === -1; });
+    }
+    function removeNode(node) {
+        node.parentNode.removeChild(node);
+    }
+    function getShadowRoot(element) {
+        return element.shadowRoot || closedShadowRootRegistry.get(element);
+    }
+
+    var cssStyleSheetMethods = [
+        'addImport',
+        'addPageRule',
+        'addRule',
+        'deleteRule',
+        'insertRule',
+        'removeImport',
+        'removeRule',
+    ];
+    var NonConstructedStyleSheet = CSSStyleSheet;
+    var nonConstructedProto = NonConstructedStyleSheet.prototype;
+    nonConstructedProto.replace = function () {
+        return Promise.reject(new _DOMException("Can't call replace on non-constructed CSSStyleSheets."));
+    };
+    nonConstructedProto.replaceSync = function () {
+        throw new _DOMException("Failed to execute 'replaceSync' on 'CSSStyleSheet': Can't call replaceSync on non-constructed CSSStyleSheets.");
+    };
+    function isCSSStyleSheetInstance(instance) {
+        return typeof instance === 'object'
+            ? proto$2.isPrototypeOf(instance) ||
+                nonConstructedProto.isPrototypeOf(instance)
+            : false;
+    }
+    function isNonConstructedStyleSheetInstance(instance) {
+        return typeof instance === 'object'
+            ? nonConstructedProto.isPrototypeOf(instance)
+            : false;
+    }
+    var $basicStyleSheet = new WeakMap();
+    var $locations = new WeakMap();
+    var $adoptersByLocation = new WeakMap();
+    function addAdopterLocation(sheet, location) {
+        var adopter = document.createElement('style');
+        $adoptersByLocation.get(sheet).set(location, adopter);
+        $locations.get(sheet).push(location);
+        return adopter;
+    }
+    function getAdopterByLocation(sheet, location) {
+        return $adoptersByLocation.get(sheet).get(location);
+    }
+    function removeAdopterLocation(sheet, location) {
+        $adoptersByLocation.get(sheet).delete(location);
+        $locations.set(sheet, $locations.get(sheet).filter(function (_location) { return _location !== location; }));
+    }
+    function restyleAdopter(sheet, adopter) {
+        requestAnimationFrame(function () {
+            clearRules(adopter.sheet);
+            insertAllRules($basicStyleSheet.get(sheet), adopter.sheet);
+        });
+    }
+    function checkInvocationCorrectness(self) {
+        if (!$basicStyleSheet.has(self)) {
+            throw new TypeError('Illegal invocation');
+        }
+    }
+    function ConstructedStyleSheet() {
+        var self = this;
+        var style = document.createElement('style');
+        bootstrapper.body.appendChild(style);
+        $basicStyleSheet.set(self, style.sheet);
+        $locations.set(self, []);
+        $adoptersByLocation.set(self, new WeakMap());
+    }
+    var proto$2 = ConstructedStyleSheet.prototype;
+    proto$2.replace = function replace(contents) {
+        try {
+            this.replaceSync(contents);
+            return Promise.resolve(this);
+        }
+        catch (e) {
+            return Promise.reject(e);
+        }
+    };
+    proto$2.replaceSync = function replaceSync(contents) {
+        checkInvocationCorrectness(this);
+        if (typeof contents === 'string') {
+            var self_1 = this;
+            var style = $basicStyleSheet.get(self_1).ownerNode;
+            style.textContent = rejectImports(contents);
+            $basicStyleSheet.set(self_1, style.sheet);
+            $locations.get(self_1).forEach(function (location) {
+                if (location.isConnected()) {
+                    restyleAdopter(self_1, getAdopterByLocation(self_1, location));
+                }
+            });
+        }
+    };
+    defineProperty(proto$2, 'cssRules', {
+        configurable: true,
+        enumerable: true,
+        get: function cssRules() {
+            checkInvocationCorrectness(this);
+            return $basicStyleSheet.get(this).cssRules;
+        },
+    });
+    cssStyleSheetMethods.forEach(function (method) {
+        proto$2[method] = function () {
+            var self = this;
+            checkInvocationCorrectness(self);
+            var args = arguments;
+            var basic = $basicStyleSheet.get(self);
+            var locations = $locations.get(self);
+            var result = basic[method].apply(basic, args);
+            locations.forEach(function (location) {
+                if (location.isConnected()) {
+                    var sheet = getAdopterByLocation(self, location).sheet;
+                    sheet[method].apply(sheet, args);
+                }
+            });
+            return result;
+        };
+    });
+    defineProperty(ConstructedStyleSheet, Symbol.hasInstance, {
+        configurable: true,
+        value: isCSSStyleSheetInstance,
+    });
+
+    var defaultObserverOptions = {
+        childList: true,
+        subtree: true,
+    };
+    var locations = new WeakMap();
+    function getAssociatedLocation(element) {
+        var location = locations.get(element);
+        if (!location) {
+            location = new Location(element);
+            locations.set(element, location);
+        }
+        return location;
+    }
+    function attachAdoptedStyleSheetProperty(constructor) {
+        defineProperty(constructor.prototype, 'adoptedStyleSheets', {
+            configurable: true,
+            enumerable: true,
+            get: function () {
+                return getAssociatedLocation(this).sheets;
+            },
+            set: function (sheets) {
+                getAssociatedLocation(this).update(sheets);
+            },
+        });
+    }
+    function traverseWebComponents(node, callback) {
+        var iter = document.createNodeIterator(node, NodeFilter.SHOW_ELEMENT, function (foundNode) {
+            return getShadowRoot(foundNode)
+                ? NodeFilter.FILTER_ACCEPT
+                : NodeFilter.FILTER_REJECT;
+        },
+        null, false);
+        for (var next = void 0; (next = iter.nextNode());) {
+            callback(getShadowRoot(next));
+        }
+    }
+    var $element = new WeakMap();
+    var $uniqueSheets = new WeakMap();
+    var $observer = new WeakMap();
+    function isExistingAdopter(self, element) {
+        return (element instanceof HTMLStyleElement &&
+            $uniqueSheets.get(self).some(function (sheet) { return getAdopterByLocation(sheet, self); }));
+    }
+    function getAdopterContainer(self) {
+        var element = $element.get(self);
+        return element instanceof Document ? element.body : element;
+    }
+    function adopt(self) {
+        var styleList = document.createDocumentFragment();
+        var sheets = $uniqueSheets.get(self);
+        var observer = $observer.get(self);
+        var container = getAdopterContainer(self);
+        observer.disconnect();
+        sheets.forEach(function (sheet) {
+            styleList.appendChild(getAdopterByLocation(sheet, self) || addAdopterLocation(sheet, self));
+        });
+        container.insertBefore(styleList, null);
+        observer.observe(container, defaultObserverOptions);
+        sheets.forEach(function (sheet) {
+            restyleAdopter(sheet, getAdopterByLocation(sheet, self));
+        });
+    }
+    function Location(element) {
+        var self = this;
+        self.sheets = [];
+        $element.set(self, element);
+        $uniqueSheets.set(self, []);
+        $observer.set(self, new MutationObserver(function (mutations, observer) {
+            if (!document) {
+                observer.disconnect();
+                return;
+            }
+            mutations.forEach(function (mutation) {
+                if (!hasShadyCss) {
+                    forEach.call(mutation.addedNodes, function (node) {
+                        if (!(node instanceof Element)) {
+                            return;
+                        }
+                        traverseWebComponents(node, function (root) {
+                            getAssociatedLocation(root).connect();
+                        });
+                    });
+                }
+                forEach.call(mutation.removedNodes, function (node) {
+                    if (!(node instanceof Element)) {
+                        return;
+                    }
+                    if (isExistingAdopter(self, node)) {
+                        adopt(self);
+                    }
+                    if (!hasShadyCss) {
+                        traverseWebComponents(node, function (root) {
+                            getAssociatedLocation(root).disconnect();
+                        });
+                    }
+                });
+            });
+        }));
+    }
+    var proto$1 = Location.prototype;
+    proto$1.isConnected = function isConnected() {
+        var element = $element.get(this);
+        return element instanceof Document
+            ? element.readyState !== 'loading'
+            : isElementConnected(element.host);
+    };
+    proto$1.connect = function connect() {
+        var container = getAdopterContainer(this);
+        $observer.get(this).observe(container, defaultObserverOptions);
+        if ($uniqueSheets.get(this).length > 0) {
+            adopt(this);
+        }
+        traverseWebComponents(container, function (root) {
+            getAssociatedLocation(root).connect();
+        });
+    };
+    proto$1.disconnect = function disconnect() {
+        $observer.get(this).disconnect();
+    };
+    proto$1.update = function update(sheets) {
+        var self = this;
+        var locationType = $element.get(self) === document ? 'Document' : 'ShadowRoot';
+        if (!Array.isArray(sheets)) {
+            throw new TypeError("Failed to set the 'adoptedStyleSheets' property on " + locationType + ": Iterator getter is not callable.");
+        }
+        if (!sheets.every(isCSSStyleSheetInstance)) {
+            throw new TypeError("Failed to set the 'adoptedStyleSheets' property on " + locationType + ": Failed to convert value to 'CSSStyleSheet'");
+        }
+        if (sheets.some(isNonConstructedStyleSheetInstance)) {
+            throw new TypeError("Failed to set the 'adoptedStyleSheets' property on " + locationType + ": Can't adopt non-constructed stylesheets");
+        }
+        self.sheets = sheets;
+        var oldUniqueSheets = $uniqueSheets.get(self);
+        var uniqueSheets = unique(sheets);
+        var removedSheets = diff(oldUniqueSheets, uniqueSheets);
+        removedSheets.forEach(function (sheet) {
+            removeNode(getAdopterByLocation(sheet, self));
+            removeAdopterLocation(sheet, self);
+        });
+        $uniqueSheets.set(self, uniqueSheets);
+        if (self.isConnected() && uniqueSheets.length > 0) {
+            adopt(self);
+        }
+    };
+
+    window.CSSStyleSheet = ConstructedStyleSheet;
+    attachAdoptedStyleSheetProperty(Document);
+    if ('ShadowRoot' in window) {
+        attachAdoptedStyleSheetProperty(ShadowRoot);
+        var proto = Element.prototype;
+        var attach_1 = proto.attachShadow;
+        proto.attachShadow = function attachShadow(init) {
+            var root = attach_1.call(this, init);
+            if (init.mode === 'closed') {
+                closedShadowRootRegistry.set(this, root);
+            }
+            return root;
+        };
+    }
+    var documentLocation = getAssociatedLocation(document);
+    if (documentLocation.isConnected()) {
+        documentLocation.connect();
+    }
+    else {
+        document.addEventListener('DOMContentLoaded', documentLocation.connect.bind(documentLocation));
+    }
+
+}());
+
 /**
  * Create CSSOM sheet.
  *
@@ -3456,8 +3789,8 @@ function cssTw(el) {
  */
 function Button(obj, children) {
   const props = {
-    onKeyDown: (e) => {
-      if (obj.onEnter && e.key === 'enter') {
+    onKeyDown: function (e) {
+      if (obj.onEnter && (e.key === 'Enter' || e.key === 'enter')) {
         obj.onEnter();
       }
       if (obj.onArrowLeft && e.key === 'ArrowLeft') {
@@ -3469,7 +3802,7 @@ function Button(obj, children) {
     },
   };
   const mergedProps = Object.assign(Object.assign({}, props), obj);
-  return obj.tag === 'a' ? (h$1("a", Object.assign({ style: { textAlign: 'left' } }, mergedProps), children)) : (h$1("button", Object.assign({ style: { textAlign: 'left' } }, mergedProps), children));
+  return obj.tag === 'a' ? (h$1("a", Object.assign({ style: { textAlign: 'left' } }, mergedProps), children)) : obj.tag === 'div' ? (h$1("div", Object.assign({ style: { textAlign: 'left' }, role: "button", tabindex: "0" }, mergedProps), children)) : (h$1("button", Object.assign({ style: { textAlign: 'left' } }, mergedProps), children));
 }
 
 const tag$n = 'spx-accordion';
@@ -3671,7 +4004,7 @@ const SpxAccordion$1 = class extends HTMLElement {
         : tw((_l = this.classContentActive) !== null && _l !== void 0 ? _l : '') +
           ' ' +
           tw((_m = this.classContentInactive) !== null && _m !== void 0 ? _m : '');
-    return (h$1(Host, { class: styleHost }, h$1("div", { class: styleShadowHost }, h$1(Button, { tag: "button", onClick: this.clickHeader, onEnter: this.clickHeader, class: !this.headerCustom ? styleHeader : '', "aria-expanded": this.openState ? 'true' : 'false' }, !this.headerCustom && (h$1("div", { class: styleHeaderIcon }, this.indicatorIcon && this.indicatorIconType && (h$1("spx-icon", { icon: this.indicatorIcon, type: this.indicatorIconType })))), tagSelector(!this.headerCustom, this.headerTextTag, this.headerTextOpen && this.openState
+    return (h$1(Host, { class: styleHost }, h$1("div", { class: styleShadowHost }, h$1(Button, { tag: "div", onClick: this.clickHeader, onEnter: this.clickHeader, class: !this.headerCustom ? styleHeader : '', "aria-expanded": this.openState ? 'true' : 'false' }, !this.headerCustom && (h$1("div", { class: styleHeaderIcon }, this.indicatorIcon && this.indicatorIconType && (h$1("spx-icon", { icon: this.indicatorIcon, type: this.indicatorIconType })))), tagSelector(!this.headerCustom, this.headerTextTag, this.headerTextOpen && this.openState
       ? this.headerTextOpen
       : this.headerText, 'header', this.styling === 'headless' && this.openState
       ? tw((_o = this.classHeaderText) !== null && _o !== void 0 ? _o : '') +
@@ -18731,12 +19064,13 @@ const SpxCode$1 = class extends HTMLElement {
       },
       code: {
         filter: setVar(tag$j, 'filter', this.filter),
+        fontSize: setVar(tag$j, 'font-size', this.fontSize),
         '*': {
           fontSize: setVar(tag$j, 'font-size', this.fontSize),
         },
       },
       '.line-numbers': {
-        paddingLeft: '5.2em',
+        paddingLeft: '5.2rem',
         counterReset: this.lineNumbersStart
           ? `linenumber ${this.lineNumbersStart - 1}`
           : 'linenumber',
@@ -18749,7 +19083,7 @@ const SpxCode$1 = class extends HTMLElement {
         position: 'absolute',
         pointerEvents: 'none',
         fontSize: '100%',
-        left: '-5.2em',
+        left: '-5.2rem',
         zIndex: 0,
         width: '3.5em',
         letterSpacing: '-1px',
@@ -26004,7 +26338,7 @@ const Resize = {
   }
 };
 
-function _extends$6() { _extends$6 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$6.apply(this, arguments); }
+function _extends$7() { _extends$7 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$7.apply(this, arguments); }
 var Observer = {
   attach: function attach(target, options) {
     if (options === void 0) {
@@ -26079,7 +26413,7 @@ const Observer$1 = {
   create: function create() {
     var swiper = this;
     bindModuleMethods(swiper, {
-      observer: _extends$6({}, Observer, {
+      observer: _extends$7({}, Observer, {
         observers: []
       })
     });
@@ -29841,7 +30175,7 @@ Object.keys(prototypes).forEach(function (prototypeGroup) {
 });
 Swiper.use([Resize, Observer$1]);
 
-function _extends$5() { _extends$5 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$5.apply(this, arguments); }
+function _extends$6() { _extends$6 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$6.apply(this, arguments); }
 var Navigation = {
   toggleEl: function toggleEl($el, disabled) {
     $el[disabled ? 'addClass' : 'removeClass'](this.params.navigation.disabledClass);
@@ -29972,7 +30306,7 @@ const Navigation$1 = {
   create: function create() {
     var swiper = this;
     bindModuleMethods(swiper, {
-      navigation: _extends$5({}, Navigation)
+      navigation: _extends$6({}, Navigation)
     });
   },
   on: {
@@ -30036,7 +30370,7 @@ const Navigation$1 = {
   }
 };
 
-function _extends$4() { _extends$4 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$4.apply(this, arguments); }
+function _extends$5() { _extends$5 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$5.apply(this, arguments); }
 var Pagination = {
   update: function update() {
     // Render || Update Pagination bullets/items
@@ -30350,7 +30684,7 @@ const Pagination$1 = {
   create: function create() {
     var swiper = this;
     bindModuleMethods(swiper, {
-      pagination: _extends$4({
+      pagination: _extends$5({
         dynamicBulletIndex: 0
       }, Pagination)
     });
@@ -30414,7 +30748,7 @@ const Pagination$1 = {
   }
 };
 
-function _extends$3() { _extends$3 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$3.apply(this, arguments); }
+function _extends$4() { _extends$4 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$4.apply(this, arguments); }
 var Lazy = {
   loadInSlide: function loadInSlide(index, loadInDuplicate) {
     if (loadInDuplicate === void 0) {
@@ -30627,7 +30961,7 @@ const Lazy$1 = {
   create: function create() {
     var swiper = this;
     bindModuleMethods(swiper, {
-      lazy: _extends$3({
+      lazy: _extends$4({
         initialImageLoaded: false
       }, Lazy)
     });
@@ -30685,7 +31019,7 @@ const Lazy$1 = {
   }
 };
 
-function _extends$2() { _extends$2 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
+function _extends$3() { _extends$3 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$3.apply(this, arguments); }
 var A11y = {
   getRandomNumber: function getRandomNumber(size) {
     if (size === void 0) {
@@ -30948,7 +31282,7 @@ const A11y$1 = {
   create: function create() {
     var swiper = this;
     bindModuleMethods(swiper, {
-      a11y: _extends$2({}, A11y, {
+      a11y: _extends$3({}, A11y, {
         liveRegion: $("<span class=\"" + swiper.params.a11y.notificationClass + "\" aria-live=\"assertive\" aria-atomic=\"true\"></span>")
       })
     });
@@ -30978,7 +31312,7 @@ const A11y$1 = {
   }
 };
 
-function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
+function _extends$2() { _extends$2 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
 var Autoplay = {
   run: function run() {
     var swiper = this;
@@ -31146,7 +31480,7 @@ const Autoplay$1 = {
   create: function create() {
     var swiper = this;
     bindModuleMethods(swiper, {
-      autoplay: _extends$1({}, Autoplay, {
+      autoplay: _extends$2({}, Autoplay, {
         running: false,
         paused: false
       })
@@ -31193,6 +31527,91 @@ const Autoplay$1 = {
 
       var document = getDocument();
       document.removeEventListener('visibilitychange', swiper.autoplay.onVisibilityChange);
+    }
+  }
+};
+
+function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
+var Fade = {
+  setTranslate: function setTranslate() {
+    var swiper = this;
+    var slides = swiper.slides;
+
+    for (var i = 0; i < slides.length; i += 1) {
+      var $slideEl = swiper.slides.eq(i);
+      var offset = $slideEl[0].swiperSlideOffset;
+      var tx = -offset;
+      if (!swiper.params.virtualTranslate) tx -= swiper.translate;
+      var ty = 0;
+
+      if (!swiper.isHorizontal()) {
+        ty = tx;
+        tx = 0;
+      }
+
+      var slideOpacity = swiper.params.fadeEffect.crossFade ? Math.max(1 - Math.abs($slideEl[0].progress), 0) : 1 + Math.min(Math.max($slideEl[0].progress, -1), 0);
+      $slideEl.css({
+        opacity: slideOpacity
+      }).transform("translate3d(" + tx + "px, " + ty + "px, 0px)");
+    }
+  },
+  setTransition: function setTransition(duration) {
+    var swiper = this;
+    var slides = swiper.slides,
+        $wrapperEl = swiper.$wrapperEl;
+    slides.transition(duration);
+
+    if (swiper.params.virtualTranslate && duration !== 0) {
+      var eventTriggered = false;
+      slides.transitionEnd(function () {
+        if (eventTriggered) return;
+        if (!swiper || swiper.destroyed) return;
+        eventTriggered = true;
+        swiper.animating = false;
+        var triggerEvents = ['webkitTransitionEnd', 'transitionend'];
+
+        for (var i = 0; i < triggerEvents.length; i += 1) {
+          $wrapperEl.trigger(triggerEvents[i]);
+        }
+      });
+    }
+  }
+};
+const EffectFade = {
+  name: 'effect-fade',
+  params: {
+    fadeEffect: {
+      crossFade: false
+    }
+  },
+  create: function create() {
+    var swiper = this;
+    bindModuleMethods(swiper, {
+      fadeEffect: _extends$1({}, Fade)
+    });
+  },
+  on: {
+    beforeInit: function beforeInit(swiper) {
+      if (swiper.params.effect !== 'fade') return;
+      swiper.classNames.push(swiper.params.containerModifierClass + "fade");
+      var overwriteParams = {
+        slidesPerView: 1,
+        slidesPerColumn: 1,
+        slidesPerGroup: 1,
+        watchSlidesProgress: true,
+        spaceBetween: 0,
+        virtualTranslate: true
+      };
+      extend(swiper.params, overwriteParams);
+      extend(swiper.originalParams, overwriteParams);
+    },
+    setTranslate: function setTranslate(swiper) {
+      if (swiper.params.effect !== 'fade') return;
+      swiper.fadeEffect.setTranslate();
+    },
+    setTransition: function setTransition(swiper, duration) {
+      if (swiper.params.effect !== 'fade') return;
+      swiper.fadeEffect.setTransition(duration);
     }
   }
 };
@@ -31543,7 +31962,15 @@ const SpxScrollspy$1 = class extends HTMLElement {
         }
       });
       /** Use modules so autoplay works in build mode. */
-      Swiper.use([Autoplay$1, Navigation$1, Pagination$1, A11y$1, Thumbs$1, Lazy$1]);
+      Swiper.use([
+        Autoplay$1,
+        Navigation$1,
+        Pagination$1,
+        A11y$1,
+        Thumbs$1,
+        Lazy$1,
+        EffectFade,
+      ]);
       /** Create swiper. */
       this.mySwiper = new Swiper(this.swiperContainer, {
         a11y: {

@@ -17,6 +17,7 @@ import Swiper, {
   A11y,
   Thumbs,
   Lazy,
+  EffectFade,
 } from 'swiper';
 import { css as cssHost } from '@emotion/css';
 import { setVar } from '../../../utils/cssVariables/setVar';
@@ -316,7 +317,15 @@ export class SpxScrollspy {
     });
 
     /** Use modules so autoplay works in build mode. */
-    Swiper.use([Autoplay, Navigation, Pagination, A11y, Thumbs, Lazy]);
+    Swiper.use([
+      Autoplay,
+      Navigation,
+      Pagination,
+      A11y,
+      Thumbs,
+      Lazy,
+      EffectFade,
+    ]);
 
     /** Create swiper. */
     this.mySwiper = new Swiper(this.swiperContainer, {

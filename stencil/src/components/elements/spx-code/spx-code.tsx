@@ -256,6 +256,7 @@ export class SpxCode {
 
       code: {
         filter: setVar(tag, 'filter', this.filter),
+        fontSize: setVar(tag, 'font-size', this.fontSize),
 
         '*': {
           fontSize: setVar(tag, 'font-size', this.fontSize),
@@ -263,7 +264,7 @@ export class SpxCode {
       },
 
       '.line-numbers': {
-        paddingLeft: '5.2em',
+        paddingLeft: '5.2rem',
         counterReset: this.lineNumbersStart
           ? `linenumber ${this.lineNumbersStart - 1}`
           : 'linenumber',
@@ -281,7 +282,7 @@ export class SpxCode {
         position: 'absolute',
         pointerEvents: 'none',
         fontSize: '100%',
-        left: '-5.2em',
+        left: '-5.2rem',
         zIndex: 0,
         width: '3.5em',
         letterSpacing: '-1px',

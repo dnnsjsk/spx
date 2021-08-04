@@ -42,6 +42,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Enhancement: rename 'gallery' helper to 'images'
 * Fix: don't create undefined fallback in CSS variables if no styles are set
 * Fix: prevent double style sheets in Shadow DOM
+* Fix: boolean values not working for Shortcodes
 * Icon: add 'loader' type to display a simple rotating loader
 * Icon: convert to Shadow DOM
 * Iframe: add 'loader-background' attribute

@@ -403,7 +403,7 @@ export class SpxAccordion {
         <div class={styleShadowHost}>
           {/** Header. */}
           <Button
-            tag="button"
+            tag="div"
             onClick={this.clickHeader}
             onEnter={this.clickHeader}
             class={!this.headerCustom ? styleHeader : ''}

@@ -1,4 +1,5 @@
 import { create, cssomSheet } from 'twind';
+import 'construct-style-sheets-polyfill';
 
 /**
  * Create CSSOM sheet.

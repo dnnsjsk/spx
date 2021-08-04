@@ -148,7 +148,7 @@ class Init {
 		$path  = SPX_DIR . '/data/components/';
 		$files = array_slice( scandir( $path ), 2 );
 
-		$element_array = [ 'spx-navigation', 'spx-group', 'spx-scrollspy', 'spx-snackbar', 'spx-docs' ];
+		$element_array = [ 'spx-navigation', 'spx-group', 'spx-scrollspy', 'spx-snackbar' ];
 
 		foreach ( $files as $file ) {
 
@@ -161,25 +161,18 @@ class Init {
 					add_shortcode( $name, function ( $atts, $content = NULL ) use ( &$path, $file, $name ) {
 
 						// Get object from .json.
-
 						$object = json_decode( file_get_contents( $path . '/' . $file ), TRUE );
 						$array  = [];
 
 						// Add attributes with default value to array.
-
 						foreach ( $object['properties'] as $prop ) {
-							if ( $prop['type'] === 'boolean' && ! $prop['defaultValue'] ) {
-							} else {
-								$array[ $prop['attribute'] ] = trim( $prop['defaultValue'], '\'"' );
-							}
+							$array[ $prop['attribute'] ] = $prop['defaultValue'] ? trim( $prop['defaultValue'], '\'"' ) : '';
 						}
 
 						// Move array to shortcode attributes.
-
 						$a = shortcode_atts( $array, $atts );
 
 						// Setup output.
-
 						$output = '<' . $name . ' ';
 						foreach ( $a as $key => $value ) {
 							$output .= $key . '="' . $value . '" ';
