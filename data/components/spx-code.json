@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "code-background",
       "name": "background",
       "attribute": "background",
       "type": "string",
@@ -14,7 +13,6 @@
       "tags": []
     },
     {
-      "id": "code-borderRadius",
       "name": "borderRadius",
       "attribute": "border-radius",
       "type": "string",
@@ -24,7 +22,6 @@
       "tags": []
     },
     {
-      "id": "code-clipboard",
       "name": "clipboard",
       "attribute": "clipboard",
       "type": "boolean",
@@ -34,7 +31,6 @@
       "tags": []
     },
     {
-      "id": "code-clipboardButtonBackground",
       "name": "clipboardButtonBackground",
       "attribute": "clipboard-button-background",
       "type": "string",
@@ -44,7 +40,6 @@
       "tags": []
     },
     {
-      "id": "code-clipboardButtonColor",
       "name": "clipboardButtonColor",
       "attribute": "clipboard-button-color",
       "type": "string",
@@ -54,7 +49,6 @@
       "tags": []
     },
     {
-      "id": "code-clipboardButtonFontSize",
       "name": "clipboardButtonFontSize",
       "attribute": "clipboard-button-font-size",
       "type": "string",
@@ -64,7 +58,6 @@
       "tags": []
     },
     {
-      "id": "code-clipboardButtonFontWeight",
       "name": "clipboardButtonFontWeight",
       "attribute": "clipboard-button-font-weight",
       "type": "any",
@@ -74,7 +67,6 @@
       "tags": []
     },
     {
-      "id": "code-clipboardButtonPadding",
       "name": "clipboardButtonPadding",
       "attribute": "clipboard-button-padding",
       "type": "string",
@@ -84,7 +76,6 @@
       "tags": []
     },
     {
-      "id": "code-clipboardButtonText",
       "name": "clipboardButtonText",
       "attribute": "clipboard-button-text",
       "type": "string",
@@ -94,7 +85,6 @@
       "tags": []
     },
     {
-      "id": "code-clipboardButtonTextCopied",
       "name": "clipboardButtonTextCopied",
       "attribute": "clipboard-button-text-copied",
       "type": "string",
@@ -104,7 +94,6 @@
       "tags": []
     },
     {
-      "id": "code-clipboardButtonTextTransform",
       "name": "clipboardButtonTextTransform",
       "attribute": "clipboard-button-text-transform",
       "type": "string",
@@ -114,7 +103,6 @@
       "tags": []
     },
     {
-      "id": "code-content",
       "name": "content",
       "attribute": "content",
       "type": "string",
@@ -122,7 +110,6 @@
       "tags": []
     },
     {
-      "id": "code-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -132,7 +119,6 @@
       "tags": []
     },
     {
-      "id": "code-filter",
       "name": "filter",
       "attribute": "filter",
       "type": "string",
@@ -140,7 +126,6 @@
       "tags": []
     },
     {
-      "id": "code-fontSize",
       "name": "fontSize",
       "attribute": "font-size",
       "type": "string",
@@ -150,7 +135,6 @@
       "tags": []
     },
     {
-      "id": "code-height",
       "name": "height",
       "attribute": "height",
       "type": "string",
@@ -160,7 +144,6 @@
       "tags": []
     },
     {
-      "id": "code-lazy",
       "name": "lazy",
       "attribute": "lazy",
       "type": "boolean",
@@ -168,7 +151,6 @@
       "tags": []
     },
     {
-      "id": "code-lineNumbers",
       "name": "lineNumbers",
       "attribute": "line-numbers",
       "type": "boolean",
@@ -178,7 +160,6 @@
       "tags": []
     },
     {
-      "id": "code-lineNumbersBackground",
       "name": "lineNumbersBackground",
       "attribute": "line-numbers-background",
       "type": "string",
@@ -188,7 +169,6 @@
       "tags": []
     },
     {
-      "id": "code-lineNumbersColor",
       "name": "lineNumbersColor",
       "attribute": "line-numbers-color",
       "type": "string",
@@ -198,7 +178,6 @@
       "tags": []
     },
     {
-      "id": "code-lineNumbersStart",
       "name": "lineNumbersStart",
       "attribute": "line-numbers-start",
       "type": "number",
@@ -206,7 +185,6 @@
       "tags": []
     },
     {
-      "id": "code-maxWidth",
       "name": "maxWidth",
       "attribute": "max-width",
       "type": "string",
@@ -216,7 +194,6 @@
       "tags": []
     },
     {
-      "id": "code-overflow",
       "name": "overflow",
       "attribute": "overflow",
       "type": "string",
@@ -226,7 +203,6 @@
       "tags": []
     },
     {
-      "id": "code-padding",
       "name": "padding",
       "attribute": "padding",
       "type": "string",
@@ -236,7 +212,6 @@
       "tags": []
     },
     {
-      "id": "code-scrollbar",
       "name": "scrollbar",
       "attribute": "scrollbar",
       "type": "boolean",
@@ -246,7 +221,6 @@
       "tags": []
     },
     {
-      "id": "code-theme",
       "name": "theme",
       "attribute": "theme",
       "type": "string",
@@ -261,7 +235,6 @@
       ]
     },
     {
-      "id": "code-type",
       "name": "type",
       "attribute": "type",
       "type": "string",
@@ -276,7 +249,6 @@
       ]
     },
     {
-      "id": "code-whitespaceLeftTrim",
       "name": "whitespaceLeftTrim",
       "attribute": "whitespace-left-trim",
       "type": "boolean",
@@ -286,7 +258,6 @@
       "tags": []
     },
     {
-      "id": "code-whitespaceRemoveIndent",
       "name": "whitespaceRemoveIndent",
       "attribute": "whitespace-remove-indent",
       "type": "boolean",
@@ -296,7 +267,6 @@
       "tags": []
     },
     {
-      "id": "code-whitespaceRemoveTrailing",
       "name": "whitespaceRemoveTrailing",
       "attribute": "whitespace-remove-trailing",
       "type": "boolean",
@@ -306,7 +276,6 @@
       "tags": []
     },
     {
-      "id": "code-whitespaceRightTrim",
       "name": "whitespaceRightTrim",
       "attribute": "whitespace-right-trim",
       "type": "boolean",

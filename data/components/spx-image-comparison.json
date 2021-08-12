@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "image-comparison-color",
       "name": "color",
       "attribute": "color",
       "type": "string",
@@ -14,7 +13,6 @@
       "tags": []
     },
     {
-      "id": "image-comparison-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -24,7 +22,6 @@
       "tags": []
     },
     {
-      "id": "image-comparison-height",
       "name": "height",
       "attribute": "height",
       "type": "string",
@@ -34,7 +31,6 @@
       "tags": []
     },
     {
-      "id": "image-comparison-iconColor",
       "name": "iconColor",
       "attribute": "icon-color",
       "type": "string",
@@ -44,7 +40,6 @@
       "tags": []
     },
     {
-      "id": "image-comparison-lazy",
       "name": "lazy",
       "attribute": "lazy",
       "type": "boolean",
@@ -52,7 +47,6 @@
       "tags": []
     },
     {
-      "id": "image-comparison-srcAfter",
       "name": "srcAfter",
       "attribute": "src-after",
       "type": "string",
@@ -62,7 +56,6 @@
       "tags": []
     },
     {
-      "id": "image-comparison-srcBefore",
       "name": "srcBefore",
       "attribute": "src-before",
       "type": "string",
@@ -72,7 +65,6 @@
       "tags": []
     },
     {
-      "id": "image-comparison-start",
       "name": "start",
       "attribute": "start",
       "type": "number",
@@ -82,7 +74,6 @@
       "tags": []
     },
     {
-      "id": "image-comparison-steps",
       "name": "steps",
       "attribute": "steps",
       "type": "number",

@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "share-classItem",
       "name": "classItem",
       "attribute": "class-item",
       "type": "string",
@@ -12,7 +11,6 @@
       "tags": []
     },
     {
-      "id": "share-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -22,7 +20,6 @@
       "tags": []
     },
     {
-      "id": "share-fontSize",
       "name": "fontSize",
       "attribute": "font-size",
       "type": "string",
@@ -32,7 +29,6 @@
       "tags": []
     },
     {
-      "id": "share-fontSizeMax",
       "name": "fontSizeMax",
       "attribute": "font-size-max",
       "type": "number",
@@ -42,7 +38,6 @@
       "tags": []
     },
     {
-      "id": "share-fontSizeMin",
       "name": "fontSizeMin",
       "attribute": "font-size-min",
       "type": "number",
@@ -52,7 +47,6 @@
       "tags": []
     },
     {
-      "id": "share-itemBackground",
       "name": "itemBackground",
       "attribute": "item-background",
       "type": "string",
@@ -60,7 +54,6 @@
       "tags": []
     },
     {
-      "id": "share-itemBorderRadius",
       "name": "itemBorderRadius",
       "attribute": "item-border-radius",
       "type": "string",
@@ -70,7 +63,6 @@
       "tags": []
     },
     {
-      "id": "share-itemColor",
       "name": "itemColor",
       "attribute": "item-color",
       "type": "string",
@@ -82,7 +74,6 @@
       ]
     },
     {
-      "id": "share-itemFilterHover",
       "name": "itemFilterHover",
       "attribute": "item-filter-hover",
       "type": "string",
@@ -96,7 +87,6 @@
       ]
     },
     {
-      "id": "share-itemGap",
       "name": "itemGap",
       "attribute": "item-gap",
       "type": "string",
@@ -110,7 +100,6 @@
       ]
     },
     {
-      "id": "share-itemGapMax",
       "name": "itemGapMax",
       "attribute": "item-gap-max",
       "type": "number",
@@ -120,7 +109,6 @@
       "tags": []
     },
     {
-      "id": "share-itemGapMin",
       "name": "itemGapMin",
       "attribute": "item-gap-min",
       "type": "number",
@@ -130,7 +118,6 @@
       "tags": []
     },
     {
-      "id": "share-itemPadding",
       "name": "itemPadding",
       "attribute": "item-padding",
       "type": "string",
@@ -140,7 +127,6 @@
       "tags": []
     },
     {
-      "id": "share-itemPaddingMax",
       "name": "itemPaddingMax",
       "attribute": "item-padding-max",
       "type": "number",
@@ -150,7 +136,6 @@
       "tags": []
     },
     {
-      "id": "share-itemPaddingMin",
       "name": "itemPaddingMin",
       "attribute": "item-padding-min",
       "type": "number",
@@ -160,7 +145,6 @@
       "tags": []
     },
     {
-      "id": "share-itemSize",
       "name": "itemSize",
       "attribute": "item-size",
       "type": "string",
@@ -170,7 +154,6 @@
       "tags": []
     },
     {
-      "id": "share-itemSizeMax",
       "name": "itemSizeMax",
       "attribute": "item-size-max",
       "type": "number",
@@ -180,7 +163,6 @@
       "tags": []
     },
     {
-      "id": "share-itemSizeMin",
       "name": "itemSizeMin",
       "attribute": "item-size-min",
       "type": "number",
@@ -190,7 +172,6 @@
       "tags": []
     },
     {
-      "id": "share-itemTransitionDuration",
       "name": "itemTransitionDuration",
       "attribute": "item-transition-duration",
       "type": "string",
@@ -200,7 +181,6 @@
       "tags": []
     },
     {
-      "id": "share-itemTransitionTimingFunction",
       "name": "itemTransitionTimingFunction",
       "attribute": "item-transition-timing-function",
       "type": "string",
@@ -210,7 +190,6 @@
       "tags": []
     },
     {
-      "id": "share-styling",
       "name": "styling",
       "attribute": "styling",
       "type": "string",
@@ -225,7 +204,6 @@
       ]
     },
     {
-      "id": "share-target",
       "name": "target",
       "attribute": "target",
       "type": "string",
@@ -235,7 +213,6 @@
       "tags": []
     },
     {
-      "id": "share-theme",
       "name": "theme",
       "attribute": "theme",
       "type": "string",
@@ -250,7 +227,6 @@
       ]
     },
     {
-      "id": "share-vertical",
       "name": "vertical",
       "attribute": "vertical",
       "type": "boolean",

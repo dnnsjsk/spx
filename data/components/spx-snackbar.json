@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "snackbar-animationDelay",
       "name": "animationDelay",
       "attribute": "animation-delay",
       "type": "string",
@@ -14,7 +13,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-animationDuration",
       "name": "animationDuration",
       "attribute": "animation-duration",
       "type": "string",
@@ -24,7 +22,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-background",
       "name": "background",
       "attribute": "background",
       "type": "string",
@@ -34,7 +31,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-border",
       "name": "border",
       "attribute": "border",
       "type": "string",
@@ -42,7 +38,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-borderRadius",
       "name": "borderRadius",
       "attribute": "border-radius",
       "type": "string",
@@ -52,7 +47,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-buttonBackground",
       "name": "buttonBackground",
       "attribute": "button-background",
       "type": "string",
@@ -62,7 +56,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-buttonBackgroundHover",
       "name": "buttonBackgroundHover",
       "attribute": "button-background-hover",
       "type": "string",
@@ -72,7 +65,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-buttonTransitionDuration",
       "name": "buttonTransitionDuration",
       "attribute": "button-transition-duration",
       "type": "string",
@@ -82,7 +74,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-buttonTransitionTimingFunction",
       "name": "buttonTransitionTimingFunction",
       "attribute": "button-transition-timing-function",
       "type": "string",
@@ -92,7 +83,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-classButton",
       "name": "classButton",
       "attribute": "class-button",
       "type": "string",
@@ -100,7 +90,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-classText",
       "name": "classText",
       "attribute": "class-text",
       "type": "string",
@@ -108,7 +97,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-closeable",
       "name": "closeable",
       "attribute": "closeable",
       "type": "boolean",
@@ -116,7 +104,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-color",
       "name": "color",
       "attribute": "color",
       "type": "string",
@@ -126,7 +113,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -136,7 +122,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-distanceX",
       "name": "distanceX",
       "attribute": "distance-x",
       "type": "string",
@@ -150,7 +135,6 @@
       ]
     },
     {
-      "id": "snackbar-distanceY",
       "name": "distanceY",
       "attribute": "distance-y",
       "type": "string",
@@ -164,7 +148,6 @@
       ]
     },
     {
-      "id": "snackbar-fixed",
       "name": "fixed",
       "attribute": "fixed",
       "type": "boolean",
@@ -172,7 +155,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-fontSize",
       "name": "fontSize",
       "attribute": "font-size",
       "type": "string",
@@ -182,7 +164,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-fontSizeMax",
       "name": "fontSizeMax",
       "attribute": "font-size-max",
       "type": "number",
@@ -192,7 +173,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-fontSizeMin",
       "name": "fontSizeMin",
       "attribute": "font-size-min",
       "type": "number",
@@ -202,7 +182,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-identifier",
       "name": "identifier",
       "attribute": "identifier",
       "type": "string",
@@ -212,7 +191,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-padding",
       "name": "padding",
       "attribute": "padding",
       "type": "string",
@@ -222,7 +200,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-paddingMax",
       "name": "paddingMax",
       "attribute": "padding-max",
       "type": "number",
@@ -232,7 +209,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-paddingMin",
       "name": "paddingMin",
       "attribute": "padding-min",
       "type": "number",
@@ -242,7 +218,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-position",
       "name": "position",
       "attribute": "position",
       "type": "string",
@@ -257,7 +232,6 @@
       ]
     },
     {
-      "id": "snackbar-positionCss",
       "name": "positionCss",
       "attribute": "position-css",
       "type": "\"absolute\" | \"fixed\" | \"relative\" | \"static\"",
@@ -267,7 +241,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-reverse",
       "name": "reverse",
       "attribute": "reverse",
       "type": "boolean",
@@ -275,7 +248,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-spaceBetween",
       "name": "spaceBetween",
       "attribute": "space-between",
       "type": "string",
@@ -285,7 +257,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-styling",
       "name": "styling",
       "attribute": "styling",
       "type": "string",
@@ -300,7 +271,6 @@
       ]
     },
     {
-      "id": "snackbar-target",
       "name": "target",
       "attribute": "target",
       "type": "string",
@@ -310,7 +280,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-text",
       "name": "text",
       "attribute": "text",
       "type": "string",
@@ -320,7 +289,6 @@
       "tags": []
     },
     {
-      "id": "snackbar-zIndex",
       "name": "zIndex",
       "attribute": "z-index",
       "type": "number",

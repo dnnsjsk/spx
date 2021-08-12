@@ -19,8 +19,7 @@ import { cssEmotion } from '../../../utils/css/cssEmotion';
 const tag = 'spx-icon';
 
 /**
- * Wrapper component for different kinds of icon sets. Currently comes included
- * with Ionicons.
+ * Wrapper component for different kinds of icon sets. Currently comes included with Ionicons.
  */
 @Component({
   tag: 'spx-icon',

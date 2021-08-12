@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "animate-clipPath",
       "name": "clipPath",
       "attribute": "clip-path",
       "type": "string",
@@ -12,7 +11,6 @@
       "tags": []
     },
     {
-      "id": "animate-delay",
       "name": "delay",
       "attribute": "delay",
       "type": "number",
@@ -22,7 +20,6 @@
       "tags": []
     },
     {
-      "id": "animate-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -32,7 +29,6 @@
       "tags": []
     },
     {
-      "id": "animate-duration",
       "name": "duration",
       "attribute": "duration",
       "type": "number",
@@ -42,7 +38,6 @@
       "tags": []
     },
     {
-      "id": "animate-ease",
       "name": "ease",
       "attribute": "ease",
       "type": "string",
@@ -52,7 +47,6 @@
       "tags": []
     },
     {
-      "id": "animate-filter",
       "name": "filter",
       "attribute": "filter",
       "type": "string",
@@ -60,7 +54,6 @@
       "tags": []
     },
     {
-      "id": "animate-once",
       "name": "once",
       "attribute": "once",
       "type": "boolean",
@@ -68,7 +61,6 @@
       "tags": []
     },
     {
-      "id": "animate-opacity",
       "name": "opacity",
       "attribute": "opacity",
       "type": "number",
@@ -78,7 +70,6 @@
       "tags": []
     },
     {
-      "id": "animate-repeat",
       "name": "repeat",
       "attribute": "repeat",
       "type": "number",
@@ -86,7 +77,6 @@
       "tags": []
     },
     {
-      "id": "animate-repeatDelay",
       "name": "repeatDelay",
       "attribute": "repeat-delay",
       "type": "number",
@@ -94,7 +84,6 @@
       "tags": []
     },
     {
-      "id": "animate-reverse",
       "name": "reverse",
       "attribute": "reverse",
       "type": "boolean",
@@ -102,7 +91,6 @@
       "tags": []
     },
     {
-      "id": "animate-stagger",
       "name": "stagger",
       "attribute": "stagger",
       "type": "number",
@@ -112,7 +100,6 @@
       "tags": []
     },
     {
-      "id": "animate-target",
       "name": "target",
       "attribute": "target",
       "type": "string",
@@ -122,7 +109,6 @@
       "tags": []
     },
     {
-      "id": "animate-viewport",
       "name": "viewport",
       "attribute": "viewport",
       "type": "boolean",
@@ -130,7 +116,6 @@
       "tags": []
     },
     {
-      "id": "animate-viewportMarginBottom",
       "name": "viewportMarginBottom",
       "attribute": "viewport-margin-bottom",
       "type": "string",
@@ -138,7 +123,6 @@
       "tags": []
     },
     {
-      "id": "animate-viewportMarginLeft",
       "name": "viewportMarginLeft",
       "attribute": "viewport-margin-left",
       "type": "string",
@@ -146,7 +130,6 @@
       "tags": []
     },
     {
-      "id": "animate-viewportMarginRight",
       "name": "viewportMarginRight",
       "attribute": "viewport-margin-right",
       "type": "string",
@@ -154,7 +137,6 @@
       "tags": []
     },
     {
-      "id": "animate-viewportMarginTop",
       "name": "viewportMarginTop",
       "attribute": "viewport-margin-top",
       "type": "string",
@@ -162,7 +144,6 @@
       "tags": []
     },
     {
-      "id": "animate-x",
       "name": "x",
       "attribute": "x",
       "type": "any",
@@ -172,7 +153,6 @@
       "tags": []
     },
     {
-      "id": "animate-y",
       "name": "y",
       "attribute": "y",
       "type": "any",
@@ -182,7 +162,6 @@
       "tags": []
     },
     {
-      "id": "animate-yoyo",
       "name": "yoyo",
       "attribute": "yoyo",
       "type": "boolean",

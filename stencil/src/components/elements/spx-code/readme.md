@@ -54,6 +54,19 @@
 | `"inner"` | Slot (between HTML tags). |
 
 
+## Dependencies
+
+### Used by
+
+ - [spx-editor](../spx-editor)
+
+### Graph
+```mermaid
+graph TD;
+  spx-editor --> spx-code
+  style spx-code fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

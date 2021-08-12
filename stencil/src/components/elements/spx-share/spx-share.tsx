@@ -16,7 +16,7 @@ import { globalComponentDidLoad } from '../../../utils/global/globalComponentDid
 import { setStyle } from '../../../utils/cssVariables/setStyle';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
 import { cssEmotion } from '../../../utils/css/cssEmotion';
-import { Button } from '../../../elements/button';
+import { Button } from '../../../elements/Button';
 
 const tag = 'spx-share';
 
@@ -37,9 +37,9 @@ export class SpxShare {
 
   @Prop({ reflect: true }) fontSize: string = s.fontSize;
 
-  @Prop({ reflect: true }) fontSizeMin: number = 1;
-
   @Prop({ reflect: true }) fontSizeMax: number = 1.4;
+
+  @Prop({ reflect: true }) fontSizeMin: number = 1;
 
   @Prop({ reflect: true }) itemBackground: string;
 
@@ -310,7 +310,6 @@ export class SpxShare {
           ].map((item) => {
             return (
               <Button
-                tag="a"
                 class={css([styleItem, item.className])}
                 href={item.href + window.location.href}
                 target={this.target}

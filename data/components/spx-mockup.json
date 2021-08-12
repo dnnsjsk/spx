@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "mockup-colorGalaxyS8",
       "name": "colorGalaxyS8",
       "attribute": "color-galaxy-s-8",
       "type": "string",
@@ -19,7 +18,6 @@
       ]
     },
     {
-      "id": "mockup-colorGooglePixel",
       "name": "colorGooglePixel",
       "attribute": "color-google-pixel",
       "type": "string",
@@ -34,7 +32,6 @@
       ]
     },
     {
-      "id": "mockup-colorIpadPro",
       "name": "colorIpadPro",
       "attribute": "color-ipad-pro",
       "type": "string",
@@ -49,7 +46,6 @@
       ]
     },
     {
-      "id": "mockup-colorIphone8",
       "name": "colorIphone8",
       "attribute": "color-iphone-8",
       "type": "string",
@@ -64,7 +60,6 @@
       ]
     },
     {
-      "id": "mockup-colorMacbook",
       "name": "colorMacbook",
       "attribute": "color-macbook",
       "type": "string",
@@ -79,7 +74,6 @@
       ]
     },
     {
-      "id": "mockup-colorMacbookPro",
       "name": "colorMacbookPro",
       "attribute": "color-macbook-pro",
       "type": "string",
@@ -94,7 +88,6 @@
       ]
     },
     {
-      "id": "mockup-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -104,7 +97,6 @@
       "tags": []
     },
     {
-      "id": "mockup-imagePosition",
       "name": "imagePosition",
       "attribute": "image-position",
       "type": "string",
@@ -114,7 +106,6 @@
       "tags": []
     },
     {
-      "id": "mockup-size",
       "name": "size",
       "attribute": "size",
       "type": "number",
@@ -122,7 +113,6 @@
       "tags": []
     },
     {
-      "id": "mockup-sizeMax",
       "name": "sizeMax",
       "attribute": "size-max",
       "type": "number",
@@ -132,7 +122,6 @@
       "tags": []
     },
     {
-      "id": "mockup-sizeMin",
       "name": "sizeMin",
       "attribute": "size-min",
       "type": "number",
@@ -142,7 +131,6 @@
       "tags": []
     },
     {
-      "id": "mockup-src",
       "name": "src",
       "attribute": "src",
       "type": "string",
@@ -150,7 +138,6 @@
       "tags": []
     },
     {
-      "id": "mockup-type",
       "name": "type",
       "attribute": "type",
       "type": "string",

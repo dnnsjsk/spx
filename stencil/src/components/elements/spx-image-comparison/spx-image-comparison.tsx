@@ -17,7 +17,7 @@ import { globalComponentDidLoad } from '../../../utils/global/globalComponentDid
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
 import * as s from '../../../constants/style';
 import { cssEmotion } from '../../../utils/css/cssEmotion';
-import { Button } from '../../../elements/button';
+import { Button } from '../../../elements/Button';
 
 const tag = 'spx-image-comparison';
 
@@ -313,7 +313,7 @@ export class SpxImageComparison {
               </div>,
 
               <Button
-                tag="button"
+                as="button"
                 ref={(el) => (this.scroller = el as HTMLElement)}
                 class={styleScroller}
                 onArrowLeft={this.moveLeft}

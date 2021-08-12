@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "typewriter-autoStart",
       "name": "autoStart",
       "attribute": "auto-start",
       "type": "boolean",
@@ -14,7 +13,6 @@
       "tags": []
     },
     {
-      "id": "typewriter-delay",
       "name": "delay",
       "attribute": "delay",
       "type": "any",
@@ -24,7 +22,6 @@
       "tags": []
     },
     {
-      "id": "typewriter-deleteSpeed",
       "name": "deleteSpeed",
       "attribute": "delete-speed",
       "type": "any",
@@ -34,7 +31,6 @@
       "tags": []
     },
     {
-      "id": "typewriter-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -44,7 +40,6 @@
       "tags": []
     },
     {
-      "id": "typewriter-loop",
       "name": "loop",
       "attribute": "loop",
       "type": "boolean",
@@ -52,7 +47,6 @@
       "tags": []
     },
     {
-      "id": "typewriter-text",
       "name": "text",
       "attribute": "text",
       "type": "string",

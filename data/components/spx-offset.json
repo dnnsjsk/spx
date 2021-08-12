@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "offset-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -14,7 +13,6 @@
       "tags": []
     },
     {
-      "id": "offset-target",
       "name": "target",
       "attribute": "target",
       "type": "string",

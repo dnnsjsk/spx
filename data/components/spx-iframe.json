@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "iframe-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -14,7 +13,6 @@
       "tags": []
     },
     {
-      "id": "iframe-documentBorder",
       "name": "documentBorder",
       "attribute": "document-border",
       "type": "string",
@@ -24,7 +22,6 @@
       "tags": []
     },
     {
-      "id": "iframe-documentBorderRadius",
       "name": "documentBorderRadius",
       "attribute": "document-border-radius",
       "type": "string",
@@ -34,7 +31,6 @@
       "tags": []
     },
     {
-      "id": "iframe-documentHeight",
       "name": "documentHeight",
       "attribute": "document-height",
       "type": "string",
@@ -44,7 +40,6 @@
       "tags": []
     },
     {
-      "id": "iframe-documentWidth",
       "name": "documentWidth",
       "attribute": "document-width",
       "type": "string",
@@ -54,7 +49,6 @@
       "tags": []
     },
     {
-      "id": "iframe-fit",
       "name": "fit",
       "attribute": "fit",
       "type": "boolean",
@@ -62,7 +56,6 @@
       "tags": []
     },
     {
-      "id": "iframe-lazy",
       "name": "lazy",
       "attribute": "lazy",
       "type": "boolean",
@@ -70,7 +63,6 @@
       "tags": []
     },
     {
-      "id": "iframe-loaderBackground",
       "name": "loaderBackground",
       "attribute": "loader-background",
       "type": "string",
@@ -80,7 +72,6 @@
       "tags": []
     },
     {
-      "id": "iframe-loaderBorderRadius",
       "name": "loaderBorderRadius",
       "attribute": "loader-border-radius",
       "type": "string",
@@ -90,7 +81,6 @@
       "tags": []
     },
     {
-      "id": "iframe-loaderColor",
       "name": "loaderColor",
       "attribute": "loader-color",
       "type": "string",
@@ -100,7 +90,6 @@
       "tags": []
     },
     {
-      "id": "iframe-minHeight",
       "name": "minHeight",
       "attribute": "min-height",
       "type": "string",
@@ -110,7 +99,6 @@
       "tags": []
     },
     {
-      "id": "iframe-size",
       "name": "size",
       "attribute": "size",
       "type": "string",
@@ -120,7 +108,6 @@
       "tags": []
     },
     {
-      "id": "iframe-src",
       "name": "src",
       "attribute": "src",
       "type": "string",
@@ -130,7 +117,6 @@
       "tags": []
     },
     {
-      "id": "iframe-type",
       "name": "type",
       "attribute": "type",
       "type": "string",

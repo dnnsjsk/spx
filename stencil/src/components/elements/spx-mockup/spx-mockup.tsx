@@ -89,11 +89,11 @@ export class SpxMockup {
   /** Mockup size. */
   @Prop({ reflect: true }) size: number;
 
-  /** Mockup size minimum. */
-  @Prop({ reflect: true }) sizeMin: number = 0.3;
-
   /** Mockup size maximum. */
   @Prop({ reflect: true }) sizeMax: number = 0.6;
+
+  /** Mockup size minimum. */
+  @Prop({ reflect: true }) sizeMin: number = 0.3;
 
   /** Image src if no inner slot is used. */
   @Prop({ reflect: true }) src: string;

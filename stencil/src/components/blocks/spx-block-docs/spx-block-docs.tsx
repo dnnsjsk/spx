@@ -71,9 +71,9 @@ export class SpxBlockDocs {
 
   @Prop({ reflect: true }) navigationLinkFontSize;
 
-  @Prop({ reflect: true }) navigationLinkFontSizeMin: number = 0.8;
-
   @Prop({ reflect: true }) navigationLinkFontSizeMax: number = 1;
+
+  @Prop({ reflect: true }) navigationLinkFontSizeMin: number = 0.8;
 
   @Prop({ reflect: true }) navigationLinkFontWeight: string = '500';
 
@@ -93,9 +93,9 @@ export class SpxBlockDocs {
 
   @Prop({ reflect: true }) navigationTitleFontSize;
 
-  @Prop({ reflect: true }) navigationTitleFontSizeMin: number = 0.8;
-
   @Prop({ reflect: true }) navigationTitleFontSizeMax: number = 0.9;
+
+  @Prop({ reflect: true }) navigationTitleFontSizeMin: number = 0.8;
 
   @Prop({ reflect: true }) navigationTitleFontWeight: string = '500';
 

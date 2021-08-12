@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "scrollspy-contentClass",
       "name": "contentClass",
       "attribute": "content-class",
       "type": "string",
@@ -14,7 +13,6 @@
       "tags": []
     },
     {
-      "id": "scrollspy-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -24,7 +22,6 @@
       "tags": []
     },
     {
-      "id": "scrollspy-navClass",
       "name": "navClass",
       "attribute": "nav-class",
       "type": "string",
@@ -34,7 +31,6 @@
       "tags": []
     },
     {
-      "id": "scrollspy-offset",
       "name": "offset",
       "attribute": "offset",
       "type": "any",
@@ -44,7 +40,6 @@
       "tags": []
     },
     {
-      "id": "scrollspy-scrolling",
       "name": "scrolling",
       "attribute": "scrolling",
       "type": "number",
@@ -52,7 +47,6 @@
       "tags": []
     },
     {
-      "id": "scrollspy-target",
       "name": "target",
       "attribute": "target",
       "type": "string",
@@ -62,7 +56,6 @@
       "tags": []
     },
     {
-      "id": "scrollspy-urlChange",
       "name": "urlChange",
       "attribute": "url-change",
       "type": "boolean",

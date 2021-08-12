@@ -1,0 +1,24 @@
+{
+  "name": "spx-control-color",
+  "description": "",
+  "shadow": false,
+  "properties": [
+    {
+      "name": "color",
+      "attribute": "color",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "name": "label",
+      "attribute": "label",
+      "type": "string",
+      "description": "",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

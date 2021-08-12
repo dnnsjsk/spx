@@ -21,9 +21,9 @@ class Init {
 
 		wp_enqueue_script(
 			'spx',
-			plugins_url( '../assets/js/components/build/spx.esm.js', dirname( __FILE__ ) ),
+			plugins_url( '../assets/components/build/spx.esm.js', dirname( __FILE__ ) ),
 			[],
-			filemtime( SPX_DIR . '/assets/js/components/build/spx.esm.js' ),
+			filemtime( SPX_DIR . '/assets/components/build/spx.esm.js' ),
 			FALSE );
 
 		wp_localize_script( 'spx', 'spx', $localizeArray );
@@ -121,7 +121,7 @@ class Init {
 	 */
 	public static function addCss() {
 
-		$str = file_get_contents( SPX_DIR . '/assets/css/spx.min.css' );
+		$str = file_get_contents( SPX_DIR . '/assets/components/build/spx.css' );
 
 		add_action( 'wp_head', function () use ( &$str ) {
 

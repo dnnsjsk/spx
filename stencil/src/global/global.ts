@@ -1,0 +1,4 @@
+/**
+ * Export.
+ */
+export default function () {}

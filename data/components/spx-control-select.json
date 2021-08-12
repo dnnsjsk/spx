@@ -1,0 +1,47 @@
+{
+  "name": "spx-control-select",
+  "description": "",
+  "shadow": false,
+  "properties": [
+    {
+      "name": "delimiter",
+      "attribute": "delimiter",
+      "type": "string",
+      "description": "",
+      "default": "','",
+      "defaultValue": "','",
+      "tags": []
+    },
+    {
+      "name": "handleChange",
+      "attribute": "handle-change",
+      "type": "any",
+      "description": "",
+      "tags": []
+    },
+    {
+      "name": "label",
+      "attribute": "label",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "name": "options",
+      "attribute": "options",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "name": "selected",
+      "attribute": "selected",
+      "type": "string",
+      "description": "",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

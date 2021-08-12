@@ -19,7 +19,6 @@ export const focus = {
 export const fontFamily = 'var(--spx-font-family)';
 export const fontSize = 'var(--spx-font-size)';
 export const transitionDuration = 'var(--spx-transition-duration)';
-export const transitionDuration2 = 'var(--spx-transition-duration-2)';
 export const transitionTimingFunction = 'var(--spx-transition-timing-function)';
 
 /**

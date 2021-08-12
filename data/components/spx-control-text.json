@@ -1,0 +1,38 @@
+{
+  "name": "spx-control-text",
+  "description": "",
+  "shadow": false,
+  "properties": [
+    {
+      "name": "handleChange",
+      "attribute": "handle-change",
+      "type": "any",
+      "description": "",
+      "tags": []
+    },
+    {
+      "name": "label",
+      "attribute": "label",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "name": "placeholder",
+      "attribute": "placeholder",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "name": "value",
+      "attribute": "value",
+      "type": "string",
+      "description": "",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

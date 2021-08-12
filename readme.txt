@@ -16,8 +16,8 @@ Supercharge your workflow using handy components for the next project. Works wit
 == Changelog ==
 
 = 4.0.0 =
-* Accordion: convert headless styling to constructable stylesheets
 * Accordion: convert to Shadow DOM
+* Accordion: make link functionality work if it is a child of Shadow DOM
 * Accordion: prevent re-renders
 * Accordion: rename 'disable-animation' to 'animation'
 * Class Toggle: prevent re-renders
@@ -39,10 +39,12 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Edit Button: convert to Shadow DOM
 * Edit Button: fix discard button not getting assigned correctly classes in headless mode
 * Enhancement: add unified ARIA properties and focus styles to all Buttons across components
+* Enhancement: clean up assets folder and make move CSS files
 * Enhancement: rename 'gallery' helper to 'images'
+* Enhancement: use Adoptable Stylesheets for Shadow Dom in Chrome
+* Fix: boolean values not working for Shortcodes
 * Fix: don't create undefined fallback in CSS variables if no styles are set
 * Fix: prevent double style sheets in Shadow DOM
-* Fix: boolean values not working for Shortcodes
 * Icon: add 'loader' type to display a simple rotating loader
 * Icon: convert to Shadow DOM
 * Iframe: add 'loader-background' attribute
@@ -67,6 +69,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * New: add global '--spx-color-focus' CSS variable
 * New: add global '--spx-display' CSS variable
 * New: add global '--spx-focus' CSS variable
+* New: change color gray scale to Tailwind 'blue-gray'
 * Scrollspy: add 'spxScrollspyActivate' and 'spxScrollspyDeactivate' events
 * Share: convert to Shadow DOM
 * Share: make sure to always share the current URL

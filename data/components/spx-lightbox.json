@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "lightbox-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -14,7 +13,6 @@
       "tags": []
     },
     {
-      "id": "lightbox-height",
       "name": "height",
       "attribute": "height",
       "type": "string",
@@ -24,7 +22,6 @@
       "tags": []
     },
     {
-      "id": "lightbox-overlayColor",
       "name": "overlayColor",
       "attribute": "overlay-color",
       "type": "string",
@@ -34,7 +31,6 @@
       "tags": []
     },
     {
-      "id": "lightbox-width",
       "name": "width",
       "attribute": "width",
       "type": "string",

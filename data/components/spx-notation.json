@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "notation-animation",
       "name": "animation",
       "attribute": "animation",
       "type": "boolean",
@@ -14,7 +13,6 @@
       "tags": []
     },
     {
-      "id": "notation-animationDuration",
       "name": "animationDuration",
       "attribute": "animation-duration",
       "type": "number",
@@ -24,7 +22,6 @@
       "tags": []
     },
     {
-      "id": "notation-autoplay",
       "name": "autoplay",
       "attribute": "autoplay",
       "type": "boolean",
@@ -34,7 +31,6 @@
       "tags": []
     },
     {
-      "id": "notation-brackets",
       "name": "brackets",
       "attribute": "brackets",
       "type": "string",
@@ -44,7 +40,6 @@
       "tags": []
     },
     {
-      "id": "notation-color",
       "name": "color",
       "attribute": "color",
       "type": "string",
@@ -54,7 +49,6 @@
       "tags": []
     },
     {
-      "id": "notation-delay",
       "name": "delay",
       "attribute": "delay",
       "type": "number",
@@ -62,7 +56,6 @@
       "tags": []
     },
     {
-      "id": "notation-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -72,7 +65,6 @@
       "tags": []
     },
     {
-      "id": "notation-group",
       "name": "group",
       "attribute": "group",
       "type": "boolean",
@@ -80,7 +72,6 @@
       "tags": []
     },
     {
-      "id": "notation-iterations",
       "name": "iterations",
       "attribute": "iterations",
       "type": "number",
@@ -90,7 +81,6 @@
       "tags": []
     },
     {
-      "id": "notation-multiline",
       "name": "multiline",
       "attribute": "multiline",
       "type": "boolean",
@@ -100,7 +90,6 @@
       "tags": []
     },
     {
-      "id": "notation-padding",
       "name": "padding",
       "attribute": "padding",
       "type": "number",
@@ -108,7 +97,6 @@
       "tags": []
     },
     {
-      "id": "notation-strokeWidth",
       "name": "strokeWidth",
       "attribute": "stroke-width",
       "type": "number",
@@ -118,7 +106,6 @@
       "tags": []
     },
     {
-      "id": "notation-type",
       "name": "type",
       "attribute": "type",
       "type": "string",

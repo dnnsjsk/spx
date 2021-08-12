@@ -19,9 +19,8 @@ import { globalComponentDidLoad } from '../../../utils/global/globalComponentDid
 import { setStyle } from '../../../utils/cssVariables/setStyle';
 import { setClamp } from '../../../utils/cssVariables/setClamp';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
-import { cssEmotion } from '../../../utils/css/cssEmotion';
 import { cssTw } from '../../../utils/css/cssTw';
-import { Button } from '../../../elements/button';
+import { Button } from '../../../elements/Button';
 
 const tag = 'spx-edit-button';
 
@@ -96,9 +95,9 @@ export class SpxEditButton {
 
   @Prop({ reflect: true }) fontSize: string = s.fontSize;
 
-  @Prop({ reflect: true }) fontSizeMin: number = 1;
-
   @Prop({ reflect: true }) fontSizeMax: number = 1.2;
+
+  @Prop({ reflect: true }) fontSizeMin: number = 1;
 
   /**
    * Gap between the buttons.
@@ -328,8 +327,7 @@ export class SpxEditButton {
   }
 
   render() {
-    const { css } = cssEmotion(this.el.shadowRoot);
-    const tw = cssTw(this.el.shadowRoot);
+    const { tw, css } = cssTw(this.el.shadowRoot);
 
     /** Host styles. */
     const styleHost = cssHost({
@@ -339,85 +337,93 @@ export class SpxEditButton {
     /** Shadow Host styles. */
     const styleShadowHost =
       (this.styling === 'default' || this.styling === 'fluid') &&
-      css({
-        ...position(
-          'edit-button',
-          this.positionArray,
-          this.distanceX,
-          this.distanceY
-        ),
-        fontFamily: s.fontFamily,
-        fontSize: setStyle(
-          tag,
-          'font-size',
-          this.fontSize,
-          this.fontSizeMin,
-          this.fontSizeMax,
-          this.styling
-        ),
-        display: 'grid',
-        gridGap: setVar(tag, 'gap', this.gap),
-        position: this.positionCss,
-        zIndex: this.zIndex,
-      });
+      tw(
+        css({
+          ...position(
+            'edit-button',
+            this.positionArray,
+            this.distanceX,
+            this.distanceY
+          ),
+          fontFamily: s.fontFamily,
+          fontSize: setStyle(
+            tag,
+            'font-size',
+            this.fontSize,
+            this.fontSizeMin,
+            this.fontSizeMax,
+            this.styling
+          ),
+          display: 'grid',
+          gridGap: setVar(tag, 'gap', this.gap),
+          position: this.positionCss,
+          zIndex: this.zIndex,
+        })
+      );
 
     /** Button styles. */
     const styleButton =
       this.styling === 'default' || this.styling === 'fluid'
-        ? css({
-            fontFamily: setVar(tag, 'font-family', this.fontFamily),
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            textAlign: 'center',
-            cursor: 'pointer',
-            fontSize: '1em',
-            padding:
-              this.styling === 'default' &&
-              setVar(tag, 'padding', this.padding),
-            paddingLeft:
-              this.styling === 'fluid' &&
-              setClamp(tag, 'padding-x', this.paddingXMin, this.paddingXMax),
-            paddingRight:
-              this.styling === 'fluid' &&
-              setClamp(tag, 'padding-x', this.paddingXMin, this.paddingXMax),
-            paddingTop:
-              this.styling === 'fluid' &&
-              setClamp(tag, 'padding-x', this.paddingYMin, this.paddingYMax),
-            paddingBottom:
-              this.styling === 'fluid' &&
-              setClamp(tag, 'padding-x', this.paddingYMin, this.paddingYMax),
-            color: setVar(tag, 'color', this.color),
-            background: setVar(tag, 'background', this.background),
-            border: setVar(tag, 'border', this.border),
-            borderRadius: setVar(tag, 'border-radius', this.borderRadius),
-            transitionProperty: 'background, box-shadow',
-            transitionDuration: s.transitionDuration,
-            transitionTimingFunction: s.transitionTimingFunction,
+        ? tw(
+            css({
+              fontFamily: setVar(tag, 'font-family', this.fontFamily),
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              textAlign: 'center',
+              cursor: 'pointer',
+              fontSize: '1em',
+              padding:
+                this.styling === 'default' &&
+                setVar(tag, 'padding', this.padding),
+              paddingLeft:
+                this.styling === 'fluid' &&
+                setClamp(tag, 'padding-x', this.paddingXMin, this.paddingXMax),
+              paddingRight:
+                this.styling === 'fluid' &&
+                setClamp(tag, 'padding-x', this.paddingXMin, this.paddingXMax),
+              paddingTop:
+                this.styling === 'fluid' &&
+                setClamp(tag, 'padding-x', this.paddingYMin, this.paddingYMax),
+              paddingBottom:
+                this.styling === 'fluid' &&
+                setClamp(tag, 'padding-x', this.paddingYMin, this.paddingYMax),
+              color: setVar(tag, 'color', this.color),
+              background: setVar(tag, 'background', this.background),
+              border: setVar(tag, 'border', this.border),
+              borderRadius: setVar(tag, 'border-radius', this.borderRadius),
+              transitionProperty: 'background, box-shadow',
+              transitionDuration: s.transitionDuration,
+              transitionTimingFunction: s.transitionTimingFunction,
 
-            ...s.focus,
-          })
+              ...s.focus,
+            })
+          )
         : tw(this.classButton ?? '');
 
     /** Discard button styles. */
     const styleButtonDiscard =
       this.styling === 'default' || this.styling === 'fluid'
-        ? css({
-            color: setVar(tag, 'color-discard', this.colorDiscard),
-            background: setVar(
-              tag,
-              'background-discard',
-              this.backgroundDiscard
-            ),
-          })
+        ? tw(
+            css({
+              color: setVar(tag, 'color-discard', this.colorDiscard),
+              background: setVar(
+                tag,
+                'background-discard',
+                this.backgroundDiscard
+              ),
+            })
+          )
         : tw((this.classButton ?? '') + ' ' + (this.classButtonDiscard ?? ''));
 
     /** Loader styles. */
     const styleLoader =
       this.styling === 'default' || this.styling === 'fluid'
-        ? css({
-            marginRight: setVar(tag, 'loader-gap', this.loaderGap),
-          })
+        ? tw(
+            css({
+              marginRight: setVar(tag, 'loader-gap', this.loaderGap),
+            })
+          )
         : tw(this.classLoader ?? '');
 
     return (
@@ -432,19 +438,19 @@ export class SpxEditButton {
             /** Discard button. */
             [
               <Button
-                tag="button"
+                as="button"
                 onClick={this.clickDiscard}
                 class={
                   this.styling === 'headless'
                     ? styleButtonDiscard
-                    : css([styleButton, styleButtonDiscard])
+                    : styleButton + ' ' + styleButtonDiscard
                 }
               >
                 {this.textDiscard || <slot name="discard" />}
               </Button>,
 
               /** Save button. */
-              <Button tag="button" onClick={this.clickSave} class={styleButton}>
+              <Button as="button" onClick={this.clickSave} class={styleButton}>
                 {this.loading && (
                   <spx-icon
                     class={styleLoader}

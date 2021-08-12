@@ -4,7 +4,6 @@
   "shadow": true,
   "properties": [
     {
-      "id": "slideshow-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -14,7 +13,6 @@
       "tags": []
     },
     {
-      "id": "slideshow-duration",
       "name": "duration",
       "attribute": "duration",
       "type": "string",
@@ -28,7 +26,6 @@
       ]
     },
     {
-      "id": "slideshow-gap",
       "name": "gap",
       "attribute": "gap",
       "type": "string",
@@ -42,7 +39,6 @@
       ]
     },
     {
-      "id": "slideshow-height",
       "name": "height",
       "attribute": "height",
       "type": "string",
@@ -50,7 +46,6 @@
       "tags": []
     },
     {
-      "id": "slideshow-imageSize",
       "name": "imageSize",
       "attribute": "image-size",
       "type": "string",
@@ -58,7 +53,6 @@
       "tags": []
     },
     {
-      "id": "slideshow-imageSrc",
       "name": "imageSrc",
       "attribute": "image-src",
       "type": "string",
@@ -71,7 +65,6 @@
       ]
     },
     {
-      "id": "slideshow-images",
       "name": "images",
       "attribute": "images",
       "type": "string",
@@ -84,7 +77,6 @@
       ]
     },
     {
-      "id": "slideshow-lazy",
       "name": "lazy",
       "attribute": "lazy",
       "type": "boolean",
@@ -92,7 +84,6 @@
       "tags": []
     },
     {
-      "id": "slideshow-maxWidth",
       "name": "maxWidth",
       "attribute": "max-width",
       "type": "string",
@@ -106,7 +97,6 @@
       ]
     },
     {
-      "id": "slideshow-objectFit",
       "name": "objectFit",
       "attribute": "object-fit",
       "type": "string",
@@ -116,7 +106,6 @@
       "tags": []
     },
     {
-      "id": "slideshow-overflow",
       "name": "overflow",
       "attribute": "overflow",
       "type": "string",

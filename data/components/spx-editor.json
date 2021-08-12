@@ -1,0 +1,30 @@
+{
+  "name": "spx-editor",
+  "description": "An editor to test and export component code using spx JSON data.",
+  "shadow": false,
+  "properties": [
+    {
+      "name": "active",
+      "attribute": "active",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "name": "activeName",
+      "attribute": "active-name",
+      "type": "string",
+      "description": "",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [
+    {
+      "name": "load",
+      "description": "Load an array of JSON objects in the spx format.",
+      "signature": "load(data: any) => Promise<void>"
+    }
+  ],
+  "slots": []
+}

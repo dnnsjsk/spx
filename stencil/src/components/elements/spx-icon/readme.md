@@ -30,6 +30,7 @@
 
  - [spx-accordion](../spx-accordion)
  - [spx-edit-button](../spx-edit-button)
+ - [spx-editor](../spx-editor)
  - [spx-iframe](../spx-iframe)
  - [spx-image-comparison](../spx-image-comparison)
  - [spx-navigation](../spx-navigation)
@@ -47,6 +48,7 @@ graph TD;
   spx-icon --> ion-icon
   spx-accordion --> spx-icon
   spx-edit-button --> spx-icon
+  spx-editor --> spx-icon
   spx-iframe --> spx-icon
   spx-image-comparison --> spx-icon
   spx-navigation --> spx-icon

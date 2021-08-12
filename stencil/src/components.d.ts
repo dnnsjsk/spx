@@ -8,7 +8,7 @@ import { HTMLStencilElement, JSXBase } from "@stencil/core/internal";
 export namespace Components {
     interface SpxAccordion {
         /**
-          * Disables the animation. Set this attribute if the accordion is starting hidden in the DOM.
+          * Animate the opening of the content. Set to false if Accordion is starting hidden.
          */
         "animation": boolean;
         "classContent": string;
@@ -50,7 +50,6 @@ export namespace Components {
         "fontSizeMin": number;
         /**
           * Space between header and content.
-          * @CSS
          */
         "gap": string;
         "gapMax": number;
@@ -58,7 +57,6 @@ export namespace Components {
         "headerColor": string;
         /**
           * Gap between header text and icon.
-          * @CSS
          */
         "headerGap": string;
         "headerGapMax": number;
@@ -351,6 +349,41 @@ export namespace Components {
          */
         "whitespaceRightTrim": boolean;
     }
+    interface SpxControlColor {
+        "color": string;
+        "label": string;
+    }
+    interface SpxControlGroup {
+    }
+    interface SpxControlLabel {
+        "label": string;
+        "mb": boolean;
+    }
+    interface SpxControlSelect {
+        "delimiter": string;
+        "handleChange": any;
+        "label": string;
+        "options": string;
+        "selected": string;
+    }
+    interface SpxControlSlider {
+        "handleChange": any;
+        "label": string;
+        "max": number;
+        "min": number;
+        "start": number;
+    }
+    interface SpxControlSwitch {
+        "checked": boolean;
+        "handleChange": any;
+        "label": string;
+    }
+    interface SpxControlText {
+        "handleChange": any;
+        "label": string;
+        "placeholder": string;
+        "value": string;
+    }
     interface SpxEdit {
         "display": string;
         /**
@@ -462,6 +495,15 @@ export namespace Components {
          */
         "textSuccess": string;
         "zIndex": number;
+    }
+    interface SpxEditor {
+        "active": string;
+        "activeName": string;
+        /**
+          * Load an array of JSON objects in the spx format.
+          * @param data Array of JSON objects.
+         */
+        "load": (data: any) => Promise<void>;
     }
     interface SpxGroup {
         "content": string;
@@ -1270,6 +1312,48 @@ declare global {
         prototype: HTMLSpxCodeElement;
         new (): HTMLSpxCodeElement;
     };
+    interface HTMLSpxControlColorElement extends Components.SpxControlColor, HTMLStencilElement {
+    }
+    var HTMLSpxControlColorElement: {
+        prototype: HTMLSpxControlColorElement;
+        new (): HTMLSpxControlColorElement;
+    };
+    interface HTMLSpxControlGroupElement extends Components.SpxControlGroup, HTMLStencilElement {
+    }
+    var HTMLSpxControlGroupElement: {
+        prototype: HTMLSpxControlGroupElement;
+        new (): HTMLSpxControlGroupElement;
+    };
+    interface HTMLSpxControlLabelElement extends Components.SpxControlLabel, HTMLStencilElement {
+    }
+    var HTMLSpxControlLabelElement: {
+        prototype: HTMLSpxControlLabelElement;
+        new (): HTMLSpxControlLabelElement;
+    };
+    interface HTMLSpxControlSelectElement extends Components.SpxControlSelect, HTMLStencilElement {
+    }
+    var HTMLSpxControlSelectElement: {
+        prototype: HTMLSpxControlSelectElement;
+        new (): HTMLSpxControlSelectElement;
+    };
+    interface HTMLSpxControlSliderElement extends Components.SpxControlSlider, HTMLStencilElement {
+    }
+    var HTMLSpxControlSliderElement: {
+        prototype: HTMLSpxControlSliderElement;
+        new (): HTMLSpxControlSliderElement;
+    };
+    interface HTMLSpxControlSwitchElement extends Components.SpxControlSwitch, HTMLStencilElement {
+    }
+    var HTMLSpxControlSwitchElement: {
+        prototype: HTMLSpxControlSwitchElement;
+        new (): HTMLSpxControlSwitchElement;
+    };
+    interface HTMLSpxControlTextElement extends Components.SpxControlText, HTMLStencilElement {
+    }
+    var HTMLSpxControlTextElement: {
+        prototype: HTMLSpxControlTextElement;
+        new (): HTMLSpxControlTextElement;
+    };
     interface HTMLSpxEditElement extends Components.SpxEdit, HTMLStencilElement {
     }
     var HTMLSpxEditElement: {
@@ -1281,6 +1365,12 @@ declare global {
     var HTMLSpxEditButtonElement: {
         prototype: HTMLSpxEditButtonElement;
         new (): HTMLSpxEditButtonElement;
+    };
+    interface HTMLSpxEditorElement extends Components.SpxEditor, HTMLStencilElement {
+    }
+    var HTMLSpxEditorElement: {
+        prototype: HTMLSpxEditorElement;
+        new (): HTMLSpxEditorElement;
     };
     interface HTMLSpxGroupElement extends Components.SpxGroup, HTMLStencilElement {
     }
@@ -1390,8 +1480,16 @@ declare global {
         "spx-block-docs": HTMLSpxBlockDocsElement;
         "spx-class-toggle": HTMLSpxClassToggleElement;
         "spx-code": HTMLSpxCodeElement;
+        "spx-control-color": HTMLSpxControlColorElement;
+        "spx-control-group": HTMLSpxControlGroupElement;
+        "spx-control-label": HTMLSpxControlLabelElement;
+        "spx-control-select": HTMLSpxControlSelectElement;
+        "spx-control-slider": HTMLSpxControlSliderElement;
+        "spx-control-switch": HTMLSpxControlSwitchElement;
+        "spx-control-text": HTMLSpxControlTextElement;
         "spx-edit": HTMLSpxEditElement;
         "spx-edit-button": HTMLSpxEditButtonElement;
+        "spx-editor": HTMLSpxEditorElement;
         "spx-group": HTMLSpxGroupElement;
         "spx-icon": HTMLSpxIconElement;
         "spx-iframe": HTMLSpxIframeElement;
@@ -1414,7 +1512,7 @@ declare global {
 declare namespace LocalJSX {
     interface SpxAccordion {
         /**
-          * Disables the animation. Set this attribute if the accordion is starting hidden in the DOM.
+          * Animate the opening of the content. Set to false if Accordion is starting hidden.
          */
         "animation"?: boolean;
         "classContent"?: string;
@@ -1452,7 +1550,6 @@ declare namespace LocalJSX {
         "fontSizeMin"?: number;
         /**
           * Space between header and content.
-          * @CSS
          */
         "gap"?: string;
         "gapMax"?: number;
@@ -1460,7 +1557,6 @@ declare namespace LocalJSX {
         "headerColor"?: string;
         /**
           * Gap between header text and icon.
-          * @CSS
          */
         "headerGap"?: string;
         "headerGapMax"?: number;
@@ -1753,6 +1849,41 @@ declare namespace LocalJSX {
          */
         "whitespaceRightTrim"?: boolean;
     }
+    interface SpxControlColor {
+        "color"?: string;
+        "label"?: string;
+    }
+    interface SpxControlGroup {
+    }
+    interface SpxControlLabel {
+        "label"?: string;
+        "mb"?: boolean;
+    }
+    interface SpxControlSelect {
+        "delimiter"?: string;
+        "handleChange"?: any;
+        "label"?: string;
+        "options"?: string;
+        "selected"?: string;
+    }
+    interface SpxControlSlider {
+        "handleChange"?: any;
+        "label"?: string;
+        "max"?: number;
+        "min"?: number;
+        "start"?: number;
+    }
+    interface SpxControlSwitch {
+        "checked"?: boolean;
+        "handleChange"?: any;
+        "label"?: string;
+    }
+    interface SpxControlText {
+        "handleChange"?: any;
+        "label"?: string;
+        "placeholder"?: string;
+        "value"?: string;
+    }
     interface SpxEdit {
         "display"?: string;
         /**
@@ -1864,6 +1995,10 @@ declare namespace LocalJSX {
          */
         "textSuccess"?: string;
         "zIndex"?: number;
+    }
+    interface SpxEditor {
+        "active"?: string;
+        "activeName"?: string;
     }
     interface SpxGroup {
         "content"?: string;
@@ -2690,8 +2825,16 @@ declare namespace LocalJSX {
         "spx-block-docs": SpxBlockDocs;
         "spx-class-toggle": SpxClassToggle;
         "spx-code": SpxCode;
+        "spx-control-color": SpxControlColor;
+        "spx-control-group": SpxControlGroup;
+        "spx-control-label": SpxControlLabel;
+        "spx-control-select": SpxControlSelect;
+        "spx-control-slider": SpxControlSlider;
+        "spx-control-switch": SpxControlSwitch;
+        "spx-control-text": SpxControlText;
         "spx-edit": SpxEdit;
         "spx-edit-button": SpxEditButton;
+        "spx-editor": SpxEditor;
         "spx-group": SpxGroup;
         "spx-icon": SpxIcon;
         "spx-iframe": SpxIframe;
@@ -2720,8 +2863,16 @@ declare module "@stencil/core" {
             "spx-block-docs": LocalJSX.SpxBlockDocs & JSXBase.HTMLAttributes<HTMLSpxBlockDocsElement>;
             "spx-class-toggle": LocalJSX.SpxClassToggle & JSXBase.HTMLAttributes<HTMLSpxClassToggleElement>;
             "spx-code": LocalJSX.SpxCode & JSXBase.HTMLAttributes<HTMLSpxCodeElement>;
+            "spx-control-color": LocalJSX.SpxControlColor & JSXBase.HTMLAttributes<HTMLSpxControlColorElement>;
+            "spx-control-group": LocalJSX.SpxControlGroup & JSXBase.HTMLAttributes<HTMLSpxControlGroupElement>;
+            "spx-control-label": LocalJSX.SpxControlLabel & JSXBase.HTMLAttributes<HTMLSpxControlLabelElement>;
+            "spx-control-select": LocalJSX.SpxControlSelect & JSXBase.HTMLAttributes<HTMLSpxControlSelectElement>;
+            "spx-control-slider": LocalJSX.SpxControlSlider & JSXBase.HTMLAttributes<HTMLSpxControlSliderElement>;
+            "spx-control-switch": LocalJSX.SpxControlSwitch & JSXBase.HTMLAttributes<HTMLSpxControlSwitchElement>;
+            "spx-control-text": LocalJSX.SpxControlText & JSXBase.HTMLAttributes<HTMLSpxControlTextElement>;
             "spx-edit": LocalJSX.SpxEdit & JSXBase.HTMLAttributes<HTMLSpxEditElement>;
             "spx-edit-button": LocalJSX.SpxEditButton & JSXBase.HTMLAttributes<HTMLSpxEditButtonElement>;
+            "spx-editor": LocalJSX.SpxEditor & JSXBase.HTMLAttributes<HTMLSpxEditorElement>;
             "spx-group": LocalJSX.SpxGroup & JSXBase.HTMLAttributes<HTMLSpxGroupElement>;
             "spx-icon": LocalJSX.SpxIcon & JSXBase.HTMLAttributes<HTMLSpxIconElement>;
             "spx-iframe": LocalJSX.SpxIframe & JSXBase.HTMLAttributes<HTMLSpxIframeElement>;

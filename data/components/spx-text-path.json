@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "text-path-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -14,7 +13,6 @@
       "tags": []
     },
     {
-      "id": "text-path-spaceBetween",
       "name": "spaceBetween",
       "attribute": "space-between",
       "type": "string",
@@ -24,7 +22,6 @@
       "tags": []
     },
     {
-      "id": "text-path-startOffset",
       "name": "startOffset",
       "attribute": "start-offset",
       "type": "string",
@@ -34,7 +31,6 @@
       "tags": []
     },
     {
-      "id": "text-path-text",
       "name": "text",
       "attribute": "text",
       "type": "string",
@@ -42,7 +38,6 @@
       "tags": []
     },
     {
-      "id": "text-path-textColor",
       "name": "textColor",
       "attribute": "text-color",
       "type": "string",
@@ -50,7 +45,6 @@
       "tags": []
     },
     {
-      "id": "text-path-textFontSize",
       "name": "textFontSize",
       "attribute": "text-font-size",
       "type": "string",
@@ -60,7 +54,6 @@
       "tags": []
     },
     {
-      "id": "text-path-textFontWeight",
       "name": "textFontWeight",
       "attribute": "text-font-weight",
       "type": "string",
@@ -68,7 +61,6 @@
       "tags": []
     },
     {
-      "id": "text-path-textTransform",
       "name": "textTransform",
       "attribute": "text-transform",
       "type": "string",

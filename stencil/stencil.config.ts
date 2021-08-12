@@ -6,23 +6,6 @@ import { JsonDocs } from '@stencil/core/internal';
 import { promises as fs } from 'fs';
 
 /**
- * KebabCase helper.
- *
- * @param {string} str - String to convert.
- * @returns {string} Returns converted string.
- */
-const toKebabCase = (str) => {
-  return str
-    .split('')
-    .map((letter, idx) => {
-      return letter.toUpperCase() === letter
-        ? `${idx !== 0 ? '-' : ''}${letter.toLowerCase()}`
-        : letter;
-    })
-    .join('');
-};
-
-/**
  * @param {JsonDocs} docsData - JSON Docs.
  */
 async function generateCustomElementsJSON(docsData: JsonDocs) {
@@ -32,15 +15,12 @@ async function generateCustomElementsJSON(docsData: JsonDocs) {
    */
   async function generate(dir, dirComponents) {
     /** Delete and create dir. */
-
     await fs.rmdir(dir, { recursive: true });
     await fs.mkdir(dir);
     await fs.rmdir(dirComponents, { recursive: true });
     await fs.mkdir(dirComponents);
 
-    /**
-     * Create file for each component.
-     */
+    /** Create file for each component. */
     await docsData.components.forEach((component) => {
       const data = {
         name: component.tag,
@@ -48,9 +28,8 @@ async function generateCustomElementsJSON(docsData: JsonDocs) {
         shadow:
           ['spx-navigation', 'spx-slideshow'].includes(component.tag) && true,
         properties: component.props.map((prop) => ({
-          id: component.tag.replace('spx-', '') + '-' + prop.name,
           name: prop.name,
-          attribute: toKebabCase(prop.name),
+          attribute: prop.attr,
           type: prop.type,
           description: prop.docs,
           default: prop.default,
@@ -111,16 +90,18 @@ async function generateCustomElementsJSON(docsData: JsonDocs) {
 export const config: Config = {
   namespace: 'spx',
   taskQueue: 'async',
+  globalStyle: 'src/global/global.scss',
+  globalScript: 'src/global/global.ts',
   outputTargets: [
     {
       type: 'www',
       serviceWorker: null,
-      dir: '../assets/js/components',
+      dir: '../assets/components',
       empty: true,
     },
     {
       type: 'dist-custom-elements-bundle',
-      dir: '../assets/js/bundle',
+      dir: '../assets/bundle',
       empty: true,
     },
     {
@@ -131,5 +112,6 @@ export const config: Config = {
   plugins: [sass()],
   devServer: {
     openBrowser: false,
+    reloadStrategy: 'pageReload',
   },
 };

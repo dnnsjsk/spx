@@ -1,0 +1,1 @@
+function n(n,o){n.parentNode.insertBefore(o,n),o.appendChild(n)}export{n as w}

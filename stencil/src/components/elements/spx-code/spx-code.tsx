@@ -26,7 +26,7 @@ import { intersectionObserver } from '../../../utils/observer/intersectionObserv
 import { cssEmotion } from '../../../utils/css/cssEmotion';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
 import { sanitize } from '../../../utils/3rd/sanitize';
-import { Button } from '../../../elements/button';
+import { Button } from '../../../elements/Button';
 
 const tag = 'spx-code';
 
@@ -219,6 +219,7 @@ export class SpxCode {
       position: 'relative',
       borderRadius: setVar(tag, 'border-radius', this.borderRadius),
       maxWidth: setVar(tag, 'max-width', this.maxWidth),
+      height: setVar(tag, 'height', this.height),
 
       'pre, code': {
         borderRadius: setVar(tag, 'border-radius', this.borderRadius),
@@ -227,6 +228,7 @@ export class SpxCode {
         display: 'block',
         position: 'relative',
         fontFamily: "Consolas, Monaco, 'Andale Mono', monospace !important",
+        height: setVar(tag, 'height', this.height),
       },
 
       pre: {
@@ -467,7 +469,7 @@ export class SpxCode {
           {/** Clipboard. */}
           {this.clipboard && (
             <Button
-              tag="button"
+              as="button"
               ref={(el) => (this.clipboardButton = el as HTMLElement)}
               class={styleClipboard}
               onClick={this.onClickClipboard}

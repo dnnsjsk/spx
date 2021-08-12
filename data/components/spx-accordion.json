@@ -4,15 +4,15 @@
   "shadow": false,
   "properties": [
     {
-      "id": "accordion-animation",
       "name": "animation",
       "attribute": "animation",
       "type": "boolean",
-      "description": "Disables the animation. Set this attribute if the accordion is starting\nhidden in the DOM.",
+      "description": "Animate the opening of the content. Set to false if Accordion is starting hidden.",
+      "default": "true",
+      "defaultValue": "true",
       "tags": []
     },
     {
-      "id": "accordion-classContent",
       "name": "classContent",
       "attribute": "class-content",
       "type": "string",
@@ -20,7 +20,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classContentActive",
       "name": "classContentActive",
       "attribute": "class-content-active",
       "type": "string",
@@ -28,7 +27,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classContentInactive",
       "name": "classContentInactive",
       "attribute": "class-content-inactive",
       "type": "string",
@@ -36,7 +34,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classContentText",
       "name": "classContentText",
       "attribute": "class-content-text",
       "type": "string",
@@ -44,7 +41,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classContentTextActive",
       "name": "classContentTextActive",
       "attribute": "class-content-text-active",
       "type": "string",
@@ -52,7 +48,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classContentTextInactive",
       "name": "classContentTextInactive",
       "attribute": "class-content-text-inactive",
       "type": "string",
@@ -60,7 +55,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classHeader",
       "name": "classHeader",
       "attribute": "class-header",
       "type": "string",
@@ -68,7 +62,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classHeaderActive",
       "name": "classHeaderActive",
       "attribute": "class-header-active",
       "type": "string",
@@ -76,7 +69,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classHeaderIcon",
       "name": "classHeaderIcon",
       "attribute": "class-header-icon",
       "type": "string",
@@ -84,7 +76,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classHeaderIconActive",
       "name": "classHeaderIconActive",
       "attribute": "class-header-icon-active",
       "type": "string",
@@ -92,7 +83,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classHeaderIconContainer",
       "name": "classHeaderIconContainer",
       "attribute": "class-header-icon-container",
       "type": "string",
@@ -100,7 +90,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classHeaderIconContainerActive",
       "name": "classHeaderIconContainerActive",
       "attribute": "class-header-icon-container-active",
       "type": "string",
@@ -108,7 +97,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classHeaderIconContainerInactive",
       "name": "classHeaderIconContainerInactive",
       "attribute": "class-header-icon-container-inactive",
       "type": "string",
@@ -116,7 +104,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classHeaderIconInactive",
       "name": "classHeaderIconInactive",
       "attribute": "class-header-icon-inactive",
       "type": "string",
@@ -124,7 +111,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classHeaderInactive",
       "name": "classHeaderInactive",
       "attribute": "class-header-inactive",
       "type": "string",
@@ -132,7 +118,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classHeaderText",
       "name": "classHeaderText",
       "attribute": "class-header-text",
       "type": "string",
@@ -140,7 +125,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classHeaderTextActive",
       "name": "classHeaderTextActive",
       "attribute": "class-header-text-active",
       "type": "string",
@@ -148,7 +132,6 @@
       "tags": []
     },
     {
-      "id": "accordion-classHeaderTextInactive",
       "name": "classHeaderTextInactive",
       "attribute": "class-header-text-inactive",
       "type": "string",
@@ -156,7 +139,6 @@
       "tags": []
     },
     {
-      "id": "accordion-contentColor",
       "name": "contentColor",
       "attribute": "content-color",
       "type": "string",
@@ -166,7 +148,6 @@
       "tags": []
     },
     {
-      "id": "accordion-contentText",
       "name": "contentText",
       "attribute": "content-text",
       "type": "string",
@@ -176,7 +157,6 @@
       "tags": []
     },
     {
-      "id": "accordion-contentTextTag",
       "name": "contentTextTag",
       "attribute": "content-text-tag",
       "type": "string",
@@ -186,7 +166,6 @@
       "tags": []
     },
     {
-      "id": "accordion-contentTransitionDuration",
       "name": "contentTransitionDuration",
       "attribute": "content-transition-duration",
       "type": "string",
@@ -196,7 +175,6 @@
       "tags": []
     },
     {
-      "id": "accordion-contentTransitionTimingFunction",
       "name": "contentTransitionTimingFunction",
       "attribute": "content-transition-timing-function",
       "type": "string",
@@ -206,7 +184,6 @@
       "tags": []
     },
     {
-      "id": "accordion-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -216,7 +193,6 @@
       "tags": []
     },
     {
-      "id": "accordion-fontSize",
       "name": "fontSize",
       "attribute": "font-size",
       "type": "string",
@@ -226,7 +202,6 @@
       "tags": []
     },
     {
-      "id": "accordion-fontSizeMax",
       "name": "fontSizeMax",
       "attribute": "font-size-max",
       "type": "number",
@@ -236,7 +211,6 @@
       "tags": []
     },
     {
-      "id": "accordion-fontSizeMin",
       "name": "fontSizeMin",
       "attribute": "font-size-min",
       "type": "number",
@@ -246,21 +220,15 @@
       "tags": []
     },
     {
-      "id": "accordion-gap",
       "name": "gap",
       "attribute": "gap",
       "type": "string",
       "description": "Space between header and content.",
       "default": "'0.4em'",
       "defaultValue": "'0.4em'",
-      "tags": [
-        {
-          "name": "CSS"
-        }
-      ]
+      "tags": []
     },
     {
-      "id": "accordion-gapMax",
       "name": "gapMax",
       "attribute": "gap-max",
       "type": "number",
@@ -270,7 +238,6 @@
       "tags": []
     },
     {
-      "id": "accordion-gapMin",
       "name": "gapMin",
       "attribute": "gap-min",
       "type": "number",
@@ -280,7 +247,6 @@
       "tags": []
     },
     {
-      "id": "accordion-headerColor",
       "name": "headerColor",
       "attribute": "header-color",
       "type": "string",
@@ -290,21 +256,15 @@
       "tags": []
     },
     {
-      "id": "accordion-headerGap",
       "name": "headerGap",
       "attribute": "header-gap",
       "type": "string",
       "description": "Gap between header text and icon.",
       "default": "'0.4em'",
       "defaultValue": "'0.4em'",
-      "tags": [
-        {
-          "name": "CSS"
-        }
-      ]
+      "tags": []
     },
     {
-      "id": "accordion-headerGapMax",
       "name": "headerGapMax",
       "attribute": "header-gap-max",
       "type": "number",
@@ -314,7 +274,6 @@
       "tags": []
     },
     {
-      "id": "accordion-headerGapMin",
       "name": "headerGapMin",
       "attribute": "header-gap-min",
       "type": "number",
@@ -324,7 +283,6 @@
       "tags": []
     },
     {
-      "id": "accordion-headerText",
       "name": "headerText",
       "attribute": "header-text",
       "type": "string",
@@ -334,7 +292,6 @@
       "tags": []
     },
     {
-      "id": "accordion-headerTextOpen",
       "name": "headerTextOpen",
       "attribute": "header-text-open",
       "type": "string",
@@ -342,7 +299,6 @@
       "tags": []
     },
     {
-      "id": "accordion-headerTextTag",
       "name": "headerTextTag",
       "attribute": "header-text-tag",
       "type": "string",
@@ -352,7 +308,6 @@
       "tags": []
     },
     {
-      "id": "accordion-indicatorIcon",
       "name": "indicatorIcon",
       "attribute": "indicator-icon",
       "type": "string",
@@ -362,7 +317,6 @@
       "tags": []
     },
     {
-      "id": "accordion-indicatorIconTransform",
       "name": "indicatorIconTransform",
       "attribute": "indicator-icon-transform",
       "type": "string",
@@ -372,7 +326,6 @@
       "tags": []
     },
     {
-      "id": "accordion-indicatorIconType",
       "name": "indicatorIconType",
       "attribute": "indicator-icon-type",
       "type": "string",
@@ -382,7 +335,6 @@
       "tags": []
     },
     {
-      "id": "accordion-link",
       "name": "link",
       "attribute": "link",
       "type": "string",
@@ -390,7 +342,6 @@
       "tags": []
     },
     {
-      "id": "accordion-linkType",
       "name": "linkType",
       "attribute": "link-type",
       "type": "string",
@@ -403,9 +354,8 @@
       ]
     },
     {
-      "id": "accordion-openState",
       "name": "openState",
-      "attribute": "open-state",
+      "attribute": "open",
       "type": "boolean",
       "description": "State of accordion.",
       "default": "false",
@@ -413,7 +363,6 @@
       "tags": []
     },
     {
-      "id": "accordion-reverse",
       "name": "reverse",
       "attribute": "reverse",
       "type": "boolean",
@@ -421,7 +370,6 @@
       "tags": []
     },
     {
-      "id": "accordion-styling",
       "name": "styling",
       "attribute": "styling",
       "type": "string",

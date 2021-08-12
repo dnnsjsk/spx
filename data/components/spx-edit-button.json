@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "edit-button-background",
       "name": "background",
       "attribute": "background",
       "type": "string",
@@ -14,7 +13,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-backgroundDiscard",
       "name": "backgroundDiscard",
       "attribute": "background-discard",
       "type": "string",
@@ -28,7 +26,6 @@
       ]
     },
     {
-      "id": "edit-button-border",
       "name": "border",
       "attribute": "border",
       "type": "string",
@@ -38,7 +35,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-borderRadius",
       "name": "borderRadius",
       "attribute": "border-radius",
       "type": "string",
@@ -48,7 +44,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-classButton",
       "name": "classButton",
       "attribute": "class-button",
       "type": "string",
@@ -56,7 +51,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-classButtonDiscard",
       "name": "classButtonDiscard",
       "attribute": "class-button-discard",
       "type": "string",
@@ -64,7 +58,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-classLoader",
       "name": "classLoader",
       "attribute": "class-loader",
       "type": "string",
@@ -72,7 +65,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-color",
       "name": "color",
       "attribute": "color",
       "type": "string",
@@ -82,7 +74,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-colorDiscard",
       "name": "colorDiscard",
       "attribute": "color-discard",
       "type": "string",
@@ -96,7 +87,6 @@
       ]
     },
     {
-      "id": "edit-button-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -106,7 +96,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-distanceX",
       "name": "distanceX",
       "attribute": "distance-x",
       "type": "string",
@@ -120,7 +109,6 @@
       ]
     },
     {
-      "id": "edit-button-distanceY",
       "name": "distanceY",
       "attribute": "distance-y",
       "type": "string",
@@ -134,7 +122,6 @@
       ]
     },
     {
-      "id": "edit-button-editId",
       "name": "editId",
       "attribute": "edit-id",
       "type": "string",
@@ -142,7 +129,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-fontFamily",
       "name": "fontFamily",
       "attribute": "font-family",
       "type": "string",
@@ -152,7 +138,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-fontSize",
       "name": "fontSize",
       "attribute": "font-size",
       "type": "string",
@@ -162,7 +147,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-fontSizeMax",
       "name": "fontSizeMax",
       "attribute": "font-size-max",
       "type": "number",
@@ -172,7 +156,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-fontSizeMin",
       "name": "fontSizeMin",
       "attribute": "font-size-min",
       "type": "number",
@@ -182,7 +165,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-gap",
       "name": "gap",
       "attribute": "gap",
       "type": "string",
@@ -196,7 +178,6 @@
       ]
     },
     {
-      "id": "edit-button-loaderColor",
       "name": "loaderColor",
       "attribute": "loader-color",
       "type": "string",
@@ -206,7 +187,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-loaderGap",
       "name": "loaderGap",
       "attribute": "loader-gap",
       "type": "string",
@@ -216,7 +196,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-padding",
       "name": "padding",
       "attribute": "padding",
       "type": "string",
@@ -226,7 +205,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-paddingXMax",
       "name": "paddingXMax",
       "attribute": "padding-x-max",
       "type": "number",
@@ -236,7 +214,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-paddingXMin",
       "name": "paddingXMin",
       "attribute": "padding-x-min",
       "type": "number",
@@ -246,7 +223,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-paddingYMax",
       "name": "paddingYMax",
       "attribute": "padding-y-max",
       "type": "number",
@@ -256,7 +232,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-paddingYMin",
       "name": "paddingYMin",
       "attribute": "padding-y-min",
       "type": "number",
@@ -266,7 +241,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-position",
       "name": "position",
       "attribute": "position",
       "type": "string",
@@ -281,7 +255,6 @@
       ]
     },
     {
-      "id": "edit-button-positionCss",
       "name": "positionCss",
       "attribute": "position-css",
       "type": "\"absolute\" | \"fixed\" | \"relative\" | \"static\"",
@@ -291,7 +264,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-styling",
       "name": "styling",
       "attribute": "styling",
       "type": "string",
@@ -306,7 +278,6 @@
       ]
     },
     {
-      "id": "edit-button-test",
       "name": "test",
       "attribute": "test",
       "type": "boolean",
@@ -316,7 +287,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-textDiscard",
       "name": "textDiscard",
       "attribute": "text-discard",
       "type": "string",
@@ -326,7 +296,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-textEdit",
       "name": "textEdit",
       "attribute": "text-edit",
       "type": "string",
@@ -336,7 +305,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-textSave",
       "name": "textSave",
       "attribute": "text-save",
       "type": "string",
@@ -346,7 +314,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-textSuccess",
       "name": "textSuccess",
       "attribute": "text-success",
       "type": "string",
@@ -356,7 +323,6 @@
       "tags": []
     },
     {
-      "id": "edit-button-zIndex",
       "name": "zIndex",
       "attribute": "z-index",
       "type": "number",

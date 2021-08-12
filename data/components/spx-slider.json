@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "slider-autoheight",
       "name": "autoheight",
       "attribute": "autoheight",
       "type": "boolean",
@@ -14,7 +13,6 @@
       "tags": []
     },
     {
-      "id": "slider-autoplay",
       "name": "autoplay",
       "attribute": "autoplay",
       "type": "boolean",
@@ -24,7 +22,6 @@
       "tags": []
     },
     {
-      "id": "slider-autoplayDelay",
       "name": "autoplayDelay",
       "attribute": "autoplay-delay",
       "type": "number",
@@ -34,7 +31,6 @@
       "tags": []
     },
     {
-      "id": "slider-autoplayDisableOnInteraction",
       "name": "autoplayDisableOnInteraction",
       "attribute": "autoplay-disable-on-interaction",
       "type": "boolean",
@@ -44,7 +40,6 @@
       "tags": []
     },
     {
-      "id": "slider-centeredSlides",
       "name": "centeredSlides",
       "attribute": "centered-slides",
       "type": "boolean",
@@ -54,7 +49,6 @@
       "tags": []
     },
     {
-      "id": "slider-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -64,7 +58,6 @@
       "tags": []
     },
     {
-      "id": "slider-effect",
       "name": "effect",
       "attribute": "effect",
       "type": "string",
@@ -79,7 +72,6 @@
       ]
     },
     {
-      "id": "slider-imageObjectFit",
       "name": "imageObjectFit",
       "attribute": "image-object-fit",
       "type": "string",
@@ -94,7 +86,6 @@
       ]
     },
     {
-      "id": "slider-imageSize",
       "name": "imageSize",
       "attribute": "image-size",
       "type": "string",
@@ -102,7 +93,6 @@
       "tags": []
     },
     {
-      "id": "slider-imageSrc",
       "name": "imageSrc",
       "attribute": "image-src",
       "type": "string",
@@ -115,7 +105,6 @@
       ]
     },
     {
-      "id": "slider-images",
       "name": "images",
       "attribute": "images",
       "type": "string",
@@ -128,7 +117,6 @@
       ]
     },
     {
-      "id": "slider-lazy",
       "name": "lazy",
       "attribute": "lazy",
       "type": "boolean",
@@ -136,7 +124,6 @@
       "tags": []
     },
     {
-      "id": "slider-lazyLoadPrevNext",
       "name": "lazyLoadPrevNext",
       "attribute": "lazy-load-prev-next",
       "type": "number",
@@ -144,7 +131,6 @@
       "tags": []
     },
     {
-      "id": "slider-loop",
       "name": "loop",
       "attribute": "loop",
       "type": "boolean",
@@ -152,7 +138,6 @@
       "tags": []
     },
     {
-      "id": "slider-maxHeight",
       "name": "maxHeight",
       "attribute": "max-height",
       "type": "string",
@@ -160,7 +145,6 @@
       "tags": []
     },
     {
-      "id": "slider-navigation",
       "name": "navigation",
       "attribute": "navigation",
       "type": "boolean",
@@ -168,7 +152,6 @@
       "tags": []
     },
     {
-      "id": "slider-navigationBackdropFilter",
       "name": "navigationBackdropFilter",
       "attribute": "navigation-backdrop-filter",
       "type": "string",
@@ -178,7 +161,6 @@
       "tags": []
     },
     {
-      "id": "slider-navigationBackground",
       "name": "navigationBackground",
       "attribute": "navigation-background",
       "type": "string",
@@ -188,7 +170,6 @@
       "tags": []
     },
     {
-      "id": "slider-navigationBackgroundHover",
       "name": "navigationBackgroundHover",
       "attribute": "navigation-background-hover",
       "type": "string",
@@ -198,7 +179,6 @@
       "tags": []
     },
     {
-      "id": "slider-navigationBorderRadius",
       "name": "navigationBorderRadius",
       "attribute": "navigation-border-radius",
       "type": "string",
@@ -208,7 +188,6 @@
       "tags": []
     },
     {
-      "id": "slider-navigationColor",
       "name": "navigationColor",
       "attribute": "navigation-color",
       "type": "string",
@@ -218,7 +197,6 @@
       "tags": []
     },
     {
-      "id": "slider-navigationDistanceX",
       "name": "navigationDistanceX",
       "attribute": "navigation-distance-x",
       "type": "string",
@@ -232,7 +210,6 @@
       ]
     },
     {
-      "id": "slider-navigationIconNext",
       "name": "navigationIconNext",
       "attribute": "navigation-icon-next",
       "type": "string",
@@ -242,7 +219,6 @@
       "tags": []
     },
     {
-      "id": "slider-navigationIconPrev",
       "name": "navigationIconPrev",
       "attribute": "navigation-icon-prev",
       "type": "string",
@@ -252,7 +228,6 @@
       "tags": []
     },
     {
-      "id": "slider-navigationIconType",
       "name": "navigationIconType",
       "attribute": "navigation-icon-type",
       "type": "string",
@@ -262,7 +237,6 @@
       "tags": []
     },
     {
-      "id": "slider-navigationPadding",
       "name": "navigationPadding",
       "attribute": "navigation-padding",
       "type": "string",
@@ -272,7 +246,6 @@
       "tags": []
     },
     {
-      "id": "slider-navigationSize",
       "name": "navigationSize",
       "attribute": "navigation-size",
       "type": "string",
@@ -286,7 +259,6 @@
       ]
     },
     {
-      "id": "slider-navigationTransitionDuration",
       "name": "navigationTransitionDuration",
       "attribute": "navigation-transition-duration",
       "type": "string",
@@ -296,7 +268,6 @@
       "tags": []
     },
     {
-      "id": "slider-navigationTransitionTimingFunction",
       "name": "navigationTransitionTimingFunction",
       "attribute": "navigation-transition-timing-function",
       "type": "string",
@@ -306,7 +277,6 @@
       "tags": []
     },
     {
-      "id": "slider-pagination",
       "name": "pagination",
       "attribute": "pagination",
       "type": "string",
@@ -321,7 +291,6 @@
       ]
     },
     {
-      "id": "slider-paginationBackdropFilter",
       "name": "paginationBackdropFilter",
       "attribute": "pagination-backdrop-filter",
       "type": "string",
@@ -331,7 +300,6 @@
       "tags": []
     },
     {
-      "id": "slider-paginationBackground",
       "name": "paginationBackground",
       "attribute": "pagination-background",
       "type": "string",
@@ -341,7 +309,6 @@
       "tags": []
     },
     {
-      "id": "slider-paginationBulletsBackground",
       "name": "paginationBulletsBackground",
       "attribute": "pagination-bullets-background",
       "type": "string",
@@ -351,7 +318,6 @@
       "tags": []
     },
     {
-      "id": "slider-paginationBulletsBackgroundActive",
       "name": "paginationBulletsBackgroundActive",
       "attribute": "pagination-bullets-background-active",
       "type": "string",
@@ -361,7 +327,6 @@
       "tags": []
     },
     {
-      "id": "slider-paginationBulletsClickable",
       "name": "paginationBulletsClickable",
       "attribute": "pagination-bullets-clickable",
       "type": "boolean",
@@ -369,7 +334,6 @@
       "tags": []
     },
     {
-      "id": "slider-paginationBulletsDynamic",
       "name": "paginationBulletsDynamic",
       "attribute": "pagination-bullets-dynamic",
       "type": "boolean",
@@ -377,7 +341,6 @@
       "tags": []
     },
     {
-      "id": "slider-paginationBulletsDynamicAmount",
       "name": "paginationBulletsDynamicAmount",
       "attribute": "pagination-bullets-dynamic-amount",
       "type": "number",
@@ -387,7 +350,6 @@
       "tags": []
     },
     {
-      "id": "slider-paginationBulletsSize",
       "name": "paginationBulletsSize",
       "attribute": "pagination-bullets-size",
       "type": "string",
@@ -401,7 +363,6 @@
       ]
     },
     {
-      "id": "slider-paginationBulletsSpaceBetween",
       "name": "paginationBulletsSpaceBetween",
       "attribute": "pagination-bullets-space-between",
       "type": "string",
@@ -415,7 +376,6 @@
       ]
     },
     {
-      "id": "slider-paginationTransitionDuration",
       "name": "paginationTransitionDuration",
       "attribute": "pagination-transition-duration",
       "type": "string",
@@ -425,7 +385,6 @@
       "tags": []
     },
     {
-      "id": "slider-paginationTransitionTimingFunction",
       "name": "paginationTransitionTimingFunction",
       "attribute": "pagination-transition-timing-function",
       "type": "string",
@@ -435,7 +394,6 @@
       "tags": []
     },
     {
-      "id": "slider-prevNextFilter",
       "name": "prevNextFilter",
       "attribute": "prev-next-filter",
       "type": "string",
@@ -443,7 +401,6 @@
       "tags": []
     },
     {
-      "id": "slider-slideMessageFirst",
       "name": "slideMessageFirst",
       "attribute": "slide-message-first",
       "type": "string",
@@ -453,7 +410,6 @@
       "tags": []
     },
     {
-      "id": "slider-slideMessageLast",
       "name": "slideMessageLast",
       "attribute": "slide-message-last",
       "type": "string",
@@ -463,7 +419,6 @@
       "tags": []
     },
     {
-      "id": "slider-slideMessageNext",
       "name": "slideMessageNext",
       "attribute": "slide-message-next",
       "type": "string",
@@ -473,7 +428,6 @@
       "tags": []
     },
     {
-      "id": "slider-slideMessagePrevious",
       "name": "slideMessagePrevious",
       "attribute": "slide-message-previous",
       "type": "string",
@@ -483,7 +437,6 @@
       "tags": []
     },
     {
-      "id": "slider-slidesPerView",
       "name": "slidesPerView",
       "attribute": "slides-per-view",
       "type": "number",
@@ -493,7 +446,6 @@
       "tags": []
     },
     {
-      "id": "slider-spaceBetween",
       "name": "spaceBetween",
       "attribute": "space-between",
       "type": "number",
@@ -503,7 +455,6 @@
       "tags": []
     },
     {
-      "id": "slider-speed",
       "name": "speed",
       "attribute": "speed",
       "type": "number",

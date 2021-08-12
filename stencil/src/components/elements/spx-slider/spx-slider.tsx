@@ -28,7 +28,7 @@ import { globalComponentWillUpdate } from '../../../utils/global/globalComponent
 import { cssEmotion } from '../../../utils/css/cssEmotion';
 import { helperImagesOrInner } from '../../../utils/helper/helperImagesOrInner';
 import { wrap } from '../../../utils/dom/wrap';
-import { Button } from '../../../elements/button';
+import { Button } from '../../../elements/Button';
 import { intersectionObserver } from '../../../utils/observer/intersectionObserver';
 
 const tag = 'spx-slider';

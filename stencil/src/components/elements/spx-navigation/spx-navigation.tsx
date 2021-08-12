@@ -18,7 +18,7 @@ import { globalComponentDidLoad } from '../../../utils/global/globalComponentDid
 import { css as cssHost } from '@emotion/css';
 import { cssEmotion } from '../../../utils/css/cssEmotion';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
-import { Button } from '../../../elements/button';
+import { Button } from '../../../elements/Button';
 
 const tag = 'spx-navigation';
 
@@ -273,10 +273,7 @@ export class SpxNavigation {
                 }
                 data-order={object['menu_order']}
               >
-                <Button
-                  tag="a"
-                  href={object['url'] === '#' ? '#0' : object['url']}
-                >
+                <Button href={object['url'] === '#' ? '#0' : object['url']}>
                   {object['title']}
                   {objectChild &&
                     !this.mobileBp &&

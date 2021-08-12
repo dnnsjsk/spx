@@ -1,0 +1,24 @@
+{
+  "name": "spx-control-label",
+  "description": "",
+  "shadow": false,
+  "properties": [
+    {
+      "name": "label",
+      "attribute": "label",
+      "type": "string",
+      "description": "",
+      "tags": []
+    },
+    {
+      "name": "mb",
+      "attribute": "mb",
+      "type": "boolean",
+      "description": "",
+      "tags": []
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

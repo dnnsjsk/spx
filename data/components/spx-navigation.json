@@ -4,7 +4,6 @@
   "shadow": true,
   "properties": [
     {
-      "id": "navigation-childBorder",
       "name": "childBorder",
       "attribute": "child-border",
       "type": "string",
@@ -14,7 +13,6 @@
       "tags": []
     },
     {
-      "id": "navigation-childBorderRadius",
       "name": "childBorderRadius",
       "attribute": "child-border-radius",
       "type": "string",
@@ -28,7 +26,6 @@
       ]
     },
     {
-      "id": "navigation-childBoxShadow",
       "name": "childBoxShadow",
       "attribute": "child-box-shadow",
       "type": "string",
@@ -42,7 +39,6 @@
       ]
     },
     {
-      "id": "navigation-childChildGap",
       "name": "childChildGap",
       "attribute": "child-child-gap",
       "type": "string",
@@ -56,7 +52,6 @@
       ]
     },
     {
-      "id": "navigation-childGap",
       "name": "childGap",
       "attribute": "child-gap",
       "type": "string",
@@ -70,7 +65,6 @@
       ]
     },
     {
-      "id": "navigation-childIcon",
       "name": "childIcon",
       "attribute": "child-icon",
       "type": "string",
@@ -80,7 +74,6 @@
       "tags": []
     },
     {
-      "id": "navigation-childIconType",
       "name": "childIconType",
       "attribute": "child-icon-type",
       "type": "string",
@@ -90,7 +83,6 @@
       "tags": []
     },
     {
-      "id": "navigation-childIndicatorGap",
       "name": "childIndicatorGap",
       "attribute": "child-indicator-gap",
       "type": "string",
@@ -104,7 +96,6 @@
       ]
     },
     {
-      "id": "navigation-childItemBackground",
       "name": "childItemBackground",
       "attribute": "child-item-background",
       "type": "string",
@@ -114,7 +105,6 @@
       "tags": []
     },
     {
-      "id": "navigation-childItemBackgroundHover",
       "name": "childItemBackgroundHover",
       "attribute": "child-item-background-hover",
       "type": "string",
@@ -124,7 +114,6 @@
       "tags": []
     },
     {
-      "id": "navigation-childItemColor",
       "name": "childItemColor",
       "attribute": "child-item-color",
       "type": "string",
@@ -134,7 +123,6 @@
       "tags": []
     },
     {
-      "id": "navigation-childItemColorHover",
       "name": "childItemColorHover",
       "attribute": "child-item-color-hover",
       "type": "string",
@@ -144,7 +132,6 @@
       "tags": []
     },
     {
-      "id": "navigation-childItemPadding",
       "name": "childItemPadding",
       "attribute": "child-item-padding",
       "type": "string",
@@ -154,7 +141,6 @@
       "tags": []
     },
     {
-      "id": "navigation-childPlacement",
       "name": "childPlacement",
       "attribute": "child-placement",
       "type": "string",
@@ -172,7 +158,6 @@
       ]
     },
     {
-      "id": "navigation-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -182,7 +167,6 @@
       "tags": []
     },
     {
-      "id": "navigation-fontSize",
       "name": "fontSize",
       "attribute": "font-size",
       "type": "string",
@@ -192,7 +176,6 @@
       "tags": []
     },
     {
-      "id": "navigation-itemTransitionDuration",
       "name": "itemTransitionDuration",
       "attribute": "item-transition-duration",
       "type": "string",
@@ -202,7 +185,6 @@
       "tags": []
     },
     {
-      "id": "navigation-itemTransitionTimingFunction",
       "name": "itemTransitionTimingFunction",
       "attribute": "item-transition-timing-function",
       "type": "string",
@@ -212,7 +194,6 @@
       "tags": []
     },
     {
-      "id": "navigation-itemUnderline",
       "name": "itemUnderline",
       "attribute": "item-underline",
       "type": "boolean",
@@ -220,7 +201,6 @@
       "tags": []
     },
     {
-      "id": "navigation-itemUnderlineHover",
       "name": "itemUnderlineHover",
       "attribute": "item-underline-hover",
       "type": "boolean",
@@ -228,7 +208,6 @@
       "tags": []
     },
     {
-      "id": "navigation-menu",
       "name": "menu",
       "attribute": "menu",
       "type": "string",
@@ -241,7 +220,6 @@
       ]
     },
     {
-      "id": "navigation-mobile",
       "name": "mobile",
       "attribute": "mobile",
       "type": "number",
@@ -251,7 +229,6 @@
       "tags": []
     },
     {
-      "id": "navigation-mobileIcon",
       "name": "mobileIcon",
       "attribute": "mobile-icon",
       "type": "string",
@@ -259,7 +236,6 @@
       "tags": []
     },
     {
-      "id": "navigation-mobileIconType",
       "name": "mobileIconType",
       "attribute": "mobile-icon-type",
       "type": "string",
@@ -269,7 +245,6 @@
       "tags": []
     },
     {
-      "id": "navigation-mobileItemBackground",
       "name": "mobileItemBackground",
       "attribute": "mobile-item-background",
       "type": "string",
@@ -279,7 +254,6 @@
       "tags": []
     },
     {
-      "id": "navigation-mobileItemBackgroundHover",
       "name": "mobileItemBackgroundHover",
       "attribute": "mobile-item-background-hover",
       "type": "string",
@@ -289,7 +263,6 @@
       "tags": []
     },
     {
-      "id": "navigation-mobileItemColor",
       "name": "mobileItemColor",
       "attribute": "mobile-item-color",
       "type": "string",
@@ -299,7 +272,6 @@
       "tags": []
     },
     {
-      "id": "navigation-mobileItemColorHover",
       "name": "mobileItemColorHover",
       "attribute": "mobile-item-color-hover",
       "type": "string",
@@ -309,7 +281,6 @@
       "tags": []
     },
     {
-      "id": "navigation-mobileItemNestedMarginLeft",
       "name": "mobileItemNestedMarginLeft",
       "attribute": "mobile-item-nested-margin-left",
       "type": "string",
@@ -319,7 +290,6 @@
       "tags": []
     },
     {
-      "id": "navigation-mobileItemPadding",
       "name": "mobileItemPadding",
       "attribute": "mobile-item-padding",
       "type": "string",
@@ -329,7 +299,6 @@
       "tags": []
     },
     {
-      "id": "navigation-mobilePlacement",
       "name": "mobilePlacement",
       "attribute": "mobile-placement",
       "type": "string",
@@ -347,7 +316,6 @@
       ]
     },
     {
-      "id": "navigation-parentItemBackground",
       "name": "parentItemBackground",
       "attribute": "parent-item-background",
       "type": "string",
@@ -357,7 +325,6 @@
       "tags": []
     },
     {
-      "id": "navigation-parentItemBackgroundHover",
       "name": "parentItemBackgroundHover",
       "attribute": "parent-item-background-hover",
       "type": "string",
@@ -367,7 +334,6 @@
       "tags": []
     },
     {
-      "id": "navigation-parentItemColor",
       "name": "parentItemColor",
       "attribute": "parent-item-color",
       "type": "string",
@@ -377,7 +343,6 @@
       "tags": []
     },
     {
-      "id": "navigation-parentItemColorHover",
       "name": "parentItemColorHover",
       "attribute": "parent-item-color-hover",
       "type": "string",
@@ -387,7 +352,6 @@
       "tags": []
     },
     {
-      "id": "navigation-parentItemGap",
       "name": "parentItemGap",
       "attribute": "parent-item-gap",
       "type": "string",
@@ -401,7 +365,6 @@
       ]
     },
     {
-      "id": "navigation-parentItemPadding",
       "name": "parentItemPadding",
       "attribute": "parent-item-padding",
       "type": "string",
@@ -411,7 +374,6 @@
       "tags": []
     },
     {
-      "id": "navigation-vertical",
       "name": "vertical",
       "attribute": "vertical",
       "type": "boolean",

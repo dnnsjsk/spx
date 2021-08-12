@@ -4,7 +4,6 @@
   "shadow": false,
   "properties": [
     {
-      "id": "edit-display",
       "name": "display",
       "attribute": "display",
       "type": "string",
@@ -14,7 +13,6 @@
       "tags": []
     },
     {
-      "id": "edit-editable",
       "name": "editable",
       "attribute": "editable",
       "type": "boolean",
@@ -22,7 +20,6 @@
       "tags": []
     },
     {
-      "id": "edit-name",
       "name": "name",
       "attribute": "name",
       "type": "string",
@@ -30,7 +27,6 @@
       "tags": []
     },
     {
-      "id": "edit-outline",
       "name": "outline",
       "attribute": "outline",
       "type": "string",
@@ -40,7 +36,6 @@
       "tags": []
     },
     {
-      "id": "edit-outlineFocus",
       "name": "outlineFocus",
       "attribute": "outline-focus",
       "type": "string",
@@ -50,7 +45,6 @@
       "tags": []
     },
     {
-      "id": "edit-placeholder",
       "name": "placeholder",
       "attribute": "placeholder",
       "type": "string",
@@ -60,7 +54,6 @@
       "tags": []
     },
     {
-      "id": "edit-placeholderColor",
       "name": "placeholderColor",
       "attribute": "placeholder-color",
       "type": "string",
@@ -70,7 +63,6 @@
       "tags": []
     },
     {
-      "id": "edit-placeholderOpacity",
       "name": "placeholderOpacity",
       "attribute": "placeholder-opacity",
       "type": "string",
@@ -80,7 +72,6 @@
       "tags": []
     },
     {
-      "id": "edit-subfield",
       "name": "subfield",
       "attribute": "subfield",
       "type": "boolean",
@@ -88,7 +79,6 @@
       "tags": []
     },
     {
-      "id": "edit-type",
       "name": "type",
       "attribute": "type",
       "type": "string",

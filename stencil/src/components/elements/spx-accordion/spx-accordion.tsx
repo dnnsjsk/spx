@@ -19,7 +19,8 @@ import { setStyle } from '../../../utils/cssVariables/setStyle';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
 import { cssEmotion } from '../../../utils/css/cssEmotion';
 import { cssTw } from '../../../utils/css/cssTw';
-import { Button } from '../../../elements/button';
+import { Button } from '../../../elements/Button';
+import { isInShadow } from '../../../utils/is/isInShadow';
 
 const tag = 'spx-accordion';
 
@@ -44,11 +45,8 @@ export class SpxAccordion {
   @State() headerCustom: boolean;
   @State() headerHeight;
 
-  /**
-   * Disables the animation. Set this attribute if the accordion is starting
-   * hidden in the DOM.
-   */
-  @Prop({ reflect: true }) animation: boolean;
+  /** Animate the opening of the content. Set to false if Accordion is starting hidden. */
+  @Prop({ reflect: true }) animation: boolean = true;
 
   @Prop({ reflect: true }) classContent: string;
 
@@ -104,39 +102,30 @@ export class SpxAccordion {
 
   @Prop({ reflect: true }) fontSize: string = s.fontSize;
 
-  @Prop({ reflect: true }) fontSizeMin: number = 1;
-
   @Prop({ reflect: true }) fontSizeMax: number = 1.2;
 
-  /**
-   * Space between header and content.
-   *
-   * @CSS
-   */
-  @Prop({ reflect: true }) gap: string = '0.4em';
+  @Prop({ reflect: true }) fontSizeMin: number = 1;
 
-  @Prop({ reflect: true }) gapMin: number = 1;
+  /** Space between header and content. */
+  @Prop({ reflect: true }) gap: string = '0.4em';
 
   @Prop({ reflect: true }) gapMax: number = 1.2;
 
+  @Prop({ reflect: true }) gapMin: number = 1;
+
   @Prop({ reflect: true }) headerColor: string = 'var(--spx-color-gray-900)';
 
-  /**
-   * Gap between header text and icon.
-   *
-   * @CSS
-   */
+  /** Gap between header text and icon. */
   @Prop({ reflect: true }) headerGap: string = '0.4em';
 
-  @Prop({ reflect: true }) headerGapMin: number = 0.6;
-
   @Prop({ reflect: true }) headerGapMax: number = 1;
+
+  @Prop({ reflect: true }) headerGapMin: number = 0.6;
 
   /** Header text. */
   @Prop({ reflect: true }) headerText: string = 'Default Header Text';
 
   /** Header text when component is closed. */
-
   @Prop({ reflect: true }) headerTextOpen: string;
 
   /** Header text tag. */
@@ -193,7 +182,7 @@ export class SpxAccordion {
     /** Turn animation off if linked, since height can't be calculated otherwise. */
     if (this.link) {
       this.disableAnimation = true;
-    } else if (this.animation) {
+    } else if (this.animation === false) {
       this.disableAnimation = true;
     }
   }
@@ -212,7 +201,8 @@ export class SpxAccordion {
   private clickHeader = () => {
     /** Handle linked instances. */
     if (this.link) {
-      document
+      /** Check if element is inside another Shadow DOM. */
+      (isInShadow(this.el) ? (this.el.getRootNode() as HTMLElement) : document)
         .querySelectorAll('spx-accordion[link="' + this.link + '"]')
         .forEach((item) => {
           /** Make sure not to toggle current element. */
@@ -268,7 +258,7 @@ export class SpxAccordion {
 
   render() {
     const { css } = cssEmotion(this.el.shadowRoot);
-    const tw = cssTw(this.el.shadowRoot);
+    const { tw } = cssTw(this.el.shadowRoot);
 
     /** Host styles. */
     const styleHost = cssHost({
@@ -403,7 +393,7 @@ export class SpxAccordion {
         <div class={styleShadowHost}>
           {/** Header. */}
           <Button
-            tag="div"
+            as="div"
             onClick={this.clickHeader}
             onEnter={this.clickHeader}
             class={!this.headerCustom ? styleHeader : ''}

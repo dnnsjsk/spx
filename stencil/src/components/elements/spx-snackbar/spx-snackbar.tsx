@@ -19,7 +19,7 @@ import { setStyle } from '../../../utils/cssVariables/setStyle';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
 import { cssEmotion } from '../../../utils/css/cssEmotion';
 import { cssTw } from '../../../utils/css/cssTw';
-import { Button } from '../../../elements/button';
+import { Button } from '../../../elements/Button';
 
 const tag = 'spx-snackbar';
 
@@ -92,9 +92,9 @@ export class SpxSnackbar {
 
   @Prop({ reflect: true }) fontSize: string = '18px';
 
-  @Prop({ reflect: true }) fontSizeMin: number = 1;
-
   @Prop({ reflect: true }) fontSizeMax: number = 1.6;
+
+  @Prop({ reflect: true }) fontSizeMin: number = 1;
 
   /**
    * Unique identifier for snackbar instance.
@@ -254,7 +254,7 @@ export class SpxSnackbar {
 
   render() {
     const { css, keyframes } = cssEmotion(this.el.shadowRoot);
-    const tw = cssTw(this.el.shadowRoot);
+    const { tw } = cssTw(this.el.shadowRoot);
 
     /** Animation in and out. */
     const kfOut = keyframes({

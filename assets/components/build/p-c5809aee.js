@@ -1,0 +1,1 @@
+import{a,t as r,b as s}from"./p-11f791f1.js";function o(o,t,f){var n,i;return o=a(o),f=null==f?0:(n=r(f),0,i=o.length,n==n&&(void 0!==i&&(n=n<=i?n:i),n=n>=0?n:0),n),t=s(t),o.slice(f,f+t.length)==t}export{o as s}
