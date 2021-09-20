@@ -1,0 +1,1 @@
+function o(o){return o.getRootNode()instanceof ShadowRoot}export{o as i}

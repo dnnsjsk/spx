@@ -1,0 +1,121 @@
+$tag: 'spx-share';
+
+$fontSize: var(--spx-font-size);
+$fontSizeMax: 1.4;
+$fontSizeMin: 1;
+$itemBackground: '';
+$itemBorderRadius: var(--spx-border-radius);
+$itemColor: #ffffff;
+$itemFilterHover: brightness(110%) saturate(120%);
+$itemGap: 0.5em;
+$itemGapMax: 1.2;
+$itemGapMin: 0.4;
+$itemPadding: 0.5em;
+$itemPaddingMax: 1.2;
+$itemPaddingMin: 0.5;
+$itemSize: 1em;
+$itemSizeMax: 0.8;
+$itemSizeMin: 0.7;
+
+:host {
+  display: setVar($tag, 'display', block);
+}
+
+.inner {
+  display: grid;
+  font-size: variable($tag, 'font-size', $fontSize);
+  grid-auto-flow: column;
+  @include style(
+    $tag,
+    'item-gap',
+    'grid-gap',
+    $itemGap,
+    $itemGapMin,
+    $itemGapMax
+  );
+
+  :host([vertical]:not([vertical='false'])) & {
+    grid-auto-flow: row;
+    grid-auto-rows: max-content;
+  }
+
+  :host([vertical]:not([vertical='false'])) & {
+    grid-auto-columns: max-content;
+  }
+}
+
+a {
+  --facebook: #1877f2;
+  --twitter: #1da1f2;
+  --whatsapp: #25d366;
+  --email: #c6c6c6;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: content-box;
+  cursor: pointer;
+  border-radius: variable($tag, 'item-border-radius', $itemBorderRadius);
+  color: variable($tag, 'item-color', $itemColor);
+  background: variable($tag, 'item-background', var(--color));
+  @include focus;
+  transition-property: filter, box-shadow;
+  @include style(
+    $tag,
+    'item-size',
+    'width',
+    $itemSize,
+    $itemSizeMin,
+    $itemSizeMax
+  );
+  @include style(
+    $tag,
+    'item-size',
+    'height',
+    $itemSize,
+    $itemSizeMin,
+    $itemSizeMax
+  );
+  @include style(
+    $tag,
+    'item-padding',
+    'padding',
+    $itemPadding,
+    $itemPaddingMin,
+    $itemPaddingMax
+  );
+
+  &.facebook {
+    --color: var(--facebook);
+  }
+
+  &.twitter {
+    --color: var(--twitter);
+  }
+
+  &.whatsapp {
+    --color: var(--whatsapp);
+  }
+
+  &.email {
+    --color: var(--email);
+  }
+
+  :host([theme='outline']) &,
+  :host([theme='minimal']) & {
+    color: variable($tag, 'item-color', var(--color));
+    background: transparent;
+  }
+
+  :host([theme='outline']) & {
+    border: 1px solid var(--color);
+  }
+
+  &:hover {
+    filter: variable($tag, 'item-filter-hover', $itemFilterHover);
+  }
+
+  svg {
+    height: 100%;
+  }
+}

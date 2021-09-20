@@ -1,59 +1,41 @@
 // eslint-disable-next-line no-unused-vars
 import { Component, h, Element, Prop } from '@stencil/core';
-import { cssTw } from '../../../utils/css/cssTw';
 
 @Component({
   tag: 'spx-control-switch',
+  styleUrl: 'spx-control-switch.scss',
   shadow: true,
 })
 export class SpxControlSwitch {
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxControlSwitchElement;
 
-  @Prop({ reflect: true }) checked: boolean;
+  @Prop({ mutable: true }) checked: boolean;
 
-  @Prop({ reflect: true }) handleChange;
+  @Prop() data: string;
 
-  @Prop({ reflect: true }) label: string;
+  @Prop() handleInput: Function;
+
+  @Prop() label: string;
+
+  private onInput = (e) => {
+    this.handleInput && this.handleInput(e);
+    this.checked = e.target.checked;
+  };
 
   render() {
-    const { tw, css } = cssTw(this.el.shadowRoot);
-
     return (
-      <label
-        class={
-          tw(`focus flex items-center cursor-pointer`) +
-          ' ' +
-          tw(
-            css`
-              .toggle:checked ~ .dot {
-                transform: translateX(28px);
-              }
-              .toggle:checked + div {
-                background: #0f172a;
-              }
-            `
-          )
-        }
-      >
-        <div class={tw(`relative mr-3`)}>
+      <label>
+        <div class="wrap">
           <input
+            data-set={this.data}
             type="checkbox"
-            class={tw(`sr-only`) + ` toggle`}
-            onChange={this.handleChange}
+            class="toggle"
+            onInput={this.onInput}
             checked={this.checked}
           />
-          <div
-            tabindex="0"
-            class={tw(
-              `focus-out block bg-blue-gray-300 w-12 h-5 rounded-full transition ease-in-out duration-100`
-            )}
-          />
-          <div
-            class={tw(
-              `dot absolute left-1 top-1 bg-white w-3 h-3 rounded-full transition ease-in-out duration-100`
-            )}
-          />
+          <div tabindex="0" class="dot-bg" />
+          <div class="dot" />
         </div>
         <spx-control-label label={this.label} />
       </label>

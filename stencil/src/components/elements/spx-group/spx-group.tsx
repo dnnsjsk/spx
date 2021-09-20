@@ -5,26 +5,22 @@ import {
   EventEmitter,
   // eslint-disable-next-line no-unused-vars
   h,
-  Host,
   Prop,
 } from '@stencil/core';
 import { startsWith } from 'lodash-es';
-import { css } from '@emotion/css';
-import * as s from '../../../constants/style';
-import { setVar } from '../../../utils/cssVariables/setVar';
 import { globalComponentDidLoad } from '../../../utils/global/globalComponentDidLoad';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
-
-const tag = 'spx-group';
 
 /**
  * Pass attributes to all inner (spx) child elements.
  * All attributes that start with g-* will be passed on to child elements.
  *
- * @slot inner - Slot (between HTML tags).
+ * @slot [slot:inner]
  */
 @Component({
   tag: 'spx-group',
+  styleUrl: 'spx-group.scss',
+  shadow: true,
 })
 export class SpxGroup {
   // eslint-disable-next-line no-undef
@@ -32,22 +28,17 @@ export class SpxGroup {
 
   @Prop({ reflect: true }) content: string;
 
-  @Prop({ reflect: true }) display: string = s.display;
-
-  /** Specifies a target element. */
+  /** [prop:target] */
   @Prop({ reflect: true }) target: string;
 
-  /** Fires after component has loaded. */
+  /** [event:loaded] */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxGroupDidLoad' })
   spxGroupDidLoad: EventEmitter;
 
   componentDidLoad() {
-    globalComponentDidLoad({ el: this.el });
-
     this.forwardAttributes();
 
-    /** Set up mutation observer. */
     const observer = new MutationObserver((mutations) => {
       mutations.forEach(() => {
         this.forwardAttributes();
@@ -58,6 +49,7 @@ export class SpxGroup {
       attributes: true,
     });
 
+    globalComponentDidLoad({ el: this.el });
     this.spxGroupDidLoad.emit({ target: 'document' });
   }
 
@@ -74,12 +66,10 @@ export class SpxGroup {
         });
     };
 
-    /** Get all tag matches. */
     const elements = this.target
       ? getAllTagMatches(new RegExp(this.target, 'i'))
       : getAllTagMatches(/^spx/i);
 
-    /** Loop matches. */
     for (
       let att, i = 0, atts = this.el.attributes, n = atts.length;
       i < n;
@@ -95,15 +85,6 @@ export class SpxGroup {
   };
 
   render() {
-    /** Host styles. */
-    const styleHost = css({
-      display: setVar(tag, 'display', this.display),
-    });
-
-    return (
-      <Host class={styleHost}>
-        <div innerHTML={this.content ?? this.el.innerHTML} />
-      </Host>
-    );
+    return <slot />;
   }
 }

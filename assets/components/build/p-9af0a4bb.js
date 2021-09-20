@@ -1,0 +1,1 @@
+import{i as o}from"./p-0e7557a8.js";function r(r){return o(r)?r.getRootNode().host.shadowRoot:document}export{r as g}

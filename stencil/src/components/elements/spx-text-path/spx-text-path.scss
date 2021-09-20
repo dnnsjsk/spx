@@ -1,0 +1,27 @@
+$tag: 'spx-text-path';
+
+$textColor: #000000;
+$textFontWeight: '';
+$textFontSize: clamp(20px, 3vw, 24px);
+$textTransform: default;
+
+:host {
+  display: setVar($tag, 'display', block);
+}
+
+.slot {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  clip-path: path('M250, 400 a150, 150 0 0, 1 0, -300a150, 150 0 0, 1 0, 300z');
+}
+
+.text-path {
+  text-transform: variable($tag, 'text-transform', $textTransform);
+  font-weight: variable($tag, 'text-font-weight', $textFontWeight);
+  font-size: variable($tag, 'text-font-size', $textFontSize);
+  fill: variable($tag, 'text-color', $textColor);
+}

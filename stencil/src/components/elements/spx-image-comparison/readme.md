@@ -7,8 +7,8 @@
 
 | Property    | Attribute    | Description                                       | Type      | Default                                         |
 | ----------- | ------------ | ------------------------------------------------- | --------- | ----------------------------------------------- |
+| `active`    | `active`     |                                                   | `boolean` | `undefined`                                     |
 | `color`     | `color`      |                                                   | `string`  | `'#ffffff'`                                     |
-| `display`   | `display`    |                                                   | `string`  | `s.display`                                     |
 | `height`    | `height`     |                                                   | `string`  | `'100%'`                                        |
 | `iconColor` | `icon-color` |                                                   | `string`  | `'var(--spx-color-gray-900)'`                   |
 | `lazy`      | `lazy`       | Lazy load images.                                 | `boolean` | `undefined`                                     |
@@ -20,9 +20,9 @@
 
 ## Events
 
-| Event                       | Description                       | Type               |
-| --------------------------- | --------------------------------- | ------------------ |
-| `spxImageComparisonDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+| Event                       | Description    | Type               |
+| --------------------------- | -------------- | ------------------ |
+| `spxImageComparisonDidLoad` | [event:loaded] | `CustomEvent<any>` |
 
 
 ## Dependencies

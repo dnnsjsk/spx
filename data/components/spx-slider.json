@@ -4,464 +4,534 @@
   "shadow": false,
   "properties": [
     {
-      "name": "autoheight",
       "attribute": "autoheight",
-      "type": "boolean",
+      "default": "false",
       "description": "Automatically adjusts height of slider.",
-      "default": "false",
-      "defaultValue": "false",
-      "tags": []
+      "id": "spx-slider-0",
+      "index": 0,
+      "name": "autoheight",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "autoplay",
       "attribute": "autoplay",
-      "type": "boolean",
+      "default": "false",
       "description": "Starts navigating to the next slide when page is loaded.",
-      "default": "false",
-      "defaultValue": "false",
-      "tags": []
+      "id": "spx-slider-1",
+      "index": 1,
+      "name": "autoplay",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "autoplayDelay",
       "attribute": "autoplay-delay",
-      "type": "number",
-      "description": "Autoplay delay.",
       "default": "6000",
-      "defaultValue": "6000",
-      "tags": []
+      "description": "Autoplay delay.",
+      "id": "spx-slider-2",
+      "index": 2,
+      "name": "autoplayDelay",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "autoplayDisableOnInteraction",
       "attribute": "autoplay-disable-on-interaction",
-      "type": "boolean",
+      "default": "false",
       "description": "Disable autoplay after interaction with slides.",
-      "default": "false",
-      "defaultValue": "false",
-      "tags": []
+      "id": "spx-slider-3",
+      "index": 3,
+      "name": "autoplayDisableOnInteraction",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "centeredSlides",
       "attribute": "centered-slides",
-      "type": "boolean",
-      "description": "Centers slides in viewport.",
       "default": "false",
-      "defaultValue": "false",
-      "tags": []
+      "description": "Centers slides in viewport.",
+      "id": "spx-slider-4",
+      "index": 4,
+      "name": "centeredSlides",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "s.display",
-      "defaultValue": "s.display",
-      "tags": []
-    },
-    {
-      "name": "effect",
       "attribute": "effect",
-      "type": "string",
+      "default": "slide",
       "description": "Slider effect.",
-      "default": "'slide'",
-      "defaultValue": "'slide'",
+      "id": "spx-slider-5",
+      "index": 5,
+      "name": "effect",
       "tags": [
         {
-          "text": "'slide', 'effect'",
+          "text": "slide, effect",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "imageObjectFit",
+      "attribute": "gap",
+      "default": "0",
+      "description": "Space between slides.",
+      "id": "spx-slider-6",
+      "index": 6,
+      "name": "gap",
+      "tags": [],
+      "type": "number"
+    },
+    {
       "attribute": "image-object-fit",
-      "type": "string",
+      "default": "cover",
       "description": "Image object-fit.",
-      "default": "'cover'",
-      "defaultValue": "'cover'",
+      "id": "spx-slider-7",
+      "index": 7,
+      "name": "imageObjectFit",
       "tags": [
         {
-          "text": "'fill', 'contain', 'cover', 'scale-down', 'none'",
+          "text": "fill, contain, cover, scale-down, none",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "imageSize",
       "attribute": "image-size",
-      "type": "string",
       "description": "WordPress media size when using the helper function.",
-      "tags": []
+      "id": "spx-slider-8",
+      "index": 8,
+      "name": "imageSize",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "imageSrc",
       "attribute": "image-src",
-      "type": "string",
+      "default": "acf",
       "description": "Gets images from an ACF or Metabox field.",
+      "id": "spx-slider-9",
+      "index": 9,
+      "name": "imageSrc",
       "tags": [
         {
-          "text": "'acf', 'mb'",
+          "text": "acf, mb",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "images",
       "attribute": "images",
-      "type": "string",
       "description": "Gets images from an ACF or Metabox field.",
+      "id": "spx-slider-10",
+      "index": 10,
+      "name": "images",
       "tags": [
         {
           "text": "&lt;?php spx\\Get::gallery($fieldName, $type) ?>",
           "name": "helper"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "lazy",
       "attribute": "lazy",
-      "type": "boolean",
       "description": "Lazy load images.",
-      "tags": []
+      "id": "spx-slider-11",
+      "index": 11,
+      "name": "lazy",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "lazyLoadPrevNext",
       "attribute": "lazy-load-prev-next",
-      "type": "number",
       "description": "Amount of images to to be preloaded when lazy is enabled.",
-      "tags": []
+      "id": "spx-slider-12",
+      "index": 12,
+      "name": "lazyLoadPrevNext",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "loop",
       "attribute": "loop",
-      "type": "boolean",
       "description": "Loops all slides infinitely.",
-      "tags": []
+      "id": "spx-slider-13",
+      "index": 13,
+      "name": "loop",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "maxHeight",
       "attribute": "max-height",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-slider-14",
+      "index": 14,
+      "name": "maxHeight",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "navigation",
       "attribute": "navigation",
-      "type": "boolean",
+      "default": "true",
       "description": "",
-      "tags": []
+      "id": "spx-slider-15",
+      "index": 15,
+      "name": "navigation",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "navigationBackdropFilter",
       "attribute": "navigation-backdrop-filter",
-      "type": "string",
+      "default": "var(--spx-backdrop-filter)",
       "description": "",
-      "default": "s.backdropFilter",
-      "defaultValue": "s.backdropFilter",
-      "tags": []
+      "id": "spx-slider-16",
+      "index": 16,
+      "name": "navigationBackdropFilter",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "navigationBackground",
       "attribute": "navigation-background",
-      "type": "string",
+      "default": "rgba(0,0,0,0.7)",
       "description": "",
-      "default": "'rgba(0,0,0,0.7)'",
-      "defaultValue": "'rgba(0,0,0,0.7)'",
-      "tags": []
+      "id": "spx-slider-17",
+      "index": 17,
+      "name": "navigationBackground",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "navigationBackgroundHover",
       "attribute": "navigation-background-hover",
-      "type": "string",
+      "default": "rgba(0,0,0,1)",
       "description": "",
-      "default": "'rgba(0,0,0,1)'",
-      "defaultValue": "'rgba(0,0,0,1)'",
-      "tags": []
+      "id": "spx-slider-18",
+      "index": 18,
+      "name": "navigationBackgroundHover",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "navigationBorderRadius",
       "attribute": "navigation-border-radius",
-      "type": "string",
+      "default": "var(--spx-border-radius)",
       "description": "",
-      "default": "s.borderRadius",
-      "defaultValue": "'var(--spx-border-radius)'",
-      "tags": []
+      "id": "spx-slider-19",
+      "index": 19,
+      "name": "navigationBorderRadius",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "navigationColor",
       "attribute": "navigation-color",
-      "type": "string",
+      "default": "#ffffff",
       "description": "",
-      "default": "'#ffffff'",
-      "defaultValue": "'#ffffff'",
-      "tags": []
+      "id": "spx-slider-20",
+      "index": 20,
+      "name": "navigationColor",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "navigationDistanceX",
       "attribute": "navigation-distance-x",
-      "type": "string",
+      "default": "12px",
       "description": "Navigation distance.",
-      "default": "'12px'",
-      "defaultValue": "'12px'",
+      "id": "spx-slider-21",
+      "index": 21,
+      "name": "navigationDistanceX",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "navigationIconNext",
       "attribute": "navigation-icon-next",
-      "type": "string",
+      "default": "arrow-forward",
       "description": "Navigation icon type.",
-      "default": "'arrow-forward'",
-      "defaultValue": "'arrow-forward'",
-      "tags": []
+      "id": "spx-slider-22",
+      "index": 22,
+      "name": "navigationIconNext",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "navigationIconPrev",
       "attribute": "navigation-icon-prev",
-      "type": "string",
+      "default": "arrow-back",
       "description": "Navigation icon type.",
-      "default": "'arrow-back'",
-      "defaultValue": "'arrow-back'",
-      "tags": []
+      "id": "spx-slider-23",
+      "index": 23,
+      "name": "navigationIconPrev",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "navigationIconType",
       "attribute": "navigation-icon-type",
-      "type": "string",
+      "default": "ionicons",
       "description": "Navigation icon type.",
-      "default": "'ionicons'",
-      "defaultValue": "'ionicons'",
-      "tags": []
+      "id": "spx-slider-24",
+      "index": 24,
+      "name": "navigationIconType",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "navigationPadding",
       "attribute": "navigation-padding",
-      "type": "string",
+      "default": "12px",
       "description": "",
-      "default": "'12px'",
-      "defaultValue": "'12px'",
-      "tags": []
-    },
-    {
-      "name": "navigationSize",
-      "attribute": "navigation-size",
-      "type": "string",
-      "description": "Navigation size.",
-      "default": "'20px'",
-      "defaultValue": "'20px'",
+      "id": "spx-slider-25",
+      "index": 25,
+      "name": "navigationPadding",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "navigationTransitionDuration",
-      "attribute": "navigation-transition-duration",
-      "type": "string",
-      "description": "",
-      "default": "s.transitionDuration",
-      "defaultValue": "'var(--spx-transition-duration)'",
-      "tags": []
-    },
-    {
-      "name": "navigationTransitionTimingFunction",
-      "attribute": "navigation-transition-timing-function",
-      "type": "string",
-      "description": "",
-      "default": "s.transitionTimingFunction",
-      "defaultValue": "'var(--spx-transition-timing-function)'",
-      "tags": []
-    },
-    {
-      "name": "pagination",
-      "attribute": "pagination",
-      "type": "string",
-      "description": "Pagination type.",
-      "default": "'bullets'",
-      "defaultValue": "'bullets'",
+      "attribute": "navigation-size",
+      "default": "20px",
+      "description": "Navigation size.",
+      "id": "spx-slider-26",
+      "index": 26,
+      "name": "navigationSize",
       "tags": [
         {
-          "text": "'bullets', 'none'",
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "pagination",
+      "default": "bullets",
+      "description": "Pagination type.",
+      "id": "spx-slider-27",
+      "index": 27,
+      "name": "pagination",
+      "tags": [
+        {
+          "text": "bullets, none",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "paginationBackdropFilter",
       "attribute": "pagination-backdrop-filter",
-      "type": "string",
+      "default": "var(--spx-backdrop-filter)",
       "description": "",
-      "default": "s.backdropFilter",
-      "defaultValue": "s.backdropFilter",
-      "tags": []
+      "id": "spx-slider-28",
+      "index": 28,
+      "name": "paginationBackdropFilter",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "paginationBackground",
       "attribute": "pagination-background",
-      "type": "string",
+      "default": "rgba(0,0,0,0.7)",
       "description": "",
-      "default": "'rgba(0,0,0,0.7)'",
-      "defaultValue": "'rgba(0,0,0,0.7)'",
-      "tags": []
+      "id": "spx-slider-29",
+      "index": 29,
+      "name": "paginationBackground",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "paginationBulletsBackground",
       "attribute": "pagination-bullets-background",
-      "type": "string",
+      "default": "var(--spx-color-gray-500)",
       "description": "",
-      "default": "'var(--spx-color-gray-500)'",
-      "defaultValue": "'var(--spx-color-gray-500)'",
-      "tags": []
+      "id": "spx-slider-30",
+      "index": 30,
+      "name": "paginationBulletsBackground",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "paginationBulletsBackgroundActive",
       "attribute": "pagination-bullets-background-active",
-      "type": "string",
+      "default": "#ffffff",
       "description": "",
-      "default": "'#ffffff'",
-      "defaultValue": "'#ffffff'",
-      "tags": []
+      "id": "spx-slider-31",
+      "index": 31,
+      "name": "paginationBulletsBackgroundActive",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "paginationBulletsClickable",
       "attribute": "pagination-bullets-clickable",
-      "type": "boolean",
       "description": "Make bullets clickable.",
-      "tags": []
+      "id": "spx-slider-32",
+      "index": 32,
+      "name": "paginationBulletsClickable",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "paginationBulletsDynamic",
       "attribute": "pagination-bullets-dynamic",
-      "type": "boolean",
+      "default": "false",
       "description": "Will only keep a selected amount of bullets visible.",
-      "tags": []
+      "id": "spx-slider-33",
+      "index": 33,
+      "name": "paginationBulletsDynamic",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "paginationBulletsDynamicAmount",
       "attribute": "pagination-bullets-dynamic-amount",
-      "type": "number",
-      "description": "Amount of dynamic bullets.",
       "default": "5",
-      "defaultValue": "5",
-      "tags": []
+      "description": "Amount of dynamic bullets.",
+      "id": "spx-slider-34",
+      "index": 34,
+      "name": "paginationBulletsDynamicAmount",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "paginationBulletsSize",
-      "attribute": "pagination-bullets-size",
-      "type": "string",
-      "description": "Size of the bullets.",
-      "default": "'6px'",
-      "defaultValue": "'6px'",
-      "tags": [
-        {
-          "name": "CSS"
-        }
-      ]
-    },
-    {
-      "name": "paginationBulletsSpaceBetween",
-      "attribute": "pagination-bullets-space-between",
-      "type": "string",
+      "attribute": "pagination-bullets-gap",
+      "default": "6px",
       "description": "Space between the bullets.",
-      "default": "'6px'",
-      "defaultValue": "'6px'",
+      "id": "spx-slider-35",
+      "index": 35,
+      "name": "paginationBulletsGap",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "paginationTransitionDuration",
-      "attribute": "pagination-transition-duration",
-      "type": "string",
-      "description": "",
-      "default": "s.transitionDuration",
-      "defaultValue": "'var(--spx-transition-duration)'",
-      "tags": []
+      "attribute": "pagination-bullets-size",
+      "default": "6px",
+      "description": "Size of the bullets.",
+      "id": "spx-slider-36",
+      "index": 36,
+      "name": "paginationBulletsSize",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "paginationTransitionTimingFunction",
-      "attribute": "pagination-transition-timing-function",
-      "type": "string",
-      "description": "",
-      "default": "s.transitionTimingFunction",
-      "defaultValue": "'var(--spx-transition-timing-function)'",
-      "tags": []
-    },
-    {
-      "name": "prevNextFilter",
       "attribute": "prev-next-filter",
-      "type": "string",
       "description": "Filter property for the previous and next elements.",
-      "tags": []
+      "id": "spx-slider-37",
+      "index": 37,
+      "name": "prevNextFilter",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "slideMessageFirst",
       "attribute": "slide-message-first",
-      "type": "string",
+      "default": "This is the first slide",
       "description": "Screen reader message for first slide.",
-      "default": "'This is the first slide'",
-      "defaultValue": "'This is the first slide'",
-      "tags": []
+      "id": "spx-slider-38",
+      "index": 38,
+      "name": "slideMessageFirst",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "slideMessageLast",
       "attribute": "slide-message-last",
-      "type": "string",
+      "default": "This is the last slide",
       "description": "Screen reader message for last slide.",
-      "default": "'This is the last slide'",
-      "defaultValue": "'This is the last slide'",
-      "tags": []
+      "id": "spx-slider-39",
+      "index": 39,
+      "name": "slideMessageLast",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "slideMessageNext",
       "attribute": "slide-message-next",
-      "type": "string",
+      "default": "Next slide",
       "description": "Screen reader message for next slide.",
-      "default": "'Next slide'",
-      "defaultValue": "'Next slide'",
-      "tags": []
+      "id": "spx-slider-40",
+      "index": 40,
+      "name": "slideMessageNext",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "slideMessagePrevious",
       "attribute": "slide-message-previous",
-      "type": "string",
+      "default": "Previous slide",
       "description": "Screen reader message for previous slide.",
-      "default": "'Previous slide'",
-      "defaultValue": "'Previous slide'",
-      "tags": []
+      "id": "spx-slider-41",
+      "index": 41,
+      "name": "slideMessagePrevious",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "slidesPerView",
       "attribute": "slides-per-view",
-      "type": "number",
-      "description": "Amount of slides shown at once.",
       "default": "1",
-      "defaultValue": "1",
-      "tags": []
+      "description": "Amount of slides shown at once.",
+      "id": "spx-slider-42",
+      "index": 42,
+      "name": "slidesPerView",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "spaceBetween",
-      "attribute": "space-between",
-      "type": "number",
-      "description": "Space between slides.",
-      "default": "0",
-      "defaultValue": "0",
-      "tags": []
-    },
-    {
-      "name": "speed",
       "attribute": "speed",
-      "type": "number",
-      "description": "Sliding speed.",
       "default": "1000",
-      "defaultValue": "1000",
-      "tags": []
+      "description": "Sliding speed.",
+      "id": "spx-slider-43",
+      "index": 43,
+      "name": "speed",
+      "tags": [],
+      "type": "number"
+    },
+    {
+      "attribute": "start",
+      "description": "At which slide component should start.",
+      "id": "spx-slider-44",
+      "index": 44,
+      "name": "start",
+      "tags": [],
+      "type": "number"
     }
   ],
   "events": [
@@ -473,8 +543,8 @@
   "methods": [],
   "slots": [
     {
-      "name": "inner",
-      "description": "Slot (between HTML tags)."
+      "name": "inner - Slot (between HTML tags).",
+      "description": ""
     }
   ]
 }

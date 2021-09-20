@@ -4,234 +4,275 @@
   "shadow": false,
   "properties": [
     {
-      "name": "classItem",
-      "attribute": "class-item",
-      "type": "string",
-      "description": "",
-      "tags": []
-    },
-    {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "s.display",
-      "defaultValue": "s.display",
-      "tags": []
-    },
-    {
-      "name": "fontSize",
       "attribute": "font-size",
-      "type": "string",
+      "default": "var(--spx-font-size)",
       "description": "",
-      "default": "s.fontSize",
-      "defaultValue": "'var(--spx-font-size)'",
-      "tags": []
+      "id": "spx-share-0",
+      "index": 0,
+      "name": "fontSize",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "fontSizeMax",
       "attribute": "font-size-max",
-      "type": "number",
-      "description": "",
       "default": "1.4",
-      "defaultValue": "1.4",
-      "tags": []
+      "description": "",
+      "id": "spx-share-1",
+      "index": 1,
+      "name": "fontSizeMax",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
     },
     {
-      "name": "fontSizeMin",
       "attribute": "font-size-min",
-      "type": "number",
-      "description": "",
       "default": "1",
-      "defaultValue": "1",
-      "tags": []
+      "description": "",
+      "id": "spx-share-2",
+      "index": 2,
+      "name": "fontSizeMin",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
     },
     {
-      "name": "itemBackground",
       "attribute": "item-background",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-share-3",
+      "index": 3,
+      "name": "itemBackground",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "itemBorderRadius",
       "attribute": "item-border-radius",
-      "type": "string",
+      "default": "var(--spx-border-radius)",
       "description": "",
-      "default": "s.borderRadius",
-      "defaultValue": "'var(--spx-border-radius)'",
-      "tags": []
+      "id": "spx-share-4",
+      "index": 4,
+      "name": "itemBorderRadius",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "itemColor",
       "attribute": "item-color",
-      "type": "string",
       "description": "Gap between buttons.",
+      "id": "spx-share-5",
+      "index": 5,
+      "name": "itemColor",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "itemFilterHover",
       "attribute": "item-filter-hover",
-      "type": "string",
+      "default": "brightness(110%) saturate(120%)",
       "description": "Filter hover.",
-      "default": "'brightness(110%) saturate(120%)'",
-      "defaultValue": "'brightness(110%) saturate(120%)'",
+      "id": "spx-share-6",
+      "index": 6,
+      "name": "itemFilterHover",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "itemGap",
       "attribute": "item-gap",
-      "type": "string",
+      "default": "0.5em",
       "description": "Gap between buttons.",
-      "default": "'0.5em'",
-      "defaultValue": "'0.5em'",
+      "id": "spx-share-7",
+      "index": 7,
+      "name": "itemGap",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "itemGapMax",
       "attribute": "item-gap-max",
-      "type": "number",
-      "description": "",
       "default": "1",
-      "defaultValue": "1",
-      "tags": []
+      "description": "",
+      "id": "spx-share-8",
+      "index": 8,
+      "name": "itemGapMax",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
     },
     {
-      "name": "itemGapMin",
       "attribute": "item-gap-min",
-      "type": "number",
-      "description": "",
       "default": "0.4",
-      "defaultValue": "0.4",
-      "tags": []
+      "description": "",
+      "id": "spx-share-9",
+      "index": 9,
+      "name": "itemGapMin",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
     },
     {
-      "name": "itemPadding",
       "attribute": "item-padding",
-      "type": "string",
+      "default": "0.5em",
       "description": "",
-      "default": "'0.5em'",
-      "defaultValue": "'0.5em'",
-      "tags": []
+      "id": "spx-share-10",
+      "index": 10,
+      "name": "itemPadding",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "itemPaddingMax",
       "attribute": "item-padding-max",
-      "type": "number",
-      "description": "",
       "default": "1.2",
-      "defaultValue": "1.2",
-      "tags": []
+      "description": "",
+      "id": "spx-share-11",
+      "index": 11,
+      "name": "itemPaddingMax",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
     },
     {
-      "name": "itemPaddingMin",
       "attribute": "item-padding-min",
-      "type": "number",
-      "description": "",
       "default": "0.5",
-      "defaultValue": "0.5",
-      "tags": []
+      "description": "",
+      "id": "spx-share-12",
+      "index": 12,
+      "name": "itemPaddingMin",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
     },
     {
-      "name": "itemSize",
       "attribute": "item-size",
-      "type": "string",
+      "default": "1em",
       "description": "",
-      "default": "'1em'",
-      "defaultValue": "'1em'",
-      "tags": []
+      "id": "spx-share-13",
+      "index": 13,
+      "name": "itemSize",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "itemSizeMax",
       "attribute": "item-size-max",
-      "type": "number",
-      "description": "",
       "default": "1",
-      "defaultValue": "1",
-      "tags": []
+      "description": "",
+      "id": "spx-share-14",
+      "index": 14,
+      "name": "itemSizeMax",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
     },
     {
-      "name": "itemSizeMin",
       "attribute": "item-size-min",
-      "type": "number",
-      "description": "",
       "default": "0.7",
-      "defaultValue": "0.7",
-      "tags": []
-    },
-    {
-      "name": "itemTransitionDuration",
-      "attribute": "item-transition-duration",
-      "type": "string",
       "description": "",
-      "default": "s.transitionDuration",
-      "defaultValue": "'var(--spx-transition-duration)'",
-      "tags": []
+      "id": "spx-share-15",
+      "index": 15,
+      "name": "itemSizeMin",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
     },
     {
-      "name": "itemTransitionTimingFunction",
-      "attribute": "item-transition-timing-function",
-      "type": "string",
-      "description": "",
-      "default": "s.transitionTimingFunction",
-      "defaultValue": "'var(--spx-transition-timing-function)'",
-      "tags": []
-    },
-    {
-      "name": "styling",
       "attribute": "styling",
-      "type": "string",
+      "default": "default",
       "description": "Styling.",
-      "default": "'default'",
-      "defaultValue": "'default'",
+      "id": "spx-share-16",
+      "index": 16,
+      "name": "styling",
       "tags": [
         {
-          "text": "'default', 'fluid', 'headless'",
+          "text": "default, fluid",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "target",
       "attribute": "target",
-      "type": "string",
-      "description": "Button href target.",
-      "default": "'_blank'",
-      "defaultValue": "'_blank'",
-      "tags": []
+      "default": "_blank",
+      "description": "Link href target.",
+      "id": "spx-share-17",
+      "index": 17,
+      "name": "target",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "theme",
       "attribute": "theme",
-      "type": "string",
+      "default": "default",
       "description": "Button theme.",
-      "default": "'default'",
-      "defaultValue": "'default'",
+      "id": "spx-share-18",
+      "index": 18,
+      "name": "theme",
       "tags": [
         {
-          "text": "'default', 'outline', 'minimal'",
+          "text": "default, outline, minimal",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "vertical",
       "attribute": "vertical",
-      "type": "boolean",
       "description": "Render buttons vertically.",
-      "tags": []
+      "id": "spx-share-19",
+      "index": 19,
+      "name": "vertical",
+      "tags": [],
+      "type": "boolean"
     }
   ],
   "events": [

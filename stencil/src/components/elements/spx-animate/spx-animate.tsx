@@ -1,46 +1,43 @@
 import {
   Component,
-  Host,
   // eslint-disable-next-line no-unused-vars
   h,
   Prop,
   Element,
-  State,
   Method,
   Event,
   EventEmitter,
 } from '@stencil/core';
-import * as s from '../../../constants/style';
-import { css } from '@emotion/css';
 import { gsap } from 'gsap';
-import { setVar } from '../../../utils/cssVariables/setVar';
 import { globalComponentDidLoad } from '../../../utils/global/globalComponentDidLoad';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
-
-const tag = 'spx-animate';
 
 /**
  * Wrapper around GSAP that allows for staggered and scroll-based animation.
  *
- * @slot inner - Slot (between HTML tags).
+ * @slot [slot:inner]
  */
 @Component({
   tag: 'spx-animate',
+  styleUrl: 'spx-animate.scss',
+  shadow: true,
 })
 export class SpxAnimate {
+  private elements;
+  private intersectionObserver;
+  private tl;
+
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxAnimateElement;
 
-  @State() elements;
-  @State() tl;
+  /** Set visibility of animated element to 'inherit' after animating it in. */
+  @Prop() autoAlpha: string;
 
   /** Clip-path value the animation starts from. */
   @Prop() clipPath: string;
 
   /** Delay before animation starts. */
   @Prop() delay: number = 0;
-
-  @Prop({ reflect: true }) display: string = s.display;
 
   /** Animation duration. */
   @Prop() duration: number = 1;
@@ -69,7 +66,7 @@ export class SpxAnimate {
   /** Amount of time elements should be staggered by. */
   @Prop() stagger: number = 0.15;
 
-  /** The target element that should be animated inside the component. */
+  /** [prop:target] */
   @Prop() target: string = '*';
 
   /** Starts animation when target is in the viewport. */
@@ -93,21 +90,15 @@ export class SpxAnimate {
   /** Y position the animation starts from. */
   @Prop() y: any = 0;
 
-  /**
-   * Causes the animation to go back and forth, alternating backward and forward
-   * on each repeat.
-   */
+  /** Causes the animation to go back and forth, alternating backward and forward on each repeat. */
   @Prop() yoyo: boolean;
 
-  /** Fires after component has loaded. */
+  /** [event:loaded] */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxAnimateDidLoad' })
   spxAnimateDidLoad: EventEmitter;
 
   componentDidLoad() {
-    globalComponentDidLoad({ el: this.el });
-
-    /** Init loop to make sure the component fires correctly in Oxygen. */
     const init = () => {
       this.elements = this.el.querySelectorAll(this.target);
 
@@ -117,90 +108,99 @@ export class SpxAnimate {
       ) {
         setTimeout(init, 100);
       } else {
-        this.tl = gsap.timeline({
-          defaults: {
-            ease: this.ease,
-          },
-          paused: true,
-        });
-
-        const options = {
-          clipPath: this.clipPath,
-          delay: this.delay,
-          duration: this.duration,
-          filter: this.filter,
-          webkitFilter: this.filter,
-          opacity: this.opacity,
-          repeat: this.repeat,
-          repeatDelay: this.repeatDelay,
-          stagger: this.stagger,
-          x: this.x,
-          y: this.y,
-          yoyo: this.yoyo,
-          onComplete: () => {
-            const el = this.el.parentElement;
-
-            if (this.el.parentElement.tagName === 'SPX-NOTATION') {
-              // @ts-ignore
-              el.show();
-            }
-          },
-        };
-
-        if (this.reverse) {
-          this.tl.to(this.elements, options);
-        } else {
-          this.tl.from(this.elements, options);
-        }
-
-        /** Play immediately when not in viewport. */
-        if (!this.viewport) {
-          this.tl.play();
-        }
-
-        /** Check viewport before playing. */
-        if (this.viewport) {
-          const options = {
-            rootMargin:
-              '' +
-              '' +
-              (this.viewportMarginTop || '0px') +
-              ' ' +
-              '' +
-              (this.viewportMarginRight || '0px') +
-              ' ' +
-              '' +
-              (this.viewportMarginBottom || '0px') +
-              ' ' +
-              '' +
-              (this.viewportMarginLeft || '0px') +
-              '',
-          };
-
-          const intersectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                this.tl.play();
-              } else {
-                if (!this.once) {
-                  this.tl.reverse();
-                }
-              }
-            });
-          }, options);
-          intersectionObserver.observe(this.el);
-        }
-
+        this.init();
         this.spxAnimateDidLoad.emit({ target: 'document' });
       }
     };
-
     init();
+    globalComponentDidLoad({ el: this.el });
   }
 
   componentWillUpdate() {
+    if (!this.tl.isActive()) {
+      this.tl?.kill();
+      this.tl = null;
+      this.intersectionObserver?.disconnect();
+      this.init();
+    }
+
     globalComponentWillUpdate(this.el);
   }
+
+  private init = () => {
+    this.tl = gsap.timeline({
+      defaults: {
+        ease: this.ease,
+      },
+      paused: true,
+    });
+
+    const options = {
+      autoAlpha: this.autoAlpha,
+      clipPath: this.clipPath,
+      delay: this.delay,
+      duration: this.duration,
+      filter: this.filter,
+      webkitFilter: this.filter,
+      opacity: this.opacity,
+      repeat: this.repeat,
+      repeatDelay: this.repeatDelay,
+      stagger: this.stagger,
+      x: this.x,
+      y: this.y,
+      yoyo: this.yoyo,
+      onComplete: () => {
+        const el = this.el.parentElement;
+
+        if (this.el.parentElement?.tagName === 'SPX-NOTATION') {
+          // @ts-ignore
+          el.show();
+        }
+      },
+    };
+
+    if (this.reverse) {
+      this.tl.to(this.elements, options);
+    } else {
+      this.tl.from(this.elements, options);
+    }
+
+    if (!this.viewport) {
+      this.tl.play();
+    }
+
+    if (this.viewport) {
+      const options = {
+        rootMargin:
+          '' +
+          '' +
+          (this.viewportMarginTop || '0px') +
+          ' ' +
+          '' +
+          (this.viewportMarginRight || '0px') +
+          ' ' +
+          '' +
+          (this.viewportMarginBottom || '0px') +
+          ' ' +
+          '' +
+          (this.viewportMarginLeft || '0px') +
+          '',
+      };
+
+      this.intersectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            this.tl.play();
+          } else {
+            if (!this.once) {
+              this.tl.reverse();
+            }
+          }
+        });
+      }, options);
+      this.intersectionObserver.observe(this.el);
+    }
+  };
 
   /**
    * Plays animation.
@@ -225,15 +225,6 @@ export class SpxAnimate {
   }
 
   render() {
-    /** Host styles. */
-    const styleHost = css({
-      display: setVar(tag, 'display', this.display),
-    });
-
-    return (
-      <Host class={styleHost}>
-        <slot />
-      </Host>
-    );
+    return <slot />;
   }
 }

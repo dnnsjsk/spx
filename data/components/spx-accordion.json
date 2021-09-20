@@ -4,384 +4,503 @@
   "shadow": false,
   "properties": [
     {
-      "name": "animation",
-      "attribute": "animation",
-      "type": "boolean",
-      "description": "Animate the opening of the content. Set to false if Accordion is starting hidden.",
-      "default": "true",
-      "defaultValue": "true",
-      "tags": []
-    },
-    {
-      "name": "classContent",
       "attribute": "class-content",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-0",
+      "index": 0,
+      "name": "classContent",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classContentActive",
       "attribute": "class-content-active",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-1",
+      "index": 1,
+      "name": "classContentActive",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classContentInactive",
       "attribute": "class-content-inactive",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-2",
+      "index": 2,
+      "name": "classContentInactive",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classContentText",
       "attribute": "class-content-text",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-3",
+      "index": 3,
+      "name": "classContentText",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classContentTextActive",
       "attribute": "class-content-text-active",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-4",
+      "index": 4,
+      "name": "classContentTextActive",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classContentTextInactive",
       "attribute": "class-content-text-inactive",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-5",
+      "index": 5,
+      "name": "classContentTextInactive",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classHeader",
       "attribute": "class-header",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-6",
+      "index": 6,
+      "name": "classHeader",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classHeaderActive",
       "attribute": "class-header-active",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-7",
+      "index": 7,
+      "name": "classHeaderActive",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classHeaderIcon",
       "attribute": "class-header-icon",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-8",
+      "index": 8,
+      "name": "classHeaderIcon",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classHeaderIconActive",
       "attribute": "class-header-icon-active",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-9",
+      "index": 9,
+      "name": "classHeaderIconActive",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classHeaderIconContainer",
       "attribute": "class-header-icon-container",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-10",
+      "index": 10,
+      "name": "classHeaderIconContainer",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classHeaderIconContainerActive",
       "attribute": "class-header-icon-container-active",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-11",
+      "index": 11,
+      "name": "classHeaderIconContainerActive",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classHeaderIconContainerInactive",
       "attribute": "class-header-icon-container-inactive",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-12",
+      "index": 12,
+      "name": "classHeaderIconContainerInactive",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classHeaderIconInactive",
       "attribute": "class-header-icon-inactive",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-13",
+      "index": 13,
+      "name": "classHeaderIconInactive",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classHeaderInactive",
       "attribute": "class-header-inactive",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-14",
+      "index": 14,
+      "name": "classHeaderInactive",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classHeaderText",
       "attribute": "class-header-text",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-15",
+      "index": 15,
+      "name": "classHeaderText",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classHeaderTextActive",
       "attribute": "class-header-text-active",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-16",
+      "index": 16,
+      "name": "classHeaderTextActive",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classHeaderTextInactive",
       "attribute": "class-header-text-inactive",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-accordion-17",
+      "index": 17,
+      "name": "classHeaderTextInactive",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "contentColor",
       "attribute": "content-color",
-      "type": "string",
+      "default": "var(--spx-color-gray-900)",
       "description": "",
-      "default": "'var(--spx-color-gray-900)'",
-      "defaultValue": "'var(--spx-color-gray-900)'",
-      "tags": []
+      "id": "spx-accordion-18",
+      "index": 18,
+      "name": "contentColor",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "contentText",
+      "attribute": "content-font-size",
+      "default": "var(--spx-font-size)",
+      "description": "",
+      "id": "spx-accordion-19",
+      "index": 19,
+      "name": "contentFontSize",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "content-font-size-max",
+      "default": "1.2",
+      "description": "",
+      "id": "spx-accordion-20",
+      "index": 20,
+      "name": "contentFontSizeMax",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
+    },
+    {
+      "attribute": "content-font-size-min",
+      "default": "1",
+      "description": "",
+      "id": "spx-accordion-21",
+      "index": 21,
+      "name": "contentFontSizeMin",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
+    },
+    {
       "attribute": "content-text",
-      "type": "string",
+      "default": "Default Content Text",
       "description": "Content text.",
-      "default": "'Default Content Text'",
-      "defaultValue": "'Default Content Text'",
-      "tags": []
+      "id": "spx-accordion-22",
+      "index": 22,
+      "name": "contentText",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "contentTextTag",
       "attribute": "content-text-tag",
-      "type": "string",
+      "default": "span",
       "description": "Content text tag.",
-      "default": "'span'",
-      "defaultValue": "'span'",
-      "tags": []
+      "id": "spx-accordion-23",
+      "index": 23,
+      "name": "contentTextTag",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "contentTransitionDuration",
-      "attribute": "content-transition-duration",
-      "type": "string",
-      "description": "",
-      "default": "s.transitionDuration",
-      "defaultValue": "'var(--spx-transition-duration)'",
-      "tags": []
-    },
-    {
-      "name": "contentTransitionTimingFunction",
-      "attribute": "content-transition-timing-function",
-      "type": "string",
-      "description": "",
-      "default": "s.transitionTimingFunction",
-      "defaultValue": "'var(--spx-transition-timing-function)'",
-      "tags": []
-    },
-    {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "s.display",
-      "defaultValue": "s.display",
-      "tags": []
-    },
-    {
-      "name": "fontSize",
-      "attribute": "font-size",
-      "type": "string",
-      "description": "",
-      "default": "s.fontSize",
-      "defaultValue": "'var(--spx-font-size)'",
-      "tags": []
-    },
-    {
-      "name": "fontSizeMax",
-      "attribute": "font-size-max",
-      "type": "number",
-      "description": "",
-      "default": "1.2",
-      "defaultValue": "1.2",
-      "tags": []
-    },
-    {
-      "name": "fontSizeMin",
-      "attribute": "font-size-min",
-      "type": "number",
-      "description": "",
-      "default": "1",
-      "defaultValue": "1",
-      "tags": []
-    },
-    {
-      "name": "gap",
       "attribute": "gap",
-      "type": "string",
+      "default": "0.4em",
       "description": "Space between header and content.",
-      "default": "'0.4em'",
-      "defaultValue": "'0.4em'",
-      "tags": []
+      "id": "spx-accordion-24",
+      "index": 24,
+      "name": "gap",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "gapMax",
       "attribute": "gap-max",
-      "type": "number",
-      "description": "",
       "default": "1.2",
-      "defaultValue": "1.2",
-      "tags": []
+      "description": "",
+      "id": "spx-accordion-25",
+      "index": 25,
+      "name": "gapMax",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
     },
     {
-      "name": "gapMin",
       "attribute": "gap-min",
-      "type": "number",
-      "description": "",
       "default": "1",
-      "defaultValue": "1",
-      "tags": []
+      "description": "",
+      "id": "spx-accordion-26",
+      "index": 26,
+      "name": "gapMin",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
     },
     {
-      "name": "headerColor",
       "attribute": "header-color",
-      "type": "string",
+      "default": "var(--spx-color-gray-900)",
       "description": "",
-      "default": "'var(--spx-color-gray-900)'",
-      "defaultValue": "'var(--spx-color-gray-900)'",
-      "tags": []
+      "id": "spx-accordion-27",
+      "index": 27,
+      "name": "headerColor",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "headerGap",
-      "attribute": "header-gap",
-      "type": "string",
-      "description": "Gap between header text and icon.",
-      "default": "'0.4em'",
-      "defaultValue": "'0.4em'",
-      "tags": []
+      "attribute": "header-font-size",
+      "default": "var(--spx-font-size)",
+      "description": "",
+      "id": "spx-accordion-28",
+      "index": 28,
+      "name": "headerFontSize",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "headerGapMax",
-      "attribute": "header-gap-max",
-      "type": "number",
+      "attribute": "header-font-size-max",
+      "default": "1.2",
       "description": "",
+      "id": "spx-accordion-29",
+      "index": 29,
+      "name": "headerFontSizeMax",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
+    },
+    {
+      "attribute": "header-font-size-min",
       "default": "1",
-      "defaultValue": "1",
-      "tags": []
-    },
-    {
-      "name": "headerGapMin",
-      "attribute": "header-gap-min",
-      "type": "number",
       "description": "",
+      "id": "spx-accordion-30",
+      "index": 30,
+      "name": "headerFontSizeMin",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
+    },
+    {
+      "attribute": "header-gap",
+      "default": "0.4em",
+      "description": "Gap between header text and icon.",
+      "id": "spx-accordion-31",
+      "index": 31,
+      "name": "headerGap",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "header-gap-max",
+      "default": "1",
+      "description": "",
+      "id": "spx-accordion-32",
+      "index": 32,
+      "name": "headerGapMax",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
+    },
+    {
+      "attribute": "header-gap-min",
       "default": "0.6",
-      "defaultValue": "0.6",
-      "tags": []
+      "description": "",
+      "id": "spx-accordion-33",
+      "index": 33,
+      "name": "headerGapMin",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "number"
     },
     {
-      "name": "headerText",
       "attribute": "header-text",
-      "type": "string",
+      "default": "Default Header Text",
       "description": "Header text.",
-      "default": "'Default Header Text'",
-      "defaultValue": "'Default Header Text'",
-      "tags": []
+      "id": "spx-accordion-34",
+      "index": 34,
+      "name": "headerText",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "headerTextOpen",
       "attribute": "header-text-open",
-      "type": "string",
       "description": "Header text when component is closed.",
-      "tags": []
+      "id": "spx-accordion-35",
+      "index": 35,
+      "name": "headerTextOpen",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "headerTextTag",
       "attribute": "header-text-tag",
-      "type": "string",
+      "default": "span",
       "description": "Header text tag.",
-      "default": "'span'",
-      "defaultValue": "'span'",
-      "tags": []
+      "id": "spx-accordion-36",
+      "index": 36,
+      "name": "headerTextTag",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "indicatorIcon",
-      "attribute": "indicator-icon",
-      "type": "string",
-      "description": "Indicator icon.",
-      "default": "'arrow-down'",
-      "defaultValue": "'arrow-down'",
-      "tags": []
+      "attribute": "icon",
+      "default": "arrow-down",
+      "description": "Icon.",
+      "id": "spx-accordion-37",
+      "index": 37,
+      "name": "icon",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "indicatorIconTransform",
-      "attribute": "indicator-icon-transform",
-      "type": "string",
-      "description": "Indicator icon transform.",
-      "default": "'rotate(180deg)'",
-      "defaultValue": "'rotate(180deg)'",
-      "tags": []
+      "attribute": "icon-transform",
+      "default": "rotate(180deg)",
+      "description": "Icon transform.",
+      "id": "spx-accordion-38",
+      "index": 38,
+      "name": "iconTransform",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "indicatorIconType",
-      "attribute": "indicator-icon-type",
-      "type": "string",
-      "description": "Indicator icon type.",
-      "default": "'ionicons'",
-      "defaultValue": "'ionicons'",
-      "tags": []
+      "attribute": "icon-type",
+      "default": "ionicons",
+      "description": "Icon type.",
+      "id": "spx-accordion-39",
+      "index": 39,
+      "name": "iconType",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "link",
       "attribute": "link",
-      "type": "string",
       "description": "Sets the ID to link different accordions together.",
-      "tags": []
+      "id": "spx-accordion-40",
+      "index": 40,
+      "name": "link",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "linkType",
       "attribute": "link-type",
-      "type": "string",
+      "default": "open",
       "description": "Sets the type of link.",
+      "id": "spx-accordion-41",
+      "index": 41,
+      "name": "linkType",
       "tags": [
         {
-          "text": "'open', 'close', 'toggle'",
+          "text": "open, close, toggle",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "openState",
       "attribute": "open",
-      "type": "boolean",
-      "description": "State of accordion.",
       "default": "false",
-      "defaultValue": "false",
-      "tags": []
+      "description": "State of accordion.",
+      "id": "spx-accordion-42",
+      "index": 42,
+      "name": "openState",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "reverse",
       "attribute": "reverse",
-      "type": "boolean",
       "description": "Reverse icon positioning.",
-      "tags": []
+      "id": "spx-accordion-43",
+      "index": 43,
+      "name": "reverse",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "styling",
       "attribute": "styling",
-      "type": "string",
+      "default": "default",
       "description": "Styling.",
-      "default": "'default'",
-      "defaultValue": "'default'",
+      "id": "spx-accordion-44",
+      "index": 44,
+      "name": "styling",
       "tags": [
         {
-          "text": "'default', 'fluid', 'headless'",
+          "text": "default, fluid, headless",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     }
   ],
   "events": [

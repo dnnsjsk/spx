@@ -1,0 +1,51 @@
+@import '../../../global/editor';
+
+:host {
+  display: block;
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--spx-color-gray-200);
+  padding-left: 1rem;
+  width: 100%;
+  height: var(--spx-editor-header-height);
+}
+
+.buttons {
+  display: flex;
+  height: 100%;
+}
+
+button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 3rem;
+  height: 100%;
+  color: var(--spx-color-gray-500);
+  @include focus;
+  @include editorHover;
+
+  &.is-desktop {
+    @media (min-width: 1024px) {
+      display: none;
+    }
+  }
+}
+
+span {
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background: var(--spx-color-gray-700);
+  bottom: -1px;
+}
+
+h1 {
+  font-weight: 600;
+  font-size: 1rem;
+}

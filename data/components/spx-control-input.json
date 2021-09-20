@@ -1,0 +1,92 @@
+{
+  "name": "spx-control-input",
+  "description": "",
+  "shadow": false,
+  "properties": [
+    {
+      "attribute": "data",
+      "description": "",
+      "id": "spx-control-input-0",
+      "index": 0,
+      "name": "data",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "default": "function () {}",
+      "description": "",
+      "id": "spx-control-input-1",
+      "index": 1,
+      "name": "handleInput",
+      "tags": [],
+      "type": "Function"
+    },
+    {
+      "attribute": "label",
+      "description": "",
+      "id": "spx-control-input-2",
+      "index": 2,
+      "name": "label",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "max",
+      "description": "",
+      "id": "spx-control-input-3",
+      "index": 3,
+      "name": "max",
+      "tags": [],
+      "type": "number"
+    },
+    {
+      "attribute": "min",
+      "description": "",
+      "id": "spx-control-input-4",
+      "index": 4,
+      "name": "min",
+      "tags": [],
+      "type": "number"
+    },
+    {
+      "attribute": "placeholder",
+      "description": "",
+      "id": "spx-control-input-5",
+      "index": 5,
+      "name": "placeholder",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "step",
+      "description": "",
+      "id": "spx-control-input-6",
+      "index": 6,
+      "name": "step",
+      "tags": [],
+      "type": "number"
+    },
+    {
+      "attribute": "type",
+      "default": "text",
+      "description": "",
+      "id": "spx-control-input-7",
+      "index": 7,
+      "name": "type",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "value",
+      "description": "",
+      "id": "spx-control-input-8",
+      "index": 8,
+      "name": "value",
+      "tags": [],
+      "type": "string"
+    }
+  ],
+  "events": [],
+  "methods": [],
+  "slots": []
+}

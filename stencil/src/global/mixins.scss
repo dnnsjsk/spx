@@ -1,0 +1,92 @@
+@function variable($tag, $attribute, $value) {
+  @return var(--#{$tag}-#{$attribute}, #{$value});
+}
+
+@mixin clamp($tag, $attribute, $property, $min: 1, $max: 5) {
+  --#{$tag}-#{$attribute}-fluid-min: var(--#{$tag}-#{$attribute}-min, #{$min});
+  --#{$tag}-#{$attribute}-fluid-max: var(--#{$tag}-#{$attribute}-max, #{$max});
+  --#{$tag}-#{$attribute}-fluid-min-w-px: calc(
+    var(--spx-fluid-min-w) / var(--spx-fluid-base)
+  );
+  --#{$tag}-#{$attribute}-fluid-max-w-px: calc(
+    var(--spx-fluid-max-w) / var(--spx-fluid-base)
+  );
+  --#{$tag}-#{$attribute}-fluid-slope: calc(
+    (
+        var(--#{$tag}-#{$attribute}-fluid-max) -
+          var(--#{$tag}-#{$attribute}-fluid-min)
+      ) /
+      (
+        var(--#{$tag}-#{$attribute}-fluid-max-w-px) -
+          var(--#{$tag}-#{$attribute}-fluid-min-w-px)
+      )
+  );
+  --#{$tag}-#{$attribute}-fluid-y-axis: calc(
+    (
+        (var(--#{$tag}-#{$attribute}-fluid-min-w-px) * -1) *
+          var(--#{$tag}-#{$attribute}-fluid-slope)
+      ) + var(--#{$tag}-#{$attribute}-fluid-min)
+  );
+  #{$property}: clamp(
+    calc(var(--#{$tag}-#{$attribute}-fluid-min) * 1rem),
+    calc(
+      (var(--#{$tag}-#{$attribute}-fluid-y-axis) * 1rem) +
+        (var(--#{$tag}-#{$attribute}-fluid-slope) * 100vw)
+    ),
+    calc(var(--#{$tag}-#{$attribute}-fluid-max) * 1rem)
+  );
+}
+
+@mixin style(
+  $tag,
+  $attribute,
+  $property,
+  $value: '',
+  $min: '',
+  $max: '',
+  $condition: ''
+) {
+  :host([styling='default']#{$condition}) & {
+    #{$property}: variable($tag, $attribute, $value);
+  }
+
+  :host([styling='fluid']#{$condition}) & {
+    @include clamp($tag, $attribute, $property, $min, $max);
+  }
+}
+
+@mixin focus() {
+  transition-property: box-shadow;
+  transition-duration: var(--spx-transition-duration);
+  transition-timing-function: var(--spx-transition-timing-function);
+
+  &:focus {
+    outline: none;
+  }
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--spx-focus);
+  }
+}
+
+@mixin focusRing() {
+  transition-property: box-shadow;
+  transition-duration: var(--spx-transition-duration);
+  transition-timing-function: var(--spx-transition-timing-function);
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--spx-focus-ring);
+  }
+}
+
+@mixin editorHover() {
+  &:hover {
+    color: var(--spx-color-gray-700);
+    background: var(--spx-color-gray-100);
+  }
+}

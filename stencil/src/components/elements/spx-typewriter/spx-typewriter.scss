@@ -1,0 +1,26 @@
+$tag: 'spx-typewriter';
+
+:host {
+  display: setVar($tag, 'display', block);
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.cursor {
+  animation-name: blink;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+  margin-left: 1px;
+}

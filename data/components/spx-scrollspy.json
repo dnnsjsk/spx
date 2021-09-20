@@ -4,92 +4,67 @@
   "shadow": false,
   "properties": [
     {
-      "name": "contentClass",
-      "attribute": "content-class",
-      "type": "string",
-      "description": "Applied class to active content element.",
-      "default": "'spx-scrollspy__content--active'",
-      "defaultValue": "'spx-scrollspy__content--active'",
-      "tags": []
-    },
-    {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "s.display",
-      "defaultValue": "s.display",
-      "tags": []
-    },
-    {
-      "name": "navClass",
       "attribute": "nav-class",
-      "type": "string",
+      "default": "spx-scrollspy__nav--active",
       "description": "Applied class to active navigation element.",
-      "default": "'spx-scrollspy__nav--active'",
-      "defaultValue": "'spx-scrollspy__nav--active'",
-      "tags": []
+      "id": "spx-scrollspy-0",
+      "index": 0,
+      "name": "navClass",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "offset",
-      "attribute": "offset",
-      "type": "any",
-      "description": "Selects the height of an element (any querySelector value) or number that\nis used for offsetting how far from the top the next section is activated.",
-      "default": "0",
-      "defaultValue": "0",
-      "tags": []
+      "attribute": "root-margin",
+      "default": "0px",
+      "description": "Intersection observer root margin.",
+      "id": "spx-scrollspy-1",
+      "index": 1,
+      "name": "rootMargin",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "scrolling",
-      "attribute": "scrolling",
-      "type": "number",
-      "description": "Activates automatic navigation scrolling and sets the offset.",
-      "tags": []
-    },
-    {
-      "name": "target",
       "attribute": "target",
-      "type": "string",
+      "default": "a",
       "description": "Target element. Can take any querySelector value. (id, class, tag etc.)",
-      "default": "'a'",
-      "defaultValue": "'a'",
-      "tags": []
+      "id": "spx-scrollspy-2",
+      "index": 2,
+      "name": "target",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "urlChange",
+      "attribute": "threshold",
+      "default": "0.5",
+      "description": "Intersection observer threshold.",
+      "id": "spx-scrollspy-3",
+      "index": 3,
+      "name": "threshold",
+      "tags": [],
+      "type": "number"
+    },
+    {
       "attribute": "url-change",
-      "type": "boolean",
-      "description": "Appends the currently active link to the end of the URL.",
       "default": "false",
-      "defaultValue": "false",
-      "tags": []
+      "description": "Appends the currently active link to the end of the URL.",
+      "id": "spx-scrollspy-4",
+      "index": 4,
+      "name": "urlChange",
+      "tags": [],
+      "type": "boolean"
     }
   ],
   "events": [
-    {
-      "name": "spxScrollspyActivate",
-      "description": "Fires after a link is activated."
-    },
-    {
-      "name": "spxScrollspyDeactivate",
-      "description": "Fires after a link is deactivated."
-    },
     {
       "name": "spxScrollspyDidLoad",
       "description": "Fires after component has loaded."
     }
   ],
-  "methods": [
-    {
-      "name": "reload",
-      "description": "Reload the Scrollspy.",
-      "signature": "reload() => Promise<void>"
-    }
-  ],
+  "methods": [],
   "slots": [
     {
-      "name": "inner",
-      "description": "Slot (between HTML tags)."
+      "name": "inner - Slot (between HTML tags).",
+      "description": ""
     }
   ]
 }

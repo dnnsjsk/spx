@@ -1,335 +1,348 @@
 {
   "name": "spx-edit-button",
-  "description": "Let your clients edit text on their site using this handy component.",
+  "description": "Let users edit content from the frontend of the site.",
   "shadow": false,
   "properties": [
     {
-      "name": "background",
       "attribute": "background",
-      "type": "string",
+      "default": "var(--spx-color-gray-900)",
       "description": "",
-      "default": "'var(--spx-color-gray-900)'",
-      "defaultValue": "'var(--spx-color-gray-900)'",
-      "tags": []
+      "id": "spx-edit-button-0",
+      "index": 0,
+      "name": "background",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "backgroundDiscard",
       "attribute": "background-discard",
-      "type": "string",
+      "default": "var(--spx-color-gray-600)",
       "description": "Discard button background.",
-      "default": "'var(--spx-color-gray-600)'",
-      "defaultValue": "'var(--spx-color-gray-600)'",
+      "id": "spx-edit-button-1",
+      "index": 1,
+      "name": "backgroundDiscard",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "border",
       "attribute": "border",
-      "type": "string",
+      "default": "none",
       "description": "",
-      "default": "'none'",
-      "defaultValue": "'none'",
-      "tags": []
+      "id": "spx-edit-button-2",
+      "index": 2,
+      "name": "border",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "borderRadius",
+      "attribute": "border-discard",
+      "default": "none",
+      "description": "",
+      "id": "spx-edit-button-3",
+      "index": 3,
+      "name": "borderDiscard",
+      "tags": [],
+      "type": "string"
+    },
+    {
       "attribute": "border-radius",
-      "type": "string",
+      "default": "var(--spx-border-radius)",
       "description": "",
-      "default": "s.borderRadius",
-      "defaultValue": "'var(--spx-border-radius)'",
-      "tags": []
+      "id": "spx-edit-button-4",
+      "index": 4,
+      "name": "borderRadius",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classButton",
+      "attribute": "bottom",
+      "default": "1em",
+      "description": "",
+      "id": "spx-edit-button-5",
+      "index": 5,
+      "name": "bottom",
+      "tags": [],
+      "type": "string"
+    },
+    {
       "attribute": "class-button",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-edit-button-6",
+      "index": 6,
+      "name": "classButton",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classButtonDiscard",
       "attribute": "class-button-discard",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-edit-button-7",
+      "index": 7,
+      "name": "classButtonDiscard",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "classLoader",
       "attribute": "class-loader",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-edit-button-8",
+      "index": 8,
+      "name": "classLoader",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "color",
       "attribute": "color",
-      "type": "string",
+      "default": "#ffffff",
       "description": "",
-      "default": "'#ffffff'",
-      "defaultValue": "'#ffffff'",
-      "tags": []
+      "id": "spx-edit-button-9",
+      "index": 9,
+      "name": "color",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "colorDiscard",
       "attribute": "color-discard",
-      "type": "string",
+      "default": "#ffffff",
       "description": "Discard button color.",
-      "default": "'#ffffff'",
-      "defaultValue": "'#ffffff'",
+      "id": "spx-edit-button-10",
+      "index": 10,
+      "name": "colorDiscard",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "s.display",
-      "defaultValue": "s.display",
-      "tags": []
-    },
-    {
-      "name": "distanceX",
-      "attribute": "distance-x",
-      "type": "string",
-      "description": "Distance to the edge of the viewport on the x-axis.",
-      "default": "'1em'",
-      "defaultValue": "'1em'",
-      "tags": [
-        {
-          "name": "CSS"
-        }
-      ]
-    },
-    {
-      "name": "distanceY",
-      "attribute": "distance-y",
-      "type": "string",
-      "description": "Distance to the edge of the viewport on the y-axis.",
-      "default": "'1em'",
-      "defaultValue": "'1em'",
-      "tags": [
-        {
-          "name": "CSS"
-        }
-      ]
-    },
-    {
-      "name": "editId",
       "attribute": "edit-id",
-      "type": "string",
       "description": "Corresponding ID for editable fields. This property is needed when multiple\nedit-button components are used on the page. Simply apply a\n\"data-spx-edit-id\" attribute with the same value to editable elements.",
-      "tags": []
+      "id": "spx-edit-button-11",
+      "index": 11,
+      "name": "editId",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "fontFamily",
-      "attribute": "font-family",
-      "type": "string",
-      "description": "",
-      "default": "s.fontFamily",
-      "defaultValue": "'var(--spx-font-family)'",
-      "tags": []
-    },
-    {
-      "name": "fontSize",
       "attribute": "font-size",
-      "type": "string",
+      "default": "var(--spx-font-size)",
       "description": "",
-      "default": "s.fontSize",
-      "defaultValue": "'var(--spx-font-size)'",
-      "tags": []
+      "id": "spx-edit-button-12",
+      "index": 12,
+      "name": "fontSize",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "fontSizeMax",
       "attribute": "font-size-max",
-      "type": "number",
-      "description": "",
       "default": "1.2",
-      "defaultValue": "1.2",
-      "tags": []
+      "description": "",
+      "id": "spx-edit-button-13",
+      "index": 13,
+      "name": "fontSizeMax",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "fontSizeMin",
       "attribute": "font-size-min",
-      "type": "number",
-      "description": "",
       "default": "1",
-      "defaultValue": "1",
-      "tags": []
+      "description": "",
+      "id": "spx-edit-button-14",
+      "index": 14,
+      "name": "fontSizeMin",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "gap",
       "attribute": "gap",
-      "type": "string",
+      "default": "0.4em",
       "description": "Gap between the buttons.",
-      "default": "'0.4em'",
-      "defaultValue": "'0.4em'",
+      "id": "spx-edit-button-15",
+      "index": 15,
+      "name": "gap",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "loaderColor",
+      "attribute": "left",
+      "description": "",
+      "id": "spx-edit-button-16",
+      "index": 16,
+      "name": "left",
+      "tags": [],
+      "type": "string"
+    },
+    {
       "attribute": "loader-color",
-      "type": "string",
+      "default": "#ffffff",
       "description": "",
-      "default": "'#ffffff'",
-      "defaultValue": "'#ffffff'",
-      "tags": []
+      "id": "spx-edit-button-17",
+      "index": 17,
+      "name": "loaderColor",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "loaderGap",
       "attribute": "loader-gap",
-      "type": "string",
+      "default": "0.5em",
       "description": "",
-      "default": "'0.5em'",
-      "defaultValue": "'0.5em'",
-      "tags": []
+      "id": "spx-edit-button-18",
+      "index": 18,
+      "name": "loaderGap",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "padding",
       "attribute": "padding",
-      "type": "string",
+      "default": "1em 1.2em",
       "description": "",
-      "default": "'0.7em 1.2em'",
-      "defaultValue": "'0.7em 1.2em'",
-      "tags": []
+      "id": "spx-edit-button-19",
+      "index": 19,
+      "name": "padding",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "paddingXMax",
       "attribute": "padding-x-max",
-      "type": "number",
-      "description": "",
       "default": "1.4",
-      "defaultValue": "1.4",
-      "tags": []
+      "description": "",
+      "id": "spx-edit-button-20",
+      "index": 20,
+      "name": "paddingXMax",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "paddingXMin",
       "attribute": "padding-x-min",
-      "type": "number",
-      "description": "",
       "default": "1",
-      "defaultValue": "1",
-      "tags": []
+      "description": "",
+      "id": "spx-edit-button-21",
+      "index": 21,
+      "name": "paddingXMin",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "paddingYMax",
       "attribute": "padding-y-max",
-      "type": "number",
-      "description": "",
       "default": "1.2",
-      "defaultValue": "1.2",
-      "tags": []
+      "description": "",
+      "id": "spx-edit-button-22",
+      "index": 22,
+      "name": "paddingYMax",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "paddingYMin",
       "attribute": "padding-y-min",
-      "type": "number",
-      "description": "",
       "default": "0.7",
-      "defaultValue": "0.7",
-      "tags": []
+      "description": "",
+      "id": "spx-edit-button-23",
+      "index": 23,
+      "name": "paddingYMin",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "position",
       "attribute": "position",
-      "type": "string",
-      "description": "Component position in page.",
-      "default": "'bottom-right'",
-      "defaultValue": "'bottom-right'",
-      "tags": [
-        {
-          "text": "'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'",
-          "name": "choice"
-        }
-      ]
+      "default": "fixed",
+      "description": "Position property of component.",
+      "id": "spx-edit-button-24",
+      "index": 24,
+      "name": "position",
+      "tags": [],
+      "type": "\"absolute\" | \"fixed\" | \"relative\" | \"static\""
     },
     {
-      "name": "positionCss",
-      "attribute": "position-css",
-      "type": "\"absolute\" | \"fixed\" | \"relative\" | \"static\"",
-      "description": "CSS property position of button.",
-      "default": "'fixed'",
-      "defaultValue": "'fixed'",
-      "tags": []
+      "attribute": "right",
+      "default": "1em",
+      "description": "",
+      "id": "spx-edit-button-25",
+      "index": 25,
+      "name": "right",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "styling",
       "attribute": "styling",
-      "type": "string",
+      "default": "default",
       "description": "Styling.",
-      "default": "'default'",
-      "defaultValue": "'default'",
+      "id": "spx-edit-button-26",
+      "index": 26,
+      "name": "styling",
       "tags": [
         {
-          "text": "'default', 'fluid', 'headless'",
+          "text": "default, fluid, headless",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "test",
       "attribute": "test",
-      "type": "boolean",
-      "description": "",
       "default": "false",
-      "defaultValue": "false",
-      "tags": []
-    },
-    {
-      "name": "textDiscard",
-      "attribute": "text-discard",
-      "type": "string",
-      "description": "Discard button text.",
-      "default": "'Discard'",
-      "defaultValue": "'Discard'",
-      "tags": []
-    },
-    {
-      "name": "textEdit",
-      "attribute": "text-edit",
-      "type": "string",
-      "description": "Edit button text.",
-      "default": "'Edit site'",
-      "defaultValue": "'Edit site'",
-      "tags": []
-    },
-    {
-      "name": "textSave",
-      "attribute": "text-save",
-      "type": "string",
-      "description": "Save button text.",
-      "default": "'Save'",
-      "defaultValue": "'Save'",
-      "tags": []
-    },
-    {
-      "name": "textSuccess",
-      "attribute": "text-success",
-      "type": "string",
-      "description": "Success message.",
-      "default": "'Save was successful'",
-      "defaultValue": "'Save was successful'",
-      "tags": []
-    },
-    {
-      "name": "zIndex",
-      "attribute": "z-index",
-      "type": "number",
       "description": "",
+      "id": "spx-edit-button-27",
+      "index": 27,
+      "name": "test",
+      "tags": [],
+      "type": "boolean"
+    },
+    {
+      "attribute": "text-discard",
+      "default": "Discard",
+      "description": "Discard button text.",
+      "id": "spx-edit-button-28",
+      "index": 28,
+      "name": "textDiscard",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "text-edit",
+      "default": "Edit site",
+      "description": "Edit button text.",
+      "id": "spx-edit-button-29",
+      "index": 29,
+      "name": "textEdit",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "text-save",
+      "default": "Save",
+      "description": "Save button text.",
+      "id": "spx-edit-button-30",
+      "index": 30,
+      "name": "textSave",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "top",
+      "description": "",
+      "id": "spx-edit-button-31",
+      "index": 31,
+      "name": "top",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "z-index",
       "default": "99",
-      "defaultValue": "99",
-      "tags": []
+      "description": "",
+      "id": "spx-edit-button-32",
+      "index": 32,
+      "name": "zIndex",
+      "tags": [],
+      "type": "number"
     }
   ],
   "events": [

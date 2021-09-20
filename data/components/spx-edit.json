@@ -4,86 +4,116 @@
   "shadow": false,
   "properties": [
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "'inline'",
-      "defaultValue": "'inline'",
-      "tags": []
-    },
-    {
-      "name": "editable",
       "attribute": "editable",
-      "type": "boolean",
-      "description": "Watch editable state.",
-      "tags": []
+      "description": "",
+      "id": "spx-edit-0",
+      "index": 0,
+      "name": "editable",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "name",
       "attribute": "name",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-edit-1",
+      "index": 1,
+      "name": "name",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "outline",
       "attribute": "outline",
-      "type": "string",
+      "default": "2px solid red",
       "description": "",
-      "default": "'2px solid red'",
-      "defaultValue": "'2px solid red'",
-      "tags": []
+      "id": "spx-edit-2",
+      "index": 2,
+      "name": "outline",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "outlineFocus",
       "attribute": "outline-focus",
-      "type": "string",
+      "default": "blue",
       "description": "",
-      "default": "'blue'",
-      "defaultValue": "'blue'",
-      "tags": []
+      "id": "spx-edit-3",
+      "index": 3,
+      "name": "outlineFocus",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "placeholder",
       "attribute": "placeholder",
-      "type": "string",
+      "default": "Enter some text here.",
       "description": "",
-      "default": "'Enter some text here.'",
-      "defaultValue": "'Enter some text here.'",
-      "tags": []
+      "id": "spx-edit-4",
+      "index": 4,
+      "name": "placeholder",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "placeholderColor",
       "attribute": "placeholder-color",
-      "type": "string",
+      "default": "inherit",
       "description": "",
-      "default": "'inherit'",
-      "defaultValue": "'inherit'",
-      "tags": []
+      "id": "spx-edit-5",
+      "index": 5,
+      "name": "placeholderColor",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "placeholderOpacity",
       "attribute": "placeholder-opacity",
-      "type": "string",
+      "default": "0.7",
       "description": "",
-      "default": "'0.7'",
-      "defaultValue": "'0.7'",
-      "tags": []
+      "id": "spx-edit-6",
+      "index": 6,
+      "name": "placeholderOpacity",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "subfield",
       "attribute": "subfield",
-      "type": "boolean",
       "description": "",
-      "tags": []
+      "id": "spx-edit-7",
+      "index": 7,
+      "name": "subfield",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "type",
-      "attribute": "type",
-      "type": "string",
+      "attribute": "text",
       "description": "",
-      "tags": []
+      "id": "spx-edit-8",
+      "index": 8,
+      "name": "text",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "type",
+      "default": "acf",
+      "description": "",
+      "id": "spx-edit-9",
+      "index": 9,
+      "name": "type",
+      "tags": [],
+      "type": "string"
     }
   ],
   "events": [],

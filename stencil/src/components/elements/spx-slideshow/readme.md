@@ -7,7 +7,6 @@
 
 | Property    | Attribute    | Description                                                                   | Type      | Default     |
 | ----------- | ------------ | ----------------------------------------------------------------------------- | --------- | ----------- |
-| `display`   | `display`    |                                                                               | `string`  | `'block'`   |
 | `duration`  | `duration`   | Duration of slideshow to complete one cycle.                                  | `string`  | `'60s'`     |
 | `gap`       | `gap`        | Gap between inner elements.                                                   | `string`  | `'1em'`     |
 | `height`    | `height`     |                                                                               | `string`  | `undefined` |
@@ -22,16 +21,16 @@
 
 ## Events
 
-| Event                 | Description                       | Type               |
-| --------------------- | --------------------------------- | ------------------ |
-| `spxSlideshowDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+| Event                 | Description    | Type               |
+| --------------------- | -------------- | ------------------ |
+| `spxSlideshowDidLoad` | [event:loaded] | `CustomEvent<any>` |
 
 
 ## Slots
 
-| Slot      | Description               |
-| --------- | ------------------------- |
-| `"inner"` | Slot (between HTML tags). |
+| Slot             | Description |
+| ---------------- | ----------- |
+| `"[slot:inner]"` |             |
 
 
 ----------------------------------------------

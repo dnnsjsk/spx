@@ -1,0 +1,5 @@
+$tag: 'spx-offset';
+
+:host {
+  display: setVar($tag, 'display', block);
+}

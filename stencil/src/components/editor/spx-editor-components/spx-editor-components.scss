@@ -1,0 +1,111 @@
+@import '../../../global/editor';
+
+:host {
+  display: block;
+}
+
+.search {
+  border-right: 1px solid var(--spx-color-gray-200);
+  border-bottom: 1px solid var(--spx-color-gray-200);
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: var(--spx-editor-header-height);
+
+  spx-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0.5em;
+  }
+
+  input {
+    @include focus;
+    padding-left: 1.75rem;
+    border: none;
+    height: 100%;
+    width: 100%;
+    font-size: 0.875rem;
+  }
+}
+
+.list {
+  height: calc(var(--vh) - var(--spx-offset) - var(--spx-editor-header-height));
+  display: grid;
+  grid-auto-rows: max-content;
+  border-right: 1px solid var(--spx-color-gray-200);
+  overflow-y: auto;
+
+  & > * + * {
+    border-top: 1px dashed var(--spx-color-gray-200);
+  }
+}
+
+.button {
+  position: relative;
+
+  &.is-active {
+    box-shadow: inset 4px 0 0 0 var(--spx-color-gray-300);
+    font-weight: 600;
+    pointer-events: none;
+  }
+
+  button {
+    position: relative;
+    @include focus;
+  }
+
+  & > button {
+    margin-top: 0;
+    width: 100%;
+    padding: 0.75rem 0.75rem 0.75rem 1.75rem;
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: var(--spx-editor-text);
+    @include editorHover;
+
+    &.is-active {
+      font-weight: 500;
+      color: var(--spx-editor-text-active);
+    }
+  }
+
+  div {
+    display: none;
+
+    &.is-active {
+      display: grid;
+    }
+
+    button {
+      pointer-events: auto;
+      padding: 0.5rem 0.5rem 0.5rem 1.75rem;
+      font-size: 0.875rem;
+      color: var(--spx-editor-text);
+      width: calc(100% - 4px);
+      margin-left: 4px;
+      font-weight: 400;
+      @include focus;
+      @include editorHover;
+
+      .text {
+        margin-left: -4px;
+      }
+
+      &.is-active {
+        color: var(--spx-editor-text-active);
+        font-weight: 500;
+        pointer-events: none;
+
+        .side {
+          position: absolute;
+          left: -4px;
+          top: 0;
+          height: 100%;
+          width: 4px;
+          background: var(--spx-editor-text-active);
+        }
+      }
+    }
+  }
+}

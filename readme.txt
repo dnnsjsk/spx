@@ -20,6 +20,12 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Accordion: make link functionality work if it is a child of Shadow DOM
 * Accordion: prevent re-renders
 * Accordion: rename 'disable-animation' to 'animation'
+* Accordion: update height accordingly if component size changed while in open state
+* Accordion: rename 'indicator-icon' attribute to 'icon'
+* Accordion: rename 'indicator-icon-type' attribute to 'icon-type'
+* Accordion: rename 'indicator-icon-transform' attribute to 'icon-transform'
+* Animate: add 'auto-alpha' attribute
+* Class Toggle: add 'inner' attribute
 * Class Toggle: prevent re-renders
 * Code: add 'content' attribute
 * Code: add 'filter' attribute
@@ -36,26 +42,36 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Docs: remove component
 * Edit Button: add 'loader-color' attribute
 * Edit Button: add 'loader-gap' attribute
+* Edit Button: check if component is inside Shadow DOM and search for nodes inside of it instead
+* Edit Button: convert <spx-edit> component that wraps around editable text to Shadow DOM
 * Edit Button: convert to Shadow DOM
 * Edit Button: fix discard button not getting assigned correctly classes in headless mode
+* Edit Button: add 'border-discard' attribute
+* Edit Button: remove 'position-css' attribute
+* Edit Button: add 'left', 'right', 'top', 'bottom' attributes for positioning
+* Edit Button: remove font-family attribute
 * Enhancement: add unified ARIA properties and focus styles to all Buttons across components
 * Enhancement: clean up assets folder and make move CSS files
 * Enhancement: rename 'gallery' helper to 'images'
-* Enhancement: use Adoptable Stylesheets for Shadow Dom in Chrome
+* Enhancement: use Constructable Stylesheets for Shadow DOM in Chrome and fallback to <style> tags in non Chromium browsers
 * Fix: boolean values not working for Shortcodes
 * Fix: don't create undefined fallback in CSS variables if no styles are set
 * Fix: prevent double style sheets in Shadow DOM
+* Fix: remove 'display' value from all components
 * Icon: add 'loader' type to display a simple rotating loader
 * Icon: convert to Shadow DOM
 * Iframe: add 'loader-background' attribute
 * Iframe: add 'loader-border-radius' attribute
 * Iframe: add 'loader-color' attribute
+* Iframe: rename 'padding' to 'loader-padding' attribute
 * Image Comparison: add 'steps' attribute
 * Image Comparison: change 'loading' attribute to 'lazy'
 * Image Comparison: convert to Shadow DOM
 * Image Comparison: enable usage with arrow keys
+* Lightbox: complete rewrite, remove GLightbox dependency
 * Masonry: add 'lazy' attribute
 * Masonry: convert to Shadow DOM
+* Masonry: fix Masonry appearing to load when first rendering
 * Masonry: rename attribute 'images-src' to 'image-src'
 * Mockup: add 'size' attribute
 * Mockup: add 'size-max' attribute
@@ -63,14 +79,16 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Mockup: convert to Shadow DOM
 * Mockup: make sure slot will be used if src is not present
 * Mockup: rework resizing mechanism
-* Navigation: add 'display' attribute
+* Navia
+* New: Tailwind component
 * New: Text-Path component
 * New: add global '--spx-backdrop-filter' CSS variable
 * New: add global '--spx-color-focus' CSS variable
-* New: add global '--spx-display' CSS variable
 * New: add global '--spx-focus' CSS variable
 * New: change color gray scale to Tailwind 'blue-gray'
-* Scrollspy: add 'spxScrollspyActivate' and 'spxScrollspyDeactivate' events
+* New: possibility to add your own Tailwind config which affects utility styling in components
+* Notation: make sure component works inside Shadow DOM environments
+* Scrollspy: complete rewrite to make use of IntersectionObserver and remove Gumshoe dependecy
 * Share: convert to Shadow DOM
 * Share: make sure to always share the current URL
 * Slider: add 'lazy' attribute
@@ -80,6 +98,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Slider: add 'navigation-transition-timing-function' attribute
 * Slider: add 'pagination-backdrop-filter' attribute
 * Slider: add 'pagination-background' attribute
+* Slider: add 'start' attribute
 * Slider: convert to Shadow DOM
 * Slider: fix dynamic bullets
 * Slider: make slides full width and height by default
@@ -90,10 +109,8 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Slideshow: add 'lazy' attribute
 * Slideshow: add 'object-fit' attribute
 * Slideshow: rename attribute 'images-src' to 'image-src'
-* Snackbar: add 'button-background' attribute
-* Snackbar: convert to Shadow DOM
-* Snackbar: rework closing button
-* StencilJS: update to 2.6.0
+* Snackbar: deprecate
+* StencilJS: update to 2.8.0
 
 = 3.1.6 =
 * Code: add support for Twig files
@@ -212,7 +229,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Enhancement: change default border-radius
 * Enhancement: remove theme function
 * Enhancement: switch to semantic versioning
-* Icon: change default display to 'inline-flex'
+* Enhancement: remove transition properties from all components (use CSS variable instead)
 * Iframe: add 'document-border' attribute
 * Iframe: add 'document-border-radius' attribute
 * Iframe: add 'document-height' attribute
@@ -235,7 +252,6 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Section Footer: change to linear font sizes and spacings
 * Section Header: change to linear font sizes and spacings
 * Section Text Media: change to linear font sizes and spacings
-* Slideshow: add 'display' attribute
 * Slideshow: add 'overflow' attribute
 * Slideshow: add conditional check to resize function
 * StencilJS: update to 2.3.0

@@ -4,56 +4,53 @@
   "shadow": false,
   "properties": [
     {
-      "name": "autoStart",
       "attribute": "auto-start",
-      "type": "boolean",
-      "description": "Automatically starts writing.",
       "default": "true",
-      "defaultValue": "true",
-      "tags": []
+      "description": "Automatically starts writing.",
+      "id": "spx-typewriter-0",
+      "index": 0,
+      "name": "autoStart",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "delay",
       "attribute": "delay",
-      "type": "any",
+      "default": "natural",
       "description": "Writing delay in ms. Also accepts 'natural' value.",
-      "default": "'natural'",
-      "defaultValue": "'natural'",
-      "tags": []
+      "id": "spx-typewriter-1",
+      "index": 1,
+      "name": "delay",
+      "tags": [],
+      "type": "any"
     },
     {
-      "name": "deleteSpeed",
       "attribute": "delete-speed",
-      "type": "any",
+      "default": "natural",
       "description": "Delete delay in ms. Also accepts 'natural' value.",
-      "default": "'natural'",
-      "defaultValue": "'natural'",
-      "tags": []
+      "id": "spx-typewriter-2",
+      "index": 2,
+      "name": "deleteSpeed",
+      "tags": [],
+      "type": "any"
     },
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "s.display",
-      "defaultValue": "s.display",
-      "tags": []
-    },
-    {
-      "name": "loop",
       "attribute": "loop",
-      "type": "boolean",
       "description": "Loops the animation.",
-      "tags": []
+      "id": "spx-typewriter-3",
+      "index": 3,
+      "name": "loop",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "text",
       "attribute": "text",
-      "type": "string",
-      "description": "Text that should be written.",
       "default": "\"I'm a typewriter\"",
-      "defaultValue": "\"I'm a typewriter\"",
-      "tags": []
+      "description": "Text that should be written.",
+      "id": "spx-typewriter-4",
+      "index": 4,
+      "name": "text",
+      "tags": [],
+      "type": "string"
     }
   ],
   "events": [
@@ -76,8 +73,8 @@
   ],
   "slots": [
     {
-      "name": "inner",
-      "description": "Slot (between HTML tags)."
+      "name": "inner - Slot (between HTML tags).",
+      "description": ""
     }
   ]
 }

@@ -1,0 +1,5 @@
+$tag: 'spx-animate';
+
+:host {
+  display: setVar($tag, 'display', block);
+}

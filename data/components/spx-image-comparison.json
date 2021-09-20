@@ -4,83 +4,104 @@
   "shadow": false,
   "properties": [
     {
-      "name": "color",
+      "attribute": "active",
+      "description": "",
+      "id": "spx-image-comparison-0",
+      "index": 0,
+      "name": "active",
+      "tags": [],
+      "type": "boolean"
+    },
+    {
       "attribute": "color",
-      "type": "string",
+      "default": "#ffffff",
       "description": "",
-      "default": "'#ffffff'",
-      "defaultValue": "'#ffffff'",
-      "tags": []
+      "id": "spx-image-comparison-1",
+      "index": 1,
+      "name": "color",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "s.display",
-      "defaultValue": "s.display",
-      "tags": []
-    },
-    {
-      "name": "height",
       "attribute": "height",
-      "type": "string",
+      "default": "100%",
       "description": "",
-      "default": "'100%'",
-      "defaultValue": "'100%'",
-      "tags": []
+      "id": "spx-image-comparison-2",
+      "index": 2,
+      "name": "height",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "iconColor",
       "attribute": "icon-color",
-      "type": "string",
+      "default": "var(--spx-color-gray-900)",
       "description": "",
-      "default": "'var(--spx-color-gray-900)'",
-      "defaultValue": "'var(--spx-color-gray-900)'",
-      "tags": []
+      "id": "spx-image-comparison-3",
+      "index": 3,
+      "name": "iconColor",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "lazy",
       "attribute": "lazy",
-      "type": "boolean",
       "description": "Lazy load images.",
-      "tags": []
+      "id": "spx-image-comparison-4",
+      "index": 4,
+      "name": "lazy",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "srcAfter",
       "attribute": "src-after",
-      "type": "string",
+      "default": "https://source.unsplash.com/random/1200x300",
       "description": "Image URL of the before image.",
-      "default": "'https://source.unsplash.com/random/1200x300'",
-      "defaultValue": "'https://source.unsplash.com/random/1200x300'",
-      "tags": []
+      "id": "spx-image-comparison-5",
+      "index": 5,
+      "name": "srcAfter",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "srcBefore",
       "attribute": "src-before",
-      "type": "string",
+      "default": "https://source.unsplash.com/random/1201x300",
       "description": "Image URL of the after image.",
-      "default": "'https://source.unsplash.com/random/1201x300'",
-      "defaultValue": "'https://source.unsplash.com/random/1201x300'",
-      "tags": []
+      "id": "spx-image-comparison-6",
+      "index": 6,
+      "name": "srcBefore",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "start",
       "attribute": "start",
-      "type": "number",
-      "description": "Opening state in pixels.",
       "default": "150",
-      "defaultValue": "150",
-      "tags": []
+      "description": "Opening state in pixels.",
+      "id": "spx-image-comparison-7",
+      "index": 7,
+      "name": "start",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "steps",
       "attribute": "steps",
-      "type": "number",
-      "description": "Step amount when using component with arrow keys.",
       "default": "10",
-      "defaultValue": "10",
-      "tags": []
+      "description": "Step amount when using component with arrow keys.",
+      "id": "spx-image-comparison-8",
+      "index": 8,
+      "name": "steps",
+      "tags": [],
+      "type": "number"
     }
   ],
   "events": [

@@ -1,0 +1,53 @@
+@import '../../../global/editor';
+
+:host {
+  display: block;
+}
+
+.inner {
+  background: var(--spx-color-gray-50);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  width: 100%;
+}
+
+.wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+
+#content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  padding: 2rem 1rem 1rem 1rem;
+
+  @media (min-width: 1024px) {
+    padding: 2rem;
+  }
+}
+
+spx-code {
+  width: 100%;
+  height: 100%;
+  filter: saturate(1.25);
+}
+
+spx-iframe,
+spx-image-comparison,
+spx-masonry {
+  width: 100%;
+}
+
+spx-iframe,
+spx-masonry {
+  height: 100%;
+}

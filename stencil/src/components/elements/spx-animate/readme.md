@@ -7,9 +7,9 @@
 
 | Property               | Attribute                | Description                                                                                 | Type      | Default        |
 | ---------------------- | ------------------------ | ------------------------------------------------------------------------------------------- | --------- | -------------- |
+| `autoAlpha`            | `auto-alpha`             | Set visibility of animated element to 'inherit' after animating it in.                      | `string`  | `undefined`    |
 | `clipPath`             | `clip-path`              | Clip-path value the animation starts from.                                                  | `string`  | `undefined`    |
 | `delay`                | `delay`                  | Delay before animation starts.                                                              | `number`  | `0`            |
-| `display`              | `display`                |                                                                                             | `string`  | `s.display`    |
 | `duration`             | `duration`               | Animation duration.                                                                         | `number`  | `1`            |
 | `ease`                 | `ease`                   | Ease being used. Accepts all common GSAP options.                                           | `string`  | `'power1.out'` |
 | `filter`               | `filter`                 | Filter value the animation starts from.                                                     | `string`  | `undefined`    |
@@ -19,7 +19,7 @@
 | `repeatDelay`          | `repeat-delay`           | Time to wait between repetitions.                                                           | `number`  | `undefined`    |
 | `reverse`              | `reverse`                | Reverses the animation.                                                                     | `boolean` | `undefined`    |
 | `stagger`              | `stagger`                | Amount of time elements should be staggered by.                                             | `number`  | `0.15`         |
-| `target`               | `target`                 | The target element that should be animated inside the component.                            | `string`  | `'*'`          |
+| `target`               | `target`                 | [prop:target]                                                                               | `string`  | `'*'`          |
 | `viewport`             | `viewport`               | Starts animation when target is in the viewport.                                            | `boolean` | `undefined`    |
 | `viewportMarginBottom` | `viewport-margin-bottom` | Adjust the root margin of the animation start.                                              | `string`  | `undefined`    |
 | `viewportMarginLeft`   | `viewport-margin-left`   | Adjust the root margin of the animation start.                                              | `string`  | `undefined`    |
@@ -32,9 +32,9 @@
 
 ## Events
 
-| Event               | Description                       | Type               |
-| ------------------- | --------------------------------- | ------------------ |
-| `spxAnimateDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+| Event               | Description    | Type               |
+| ------------------- | -------------- | ------------------ |
+| `spxAnimateDidLoad` | [event:loaded] | `CustomEvent<any>` |
 
 
 ## Methods
@@ -62,9 +62,9 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot      | Description               |
-| --------- | ------------------------- |
-| `"inner"` | Slot (between HTML tags). |
+| Slot             | Description |
+| ---------------- | ----------- |
+| `"[slot:inner]"` |             |
 
 
 ----------------------------------------------

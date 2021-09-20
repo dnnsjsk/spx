@@ -1,0 +1,33 @@
+@import '../../../global/editor';
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.inner {
+  display: grid;
+  background: #ffffff;
+  grid-template-columns: minmax(0, 1fr);
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 250px minmax(0, 1fr) 270px;
+  }
+}
+
+.header-content {
+  height: 100%;
+  grid-row-start: 1;
+}
+
+@media (min-width: 1024px) {
+  spx-editor-components,
+  spx-editor-content,
+  spx-editor-controls {
+    display: block !important;
+  }
+
+  .header-content {
+    grid-row-start: unset;
+  }
+}

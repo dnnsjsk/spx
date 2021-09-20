@@ -1,9 +1,13 @@
-body{--spx-backdrop-filter:var(--spx-token-backdrop-filter, blur(4px));--spx-color-black:#000000;--spx-color-white:#ffffff;--spx-color-gray-50:#f8fafc;--spx-color-gray-100:#f1f5f9;--spx-color-gray-200:#e2e8f0;--spx-color-gray-300:#cbd5e1;--spx-color-gray-400:#94a3b8;--spx-color-gray-500:#64748b;--spx-color-gray-600:#475569;--spx-color-gray-700:#334155;--spx-color-gray-800:#1e293b;--spx-color-gray-900:#0f172a;--spx-color-focus:var(--spx-token-color-focus, #3b82f6);--spx-border-radius:var(--spx-token-border-radius, 0.375rem);--spx-display:var(--spx-token-display, block);--spx-focus:var(
+body{--spx-fluid-base:16;--spx-fluid-min-w:320;--spx-fluid-max-w:1440;--spx-backdrop-filter:var(--spx-token-backdrop-filter, blur(4px));--spx-color-black:#000000;--spx-color-white:#ffffff;--spx-color-gray-50:#f8fafc;--spx-color-gray-100:#f1f5f9;--spx-color-gray-200:#e2e8f0;--spx-color-gray-300:#cbd5e1;--spx-color-gray-400:#94a3b8;--spx-color-gray-500:#64748b;--spx-color-gray-600:#475569;--spx-color-gray-700:#334155;--spx-color-gray-800:#1e293b;--spx-color-gray-900:#0f172a;--spx-color-focus:var(--spx-token-color-focus, #3b82f6);--spx-border-radius:var(--spx-token-border-radius, 0.375rem);--spx-display:var(--spx-token-display, block);--spx-focus:var(
     --spx-token-focus,
     inset 0px 0px 0px 2px var(--spx-color-focus)
   );--spx-focus-px:var(
     --spx-token-focus-px,
     inset 0px 0px 0px 1px var(--spx-color-focus)
+  );--spx-focus-ring:var(
+    --spx-token-focus-ring,
+    0 0 0 2px white,
+    0 0 0 4px var(--spx-color-focus)
   );--spx-font-family:var(
     --spx-token-font-family,
     helvetica,
@@ -13,4 +17,4 @@ body{--spx-backdrop-filter:var(--spx-token-backdrop-filter, blur(4px));--spx-col
   );--spx-font-size:var(--spx-token-font-size, 16px);--spx-transition-duration:var(--spx-token-transition-duration, 100ms);--spx-transition-timing-function:var(
     --spx-token-transition-timing-function,
     cubic-bezier(0.4, 0, 0.2, 1)
-  )}spx-accordion:not([has-loaded]),spx-animate:not([has-loaded]),spx-class-toggle:not([has-loaded]),spx-code:not([has-loaded]),spx-docs:not([has-loaded]),spx-edit-button:not([has-loaded]),spx-group:not([has-loaded]),spx-icon:not([has-loaded]),spx-iframe:not([has-loaded]),spx-image-comparision:not([has-loaded]),spx-lightbox:not([has-loaded]),spx-masonry:not([has-loaded]),spx-mockup:not([has-loaded]),spx-navigation:not([has-loaded]),spx-notation:not([has-loaded]),spx-offset:not([has-loaded]),spx-scrollspy:not([has-loaded]),spx-share:not([has-loaded]),spx-slider:not([has-loaded]),spx-slideshow:not([has-loaded]),spx-snackbar:not([has-loaded]),spx-textpath:not([has-loaded]),spx-typewriter:not([has-loaded]){visibility:hidden}
+  )}spx-accordion:not(.hydrated),spx-animate:not(.hydrated),spx-class-toggle:not(.hydrated),spx-code:not(.hydrated),spx-docs:not(.hydrated),spx-edit-button:not(.hydrated),spx-group:not(.hydrated),spx-icon:not(.hydrated),spx-iframe:not(.hydrated),spx-image-comparision:not(.hydrated),spx-lightbox:not(.hydrated),spx-masonry:not(.hydrated),spx-mockup:not(.hydrated),spx-navigation:not(.hydrated),spx-notation:not(.hydrated),spx-offset:not(.hydrated),spx-scrollspy:not(.hydrated),spx-share:not(.hydrated),spx-slider:not(.hydrated),spx-slideshow:not(.hydrated),spx-tailwind:not(.hydrated),spx-textpath:not(.hydrated),spx-typewriter:not(.hydrated),spx-editor:not(.hydrated),spx-editor-components:not(.hydrated),spx-editor-container:not(.hydrated),spx-editor-content:not(.hydrated),spx-editor-controls:not(.hydrated),spx-editor-header:not(.hydrated),spx-control-color:not(.hydrated),spx-control-group:not(.hydrated),spx-control-input:not(.hydrated),spx-control-label:not(.hydrated),spx-control-number:not(.hydrated),spx-control-select:not(.hydrated),spx-control-switch:not(.hydrated){visibility:hidden}

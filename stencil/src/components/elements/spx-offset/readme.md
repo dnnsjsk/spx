@@ -5,17 +5,17 @@
 
 ## Properties
 
-| Property  | Attribute | Description     | Type     | Default     |
-| --------- | --------- | --------------- | -------- | ----------- |
-| `display` | `display` |                 | `string` | `s.display` |
-| `target`  | `target`  | Target element. | `string` | `'header'`  |
+| Property   | Attribute  | Description                         | Type      | Default    |
+| ---------- | ---------- | ----------------------------------- | --------- | ---------- |
+| `target`   | `target`   | [prop:target]                       | `string`  | `'header'` |
+| `variable` | `variable` | Add offset as CSS variable to body. | `boolean` | `true`     |
 
 
 ## Events
 
-| Event              | Description                       | Type               |
-| ------------------ | --------------------------------- | ------------------ |
-| `spxOffsetDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+| Event              | Description    | Type               |
+| ------------------ | -------------- | ------------------ |
+| `spxOffsetDidLoad` | [event:loaded] | `CustomEvent<any>` |
 
 
 ## Methods
@@ -33,9 +33,9 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot      | Description               |
-| --------- | ------------------------- |
-| `"inner"` | Slot (between HTML tags). |
+| Slot             | Description |
+| ---------------- | ----------- |
+| `"[slot:inner]"` |             |
 
 
 ----------------------------------------------

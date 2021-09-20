@@ -1,43 +1,76 @@
 {
   "name": "spx-lightbox",
-  "description": "Overlay a gallery of images on top of the current page.",
+  "description": "Creates a lightbox for images.",
   "shadow": false,
   "properties": [
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "'block'",
-      "defaultValue": "'block'",
-      "tags": []
+      "attribute": "body-overflow",
+      "default": "true",
+      "description": "If 'overflow: hidden' should be applied to the body when a lightbox is open.",
+      "id": "spx-lightbox-0",
+      "index": 0,
+      "name": "bodyOverflow",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "height",
-      "attribute": "height",
-      "type": "string",
-      "description": "",
-      "default": "'auto'",
-      "defaultValue": "'auto'",
-      "tags": []
+      "attribute": "close-button",
+      "default": "true",
+      "description": "Show close button.",
+      "id": "spx-lightbox-1",
+      "index": 1,
+      "name": "closeButton",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "overlayColor",
-      "attribute": "overlay-color",
-      "type": "string",
+      "attribute": "close-button-color",
+      "default": "#ffffff",
       "description": "",
-      "default": "'rgba(0, 0, 0, 0.92)'",
-      "defaultValue": "'rgba(0, 0, 0, 0.92)'",
-      "tags": []
+      "id": "spx-lightbox-2",
+      "index": 2,
+      "name": "closeButtonColor",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "width",
-      "attribute": "width",
-      "type": "string",
+      "attribute": "overlay-backdrop-filter",
+      "default": "var(--spx-backdrop-filter)",
       "description": "",
-      "default": "'100%'",
-      "defaultValue": "'100%'",
-      "tags": []
+      "id": "spx-lightbox-3",
+      "index": 3,
+      "name": "overlayBackdropFilter",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "overlay-background",
+      "default": "rgba(0,0,0,0.8)",
+      "description": "",
+      "id": "spx-lightbox-4",
+      "index": 4,
+      "name": "overlayBackground",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "spx-slider",
+      "description": "Pass attributes to the inner <spx-slider> component using a JSON string: { \"slides-per-view\": \"2.5\" }",
+      "id": "spx-lightbox-5",
+      "index": 5,
+      "name": "spxSlider",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "target",
+      "default": "img",
+      "description": "Target element. Can take any querySelector value. (id, class, tag etc.)",
+      "id": "spx-lightbox-6",
+      "index": 6,
+      "name": "target",
+      "tags": [],
+      "type": "string"
     }
   ],
   "events": [
@@ -47,10 +80,5 @@
     }
   ],
   "methods": [],
-  "slots": [
-    {
-      "name": "inner",
-      "description": "Slot (between HTML tags)."
-    }
-  ]
+  "slots": []
 }

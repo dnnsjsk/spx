@@ -1,48 +1,68 @@
 <html lang="en">
-<head>
-  <script type="module" id="spx-js" src="build/spx.esm.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/build/spx.css">
-  <style>html,body{height: 100%; overflow: hidden;}body{margin: 0;}</style>
-  <title>spx dev</title>
-</head>
-<body>
-<spx-editor active="spx-accordion" active-name="Default">
-  <template data-spx-element="spx-accordion" data-spx-name="Default">
-    <spx-accordion
-      indicator-icon="happy"
-      header-text="Click me to show some more text">
-      <p slot="content">
-        Hello!
-      </p>
-    </spx-accordion>
-  </template>
-  <template data-spx-element="spx-accordion" data-spx-name="Reverse">
-    <spx-accordion
-      indicator-icon="happy"
-      header-text="Click me to show some more text"
-      reverse>
-      <p slot="content">
-        Hello!
-      </p>
-    </spx-accordion>
-  </template>
-  <template data-spx-element="spx-animate">
-    <spx-animate
-      duration="1"
-      opacity="0"
-      viewport
-      stagger="0.05">
-      <p>Hi!</p>
-      <p>Hi!</p>
-      <p>Hi!</p>
-      <p>Hi!</p>
-      <p>Hi!</p>
-      <p>Hi!</p>
-    </spx-animate>
-  </template>
-</spx-editor>
-</body>
+  <head>
+    <script type="module" id="spx-js" src="build/spx.esm.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/build/spx.css" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        overflow: hidden;
+      }
+
+      body {
+        margin: 0;
+      }
+    </style>
+    <title>spx dev</title>
+  </head>
+  <body>
+    <spx-editor>
+      <spx-editor-components slot="components">
+        <template data-spx-element="spx-accordion" data-spx-name="Default">
+          <spx-accordion
+            class-content="blub"
+            animation="false"
+            indicator-icon="happy"
+            header-text="Click me to show some more text"
+          >
+            <p slot="content">Hello!</p>
+          </spx-accordion>
+        </template>
+        <template data-spx-element="spx-accordion" data-spx-name="Default 2">
+          <spx-accordion
+            indicator-icon="add-outline"
+            header-text="Blablabla"
+            content-text="More blabla"
+          >
+            <p slot="content">Hello!</p>
+          </spx-accordion>
+        </template>
+        <template data-spx-element="spx-accordion" data-spx-name="Reverse">
+          <spx-accordion
+            indicator-icon="happy"
+            header-text="Click me to show some more text"
+            reverse
+          >
+            <p slot="content">Hello!</p>
+          </spx-accordion>
+        </template>
+        <template data-spx-element="spx-animate">
+          <spx-animate duration="1" opacity="0" viewport stagger="0.05">
+            <p>Hi!</p>
+            <p>Hi!</p>
+            <p>Hi!</p>
+            <p>Hi!</p>
+            <p>Hi!</p>
+            <p>Hi!</p>
+          </spx-animate>
+        </template>
+      </spx-editor-components>
+    </spx-editor>
+  </body>
 </html>

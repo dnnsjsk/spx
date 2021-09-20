@@ -1,0 +1,5 @@
+$tag: 'spx-notation';
+
+:host {
+  display: setVar($tag, 'display', block);
+}

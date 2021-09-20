@@ -1,0 +1,119 @@
+$tag: 'spx-accordion';
+
+$contentColor: var(--spx-color-gray-900);
+$contentFontSize: var(--spx-font-size);
+$contentFontSizeMax: 1.2;
+$contentFontSizeMin: 1;
+$gap: 0.4em;
+$gapMax: 1.2;
+$gapMin: 1;
+$headerColor: var(--spx-color-gray-900);
+$headerFontSize: var(--spx-font-size);
+$headerFontSizeMax: 1.2;
+$headerFontSizeMin: 1;
+$headerGap: 0.4em;
+$headerGapMax: 1;
+$headerGapMin: 0.6;
+$iconTransform: rotate(180deg);
+
+:host {
+  display: setVar($tag, 'display', block);
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--spx-font-family);
+}
+
+.header {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  justify-items: left;
+  grid-template-columns: auto 1fr;
+  cursor: pointer;
+  @include style(
+    $tag,
+    'header-gap',
+    'grid-column-gap',
+    $headerGap,
+    $headerGapMin,
+    $headerGapMax
+  );
+  @include focus;
+
+  :host([reverse]:not([reverse='false'])) & {
+    grid-template-columns: 1fr auto;
+  }
+
+  @include style(
+    $tag,
+    'header-font-size',
+    'font-size',
+    $headerFontSize,
+    $headerFontSizeMin,
+    $headerFontSizeMax
+  );
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span {
+    color: variable($tag, 'header-color', $headerColor);
+  }
+
+  *:not([slot]) {
+    margin: 0;
+  }
+}
+
+.header-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-origin: center center;
+  color: variable($tag, 'header-color', $headerColor);
+  font-size: 1em;
+
+  :host([reverse]:not([reverse='false'])) & {
+    grid-column: 2;
+  }
+
+  :host([open]) & {
+    transform: variable($tag, 'icon-transform', $iconTransform);
+  }
+}
+
+.content {
+  display: none;
+  margin-top: 0;
+  @include style(
+    $tag,
+    'content-font-size',
+    'font-size',
+    $contentFontSize,
+    $contentFontSizeMin,
+    $contentFontSizeMax
+  );
+
+  @include style($tag, 'gap', 'margin-top', $gap, $gapMax, $gapMax, [open]);
+  :host([open]) & {
+    display: block;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  span:not(.token) {
+    color: variable($tag, 'content-color', $contentColor);
+  }
+}

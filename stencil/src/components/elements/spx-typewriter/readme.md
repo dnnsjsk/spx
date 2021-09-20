@@ -10,16 +10,15 @@
 | `autoStart`   | `auto-start`   | Automatically starts writing.                      | `boolean` | `true`               |
 | `delay`       | `delay`        | Writing delay in ms. Also accepts 'natural' value. | `any`     | `'natural'`          |
 | `deleteSpeed` | `delete-speed` | Delete delay in ms. Also accepts 'natural' value.  | `any`     | `'natural'`          |
-| `display`     | `display`      |                                                    | `string`  | `s.display`          |
 | `loop`        | `loop`         | Loops the animation.                               | `boolean` | `undefined`          |
 | `text`        | `text`         | Text that should be written.                       | `string`  | `"I'm a typewriter"` |
 
 
 ## Events
 
-| Event                  | Description                       | Type               |
-| ---------------------- | --------------------------------- | ------------------ |
-| `spxTypewriterDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+| Event                  | Description    | Type               |
+| ---------------------- | -------------- | ------------------ |
+| `spxTypewriterDidLoad` | [event:loaded] | `CustomEvent<any>` |
 
 
 ## Methods
@@ -47,9 +46,9 @@ Type: `Promise<void>`
 
 ## Slots
 
-| Slot      | Description               |
-| --------- | ------------------------- |
-| `"inner"` | Slot (between HTML tags). |
+| Slot             | Description |
+| ---------------- | ----------- |
+| `"[slot:inner]"` |             |
 
 
 ----------------------------------------------

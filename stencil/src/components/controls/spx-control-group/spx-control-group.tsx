@@ -1,9 +1,9 @@
 // eslint-disable-next-line no-unused-vars
 import { Component, h, Element } from '@stencil/core';
-import { cssTw } from '../../../utils/css/cssTw';
 
 @Component({
   tag: 'spx-control-group',
+  styleUrl: 'spx-control-group.scss',
   shadow: true,
 })
 export class SpxControlGroup {
@@ -11,10 +11,8 @@ export class SpxControlGroup {
   @Element() el: HTMLSpxControlGroupElement;
 
   render() {
-    const { tw } = cssTw(this.el.shadowRoot);
-
     return (
-      <div class={tw(`grid gap-6`)}>
+      <div class="inner">
         <slot />
       </div>
     );

@@ -1,0 +1,33 @@
+@import '../../../global/editor';
+
+:host {
+  display: block;
+}
+
+.top {
+  border-left: 1px solid var(--spx-color-gray-200);
+  border-bottom: 1px solid var(--spx-color-gray-200);
+  height: var(--spx-editor-header-height);
+
+  button {
+    display: flex;
+    text-align: center;
+    font-weight: 500;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 100%;
+    width: 100%;
+    font-size: 0.875rem;
+
+    @include editorHover;
+    @include focus;
+  }
+}
+
+.controls {
+  border-left: 1px solid var(--spx-color-gray-200);
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 1.5rem;
+}

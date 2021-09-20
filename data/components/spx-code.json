@@ -4,285 +4,374 @@
   "shadow": false,
   "properties": [
     {
-      "name": "background",
       "attribute": "background",
-      "type": "string",
+      "default": "var(--spx-color-gray-900)",
       "description": "",
-      "default": "'var(--spx-color-gray-900)'",
-      "defaultValue": "'var(--spx-color-gray-900)'",
-      "tags": []
+      "id": "spx-code-0",
+      "index": 0,
+      "name": "background",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "borderRadius",
       "attribute": "border-radius",
-      "type": "string",
+      "default": "var(--spx-border-radius)",
       "description": "",
-      "default": "s.borderRadius",
-      "defaultValue": "'var(--spx-border-radius)'",
-      "tags": []
+      "id": "spx-code-1",
+      "index": 1,
+      "name": "borderRadius",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "clipboard",
       "attribute": "clipboard",
-      "type": "boolean",
+      "default": "true",
       "description": "Enable clipboard button.",
-      "default": "true",
-      "defaultValue": "true",
-      "tags": []
+      "id": "spx-code-2",
+      "index": 2,
+      "name": "clipboard",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "clipboardButtonBackground",
       "attribute": "clipboard-button-background",
-      "type": "string",
+      "default": "var(--spx-color-gray-800)",
       "description": "",
-      "default": "'var(--spx-color-gray-800)'",
-      "defaultValue": "'var(--spx-color-gray-800)'",
-      "tags": []
+      "id": "spx-code-3",
+      "index": 3,
+      "name": "clipboardButtonBackground",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "clipboardButtonColor",
       "attribute": "clipboard-button-color",
-      "type": "string",
+      "default": "var(--spx-color-gray-400)",
       "description": "",
-      "default": "'var(--spx-color-gray-400)'",
-      "defaultValue": "'var(--spx-color-gray-400)'",
-      "tags": []
+      "id": "spx-code-4",
+      "index": 4,
+      "name": "clipboardButtonColor",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "clipboardButtonFontSize",
       "attribute": "clipboard-button-font-size",
-      "type": "string",
+      "default": "12px",
       "description": "",
-      "default": "'12px'",
-      "defaultValue": "'12px'",
-      "tags": []
+      "id": "spx-code-5",
+      "index": 5,
+      "name": "clipboardButtonFontSize",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "clipboardButtonFontWeight",
       "attribute": "clipboard-button-font-weight",
-      "type": "any",
+      "default": "600",
       "description": "",
-      "default": "'600'",
-      "defaultValue": "'600'",
-      "tags": []
+      "id": "spx-code-6",
+      "index": 6,
+      "name": "clipboardButtonFontWeight",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "any"
     },
     {
-      "name": "clipboardButtonPadding",
       "attribute": "clipboard-button-padding",
-      "type": "string",
+      "default": "6px 12px",
       "description": "",
-      "default": "'6px 12px'",
-      "defaultValue": "'6px 12px'",
-      "tags": []
+      "id": "spx-code-7",
+      "index": 7,
+      "name": "clipboardButtonPadding",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "clipboardButtonText",
       "attribute": "clipboard-button-text",
-      "type": "string",
+      "default": "Copy",
       "description": "",
-      "default": "'Copy'",
-      "defaultValue": "'Copy'",
-      "tags": []
+      "id": "spx-code-8",
+      "index": 8,
+      "name": "clipboardButtonText",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "clipboardButtonTextCopied",
       "attribute": "clipboard-button-text-copied",
-      "type": "string",
+      "default": "Copied!",
       "description": "",
-      "default": "'Copied!'",
-      "defaultValue": "'Copied!'",
-      "tags": []
+      "id": "spx-code-9",
+      "index": 9,
+      "name": "clipboardButtonTextCopied",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "clipboardButtonTextTransform",
       "attribute": "clipboard-button-text-transform",
-      "type": "string",
+      "default": "uppercase",
       "description": "",
-      "default": "'uppercase'",
-      "defaultValue": "'uppercase'",
-      "tags": []
+      "id": "spx-code-10",
+      "index": 10,
+      "name": "clipboardButtonTextTransform",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "content",
       "attribute": "content",
-      "type": "string",
       "description": "Can be used instead of the inner slot.",
-      "tags": []
+      "id": "spx-code-11",
+      "index": 11,
+      "name": "content",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "s.display",
-      "defaultValue": "s.display",
-      "tags": []
-    },
-    {
-      "name": "filter",
       "attribute": "filter",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-code-12",
+      "index": 12,
+      "name": "filter",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "fontSize",
       "attribute": "font-size",
-      "type": "string",
+      "default": "clamp(12px, 1.6vw, 16px)",
       "description": "",
-      "default": "'clamp(12px, 1.6vw, 16px)'",
-      "defaultValue": "'clamp(12px, 1.6vw, 16px)'",
-      "tags": []
+      "id": "spx-code-13",
+      "index": 13,
+      "name": "fontSize",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "height",
       "attribute": "height",
-      "type": "string",
+      "default": "auto",
       "description": "",
-      "default": "'auto'",
-      "defaultValue": "'auto'",
-      "tags": []
+      "id": "spx-code-14",
+      "index": 14,
+      "name": "height",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "lazy",
+      "attribute": "hide-scrollbar",
+      "default": "false",
+      "description": "Show scrollbar.",
+      "id": "spx-code-15",
+      "index": 15,
+      "name": "hideScrollbar",
+      "tags": [],
+      "type": "boolean"
+    },
+    {
       "attribute": "lazy",
-      "type": "boolean",
       "description": "Load component when it enters the viewport.",
-      "tags": []
+      "id": "spx-code-16",
+      "index": 16,
+      "name": "lazy",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "lineNumbers",
       "attribute": "line-numbers",
-      "type": "boolean",
+      "default": "true",
       "description": "Enable line numbers.",
-      "default": "true",
-      "defaultValue": "true",
-      "tags": []
+      "id": "spx-code-17",
+      "index": 17,
+      "name": "lineNumbers",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "lineNumbersBackground",
       "attribute": "line-numbers-background",
-      "type": "string",
+      "default": "var(--spx-color-gray-800)",
       "description": "",
-      "default": "'var(--spx-color-gray-800)'",
-      "defaultValue": "'var(--spx-color-gray-800)'",
-      "tags": []
+      "id": "spx-code-18",
+      "index": 18,
+      "name": "lineNumbersBackground",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "lineNumbersColor",
       "attribute": "line-numbers-color",
-      "type": "string",
+      "default": "var(--spx-color-gray-400)",
       "description": "",
-      "default": "'var(--spx-color-gray-400)'",
-      "defaultValue": "'var(--spx-color-gray-400)'",
-      "tags": []
+      "id": "spx-code-19",
+      "index": 19,
+      "name": "lineNumbersColor",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "lineNumbersStart",
       "attribute": "line-numbers-start",
-      "type": "number",
       "description": "Start of line number.",
-      "tags": []
+      "id": "spx-code-20",
+      "index": 20,
+      "name": "lineNumbersStart",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "maxWidth",
       "attribute": "max-width",
-      "type": "string",
+      "default": "100%",
       "description": "",
-      "default": "'100%'",
-      "defaultValue": "'100%'",
-      "tags": []
+      "id": "spx-code-21",
+      "index": 21,
+      "name": "maxWidth",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "overflow",
       "attribute": "overflow",
-      "type": "string",
+      "default": "auto",
       "description": "",
-      "default": "'auto'",
-      "defaultValue": "'auto'",
-      "tags": []
+      "id": "spx-code-22",
+      "index": 22,
+      "name": "overflow",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "padding",
       "attribute": "padding",
-      "type": "string",
+      "default": "clamp(20px, 2.4vw, 40px)",
       "description": "",
-      "default": "'clamp(20px, 2.4vw, 40px)'",
-      "defaultValue": "'clamp(20px, 2.4vw, 40px)'",
-      "tags": []
+      "id": "spx-code-23",
+      "index": 23,
+      "name": "padding",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "scrollbar",
-      "attribute": "scrollbar",
-      "type": "boolean",
-      "description": "Hide scrollbar.",
-      "default": "true",
-      "defaultValue": "true",
-      "tags": []
-    },
-    {
-      "name": "theme",
       "attribute": "theme",
-      "type": "string",
+      "default": "default",
       "description": "Colour theme.",
-      "default": "'default'",
-      "defaultValue": "'default'",
+      "id": "spx-code-24",
+      "index": 24,
+      "name": "theme",
       "tags": [
         {
-          "text": "'default', 'dracula'",
+          "text": "default, dracula",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "type",
       "attribute": "type",
-      "type": "string",
+      "default": "markup",
       "description": "Determines the programming language.",
-      "default": "'markup'",
-      "defaultValue": "'markup'",
+      "id": "spx-code-25",
+      "index": 25,
+      "name": "type",
       "tags": [
         {
-          "text": "'markup', 'css', 'js', 'php', 'twig', 'json'",
+          "text": "markup, css, js, php, twig, json",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "whitespaceLeftTrim",
       "attribute": "whitespace-left-trim",
-      "type": "boolean",
+      "default": "true",
       "description": "Removes all whitespace from the top of the code block.",
-      "default": "true",
-      "defaultValue": "true",
-      "tags": []
+      "id": "spx-code-26",
+      "index": 26,
+      "name": "whitespaceLeftTrim",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "whitespaceRemoveIndent",
       "attribute": "whitespace-remove-indent",
-      "type": "boolean",
+      "default": "true",
       "description": "If the whole code block is indented too much it removes the extra indent.",
-      "default": "true",
-      "defaultValue": "true",
-      "tags": []
+      "id": "spx-code-27",
+      "index": 27,
+      "name": "whitespaceRemoveIndent",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "whitespaceRemoveTrailing",
       "attribute": "whitespace-remove-trailing",
-      "type": "boolean",
-      "description": "Removes trailing whitespace on all lines.",
       "default": "true",
-      "defaultValue": "true",
-      "tags": []
+      "description": "Removes trailing whitespace on all lines.",
+      "id": "spx-code-28",
+      "index": 28,
+      "name": "whitespaceRemoveTrailing",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "whitespaceRightTrim",
       "attribute": "whitespace-right-trim",
-      "type": "boolean",
-      "description": "Removes all whitespace from the bottom of the code block.",
       "default": "true",
-      "defaultValue": "true",
-      "tags": []
+      "description": "Removes all whitespace from the bottom of the code block.",
+      "id": "spx-code-29",
+      "index": 29,
+      "name": "whitespaceRightTrim",
+      "tags": [],
+      "type": "boolean"
     }
   ],
   "events": [
@@ -294,8 +383,8 @@
   "methods": [],
   "slots": [
     {
-      "name": "inner",
-      "description": "Slot (between HTML tags)."
+      "name": "inner - Slot (between HTML tags).",
+      "description": ""
     }
   ]
 }

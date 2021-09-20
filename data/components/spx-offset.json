@@ -4,22 +4,24 @@
   "shadow": false,
   "properties": [
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "s.display",
-      "defaultValue": "s.display",
-      "tags": []
+      "attribute": "target",
+      "default": "header",
+      "description": "Target element. Can take any querySelector value. (id, class, tag etc.)",
+      "id": "spx-offset-0",
+      "index": 0,
+      "name": "target",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "target",
-      "attribute": "target",
-      "type": "string",
-      "description": "Target element.",
-      "default": "'header'",
-      "defaultValue": "'header'",
-      "tags": []
+      "attribute": "variable",
+      "default": "true",
+      "description": "Add offset as CSS variable to body.",
+      "id": "spx-offset-1",
+      "index": 1,
+      "name": "variable",
+      "tags": [],
+      "type": "boolean"
     }
   ],
   "events": [
@@ -37,8 +39,8 @@
   ],
   "slots": [
     {
-      "name": "inner",
-      "description": "Slot (between HTML tags)."
+      "name": "inner - Slot (between HTML tags).",
+      "description": ""
     }
   ]
 }

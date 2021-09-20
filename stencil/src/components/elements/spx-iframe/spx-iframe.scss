@@ -1,0 +1,35 @@
+$tag: 'spx-iframe';
+
+$loaderBackground: var(--spx-color-gray-900);
+$loaderBorderRadius: var(--spx-border-radius);
+$loaderColor: #ffffff;
+$loaderPadding: 0.8em;
+$minHeight: 400px;
+
+:host {
+  display: setVar($tag, 'display', block);
+}
+
+.inner {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  min-height: variable($tag, 'min-heigt', $minHeight);
+}
+
+iframe {
+  border: none;
+  transform-origin: left top;
+  position: absolute;
+}
+
+.loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(2);
+  padding: variable($tag, 'loader-padding', $loaderPadding);
+  background: variable($tag, 'loader-background', $loaderBackground);
+  color: variable($tag, 'loader-color', $loaderColor);
+  border-radius: variable($tag, 'loader-border-radius', $loaderBorderRadius);
+}

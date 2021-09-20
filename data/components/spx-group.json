@@ -4,27 +4,22 @@
   "shadow": false,
   "properties": [
     {
-      "name": "content",
       "attribute": "content",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-group-0",
+      "index": 0,
+      "name": "content",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "s.display",
-      "defaultValue": "s.display",
-      "tags": []
-    },
-    {
-      "name": "target",
       "attribute": "target",
-      "type": "string",
-      "description": "Specifies a target element.",
-      "tags": []
+      "description": "Target element. Can take any querySelector value. (id, class, tag etc.)",
+      "id": "spx-group-1",
+      "index": 1,
+      "name": "target",
+      "tags": [],
+      "type": "string"
     }
   ],
   "events": [
@@ -36,8 +31,8 @@
   "methods": [],
   "slots": [
     {
-      "name": "inner",
-      "description": "Slot (between HTML tags)."
+      "name": "inner - Slot (between HTML tags).",
+      "description": ""
     }
   ]
 }

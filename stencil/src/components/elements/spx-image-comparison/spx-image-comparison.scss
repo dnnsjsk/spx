@@ -1,0 +1,98 @@
+$tag: 'spx-image-comparison';
+
+$color: #ffffff;
+$height: 100%;
+$iconColor: var(--spx-color-gray-900);
+
+:host {
+  display: setVar($tag, 'display', block);
+}
+
+.inner {
+  display: block;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  height: variable($tag, 'height', $height);
+}
+
+.container {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: hidden;
+  user-select: none;
+  height: variable($tag, 'height', $height);
+
+  &--after {
+    width: 125px;
+  }
+}
+
+img {
+  height: 100%;
+  max-width: none !important;
+}
+
+.scroller {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  left: 100px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 50%;
+  background-color: transparent;
+  cursor: pointer;
+  opacity: 0.9;
+  border: 4px solid variable($tag, 'color', $color);
+  background: variable($tag, 'color', $color);
+  @include focus;
+  transition-property: box-shadow, opacity;
+
+  :host([active]) & {
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 9999px;
+    position: absolute;
+    left: 50%;
+    margin-left: -2px;
+    z-index: 30;
+    transition: 0.1s;
+    background: variable($tag, 'color', $color);
+  }
+
+  &:before {
+    top: 100%;
+  }
+
+  &:after {
+    bottom: 100%;
+  }
+}
+
+.thumb {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  spx-icon {
+    transform: rotate(45deg);
+    color: variable($tag, 'icon-color', $iconColor);
+  }
+}

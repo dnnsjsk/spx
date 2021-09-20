@@ -1,20 +1,40 @@
-:host {
-  @keyframes loader {
-    0% {
-      transform: rotate(0deg);
-    }
+$tag: 'spx-icon';
 
-    100% {
-      transform: rotate(360deg);
-    }
+$color: 'inherit';
+$size: '1em';
+$sizeMax: 1;
+$sizeMin: 0.8;
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
 
-  div.loader {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.inner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  @include style($tag, 'size', 'font-size', $size, $sizeMin, $sizeMax);
+
+  :host([type='loader']) & {
+    transform-origin: center;
     animation-duration: 1s;
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
-    animation-name: loader;
     animation-timing-function: linear;
-    transform-origin: center;
+    animation-name: spin;
   }
+
+  * {
+    color: variable($tag, 'color', $color);
+  }
+}
+
+.loader {
+  width: 1em;
 }

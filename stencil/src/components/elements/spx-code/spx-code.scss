@@ -1,0 +1,448 @@
+$tag: 'spx-code';
+
+$background: var(--spx-color-gray-900);
+$borderRadius: var(--spx-border-radius);
+$clipboardButtonColor: var(--spx-color-gray-400);
+$clipboardButtonFontSize: 12px;
+$clipboardButtonFontWeight: 600;
+$clipboardButtonPadding: 6px 12px;
+$clipboardButtonTextTransform: uppercase;
+$filter: '';
+$fontSize: clamp(12px, 1.6vw, 16px);
+$height: auto;
+$lineNumbersBackground: var(--spx-color-gray-800);
+$lineNumbersColor: var(--spx-color-gray-400);
+$maxWidth: 100%;
+$overflow: auto;
+$padding: clamp(20px, 2.4vw, 40px);
+
+:host {
+  display: setVar($tag, 'display', block);
+}
+
+:host([theme='default']) {
+  .token.comment,
+  token.prolog,
+  .token.cdata {
+    color: #808080;
+  }
+
+  .token.delimiter,
+  .token.boolean,
+  .token.keyword,
+  .token.selector,
+  .token.important,
+  .token.atrule {
+    color: #cc7832;
+  }
+
+  .token.operator,
+  .token.punctuation,
+  .token.attr-name {
+    color: #a9b7c6;
+  }
+
+  .token.tag,
+  .token.tag .punctuation,
+  .token.doctype,
+  .token.builtin {
+    color: #e8bf6a;
+  }
+
+  .token.entity,
+  .token.number,
+  .token.symbol {
+    color: #6897bb;
+  }
+
+  .token.property,
+  .token.constant,
+  .token.variable {
+    color: #9876aa;
+  }
+
+  .token.string,
+  .token.char {
+    color: #6a8759;
+  }
+
+  .token.attr-value,
+  .token.attr-value .punctuation {
+    color: #a5c261;
+  }
+
+  .token.attr-value .punctuation:first-child {
+    color: #a9b7c6;
+  }
+
+  .token.url {
+    color: #287bde;
+    text-decoration: underline;
+  }
+
+  .token.function {
+    color: #ffc66d;
+  }
+
+  .token.regex {
+    background: #364135;
+  }
+
+  .token.bold {
+    font-weight: bold;
+  }
+
+  .token.italic {
+    font-style: italic;
+  }
+
+  .token.inserted {
+    background: #294436;
+  }
+
+  .token.deleted {
+    background: #484a4a;
+  }
+
+  code.language-css .token.property,
+  code.language-css .token.property + .token.punctuation {
+    color: #a9b7c6;
+  }
+
+  code.language-css .token.id {
+    color: #ffc66d;
+  }
+
+  code.language-css .token.selector > .token.class,
+  code.language-css .token.selector > .token.attribute,
+  code.language-css .token.selector > .token.pseudo-class,
+  code.language-css .token.selector > .token.pseudo-element {
+    color: #ffc66d;
+  }
+}
+
+:host([theme='dracula']) {
+  .language-css {
+    color: #bd93f9;
+  }
+
+  .token {
+    color: #ff79c6;
+  }
+
+  .language-css .token {
+    color: #ff79c6;
+  }
+
+  .token.script {
+    color: #f8f8f2;
+  }
+
+  .token.bold {
+    font-weight: bold;
+  }
+
+  .token.italic {
+    font-style: italic;
+  }
+
+  .token.atrule,
+  .token.attr-name,
+  .token.attr-value {
+    color: #50fa7b;
+  }
+
+  .language-css .token.atrule {
+    color: #bd93f9;
+  }
+
+  .language-html .token.attr-value,
+  .language-markup .token.attr-value {
+    color: #f1fa8c;
+  }
+
+  .token.boolean {
+    color: #bd93f9;
+  }
+
+  .token.builtin,
+  .token.class-name {
+    color: #8be9fd;
+  }
+
+  .token.comment {
+    color: #6272a4;
+  }
+
+  .token.constant {
+    color: #bd93f9;
+  }
+
+  .language-javascript .token.constant {
+    color: #ffb86c;
+    font-style: italic;
+  }
+
+  .token.entity {
+    color: #ff79c6;
+  }
+
+  .language-css .token.entity {
+    color: #50fa7b;
+  }
+
+  .language-html .token.entity.named-entity {
+    color: #bd93f9;
+  }
+
+  .language-html .token.entity:not(.named-entity) {
+    color: #ff79c6;
+  }
+
+  .language-markup .token.entity.named-entity {
+    color: #bd93f9;
+  }
+
+  .language-markup .token.entity:not(.named-entity) {
+    color: #ff79c6;
+  }
+
+  .token.function {
+    color: #50fa7b;
+  }
+
+  .language-css .token.function {
+    color: #8be9fd;
+  }
+
+  .token.important,
+  .token.keyword {
+    color: #ff79c6;
+  }
+
+  .token.prolog {
+    color: #f8f8f2;
+  }
+
+  .token.property {
+    color: #ffb86c;
+  }
+
+  .language-css .token.property {
+    color: #8be9fd;
+  }
+
+  .token.punctuation {
+    color: #ff79c6;
+  }
+
+  .language-css .token.punctuation {
+    color: #ffb86c;
+  }
+
+  .language-html .token.punctuation,
+  .language-markup .token.punctuation {
+    color: #f8f8f2;
+  }
+
+  .token.selector {
+    color: #ff79c6;
+  }
+
+  .language-css .token.selector {
+    color: #50fa7b;
+  }
+
+  .token.regex {
+    color: #ff5555;
+  }
+
+  .language-css .token.rule:not(.atrule) {
+    color: #f8f8f2;
+  }
+
+  .token.string {
+    color: #f1fa8c;
+  }
+
+  .token.tag {
+    color: #ff79c6;
+  }
+
+  .token.url {
+    color: #8be9fd;
+  }
+
+  .language-css .token.url {
+    color: #ffb86c;
+  }
+
+  .token.variable {
+    color: #6272a4;
+  }
+
+  .token.number {
+    color: rgba(189, 147, 249, 1);
+  }
+
+  .token.operator {
+    color: rgba(139, 233, 253, 1);
+  }
+
+  .token.char {
+    color: rgba(255, 135, 157, 1);
+  }
+
+  .token.symbol {
+    color: rgba(255, 184, 108, 1);
+  }
+
+  .token.deleted {
+    color: #e2777a;
+  }
+
+  .token.namespace {
+    color: #e2777a;
+  }
+}
+
+.inner {
+  position: relative;
+  overflow: hidden;
+  border-radius: variable($tag, 'border-radius', $borderRadius);
+  max-width: variable($tag, 'max-width', $maxWidth);
+}
+
+pre,
+code {
+  margin: 0;
+  display: block;
+  position: relative;
+  font-family: Consolas, Monaco, 'Andale Mono', monospace !important;
+  border-radius: variable($tag, 'border-radius', $borderRadius);
+}
+
+pre {
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  line-height: 1.5;
+  tab-size: 4;
+  hyphens: none;
+  display: flex;
+  box-sizing: border-box;
+  height: 100%;
+  color: #a9b7c6;
+  overflow: variable($tag, 'overflow', $overflow);
+  background: variable($tag, 'background', $background);
+  padding: variable($tag, 'padding', $padding);
+  padding-bottom: 0;
+
+  :host([hide-scrollbar]) & {
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+  }
+
+  &:after {
+    top: 0;
+    z-index: 1;
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 3.5em;
+    background: variable($tag, 'line-numbers-background', $lineNumbersBackground);
+    height: var(--spx-code-internal-height, 100%);
+  }
+}
+
+code {
+  z-index: 2;
+  filter: variable($tag, 'filter', $filter);
+  margin-bottom: variable($tag, 'margin-bottom', $padding);
+  height: calc(
+    variable($tag, 'height', auto) - variable($tag, 'padding', $padding)
+  );
+
+  &,
+  * {
+    font-size: variable($tag, 'font-size', $fontSize);
+  }
+}
+
+.line-numbers {
+  padding-left: 5.2rem;
+  counter-reset: var(--spx-code-internal-line-start, 1);
+}
+
+.line-numbers-rows {
+  height: calc(#{variable($tag, 'padding', $padding)} + 100%);
+  top: calc(#{variable($tag, 'padding', $padding)} * -1);
+  padding-top: variable($tag, 'padding', $padding);
+  position: absolute;
+  pointer-events: none;
+  font-size: 100%;
+  left: -5.2rem;
+  width: 3.5em;
+  letter-spacing: -1px;
+  user-select: none;
+
+  & > span {
+    display: block;
+    counter-increment: linenumber;
+
+    &:before {
+      content: counter(linenumber);
+      display: block;
+      padding-right: 1.2em;
+      text-align: right;
+      color: variable($tag, 'line-numbers-color', $lineNumbersColor);
+    }
+
+    &:last-of-type {
+      padding-bottom: variable($tag, 'padding', $padding);
+    }
+  }
+}
+
+.clipboard {
+  position: absolute;
+  border: none;
+  right: 0px;
+  top: 0px;
+  cursor: pointer;
+  text-transform: variable(
+    $tag,
+    'clipboard-button-text-transform',
+    $clipboardButtonTextTransform
+  );
+  background: variable(
+    $tag,
+    'clipboard-button-background',
+    var(--spx-color-gray-800)
+  );
+  color: variable($tag, 'clipboard-button-color', $clipboardButtonColor);
+  padding: variable($tag, 'clipboard-button-padding', $clipboardButtonPadding);
+  font-size: variable(
+    $tag,
+    'clipboard-button-font-size',
+    $clipboardButtonFontSize
+  );
+  font-weight: variable(
+    $tag,
+    'clipboard-button-font-weight',
+    $clipboardButtonFontWeight
+  );
+  border-bottom-left-radius: variable(
+    $tag,
+    'border-radius',
+    var(--spx-border-radius)
+  );
+  border-bottom-right-radius: variable(
+    tag,
+    'border-radius',
+    var(--spx-border-radius)
+  );
+  @include focus;
+}

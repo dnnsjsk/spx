@@ -5,27 +5,40 @@
 
 ## Properties
 
-| Property       | Attribute       | Description | Type     | Default                 |
-| -------------- | --------------- | ----------- | -------- | ----------------------- |
-| `display`      | `display`       |             | `string` | `'block'`               |
-| `height`       | `height`        |             | `string` | `'auto'`                |
-| `overlayColor` | `overlay-color` |             | `string` | `'rgba(0, 0, 0, 0.92)'` |
-| `width`        | `width`         |             | `string` | `'100%'`                |
+| Property                | Attribute                 | Description                                                                  | Type      | Default                        |
+| ----------------------- | ------------------------- | ---------------------------------------------------------------------------- | --------- | ------------------------------ |
+| `bodyOverflow`          | `body-overflow`           | If 'overflow: hidden' should be applied to the body when a lightbox is open. | `boolean` | `true`                         |
+| `closeButton`           | `close-button`            | Show close button.                                                           | `boolean` | `true`                         |
+| `closeButtonColor`      | `close-button-color`      |                                                                              | `string`  | `'#ffffff'`                    |
+| `overlayBackdropFilter` | `overlay-backdrop-filter` |                                                                              | `string`  | `'var(--spx-backdrop-filter)'` |
+| `overlayBackground`     | `overlay-background`      |                                                                              | `string`  | `'rgba(0,0,0,0.8)'`            |
+| `spxSlider`             | `spx-slider`              | [component:spx-slider]                                                       | `string`  | `undefined`                    |
+| `target`                | `target`                  | [prop:target]                                                                | `string`  | `'img'`                        |
 
 
 ## Events
 
-| Event                | Description                       | Type               |
-| -------------------- | --------------------------------- | ------------------ |
-| `spxLightboxDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+| Event                | Description    | Type               |
+| -------------------- | -------------- | ------------------ |
+| `spxLightboxDidLoad` | [event:loaded] | `CustomEvent<any>` |
 
 
-## Slots
+## Dependencies
 
-| Slot      | Description               |
-| --------- | ------------------------- |
-| `"inner"` | Slot (between HTML tags). |
+### Depends on
 
+- [spx-icon](../spx-icon)
+- [spx-slider](../spx-slider)
+
+### Graph
+```mermaid
+graph TD;
+  spx-lightbox --> spx-icon
+  spx-lightbox --> spx-slider
+  spx-icon --> ion-icon
+  spx-slider --> spx-icon
+  style spx-lightbox fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 

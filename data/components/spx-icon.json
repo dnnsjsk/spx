@@ -4,84 +4,92 @@
   "shadow": false,
   "properties": [
     {
-      "name": "color",
       "attribute": "color",
-      "type": "string",
+      "default": "inherit",
       "description": "",
-      "default": "'inherit'",
-      "defaultValue": "'inherit'",
-      "tags": []
+      "id": "spx-icon-0",
+      "index": 0,
+      "name": "color",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "'inline-block'",
-      "defaultValue": "'inline-block'",
-      "tags": []
-    },
-    {
-      "name": "icon",
       "attribute": "icon",
-      "type": "string",
       "description": "Icon code.",
-      "tags": []
+      "id": "spx-icon-1",
+      "index": 1,
+      "name": "icon",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "size",
       "attribute": "size",
-      "type": "string",
+      "default": "1em",
       "description": "Icon size.",
-      "default": "'1em'",
-      "defaultValue": "'1em'",
-      "tags": []
+      "id": "spx-icon-2",
+      "index": 2,
+      "name": "size",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "sizeMax",
       "attribute": "size-max",
-      "type": "number",
-      "description": "",
       "default": "1",
-      "defaultValue": "1",
-      "tags": []
-    },
-    {
-      "name": "sizeMin",
-      "attribute": "size-min",
-      "type": "number",
       "description": "",
+      "id": "spx-icon-3",
+      "index": 3,
+      "name": "sizeMax",
+      "tags": [],
+      "type": "number"
+    },
+    {
+      "attribute": "size-min",
       "default": "0.8",
-      "defaultValue": "0.8",
-      "tags": []
+      "description": "",
+      "id": "spx-icon-4",
+      "index": 4,
+      "name": "sizeMin",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "styling",
       "attribute": "styling",
-      "type": "string",
+      "default": "default",
       "description": "Styling.",
-      "default": "'default'",
-      "defaultValue": "'default'",
+      "id": "spx-icon-5",
+      "index": 5,
+      "name": "styling",
       "tags": [
         {
-          "text": "'default', 'fluid'",
+          "text": "default, fluid",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "type",
       "attribute": "type",
-      "type": "string",
+      "default": "ionicons",
       "description": "Icon type.",
-      "default": "'ionicons'",
-      "defaultValue": "'ionicons'",
+      "id": "spx-icon-6",
+      "index": 6,
+      "name": "type",
       "tags": [
         {
-          "text": "'ionicons', 'caret'",
+          "text": "ionicons, caret",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "width",
+      "description": "",
+      "id": "spx-icon-7",
+      "index": 7,
+      "name": "width",
+      "tags": [],
+      "type": "string"
     }
   ],
   "events": [

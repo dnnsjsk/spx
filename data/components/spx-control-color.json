@@ -4,18 +4,40 @@
   "shadow": false,
   "properties": [
     {
-      "name": "color",
-      "attribute": "color",
-      "type": "string",
+      "attribute": "data",
       "description": "",
-      "tags": []
+      "id": "spx-control-color-0",
+      "index": 0,
+      "name": "data",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "label",
-      "attribute": "label",
-      "type": "string",
+      "default": "function () {}",
       "description": "",
-      "tags": []
+      "id": "spx-control-color-1",
+      "index": 1,
+      "name": "handleInput",
+      "tags": [],
+      "type": "Function"
+    },
+    {
+      "attribute": "label",
+      "description": "",
+      "id": "spx-control-color-2",
+      "index": 2,
+      "name": "label",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "value",
+      "description": "",
+      "id": "spx-control-color-3",
+      "index": 3,
+      "name": "value",
+      "tags": [],
+      "type": "string"
     }
   ],
   "events": [],

@@ -1,0 +1,21 @@
+@import 'node_modules/modern-normalize/modern-normalize';
+
+:host {
+  --spx-editor-header-height: 40px;
+  --spx-editor-text: var(--spx-color-gray-700);
+  --spx-editor-text-active: var(--spx-color-gray-900);
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+  font-family: inter, sans-serif;
+}
+
+button {
+  background: none;
+  border: none;
+  line-height: 1.5;
+  cursor: pointer;
+}

@@ -1,0 +1,28 @@
+$tag: 'spx-masonry';
+
+$gap: 10px;
+
+:host {
+  display: setVar($tag, 'display', block);
+}
+
+.inner {
+  margin: calc(#{variable($tag, 'gap', $gap)} * -1)
+    calc(#{variable($tag, 'gap', $gap)} / 2 * -1) 0
+    calc(#{variable($tag, 'gap', $gap)} / 2 * -1);
+
+  & > div {
+    padding: variable($tag, 'gap', $gap) calc(#{variable($tag, 'gap', $gap)} / 2) 0
+      calc(#{variable($tag, 'gap', $gap)} / 2);
+    box-sizing: border-box;
+
+    * {
+      width: 100%;
+      max-width: 100%;
+    }
+
+    img {
+      vertical-align: top;
+    }
+  }
+}

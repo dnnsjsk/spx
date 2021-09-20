@@ -4,381 +4,472 @@
   "shadow": true,
   "properties": [
     {
-      "name": "childBorder",
       "attribute": "child-border",
-      "type": "string",
+      "default": "1px solid var(--spx-color-gray-200)",
       "description": "",
-      "default": "'1px solid var(--spx-color-gray-200)'",
-      "defaultValue": "'1px solid var(--spx-color-gray-200)'",
-      "tags": []
+      "id": "spx-navigation-0",
+      "index": 0,
+      "name": "childBorder",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "childBorderRadius",
       "attribute": "child-border-radius",
-      "type": "string",
+      "default": "0",
       "description": "Child menu border-radius.",
-      "default": "'0'",
-      "defaultValue": "'0'",
+      "id": "spx-navigation-1",
+      "index": 1,
+      "name": "childBorderRadius",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "childBoxShadow",
       "attribute": "child-box-shadow",
-      "type": "string",
+      "default": "0 3px 10px 0 rgba(0,0,0,0.05)",
       "description": "Child menu box-shadow.",
-      "default": "'0 3px 10px 0 rgba(0,0,0,0.05)'",
-      "defaultValue": "'0 3px 10px 0 rgba(0,0,0,0.05)'",
+      "id": "spx-navigation-2",
+      "index": 2,
+      "name": "childBoxShadow",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "childChildGap",
       "attribute": "child-child-gap",
-      "type": "string",
+      "default": "0.8em",
       "description": "Gap between nested child menus.",
-      "default": "'0.8em'",
-      "defaultValue": "'0.8em'",
+      "id": "spx-navigation-3",
+      "index": 3,
+      "name": "childChildGap",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "childGap",
       "attribute": "child-gap",
-      "type": "string",
+      "default": "0.5em",
       "description": "Gap between top level menu items and child menus.",
-      "default": "'0.5em'",
-      "defaultValue": "'0.5em'",
+      "id": "spx-navigation-4",
+      "index": 4,
+      "name": "childGap",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "childIcon",
       "attribute": "child-icon",
-      "type": "string",
+      "default": "arrow-down",
       "description": "Indicator icon.",
-      "default": "'arrow-down'",
-      "defaultValue": "'arrow-down'",
-      "tags": []
+      "id": "spx-navigation-5",
+      "index": 5,
+      "name": "childIcon",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "childIconType",
       "attribute": "child-icon-type",
-      "type": "string",
+      "default": "ionicons",
       "description": "Indicator icon type.",
-      "default": "'ionicons'",
-      "defaultValue": "'ionicons'",
-      "tags": []
+      "id": "spx-navigation-6",
+      "index": 6,
+      "name": "childIconType",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "childIndicatorGap",
       "attribute": "child-indicator-gap",
-      "type": "string",
+      "default": "0.2em",
       "description": "Gap between child menu indicator and text.",
-      "default": "'0.2em'",
-      "defaultValue": "'0.2em'",
+      "id": "spx-navigation-7",
+      "index": 7,
+      "name": "childIndicatorGap",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "childItemBackground",
       "attribute": "child-item-background",
-      "type": "string",
+      "default": "#ffffff",
       "description": "",
-      "default": "'#ffffff'",
-      "defaultValue": "'#ffffff'",
-      "tags": []
-    },
-    {
-      "name": "childItemBackgroundHover",
-      "attribute": "child-item-background-hover",
-      "type": "string",
-      "description": "",
-      "default": "'var(--spx-color-gray-100)'",
-      "defaultValue": "'var(--spx-color-gray-100)'",
-      "tags": []
-    },
-    {
-      "name": "childItemColor",
-      "attribute": "child-item-color",
-      "type": "string",
-      "description": "",
-      "default": "'var(--spx-color-gray-700)'",
-      "defaultValue": "'var(--spx-color-gray-700)'",
-      "tags": []
-    },
-    {
-      "name": "childItemColorHover",
-      "attribute": "child-item-color-hover",
-      "type": "string",
-      "description": "",
-      "default": "'var(--spx-color-gray-900)'",
-      "defaultValue": "'var(--spx-color-gray-900)'",
-      "tags": []
-    },
-    {
-      "name": "childItemPadding",
-      "attribute": "child-item-padding",
-      "type": "string",
-      "description": "",
-      "default": "'0.6em 0.8em'",
-      "defaultValue": "'0.6em 0.8em'",
-      "tags": []
-    },
-    {
-      "name": "childPlacement",
-      "attribute": "child-placement",
-      "type": "string",
-      "description": "Child menu placement.",
-      "default": "'start'",
-      "defaultValue": "'start'",
+      "id": "spx-navigation-8",
+      "index": 8,
+      "name": "childItemBackground",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "child-item-background-hover",
+      "default": "var(--spx-color-gray-100)",
+      "description": "",
+      "id": "spx-navigation-9",
+      "index": 9,
+      "name": "childItemBackgroundHover",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "child-item-color",
+      "default": "var(--spx-color-gray-700)",
+      "description": "",
+      "id": "spx-navigation-10",
+      "index": 10,
+      "name": "childItemColor",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "child-item-color-hover",
+      "default": "var(--spx-color-gray-900)",
+      "description": "",
+      "id": "spx-navigation-11",
+      "index": 11,
+      "name": "childItemColorHover",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "child-item-padding",
+      "default": "0.6em 0.8em",
+      "description": "",
+      "id": "spx-navigation-12",
+      "index": 12,
+      "name": "childItemPadding",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "child-placement",
+      "default": "start",
+      "description": "Child menu placement.",
+      "id": "spx-navigation-13",
+      "index": 13,
+      "name": "childPlacement",
+      "tags": [
+        {
+          "name": "css"
         },
         {
-          "text": "'start', 'end'",
+          "text": "start, end",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "s.display",
-      "defaultValue": "s.display",
-      "tags": []
-    },
-    {
-      "name": "fontSize",
       "attribute": "font-size",
-      "type": "string",
+      "default": "clamp(18px, 1.6vw, 20px)",
       "description": "",
-      "default": "'clamp(18px, 1.6vw, 20px)'",
-      "defaultValue": "'clamp(18px, 1.6vw, 20px)'",
-      "tags": []
+      "id": "spx-navigation-14",
+      "index": 14,
+      "name": "fontSize",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "itemTransitionDuration",
-      "attribute": "item-transition-duration",
-      "type": "string",
+      "attribute": "is-mobile",
       "description": "",
-      "default": "s.transitionDuration",
-      "defaultValue": "'var(--spx-transition-duration)'",
-      "tags": []
+      "id": "spx-navigation-15",
+      "index": 15,
+      "name": "isMobile",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "itemTransitionTimingFunction",
-      "attribute": "item-transition-timing-function",
-      "type": "string",
-      "description": "",
-      "default": "s.transitionTimingFunction",
-      "defaultValue": "'var(--spx-transition-timing-function)'",
-      "tags": []
-    },
-    {
-      "name": "itemUnderline",
       "attribute": "item-underline",
-      "type": "boolean",
       "description": "Underlines all links.",
-      "tags": []
+      "id": "spx-navigation-16",
+      "index": 16,
+      "name": "itemUnderline",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "itemUnderlineHover",
       "attribute": "item-underline-hover",
-      "type": "boolean",
       "description": "Underlines all links on hover.",
-      "tags": []
+      "id": "spx-navigation-17",
+      "index": 17,
+      "name": "itemUnderlineHover",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "menu",
       "attribute": "menu",
-      "type": "string",
       "description": "Renders a WordPress menu.",
+      "id": "spx-navigation-18",
+      "index": 18,
+      "name": "menu",
       "tags": [
         {
           "text": "&lt;?php spx\\Get::navigation(\"myMenu\") ?>",
           "name": "helper"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "mobile",
       "attribute": "mobile",
-      "type": "number",
+      "default": "768",
       "description": "Mobile breakpoint.",
-      "default": "s.bpMobileWidth",
-      "defaultValue": 768,
-      "tags": []
+      "id": "spx-navigation-19",
+      "index": 19,
+      "name": "mobile",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "mobileIcon",
       "attribute": "mobile-icon",
-      "type": "string",
       "description": "Mobile button icon.",
-      "tags": []
+      "id": "spx-navigation-20",
+      "index": 20,
+      "name": "mobileIcon",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "mobileIconType",
       "attribute": "mobile-icon-type",
-      "type": "string",
+      "default": "ionicons",
       "description": "Mobile button icon type.",
-      "default": "'ionicons'",
-      "defaultValue": "'ionicons'",
-      "tags": []
+      "id": "spx-navigation-21",
+      "index": 21,
+      "name": "mobileIconType",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "mobileItemBackground",
       "attribute": "mobile-item-background",
-      "type": "string",
+      "default": "#ffffff",
       "description": "",
-      "default": "'#ffffff'",
-      "defaultValue": "'#ffffff'",
-      "tags": []
-    },
-    {
-      "name": "mobileItemBackgroundHover",
-      "attribute": "mobile-item-background-hover",
-      "type": "string",
-      "description": "",
-      "default": "'var(--spx-color-gray-100)'",
-      "defaultValue": "'var(--spx-color-gray-100)'",
-      "tags": []
-    },
-    {
-      "name": "mobileItemColor",
-      "attribute": "mobile-item-color",
-      "type": "string",
-      "description": "",
-      "default": "'var(--spx-color-gray-800)'",
-      "defaultValue": "'var(--spx-color-gray-800)'",
-      "tags": []
-    },
-    {
-      "name": "mobileItemColorHover",
-      "attribute": "mobile-item-color-hover",
-      "type": "string",
-      "description": "",
-      "default": "'var(--spx-color-gray-900)'",
-      "defaultValue": "'var(--spx-color-gray-900)'",
-      "tags": []
-    },
-    {
-      "name": "mobileItemNestedMarginLeft",
-      "attribute": "mobile-item-nested-margin-left",
-      "type": "string",
-      "description": "",
-      "default": "'0.8em'",
-      "defaultValue": "'0.8em'",
-      "tags": []
-    },
-    {
-      "name": "mobileItemPadding",
-      "attribute": "mobile-item-padding",
-      "type": "string",
-      "description": "",
-      "default": "'0.6em'",
-      "defaultValue": "'0.6em'",
-      "tags": []
-    },
-    {
-      "name": "mobilePlacement",
-      "attribute": "mobile-placement",
-      "type": "string",
-      "description": "Mobile placement.",
-      "default": "'start'",
-      "defaultValue": "'start'",
+      "id": "spx-navigation-22",
+      "index": 22,
+      "name": "mobileItemBackground",
       "tags": [
         {
-          "name": "CSS"
-        },
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "mobile-item-background-hover",
+      "default": "var(--spx-color-gray-100)",
+      "description": "",
+      "id": "spx-navigation-23",
+      "index": 23,
+      "name": "mobileItemBackgroundHover",
+      "tags": [
         {
-          "text": "'start', 'end'",
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "mobile-item-color",
+      "default": "var(--spx-color-gray-800)",
+      "description": "",
+      "id": "spx-navigation-24",
+      "index": 24,
+      "name": "mobileItemColor",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "mobile-item-color-hover",
+      "default": "var(--spx-color-gray-900)",
+      "description": "",
+      "id": "spx-navigation-25",
+      "index": 25,
+      "name": "mobileItemColorHover",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "mobile-item-nested-margin-left",
+      "default": "0.8em",
+      "description": "",
+      "id": "spx-navigation-26",
+      "index": 26,
+      "name": "mobileItemNestedMarginLeft",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "mobile-item-padding",
+      "default": "0.6em",
+      "description": "",
+      "id": "spx-navigation-27",
+      "index": 27,
+      "name": "mobileItemPadding",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "mobile-placement",
+      "default": "start",
+      "description": "Mobile placement.",
+      "id": "spx-navigation-28",
+      "index": 28,
+      "name": "mobilePlacement",
+      "tags": [
+        {
+          "text": "start, end",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "parentItemBackground",
       "attribute": "parent-item-background",
-      "type": "string",
+      "default": "#ffffff",
       "description": "",
-      "default": "'#ffffff'",
-      "defaultValue": "'#ffffff'",
-      "tags": []
-    },
-    {
-      "name": "parentItemBackgroundHover",
-      "attribute": "parent-item-background-hover",
-      "type": "string",
-      "description": "",
-      "default": "'var(--spx-color-gray-100)'",
-      "defaultValue": "'var(--spx-color-gray-100)'",
-      "tags": []
-    },
-    {
-      "name": "parentItemColor",
-      "attribute": "parent-item-color",
-      "type": "string",
-      "description": "",
-      "default": "'var(--spx-color-gray-800)'",
-      "defaultValue": "'var(--spx-color-gray-800)'",
-      "tags": []
-    },
-    {
-      "name": "parentItemColorHover",
-      "attribute": "parent-item-color-hover",
-      "type": "string",
-      "description": "",
-      "default": "'var(--spx-color-gray-900)'",
-      "defaultValue": "'var(--spx-color-gray-900)'",
-      "tags": []
-    },
-    {
-      "name": "parentItemGap",
-      "attribute": "parent-item-gap",
-      "type": "string",
-      "description": "Gap between parent menu items.",
-      "default": "'0.4em'",
-      "defaultValue": "'0.4em'",
+      "id": "spx-navigation-29",
+      "index": 29,
+      "name": "parentItemBackground",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "parentItemPadding",
-      "attribute": "parent-item-padding",
-      "type": "string",
+      "attribute": "parent-item-background-hover",
+      "default": "var(--spx-color-gray-100)",
       "description": "",
-      "default": "'0.6em'",
-      "defaultValue": "'0.6em'",
-      "tags": []
+      "id": "spx-navigation-30",
+      "index": 30,
+      "name": "parentItemBackgroundHover",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     },
     {
-      "name": "vertical",
+      "attribute": "parent-item-color",
+      "default": "var(--spx-color-gray-800)",
+      "description": "",
+      "id": "spx-navigation-31",
+      "index": 31,
+      "name": "parentItemColor",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "parent-item-color-hover",
+      "default": "var(--spx-color-gray-900)",
+      "description": "",
+      "id": "spx-navigation-32",
+      "index": 32,
+      "name": "parentItemColorHover",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "parent-item-gap",
+      "default": "0.4em",
+      "description": "Gap between parent menu items.",
+      "id": "spx-navigation-33",
+      "index": 33,
+      "name": "parentItemGap",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "parent-item-padding",
+      "default": "0.6em",
+      "description": "",
+      "id": "spx-navigation-34",
+      "index": 34,
+      "name": "parentItemPadding",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
       "attribute": "vertical",
-      "type": "boolean",
       "description": "Renders menu vertically.",
-      "tags": []
+      "id": "spx-navigation-35",
+      "index": 35,
+      "name": "vertical",
+      "tags": [],
+      "type": "boolean"
     }
   ],
   "events": [

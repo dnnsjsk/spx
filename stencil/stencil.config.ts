@@ -21,62 +21,62 @@ async function generateCustomElementsJSON(docsData: JsonDocs) {
     await fs.mkdir(dirComponents);
 
     /** Create file for each component. */
-    await docsData.components.forEach((component) => {
-      const data = {
-        name: component.tag,
-        description: component.docs,
-        shadow:
-          ['spx-navigation', 'spx-slideshow'].includes(component.tag) && true,
-        properties: component.props.map((prop) => ({
-          name: prop.name,
-          attribute: prop.attr,
-          type: prop.type,
-          description: prop.docs,
-          default: prop.default,
-          defaultValue:
-            prop.default === 's.bpMobileWidth'
-              ? 768
-              : prop.default === 's.fontFamily'
-              ? "'var(--spx-font-family)'"
-              : prop.default === 's.fontSize'
-              ? "'var(--spx-font-size)'"
-              : prop.default === 's.borderRadius'
-              ? "'var(--spx-border-radius)'"
-              : prop.default === 's.transitionDuration'
-              ? "'var(--spx-transition-duration)'"
-              : prop.default === 's.transitionDuration2'
-              ? "'var(--spx-transition-duration-2)'"
-              : prop.default === 's.transitionTimingFunction'
-              ? "'var(--spx-transition-timing-function)'"
-              : prop.default,
-          tags: prop.docsTags,
-        })),
+    await Promise.all(
+      docsData.components.map((component) => {
+        const data = {
+          name: component.tag,
+          description: component.docs,
+          shadow:
+            ['spx-navigation', 'spx-slideshow'].includes(component.tag) && true,
+          properties: component.props.map((prop, index) => ({
+            attribute: prop.attr,
+            default: prop.default,
+            description: prop.docs,
+            id: component.tag + '-' + index,
+            index: index,
+            name: prop.name,
+            tags: prop.docsTags,
+            type: prop.type,
+          })),
 
-        events: component.events.map((event) => ({
-          name: event.event,
-          description: event.docs,
-        })),
+          events: component.events.map((event) => ({
+            name: event.event,
+            description: event.docs,
+          })),
 
-        methods: component.methods.map((method) => ({
-          name: method.name,
-          description: method.docs,
-          signature: method.signature,
-        })),
+          methods: component.methods.map((method) => ({
+            name: method.name,
+            description: method.docs,
+            signature: method.signature,
+          })),
 
-        slots: component.slots.map((slot) => ({
-          name: slot.name,
-          description: slot.docs,
-        })),
-      };
+          slots: component.slots.map((slot) => ({
+            name: slot.name,
+            description: slot.docs,
+          })),
+        };
 
-      /**
-       * Write files.
-       */
-      fs.writeFile(
-        dirComponents + component.tag + '.json',
-        JSON.stringify(data, null, 2)
-      );
-    });
+        /**
+         * Write files and replace JSDoc variables.
+         */
+        return fs.writeFile(
+          dirComponents + component.tag + '.json',
+          JSON.stringify(data, null, 2)
+            .replace(/"'/gm, '"')
+            .replace(/'"/gm, '"')
+            .replace(
+              /\[prop:target\]/gm,
+              'Target element. Can take any querySelector value. (id, class, tag etc.)'
+            )
+            .replace(
+              /\[component:spx-slider\]/gm,
+              'Pass attributes to the inner <spx-slider> component using a JSON string: { \\"slides-per-view\\": \\"2.5\\" }'
+            )
+            .replace(/\[event:loaded\]/gm, 'Fires after component has loaded.')
+            .replace(/\[slot:inner\]/gm, 'inner - Slot (between HTML tags).')
+        );
+      })
+    );
   }
 
   await generate('./../data/', './../data/components/');
@@ -91,7 +91,6 @@ export const config: Config = {
   namespace: 'spx',
   taskQueue: 'async',
   globalStyle: 'src/global/global.scss',
-  globalScript: 'src/global/global.ts',
   outputTargets: [
     {
       type: 'www',
@@ -109,7 +108,11 @@ export const config: Config = {
       generator: generateCustomElementsJSON,
     },
   ],
-  plugins: [sass()],
+  plugins: [
+    sass({
+      injectGlobalPaths: ['src/global/mixins.scss'],
+    }),
+  ],
   devServer: {
     openBrowser: false,
     reloadStrategy: 'pageReload',

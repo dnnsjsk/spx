@@ -3,7 +3,6 @@ import {
   Element,
   // eslint-disable-next-line no-unused-vars
   h,
-  Host,
   Prop,
   State,
   Method,
@@ -11,22 +10,18 @@ import {
   EventEmitter,
 } from '@stencil/core';
 import Typewriter from 'typewriter-effect/dist/core';
-import { css } from '@emotion/css';
-import { setVar } from '../../../utils/cssVariables/setVar';
 import { globalComponentDidLoad } from '../../../utils/global/globalComponentDidLoad';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
-import * as s from '../../../constants/style';
-
-const tag = 'spx-typewriter';
 
 /**
  * Animates text like it is being written on a typewriter.
  *
- * @slot inner - Slot (between HTML tags).
+ * @slot [slot:inner]
  */
 @Component({
   tag: 'spx-typewriter',
-  styleUrl: 'spx-typewriter.css',
+  styleUrl: 'spx-typewriter.scss',
+  shadow: true,
 })
 export class SpxTypewriter {
   // eslint-disable-next-line no-undef
@@ -43,27 +38,22 @@ export class SpxTypewriter {
   /** Delete delay in ms. Also accepts 'natural' value. */
   @Prop({ reflect: true }) deleteSpeed: any = 'natural';
 
-  @Prop({ reflect: true }) display: string = s.display;
-
   /** Loops the animation. */
   @Prop({ reflect: true }) loop: boolean;
 
   /** Text that should be written. */
   @Prop({ reflect: true }) text: string = "I'm a typewriter";
 
-  /** Fires after component has loaded. */
+  /** [event:loaded] */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxTypewriterDidLoad' })
   spxTypewriterDidLoad: EventEmitter;
 
   componentDidLoad() {
-    globalComponentDidLoad({ el: this.el });
-
-    /** Define elements. */
     const el =
-      this.el.querySelector('h1, h2, h3, h4, h5, h6, p, span') || this.el;
+      this.el.querySelector('h1, h2, h3, h4, h5, h6, p, span') ||
+      this.el.shadowRoot.querySelector('div');
 
-    /** Init Typewriter. */
     this.typewriter = new Typewriter(el, {
       strings:
         this.text[0] === '['
@@ -77,11 +67,12 @@ export class SpxTypewriter {
       deleteSpeed: this.deleteSpeed,
       loop: this.loop,
       autoStart: this.autoStart,
-      wrapperClassName: 'spx-typewriter__wrapper',
-      cursorClassName: 'spx-typewriter__cursor',
+      wrapperClassName: 'wrapper',
+      cursorClassName: 'cursor',
       skipAddStyles: true,
     });
 
+    globalComponentDidLoad({ el: this.el });
     this.spxTypewriterDidLoad.emit({ target: 'document' });
   }
 
@@ -103,11 +94,10 @@ export class SpxTypewriter {
   }
 
   render() {
-    /** Host styles. */
-    const styleHost = css({
-      display: setVar(tag, 'display', this.display),
-    });
-
-    return <Host class={styleHost} />;
+    return (
+      <div>
+        <slot />
+      </div>
+    );
   }
 }

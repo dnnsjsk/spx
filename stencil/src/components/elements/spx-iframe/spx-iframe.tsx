@@ -1,6 +1,5 @@
 import {
   Component,
-  Host,
   // eslint-disable-next-line no-unused-vars
   h,
   Prop,
@@ -9,15 +8,13 @@ import {
   Element,
   Event,
   EventEmitter,
+  Watch,
 } from '@stencil/core';
-import { css as cssHost } from '@emotion/css';
-import * as s from '../../../constants/style';
 import { globalComponentDidLoad } from '../../../utils/global/globalComponentDidLoad';
-import { setVar } from '../../../utils/cssVariables/setVar';
 import LazyLoad from 'vanilla-lazyload';
 import { mutationObserver } from '../../../utils/observer/mutationObserver';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
-import { cssEmotion } from '../../../utils/css/cssEmotion';
+import { setProperty } from '../../../utils/dom/setProperty';
 
 const tag = 'spx-iframe';
 
@@ -25,18 +22,17 @@ const tag = 'spx-iframe';
  * A wrapper around a standard iframe element, which scales proportionally to
  * its parent. Great for showing desktop versions of a website on smaller
  * screens or viewports.
- *
- * @slot inner - Slot (between HTML tags).
  */
 @Component({
   tag: 'spx-iframe',
+  styleUrl: 'spx-iframe.scss',
   shadow: true,
 })
 export class SpxIframe {
+  private iframe: HTMLIFrameElement;
+
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxIframeElement;
-  private iframe: HTMLIFrameElement;
-  private content: HTMLElement;
 
   @State() height: string;
   @State() loaded: boolean;
@@ -44,29 +40,27 @@ export class SpxIframe {
   @State() parentHeight;
   @State() width: string;
 
-  @Prop({ reflect: true }) display: string = s.display;
-
-  @Prop({ reflect: true }) documentBorder: string = 'none';
-
-  @Prop({ reflect: true }) documentBorderRadius: string = 'none';
-
-  @Prop({ reflect: true }) documentHeight: string = 'auto';
-
-  @Prop({ reflect: true }) documentWidth: string = '100%';
-
   /** Automatically resize iframe to fit content. */
   @Prop() fit: boolean;
 
   /** Lazy load content. */
   @Prop() lazy: boolean;
 
+  /** @css */
   @Prop({ reflect: true }) loaderBackground: string =
     'var(--spx-color-gray-900)';
 
+  /** @css */
   @Prop({ reflect: true }) loaderColor: string = '#ffffff';
 
-  @Prop({ reflect: true }) loaderBorderRadius: string = s.borderRadius;
+  /** @css */
+  @Prop({ reflect: true }) loaderBorderRadius: string =
+    'var(--spx-border-radius)';
 
+  /** @css */
+  @Prop({ reflect: true }) loaderPadding: string = '0.8em';
+
+  /** @css */
   @Prop({ reflect: true }) minHeight: string = '400px';
 
   /** Screen size of the site shown inside the iframe. */
@@ -75,23 +69,24 @@ export class SpxIframe {
   /** Source for the iframe. */
   @Prop() src: string = 'https://spx.dev';
 
-  /**
-   * Screen size of the site shown inside the iframe.
-   *
-   * @choice 'resize', 'document'
-   */
-  @Prop() type: string = 'resize';
+  @Watch('loaderBackground')
+  @Watch('loaderBorderRadius')
+  @Watch('loaderColor')
+  @Watch('loaderPadding')
+  @Watch('minHeight')
+  // @ts-ignore
+  watchAttributes(value, old, attribute) {
+    setProperty(this.el, tag, attribute, value);
+  }
 
-  /** Fires after component has loaded. */
+  /** [event:loaded] */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxIframeDidLoad' })
   spxIframeDidLoad: EventEmitter;
 
   @Listen('resize', { target: 'window' })
   onResize() {
-    if (this.type === 'resize') {
-      this.handleResize();
-    }
+    this.handleResize();
 
     if (this.fit) {
       this.setHeight();
@@ -99,9 +94,6 @@ export class SpxIframe {
   }
 
   componentDidLoad() {
-    globalComponentDidLoad({ el: this.el });
-
-    /** Setup lazy loading. */
     if (this.lazy) {
       // @ts-ignore
       // eslint-disable-next-line no-unused-vars
@@ -115,9 +107,7 @@ export class SpxIframe {
                 this.setHeight();
                 this.setUpMutationObserver();
               }
-              if (this.type === 'resize') {
-                this.handleResize();
-              }
+              this.handleResize();
             }, 10);
           },
         },
@@ -125,30 +115,33 @@ export class SpxIframe {
       );
     }
 
-    if (this.type === 'resize') {
-      /** Assign states. */
-      this.iframe = this.el.shadowRoot.querySelector('iframe');
-      this.parent = this.el.shadowRoot.querySelector(':scope > div');
+    this.iframe = this.el.shadowRoot.querySelector('iframe');
+    this.parent = this.el.shadowRoot.querySelector('.inner');
 
-      /** Wait for Iframe to load before showing content. */
-      this.el.shadowRoot.querySelector('iframe').onload = () => {
-        this.loaded = true;
+    this.el.shadowRoot.querySelector('iframe').onload = () => {
+      this.loaded = true;
 
-        if (!this.lazy) {
-          this.handleResize();
-        }
-      };
-    }
-
-    if (this.type === 'document') {
-      this.createIframeContent();
-    }
+      if (!this.lazy) {
+        this.handleResize();
+      }
+    };
 
     if (this.fit && !this.lazy) {
       this.setHeight();
       this.setUpMutationObserver();
     }
 
+    globalComponentDidLoad({
+      el: this.el,
+      tag: tag,
+      props: [
+        'loaderBackground',
+        'loaderBorderRadius',
+        'loaderColor',
+        'loaderPadding',
+        'minHeight',
+      ],
+    });
     this.spxIframeDidLoad.emit({ target: 'document' });
   }
 
@@ -157,16 +150,9 @@ export class SpxIframe {
   }
 
   componentDidUpdate() {
-    if (this.type === 'resize') {
-      this.handleResize();
-    }
-
-    if (this.type === 'document') {
-      this.createIframeContent();
-    }
+    this.handleResize();
   }
 
-  /** Fit function. */
   private setHeight = () => {
     const set = () => {
       if (
@@ -186,7 +172,6 @@ export class SpxIframe {
     set();
   };
 
-  /** Set up mutation observer. */
   private setUpMutationObserver = () => {
     mutationObserver(
       this.el.shadowRoot.querySelector('iframe').contentWindow.document.body,
@@ -202,7 +187,6 @@ export class SpxIframe {
     );
   };
 
-  /** Type: resize - function to keep src element in proportion. */
   private handleResize = () => {
     if (this.parent && this.iframe) {
       const ratio = this.parent.offsetWidth / this.iframe.offsetWidth;
@@ -212,115 +196,23 @@ export class SpxIframe {
     }
   };
 
-  /** Type: document - add all slot elements to iframe. */
-  private createIframeContent = () => {
-    const doc = this.iframe.contentDocument;
-
-    this.content.querySelectorAll('*').forEach((item) => {
-      doc.body.appendChild(item);
-    });
-
-    this.content.remove();
-  };
-
   render() {
-    const { css } = cssEmotion(this.el.shadowRoot);
-
-    /** Host styles. */
-    const styleHost = cssHost({
-      display: setVar(tag, 'display', this.display),
-    });
-
-    /** Shadow Host styles. */
-    const styleShadowHost = css({
-      height: 'auto',
-      width: '100%',
-      position: 'relative',
-      minHeight: setVar(tag, 'min-height', this.minHeight),
-    });
-
-    /** Iframe resize styles. */
-    const styleIframeResize = css({
-      border: 'none',
-      width: this.size,
-      transformOrigin: 'left top',
-      position: 'absolute',
-      minHeight: setVar(tag, 'min-height', this.minHeight),
-    });
-
-    /** Iframe document styles. */
-    const styleIframeDocument = css({
-      border: setVar(tag, 'document-border', this.documentBorder),
-      borderRadius: setVar(
-        tag,
-        'document-border-radius',
-        this.documentBorderRadius
-      ),
-      width: setVar(tag, 'document-width', this.documentWidth),
-      height: setVar(tag, 'document-height', this.documentHeight),
-    });
-
-    /** Iframe styles. */
-    const styleIframe =
-      this.type === 'resize'
-        ? styleIframeResize
-        : this.type === 'document' && styleIframeDocument;
-
-    /** Loader styles. */
-    const styleLoader = css({
-      padding: '0.8em',
-      borderRadius: setVar(
-        tag,
-        'loader-border-radius',
-        this.loaderBorderRadius
-      ),
-      backgroundColor: setVar(tag, 'loader-background', this.loaderBackground),
-      position: 'absolute',
-      left: '50%',
-      top: '50%',
-      transform: 'translate(-50%, -50%) scale(2)',
-    });
-
     return (
-      <Host class={styleHost}>
-        <div class={styleShadowHost}>
-          {/** Slot for document. */}
+      <div class="inner">
+        <iframe
+          style={{ width: this.size }}
+          ref={(el) => (this.iframe = el as HTMLIFrameElement)}
+          tabindex="-1"
+          src={!this.lazy ? this.src : ''}
+          data-src={this.lazy && this.src}
+        />
 
-          {this.type === 'document' && (
-            <div
-              ref={(el) => (this.content = el as HTMLElement)}
-              innerHTML={this.el.innerHTML}
-            />
-          )}
-
-          {/** Iframes. */}
-          {this.type === 'resize' ? (
-            <iframe
-              class={styleIframe}
-              ref={(el) => (this.iframe = el as HTMLIFrameElement)}
-              tabindex="-1"
-              src={!this.lazy ? this.src : ''}
-              data-src={this.lazy && this.src}
-            />
-          ) : (
-            <iframe
-              class={styleIframe}
-              ref={(el) => (this.iframe = el as HTMLIFrameElement)}
-              tabindex="-1"
-            />
-          )}
-
-          {/** Loader. */}
-          {this.type === 'resize' && !this.loaded && (
-            <div class={styleLoader}>
-              <spx-icon
-                type="loader"
-                color={setVar(tag, 'loader-color', this.loaderColor)}
-              />
-            </div>
-          )}
-        </div>
-      </Host>
+        {!this.loaded && (
+          <div class="loader">
+            <spx-icon type="loader" />
+          </div>
+        )}
+      </div>
     );
   }
 }

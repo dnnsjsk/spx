@@ -1,0 +1,47 @@
+$tag: 'spx-slideshow';
+
+$duration: 60s;
+$gap: 1em;
+$height: '';
+$maxWidth: 300px;
+$objectFit: contain;
+$overflow: '';
+
+:host {
+  display: setVar($tag, 'display', block);
+}
+
+.inner {
+  overflow: variable($tag, 'overflow', $overflow);
+}
+
+.wrap {
+  display: flex;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-fill-mode: none;
+  animation-play-state: running;
+  animation-duration: variable($tag, 'duration', $duration);
+
+  img {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    object-fit: variable($tag, 'object-fit', $objectFit);
+
+    :host([height]) & {
+      height: variable($tag, 'height', $height);
+    }
+  }
+
+  & > div + div {
+    margin-left: variable($tag, 'gap', $gap);
+  }
+}
+
+.slideshow {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: variable($tag, 'max-width', $maxWidth);
+  grid-gap: variable($tag, 'gap', $gap);
+}

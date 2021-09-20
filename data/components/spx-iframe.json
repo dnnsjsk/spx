@@ -4,131 +4,112 @@
   "shadow": false,
   "properties": [
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "s.display",
-      "defaultValue": "s.display",
-      "tags": []
-    },
-    {
-      "name": "documentBorder",
-      "attribute": "document-border",
-      "type": "string",
-      "description": "",
-      "default": "'none'",
-      "defaultValue": "'none'",
-      "tags": []
-    },
-    {
-      "name": "documentBorderRadius",
-      "attribute": "document-border-radius",
-      "type": "string",
-      "description": "",
-      "default": "'none'",
-      "defaultValue": "'none'",
-      "tags": []
-    },
-    {
-      "name": "documentHeight",
-      "attribute": "document-height",
-      "type": "string",
-      "description": "",
-      "default": "'auto'",
-      "defaultValue": "'auto'",
-      "tags": []
-    },
-    {
-      "name": "documentWidth",
-      "attribute": "document-width",
-      "type": "string",
-      "description": "",
-      "default": "'100%'",
-      "defaultValue": "'100%'",
-      "tags": []
-    },
-    {
-      "name": "fit",
       "attribute": "fit",
-      "type": "boolean",
       "description": "Automatically resize iframe to fit content.",
-      "tags": []
+      "id": "spx-iframe-0",
+      "index": 0,
+      "name": "fit",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "lazy",
       "attribute": "lazy",
-      "type": "boolean",
       "description": "Lazy load content.",
-      "tags": []
+      "id": "spx-iframe-1",
+      "index": 1,
+      "name": "lazy",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "loaderBackground",
       "attribute": "loader-background",
-      "type": "string",
+      "default": "var(--spx-color-gray-900)",
       "description": "",
-      "default": "'var(--spx-color-gray-900)'",
-      "defaultValue": "'var(--spx-color-gray-900)'",
-      "tags": []
-    },
-    {
-      "name": "loaderBorderRadius",
-      "attribute": "loader-border-radius",
-      "type": "string",
-      "description": "",
-      "default": "s.borderRadius",
-      "defaultValue": "'var(--spx-border-radius)'",
-      "tags": []
-    },
-    {
-      "name": "loaderColor",
-      "attribute": "loader-color",
-      "type": "string",
-      "description": "",
-      "default": "'#ffffff'",
-      "defaultValue": "'#ffffff'",
-      "tags": []
-    },
-    {
-      "name": "minHeight",
-      "attribute": "min-height",
-      "type": "string",
-      "description": "",
-      "default": "'400px'",
-      "defaultValue": "'400px'",
-      "tags": []
-    },
-    {
-      "name": "size",
-      "attribute": "size",
-      "type": "string",
-      "description": "Screen size of the site shown inside the iframe.",
-      "default": "'1440px'",
-      "defaultValue": "'1440px'",
-      "tags": []
-    },
-    {
-      "name": "src",
-      "attribute": "src",
-      "type": "string",
-      "description": "Source for the iframe.",
-      "default": "'https://spx.dev'",
-      "defaultValue": "'https://spx.dev'",
-      "tags": []
-    },
-    {
-      "name": "type",
-      "attribute": "type",
-      "type": "string",
-      "description": "Screen size of the site shown inside the iframe.",
-      "default": "'resize'",
-      "defaultValue": "'resize'",
+      "id": "spx-iframe-2",
+      "index": 2,
+      "name": "loaderBackground",
       "tags": [
         {
-          "text": "'resize', 'document'",
-          "name": "choice"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "loader-border-radius",
+      "default": "var(--spx-border-radius)",
+      "description": "",
+      "id": "spx-iframe-3",
+      "index": 3,
+      "name": "loaderBorderRadius",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "loader-color",
+      "default": "#ffffff",
+      "description": "",
+      "id": "spx-iframe-4",
+      "index": 4,
+      "name": "loaderColor",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "loader-padding",
+      "default": "0.8em",
+      "description": "",
+      "id": "spx-iframe-5",
+      "index": 5,
+      "name": "loaderPadding",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "min-height",
+      "default": "400px",
+      "description": "",
+      "id": "spx-iframe-6",
+      "index": 6,
+      "name": "minHeight",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "size",
+      "default": "1440px",
+      "description": "Screen size of the site shown inside the iframe.",
+      "id": "spx-iframe-7",
+      "index": 7,
+      "name": "size",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "src",
+      "default": "https://spx.dev",
+      "description": "Source for the iframe.",
+      "id": "spx-iframe-8",
+      "index": 8,
+      "name": "src",
+      "tags": [],
+      "type": "string"
     }
   ],
   "events": [
@@ -138,10 +119,5 @@
     }
   ],
   "methods": [],
-  "slots": [
-    {
-      "name": "inner",
-      "description": "Slot (between HTML tags)."
-    }
-  ]
+  "slots": []
 }

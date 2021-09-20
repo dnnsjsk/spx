@@ -4,120 +4,126 @@
   "shadow": false,
   "properties": [
     {
-      "name": "animation",
       "attribute": "animation",
-      "type": "boolean",
+      "default": "true",
       "description": "Turn animation on or off when animation.",
-      "default": "true",
-      "defaultValue": "true",
-      "tags": []
+      "id": "spx-notation-0",
+      "index": 0,
+      "name": "animation",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "animationDuration",
       "attribute": "animation-duration",
-      "type": "number",
-      "description": "Animation duration.",
       "default": "800",
-      "defaultValue": "800",
-      "tags": []
+      "description": "Animation duration.",
+      "id": "spx-notation-1",
+      "index": 1,
+      "name": "animationDuration",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "autoplay",
       "attribute": "autoplay",
-      "type": "boolean",
+      "default": "true",
       "description": "Autoplay.",
-      "default": "true",
-      "defaultValue": "true",
-      "tags": []
+      "id": "spx-notation-2",
+      "index": 2,
+      "name": "autoplay",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "brackets",
       "attribute": "brackets",
-      "type": "string",
+      "default": "left, right",
       "description": "Brackets.",
-      "default": "'left, right'",
-      "defaultValue": "'left, right'",
-      "tags": []
+      "id": "spx-notation-3",
+      "index": 3,
+      "name": "brackets",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "color",
       "attribute": "color",
-      "type": "string",
+      "default": "var(--spx-color-gray-100)",
       "description": "",
-      "default": "'var(--spx-color-gray-100)'",
-      "defaultValue": "'var(--spx-color-gray-100)'",
-      "tags": []
+      "id": "spx-notation-4",
+      "index": 4,
+      "name": "color",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "delay",
       "attribute": "delay",
-      "type": "number",
       "description": "",
-      "tags": []
+      "id": "spx-notation-5",
+      "index": 5,
+      "name": "delay",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "'inline-block'",
-      "defaultValue": "'inline-block'",
-      "tags": []
-    },
-    {
-      "name": "group",
       "attribute": "group",
-      "type": "boolean",
       "description": "Create a group on annotations by applying a \"data-spx-annotation\" to elements within.",
-      "tags": []
+      "id": "spx-notation-6",
+      "index": 6,
+      "name": "group",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "iterations",
       "attribute": "iterations",
-      "type": "number",
+      "default": "1",
       "description": "Number of iterations.",
-      "default": "1",
-      "defaultValue": "1",
-      "tags": []
+      "id": "spx-notation-7",
+      "index": 7,
+      "name": "iterations",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "multiline",
       "attribute": "multiline",
-      "type": "boolean",
-      "description": "Annotate multiline text.",
       "default": "true",
-      "defaultValue": "true",
-      "tags": []
+      "description": "Annotate multiline text.",
+      "id": "spx-notation-8",
+      "index": 8,
+      "name": "multiline",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "padding",
       "attribute": "padding",
-      "type": "number",
       "description": "Padding around notations.",
-      "tags": []
+      "id": "spx-notation-9",
+      "index": 9,
+      "name": "padding",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "strokeWidth",
       "attribute": "stroke-width",
-      "type": "number",
-      "description": "Stroke width.",
       "default": "1",
-      "defaultValue": "1",
-      "tags": []
+      "description": "Stroke width.",
+      "id": "spx-notation-10",
+      "index": 10,
+      "name": "strokeWidth",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "type",
       "attribute": "type",
-      "type": "string",
+      "default": "underline",
       "description": "Type of notation.",
-      "default": "'underline'",
-      "defaultValue": "'underline'",
+      "id": "spx-notation-11",
+      "index": 11,
+      "name": "type",
       "tags": [
         {
-          "text": "'underline', 'box', 'circle', 'highlight', 'strike-through', 'crossed-off', 'bracket'",
+          "text": "underline, box, circle, highlight, strike-through, crossed-off, bracket",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     }
   ],
   "events": [
@@ -148,5 +154,10 @@
       "signature": "show() => Promise<void>"
     }
   ],
-  "slots": []
+  "slots": [
+    {
+      "name": "inner - Slot (between HTML tags).",
+      "description": ""
+    }
+  ]
 }

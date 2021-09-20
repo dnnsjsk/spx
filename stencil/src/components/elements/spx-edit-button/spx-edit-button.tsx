@@ -5,28 +5,24 @@ import {
   EventEmitter,
   // eslint-disable-next-line no-unused-vars
   h,
-  Host,
   Method,
   Prop,
   State,
   Watch,
 } from '@stencil/core';
-import { css as cssHost } from '@emotion/css';
-import * as s from '../../../constants/style';
-import { position } from '../../../constants/style';
-import { setVar } from '../../../utils/cssVariables/setVar';
 import { globalComponentDidLoad } from '../../../utils/global/globalComponentDidLoad';
-import { setStyle } from '../../../utils/cssVariables/setStyle';
-import { setClamp } from '../../../utils/cssVariables/setClamp';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
-import { cssTw } from '../../../utils/css/cssTw';
+import { twind } from '../../../utils/3rd/twind';
 import { Button } from '../../../elements/Button';
+import { getDoc } from '../../../utils/dom/getDoc';
+import { setProperty } from '../../../utils/dom/setProperty';
 
 const tag = 'spx-edit-button';
 
-/** Let your clients edit text on their site using this handy component. */
+/** Let users edit content from the frontend of the site. */
 @Component({
   tag: 'spx-edit-button',
+  styleUrl: 'spx-edit-button.scss',
   shadow: true,
 })
 export class SpxEditButton {
@@ -35,7 +31,6 @@ export class SpxEditButton {
 
   @State() loading: boolean = false;
   @State() open: boolean = false;
-  @State() positionArray;
 
   @Prop() test: boolean = false;
 
@@ -44,14 +39,18 @@ export class SpxEditButton {
   /**
    * Discard button background.
    *
-   * @CSS
+   * @css
    */
   @Prop({ reflect: true }) backgroundDiscard: string =
     'var(--spx-color-gray-600)';
 
+  @Prop({ reflect: true }) bottom: string = '1em';
+
   @Prop({ reflect: true }) border: string = 'none';
 
-  @Prop({ reflect: true }) borderRadius: string = s.borderRadius;
+  @Prop({ reflect: true }) borderDiscard: string = 'none';
+
+  @Prop({ reflect: true }) borderRadius: string = 'var(--spx-border-radius)';
 
   @Prop({ reflect: true }) classButton: string;
 
@@ -64,25 +63,9 @@ export class SpxEditButton {
   /**
    * Discard button color.
    *
-   * @CSS
+   * @css
    */
   @Prop({ reflect: true }) colorDiscard: string = '#ffffff';
-
-  @Prop({ reflect: true }) display: string = s.display;
-
-  /**
-   * Distance to the edge of the viewport on the x-axis.
-   *
-   * @CSS
-   */
-  @Prop({ reflect: true }) distanceX: string = '1em';
-
-  /**
-   * Distance to the edge of the viewport on the y-axis.
-   *
-   * @CSS
-   */
-  @Prop({ reflect: true }) distanceY: string = '1em';
 
   /**
    * Corresponding ID for editable fields. This property is needed when multiple
@@ -91,9 +74,7 @@ export class SpxEditButton {
    */
   @Prop({ reflect: true }) editId: string;
 
-  @Prop({ reflect: true }) fontFamily: string = s.fontFamily;
-
-  @Prop({ reflect: true }) fontSize: string = s.fontSize;
+  @Prop({ reflect: true }) fontSize: string = 'var(--spx-font-size)';
 
   @Prop({ reflect: true }) fontSizeMax: number = 1.2;
 
@@ -102,15 +83,17 @@ export class SpxEditButton {
   /**
    * Gap between the buttons.
    *
-   * @CSS
+   * @css
    */
   @Prop({ reflect: true }) gap: string = '0.4em';
+
+  @Prop({ reflect: true }) left: string;
 
   @Prop({ reflect: true }) loaderColor: string = '#ffffff';
 
   @Prop({ reflect: true }) loaderGap: string = '0.5em';
 
-  @Prop({ reflect: true }) padding: string = '0.7em 1.2em';
+  @Prop({ reflect: true }) padding: string = '1em 1.2em';
 
   @Prop({ reflect: true }) paddingXMin: number = 1;
 
@@ -120,24 +103,19 @@ export class SpxEditButton {
 
   @Prop({ reflect: true }) paddingYMax: number = 1.2;
 
-  /**
-   * Component position in page.
-   *
-   * @choice 'bottom-right', 'bottom-center', 'bottom-left', 'top-right', 'top-center', 'top-right'
-   */
-  @Prop({ reflect: true }) position: string = 'bottom-right';
-
-  /** CSS property position of button. */
-  @Prop({ reflect: true }) positionCss:
+  /** Position property of component. */
+  @Prop({ reflect: true }) position:
     | 'fixed'
     | 'absolute'
     | 'relative'
     | 'static' = 'fixed';
 
+  @Prop({ reflect: true }) right: string = '1em';
+
   /**
    * Styling.
    *
-   * @choice 'default', 'fluid', 'headless'
+   * @choice default, fluid, headless
    */
   @Prop({ reflect: true }) styling: string = 'default';
 
@@ -150,17 +128,40 @@ export class SpxEditButton {
   /** Save button text. */
   @Prop({ reflect: true }) textSave: string = 'Save';
 
-  /** Success message. */
-  @Prop({ reflect: true }) textSuccess: string = 'Save was successful';
+  @Prop({ reflect: true }) top: string;
 
   @Prop({ reflect: true }) zIndex: number = 99;
 
+  @Watch('background')
+  @Watch('backgroundDiscard')
+  @Watch('border')
+  @Watch('borderDiscard')
+  @Watch('borderRadius')
+  @Watch('bottom')
+  @Watch('color')
+  @Watch('colorDiscard')
+  @Watch('fontSize')
+  @Watch('fontSizeMin')
+  @Watch('fontSizeMax')
+  @Watch('gap')
+  @Watch('left')
+  @Watch('loaderColor')
+  @Watch('loaderGap')
+  @Watch('padding')
+  @Watch('paddingXMax')
+  @Watch('paddingXMin')
+  @Watch('paddingYMax')
+  @Watch('paddingYMin')
   @Watch('position')
-  positionChanged() {
-    this.createPositionArray();
+  @Watch('right')
+  @Watch('top')
+  @Watch('zIndex')
+  // @ts-ignore
+  watchAttributes(value, old, attribute) {
+    setProperty(this.el, tag, attribute, value);
   }
 
-  /** Fires after component has loaded. */
+  /** [event:loaded] */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxEditButtonDidLoad' })
   spxEditButtonDidLoad: EventEmitter;
@@ -173,13 +174,37 @@ export class SpxEditButton {
   /** Fires after pressing the save button. */
   @Event({ eventName: 'spxEditButtonSave' }) spxEditButtonSave: EventEmitter;
 
-  componentWillLoad() {
-    this.createPositionArray();
-  }
-
   componentDidLoad() {
-    globalComponentDidLoad({ el: this.el });
-
+    globalComponentDidLoad({
+      el: this.el,
+      tag: tag,
+      props: [
+        'background',
+        'backgroundDiscard',
+        'border',
+        'borderDiscard',
+        'borderRadius',
+        'bottom',
+        'color',
+        'colorDiscard',
+        'fontSize',
+        'fontSizeMin',
+        'fontSizeMax',
+        'gap',
+        'left',
+        'loaderColor',
+        'loaderGap',
+        'padding',
+        'paddingXMax',
+        'paddingXMin',
+        'paddingYMax',
+        'paddingYMin',
+        'position',
+        'right',
+        'top',
+        'zIndex',
+      ],
+    });
     this.spxEditButtonDidLoad.emit({ target: 'document' });
   }
 
@@ -187,19 +212,14 @@ export class SpxEditButton {
     globalComponentWillUpdate(this.el);
   }
 
-  private createPositionArray = () => {
-    this.positionArray = this.position.split('-');
-  };
-
   private clickEdit = () => {
     this.open = true;
 
-    /** Generate edit components around text. */
     const elements = this.editId
-      ? document.querySelectorAll(
+      ? getDoc(this.el).querySelectorAll(
           '[data-spx-edit][data-spx-edit-id=' + this.editId + ']'
         )
-      : document.querySelectorAll('[data-spx-edit]');
+      : getDoc(this.el).querySelectorAll('[data-spx-edit]');
 
     elements.forEach((item) => {
       const edit = document.createElement('spx-edit');
@@ -216,7 +236,7 @@ export class SpxEditButton {
       if (subfield) {
         edit.setAttribute('subfield', '');
       }
-      edit.innerHTML = text;
+      edit.setAttribute('text', text);
       edit.setAttribute('editable', '');
       item.innerHTML = '';
       item.appendChild(edit);
@@ -224,23 +244,15 @@ export class SpxEditButton {
   };
 
   private clickDiscard = () => {
-    /** Close buttons again. */
     this.open = false;
 
-    /** Emit closing event to document. */
     this.spxEditButtonDiscard.emit({ target: 'document' });
   };
 
   private clickSave = () => {
     this.loading = true;
 
-    /**
-     * Emit save event to document.
-     *
-     * @returns {string} Send to WP Admin with AJAX.
-     */
     const getBodyString = () => {
-      /** Create the body string to be sent off to the AJAX call. */
       const string = Math.random().toString(36).substr(2, 9);
       const bodyStringArray = [];
       const elements = document.querySelectorAll('spx-edit');
@@ -258,21 +270,8 @@ export class SpxEditButton {
     };
 
     const afterSuccess = () => {
-      /** Insert snackbar. */
-      const snackbar = document.createElement('spx-snackbar');
-      snackbar.setAttribute('text', this.textSuccess);
-      document.body.appendChild(snackbar);
-
-      /** Remove edit components. */
-      const elements = document.querySelectorAll('spx-edit');
-      elements.forEach((item) => {
-        item.parentElement.innerHTML = item.innerHTML;
-      });
-
-      /** Save changes event. */
       this.spxEditButtonSave.emit({ target: 'document' });
 
-      /** Remove loader and close on success. */
       this.open = false;
       this.loading = false;
     };
@@ -299,7 +298,6 @@ export class SpxEditButton {
         if (response.status === 200) {
           afterSuccess();
         } else if (response.status === 500) {
-          /** Remove loader on fail. */
           this.loading = false;
         }
       });
@@ -327,144 +325,59 @@ export class SpxEditButton {
   }
 
   render() {
-    const { tw, css } = cssTw(this.el.shadowRoot);
+    const { tw } = twind(this.el.shadowRoot, this.styling === 'headless');
 
-    /** Host styles. */
-    const styleHost = cssHost({
-      display: setVar(tag, 'display', this.display),
-    });
-
-    /** Shadow Host styles. */
-    const styleShadowHost =
-      (this.styling === 'default' || this.styling === 'fluid') &&
-      tw(
-        css({
-          ...position(
-            'edit-button',
-            this.positionArray,
-            this.distanceX,
-            this.distanceY
-          ),
-          fontFamily: s.fontFamily,
-          fontSize: setStyle(
-            tag,
-            'font-size',
-            this.fontSize,
-            this.fontSizeMin,
-            this.fontSizeMax,
-            this.styling
-          ),
-          display: 'grid',
-          gridGap: setVar(tag, 'gap', this.gap),
-          position: this.positionCss,
-          zIndex: this.zIndex,
-        })
-      );
-
-    /** Button styles. */
     const styleButton =
-      this.styling === 'default' || this.styling === 'fluid'
-        ? tw(
-            css({
-              fontFamily: setVar(tag, 'font-family', this.fontFamily),
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              textAlign: 'center',
-              cursor: 'pointer',
-              fontSize: '1em',
-              padding:
-                this.styling === 'default' &&
-                setVar(tag, 'padding', this.padding),
-              paddingLeft:
-                this.styling === 'fluid' &&
-                setClamp(tag, 'padding-x', this.paddingXMin, this.paddingXMax),
-              paddingRight:
-                this.styling === 'fluid' &&
-                setClamp(tag, 'padding-x', this.paddingXMin, this.paddingXMax),
-              paddingTop:
-                this.styling === 'fluid' &&
-                setClamp(tag, 'padding-x', this.paddingYMin, this.paddingYMax),
-              paddingBottom:
-                this.styling === 'fluid' &&
-                setClamp(tag, 'padding-x', this.paddingYMin, this.paddingYMax),
-              color: setVar(tag, 'color', this.color),
-              background: setVar(tag, 'background', this.background),
-              border: setVar(tag, 'border', this.border),
-              borderRadius: setVar(tag, 'border-radius', this.borderRadius),
-              transitionProperty: 'background, box-shadow',
-              transitionDuration: s.transitionDuration,
-              transitionTimingFunction: s.transitionTimingFunction,
+      this.styling === 'headless' && tw(this.classButton ?? '');
 
-              ...s.focus,
-            })
-          )
-        : tw(this.classButton ?? '');
-
-    /** Discard button styles. */
     const styleButtonDiscard =
-      this.styling === 'default' || this.styling === 'fluid'
-        ? tw(
-            css({
-              color: setVar(tag, 'color-discard', this.colorDiscard),
-              background: setVar(
-                tag,
-                'background-discard',
-                this.backgroundDiscard
-              ),
-            })
-          )
-        : tw((this.classButton ?? '') + ' ' + (this.classButtonDiscard ?? ''));
+      this.styling === 'headless' &&
+      tw((this.classButton ?? '') + ' ' + (this.classButtonDiscard ?? ''));
 
-    /** Loader styles. */
     const styleLoader =
-      this.styling === 'default' || this.styling === 'fluid'
-        ? tw(
-            css({
-              marginRight: setVar(tag, 'loader-gap', this.loaderGap),
-            })
-          )
-        : tw(this.classLoader ?? '');
+      this.styling === 'headless' && tw(this.classLoader ?? '');
 
     return (
-      <Host class={styleHost}>
-        <div class={styleShadowHost}>
-          {!this.open ? (
-            /** Edit button. */
-            <button onClick={this.clickEdit} class={styleButton}>
-              {this.textEdit || <slot name="edit" />}
-            </button>
-          ) : (
-            /** Discard button. */
-            [
-              <Button
-                as="button"
-                onClick={this.clickDiscard}
-                class={
-                  this.styling === 'headless'
-                    ? styleButtonDiscard
-                    : styleButton + ' ' + styleButtonDiscard
-                }
-              >
-                {this.textDiscard || <slot name="discard" />}
-              </Button>,
+      <div class="inner">
+        {!this.open ? (
+          <Button
+            as="button"
+            onClick={this.clickEdit}
+            class={this.styling === 'headless' ? styleButton : 'button'}
+          >
+            {this.textEdit || <slot name="edit" />}
+          </Button>
+        ) : (
+          [
+            <Button
+              as="button"
+              onClick={this.clickDiscard}
+              class={
+                this.styling === 'headless'
+                  ? styleButtonDiscard
+                  : 'button button--discard'
+              }
+            >
+              {this.textDiscard || <slot name="discard" />}
+            </Button>,
 
-              /** Save button. */
-              <Button as="button" onClick={this.clickSave} class={styleButton}>
-                {this.loading && (
-                  <spx-icon
-                    class={styleLoader}
-                    type="loader"
-                    color={setVar(tag, 'loader-color', this.loaderColor)}
-                  />
-                )}
+            <Button
+              as="button"
+              onClick={this.clickSave}
+              class={this.styling === 'headless' ? styleButton : 'button'}
+            >
+              {this.loading && (
+                <spx-icon
+                  class={this.styling === 'headless' ? styleLoader : 'loader'}
+                  type="loader"
+                />
+              )}
 
-                {this.textSave || <slot name="save" />}
-              </Button>,
-            ]
-          )}
-        </div>
-      </Host>
+              {this.textSave || <slot name="save" />}
+            </Button>,
+          ]
+        )}
+      </div>
     );
   }
 }

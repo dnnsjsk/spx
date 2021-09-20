@@ -1,0 +1,5 @@
+$tag: 'class-toggle';
+
+:host {
+  display: setVar($tag, 'display', block);
+}

@@ -1,0 +1,5 @@
+$tag: 'spx-tailwind';
+
+:host {
+  display: setVar($tag, 'display', block);
+}

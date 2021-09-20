@@ -4,169 +4,201 @@
   "shadow": false,
   "properties": [
     {
-      "name": "clipPath",
+      "attribute": "auto-alpha",
+      "description": "Set visibility of animated element to 'inherit' after animating it in.",
+      "id": "spx-animate-0",
+      "index": 0,
+      "name": "autoAlpha",
+      "tags": [],
+      "type": "string"
+    },
+    {
       "attribute": "clip-path",
-      "type": "string",
       "description": "Clip-path value the animation starts from.",
-      "tags": []
+      "id": "spx-animate-1",
+      "index": 1,
+      "name": "clipPath",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "delay",
       "attribute": "delay",
-      "type": "number",
+      "default": "0",
       "description": "Delay before animation starts.",
-      "default": "0",
-      "defaultValue": "0",
-      "tags": []
+      "id": "spx-animate-2",
+      "index": 2,
+      "name": "delay",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "s.display",
-      "defaultValue": "s.display",
-      "tags": []
-    },
-    {
-      "name": "duration",
       "attribute": "duration",
-      "type": "number",
-      "description": "Animation duration.",
       "default": "1",
-      "defaultValue": "1",
-      "tags": []
+      "description": "Animation duration.",
+      "id": "spx-animate-3",
+      "index": 3,
+      "name": "duration",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "ease",
       "attribute": "ease",
-      "type": "string",
+      "default": "power1.out",
       "description": "Ease being used. Accepts all common GSAP options.",
-      "default": "'power1.out'",
-      "defaultValue": "'power1.out'",
-      "tags": []
+      "id": "spx-animate-4",
+      "index": 4,
+      "name": "ease",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "filter",
       "attribute": "filter",
-      "type": "string",
       "description": "Filter value the animation starts from.",
-      "tags": []
+      "id": "spx-animate-5",
+      "index": 5,
+      "name": "filter",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "once",
       "attribute": "once",
-      "type": "boolean",
       "description": "Determines if animation should only play once. (if viewport is true)",
-      "tags": []
+      "id": "spx-animate-6",
+      "index": 6,
+      "name": "once",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "opacity",
       "attribute": "opacity",
-      "type": "number",
+      "default": "0",
       "description": "Opacity level the animation starts from.",
-      "default": "0",
-      "defaultValue": "0",
-      "tags": []
+      "id": "spx-animate-7",
+      "index": 7,
+      "name": "opacity",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "repeat",
       "attribute": "repeat",
-      "type": "number",
       "description": "Repeats the animation. -1 to repeat indefinitely.",
-      "tags": []
+      "id": "spx-animate-8",
+      "index": 8,
+      "name": "repeat",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "repeatDelay",
       "attribute": "repeat-delay",
-      "type": "number",
       "description": "Time to wait between repetitions.",
-      "tags": []
+      "id": "spx-animate-9",
+      "index": 9,
+      "name": "repeatDelay",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "reverse",
       "attribute": "reverse",
-      "type": "boolean",
       "description": "Reverses the animation.",
-      "tags": []
+      "id": "spx-animate-10",
+      "index": 10,
+      "name": "reverse",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "stagger",
       "attribute": "stagger",
-      "type": "number",
-      "description": "Amount of time elements should be staggered by.",
       "default": "0.15",
-      "defaultValue": "0.15",
-      "tags": []
+      "description": "Amount of time elements should be staggered by.",
+      "id": "spx-animate-11",
+      "index": 11,
+      "name": "stagger",
+      "tags": [],
+      "type": "number"
     },
     {
-      "name": "target",
       "attribute": "target",
-      "type": "string",
-      "description": "The target element that should be animated inside the component.",
-      "default": "'*'",
-      "defaultValue": "'*'",
-      "tags": []
+      "default": "*",
+      "description": "Target element. Can take any querySelector value. (id, class, tag etc.)",
+      "id": "spx-animate-12",
+      "index": 12,
+      "name": "target",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "viewport",
       "attribute": "viewport",
-      "type": "boolean",
       "description": "Starts animation when target is in the viewport.",
-      "tags": []
+      "id": "spx-animate-13",
+      "index": 13,
+      "name": "viewport",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "viewportMarginBottom",
       "attribute": "viewport-margin-bottom",
-      "type": "string",
       "description": "Adjust the root margin of the animation start.",
-      "tags": []
+      "id": "spx-animate-14",
+      "index": 14,
+      "name": "viewportMarginBottom",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "viewportMarginLeft",
       "attribute": "viewport-margin-left",
-      "type": "string",
       "description": "Adjust the root margin of the animation start.",
-      "tags": []
+      "id": "spx-animate-15",
+      "index": 15,
+      "name": "viewportMarginLeft",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "viewportMarginRight",
       "attribute": "viewport-margin-right",
-      "type": "string",
       "description": "Adjust the root margin of the animation start.",
-      "tags": []
+      "id": "spx-animate-16",
+      "index": 16,
+      "name": "viewportMarginRight",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "viewportMarginTop",
       "attribute": "viewport-margin-top",
-      "type": "string",
       "description": "Adjust the root margin of the animation start.",
-      "tags": []
+      "id": "spx-animate-17",
+      "index": 17,
+      "name": "viewportMarginTop",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "x",
       "attribute": "x",
-      "type": "any",
+      "default": "0",
       "description": "X position the animation starts from.",
-      "default": "0",
-      "defaultValue": "0",
-      "tags": []
+      "id": "spx-animate-18",
+      "index": 18,
+      "name": "x",
+      "tags": [],
+      "type": "any"
     },
     {
-      "name": "y",
       "attribute": "y",
-      "type": "any",
-      "description": "Y position the animation starts from.",
       "default": "0",
-      "defaultValue": "0",
-      "tags": []
+      "description": "Y position the animation starts from.",
+      "id": "spx-animate-19",
+      "index": 19,
+      "name": "y",
+      "tags": [],
+      "type": "any"
     },
     {
-      "name": "yoyo",
       "attribute": "yoyo",
-      "type": "boolean",
-      "description": "Causes the animation to go back and forth, alternating backward and forward\non each repeat.",
-      "tags": []
+      "description": "Causes the animation to go back and forth, alternating backward and forward on each repeat.",
+      "id": "spx-animate-20",
+      "index": 20,
+      "name": "yoyo",
+      "tags": [],
+      "type": "boolean"
     }
   ],
   "events": [
@@ -189,8 +221,8 @@
   ],
   "slots": [
     {
-      "name": "inner",
-      "description": "Slot (between HTML tags)."
+      "name": "inner - Slot (between HTML tags).",
+      "description": ""
     }
   ]
 }

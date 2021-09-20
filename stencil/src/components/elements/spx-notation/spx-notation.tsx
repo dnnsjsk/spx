@@ -10,19 +10,24 @@ import {
   Event,
   EventEmitter,
 } from '@stencil/core';
-import { css } from '@emotion/css';
-import { setVar } from '../../../utils/cssVariables/setVar';
 import { annotate, annotationGroup } from 'rough-notation';
 import { globalComponentDidLoad } from '../../../utils/global/globalComponentDidLoad';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
+import { isInShadow } from '../../../utils/is/isInShadow';
 
-const tag = 'spx-notation';
-
-/** Annotate letters, words or whole sentences. */
+/**
+ * Annotate letters, words or whole sentences.
+ *
+ * @slot [slot:inner]
+ */
 @Component({
   tag: 'spx-notation',
+  styleUrl: 'spx-notation.scss',
 })
 export class SpxNotation {
+  private keyframes =
+    '@keyframes rough-notation-dash { to { stroke-dashoffset: 0; } }';
+
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxNotationElement;
 
@@ -41,8 +46,6 @@ export class SpxNotation {
   @Prop({ reflect: true }) brackets: string = 'left, right';
 
   @Prop({ reflect: true }) color: string = 'var(--spx-color-gray-100)';
-
-  @Prop({ reflect: true }) display: string = 'inline-block';
 
   @Prop({ reflect: true }) delay: number;
 
@@ -64,18 +67,16 @@ export class SpxNotation {
   /**
    * Type of notation.
    *
-   * @choice 'underline', 'box', 'circle', 'highlight', 'strike-through', 'crossed-off', 'bracket'
+   * @choice underline, box, circle, highlight, strike-through, crossed-off, bracket
    */
   @Prop({ reflect: true }) type: string = 'underline';
 
-  /** Fires after component has loaded. */
+  /** [event:loaded] */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxNotationDidLoad' })
   spxNotationDidLoad: EventEmitter;
 
   componentDidLoad() {
-    globalComponentDidLoad({ el: this.el });
-
     if (
       ((this.el.querySelector(':scope > span > span') &&
         this.el.querySelector(':scope > span > span').innerHTML.length > 0) ||
@@ -85,6 +86,7 @@ export class SpxNotation {
       this.annotate();
     }
 
+    globalComponentDidLoad({ el: this.el });
     this.spxNotationDidLoad.emit({ target: 'document' });
   }
 
@@ -92,11 +94,9 @@ export class SpxNotation {
     globalComponentWillUpdate(this.el);
   }
 
-  /** Annotate. */
   private annotate = () => {
     const groupArray = [];
 
-    /** Get options. */
     const options = {
       animate: this.animation,
       animationDuration: this.animationDuration,
@@ -122,7 +122,6 @@ export class SpxNotation {
       brackets: this.brackets,
     };
 
-    /** Check if group is active. */
     if (!this.group) {
       this.annotation = annotate(
         this.el.querySelector(':scope > span > span'),
@@ -146,7 +145,6 @@ export class SpxNotation {
       });
     }
 
-    /** Fire off animation. */
     if (this.delay) {
       setTimeout(() => {
         if (!this.group) {
@@ -194,22 +192,14 @@ export class SpxNotation {
   }
 
   render() {
-    /** Host styles. */
-    const styleHost = css({
-      display: setVar(tag, 'display', this.display),
-      position: 'relative',
-    });
-
-    /** Span styles. */
-    const styleSpan = css({ position: 'relative', display: 'inline-block' });
-
     return (
-      <Host class={styleHost}>
+      <Host>
+        {isInShadow(this.el) && <style>{this.keyframes}</style>}
         {this.group ? (
           <slot />
         ) : (
-          <span class={styleSpan}>
-            <span class={styleSpan}>
+          <span>
+            <span>
               <slot />
             </span>
           </span>

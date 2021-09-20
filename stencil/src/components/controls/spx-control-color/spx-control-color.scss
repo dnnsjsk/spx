@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.control {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  grid-gap: 0.5rem;
+
+  button {
+    cursor: pointer;
+    height: 34px;
+    width: 34px;
+    border: 1px solid var(--spx-color-gray-300);
+    border-radius: 0.375rem;
+    @include focusRing;
+  }
+}
+
+.picker {
+  margin-top: 1rem;
+  display: none;
+
+  &.is-active {
+    display: block;
+  }
+}

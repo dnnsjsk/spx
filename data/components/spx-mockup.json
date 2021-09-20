@@ -4,152 +4,161 @@
   "shadow": false,
   "properties": [
     {
-      "name": "colorGalaxyS8",
       "attribute": "color-galaxy-s-8",
-      "type": "string",
+      "default": "black",
       "description": "Samsung S8 color.",
-      "default": "'black'",
-      "defaultValue": "'black'",
+      "id": "spx-mockup-0",
+      "index": 0,
+      "name": "colorGalaxyS8",
       "tags": [
         {
-          "text": "'black', 'blue'",
+          "text": "black, blue",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "colorGooglePixel",
       "attribute": "color-google-pixel",
-      "type": "string",
+      "default": "silver",
       "description": "Google Pixel color.",
-      "default": "'silver'",
-      "defaultValue": "'silver'",
+      "id": "spx-mockup-1",
+      "index": 1,
+      "name": "colorGooglePixel",
       "tags": [
         {
-          "text": "'silver', 'black', 'blue'",
+          "text": "silver, black, blue",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "colorIpadPro",
       "attribute": "color-ipad-pro",
-      "type": "string",
+      "default": "silver",
       "description": "IPad Pro color.",
-      "default": "'silver'",
-      "defaultValue": "'silver'",
+      "id": "spx-mockup-2",
+      "index": 2,
+      "name": "colorIpadPro",
       "tags": [
         {
-          "text": "'silver', 'gold', 'rosegold', 'spacegray'",
+          "text": "silver, gold, rosegold, spacegray",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "colorIphone8",
       "attribute": "color-iphone-8",
-      "type": "string",
+      "default": "silver",
       "description": "IPhone 8 color.",
-      "default": "'silver'",
-      "defaultValue": "'silver'",
+      "id": "spx-mockup-3",
+      "index": 3,
+      "name": "colorIphone8",
       "tags": [
         {
-          "text": "'silver', 'gold', 'spacegray'",
+          "text": "silver, gold, spacegray",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "colorMacbook",
       "attribute": "color-macbook",
-      "type": "string",
+      "default": "silver",
       "description": "MacBook color.",
-      "default": "'silver'",
-      "defaultValue": "'silver'",
+      "id": "spx-mockup-4",
+      "index": 4,
+      "name": "colorMacbook",
       "tags": [
         {
-          "text": "'silver', 'gold', 'rosegold', 'spacegray'",
+          "text": "silver, gold, rosegold, spacegray",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "colorMacbookPro",
       "attribute": "color-macbook-pro",
-      "type": "string",
+      "default": "silver",
       "description": "MacBook Pro color.",
-      "default": "'silver'",
-      "defaultValue": "'silver'",
+      "id": "spx-mockup-5",
+      "index": 5,
+      "name": "colorMacbookPro",
       "tags": [
         {
-          "text": "'silver', 'spacegray'",
+          "text": "silver, spacegray",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "'inline-block'",
-      "defaultValue": "'inline-block'",
-      "tags": []
-    },
-    {
-      "name": "imagePosition",
       "attribute": "image-position",
-      "type": "string",
+      "default": "50% 50%",
       "description": "",
-      "default": "'50% 50%'",
-      "defaultValue": "'50% 50%'",
-      "tags": []
-    },
-    {
-      "name": "size",
-      "attribute": "size",
-      "type": "number",
-      "description": "Mockup size.",
-      "tags": []
-    },
-    {
-      "name": "sizeMax",
-      "attribute": "size-max",
-      "type": "number",
-      "description": "Mockup size maximum.",
-      "default": "0.6",
-      "defaultValue": "0.6",
-      "tags": []
-    },
-    {
-      "name": "sizeMin",
-      "attribute": "size-min",
-      "type": "number",
-      "description": "Mockup size minimum.",
-      "default": "0.3",
-      "defaultValue": "0.3",
-      "tags": []
-    },
-    {
-      "name": "src",
-      "attribute": "src",
-      "type": "string",
-      "description": "Image src if no inner slot is used.",
-      "tags": []
-    },
-    {
-      "name": "type",
-      "attribute": "type",
-      "type": "string",
-      "description": "Device type.",
-      "default": "'iphone-8'",
-      "defaultValue": "'iphone-8'",
+      "id": "spx-mockup-6",
+      "index": 6,
+      "name": "imagePosition",
       "tags": [
         {
-          "text": "'iphone-8', 'iphone-x', 'google-pixel-2-xl', 'google-pixel', 'galaxy-s8', 'ipad-pro', 'surface-pro', 'surface-book', 'macbook', 'macbook-pro', 'surface-studio', 'imac-pro', 'apple-watch'",
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "size",
+      "description": "Mockup size.",
+      "id": "spx-mockup-7",
+      "index": 7,
+      "name": "size",
+      "tags": [],
+      "type": "number"
+    },
+    {
+      "attribute": "size-max",
+      "default": "0.6",
+      "description": "Mockup size maximum.",
+      "id": "spx-mockup-8",
+      "index": 8,
+      "name": "sizeMax",
+      "tags": [],
+      "type": "number"
+    },
+    {
+      "attribute": "size-min",
+      "default": "0.3",
+      "description": "Mockup size minimum.",
+      "id": "spx-mockup-9",
+      "index": 9,
+      "name": "sizeMin",
+      "tags": [],
+      "type": "number"
+    },
+    {
+      "attribute": "src",
+      "description": "Image src if no inner slot is used.",
+      "id": "spx-mockup-10",
+      "index": 10,
+      "name": "src",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "type",
+      "default": "iphone-8",
+      "description": "Device type.",
+      "id": "spx-mockup-11",
+      "index": 11,
+      "name": "type",
+      "tags": [
+        {
+          "text": "iphone-8, iphone-x, google-pixel-2-xl, google-pixel, galaxy-s8, ipad-pro, surface-pro, surface-book, macbook, macbook-pro, surface-studio, imac-pro, apple-watch",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     }
   ],
   "events": [
@@ -161,8 +170,8 @@
   "methods": [],
   "slots": [
     {
-      "name": "inner",
-      "description": "Slot (between HTML tags)."
+      "name": "inner - Slot (between HTML tags).",
+      "description": ""
     }
   ]
 }

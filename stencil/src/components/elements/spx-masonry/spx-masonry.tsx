@@ -1,46 +1,40 @@
 import {
   Component,
   // eslint-disable-next-line no-unused-vars
-  h,
-  Host,
   Element,
   Prop,
-  State,
   Watch,
   Event,
   EventEmitter,
 } from '@stencil/core';
-import { css as cssHost } from '@emotion/css';
 import Macy from 'macy';
 import { wrap } from '../../../utils/dom/wrap';
 import { globalComponentDidLoad } from '../../../utils/global/globalComponentDidLoad';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
-import { cssEmotion } from '../../../utils/css/cssEmotion';
-import { setVar } from '../../../utils/cssVariables/setVar';
-import * as s from '../../../constants/style';
 import { helperImagesOrInner } from '../../../utils/helper/helperImagesOrInner';
 import { lazy } from '../../../utils/3rd/lazy';
+import { setProperty } from '../../../utils/dom/setProperty';
 
 const tag = 'spx-masonry';
 
 /**
  * Arrange images in a masonry layout.
  *
- * @slot inner - Slot (between HTML tags).
+ * @slot [slot:inner]
  */
 @Component({
   tag: 'spx-masonry',
+  styleUrl: 'spx-masonry.scss',
   shadow: true,
 })
 export class SpxMasonry {
+  private container: HTMLElement;
+  private bpColumnsObject: object;
+  private imagesArray: Array<string>;
+  private macyState;
+
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxMasonryElement;
-  private container: HTMLElement;
-
-  @State() bpColumnsObject: object;
-  @State() content;
-  @State() imagesArray: Array<string>;
-  @State() macyState;
 
   /**
    * Columns for different screen sizes. Example value: 1000:3;600:2 - this will
@@ -52,12 +46,10 @@ export class SpxMasonry {
   /** Number of columns. */
   @Prop({ reflect: true }) columns: number = 4;
 
-  @Prop({ reflect: true }) display: string = s.display;
-
   /**
    * Gap between images.
    *
-   * @CSS
+   * @css
    */
   @Prop({ reflect: true }) gap: string = '10px';
 
@@ -74,161 +66,126 @@ export class SpxMasonry {
   /**
    * Gets images from an ACF or Metabox field.
    *
-   * @choice 'acf', 'mb'
+   * @choice acf, mb
    */
-  @Prop({ reflect: true }) imageSrc: string;
+  @Prop({ reflect: true }) imageSrc: string = 'acf';
 
   /** Lazy load images. */
   @Prop({ reflect: true }) lazy: boolean;
 
-  /** Fires after component has loaded. */
-  // eslint-disable-next-line @stencil/decorators-style
-  @Event({ eventName: 'spxMasonryDidLoad' })
-  spxMasonryDidLoad: EventEmitter;
-
-  /**
-   * Watch images.
-   *
-   * @param {string} newValue Array string.
-   */
   @Watch('images')
   imagesChanged(newValue: string) {
     if (newValue) this.imagesArray = JSON.parse(newValue);
   }
 
-  componentWillLoad() {
-    this.content = this.el.innerHTML;
+  @Watch('gap')
+  // @ts-ignore
+  watchAttributes(value, old, attribute) {
+    setProperty(this.el, tag, attribute, value);
+  }
 
-    /** If image prop is set. */
+  /** [event:loaded] */
+  // eslint-disable-next-line @stencil/decorators-style
+  @Event({ eventName: 'spxMasonryDidLoad' })
+  spxMasonryDidLoad: EventEmitter;
+
+  componentWillLoad() {
     if (this.images) {
       this.imagesChanged(this.images);
     }
   }
 
   componentDidLoad() {
-    globalComponentDidLoad({ el: this.el, lazy: this.lazy, cb: this.update });
-
-    /** Create object for breakpoint attribute. */
+    this.wrapElements();
+    this.init();
     if (this.bpColumns) {
       this.bpColumnsObject = JSON.parse(
         '{' + this.bpColumns.replace(/([0-9]+)/g, '"$1"') + '}'
       );
     }
 
-    /** Init Macy. */
-    this.initMacy();
-
-    /** Emit event to document when Masonry finished loading. */
+    globalComponentDidLoad({
+      el: this.el,
+      tag: tag,
+      props: ['gap'],
+      lazy: this.lazy,
+      cb: this.update,
+      mutations: {
+        subtree: true,
+      },
+    });
     this.spxMasonryDidLoad.emit({ target: 'document' });
   }
 
   componentWillUpdate() {
+    this.macyState.remove();
+    this.init();
     globalComponentWillUpdate(this.el);
-  }
-
-  componentDidUpdate() {
-    this.macyState.reInit();
   }
 
   disconnectedCallback() {
     this.macyState.remove();
   }
 
-  /** Init Macy. */
-  private initMacy = () => {
-    /** Wrap all children in div. */
+  private wrapElements = () => {
     Array.from(this.container.children).forEach((item) => {
       wrap(item, document.createElement('div'));
     });
+  };
+
+  private init = () => {
+    this.el.style.visibility = 'hidden';
 
     this.macyState = Macy({
       container: this.container,
       margin: 0,
       mobileFirst: true,
       runOnImageLoad: true,
-      columns: this.columns,
+      waitForImages: false,
+      columns: !this.columns ? 1 : this.columns.toFixed(0),
       breakAt: this.bpColumns
         ? this.bpColumnsObject
         : {
             9999: this.columns ? this.columns : 4,
           },
     });
+
+    this.macyState.on(this.macyState.constants.EVENT_IMAGE_COMPLETE, () => {
+      this.macyState.recalculate(true);
+
+      setTimeout(() => {
+        this.macyState.recalculate(true);
+      });
+      this.el.style.visibility = 'visible';
+    });
   };
 
-  /** Update. */
   private update = () => {
     this.macyState.remove();
-    this.container.innerHTML = '';
-    this.content = this.el.innerHTML;
-    setTimeout(() => {
-      lazy({
-        el: this.el,
-        condition: this.lazy,
-      });
-      this.initMacy();
-    }, 100);
+    this.container.innerHTML = this.el.innerHTML;
+    lazy({
+      el: this.el,
+      condition: this.lazy,
+    });
+    this.wrapElements();
+    this.init();
   };
 
   render() {
-    const { css } = cssEmotion(this.el.shadowRoot);
-
-    /** Host styles. */
-    const styleHost = cssHost({
-      display: setVar(tag, 'display', this.display),
-    });
-
-    /** Shadow Host styles. */
-    const styleShadowHost = css({
-      /** Adjust container margin to make up for element paddings. */
-      margin:
-        'calc(var(--spx-masonry-gap, ' +
-        this.gap +
-        ') * -1) calc(var(--spx-masonry-gap, ' +
-        this.gap +
-        ') / 2 * -1) 0 calc(var(--spx-masonry-gap, ' +
-        this.gap +
-        ') / 2 * -1)',
-      /** Convert gap to correct padding for elements. */
-      '& > div': {
-        padding:
-          'var(--spx-masonry-gap, ' +
-          this.gap +
-          ') calc(var(--spx-masonry-gap, ' +
-          this.gap +
-          ') / 2) 0 calc(var(--spx-masonry-gap, ' +
-          this.gap +
-          ') / 2)',
-        boxSizing: 'border-box',
-
-        '*': {
-          width: '100%',
-          maxWidth: '100%',
-        },
-
-        img: {
-          verticalAlign: 'top',
-        },
+    return helperImagesOrInner({
+      class: 'inner',
+      condition: this.images,
+      content: this.el.innerHTML,
+      el: this.el,
+      ref: (el) => (this.container = el as HTMLElement),
+      helper: {
+        array: this.imagesArray,
+        el: this.el,
+        images: this.images,
+        lazy: this.lazy,
+        size: this.imageSize,
+        src: this.imageSrc,
       },
     });
-
-    return (
-      <Host class={styleHost}>
-        {helperImagesOrInner({
-          class: styleShadowHost,
-          condition: this.images,
-          content: this.content,
-          el: this.el,
-          ref: (el) => (this.container = el as HTMLElement),
-          helper: {
-            array: this.imagesArray,
-            el: this.el,
-            images: this.images,
-            lazy: this.lazy,
-            size: this.imageSize,
-            src: this.imageSrc,
-          },
-        })}
-      </Host>
-    );
   }
 }

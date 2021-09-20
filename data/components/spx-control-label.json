@@ -4,18 +4,22 @@
   "shadow": false,
   "properties": [
     {
-      "name": "label",
       "attribute": "label",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-control-label-0",
+      "index": 0,
+      "name": "label",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "mb",
       "attribute": "mb",
-      "type": "boolean",
       "description": "",
-      "tags": []
+      "id": "spx-control-label-1",
+      "index": 1,
+      "name": "mb",
+      "tags": [],
+      "type": "boolean"
     }
   ],
   "events": [],

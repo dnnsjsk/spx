@@ -2,27 +2,24 @@ import {
   Component,
   // eslint-disable-next-line no-unused-vars
   h,
-  Host,
   Element,
   Prop,
   State,
   Event,
   EventEmitter,
+  Watch,
 } from '@stencil/core';
-import { css as cssHost } from '@emotion/css';
-import * as s from '../../../constants/style';
-import { setVar } from '../../../utils/cssVariables/setVar';
 import { globalComponentDidLoad } from '../../../utils/global/globalComponentDidLoad';
-import { setStyle } from '../../../utils/cssVariables/setStyle';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
-import { cssEmotion } from '../../../utils/css/cssEmotion';
 import { Button } from '../../../elements/Button';
+import { setProperty } from '../../../utils/dom/setProperty';
 
 const tag = 'spx-share';
 
 /** Social share buttons. Currently includes Facebook, Twitter, Whatsapp and E-Mail. */
 @Component({
   tag: 'spx-share',
+  styleUrl: 'spx-share.scss',
   shadow: true,
 })
 export class SpxShare {
@@ -31,31 +28,33 @@ export class SpxShare {
 
   @State() location;
 
-  @Prop({ reflect: true }) classItem: string;
+  /** @css */
+  @Prop({ reflect: true }) fontSize: string = 'var(--spx-font-size)';
 
-  @Prop({ reflect: true }) display: string = s.display;
-
-  @Prop({ reflect: true }) fontSize: string = s.fontSize;
-
+  /** @css */
   @Prop({ reflect: true }) fontSizeMax: number = 1.4;
 
+  /** @css */
   @Prop({ reflect: true }) fontSizeMin: number = 1;
 
+  /** @css */
   @Prop({ reflect: true }) itemBackground: string;
 
-  @Prop({ reflect: true }) itemBorderRadius: string = s.borderRadius;
+  /** @css */
+  @Prop({ reflect: true }) itemBorderRadius: string =
+    'var(--spx-border-radius)';
 
   /**
    * Gap between buttons.
    *
-   * @CSS
+   * @css
    */
   @Prop({ reflect: true }) itemColor: string;
 
   /**
    * Filter hover.
    *
-   * @CSS
+   * @css
    */
   @Prop({ reflect: true }) itemFilterHover: string =
     'brightness(110%) saturate(120%)';
@@ -63,60 +62,101 @@ export class SpxShare {
   /**
    * Gap between buttons.
    *
-   * @CSS
+   * @css
    */
   @Prop({ reflect: true }) itemGap: string = '0.5em';
 
+  /** @css */
   @Prop({ reflect: true }) itemGapMin: number = 0.4;
 
+  /** @css */
   @Prop({ reflect: true }) itemGapMax: number = 1;
 
+  /** @css */
   @Prop({ reflect: true }) itemPadding: string = '0.5em';
 
+  /** @css */
   @Prop({ reflect: true }) itemPaddingMin: number = 0.5;
 
+  /** @css */
   @Prop({ reflect: true }) itemPaddingMax: number = 1.2;
 
+  /** @css */
   @Prop({ reflect: true }) itemSize: string = '1em';
 
+  /** @css */
   @Prop({ reflect: true }) itemSizeMin: number = 0.7;
 
+  /** @css */
   @Prop({ reflect: true }) itemSizeMax: number = 1;
-
-  @Prop({ reflect: true }) itemTransitionDuration: string =
-    s.transitionDuration;
-
-  @Prop({ reflect: true }) itemTransitionTimingFunction: string =
-    s.transitionTimingFunction;
 
   /**
    * Styling.
    *
-   * @choice 'default', 'fluid', 'headless'
+   * @choice default, fluid
    */
   @Prop({ reflect: true }) styling: string = 'default';
 
-  /** Button href target. */
+  /** Link href target. */
   @Prop({ reflect: true }) target: string = '_blank';
 
   /**
    * Button theme.
    *
-   * @choice 'default', 'outline', 'minimal'
+   * @choice default, outline, minimal
    */
   @Prop({ reflect: true }) theme: string = 'default';
 
   /** Render buttons vertically. */
   @Prop({ reflect: true }) vertical: boolean;
 
-  /** Fires after component has loaded. */
+  @Watch('fontSize')
+  @Watch('fontSizeMax')
+  @Watch('fontSizeMin')
+  @Watch('itemBackground')
+  @Watch('itemBorderRadius')
+  @Watch('itemColor')
+  @Watch('itemFilterHover')
+  @Watch('itemGap')
+  @Watch('itemGapMax')
+  @Watch('itemGapMin')
+  @Watch('itemPaddingMax')
+  @Watch('itemPaddingMin')
+  @Watch('itemSize')
+  @Watch('itemSizeMax')
+  @Watch('itemSizeMin')
+  // @ts-ignore
+  watchAttributes(value, old, attribute) {
+    setProperty(this.el, tag, attribute, value);
+  }
+
+  /** [event:loaded] */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxShareDidLoad' })
   spxShareDidLoad: EventEmitter;
 
   componentDidLoad() {
-    globalComponentDidLoad({ el: this.el });
-
+    globalComponentDidLoad({
+      el: this.el,
+      tag: tag,
+      props: [
+        'fontSize',
+        'fontSizeMax',
+        'fontSizeMin',
+        'itemBackground',
+        'itemBorderRadius',
+        'itemColor',
+        'itemFilterHover',
+        'itemGap',
+        'itemGapMax',
+        'itemGapMin',
+        'itemPaddingMax',
+        'itemPaddingMin',
+        'itemSize',
+        'itemSizeMax',
+        'itemSizeMin',
+      ],
+    });
     this.spxShareDidLoad.emit({ target: 'document' });
   }
 
@@ -125,201 +165,41 @@ export class SpxShare {
   }
 
   render() {
-    const { css } = cssEmotion(this.el.shadowRoot);
-
-    /** Host styles. */
-    const styleHost = cssHost({
-      display: setVar(tag, 'display', this.display),
-    });
-
-    /** Shadow Host styles. */
-    const styleShadowHost =
-      (this.styling === 'default' || this.styling === 'fluid') &&
-      css({
-        fontSize: setVar(tag, 'font-size', this.fontSize),
-        display: 'grid',
-        gridAutoFlow: this.vertical ? 'row' : 'column',
-        gridAutoColumns: !this.vertical && 'max-content',
-        gridAutoRows: this.vertical && 'max-content',
-        gridGap: setStyle(
-          tag,
-          'item-gap',
-          this.itemGap,
-          this.itemGapMin,
-          this.itemGapMax,
-          this.styling
-        ),
-      });
-
-    /** Link styles. */
-    const styleItem =
-      this.styling === 'default' || this.styling === 'fluid'
-        ? css({
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            boxSizing: 'content-box',
-            cursor: 'pointer',
-            width: setStyle(
-              tag,
-              'item-size',
-              this.itemSize,
-              this.itemSizeMin,
-              this.itemSizeMax,
-              this.styling
-            ),
-            height: setStyle(
-              tag,
-              'item-size',
-              this.itemSize,
-              this.itemSizeMin,
-              this.itemSizeMax,
-              this.styling
-            ),
-            padding: setStyle(
-              tag,
-              'item-padding',
-              this.itemPadding,
-              this.itemPaddingMin,
-              this.itemPaddingMax,
-              this.styling
-            ),
-            borderRadius: setVar(
-              tag,
-              'item-border-radius',
-              this.itemBorderRadius
-            ),
-            color: setVar(tag, 'item-color', this.itemColor),
-            background: setVar(tag, 'item-background', this.itemBackground),
-            transitionProperty: 'filter, box-shadow',
-            transitionDuration: setVar(
-              tag,
-              'item-transition-duration',
-              this.itemTransitionDuration
-            ),
-            transitionTimingFunction: setVar(
-              tag,
-              'item-transition-timing-function',
-              this.itemTransitionTimingFunction
-            ),
-
-            '&:hover': {
-              filter: setVar(tag, 'item-filter-hover', this.itemFilterHover),
-            },
-
-            svg: {
-              height: '100%',
-            },
-
-            ...s.focus,
-          })
-        : this.classItem;
-
-    /** Facebook styles. */
-    const styleFacebook = css({
-      background:
-        this.theme === 'default' && !this.itemBackground
-          ? '#1877F2'
-          : this.theme === 'default' && this.itemBackground
-          ? this.itemBackground
-          : null,
-      color:
-        this.theme === 'outline' || this.theme === 'minimal'
-          ? '#1877F2'
-          : !this.itemColor
-          ? '#ffffff'
-          : null,
-      border: this.theme === 'outline' && '1px solid #1877F2',
-    });
-
-    /** Twitter styles. */
-    const styleTwitter = css({
-      background:
-        this.theme === 'default' && !this.itemBackground
-          ? '#1DA1F2'
-          : this.theme === 'default' && this.itemBackground
-          ? this.itemBackground
-          : null,
-      color:
-        this.theme === 'outline' || this.theme === 'minimal'
-          ? '#1DA1F2'
-          : !this.itemColor
-          ? '#ffffff'
-          : null,
-      border: this.theme === 'outline' && '1px solid #1DA1F2',
-    });
-
-    /** Email styles. */
-    const styleEmail = css({
-      background:
-        this.theme === 'default' && !this.itemBackground
-          ? '#c6c6c6'
-          : this.theme === 'default' && this.itemBackground
-          ? this.itemBackground
-          : null,
-      color:
-        this.theme === 'outline' || this.theme === 'minimal'
-          ? '#c6c6c6'
-          : !this.itemColor
-          ? '#ffffff'
-          : null,
-      border: this.theme === 'outline' && '1px solid #c6c6c6',
-    });
-
-    /** WhatsApp styles. */
-    const styleWhatsapp = css({
-      background:
-        this.theme === 'default' && !this.itemBackground
-          ? '#25D366'
-          : this.theme === 'default' && this.itemBackground
-          ? this.itemBackground
-          : null,
-      color:
-        this.theme === 'outline' || this.theme === 'minimal'
-          ? '#25D366'
-          : !this.itemColor
-          ? '#ffffff'
-          : null,
-      border: this.theme === 'outline' && '1px solid #25D366',
-    });
-
     return (
-      <Host class={styleHost}>
-        <div class={styleShadowHost}>
-          {[
-            {
-              className: styleFacebook,
-              href: 'https://www.facebook.com/sharer/sharer.php?u=',
-              icon: 'logo-facebook',
-            },
-            {
-              className: styleTwitter,
-              href: 'https://www.twitter.com/share?url=',
-              icon: 'logo-twitter',
-            },
-            {
-              className: styleWhatsapp,
-              href: 'https://web.whatsapp.com/send?text=',
-              icon: 'logo-whatsapp',
-            },
-            {
-              className: styleEmail,
-              href: 'mailto:?body=',
-              icon: 'mail',
-            },
-          ].map((item) => {
-            return (
-              <Button
-                class={css([styleItem, item.className])}
-                href={item.href + window.location.href}
-                target={this.target}
-              >
-                <spx-icon icon={item.icon} />
-              </Button>
-            );
-          })}
-        </div>
-      </Host>
+      <div class="inner">
+        {[
+          {
+            className: 'facebook',
+            href: 'https://www.facebook.com/sharer/sharer.php?u=',
+            icon: 'logo-facebook',
+          },
+          {
+            className: 'twitter',
+            href: 'https://www.twitter.com/share?url=',
+            icon: 'logo-twitter',
+          },
+          {
+            className: 'whatsapp',
+            href: 'https://web.whatsapp.com/send?text=',
+            icon: 'logo-whatsapp',
+          },
+          {
+            className: 'email',
+            href: 'mailto:?body=',
+            icon: 'mail',
+          },
+        ].map((item) => {
+          return (
+            <Button
+              class={item.className}
+              href={item.href + window.location.href}
+              target={this.target}
+            >
+              <spx-icon icon={item.icon} />
+            </Button>
+          );
+        })}
+      </div>
     );
   }
 }

@@ -13,7 +13,6 @@
 | `brackets`          | `brackets`           | Brackets.                                                                             | `string`  | `'left, right'`               |
 | `color`             | `color`              |                                                                                       | `string`  | `'var(--spx-color-gray-100)'` |
 | `delay`             | `delay`              |                                                                                       | `number`  | `undefined`                   |
-| `display`           | `display`            |                                                                                       | `string`  | `'inline-block'`              |
 | `group`             | `group`              | Create a group on annotations by applying a "data-spx-annotation" to elements within. | `boolean` | `undefined`                   |
 | `iterations`        | `iterations`         | Number of iterations.                                                                 | `number`  | `1`                           |
 | `multiline`         | `multiline`          | Annotate multiline text.                                                              | `boolean` | `true`                        |
@@ -24,9 +23,9 @@
 
 ## Events
 
-| Event                | Description                       | Type               |
-| -------------------- | --------------------------------- | ------------------ |
-| `spxNotationDidLoad` | Fires after component has loaded. | `CustomEvent<any>` |
+| Event                | Description    | Type               |
+| -------------------- | -------------- | ------------------ |
+| `spxNotationDidLoad` | [event:loaded] | `CustomEvent<any>` |
 
 
 ## Methods
@@ -70,6 +69,13 @@ Draws the annotation.
 Type: `Promise<void>`
 
 
+
+
+## Slots
+
+| Slot             | Description |
+| ---------------- | ----------- |
+| `"[slot:inner]"` |             |
 
 
 ----------------------------------------------

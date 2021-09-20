@@ -1,26 +1,25 @@
 # spx-control-select
 
-
-
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-| Property       | Attribute       | Description | Type     | Default     |
-| -------------- | --------------- | ----------- | -------- | ----------- |
-| `delimiter`    | `delimiter`     |             | `string` | `','`       |
-| `handleChange` | `handle-change` |             | `any`    | `undefined` |
-| `label`        | `label`         |             | `string` | `undefined` |
-| `options`      | `options`       |             | `string` | `undefined` |
-| `selected`     | `selected`      |             | `string` | `undefined` |
+| Property      | Attribute   | Description | Type       | Default     |
+| ------------- | ----------- | ----------- | ---------- | ----------- |
+| `data`        | `data`      |             | `string`   | `undefined` |
+| `delimiter`   | `delimiter` |             | `string`   | `','`       |
+| `handleInput` | --          |             | `Function` | `undefined` |
+| `label`       | `label`     |             | `string`   | `undefined` |
+| `options`     | `options`   |             | `string`   | `undefined` |
+| `value`       | `value`     |             | `string`   | `undefined` |
 
 
 ## Dependencies
 
 ### Used by
 
- - [spx-editor](../../elements/spx-editor)
+ - [spx-editor-controls](../../editor/spx-editor-controls)
 
 ### Depends on
 
@@ -30,7 +29,7 @@
 ```mermaid
 graph TD;
   spx-control-select --> spx-control-label
-  spx-editor --> spx-control-select
+  spx-editor-controls --> spx-control-select
   style spx-control-select fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

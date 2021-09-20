@@ -1,4 +1,7 @@
 body {
+  --spx-fluid-base: 16;
+  --spx-fluid-min-w: 320;
+  --spx-fluid-max-w: 1440;
   --spx-backdrop-filter: var(--spx-token-backdrop-filter, blur(4px));
   --spx-color-black: #000000;
   --spx-color-white: #ffffff;
@@ -23,6 +26,11 @@ body {
     --spx-token-focus-px,
     inset 0px 0px 0px 1px var(--spx-color-focus)
   );
+  --spx-focus-ring: var(
+    --spx-token-focus-ring,
+    0 0 0 2px white,
+    0 0 0 4px var(--spx-color-focus)
+  );
   --spx-font-family: var(
     --spx-token-font-family,
     helvetica,
@@ -38,28 +46,41 @@ body {
   );
 }
 
-spx-accordion:not([has-loaded]),
-spx-animate:not([has-loaded]),
-spx-class-toggle:not([has-loaded]),
-spx-code:not([has-loaded]),
-spx-docs:not([has-loaded]),
-spx-edit-button:not([has-loaded]),
-spx-group:not([has-loaded]),
-spx-icon:not([has-loaded]),
-spx-iframe:not([has-loaded]),
-spx-image-comparision:not([has-loaded]),
-spx-lightbox:not([has-loaded]),
-spx-masonry:not([has-loaded]),
-spx-mockup:not([has-loaded]),
-spx-navigation:not([has-loaded]),
-spx-notation:not([has-loaded]),
-spx-offset:not([has-loaded]),
-spx-scrollspy:not([has-loaded]),
-spx-share:not([has-loaded]),
-spx-slider:not([has-loaded]),
-spx-slideshow:not([has-loaded]),
-spx-snackbar:not([has-loaded]),
-spx-textpath:not([has-loaded]),
-spx-typewriter:not([has-loaded]) {
+spx-accordion:not(.hydrated),
+spx-animate:not(.hydrated),
+spx-class-toggle:not(.hydrated),
+spx-code:not(.hydrated),
+spx-docs:not(.hydrated),
+spx-edit-button:not(.hydrated),
+spx-group:not(.hydrated),
+spx-icon:not(.hydrated),
+spx-iframe:not(.hydrated),
+spx-image-comparision:not(.hydrated),
+spx-lightbox:not(.hydrated),
+spx-masonry:not(.hydrated),
+spx-mockup:not(.hydrated),
+spx-navigation:not(.hydrated),
+spx-notation:not(.hydrated),
+spx-offset:not(.hydrated),
+spx-scrollspy:not(.hydrated),
+spx-share:not(.hydrated),
+spx-slider:not(.hydrated),
+spx-slideshow:not(.hydrated),
+spx-tailwind:not(.hydrated),
+spx-textpath:not(.hydrated),
+spx-typewriter:not(.hydrated),
+spx-editor:not(.hydrated),
+spx-editor-components:not(.hydrated),
+spx-editor-container:not(.hydrated),
+spx-editor-content:not(.hydrated),
+spx-editor-controls:not(.hydrated),
+spx-editor-header:not(.hydrated),
+spx-control-color:not(.hydrated),
+spx-control-group:not(.hydrated),
+spx-control-input:not(.hydrated),
+spx-control-label:not(.hydrated),
+spx-control-number:not(.hydrated),
+spx-control-select:not(.hydrated),
+spx-control-switch:not(.hydrated) {
   visibility: hidden;
 }

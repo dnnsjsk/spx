@@ -1,24 +1,23 @@
 # spx-control-switch
 
-
-
 <!-- Auto Generated Below -->
 
 
 ## Properties
 
-| Property       | Attribute       | Description | Type      | Default     |
-| -------------- | --------------- | ----------- | --------- | ----------- |
-| `checked`      | `checked`       |             | `boolean` | `undefined` |
-| `handleChange` | `handle-change` |             | `any`     | `undefined` |
-| `label`        | `label`         |             | `string`  | `undefined` |
+| Property      | Attribute | Description | Type       | Default     |
+| ------------- | --------- | ----------- | ---------- | ----------- |
+| `checked`     | `checked` |             | `boolean`  | `undefined` |
+| `data`        | `data`    |             | `string`   | `undefined` |
+| `handleInput` | --        |             | `Function` | `undefined` |
+| `label`       | `label`   |             | `string`   | `undefined` |
 
 
 ## Dependencies
 
 ### Used by
 
- - [spx-editor](../../elements/spx-editor)
+ - [spx-editor-controls](../../editor/spx-editor-controls)
 
 ### Depends on
 
@@ -28,7 +27,7 @@
 ```mermaid
 graph TD;
   spx-control-switch --> spx-control-label
-  spx-editor --> spx-control-switch
+  spx-editor-controls --> spx-control-switch
   style spx-control-switch fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

@@ -5,19 +5,13 @@ import {
   EventEmitter,
   // eslint-disable-next-line no-unused-vars
   h,
-  Host,
   Listen,
   Method,
   Prop,
 } from '@stencil/core';
-import { css } from '@emotion/css';
-import { setVar } from '../../../utils/cssVariables/setVar';
 import { offsetHeader } from '../../../utils/dom/offsetHeader';
 import { globalComponentDidLoad } from '../../../utils/global/globalComponentDidLoad';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
-import * as s from '../../../constants/style';
-
-const tag = 'spx-offset';
 
 /**
  * The component offsets itself to the height of a specified element. It comes
@@ -25,37 +19,36 @@ const tag = 'spx-offset';
  * wrap your main content container with it and select a target element. The
  * distance will adjust on screen resize.
  *
- * @slot inner - Slot (between HTML tags).
+ * @slot [slot:inner]
  */
 @Component({
   tag: 'spx-offset',
+  styleUrl: 'spx-offset.scss',
   shadow: true,
 })
 export class SpxOffset {
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxOffsetElement;
 
-  @Prop({ reflect: true }) display: string = s.display;
-
-  /** Target element. */
+  /** [prop:target] */
   @Prop({ reflect: true }) target: string = 'header';
 
-  /** Fires after component has loaded. */
+  /** Add offset as CSS variable to body. */
+  @Prop({ reflect: true }) variable: boolean = true;
 
+  /** [event:loaded] */
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxOffsetDidLoad' })
   spxOffsetDidLoad: EventEmitter;
 
-  /** Listen to window resize. */
   @Listen('resize', { target: 'window' })
   onResize() {
-    offsetHeader(this.el, this.target);
+    offsetHeader(this.el, this.target, this.variable);
   }
 
   componentDidLoad() {
-    globalComponentDidLoad({ el: this.el });
     this.onResize();
-
+    globalComponentDidLoad({ el: this.el });
     this.spxOffsetDidLoad.emit({ target: 'document' });
   }
 
@@ -74,15 +67,6 @@ export class SpxOffset {
   }
 
   render() {
-    /** Host styles. */
-    const styleHost = css({
-      display: setVar(tag, 'display', this.display),
-    });
-
-    return (
-      <Host class={styleHost}>
-        <slot />
-      </Host>
-    );
+    return <slot />;
   }
 }

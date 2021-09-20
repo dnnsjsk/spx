@@ -4,41 +4,58 @@
   "shadow": false,
   "properties": [
     {
-      "name": "delimiter",
+      "attribute": "data",
+      "description": "",
+      "id": "spx-control-select-0",
+      "index": 0,
+      "name": "data",
+      "tags": [],
+      "type": "string"
+    },
+    {
       "attribute": "delimiter",
-      "type": "string",
+      "default": ",",
       "description": "",
-      "default": "','",
-      "defaultValue": "','",
-      "tags": []
+      "id": "spx-control-select-1",
+      "index": 1,
+      "name": "delimiter",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "handleChange",
-      "attribute": "handle-change",
-      "type": "any",
       "description": "",
-      "tags": []
+      "id": "spx-control-select-2",
+      "index": 2,
+      "name": "handleInput",
+      "tags": [],
+      "type": "Function"
     },
     {
-      "name": "label",
       "attribute": "label",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-control-select-3",
+      "index": 3,
+      "name": "label",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "options",
       "attribute": "options",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-control-select-4",
+      "index": 4,
+      "name": "options",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "selected",
-      "attribute": "selected",
-      "type": "string",
+      "attribute": "value",
       "description": "",
-      "tags": []
+      "id": "spx-control-select-5",
+      "index": 5,
+      "name": "value",
+      "tags": [],
+      "type": "string"
     }
   ],
   "events": [],

@@ -4,117 +4,132 @@
   "shadow": true,
   "properties": [
     {
-      "name": "display",
-      "attribute": "display",
-      "type": "string",
-      "description": "",
-      "default": "'block'",
-      "defaultValue": "'block'",
-      "tags": []
-    },
-    {
-      "name": "duration",
       "attribute": "duration",
-      "type": "string",
+      "default": "60s",
       "description": "Duration of slideshow to complete one cycle.",
-      "default": "'60s'",
-      "defaultValue": "'60s'",
+      "id": "spx-slideshow-0",
+      "index": 0,
+      "name": "duration",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "gap",
       "attribute": "gap",
-      "type": "string",
+      "default": "1em",
       "description": "Gap between inner elements.",
-      "default": "'1em'",
-      "defaultValue": "'1em'",
+      "id": "spx-slideshow-1",
+      "index": 1,
+      "name": "gap",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "height",
       "attribute": "height",
-      "type": "string",
       "description": "",
-      "tags": []
-    },
-    {
-      "name": "imageSize",
-      "attribute": "image-size",
-      "type": "string",
-      "description": "WordPress media size when using the helper function..",
-      "tags": []
-    },
-    {
-      "name": "imageSrc",
-      "attribute": "image-src",
-      "type": "string",
-      "description": "Gets images from an ACF or Metabox field.",
+      "id": "spx-slideshow-2",
+      "index": 2,
+      "name": "height",
       "tags": [
         {
-          "text": "'acf', 'mb'",
+          "name": "css"
+        }
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "image-size",
+      "description": "WordPress media size when using the helper function..",
+      "id": "spx-slideshow-3",
+      "index": 3,
+      "name": "imageSize",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "image-src",
+      "description": "Gets images from an ACF or Metabox field.",
+      "id": "spx-slideshow-4",
+      "index": 4,
+      "name": "imageSrc",
+      "tags": [
+        {
+          "text": "acf, mb",
           "name": "choice"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "images",
       "attribute": "images",
-      "type": "string",
       "description": "Gets images from an ACF or Metabox field.",
+      "id": "spx-slideshow-5",
+      "index": 5,
+      "name": "images",
       "tags": [
         {
           "text": "&lt;?php spx\\get::gallery($fieldName, $type) ?>",
           "name": "helper"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "lazy",
       "attribute": "lazy",
-      "type": "boolean",
       "description": "Lazy load images.",
-      "tags": []
+      "id": "spx-slideshow-6",
+      "index": 6,
+      "name": "lazy",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "maxWidth",
       "attribute": "max-width",
-      "type": "string",
+      "default": "300px",
       "description": "Max width of inner elements.",
-      "default": "'300px'",
-      "defaultValue": "'300px'",
+      "id": "spx-slideshow-7",
+      "index": 7,
+      "name": "maxWidth",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
     },
     {
-      "name": "objectFit",
       "attribute": "object-fit",
-      "type": "string",
+      "default": "contain",
       "description": "",
-      "default": "'contain'",
-      "defaultValue": "'contain'",
-      "tags": []
-    },
-    {
-      "name": "overflow",
-      "attribute": "overflow",
-      "type": "string",
-      "description": "If not set with this attribute, overflow should be set on the parent element.",
+      "id": "spx-slideshow-8",
+      "index": 8,
+      "name": "objectFit",
       "tags": [
         {
-          "name": "CSS"
+          "name": "css"
         }
-      ]
+      ],
+      "type": "string"
+    },
+    {
+      "attribute": "overflow",
+      "description": "If not set with this attribute, overflow should be set on the parent element.",
+      "id": "spx-slideshow-9",
+      "index": 9,
+      "name": "overflow",
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string"
     }
   ],
   "events": [
@@ -126,8 +141,8 @@
   "methods": [],
   "slots": [
     {
-      "name": "inner",
-      "description": "Slot (between HTML tags)."
+      "name": "inner - Slot (between HTML tags).",
+      "description": ""
     }
   ]
 }

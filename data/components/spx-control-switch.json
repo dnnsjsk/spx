@@ -4,25 +4,39 @@
   "shadow": false,
   "properties": [
     {
-      "name": "checked",
       "attribute": "checked",
-      "type": "boolean",
       "description": "",
-      "tags": []
+      "id": "spx-control-switch-0",
+      "index": 0,
+      "name": "checked",
+      "tags": [],
+      "type": "boolean"
     },
     {
-      "name": "handleChange",
-      "attribute": "handle-change",
-      "type": "any",
+      "attribute": "data",
       "description": "",
-      "tags": []
+      "id": "spx-control-switch-1",
+      "index": 1,
+      "name": "data",
+      "tags": [],
+      "type": "string"
     },
     {
-      "name": "label",
+      "description": "",
+      "id": "spx-control-switch-2",
+      "index": 2,
+      "name": "handleInput",
+      "tags": [],
+      "type": "Function"
+    },
+    {
       "attribute": "label",
-      "type": "string",
       "description": "",
-      "tags": []
+      "id": "spx-control-switch-3",
+      "index": 3,
+      "name": "label",
+      "tags": [],
+      "type": "string"
     }
   ],
   "events": [],
