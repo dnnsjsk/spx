@@ -1,7 +1,6 @@
 {
   "name": "spx-tailwind",
   "description": "Generate Tailwind classes for inner elements.",
-  "shadow": false,
   "properties": [],
   "events": [
     {

@@ -1,3 +1,4 @@
+@import 'node_modules/modern-normalize/modern-normalize';
 @import 'node_modules/swiper/swiper';
 @import 'node_modules/swiper/components/a11y/a11y';
 @import 'node_modules/swiper/components/effect-fade/effect-fade';
@@ -27,6 +28,7 @@ $prevNextFilter: '';
   display: block;
   height: 100%;
   width: 100%;
+  max-height: variable($tag, 'max-height', $maxHeight);
 }
 
 .inner {
@@ -136,13 +138,19 @@ $prevNextFilter: '';
   }
 }
 
-.swiper-wrapper {
+.swiper-container {
+  height: 100%;
   max-height: variable($tag, 'max-height', $maxHeight);
+
+  &, * {
+    line-height: 0;
+  }
 }
 
 .swiper-slide {
   height: auto;
   width: 100%;
+  max-height: variable($tag, 'max-height', $maxHeight);
 
   &:not(.swiper-slide-active) {
     filter: variable($tag, 'prev-next-filter', $prevNextFilter);

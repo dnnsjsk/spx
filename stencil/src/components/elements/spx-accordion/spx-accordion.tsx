@@ -198,7 +198,7 @@ export class SpxAccordion {
   @Watch('headerGapMin')
   @Watch('iconTransform')
   // @ts-ignore
-  watchAttributes(value, old, attribute) {
+  attributesChanged(value, old, attribute) {
     setProperty(this.el, tag, attribute, value);
   }
 
@@ -208,13 +208,7 @@ export class SpxAccordion {
   spxAccordionDidLoad: EventEmitter;
 
   componentWillLoad() {
-    if (this.el.querySelector('[slot="header"]')) {
-      this.headerCustom = true;
-    }
-
-    if (this.el.querySelector('[slot="content"]')) {
-      this.contentCustom = true;
-    }
+    this.checkForSlots();
   }
 
   componentDidLoad() {
@@ -238,6 +232,11 @@ export class SpxAccordion {
         'headerGapMin',
         'iconTransform',
       ],
+      cb: this.checkForSlots,
+      mutations: {
+        subtree: true,
+        attributes: true,
+      },
     });
     this.spxAccordionDidLoad.emit({ target: 'document' });
   }
@@ -246,6 +245,16 @@ export class SpxAccordion {
     this.getHeight();
     globalComponentWillUpdate(this.el);
   }
+
+  private checkForSlots = () => {
+    if (this.el.querySelector('[slot="header"]')) {
+      this.headerCustom = true;
+    }
+
+    if (this.el.querySelector('[slot="content"]')) {
+      this.contentCustom = true;
+    }
+  };
 
   private getHeight = () => {
     this.height = this.content.scrollHeight + 'px';

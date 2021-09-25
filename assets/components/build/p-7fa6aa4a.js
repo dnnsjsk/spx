@@ -1,1 +1,0 @@
-import{e as r,t as s,g as a}from"./p-f47b3188.js";function o(o,t,n){var e,f;return o=r(o),n=null==n?0:(e=s(n),0,f=o.length,e==e&&(void 0!==f&&(e=e<=f?e:f),e=e>=0?e:0),e),t=a(t),o.slice(n,n+t.length)==t}export{o as s}

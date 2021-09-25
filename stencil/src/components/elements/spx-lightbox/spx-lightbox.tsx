@@ -28,10 +28,13 @@ export class SpxLightbox {
   /** Show close button. */
   @Prop({ reflect: true }) closeButton: boolean = true;
 
+  /** @css */
   @Prop({ reflect: true }) closeButtonColor: string = '#ffffff';
 
+  /** @css */
   @Prop({ reflect: true }) overlayBackground: string = 'rgba(0,0,0,0.8)';
 
+  /** @css */
   @Prop({ reflect: true }) overlayBackdropFilter: string =
     'var(--spx-backdrop-filter)';
 
@@ -58,12 +61,7 @@ export class SpxLightbox {
 
   private init = () => {
     lightbox({
-      bodyOverflow: this.bodyOverflow,
-      closeButton: this.closeButton,
-      closeButtonColor: this.closeButtonColor,
-      overlayBackground: this.overlayBackground,
-      overlayBackdropFilter: this.overlayBackdropFilter,
-      slider: this.spxSlider,
+      el: this.el,
       query: this.el.querySelectorAll(this.target),
     });
   };

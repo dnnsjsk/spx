@@ -27,7 +27,7 @@
 | `lineNumbers`                  | `line-numbers`                    | Enable line numbers.                                                      | `boolean` | `true`                        |
 | `lineNumbersBackground`        | `line-numbers-background`         |                                                                           | `string`  | `'var(--spx-color-gray-800)'` |
 | `lineNumbersColor`             | `line-numbers-color`              |                                                                           | `string`  | `'var(--spx-color-gray-400)'` |
-| `lineNumbersStart`             | `line-numbers-start`              | Start of line number.                                                     | `number`  | `undefined`                   |
+| `lineNumbersStart`             | `line-numbers-start`              | Start of line number.                                                     | `number`  | `1`                           |
 | `maxWidth`                     | `max-width`                       |                                                                           | `string`  | `'100%'`                      |
 | `overflow`                     | `overflow`                        |                                                                           | `string`  | `'auto'`                      |
 | `padding`                      | `padding`                         |                                                                           | `string`  | `'clamp(20px, 2.4vw, 40px)'`  |
@@ -48,9 +48,9 @@
 
 ## Slots
 
-| Slot             | Description |
-| ---------------- | ----------- |
-| `"[slot:inner]"` |             |
+| Slot      | Description              |
+| --------- | ------------------------ |
+| `"inner"` | Slot (between HTML tag). |
 
 
 ## Dependencies

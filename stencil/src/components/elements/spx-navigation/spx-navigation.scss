@@ -1,7 +1,7 @@
 $tag: 'spx-navigation';
 
 :host {
-  display: setVar($tag, 'display', block);
+  display: variable($tag, 'display', block);
 }
 
 $childBorder: 1px solid var(--spx-color-gray-200);
@@ -111,6 +111,10 @@ ul ul,
 
   &.item--has-child > .child {
     flex-direction: column;
+
+    &[data-popper-placement="top-start"] {
+      flex-direction: column-reverse;
+    }
 
     :host([vertical]:not([vertical='false'])) & {
       margin-top: variable($tag, 'parent-item-gap', $parentItemGap);

@@ -18,21 +18,20 @@ import Swiper, {
   Lazy,
   EffectFade,
 } from 'swiper';
-import { startsWith, fromPairs, mapKeys, camelCase } from 'lodash-es';
 import { globalComponentDidLoad } from '../../../utils/global/globalComponentDidLoad';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
 import { helperImagesOrInner } from '../../../utils/helper/helperImagesOrInner';
-import { wrap } from '../../../utils/dom/wrap';
 import { Button } from '../../../elements/Button';
-import { intersectionObserver } from '../../../utils/observer/intersectionObserver';
 import { setProperty } from '../../../utils/dom/setProperty';
+import { parse } from '../../../utils/strings/parse';
+import { helperImagesCreate } from '../../../utils/helper/helperImagesCreate';
 
 const tag = 'spx-slider';
 
 /**
  * A slider is a revolving carousel that displays photos or other types of content.
  *
- * @slot [slot:inner]
+ * @slot inner - Slot (between HTML tag).
  */
 @Component({
   tag: 'spx-slider',
@@ -91,7 +90,8 @@ export class SpxScrollspy {
   /**
    * Gets images from an ACF or Metabox field.
    *
-   * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
+   * @helper &lt;?php spx\Get::gallery($fieldName, $type; ?>
+   * @function spxGetImages
    */
   @Prop({ reflect: true }) images: string;
 
@@ -238,7 +238,7 @@ export class SpxScrollspy {
 
   @Watch('images')
   imagesChanged(newValue: string) {
-    if (newValue) this.imagesArray = JSON.parse(newValue);
+    if (newValue) this.imagesArray = parse(newValue);
   }
 
   @Watch('paginationBulletsDynamic')
@@ -265,7 +265,7 @@ export class SpxScrollspy {
   @Watch('paginationBulletsSize')
   @Watch('prevNextFilter')
   // @ts-ignore
-  watchAttributes(value, old, attribute) {
+  attributesChanged(value, old, attribute) {
     setProperty(this.el, tag, attribute, value);
   }
 
@@ -284,9 +284,6 @@ export class SpxScrollspy {
 
   componentDidLoad() {
     this.init();
-    intersectionObserver(this.el, () => {
-      this.mySwiper.update();
-    });
 
     globalComponentDidLoad({
       el: this.el,
@@ -322,59 +319,34 @@ export class SpxScrollspy {
     globalComponentWillUpdate(this.el);
   }
 
-  private createBps = () => {
-    for (
-      let att, i = 0, atts = this.el.attributes, n = atts.length;
-      i < n;
-      i++
-    ) {
-      att = atts[i];
-      if (startsWith(att.nodeName, 'bp-')) {
-        const attribute = this.el.getAttribute(att.nodeName);
-        const array = attribute.split(';');
-        const pairsArray = [];
-        array.forEach((item) => {
-          pairsArray.push(item.replace(/ /g, '').replace(/"/g, '').split(':'));
-        });
-        const finalArray = fromPairs(pairsArray);
-        const camelCaseArray = mapKeys(finalArray, function (_value, key) {
-          return camelCase(key);
-        });
-        const breakpoint = att.nodeName.split('-')[1];
-        return { [breakpoint]: camelCaseArray };
-      }
-    }
-  };
-
   private init = () => {
-    this.container.querySelectorAll(':scope > *').forEach((item) => {
-      const div = document.createElement('div');
-      div.classList.add('swiper-slide');
-      wrap(item, div);
-      if (this.lazy) {
-        div.querySelector('img').classList.add('swiper-lazy');
-      }
+    helperImagesCreate({
+      images: this.images,
+      el: this.el,
+      container: this.container,
+      lazy: this.lazy,
+      cb: () => {
+        Swiper.use([
+          Autoplay,
+          Navigation,
+          Pagination,
+          A11y,
+          Thumbs,
+          Lazy,
+          EffectFade,
+        ]);
+
+        this.mySwiper = new Swiper(this.swiperContainer, {
+          init: false,
+        });
+        this.setParams();
+        this.mySwiper.init();
+
+        if (this.start) {
+          this.mySwiper.slideTo(this.start, 0);
+        }
+      },
     });
-
-    Swiper.use([
-      Autoplay,
-      Navigation,
-      Pagination,
-      A11y,
-      Thumbs,
-      Lazy,
-      EffectFade,
-    ]);
-
-    this.mySwiper = new Swiper(this.swiperContainer, {
-      init: false,
-    });
-    this.setParams();
-    this.mySwiper.init();
-
-    if (this.start) {
-      this.mySwiper.slideTo(this.start, 0);
-    }
   };
 
   private setParams = () => {
@@ -400,7 +372,6 @@ export class SpxScrollspy {
               },
             }
           : false,
-        breakpoints: this.createBps(),
         centeredSlides: this.centeredSlides,
         direction: 'horizontal',
         effect: this.effect as 'slide' | 'fade',
@@ -449,8 +420,9 @@ export class SpxScrollspy {
   };
 
   private update = () => {
-    this.mySwiper.destroy();
-    this.container.innerHTML = this.el.innerHTML;
+    this.mySwiper?.destroy();
+    this.container.innerHTML = '';
+
     this.init();
   };
 
@@ -464,7 +436,6 @@ export class SpxScrollspy {
           {helperImagesOrInner({
             class: 'swiper-wrapper',
             condition: this.images,
-            content: this.el.innerHTML,
             el: this.el,
             ref: (el) => (this.container = el as HTMLElement),
             helper: {

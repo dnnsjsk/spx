@@ -16,7 +16,7 @@ import { getDoc } from '../../../utils/dom/getDoc';
  * Automatically add CSS classes to navigation items
  * and content elements depending on the scroll position.
  *
- * @slot [slot:inner]
+ * @slot inner - Slot (between HTML tag).
  */
 @Component({
   tag: 'spx-scrollspy',

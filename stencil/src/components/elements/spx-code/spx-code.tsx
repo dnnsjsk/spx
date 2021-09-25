@@ -30,7 +30,7 @@ const tag = 'spx-code';
 /**
  * Highlight a block of code similar to a code editor.
  *
- * @slot [slot:inner]
+ * @slot inner - Slot (between HTML tag).
  */
 @Component({
   tag: 'spx-code',
@@ -110,7 +110,7 @@ export class SpxCode {
     'var(--spx-color-gray-400)';
 
   /** Start of line number. */
-  @Prop({ reflect: true }) lineNumbersStart: number;
+  @Prop({ reflect: true }) lineNumbersStart: number = 1;
 
   /** @css */
   @Prop({ reflect: true }) maxWidth: string = '100%';
@@ -164,11 +164,12 @@ export class SpxCode {
   @Watch('height')
   @Watch('lineNumbersBackground')
   @Watch('lineNumbersColor')
+  @Watch('lineNumbersStart')
   @Watch('maxWidth')
   @Watch('overflow')
   @Watch('padding')
   // @ts-ignore
-  watchAttributes(value, old, attribute) {
+  attributesChanged(value, old, attribute) {
     setProperty(this.el, tag, attribute, value);
   }
 
@@ -179,10 +180,12 @@ export class SpxCode {
 
   @Listen('resize', { target: 'window' })
   onResize() {
-    this.el.style.setProperty(
-      '--spx-code-internal-height',
-      this.el.shadowRoot.querySelector('pre').scrollHeight + 'px'
-    );
+    if (this.height === '100%') {
+      this.el.style.setProperty(
+        '--spx-code-internal-height',
+        this.el.shadowRoot.querySelector('pre').scrollHeight + 'px'
+      );
+    }
   }
 
   componentWillLoad() {
@@ -215,6 +218,7 @@ export class SpxCode {
         'height',
         'lineNumbersBackground',
         'lineNumbersColor',
+        'lineNumbersStart',
         'maxWidth',
         'overflow',
         'padding',

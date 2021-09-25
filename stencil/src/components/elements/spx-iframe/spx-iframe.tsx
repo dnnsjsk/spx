@@ -75,7 +75,7 @@ export class SpxIframe {
   @Watch('loaderPadding')
   @Watch('minHeight')
   // @ts-ignore
-  watchAttributes(value, old, attribute) {
+  attributesChanged(value, old, attribute) {
     setProperty(this.el, tag, attribute, value);
   }
 

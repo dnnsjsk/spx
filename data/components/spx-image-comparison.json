@@ -1,7 +1,6 @@
 {
   "name": "spx-image-comparison",
   "description": "Compare two images visually using a slider. Handy for showing subtle (or not\nso subtle) before/after differences.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "active",
@@ -24,7 +23,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-image-comparison-color"
     },
     {
       "attribute": "height",
@@ -38,7 +38,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-image-comparison-height"
     },
     {
       "attribute": "icon-color",
@@ -52,7 +53,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-image-comparison-icon-color"
     },
     {
       "attribute": "lazy",

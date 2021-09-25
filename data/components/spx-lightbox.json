@@ -1,7 +1,6 @@
 {
   "name": "spx-lightbox",
   "description": "Creates a lightbox for images.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "body-overflow",
@@ -30,8 +29,13 @@
       "id": "spx-lightbox-2",
       "index": 2,
       "name": "closeButtonColor",
-      "tags": [],
-      "type": "string"
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string",
+      "variable": "--spx-lightbox-close-button-color"
     },
     {
       "attribute": "overlay-backdrop-filter",
@@ -40,8 +44,13 @@
       "id": "spx-lightbox-3",
       "index": 3,
       "name": "overlayBackdropFilter",
-      "tags": [],
-      "type": "string"
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string",
+      "variable": "--spx-lightbox-overlay-backdrop-filter"
     },
     {
       "attribute": "overlay-background",
@@ -50,8 +59,13 @@
       "id": "spx-lightbox-4",
       "index": 4,
       "name": "overlayBackground",
-      "tags": [],
-      "type": "string"
+      "tags": [
+        {
+          "name": "css"
+        }
+      ],
+      "type": "string",
+      "variable": "--spx-lightbox-overlay-background"
     },
     {
       "attribute": "spx-slider",

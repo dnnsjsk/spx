@@ -1,7 +1,6 @@
 {
   "name": "spx-group",
   "description": "Pass attributes to all inner (spx) child elements.\nAll attributes that start with g-* will be passed on to child elements.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "content",
@@ -31,8 +30,8 @@
   "methods": [],
   "slots": [
     {
-      "name": "inner - Slot (between HTML tags).",
-      "description": ""
+      "name": "inner",
+      "description": "Slot (between HTML tag)."
     }
   ]
 }

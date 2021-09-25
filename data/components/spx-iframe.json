@@ -1,7 +1,6 @@
 {
   "name": "spx-iframe",
   "description": "A wrapper around a standard iframe element, which scales proportionally to\nits parent. Great for showing desktop versions of a website on smaller\nscreens or viewports.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "fit",
@@ -33,7 +32,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-iframe-loader-background"
     },
     {
       "attribute": "loader-border-radius",
@@ -47,7 +47,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-iframe-loader-border-radius"
     },
     {
       "attribute": "loader-color",
@@ -61,7 +62,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-iframe-loader-color"
     },
     {
       "attribute": "loader-padding",
@@ -75,7 +77,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-iframe-loader-padding"
     },
     {
       "attribute": "min-height",
@@ -89,7 +92,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-iframe-min-height"
     },
     {
       "attribute": "size",

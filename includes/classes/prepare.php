@@ -10,9 +10,15 @@ namespace spx;
  */
 class Prepare {
 
-	public static function JSON( $data ) {
+	public static function JSON( $data, $encode = FALSE ) {
 
-		echo htmlspecialchars( json_encode( $data ), ENT_QUOTES, 'UTF-8' );
+		$string = htmlspecialchars( json_encode( $data ), ENT_QUOTES, 'UTF-8' );
+
+		if ( $encode ) {
+			return base64_encode( $string );
+		} else {
+			echo $string;
+		}
 
 	}
 

@@ -1,16 +1,15 @@
 {
   "name": "spx-animate",
   "description": "Wrapper around GSAP that allows for staggered and scroll-based animation.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "auto-alpha",
-      "description": "Set visibility of animated element to 'inherit' after animating it in.",
+      "description": "Same as opacity but sets visibility to 'hidden' after hitting 0.",
       "id": "spx-animate-0",
       "index": 0,
       "name": "autoAlpha",
       "tags": [],
-      "type": "string"
+      "type": "number"
     },
     {
       "attribute": "clip-path",
@@ -71,7 +70,6 @@
     },
     {
       "attribute": "opacity",
-      "default": "0",
       "description": "Opacity level the animation starts from.",
       "id": "spx-animate-7",
       "index": 7,
@@ -136,47 +134,31 @@
       "type": "boolean"
     },
     {
-      "attribute": "viewport-margin-bottom",
-      "description": "Adjust the root margin of the animation start.",
+      "attribute": "viewport-root-margin",
+      "default": "0px",
+      "description": "Scroll intersection observer root margin.",
       "id": "spx-animate-14",
       "index": 14,
-      "name": "viewportMarginBottom",
+      "name": "viewportRootMargin",
       "tags": [],
       "type": "string"
     },
     {
-      "attribute": "viewport-margin-left",
-      "description": "Adjust the root margin of the animation start.",
+      "attribute": "viewport-threshold",
+      "default": "0",
+      "description": "Scroll intersection observer threshold.",
       "id": "spx-animate-15",
       "index": 15,
-      "name": "viewportMarginLeft",
+      "name": "viewportThreshold",
       "tags": [],
-      "type": "string"
-    },
-    {
-      "attribute": "viewport-margin-right",
-      "description": "Adjust the root margin of the animation start.",
-      "id": "spx-animate-16",
-      "index": 16,
-      "name": "viewportMarginRight",
-      "tags": [],
-      "type": "string"
-    },
-    {
-      "attribute": "viewport-margin-top",
-      "description": "Adjust the root margin of the animation start.",
-      "id": "spx-animate-17",
-      "index": 17,
-      "name": "viewportMarginTop",
-      "tags": [],
-      "type": "string"
+      "type": "number"
     },
     {
       "attribute": "x",
       "default": "0",
       "description": "X position the animation starts from.",
-      "id": "spx-animate-18",
-      "index": 18,
+      "id": "spx-animate-16",
+      "index": 16,
       "name": "x",
       "tags": [],
       "type": "any"
@@ -185,8 +167,8 @@
       "attribute": "y",
       "default": "0",
       "description": "Y position the animation starts from.",
-      "id": "spx-animate-19",
-      "index": 19,
+      "id": "spx-animate-17",
+      "index": 17,
       "name": "y",
       "tags": [],
       "type": "any"
@@ -194,8 +176,8 @@
     {
       "attribute": "yoyo",
       "description": "Causes the animation to go back and forth, alternating backward and forward on each repeat.",
-      "id": "spx-animate-20",
-      "index": 20,
+      "id": "spx-animate-18",
+      "index": 18,
       "name": "yoyo",
       "tags": [],
       "type": "boolean"
@@ -221,8 +203,8 @@
   ],
   "slots": [
     {
-      "name": "inner - Slot (between HTML tags).",
-      "description": ""
+      "name": "inner",
+      "description": "Slot (between HTML tag)."
     }
   ]
 }

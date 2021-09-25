@@ -153,9 +153,9 @@ export namespace Components {
     }
     interface SpxAnimate {
         /**
-          * Set visibility of animated element to 'inherit' after animating it in.
+          * Same as opacity but sets visibility to 'hidden' after hitting 0.
          */
-        "autoAlpha": string;
+        "autoAlpha": number;
         /**
           * Clip-path value the animation starts from.
          */
@@ -221,21 +221,13 @@ export namespace Components {
          */
         "viewport": boolean;
         /**
-          * Adjust the root margin of the animation start.
+          * Scroll intersection observer root margin.
          */
-        "viewportMarginBottom": string;
+        "viewportRootMargin": string;
         /**
-          * Adjust the root margin of the animation start.
+          * Scroll intersection observer threshold.
          */
-        "viewportMarginLeft": string;
-        /**
-          * Adjust the root margin of the animation start.
-         */
-        "viewportMarginRight": string;
-        /**
-          * Adjust the root margin of the animation start.
-         */
-        "viewportMarginTop": string;
+        "viewportThreshold": number;
         /**
           * X position the animation starts from.
          */
@@ -664,8 +656,17 @@ export namespace Components {
           * Show close button.
          */
         "closeButton": boolean;
+        /**
+          * @css
+         */
         "closeButtonColor": string;
+        /**
+          * @css
+         */
         "overlayBackdropFilter": string;
+        /**
+          * @css
+         */
         "overlayBackground": string;
         /**
           * [component:spx-slider]
@@ -677,10 +678,6 @@ export namespace Components {
         "target": string;
     }
     interface SpxMasonry {
-        /**
-          * Columns for different screen sizes. Example value: 1000:3;600:2 - this will switch to a three column layout when the screen size is under 1000px and to a two column layout under 600px.
-         */
-        "bpColumns": string;
         /**
           * Number of columns.
          */
@@ -701,7 +698,8 @@ export namespace Components {
         "imageSrc": string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\Get::images($fieldName, $type) ?>
+          * @helper &lt;?php spx\Get::images($fieldName, $type; ?>
+          * @function spxGetImages
          */
         "images": string;
         /**
@@ -846,6 +844,7 @@ export namespace Components {
         /**
           * Renders a WordPress menu.
           * @helper &lt;?php spx\Get::navigation("myMenu") ?>
+          * @function spxGetNavigation
          */
         "menu": string;
         /**
@@ -1149,7 +1148,8 @@ export namespace Components {
         "imageSrc": string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
+          * @helper &lt;?php spx\Get::gallery($fieldName, $type; ?>
+          * @function spxGetImages
          */
         "images": string;
         /**
@@ -1308,7 +1308,7 @@ export namespace Components {
          */
         "height": string;
         /**
-          * WordPress media size when using the helper function..
+          * WordPress media size when using the helper function.
          */
         "imageSize": string;
         /**
@@ -1318,7 +1318,8 @@ export namespace Components {
         "imageSrc": string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+          * @helper &lt;?php spx\get::gallery($fieldName, $type; ?>
+          * @function spxGetImages
          */
         "images": string;
         /**
@@ -1347,6 +1348,10 @@ export namespace Components {
           * Space between text and path.
          */
         "gap": string;
+        /**
+          * Image src.
+         */
+        "src": string;
         /**
           * Starting offset off the text.
          */
@@ -1387,6 +1392,10 @@ export namespace Components {
           * Delete delay in ms. Also accepts 'natural' value.
          */
         "deleteSpeed": any;
+        /**
+          * Delimiter to use if multiple sentences are going ot be used.
+         */
+        "delimiter": any;
         /**
           * Loops the animation.
          */
@@ -1801,9 +1810,9 @@ declare namespace LocalJSX {
     }
     interface SpxAnimate {
         /**
-          * Set visibility of animated element to 'inherit' after animating it in.
+          * Same as opacity but sets visibility to 'hidden' after hitting 0.
          */
-        "autoAlpha"?: string;
+        "autoAlpha"?: number;
         /**
           * Clip-path value the animation starts from.
          */
@@ -1861,21 +1870,13 @@ declare namespace LocalJSX {
          */
         "viewport"?: boolean;
         /**
-          * Adjust the root margin of the animation start.
+          * Scroll intersection observer root margin.
          */
-        "viewportMarginBottom"?: string;
+        "viewportRootMargin"?: string;
         /**
-          * Adjust the root margin of the animation start.
+          * Scroll intersection observer threshold.
          */
-        "viewportMarginLeft"?: string;
-        /**
-          * Adjust the root margin of the animation start.
-         */
-        "viewportMarginRight"?: string;
-        /**
-          * Adjust the root margin of the animation start.
-         */
-        "viewportMarginTop"?: string;
+        "viewportThreshold"?: number;
         /**
           * X position the animation starts from.
          */
@@ -2328,12 +2329,21 @@ declare namespace LocalJSX {
           * Show close button.
          */
         "closeButton"?: boolean;
+        /**
+          * @css
+         */
         "closeButtonColor"?: string;
         /**
           * [event:loaded]
          */
         "onSpxLightboxDidLoad"?: (event: CustomEvent<any>) => void;
+        /**
+          * @css
+         */
         "overlayBackdropFilter"?: string;
+        /**
+          * @css
+         */
         "overlayBackground"?: string;
         /**
           * [component:spx-slider]
@@ -2345,10 +2355,6 @@ declare namespace LocalJSX {
         "target"?: string;
     }
     interface SpxMasonry {
-        /**
-          * Columns for different screen sizes. Example value: 1000:3;600:2 - this will switch to a three column layout when the screen size is under 1000px and to a two column layout under 600px.
-         */
-        "bpColumns"?: string;
         /**
           * Number of columns.
          */
@@ -2369,7 +2375,8 @@ declare namespace LocalJSX {
         "imageSrc"?: string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\Get::images($fieldName, $type) ?>
+          * @helper &lt;?php spx\Get::images($fieldName, $type; ?>
+          * @function spxGetImages
          */
         "images"?: string;
         /**
@@ -2522,6 +2529,7 @@ declare namespace LocalJSX {
         /**
           * Renders a WordPress menu.
           * @helper &lt;?php spx\Get::navigation("myMenu") ?>
+          * @function spxGetNavigation
          */
         "menu"?: string;
         /**
@@ -2825,7 +2833,8 @@ declare namespace LocalJSX {
         "imageSrc"?: string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\Get::gallery($fieldName, $type) ?>
+          * @helper &lt;?php spx\Get::gallery($fieldName, $type; ?>
+          * @function spxGetImages
          */
         "images"?: string;
         /**
@@ -2988,7 +2997,7 @@ declare namespace LocalJSX {
          */
         "height"?: string;
         /**
-          * WordPress media size when using the helper function..
+          * WordPress media size when using the helper function.
          */
         "imageSize"?: string;
         /**
@@ -2998,7 +3007,8 @@ declare namespace LocalJSX {
         "imageSrc"?: string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+          * @helper &lt;?php spx\get::gallery($fieldName, $type; ?>
+          * @function spxGetImages
          */
         "images"?: string;
         /**
@@ -3040,6 +3050,10 @@ declare namespace LocalJSX {
          */
         "onSpxTextPathDidLoad"?: (event: CustomEvent<any>) => void;
         /**
+          * Image src.
+         */
+        "src"?: string;
+        /**
           * Starting offset off the text.
          */
         "startOffset"?: string;
@@ -3079,6 +3093,10 @@ declare namespace LocalJSX {
           * Delete delay in ms. Also accepts 'natural' value.
          */
         "deleteSpeed"?: any;
+        /**
+          * Delimiter to use if multiple sentences are going ot be used.
+         */
+        "delimiter"?: any;
         /**
           * Loops the animation.
          */

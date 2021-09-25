@@ -1,0 +1,25 @@
+$tag: 'spx-edit';
+
+$outline: 2px solid red;
+$outlineFocus: blue;
+$placeholderColor: inherit;
+$placeholderOpacity: 0.7;
+
+:host {
+  display: variable($tag, 'display', inline-block);
+}
+
+.inner[contenteditable] {
+  outline: variable($tag, 'outline', $outline);
+  cursor: text;
+
+  &:focus {
+    outline-color: variable($tag, 'outline-focus', $outlineFocus);
+  }
+
+  &:empty:before {
+    content: attr(data-placeholder);
+    color: variable($tag, 'placeholder-color', $placeholderColor);
+    opacity: variable($tag, 'placeholder-opacity', $placeholderOpacity);
+  }
+}

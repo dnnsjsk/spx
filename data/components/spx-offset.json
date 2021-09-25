@@ -1,7 +1,6 @@
 {
   "name": "spx-offset",
   "description": "The component offsets itself to the height of a specified element. It comes\nin handy when dealing with a fixed header and is used on this site. Simply\nwrap your main content container with it and select a target element. The\ndistance will adjust on screen resize.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "target",
@@ -39,8 +38,8 @@
   ],
   "slots": [
     {
-      "name": "inner - Slot (between HTML tags).",
-      "description": ""
+      "name": "inner",
+      "description": "Slot (between HTML tag)."
     }
   ]
 }

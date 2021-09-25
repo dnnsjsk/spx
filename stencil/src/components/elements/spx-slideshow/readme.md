@@ -10,7 +10,7 @@
 | `duration`  | `duration`   | Duration of slideshow to complete one cycle.                                  | `string`  | `'60s'`     |
 | `gap`       | `gap`        | Gap between inner elements.                                                   | `string`  | `'1em'`     |
 | `height`    | `height`     |                                                                               | `string`  | `undefined` |
-| `imageSize` | `image-size` | WordPress media size when using the helper function..                         | `string`  | `undefined` |
+| `imageSize` | `image-size` | WordPress media size when using the helper function.                          | `string`  | `undefined` |
 | `imageSrc`  | `image-src`  | Gets images from an ACF or Metabox field.                                     | `string`  | `undefined` |
 | `images`    | `images`     | Gets images from an ACF or Metabox field.                                     | `string`  | `undefined` |
 | `lazy`      | `lazy`       | Lazy load images.                                                             | `boolean` | `undefined` |
@@ -28,9 +28,9 @@
 
 ## Slots
 
-| Slot             | Description |
-| ---------------- | ----------- |
-| `"[slot:inner]"` |             |
+| Slot      | Description              |
+| --------- | ------------------------ |
+| `"inner"` | Slot (between HTML tag). |
 
 
 ----------------------------------------------

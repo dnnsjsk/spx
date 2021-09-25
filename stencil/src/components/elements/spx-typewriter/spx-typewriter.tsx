@@ -16,7 +16,7 @@ import { globalComponentWillUpdate } from '../../../utils/global/globalComponent
 /**
  * Animates text like it is being written on a typewriter.
  *
- * @slot [slot:inner]
+ * @slot inner - Slot (between HTML tag).
  */
 @Component({
   tag: 'spx-typewriter',
@@ -38,6 +38,9 @@ export class SpxTypewriter {
   /** Delete delay in ms. Also accepts 'natural' value. */
   @Prop({ reflect: true }) deleteSpeed: any = 'natural';
 
+  /** Delimiter to use if multiple sentences are going ot be used. */
+  @Prop({ reflect: true }) delimiter;
+
   /** Loops the animation. */
   @Prop({ reflect: true }) loop: boolean;
 
@@ -55,14 +58,7 @@ export class SpxTypewriter {
       this.el.shadowRoot.querySelector('div');
 
     this.typewriter = new Typewriter(el, {
-      strings:
-        this.text[0] === '['
-          ? this.text
-              .replaceAll("['", '')
-              .replaceAll("']", '')
-              .replaceAll(" '", '')
-              .split("',")
-          : this.text,
+      strings: this.delimiter ? this.text.split(this.delimiter) : this.text,
       delay: this.delay,
       deleteSpeed: this.deleteSpeed,
       loop: this.loop,

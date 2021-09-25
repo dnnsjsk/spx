@@ -178,7 +178,7 @@ export class SpxEditorControls {
           }}
           class="controls"
         >
-          <spx-control-group>
+          <spx-control-group tabindex="-1" style={{ outline: 'none' }}>
             {this.getControls(state.activeControlObject)}
           </spx-control-group>
         </div>

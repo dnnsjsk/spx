@@ -1,7 +1,6 @@
 {
   "name": "spx-navigation",
   "description": "Render a complete WordPress menu with nested submenus and automatic positioning.",
-  "shadow": true,
   "properties": [
     {
       "attribute": "child-border",
@@ -15,7 +14,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-child-border"
     },
     {
       "attribute": "child-border-radius",
@@ -29,7 +29,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-child-border-radius"
     },
     {
       "attribute": "child-box-shadow",
@@ -43,7 +44,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-child-box-shadow"
     },
     {
       "attribute": "child-child-gap",
@@ -57,7 +59,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-child-child-gap"
     },
     {
       "attribute": "child-gap",
@@ -71,7 +74,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-child-gap"
     },
     {
       "attribute": "child-icon",
@@ -105,7 +109,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-child-indicator-gap"
     },
     {
       "attribute": "child-item-background",
@@ -119,7 +124,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-child-item-background"
     },
     {
       "attribute": "child-item-background-hover",
@@ -133,7 +139,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-child-item-background-hover"
     },
     {
       "attribute": "child-item-color",
@@ -147,7 +154,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-child-item-color"
     },
     {
       "attribute": "child-item-color-hover",
@@ -161,7 +169,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-child-item-color-hover"
     },
     {
       "attribute": "child-item-padding",
@@ -175,7 +184,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-child-item-padding"
     },
     {
       "attribute": "child-placement",
@@ -193,7 +203,8 @@
           "name": "choice"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-child-placement"
     },
     {
       "attribute": "font-size",
@@ -207,7 +218,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-font-size"
     },
     {
       "attribute": "is-mobile",
@@ -246,6 +258,10 @@
         {
           "text": "&lt;?php spx\\Get::navigation(\"myMenu\") ?>",
           "name": "helper"
+        },
+        {
+          "text": "spxGetNavigation",
+          "name": "function"
         }
       ],
       "type": "string"
@@ -291,7 +307,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-mobile-item-background"
     },
     {
       "attribute": "mobile-item-background-hover",
@@ -305,7 +322,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-mobile-item-background-hover"
     },
     {
       "attribute": "mobile-item-color",
@@ -319,7 +337,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-mobile-item-color"
     },
     {
       "attribute": "mobile-item-color-hover",
@@ -333,7 +352,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-mobile-item-color-hover"
     },
     {
       "attribute": "mobile-item-nested-margin-left",
@@ -347,7 +367,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-mobile-item-nested-margin-left"
     },
     {
       "attribute": "mobile-item-padding",
@@ -361,7 +382,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-mobile-item-padding"
     },
     {
       "attribute": "mobile-placement",
@@ -390,7 +412,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-parent-item-background"
     },
     {
       "attribute": "parent-item-background-hover",
@@ -404,7 +427,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-parent-item-background-hover"
     },
     {
       "attribute": "parent-item-color",
@@ -418,7 +442,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-parent-item-color"
     },
     {
       "attribute": "parent-item-color-hover",
@@ -432,7 +457,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-parent-item-color-hover"
     },
     {
       "attribute": "parent-item-gap",
@@ -446,7 +472,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-parent-item-gap"
     },
     {
       "attribute": "parent-item-padding",
@@ -460,7 +487,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-navigation-parent-item-padding"
     },
     {
       "attribute": "vertical",

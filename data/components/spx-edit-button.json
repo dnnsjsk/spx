@@ -1,7 +1,6 @@
 {
   "name": "spx-edit-button",
   "description": "Let users edit content from the frontend of the site.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "background",
@@ -25,7 +24,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-edit-button-background-discard"
     },
     {
       "attribute": "border",
@@ -116,7 +116,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-edit-button-color-discard"
     },
     {
       "attribute": "edit-id",
@@ -169,7 +170,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-edit-button-gap"
     },
     {
       "attribute": "left",

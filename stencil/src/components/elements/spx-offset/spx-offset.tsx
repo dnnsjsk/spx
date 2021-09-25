@@ -19,7 +19,7 @@ import { globalComponentWillUpdate } from '../../../utils/global/globalComponent
  * wrap your main content container with it and select a target element. The
  * distance will adjust on screen resize.
  *
- * @slot [slot:inner]
+ * @slot inner - Slot (between HTML tag).
  */
 @Component({
   tag: 'spx-offset',

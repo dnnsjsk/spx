@@ -6,17 +6,9 @@ $textFontSize: clamp(20px, 3vw, 24px);
 $textTransform: default;
 
 :host {
-  display: setVar($tag, 'display', block);
-}
-
-.slot {
   height: 100%;
   width: 100%;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  clip-path: path('M250, 400 a150, 150 0 0, 1 0, -300a150, 150 0 0, 1 0, 300z');
+  display: variable($tag, 'display', block);
 }
 
 .text-path {

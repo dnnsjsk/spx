@@ -1,5 +1,5 @@
 $tag: 'spx-lightbox';
 
 :host {
-  display: setVar($tag, 'display', block);
+  display: variable($tag, 'display', block);
 }

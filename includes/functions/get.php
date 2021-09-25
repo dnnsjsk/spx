@@ -10,10 +10,30 @@ use spx\Get;
  *
  * @param $field
  * @param $type
+ * @param string $id
+ * @param bool $encode
  *
+ * @return string|void
  */
-function spxGetGallery( $field, $type ) {
-	Get::gallery( $field, $type );
+function spxGetGallery( $field, $type, string $id = '', bool $encode = false ) {
+	return Get::gallery( $field, $type, $id, $encode );
+}
+
+/**
+ * Get images.
+ *
+ * @date    22/09/2021
+ * @since   4.0.0
+ *
+ * @param $field
+ * @param $type
+ * @param string $id
+ * @param bool $encode
+ *
+ * @return string|void
+ */
+function spxGetImages( $field, $type, string $id = '', bool $encode = false ) {
+	return Get::images( $field, $type, $id, $encode );
 }
 
 /**
@@ -22,9 +42,11 @@ function spxGetGallery( $field, $type ) {
  * @date    28/07/2020
  * @since   1.0.0
  *
- * @param $name
+ * @param      $name
+ * @param bool $encode
  *
+ * @return string|void
  */
-function spxGetNavigation( $name ) {
-	Get::navigation( $name );
+function spxGetNavigation( $name, bool $encode = FALSE ) {
+	return Get::navigation( $name, $encode );
 }

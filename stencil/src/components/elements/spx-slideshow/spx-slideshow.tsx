@@ -17,13 +17,15 @@ import { lazy } from '../../../utils/3rd/lazy';
 import { setProperty } from '../../../utils/dom/setProperty';
 import { twind } from '../../../utils/3rd/twind';
 import { keyframes } from 'twind/css';
+import { parse } from '../../../utils/strings/parse';
+import { helperImagesCreate } from '../../../utils/helper/helperImagesCreate';
 
 const tag = 'spx-slideshow';
 
 /**
  * Continuously playing slideshow.
  *
- * @slot [slot:inner]
+ * @slot inner - Slot (between HTML tag).
  */
 @Component({
   tag: 'spx-slideshow',
@@ -58,14 +60,15 @@ export class SpxSlideshow {
   /**
    * Gets images from an ACF or Metabox field.
    *
-   * @helper &lt;?php spx\get::gallery($fieldName, $type) ?>
+   * @helper &lt;?php spx\get::gallery($fieldName, $type; ?>
+   * @function spxGetImages
    */
   @Prop({ reflect: true }) images: string;
 
   /** @css */
   @Prop({ reflect: true }) height: string;
 
-  /** WordPress media size when using the helper function.. */
+  /** WordPress media size when using the helper function. */
   @Prop({ reflect: true }) imageSize: string;
 
   /**
@@ -97,7 +100,7 @@ export class SpxSlideshow {
 
   @Watch('images')
   imagesChanged(newValue: string) {
-    if (newValue) this.imagesArray = JSON.parse(newValue);
+    if (newValue) this.imagesArray = parse(newValue);
   }
 
   @Watch('duration')
@@ -107,7 +110,7 @@ export class SpxSlideshow {
   @Watch('objectFit')
   @Watch('overflow')
   // @ts-ignore
-  watchAttributes(value, old, attribute) {
+  attributesChanged(value, old, attribute) {
     setProperty(this.el, tag, attribute, value);
   }
 
@@ -148,16 +151,23 @@ export class SpxSlideshow {
   }
 
   private init = () => {
-    this.container.querySelectorAll(':scope > *').forEach((item) => {
-      const clone = item.cloneNode(true);
-      this.clone.appendChild(clone);
+    helperImagesCreate({
+      images: this.images,
+      el: this.el,
+      container: this.container,
+      cb: () => {
+        this.container.querySelectorAll(':scope > *').forEach((item) => {
+          const clone = item.cloneNode(true);
+          this.clone.appendChild(clone);
+        });
+      },
     });
 
     this.offsetWidth = this.container.offsetWidth;
   };
 
   private update = () => {
-    this.container.innerHTML = this.el.innerHTML;
+    this.container.innerHTML = '';
     this.clone.innerHTML = '';
     this.init();
     lazy({

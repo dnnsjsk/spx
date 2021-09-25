@@ -6,51 +6,38 @@
  * @date    28/07/2020
  * @since   1.0.0
  */
-function spxEditButtonAjaxHandler() {
-	if ( current_user_can( 'manage_options' ) ) {
+function spxEditButtonAjaxHandlerGetString( $value, $type ): string {
+	return trim( wp_kses( htmlspecialchars( str_replace( $_POST['nonce'] . $type, '', $value ), ENT_QUOTES, 'UTF-8' ), FALSE ) );
+}
 
-		/**
-		 * Get post ID.
-		 */
+function spxEditButtonAjaxHandler() {
+	if ( wp_verify_nonce( $_POST['nonce'], 'ajax-nonce' ) ) {
 		$post_id = $_POST['post_id'];
 
 		foreach ( $_POST as $key => $value ) {
 
-			if ( strpos( $value, 'eF3ztPlKSglSF2g7uPUIs8fGWQnkeHqnacf' ) !== FALSE ) {
-				update_field( $key,
-					htmlspecialchars( str_replace( 'eF3ztPlKSglSF2g7uPUIs8fGWQnkeHqnacf', '', $value ), ENT_QUOTES, 'UTF-8' ), $post_id );
+			if ( strpos( $value, $_POST['nonce'] . 'acf' ) !== FALSE ) {
+				update_field( $key, spxEditButtonAjaxHandlerGetString( $value, 'acf' ), $post_id );
 			}
 
-			if ( strpos( $value, 'eF3ztPlKSglSF2g7uPUIs8fGWQnkeHqnoption' ) !== FALSE ) {
-				update_option( $key,
-					htmlspecialchars( str_replace( 'eF3ztPlKSglSF2g7uPUIs8fGWQnkeHqnoption', '', $value ), ENT_QUOTES, 'UTF-8' ) );
+			if ( strpos( $value, $_POST['nonce'] . 'option' ) !== FALSE ) {
+				update_option( $key, spxEditButtonAjaxHandlerGetString( $value, 'option' ) );
 			}
 
-			if ( strpos( $value, 'eF3ztPlKSglSF2g7uPUIs8fGWQnkeHqnparentacf' ) !== FALSE ) {
+			if ( strpos( $value, $_POST['nonce'] . 'parentacf' ) !== FALSE ) {
 
 				$string = str_replace( ',_', ",", $key );
 				$array  = explode( ',', $string );
 
-				echo json_encode( $array );
-
-				update_sub_field( $array,
-					htmlspecialchars( str_replace( 'eF3ztPlKSglSF2g7uPUIs8fGWQnkeHqnparentacf', '', $value ), ENT_QUOTES, 'UTF-8' ), $post_id );
+				update_sub_field( $array, spxEditButtonAjaxHandlerGetString( $value, 'parentacf' ), $post_id );
 			}
 		}
-
-		/**
-		 * Create hook.
-		 */
 		do_action( 'spxEditButtonAjax' );
 
-		die();
-	} else {
-		die();
 	}
+	die ();
 }
 
 add_action( 'plugins_loaded', function () {
-	if ( current_user_can( 'manage_options' ) ) {
-		add_action( 'wp_ajax_spxEditButtonAjaxHandler', 'spxEditButtonAjaxHandler' );
-	}
+	add_action( 'wp_ajax_spxEditButtonAjaxHandler', 'spxEditButtonAjaxHandler' );
 } );

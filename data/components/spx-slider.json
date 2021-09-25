@@ -1,7 +1,6 @@
 {
   "name": "spx-slider",
   "description": "A slider is a revolving carousel that displays photos or other types of content.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "autoheight",
@@ -125,8 +124,12 @@
       "name": "images",
       "tags": [
         {
-          "text": "&lt;?php spx\\Get::gallery($fieldName, $type) ?>",
+          "text": "&lt;?php spx\\Get::gallery($fieldName, $type; ?>",
           "name": "helper"
+        },
+        {
+          "text": "spxGetImages",
+          "name": "function"
         }
       ],
       "type": "string"
@@ -169,7 +172,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-max-height"
     },
     {
       "attribute": "navigation",
@@ -193,7 +197,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-navigation-backdrop-filter"
     },
     {
       "attribute": "navigation-background",
@@ -207,7 +212,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-navigation-background"
     },
     {
       "attribute": "navigation-background-hover",
@@ -221,7 +227,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-navigation-background-hover"
     },
     {
       "attribute": "navigation-border-radius",
@@ -235,7 +242,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-navigation-border-radius"
     },
     {
       "attribute": "navigation-color",
@@ -249,7 +257,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-navigation-color"
     },
     {
       "attribute": "navigation-distance-x",
@@ -263,7 +272,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-navigation-distance-x"
     },
     {
       "attribute": "navigation-icon-next",
@@ -307,7 +317,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-navigation-padding"
     },
     {
       "attribute": "navigation-size",
@@ -321,7 +332,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-navigation-size"
     },
     {
       "attribute": "pagination",
@@ -350,7 +362,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-pagination-backdrop-filter"
     },
     {
       "attribute": "pagination-background",
@@ -364,7 +377,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-pagination-background"
     },
     {
       "attribute": "pagination-bullets-background",
@@ -378,7 +392,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-pagination-bullets-background"
     },
     {
       "attribute": "pagination-bullets-background-active",
@@ -392,7 +407,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-pagination-bullets-background-active"
     },
     {
       "attribute": "pagination-bullets-clickable",
@@ -435,7 +451,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-pagination-bullets-gap"
     },
     {
       "attribute": "pagination-bullets-size",
@@ -449,7 +466,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-pagination-bullets-size"
     },
     {
       "attribute": "prev-next-filter",
@@ -462,7 +480,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slider-prev-next-filter"
     },
     {
       "attribute": "slide-message-first",
@@ -543,8 +562,8 @@
   "methods": [],
   "slots": [
     {
-      "name": "inner - Slot (between HTML tags).",
-      "description": ""
+      "name": "inner",
+      "description": "Slot (between HTML tag)."
     }
   ]
 }

@@ -6,6 +6,7 @@
  * @date    28/07/2020
  * @since   1.0.0
  */
+
 namespace spx;
 
 class Init {
@@ -17,6 +18,7 @@ class Init {
 		$localizeArray = [
 			'ajax'   => admin_url( 'admin-ajax.php' ),
 			'postId' => $post->ID,
+			'nonce' => wp_create_nonce( 'ajax-nonce' )
 		];
 
 		wp_enqueue_script(
@@ -73,7 +75,7 @@ class Init {
 	 */
 	private function lazyLoadAssets() {
 
-		$classes   = apply_filters( 'spx_lazyload_whitelist', [ 'oxygen-builder-body' ] );
+		$classes   = apply_filters( 'spx/lazyload_whitelist', [ 'oxygen-builder-body' ] );
 		$classesJS = implode( ',', $classes );
 
 		add_filter( 'wp_footer', function () use ( &$classesJS ) {
@@ -148,7 +150,19 @@ class Init {
 		$path  = SPX_DIR . '/data/components/';
 		$files = array_slice( scandir( $path ), 2 );
 
-		$element_array = [ 'spx-navigation', 'spx-group', 'spx-scrollspy', 'spx-snackbar' ];
+		function get_helper( $array, $key, $value ): array {
+			$results = array();
+			if ( is_array( $array ) ) {
+				if ( isset( $array[ $key ] ) && $array[ $key ] == $value ) {
+					$results[] = $array;
+				}
+				foreach ( $array as $subarray ) {
+					$results = array_merge( $results, get_helper( $subarray, $key, $value ) );
+				}
+			}
+
+			return $results;
+		}
 
 		foreach ( $files as $file ) {
 
@@ -156,38 +170,47 @@ class Init {
 
 			if ( pathinfo( $file )['extension'] === 'json' ) {
 
-				if ( ! in_array( $name, $element_array ) ) {
+				add_shortcode( $name, function ( $atts, $content = NULL ) use ( &$path, $file, $name ) {
+					$object  = json_decode( file_get_contents( $path . '/' . $file ), TRUE );
+					$array   = [];
+					$helpers = [];
 
-					add_shortcode( $name, function ( $atts, $content = NULL ) use ( &$path, $file, $name ) {
+					foreach ( $object['properties'] as $prop ) {
+						$array[ $prop['attribute'] ] = $prop['default'] ? trim( $prop['default'], '\'"' ) : '';
+						array_walk_recursive( $prop['tags'], function ( $item, $key ) use ( &$helpers, $prop ) {
+							if ( $item == 'function' ) {
+								$helpers[ $prop['attribute'] ] = get_helper( $prop['tags'], 'name', 'function' )[0]['text'];
+							}
+						} );
+					}
 
-						// Get object from .json.
-						$object = json_decode( file_get_contents( $path . '/' . $file ), TRUE );
-						$array  = [];
+					$a = shortcode_atts( $array, $atts );
 
-						// Add attributes with default value to array.
-						foreach ( $object['properties'] as $prop ) {
-							$array[ $prop['attribute'] ] = $prop['defaultValue'] ? trim( $prop['defaultValue'], '\'"' ) : '';
+					$output = '<' . $name . ' ';
+					foreach ( $a as $key => $value ) {
+						if ( ! empty( $value ) || $value == '0' ) {
+							if ( $helpers[ $key ] ) {
+								if ( $key == 'images' ) {
+									$val = explode( ', ', $value );
+
+									$output .= $key . '="' . call_user_func( $helpers[ $key ], $val[0], $val[1], $val[2] ?: get_the_ID(), true ) . '" ';
+								} else {
+									$output .= $key . '="' . call_user_func( $helpers[ $key ], $value, TRUE ) . '" ';
+								}
+							} else {
+								$output .= $key . '="' . $value . '" ';
+							}
 						}
+					}
+					$output .= '>';
+					if ( $content != NULL ) {
+						$output .= $content;
+					}
+					$output .= '</' . $name . '>';
 
-						// Move array to shortcode attributes.
-						$a = shortcode_atts( $array, $atts );
+					return $output;
 
-						// Setup output.
-						$output = '<' . $name . ' ';
-						foreach ( $a as $key => $value ) {
-							$output .= $key . '="' . $value . '" ';
-						}
-						$output .= '>';
-						if ( $content != NULL ) {
-							$output .= $content;
-						}
-						$output .= '</' . $name . '>';
-
-						return $output;
-
-					} );
-
-				}
+				} );
 
 			}
 

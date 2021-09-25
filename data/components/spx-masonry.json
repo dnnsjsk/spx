@@ -1,23 +1,13 @@
 {
   "name": "spx-masonry",
   "description": "Arrange images in a masonry layout.",
-  "shadow": false,
   "properties": [
-    {
-      "attribute": "bp-columns",
-      "description": "Columns for different screen sizes. Example value: 1000:3;600:2 - this will\nswitch to a three column layout when the screen size is under 1000px and to\na two column layout under 600px.",
-      "id": "spx-masonry-0",
-      "index": 0,
-      "name": "bpColumns",
-      "tags": [],
-      "type": "string"
-    },
     {
       "attribute": "columns",
       "default": "4",
       "description": "Number of columns.",
-      "id": "spx-masonry-1",
-      "index": 1,
+      "id": "spx-masonry-0",
+      "index": 0,
       "name": "columns",
       "tags": [],
       "type": "number"
@@ -26,21 +16,22 @@
       "attribute": "gap",
       "default": "10px",
       "description": "Gap between images.",
-      "id": "spx-masonry-2",
-      "index": 2,
+      "id": "spx-masonry-1",
+      "index": 1,
       "name": "gap",
       "tags": [
         {
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-masonry-gap"
     },
     {
       "attribute": "image-size",
       "description": "WordPress media size when using the helper function..",
-      "id": "spx-masonry-3",
-      "index": 3,
+      "id": "spx-masonry-2",
+      "index": 2,
       "name": "imageSize",
       "tags": [],
       "type": "string"
@@ -49,8 +40,8 @@
       "attribute": "image-src",
       "default": "acf",
       "description": "Gets images from an ACF or Metabox field.",
-      "id": "spx-masonry-4",
-      "index": 4,
+      "id": "spx-masonry-3",
+      "index": 3,
       "name": "imageSrc",
       "tags": [
         {
@@ -63,13 +54,17 @@
     {
       "attribute": "images",
       "description": "Gets images from an ACF or Metabox field.",
-      "id": "spx-masonry-5",
-      "index": 5,
+      "id": "spx-masonry-4",
+      "index": 4,
       "name": "images",
       "tags": [
         {
-          "text": "&lt;?php spx\\Get::images($fieldName, $type) ?>",
+          "text": "&lt;?php spx\\Get::images($fieldName, $type; ?>",
           "name": "helper"
+        },
+        {
+          "text": "spxGetImages",
+          "name": "function"
         }
       ],
       "type": "string"
@@ -77,8 +72,8 @@
     {
       "attribute": "lazy",
       "description": "Lazy load images.",
-      "id": "spx-masonry-6",
-      "index": 6,
+      "id": "spx-masonry-5",
+      "index": 5,
       "name": "lazy",
       "tags": [],
       "type": "boolean"
@@ -93,8 +88,8 @@
   "methods": [],
   "slots": [
     {
-      "name": "inner - Slot (between HTML tags).",
-      "description": ""
+      "name": "inner",
+      "description": "Slot (between HTML tag)."
     }
   ]
 }

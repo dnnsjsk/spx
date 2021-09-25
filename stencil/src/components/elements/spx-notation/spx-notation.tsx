@@ -18,7 +18,7 @@ import { isInShadow } from '../../../utils/is/isInShadow';
 /**
  * Annotate letters, words or whole sentences.
  *
- * @slot [slot:inner]
+ * @slot inner - Slot (between HTML tag).
  */
 @Component({
   tag: 'spx-notation',

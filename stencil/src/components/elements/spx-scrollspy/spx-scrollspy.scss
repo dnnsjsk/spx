@@ -1,5 +1,5 @@
 $tag: 'spx-scrollspy';
 
 :host {
-  display: setVar($tag, 'display', block);
+  display: variable($tag, 'display', block);
 }

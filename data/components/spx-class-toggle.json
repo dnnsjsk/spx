@@ -1,7 +1,6 @@
 {
   "name": "spx-class-toggle",
   "description": "Toggle CSS classes on any element in the document.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "inner",
@@ -52,8 +51,8 @@
   "methods": [],
   "slots": [
     {
-      "name": "inner - Slot (between HTML tags).",
-      "description": ""
+      "name": "inner",
+      "description": "Slot (between HTML tag)."
     }
   ]
 }

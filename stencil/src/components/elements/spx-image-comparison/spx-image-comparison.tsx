@@ -81,7 +81,7 @@ export class SpxImageComparison {
   @Watch('height')
   @Watch('iconColor')
   // @ts-ignore
-  watchAttributes(value, old, attribute) {
+  attributesChanged(value, old, attribute) {
     setProperty(this.el, tag, attribute, value);
   }
 

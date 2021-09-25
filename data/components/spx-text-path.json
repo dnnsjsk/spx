@@ -1,7 +1,6 @@
 {
   "name": "spx-text-path",
   "description": "Write text along a predefined path.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "gap",
@@ -14,11 +13,20 @@
       "type": "string"
     },
     {
+      "attribute": "src",
+      "description": "Image src.",
+      "id": "spx-text-path-1",
+      "index": 1,
+      "name": "src",
+      "tags": [],
+      "type": "string"
+    },
+    {
       "attribute": "start-offset",
       "default": "25%",
       "description": "Starting offset off the text.",
-      "id": "spx-text-path-1",
-      "index": 1,
+      "id": "spx-text-path-2",
+      "index": 2,
       "name": "startOffset",
       "tags": [],
       "type": "string"
@@ -26,8 +34,8 @@
     {
       "attribute": "text",
       "description": "Text to be shown.",
-      "id": "spx-text-path-2",
-      "index": 2,
+      "id": "spx-text-path-3",
+      "index": 3,
       "name": "text",
       "tags": [],
       "type": "string"
@@ -36,56 +44,60 @@
       "attribute": "text-color",
       "default": "#000000",
       "description": "",
-      "id": "spx-text-path-3",
-      "index": 3,
+      "id": "spx-text-path-4",
+      "index": 4,
       "name": "textColor",
       "tags": [
         {
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-text-path-text-color"
     },
     {
       "attribute": "text-font-size",
       "default": "clamp(20px, 3vw, 24px)",
       "description": "Text size.",
-      "id": "spx-text-path-4",
-      "index": 4,
+      "id": "spx-text-path-5",
+      "index": 5,
       "name": "textFontSize",
       "tags": [
         {
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-text-path-text-font-size"
     },
     {
       "attribute": "text-font-weight",
       "description": "",
-      "id": "spx-text-path-5",
-      "index": 5,
+      "id": "spx-text-path-6",
+      "index": 6,
       "name": "textFontWeight",
       "tags": [
         {
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-text-path-text-font-weight"
     },
     {
       "attribute": "text-transform",
       "default": "default",
       "description": "Text transform.",
-      "id": "spx-text-path-6",
-      "index": 6,
+      "id": "spx-text-path-7",
+      "index": 7,
       "name": "textTransform",
       "tags": [
         {
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-text-path-text-transform"
     }
   ],
   "events": [
@@ -97,8 +109,8 @@
   "methods": [],
   "slots": [
     {
-      "name": "inner - Slot (between HTML tags).",
-      "description": ""
+      "name": "inner",
+      "description": "Slot (between HTML tag)."
     }
   ]
 }

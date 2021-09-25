@@ -1,7 +1,6 @@
 {
   "name": "spx-notation",
   "description": "Annotate letters, words or whole sentences.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "animation",
@@ -156,8 +155,8 @@
   ],
   "slots": [
     {
-      "name": "inner - Slot (between HTML tags).",
-      "description": ""
+      "name": "inner",
+      "description": "Slot (between HTML tag)."
     }
   ]
 }

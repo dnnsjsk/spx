@@ -15,7 +15,7 @@ import { globalComponentWillUpdate } from '../../../utils/global/globalComponent
 /**
  * Wrapper around GSAP that allows for staggered and scroll-based animation.
  *
- * @slot [slot:inner]
+ * @slot inner - Slot (between HTML tag).
  */
 @Component({
   tag: 'spx-animate',
@@ -30,8 +30,8 @@ export class SpxAnimate {
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxAnimateElement;
 
-  /** Set visibility of animated element to 'inherit' after animating it in. */
-  @Prop() autoAlpha: string;
+  /** Same as opacity but sets visibility to 'hidden' after hitting 0. */
+  @Prop() autoAlpha: number;
 
   /** Clip-path value the animation starts from. */
   @Prop() clipPath: string;
@@ -52,7 +52,7 @@ export class SpxAnimate {
   @Prop() once: boolean;
 
   /** Opacity level the animation starts from. */
-  @Prop() opacity: number = 0;
+  @Prop() opacity: number;
 
   /** Repeats the animation. -1 to repeat indefinitely. */
   @Prop() repeat: number;
@@ -72,17 +72,11 @@ export class SpxAnimate {
   /** Starts animation when target is in the viewport. */
   @Prop() viewport: boolean;
 
-  /** Adjust the root margin of the animation start. */
-  @Prop() viewportMarginBottom: string;
+  /** Scroll intersection observer threshold. */
+  @Prop({ reflect: true }) viewportThreshold: number = 0;
 
-  /** Adjust the root margin of the animation start. */
-  @Prop() viewportMarginLeft: string;
-
-  /** Adjust the root margin of the animation start. */
-  @Prop() viewportMarginRight: string;
-
-  /** Adjust the root margin of the animation start. */
-  @Prop() viewportMarginTop: string;
+  /** Scroll intersection observer root margin. */
+  @Prop({ reflect: true }) viewportRootMargin: string = '0px';
 
   /** X position the animation starts from. */
   @Prop() x: any = 0;
@@ -171,20 +165,8 @@ export class SpxAnimate {
 
     if (this.viewport) {
       const options = {
-        rootMargin:
-          '' +
-          '' +
-          (this.viewportMarginTop || '0px') +
-          ' ' +
-          '' +
-          (this.viewportMarginRight || '0px') +
-          ' ' +
-          '' +
-          (this.viewportMarginBottom || '0px') +
-          ' ' +
-          '' +
-          (this.viewportMarginLeft || '0px') +
-          '',
+        rootMargin: this.viewportRootMargin,
+        threshold: this.viewportThreshold,
       };
 
       this.intersectionObserver = new IntersectionObserver((entries) => {

@@ -1,5 +1,5 @@
 /**
- * @param {Object} obj Lightbox settings.
+ * @param {object} obj Lightbox settings.
  */
 export function lightbox(obj) {
   const urls = [];
@@ -18,8 +18,12 @@ export function lightbox(obj) {
     modal.style.display = 'flex';
     modal.style.justifyContent = 'center';
     modal.style.alignItems = 'center';
-    modal.style.background = obj.overlayBackground;
-    modal.style.backdropFilter = obj.overlayBackdropFilter;
+    modal.style.background = `var(--spx-lightbox-overlay-background, ${obj.el.getAttribute(
+      'overlay-background'
+    )})`;
+    modal.style.backdropFilter = `var(--spx-lightbox-overlay-backdrop-filter, ${obj.el.getAttribute(
+      'overlay-backdrop-filter'
+    )})`;
     modal.style.zIndex = '99999999999999999999999999999999999999';
 
     const modalInner = document.createElement('div');
@@ -40,11 +44,18 @@ export function lightbox(obj) {
     modalClose.style.borderRadius = '0';
     modalClose.style.width = padding;
     modalClose.style.height = padding;
+    modalClose.style.background = 'none';
+    modalClose.style.border = 'none';
 
     const modalCloseIcon = document.createElement('spx-icon');
     modalCloseIcon.setAttribute('icon', 'close-outline');
     modalCloseIcon.setAttribute('size', '150%');
-    modalCloseIcon.setAttribute('color', obj.closeButtonColor);
+    modalCloseIcon.setAttribute(
+      'color',
+      `var(--spx-lightbox-close-button-color, ${obj.el.getAttribute(
+        'close-button-color'
+      )})`
+    );
 
     const slider = document.createElement('spx-slider');
     slider.style.width = '100%';
@@ -57,17 +68,20 @@ export function lightbox(obj) {
 
     slider.setAttribute('start', e.target.getAttribute('data-index'));
 
-    if (obj.slider) {
-      Object.entries(JSON.parse(obj.slider) as unknown).forEach(
-        ([key, value]) => {
-          slider.setAttribute(key, value);
-        }
-      );
+    if (obj.el.hasAttribute('spx-slider')) {
+      Object.entries(
+        JSON.parse(obj.el.getAttribute('spx-slider')) as unknown
+      ).forEach(([key, value]) => {
+        slider.setAttribute(key, value);
+      });
     }
 
     modalClose.appendChild(modalCloseIcon);
     modal.appendChild(modalInner);
-    if (obj.closeButton) {
+    if (
+      obj.el.hasAttribute('close-button') &&
+      obj.el.getAttribute('close-button') !== 'false'
+    ) {
       modal.appendChild(modalClose);
     }
     modal.appendChild(slider);
@@ -77,14 +91,20 @@ export function lightbox(obj) {
     modalCloseIcon.addEventListener('click', function () {
       onRemove();
     });
-    if (obj.bodyOverflow) {
+    if (
+      obj.el.hasAttribute('body-overflow') &&
+      obj.el.getAttribute('body-overflow') !== 'false'
+    ) {
       document.body.style.overflow = 'hidden';
     }
     document.body.appendChild(modal);
   };
 
   const onRemove = () => {
-    if (obj.bodyOverflow) {
+    if (
+      obj.el.hasAttribute('body-overflow') &&
+      obj.el.getAttribute('body-overflow') !== 'false'
+    ) {
       document.body.style.overflow = 'auto';
     }
     modal.remove();

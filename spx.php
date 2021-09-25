@@ -45,7 +45,9 @@ require_once plugin_dir_path( __FILE__ ) . 'includes/functions/edit-ajax-handler
 require_once plugin_dir_path( __FILE__ ) . 'includes/functions/get.php';
 
 if ( class_exists( 'OxyEl' ) ) {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/oxygen/element.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/integrations/oxygen/spxOxygen.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/integrations/oxygen/element.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/integrations/oxygen/elements.php';
 }
 
 if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {

@@ -58,7 +58,7 @@ export class SpxIcon {
   @Watch('sizeMax')
   @Watch('sizeMin')
   // @ts-ignore
-  watchAttributes(value, old, attribute) {
+  attributesChanged(value, old, attribute) {
     setProperty(this.el, tag, attribute, value);
   }
 

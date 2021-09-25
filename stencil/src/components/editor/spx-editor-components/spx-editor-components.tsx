@@ -75,25 +75,29 @@ export class SpxEditorComponents {
   render() {
     return (
       <Host>
-        <div class="search">
+        <div tabindex="-1" style={{ outline: 'none' }} class="search">
           <spx-icon icon="search-outline" />
           <TextInput placeholder="Search components" onInput={this.onSearch} />
         </div>
         <div
+          tabindex="-1"
           style={{
             height: `calc(${state.height} - var(--spx-editor-header-height) ${
               state.showComponents ? ' - var(--spx-editor-header-height)' : ''
-            }
-          `,
+            }`,
+            outline: 'none',
           }}
-          tabindex="-1"
           class="list"
         >
           {Object.values(this.currentData as unknown).map((object) => {
             const isActive = state.activeComponent === object.name;
 
             return (
-              <div class={`button ${isActive ? 'is-active' : ''}`}>
+              <div
+                tabindex="-1"
+                style={{ outline: 'none' }}
+                class={`button ${isActive ? 'is-active' : ''}`}
+              >
                 <Button
                   name={object.name}
                   tabindex={isActive ? '-1' : '0'}

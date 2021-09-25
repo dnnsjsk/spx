@@ -18,7 +18,7 @@ const tag = 'spx-text-path';
 /**
  * Write text along a predefined path.
  *
- * @slot [slot:inner]
+ * @slot inner - Slot (between HTML tag).
  */
 @Component({
   tag: 'spx-text-path',
@@ -31,6 +31,9 @@ export class SpxTextPath {
 
   /** Space between text and path. */
   @Prop({ reflect: true }) gap: string = '-2%';
+
+  /** Image src. */
+  @Prop({ reflect: true }) src: string;
 
   /** Starting offset off the text. */
   @Prop({ reflect: true }) startOffset: string = '25%';
@@ -63,7 +66,7 @@ export class SpxTextPath {
   @Watch('textFontSize')
   @Watch('textTransform')
   // @ts-ignore
-  watchAttributes(value, old, attribute) {
+  attributesChanged(value, old, attribute) {
     setProperty(this.el, tag, attribute, value);
   }
 
@@ -73,13 +76,6 @@ export class SpxTextPath {
   spxTextPathDidLoad: EventEmitter;
 
   componentDidLoad() {
-    this.el.shadowRoot
-      .querySelector('foreignObject')
-      .setAttribute('height', '100%');
-    this.el.shadowRoot
-      .querySelector('foreignObject')
-      .setAttribute('width', '100%');
-
     globalComponentDidLoad({
       el: this.el,
       tag: tag,
@@ -108,13 +104,16 @@ export class SpxTextPath {
             id="circlePathInner"
             d="M250,400 a150,150 0 0,1 0,-300a150,150 0 0,1 0,300Z"
           />
+          <pattern
+            id="img"
+            patternUnits="userSpaceOnUse"
+            width="100%"
+            height="100%"
+          >
+            <image href={this.src} x="0" y="0" width="100%" height="100%" />
+          </pattern>
         </defs>
-        <foreignObject x="0" y="0" height={0} width={0}>
-          <div class="slot">
-            <slot />
-          </div>
-        </foreignObject>
-        <use xlinkHref="#circlePathInner" fill="none" />
+        <use xlinkHref="#circlePathInner" fill="url(#img)" />
         <text dy={this.gap} class="text-path">
           <textPath startOffset={this.startOffset} xlinkHref="#circlePath">
             {this.text}

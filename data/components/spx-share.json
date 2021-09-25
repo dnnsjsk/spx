@@ -1,7 +1,6 @@
 {
   "name": "spx-share",
   "description": "Social share buttons. Currently includes Facebook, Twitter, Whatsapp and E-Mail.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "font-size",
@@ -15,7 +14,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-share-font-size"
     },
     {
       "attribute": "font-size-max",
@@ -29,7 +29,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-share-font-size-max"
     },
     {
       "attribute": "font-size-min",
@@ -43,7 +44,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-share-font-size-min"
     },
     {
       "attribute": "item-background",
@@ -56,7 +58,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-share-item-background"
     },
     {
       "attribute": "item-border-radius",
@@ -70,7 +73,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-share-item-border-radius"
     },
     {
       "attribute": "item-color",
@@ -83,7 +87,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-share-item-color"
     },
     {
       "attribute": "item-filter-hover",
@@ -97,7 +102,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-share-item-filter-hover"
     },
     {
       "attribute": "item-gap",
@@ -111,7 +117,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-share-item-gap"
     },
     {
       "attribute": "item-gap-max",
@@ -125,7 +132,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-share-item-gap-max"
     },
     {
       "attribute": "item-gap-min",
@@ -139,7 +147,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-share-item-gap-min"
     },
     {
       "attribute": "item-padding",
@@ -153,7 +162,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-share-item-padding"
     },
     {
       "attribute": "item-padding-max",
@@ -167,7 +177,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-share-item-padding-max"
     },
     {
       "attribute": "item-padding-min",
@@ -181,7 +192,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-share-item-padding-min"
     },
     {
       "attribute": "item-size",
@@ -195,7 +207,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-share-item-size"
     },
     {
       "attribute": "item-size-max",
@@ -209,7 +222,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-share-item-size-max"
     },
     {
       "attribute": "item-size-min",
@@ -223,7 +237,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-share-item-size-min"
     },
     {
       "attribute": "styling",

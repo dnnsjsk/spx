@@ -8,6 +8,7 @@
 | Property         | Attribute          | Description                   | Type     | Default                    |
 | ---------------- | ------------------ | ----------------------------- | -------- | -------------------------- |
 | `gap`            | `gap`              | Space between text and path.  | `string` | `'-2%'`                    |
+| `src`            | `src`              | Image src.                    | `string` | `undefined`                |
 | `startOffset`    | `start-offset`     | Starting offset off the text. | `string` | `'25%'`                    |
 | `text`           | `text`             | Text to be shown.             | `string` | `undefined`                |
 | `textColor`      | `text-color`       |                               | `string` | `'#000000'`                |
@@ -25,9 +26,9 @@
 
 ## Slots
 
-| Slot             | Description |
-| ---------------- | ----------- |
-| `"[slot:inner]"` |             |
+| Slot      | Description              |
+| --------- | ------------------------ |
+| `"inner"` | Slot (between HTML tag). |
 
 
 ----------------------------------------------

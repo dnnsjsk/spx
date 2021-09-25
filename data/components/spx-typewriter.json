@@ -1,7 +1,6 @@
 {
   "name": "spx-typewriter",
   "description": "Animates text like it is being written on a typewriter.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "auto-start",
@@ -34,10 +33,19 @@
       "type": "any"
     },
     {
-      "attribute": "loop",
-      "description": "Loops the animation.",
+      "attribute": "delimiter",
+      "description": "Delimiter to use if multiple sentences are going ot be used.",
       "id": "spx-typewriter-3",
       "index": 3,
+      "name": "delimiter",
+      "tags": [],
+      "type": "any"
+    },
+    {
+      "attribute": "loop",
+      "description": "Loops the animation.",
+      "id": "spx-typewriter-4",
+      "index": 4,
       "name": "loop",
       "tags": [],
       "type": "boolean"
@@ -46,8 +54,8 @@
       "attribute": "text",
       "default": "\"I'm a typewriter\"",
       "description": "Text that should be written.",
-      "id": "spx-typewriter-4",
-      "index": 4,
+      "id": "spx-typewriter-5",
+      "index": 5,
       "name": "text",
       "tags": [],
       "type": "string"
@@ -73,8 +81,8 @@
   ],
   "slots": [
     {
-      "name": "inner - Slot (between HTML tags).",
-      "description": ""
+      "name": "inner",
+      "description": "Slot (between HTML tag)."
     }
   ]
 }

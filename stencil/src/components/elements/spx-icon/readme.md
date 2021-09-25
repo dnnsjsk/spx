@@ -29,7 +29,7 @@
 ### Used by
 
  - [spx-accordion](../spx-accordion)
- - [spx-edit-button](../spx-edit-button)
+ - [spx-edit-button](../spx-edit)
  - [spx-editor](../../editor/spx-editor)
  - [spx-editor-components](../../editor/spx-editor-components)
  - [spx-editor-header](../../editor/spx-editor-header)

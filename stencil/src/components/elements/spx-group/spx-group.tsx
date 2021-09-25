@@ -15,7 +15,7 @@ import { globalComponentWillUpdate } from '../../../utils/global/globalComponent
  * Pass attributes to all inner (spx) child elements.
  * All attributes that start with g-* will be passed on to child elements.
  *
- * @slot [slot:inner]
+ * @slot inner - Slot (between HTML tag).
  */
 @Component({
   tag: 'spx-group',

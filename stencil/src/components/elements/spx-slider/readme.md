@@ -63,9 +63,9 @@
 
 ## Slots
 
-| Slot             | Description |
-| ---------------- | ----------- |
-| `"[slot:inner]"` |             |
+| Slot      | Description              |
+| --------- | ------------------------ |
+| `"inner"` | Slot (between HTML tag). |
 
 
 ## Dependencies

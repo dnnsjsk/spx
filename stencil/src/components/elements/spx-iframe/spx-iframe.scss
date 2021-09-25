@@ -7,7 +7,7 @@ $loaderPadding: 0.8em;
 $minHeight: 400px;
 
 :host {
-  display: setVar($tag, 'display', block);
+  display: variable($tag, 'display', block);
 }
 
 .inner {

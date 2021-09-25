@@ -16,7 +16,7 @@ import { globalComponentWillUpdate } from '../../../utils/global/globalComponent
 /**
  * Toggle CSS classes on any element in the document.
  *
- * @slot [slot:inner]
+ * @slot inner - Slot (between HTML tag).
  */
 @Component({
   tag: 'spx-class-toggle',

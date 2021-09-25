@@ -15,6 +15,7 @@ import { globalComponentDidLoad } from '../../../utils/global/globalComponentDid
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
 import { Button } from '../../../elements/Button';
 import { setProperty } from '../../../utils/dom/setProperty';
+import { parse } from '../../../utils/strings/parse';
 
 const tag = 'spx-navigation';
 
@@ -116,6 +117,7 @@ export class SpxNavigation {
    * Renders a WordPress menu.
    *
    * @helper &lt;?php spx\Get::navigation("myMenu") ?>
+   * @function spxGetNavigation
    */
   @Prop({ reflect: true }) menu: string;
 
@@ -186,7 +188,7 @@ export class SpxNavigation {
 
   @Watch('menu')
   navigationChanged(newValue: string) {
-    if (newValue) this.menuArray = JSON.parse(newValue);
+    if (newValue) this.menuArray = parse(newValue);
   }
 
   @Watch('childBorder')
@@ -215,7 +217,7 @@ export class SpxNavigation {
   @Watch('parentItemGap')
   @Watch('parentItemPadding')
   // @ts-ignore
-  watchAttributes(value, old, attribute) {
+  attributesChanged(value, old, attribute) {
     setProperty(this.el, tag, attribute, value);
   }
 

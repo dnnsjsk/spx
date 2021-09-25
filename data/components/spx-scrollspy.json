@@ -1,7 +1,6 @@
 {
   "name": "spx-scrollspy",
   "description": "Automatically add CSS classes to navigation items\nand content elements depending on the scroll position.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "nav-class",
@@ -63,8 +62,8 @@
   "methods": [],
   "slots": [
     {
-      "name": "inner - Slot (between HTML tags).",
-      "description": ""
+      "name": "inner",
+      "description": "Slot (between HTML tag)."
     }
   ]
 }

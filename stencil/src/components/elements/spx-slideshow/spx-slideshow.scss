@@ -8,7 +8,7 @@ $objectFit: contain;
 $overflow: '';
 
 :host {
-  display: setVar($tag, 'display', block);
+  display: variable($tag, 'display', block);
 }
 
 .inner {

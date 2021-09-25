@@ -3,7 +3,7 @@ $tag: 'spx-mockup';
 $imagePosition: 50% 50%;
 
 :host {
-  display: setVar($tag, 'display', block);
+  display: variable($tag, 'display', block);
 }
 
 .inner {

@@ -12,17 +12,18 @@ $fontSize: clamp(12px, 1.6vw, 16px);
 $height: auto;
 $lineNumbersBackground: var(--spx-color-gray-800);
 $lineNumbersColor: var(--spx-color-gray-400);
+$lineNumbersStart: 1;
 $maxWidth: 100%;
 $overflow: auto;
 $padding: clamp(20px, 2.4vw, 40px);
 
 :host {
-  display: setVar($tag, 'display', block);
+  display: variable($tag, 'display', block);
 }
 
 :host([theme='default']) {
   .token.comment,
-  token.prolog,
+  .token.prolog,
   .token.cdata {
     color: #808080;
   }
@@ -332,7 +333,7 @@ pre {
   hyphens: none;
   display: flex;
   box-sizing: border-box;
-  height: 100%;
+  height: variable($tag, 'height', $height);
   color: #a9b7c6;
   overflow: variable($tag, 'overflow', $overflow);
   background: variable($tag, 'background', $background);
@@ -352,15 +353,22 @@ pre {
     position: absolute;
     left: 0;
     width: 3.5em;
-    background: variable($tag, 'line-numbers-background', $lineNumbersBackground);
-    height: var(--spx-code-internal-height, 100%);
+    background: variable(
+      $tag,
+      'line-numbers-background',
+      $lineNumbersBackground
+    );
+    height: var(
+      --spx-code-internal-height,
+      #{variable($tag, 'height', $height)}
+    );
   }
 }
 
 code {
   z-index: 2;
   filter: variable($tag, 'filter', $filter);
-  margin-bottom: variable($tag, 'margin-bottom', $padding);
+  margin-bottom: variable($tag, 'padding', $padding);
   height: calc(
     variable($tag, 'height', auto) - variable($tag, 'padding', $padding)
   );
@@ -373,7 +381,7 @@ code {
 
 .line-numbers {
   padding-left: 5.2rem;
-  counter-reset: var(--spx-code-internal-line-start, 1);
+  counter-reset: linenumber calc(var(--spx-code-line-numbers-start, 0) - 1);
 }
 
 .line-numbers-rows {

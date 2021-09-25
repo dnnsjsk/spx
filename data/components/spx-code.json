@@ -1,7 +1,6 @@
 {
   "name": "spx-code",
   "description": "Highlight a block of code similar to a code editor.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "background",
@@ -15,7 +14,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-code-background"
     },
     {
       "attribute": "border-radius",
@@ -29,7 +29,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-code-border-radius"
     },
     {
       "attribute": "clipboard",
@@ -53,7 +54,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-code-clipboard-button-background"
     },
     {
       "attribute": "clipboard-button-color",
@@ -67,7 +69,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-code-clipboard-button-color"
     },
     {
       "attribute": "clipboard-button-font-size",
@@ -81,7 +84,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-code-clipboard-button-font-size"
     },
     {
       "attribute": "clipboard-button-font-weight",
@@ -95,7 +99,8 @@
           "name": "css"
         }
       ],
-      "type": "any"
+      "type": "any",
+      "variable": "--spx-code-clipboard-button-font-weight"
     },
     {
       "attribute": "clipboard-button-padding",
@@ -109,7 +114,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-code-clipboard-button-padding"
     },
     {
       "attribute": "clipboard-button-text",
@@ -143,7 +149,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-code-clipboard-button-text-transform"
     },
     {
       "attribute": "content",
@@ -165,7 +172,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-code-filter"
     },
     {
       "attribute": "font-size",
@@ -179,7 +187,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-code-font-size"
     },
     {
       "attribute": "height",
@@ -193,7 +202,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-code-height"
     },
     {
       "attribute": "hide-scrollbar",
@@ -236,7 +246,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-code-line-numbers-background"
     },
     {
       "attribute": "line-numbers-color",
@@ -250,10 +261,12 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-code-line-numbers-color"
     },
     {
       "attribute": "line-numbers-start",
+      "default": "1",
       "description": "Start of line number.",
       "id": "spx-code-20",
       "index": 20,
@@ -273,7 +286,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-code-max-width"
     },
     {
       "attribute": "overflow",
@@ -287,7 +301,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-code-overflow"
     },
     {
       "attribute": "padding",
@@ -301,7 +316,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-code-padding"
     },
     {
       "attribute": "theme",
@@ -383,8 +399,8 @@
   "methods": [],
   "slots": [
     {
-      "name": "inner - Slot (between HTML tags).",
-      "description": ""
+      "name": "inner",
+      "description": "Slot (between HTML tag)."
     }
   ]
 }

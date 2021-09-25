@@ -6,7 +6,7 @@ import { JsonDocs } from '@stencil/core/internal';
 import { promises as fs } from 'fs';
 
 /**
- * @param {JsonDocs} docsData - JSON Docs.
+ * @param {JsonDocs} docsData JSON Docs.
  */
 async function generateCustomElementsJSON(docsData: JsonDocs) {
   /**
@@ -22,12 +22,11 @@ async function generateCustomElementsJSON(docsData: JsonDocs) {
 
     /** Create file for each component. */
     await Promise.all(
+      // eslint-disable-next-line array-callback-return
       docsData.components.map((component) => {
         const data = {
           name: component.tag,
           description: component.docs,
-          shadow:
-            ['spx-navigation', 'spx-slideshow'].includes(component.tag) && true,
           properties: component.props.map((prop, index) => ({
             attribute: prop.attr,
             default: prop.default,
@@ -37,6 +36,9 @@ async function generateCustomElementsJSON(docsData: JsonDocs) {
             name: prop.name,
             tags: prop.docsTags,
             type: prop.type,
+            ...(prop.docsTags[0]?.name === 'css' && {
+              variable: `--${component.tag}-${prop.attr}`,
+            }),
           })),
 
           events: component.events.map((event) => ({
@@ -59,22 +61,31 @@ async function generateCustomElementsJSON(docsData: JsonDocs) {
         /**
          * Write files and replace JSDoc variables.
          */
-        return fs.writeFile(
-          dirComponents + component.tag + '.json',
-          JSON.stringify(data, null, 2)
-            .replace(/"'/gm, '"')
-            .replace(/'"/gm, '"')
-            .replace(
-              /\[prop:target\]/gm,
-              'Target element. Can take any querySelector value. (id, class, tag etc.)'
-            )
-            .replace(
-              /\[component:spx-slider\]/gm,
-              'Pass attributes to the inner <spx-slider> component using a JSON string: { \\"slides-per-view\\": \\"2.5\\" }'
-            )
-            .replace(/\[event:loaded\]/gm, 'Fires after component has loaded.')
-            .replace(/\[slot:inner\]/gm, 'inner - Slot (between HTML tags).')
-        );
+        if (
+          !component.tag.includes('editor') &&
+          !component.tag.includes('control') &&
+          component.tag !== 'spx-edit'
+        ) {
+          return fs.writeFile(
+            dirComponents + component.tag + '.json',
+            JSON.stringify(data, null, 2)
+              .replace(/"'/gm, '"')
+              .replace(/'"/gm, '"')
+              .replace(
+                /\[prop:target\]/gm,
+                'Target element. Can take any querySelector value. (id, class, tag etc.)'
+              )
+              .replace(
+                /\[component:spx-slider\]/gm,
+                'Pass attributes to the inner <spx-slider> component using a JSON string: { \\"slides-per-view\\": \\"2.5\\" }'
+              )
+              .replace(
+                /\[event:loaded\]/gm,
+                'Fires after component has loaded.'
+              )
+              .replace(/\[slot:inner\]/gm, 'inner - Slot (between HTML tag).')
+          );
+        }
       })
     );
   }
@@ -90,7 +101,7 @@ async function generateCustomElementsJSON(docsData: JsonDocs) {
 export const config: Config = {
   namespace: 'spx',
   taskQueue: 'async',
-  globalStyle: 'src/global/global.scss',
+  globalStyle: 'src/scss/global.scss',
   outputTargets: [
     {
       type: 'www',
@@ -110,7 +121,7 @@ export const config: Config = {
   ],
   plugins: [
     sass({
-      injectGlobalPaths: ['src/global/mixins.scss'],
+      injectGlobalPaths: ['src/scss/mixins.scss'],
     }),
   ],
   devServer: {

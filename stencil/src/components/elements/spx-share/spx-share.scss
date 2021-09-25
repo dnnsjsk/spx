@@ -18,10 +18,11 @@ $itemSizeMax: 0.8;
 $itemSizeMin: 0.7;
 
 :host {
-  display: setVar($tag, 'display', block);
+  display: variable($tag, 'display', block);
 }
 
 .inner {
+  line-height: 0;
   display: grid;
   font-size: variable($tag, 'font-size', $fontSize);
   grid-auto-flow: column;

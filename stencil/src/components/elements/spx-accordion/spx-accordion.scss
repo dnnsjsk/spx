@@ -17,7 +17,7 @@ $headerGapMin: 0.6;
 $iconTransform: rotate(180deg);
 
 :host {
-  display: setVar($tag, 'display', block);
+  display: variable($tag, 'display', block);
 }
 
 .inner {
@@ -79,12 +79,13 @@ $iconTransform: rotate(180deg);
   transform-origin: center center;
   color: variable($tag, 'header-color', $headerColor);
   font-size: 1em;
+  line-height: 0;
 
   :host([reverse]:not([reverse='false'])) & {
     grid-column: 2;
   }
 
-  :host([open]) & {
+  :host([open]:not([open="false"])) & {
     transform: variable($tag, 'icon-transform', $iconTransform);
   }
 }
@@ -102,7 +103,7 @@ $iconTransform: rotate(180deg);
   );
 
   @include style($tag, 'gap', 'margin-top', $gap, $gapMax, $gapMax, [open]);
-  :host([open]) & {
+  :host([open]:not([open="false"])) & {
     display: block;
   }
 

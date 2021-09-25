@@ -32,9 +32,20 @@ export class SpxTailwind {
   @Event({ eventName: 'spxTailwindDidLoad' })
   spxTailwindDidLoad: EventEmitter;
 
-  componentDidLoad() {
+  componentWillLoad() {
     this.setContent();
-    globalComponentDidLoad({ el: this.el, cb: this.setContent });
+  }
+
+  componentDidLoad() {
+    globalComponentDidLoad({
+      el: this.el,
+      cb: this.setContent,
+      mutations: {
+        subtree: true,
+        attributes: true,
+        classList: true,
+      },
+    });
     this.spxTailwindDidLoad.emit({ target: 'document' });
   }
 

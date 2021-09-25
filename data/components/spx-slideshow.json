@@ -1,7 +1,6 @@
 {
   "name": "spx-slideshow",
   "description": "Continuously playing slideshow.",
-  "shadow": true,
   "properties": [
     {
       "attribute": "duration",
@@ -15,7 +14,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slideshow-duration"
     },
     {
       "attribute": "gap",
@@ -29,7 +29,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slideshow-gap"
     },
     {
       "attribute": "height",
@@ -42,11 +43,12 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slideshow-height"
     },
     {
       "attribute": "image-size",
-      "description": "WordPress media size when using the helper function..",
+      "description": "WordPress media size when using the helper function.",
       "id": "spx-slideshow-3",
       "index": 3,
       "name": "imageSize",
@@ -75,8 +77,12 @@
       "name": "images",
       "tags": [
         {
-          "text": "&lt;?php spx\\get::gallery($fieldName, $type) ?>",
+          "text": "&lt;?php spx\\get::gallery($fieldName, $type; ?>",
           "name": "helper"
+        },
+        {
+          "text": "spxGetImages",
+          "name": "function"
         }
       ],
       "type": "string"
@@ -102,7 +108,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slideshow-max-width"
     },
     {
       "attribute": "object-fit",
@@ -116,7 +123,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slideshow-object-fit"
     },
     {
       "attribute": "overflow",
@@ -129,7 +137,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-slideshow-overflow"
     }
   ],
   "events": [
@@ -141,8 +150,8 @@
   "methods": [],
   "slots": [
     {
-      "name": "inner - Slot (between HTML tags).",
-      "description": ""
+      "name": "inner",
+      "description": "Slot (between HTML tag)."
     }
   ]
 }

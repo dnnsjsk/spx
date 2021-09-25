@@ -16,15 +16,16 @@ Supercharge your workflow using handy components for the next project. Works wit
 == Changelog ==
 
 = 4.0.0 =
-* Accordion: convert to Shadow DOM
 * Accordion: make link functionality work if it is a child of Shadow DOM
 * Accordion: prevent re-renders
 * Accordion: rename 'disable-animation' to 'animation'
-* Accordion: update height accordingly if component size changed while in open state
 * Accordion: rename 'indicator-icon' attribute to 'icon'
-* Accordion: rename 'indicator-icon-type' attribute to 'icon-type'
 * Accordion: rename 'indicator-icon-transform' attribute to 'icon-transform'
+* Accordion: rename 'indicator-icon-type' attribute to 'icon-type'
+* Accordion: update height accordingly if component size changed while in open state
 * Animate: add 'auto-alpha' attribute
+* Animate: add 'viewport-threshold' attribute
+* Animate: combine all 'viewport-margin-*' attributes to 'viewport-root-margin'
 * Class Toggle: add 'inner' attribute
 * Class Toggle: prevent re-renders
 * Code: add 'content' attribute
@@ -34,72 +35,68 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Code: add 'whitespace-remove-trailing' attribute
 * Code: add 'whitespace-right-trim' attribute
 * Code: add right padding if content is overflowing
-* Code: convert to Shadow DOM
 * Code: don't focus content
 * Code: make theme attribute reflect to changes
 * Code: prevent re-renders
 * Docs: make id generation more reliable
 * Docs: remove component
+* Edit Button: add 'border-discard' attribute
+* Edit Button: add 'left', 'right', 'top', 'bottom' attributes for positioning
 * Edit Button: add 'loader-color' attribute
 * Edit Button: add 'loader-gap' attribute
+* Edit Button: add nonce to AJAX call
+* Edit Button: add wp_kses to string update function
 * Edit Button: check if component is inside Shadow DOM and search for nodes inside of it instead
-* Edit Button: convert <spx-edit> component that wraps around editable text to Shadow DOM
-* Edit Button: convert to Shadow DOM
 * Edit Button: fix discard button not getting assigned correctly classes in headless mode
-* Edit Button: add 'border-discard' attribute
 * Edit Button: remove 'position-css' attribute
-* Edit Button: add 'left', 'right', 'top', 'bottom' attributes for positioning
-* Edit Button: remove font-family attribute
-* Enhancement: add unified ARIA properties and focus styles to all Buttons across components
-* Enhancement: clean up assets folder and make move CSS files
+* Enhancement: add $postId as third parameter for image helper
+* Enhancement: add unified ARIA attributes and focus styles to all Buttons across components
+* Enhancement: clean up assets folder
+* Enhancement: convert all components to Shadow DOM
+* Enhancement: remove all runtime CSS (unless components are set to headless styling)
+* Enhancement: remove font-family attributes from all components (use CSS variable instead)
+* Enhancement: remove transition attributes from all components (use CSS variable instead)
 * Enhancement: rename 'gallery' helper to 'images'
-* Enhancement: use Constructable Stylesheets for Shadow DOM in Chrome and fallback to <style> tags in non Chromium browsers
+* Enhancement: rename 'spx_lazyload_whitelist' filter to 'spx/lazyload_whitelist'
 * Fix: boolean values not working for Shortcodes
 * Fix: don't create undefined fallback in CSS variables if no styles are set
 * Fix: prevent double style sheets in Shadow DOM
 * Fix: remove 'display' value from all components
 * Icon: add 'loader' type to display a simple rotating loader
-* Icon: convert to Shadow DOM
 * Iframe: add 'loader-background' attribute
 * Iframe: add 'loader-border-radius' attribute
 * Iframe: add 'loader-color' attribute
 * Iframe: rename 'padding' to 'loader-padding' attribute
 * Image Comparison: add 'steps' attribute
 * Image Comparison: change 'loading' attribute to 'lazy'
-* Image Comparison: convert to Shadow DOM
 * Image Comparison: enable usage with arrow keys
 * Lightbox: complete rewrite, remove GLightbox dependency
 * Masonry: add 'lazy' attribute
-* Masonry: convert to Shadow DOM
 * Masonry: fix Masonry appearing to load when first rendering
 * Masonry: rename attribute 'images-src' to 'image-src'
 * Mockup: add 'size' attribute
 * Mockup: add 'size-max' attribute
 * Mockup: add 'size-min' attribute
-* Mockup: convert to Shadow DOM
 * Mockup: make sure slot will be used if src is not present
 * Mockup: rework resizing mechanism
-* Navia
 * New: Tailwind component
 * New: Text-Path component
 * New: add global '--spx-backdrop-filter' CSS variable
 * New: add global '--spx-color-focus' CSS variable
 * New: add global '--spx-focus' CSS variable
 * New: change color gray scale to Tailwind 'blue-gray'
+* New: helpers can be used with shortcodes now
 * New: possibility to add your own Tailwind config which affects utility styling in components
+* New: responsive engine for adjusting attributes on different breakpoints
 * Notation: make sure component works inside Shadow DOM environments
-* Scrollspy: complete rewrite to make use of IntersectionObserver and remove Gumshoe dependecy
-* Share: convert to Shadow DOM
+* Scrollspy: complete rewrite to make use of IntersectionObserver and remove Gumshoe dependency
 * Share: make sure to always share the current URL
 * Slider: add 'lazy' attribute
 * Slider: add 'lazy-load-prev-next' attribute
 * Slider: add 'navigation-background-hover' attribute
-* Slider: add 'navigation-transition-duration' attribute
-* Slider: add 'navigation-transition-timing-function' attribute
 * Slider: add 'pagination-backdrop-filter' attribute
 * Slider: add 'pagination-background' attribute
 * Slider: add 'start' attribute
-* Slider: convert to Shadow DOM
 * Slider: fix dynamic bullets
 * Slider: make slides full width and height by default
 * Slider: remove 'max-width' attribute
@@ -110,7 +107,8 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Slideshow: add 'object-fit' attribute
 * Slideshow: rename attribute 'images-src' to 'image-src'
 * Snackbar: deprecate
-* StencilJS: update to 2.8.0
+* StencilJS: update to 2.8.1
+* Typewriter: add 'delimiter' attribute for multiple strings
 
 = 3.1.6 =
 * Code: add support for Twig files
@@ -229,7 +227,6 @@ Supercharge your workflow using handy components for the next project. Works wit
 * Enhancement: change default border-radius
 * Enhancement: remove theme function
 * Enhancement: switch to semantic versioning
-* Enhancement: remove transition properties from all components (use CSS variable instead)
 * Iframe: add 'document-border' attribute
 * Iframe: add 'document-border-radius' attribute
 * Iframe: add 'document-height' attribute

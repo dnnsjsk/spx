@@ -20,7 +20,7 @@ const tag = 'spx-mockup';
 /**
  * Display device mockups around your content.
  *
- * @slot [slot:inner]
+ * @slot inner - Slot (between HTML tag).
  */
 @Component({
   tag: 'spx-mockup',
@@ -105,7 +105,7 @@ export class SpxMockup {
 
   @Watch('imagePosition')
   // @ts-ignore
-  watchAttributes(value, old, attribute) {
+  attributesChanged(value, old, attribute) {
     setProperty(this.el, tag, attribute, value);
   }
 

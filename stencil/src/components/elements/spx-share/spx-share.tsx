@@ -126,7 +126,7 @@ export class SpxShare {
   @Watch('itemSizeMax')
   @Watch('itemSizeMin')
   // @ts-ignore
-  watchAttributes(value, old, attribute) {
+  attributesChanged(value, old, attribute) {
     setProperty(this.el, tag, attribute, value);
   }
 

@@ -1,7 +1,6 @@
 {
   "name": "spx-accordion",
   "description": "The classic method to show and hide elements on your website. Can be used\nwith custom markup for the header and/or content section.",
-  "shadow": false,
   "properties": [
     {
       "attribute": "class-content",
@@ -177,7 +176,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-accordion-content-color"
     },
     {
       "attribute": "content-font-size",
@@ -191,7 +191,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-accordion-content-font-size"
     },
     {
       "attribute": "content-font-size-max",
@@ -205,7 +206,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-accordion-content-font-size-max"
     },
     {
       "attribute": "content-font-size-min",
@@ -219,7 +221,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-accordion-content-font-size-min"
     },
     {
       "attribute": "content-text",
@@ -253,7 +256,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-accordion-gap"
     },
     {
       "attribute": "gap-max",
@@ -267,7 +271,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-accordion-gap-max"
     },
     {
       "attribute": "gap-min",
@@ -281,7 +286,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-accordion-gap-min"
     },
     {
       "attribute": "header-color",
@@ -295,7 +301,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-accordion-header-color"
     },
     {
       "attribute": "header-font-size",
@@ -309,7 +316,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-accordion-header-font-size"
     },
     {
       "attribute": "header-font-size-max",
@@ -323,7 +331,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-accordion-header-font-size-max"
     },
     {
       "attribute": "header-font-size-min",
@@ -337,7 +346,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-accordion-header-font-size-min"
     },
     {
       "attribute": "header-gap",
@@ -351,7 +361,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-accordion-header-gap"
     },
     {
       "attribute": "header-gap-max",
@@ -365,7 +376,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-accordion-header-gap-max"
     },
     {
       "attribute": "header-gap-min",
@@ -379,7 +391,8 @@
           "name": "css"
         }
       ],
-      "type": "number"
+      "type": "number",
+      "variable": "--spx-accordion-header-gap-min"
     },
     {
       "attribute": "header-text",
@@ -432,7 +445,8 @@
           "name": "css"
         }
       ],
-      "type": "string"
+      "type": "string",
+      "variable": "--spx-accordion-icon-transform"
     },
     {
       "attribute": "icon-type",
