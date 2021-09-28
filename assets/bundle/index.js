@@ -7338,6 +7338,7 @@ function twind(el, condition = true) {
         rose: rose,
       } }, tailwindConfig === null || tailwindConfig === void 0 ? void 0 : tailwindConfig.theme),
     plugins: Object.assign({ focus: apply `${focus} focus-visible:shadow-[var(--spx-focus)]`, 'focus-border': apply `${focus} focus-visible:border-blue-500 focus-visible:shadow-[var(--spx-focus-px)]`, 'focus-out': apply `${focus} focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus:shadow-none` }, tailwindConfig === null || tailwindConfig === void 0 ? void 0 : tailwindConfig.plugins),
+    variants: Object.assign({}, tailwindConfig === null || tailwindConfig === void 0 ? void 0 : tailwindConfig.variatns),
     mode: 'silent',
   });
   if (condition) {

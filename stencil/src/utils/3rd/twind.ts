@@ -66,6 +66,9 @@ export function twind(el, condition = true) {
       'focus-out': apply`${focus} focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus:shadow-none`,
       ...tailwindConfig?.plugins,
     },
+    variants: {
+      ...tailwindConfig?.variatns,
+    },
     mode: 'silent',
   });
 
