@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 4.0.2 =
+* Fix: PHP helpers not working correctly inside Oxygen
+
 = 4.0.1 =
 * Fix: bring asset folder back
 

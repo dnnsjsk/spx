@@ -17,21 +17,21 @@ class Get {
 	 *
 	 * @param        $field
 	 * @param string $type
-	 * @param        $id
-	 * @param        $encode
+	 * @param string $id
+	 * @param bool   $encode
 	 *
 	 * @return string|void
 	 */
-	public static function gallery( $field, string $type, $id, $encode ) {
+	public static function gallery( $field, string $type, string $id = '', bool $encode = false ) {
 
-		if ( $type == 'acf' ) {
-			$array = get_field( $field, $id ?: get_the_ID() );
+		if ( $type === 'acf' ) {
+			$array = get_field( $field, $id === '' ? get_the_ID() : $id );
 
 			return prepare::JSON( $array, $encode );
 
 		}
 
-		if ( $type == 'mb' ) {
+		if ( $type === 'mb' ) {
 			$array = rwmb_get_value( $field );
 
 			return prepare::JSON( $array, $encode );
@@ -48,21 +48,21 @@ class Get {
 	 *
 	 * @param        $field
 	 * @param string $type
-	 * @param        $id
-	 * @param        $encode
+	 * @param string $id
+	 * @param bool   $encode
 	 *
 	 * @return string|void
 	 */
-	public static function images( $field, string $type, $id, $encode ) {
+	public static function images( $field, string $type, string $id = '', bool $encode = false ) {
 
-		if ( $type == 'acf' ) {
-			$array = get_field( $field, $id ?: get_the_ID() );
+		if ( $type === 'acf' ) {
+			$array = get_field( $field, $id === '' ? get_the_ID() : $id );
 
 			return prepare::JSON( $array, $encode );
 
 		}
 
-		if ( $type == 'mb' ) {
+		if ( $type === 'mb' ) {
 			$array = rwmb_get_value( $field );
 
 			return prepare::JSON( $array, $encode );

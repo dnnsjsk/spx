@@ -90,7 +90,7 @@ export class SpxScrollspy {
   /**
    * Gets images from an ACF or Metabox field.
    *
-   * @helper &lt;?php spx\Get::gallery($fieldName, $type; ?>
+   * @helper &lt;?php spxGetImages( $fieldName, $type, $postId ); ?>
    * @function spxGetImages
    */
   @Prop({ reflect: true }) images: string;

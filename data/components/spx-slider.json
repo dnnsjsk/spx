@@ -124,7 +124,7 @@
       "name": "images",
       "tags": [
         {
-          "text": "&lt;?php spx\\Get::gallery($fieldName, $type; ?>",
+          "text": "&lt;?php spxGetImages( $fieldName, $type, $postId ); ?>",
           "name": "helper"
         },
         {

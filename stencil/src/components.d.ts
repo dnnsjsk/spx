@@ -698,7 +698,7 @@ export namespace Components {
         "imageSrc": string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\Get::images($fieldName, $type; ?>
+          * @helper &lt;?php spxGetImages( $fieldName, $type, $postId ); ?>
           * @function spxGetImages
          */
         "images": string;
@@ -843,7 +843,7 @@ export namespace Components {
         "itemUnderlineHover": boolean;
         /**
           * Renders a WordPress menu.
-          * @helper &lt;?php spx\Get::navigation("myMenu") ?>
+          * @helper &lt;?php spxGetNavigation( $menuName ); ?>
           * @function spxGetNavigation
          */
         "menu": string;
@@ -1148,7 +1148,7 @@ export namespace Components {
         "imageSrc": string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\Get::gallery($fieldName, $type; ?>
+          * @helper &lt;?php spxGetImages( $fieldName, $type, $postId ); ?>
           * @function spxGetImages
          */
         "images": string;
@@ -1318,7 +1318,7 @@ export namespace Components {
         "imageSrc": string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\get::gallery($fieldName, $type; ?>
+          * @helper &lt;?php spxGetImages( $fieldName, $type, $postId ); ?>
           * @function spxGetImages
          */
         "images": string;
@@ -2375,7 +2375,7 @@ declare namespace LocalJSX {
         "imageSrc"?: string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\Get::images($fieldName, $type; ?>
+          * @helper &lt;?php spxGetImages( $fieldName, $type, $postId ); ?>
           * @function spxGetImages
          */
         "images"?: string;
@@ -2528,7 +2528,7 @@ declare namespace LocalJSX {
         "itemUnderlineHover"?: boolean;
         /**
           * Renders a WordPress menu.
-          * @helper &lt;?php spx\Get::navigation("myMenu") ?>
+          * @helper &lt;?php spxGetNavigation( $menuName ); ?>
           * @function spxGetNavigation
          */
         "menu"?: string;
@@ -2833,7 +2833,7 @@ declare namespace LocalJSX {
         "imageSrc"?: string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\Get::gallery($fieldName, $type; ?>
+          * @helper &lt;?php spxGetImages( $fieldName, $type, $postId ); ?>
           * @function spxGetImages
          */
         "images"?: string;
@@ -3007,7 +3007,7 @@ declare namespace LocalJSX {
         "imageSrc"?: string;
         /**
           * Gets images from an ACF or Metabox field.
-          * @helper &lt;?php spx\get::gallery($fieldName, $type; ?>
+          * @helper &lt;?php spxGetImages( $fieldName, $type, $postId ); ?>
           * @function spxGetImages
          */
         "images"?: string;

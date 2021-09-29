@@ -59,7 +59,7 @@
       "name": "images",
       "tags": [
         {
-          "text": "&lt;?php spx\\Get::images($fieldName, $type; ?>",
+          "text": "&lt;?php spxGetImages( $fieldName, $type, $postId ); ?>",
           "name": "helper"
         },
         {

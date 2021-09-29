@@ -116,7 +116,7 @@ export class SpxNavigation {
   /**
    * Renders a WordPress menu.
    *
-   * @helper &lt;?php spx\Get::navigation("myMenu") ?>
+   * @helper &lt;?php spxGetNavigation( $menuName ); ?>
    * @function spxGetNavigation
    */
   @Prop({ reflect: true }) menu: string;

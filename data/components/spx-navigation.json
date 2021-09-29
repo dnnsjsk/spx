@@ -256,7 +256,7 @@
       "name": "menu",
       "tags": [
         {
-          "text": "&lt;?php spx\\Get::navigation(\"myMenu\") ?>",
+          "text": "&lt;?php spxGetNavigation( $menuName ); ?>",
           "name": "helper"
         },
         {

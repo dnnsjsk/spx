@@ -26822,7 +26822,7 @@ const properties$b = [
 		name: "images",
 		tags: [
 			{
-				text: "&lt;?php spx\\Get::images($fieldName, $type; ?>",
+				text: "&lt;?php spxGetImages( $fieldName, $type, $postId ); ?>",
 				name: "helper"
 			},
 			{
@@ -27339,7 +27339,7 @@ const properties$9 = [
 		name: "menu",
 		tags: [
 			{
-				text: "&lt;?php spx\\Get::navigation(\"myMenu\") ?>",
+				text: "&lt;?php spxGetNavigation( $menuName ); ?>",
 				name: "helper"
 			},
 			{
@@ -28421,7 +28421,7 @@ const properties$4 = [
 		name: "images",
 		tags: [
 			{
-				text: "&lt;?php spx\\Get::gallery($fieldName, $type; ?>",
+				text: "&lt;?php spxGetImages( $fieldName, $type, $postId ); ?>",
 				name: "helper"
 			},
 			{
@@ -28980,7 +28980,7 @@ const properties$3 = [
 		name: "images",
 		tags: [
 			{
-				text: "&lt;?php spx\\get::gallery($fieldName, $type; ?>",
+				text: "&lt;?php spxGetImages( $fieldName, $type, $postId ); ?>",
 				name: "helper"
 			},
 			{
