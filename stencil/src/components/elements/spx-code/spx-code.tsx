@@ -5,7 +5,6 @@ import {
   EventEmitter,
   // eslint-disable-next-line no-unused-vars
   h,
-  Listen,
   Prop,
   State,
   Watch,
@@ -22,7 +21,6 @@ import { intersectionObserver } from '../../../utils/observer/intersectionObserv
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
 import { sanitize } from '../../../utils/3rd/sanitize';
 import { Button } from '../../../elements/Button';
-import { mutationObserver } from '../../../utils/observer/mutationObserver';
 import { setProperty } from '../../../utils/dom/setProperty';
 
 const tag = 'spx-code';
@@ -44,7 +42,6 @@ export class SpxCode {
   @Element() el: HTMLSpxCodeElement;
 
   @State() contentInner;
-  @State() heightInner;
   @State() text;
 
   /** @css */
@@ -89,9 +86,6 @@ export class SpxCode {
   /** @css */
   @Prop({ reflect: true }) fontSize: string = 'clamp(12px, 1.6vw, 16px)';
 
-  /** @css */
-  @Prop({ reflect: true }) height: string = 'auto';
-
   /** Show scrollbar. */
   @Prop({ reflect: true }) hideScrollbar: boolean = false;
 
@@ -114,9 +108,6 @@ export class SpxCode {
 
   /** @css */
   @Prop({ reflect: true }) maxWidth: string = '100%';
-
-  /** @css */
-  @Prop({ reflect: true }) overflow: string = 'auto';
 
   /** @css */
   @Prop({ reflect: true }) padding: string = 'clamp(20px, 2.4vw, 40px)';
@@ -161,12 +152,10 @@ export class SpxCode {
   @Watch('clipboardButtonTextTransform')
   @Watch('filter')
   @Watch('fontSize')
-  @Watch('height')
   @Watch('lineNumbersBackground')
   @Watch('lineNumbersColor')
   @Watch('lineNumbersStart')
   @Watch('maxWidth')
-  @Watch('overflow')
   @Watch('padding')
   // @ts-ignore
   attributesChanged(value, old, attribute) {
@@ -177,16 +166,6 @@ export class SpxCode {
   // eslint-disable-next-line @stencil/decorators-style
   @Event({ eventName: 'spxCodeDidLoad' })
   spxCodeDidLoad: EventEmitter;
-
-  @Listen('resize', { target: 'window' })
-  onResize() {
-    if (this.height === '100%') {
-      this.el.style.setProperty(
-        '--spx-code-internal-height',
-        this.el.shadowRoot.querySelector('pre').scrollHeight + 'px'
-      );
-    }
-  }
 
   componentWillLoad() {
     if (this.lazy) {
@@ -215,7 +194,6 @@ export class SpxCode {
         'clipboardButtonTextTransform',
         'filter',
         'fontSize',
-        'height',
         'lineNumbersBackground',
         'lineNumbersColor',
         'lineNumbersStart',
@@ -233,8 +211,6 @@ export class SpxCode {
   }
 
   componentWillUpdate() {
-    this.el.style.setProperty('--spx-code-internal-height', '100%');
-    this.onResize();
     globalComponentWillUpdate(this.el);
   }
 
@@ -248,8 +224,6 @@ export class SpxCode {
   };
 
   private highlightCode = () => {
-    this.heightInner = undefined;
-
     const nw = Prism.plugins.NormalizeWhitespace;
     let content = this.content ?? this.el.textContent;
 
@@ -274,21 +248,6 @@ export class SpxCode {
         { length: length },
         () => '<span></span>'
       )}`.replaceAll(',', '');
-
-    mutationObserver(
-      this.el.shadowRoot,
-      {
-        subtree: true,
-        childList: true,
-      },
-      () => {
-        if (this.el.shadowRoot.querySelector('.line-numbers-rows')) {
-          this.heightInner =
-            this.el.shadowRoot.querySelector('pre').scrollHeight;
-        }
-      },
-      true
-    );
   };
 
   render() {

@@ -9,12 +9,10 @@ $clipboardButtonPadding: 6px 12px;
 $clipboardButtonTextTransform: uppercase;
 $filter: '';
 $fontSize: clamp(12px, 1.6vw, 16px);
-$height: auto;
 $lineNumbersBackground: var(--spx-color-gray-800);
 $lineNumbersColor: var(--spx-color-gray-400);
 $lineNumbersStart: 1;
 $maxWidth: 100%;
-$overflow: auto;
 $padding: clamp(20px, 2.4vw, 40px);
 
 :host {
@@ -309,9 +307,9 @@ $padding: clamp(20px, 2.4vw, 40px);
 
 .inner {
   position: relative;
-  overflow: hidden;
   border-radius: variable($tag, 'border-radius', $borderRadius);
   max-width: variable($tag, 'max-width', $maxWidth);
+  overflow: hidden;
 }
 
 pre,
@@ -333,12 +331,11 @@ pre {
   hyphens: none;
   display: flex;
   box-sizing: border-box;
-  height: variable($tag, 'height', $height);
   color: #a9b7c6;
-  overflow: variable($tag, 'overflow', $overflow);
   background: variable($tag, 'background', $background);
   padding: variable($tag, 'padding', $padding);
   padding-bottom: 0;
+  overflow: auto;
 
   :host([hide-scrollbar]) & {
     &::-webkit-scrollbar {
@@ -354,14 +351,11 @@ pre {
     left: 0;
     width: 3.5em;
     background: variable(
-      $tag,
-      'line-numbers-background',
-      $lineNumbersBackground
+                    $tag,
+                    'line-numbers-background',
+                    $lineNumbersBackground
     );
-    height: var(
-      --spx-code-internal-height,
-      #{variable($tag, 'height', $height)}
-    );
+    height: 100%;
   }
 }
 
@@ -444,11 +438,6 @@ code {
   );
   border-bottom-left-radius: variable(
     $tag,
-    'border-radius',
-    var(--spx-border-radius)
-  );
-  border-bottom-right-radius: variable(
-    tag,
     'border-radius',
     var(--spx-border-radius)
   );

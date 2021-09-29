@@ -15,6 +15,11 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 4.0.3 =
+* Code: remove 'overflow' attribute, not necessary - apply to Host element instead
+* Code: remove 'height' attribute, not necessary - apply to Host element instead
+* Code: fix border-radius being applied to the wrong side
+
 = 4.0.2 =
 * Fix: PHP helpers not working correctly inside Oxygen
 

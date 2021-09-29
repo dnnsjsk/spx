@@ -21,7 +21,6 @@
 | `content`                      | `content`                         | Can be used instead of the inner slot.                                    | `string`  | `undefined`                   |
 | `filter`                       | `filter`                          |                                                                           | `string`  | `undefined`                   |
 | `fontSize`                     | `font-size`                       |                                                                           | `string`  | `'clamp(12px, 1.6vw, 16px)'`  |
-| `height`                       | `height`                          |                                                                           | `string`  | `'auto'`                      |
 | `hideScrollbar`                | `hide-scrollbar`                  | Show scrollbar.                                                           | `boolean` | `false`                       |
 | `lazy`                         | `lazy`                            | Load component when it enters the viewport.                               | `boolean` | `undefined`                   |
 | `lineNumbers`                  | `line-numbers`                    | Enable line numbers.                                                      | `boolean` | `true`                        |
@@ -29,7 +28,6 @@
 | `lineNumbersColor`             | `line-numbers-color`              |                                                                           | `string`  | `'var(--spx-color-gray-400)'` |
 | `lineNumbersStart`             | `line-numbers-start`              | Start of line number.                                                     | `number`  | `1`                           |
 | `maxWidth`                     | `max-width`                       |                                                                           | `string`  | `'100%'`                      |
-| `overflow`                     | `overflow`                        |                                                                           | `string`  | `'auto'`                      |
 | `padding`                      | `padding`                         |                                                                           | `string`  | `'clamp(20px, 2.4vw, 40px)'`  |
 | `theme`                        | `theme`                           | Colour theme.                                                             | `string`  | `'default'`                   |
 | `type`                         | `type`                            | Determines the programming language.                                      | `string`  | `'markup'`                    |

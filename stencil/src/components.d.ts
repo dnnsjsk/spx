@@ -311,10 +311,6 @@ export namespace Components {
          */
         "fontSize": string;
         /**
-          * @css
-         */
-        "height": string;
-        /**
           * Show scrollbar.
          */
         "hideScrollbar": boolean;
@@ -342,10 +338,6 @@ export namespace Components {
           * @css
          */
         "maxWidth": string;
-        /**
-          * @css
-         */
-        "overflow": string;
         /**
           * @css
          */
@@ -1964,10 +1956,6 @@ declare namespace LocalJSX {
          */
         "fontSize"?: string;
         /**
-          * @css
-         */
-        "height"?: string;
-        /**
           * Show scrollbar.
          */
         "hideScrollbar"?: boolean;
@@ -1999,10 +1987,6 @@ declare namespace LocalJSX {
           * [event:loaded]
          */
         "onSpxCodeDidLoad"?: (event: CustomEvent<any>) => void;
-        /**
-          * @css
-         */
-        "overflow"?: string;
         /**
           * @css
          */

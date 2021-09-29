@@ -20,12 +20,7 @@ export class SpxEditorContent {
         class="inner"
       >
         {state.modeCode ? (
-          <spx-code
-            font-size="14px"
-            border-radius="0"
-            theme="dracula"
-            height="100%"
-          >
+          <spx-code font-size="14px" border-radius="0" filter="saturate(2)">
             {state.activeCode}
           </spx-code>
         ) : (
