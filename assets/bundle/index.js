@@ -26791,7 +26791,7 @@ const properties$b = [
 	},
 	{
 		attribute: "image-size",
-		description: "WordPress media size when using the helper function..",
+		description: "WordPress media size when using the helper function.",
 		id: "spx-masonry-2",
 		index: 2,
 		name: "imageSize",

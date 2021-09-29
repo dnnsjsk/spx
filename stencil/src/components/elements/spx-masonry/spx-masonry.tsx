@@ -54,7 +54,7 @@ export class SpxMasonry {
    */
   @Prop({ reflect: true }) images: string;
 
-  /** WordPress media size when using the helper function.. */
+  /** WordPress media size when using the helper function. */
   @Prop({ reflect: true }) imageSize: string;
 
   /**

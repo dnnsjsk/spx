@@ -688,7 +688,7 @@ export namespace Components {
          */
         "gap": string;
         /**
-          * WordPress media size when using the helper function..
+          * WordPress media size when using the helper function.
          */
         "imageSize": string;
         /**
@@ -2365,7 +2365,7 @@ declare namespace LocalJSX {
          */
         "gap"?: string;
         /**
-          * WordPress media size when using the helper function..
+          * WordPress media size when using the helper function.
          */
         "imageSize"?: string;
         /**
