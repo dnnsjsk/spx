@@ -5,7 +5,7 @@
  * Plugin URI: https://spx.dev
  * Description: An ever growing collection of flexible web components to supercharge your workflow.
  * Author: Fabrikat
- * Version: 4.0.0
+ * Version: 4.0.1
  * License: GPL2+
  * License URI: https://www.gnu.org/licenses/gpl-2.0.txt
  */

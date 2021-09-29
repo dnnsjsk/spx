@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 4.0.1 =
+* Fix: bring asset folder back
+
 = 4.0.0 =
 * Accordion: make link functionality work if it is a child of Shadow DOM
 * Accordion: prevent re-renders
