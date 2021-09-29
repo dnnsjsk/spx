@@ -80,9 +80,9 @@ class Get {
 	 * @param      $name
 	 * @param bool $encode
 	 *
-	 * @return string|void
+	 * @return string
 	 */
-	public static function navigation( $name, bool $encode = FALSE ) {
+	public static function navigation( $name, bool $encode = FALSE ): string {
 
 		$items = wp_get_nav_menu_items( $name );
 
