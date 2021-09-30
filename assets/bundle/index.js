@@ -25463,26 +25463,11 @@ const properties$i = [
 		variable: "--spx-code-font-size"
 	},
 	{
-		attribute: "height",
-		"default": "auto",
-		description: "",
-		id: "spx-code-14",
-		index: 14,
-		name: "height",
-		tags: [
-			{
-				name: "css"
-			}
-		],
-		type: "string",
-		variable: "--spx-code-height"
-	},
-	{
 		attribute: "hide-scrollbar",
 		"default": "false",
 		description: "Show scrollbar.",
-		id: "spx-code-15",
-		index: 15,
+		id: "spx-code-14",
+		index: 14,
 		name: "hideScrollbar",
 		tags: [
 		],
@@ -25491,8 +25476,8 @@ const properties$i = [
 	{
 		attribute: "lazy",
 		description: "Load component when it enters the viewport.",
-		id: "spx-code-16",
-		index: 16,
+		id: "spx-code-15",
+		index: 15,
 		name: "lazy",
 		tags: [
 		],
@@ -25502,8 +25487,8 @@ const properties$i = [
 		attribute: "line-numbers",
 		"default": "true",
 		description: "Enable line numbers.",
-		id: "spx-code-17",
-		index: 17,
+		id: "spx-code-16",
+		index: 16,
 		name: "lineNumbers",
 		tags: [
 		],
@@ -25513,8 +25498,8 @@ const properties$i = [
 		attribute: "line-numbers-background",
 		"default": "var(--spx-color-gray-800)",
 		description: "",
-		id: "spx-code-18",
-		index: 18,
+		id: "spx-code-17",
+		index: 17,
 		name: "lineNumbersBackground",
 		tags: [
 			{
@@ -25528,8 +25513,8 @@ const properties$i = [
 		attribute: "line-numbers-color",
 		"default": "var(--spx-color-gray-400)",
 		description: "",
-		id: "spx-code-19",
-		index: 19,
+		id: "spx-code-18",
+		index: 18,
 		name: "lineNumbersColor",
 		tags: [
 			{
@@ -25543,8 +25528,8 @@ const properties$i = [
 		attribute: "line-numbers-start",
 		"default": "1",
 		description: "Start of line number.",
-		id: "spx-code-20",
-		index: 20,
+		id: "spx-code-19",
+		index: 19,
 		name: "lineNumbersStart",
 		tags: [
 		],
@@ -25554,8 +25539,8 @@ const properties$i = [
 		attribute: "max-width",
 		"default": "100%",
 		description: "",
-		id: "spx-code-21",
-		index: 21,
+		id: "spx-code-20",
+		index: 20,
 		name: "maxWidth",
 		tags: [
 			{
@@ -25566,26 +25551,11 @@ const properties$i = [
 		variable: "--spx-code-max-width"
 	},
 	{
-		attribute: "overflow",
-		"default": "auto",
-		description: "",
-		id: "spx-code-22",
-		index: 22,
-		name: "overflow",
-		tags: [
-			{
-				name: "css"
-			}
-		],
-		type: "string",
-		variable: "--spx-code-overflow"
-	},
-	{
 		attribute: "padding",
 		"default": "clamp(20px, 2.4vw, 40px)",
 		description: "",
-		id: "spx-code-23",
-		index: 23,
+		id: "spx-code-21",
+		index: 21,
 		name: "padding",
 		tags: [
 			{
@@ -25599,8 +25569,8 @@ const properties$i = [
 		attribute: "theme",
 		"default": "default",
 		description: "Colour theme.",
-		id: "spx-code-24",
-		index: 24,
+		id: "spx-code-22",
+		index: 22,
 		name: "theme",
 		tags: [
 			{
@@ -25614,8 +25584,8 @@ const properties$i = [
 		attribute: "type",
 		"default": "markup",
 		description: "Determines the programming language.",
-		id: "spx-code-25",
-		index: 25,
+		id: "spx-code-23",
+		index: 23,
 		name: "type",
 		tags: [
 			{
@@ -25629,8 +25599,8 @@ const properties$i = [
 		attribute: "whitespace-left-trim",
 		"default": "true",
 		description: "Removes all whitespace from the top of the code block.",
-		id: "spx-code-26",
-		index: 26,
+		id: "spx-code-24",
+		index: 24,
 		name: "whitespaceLeftTrim",
 		tags: [
 		],
@@ -25640,8 +25610,8 @@ const properties$i = [
 		attribute: "whitespace-remove-indent",
 		"default": "true",
 		description: "If the whole code block is indented too much it removes the extra indent.",
-		id: "spx-code-27",
-		index: 27,
+		id: "spx-code-25",
+		index: 25,
 		name: "whitespaceRemoveIndent",
 		tags: [
 		],
@@ -25651,8 +25621,8 @@ const properties$i = [
 		attribute: "whitespace-remove-trailing",
 		"default": "true",
 		description: "Removes trailing whitespace on all lines.",
-		id: "spx-code-28",
-		index: 28,
+		id: "spx-code-26",
+		index: 26,
 		name: "whitespaceRemoveTrailing",
 		tags: [
 		],
@@ -25662,8 +25632,8 @@ const properties$i = [
 		attribute: "whitespace-right-trim",
 		"default": "true",
 		description: "Removes all whitespace from the bottom of the code block.",
-		id: "spx-code-29",
-		index: 29,
+		id: "spx-code-27",
+		index: 27,
 		name: "whitespaceRightTrim",
 		tags: [
 		],
@@ -29471,10 +29441,7 @@ const SpxEditorContent$1 = class extends HTMLElement {
     return (h$4("div", { style: {
         height: `calc(${state.height} - var(--spx-editor-header-height))`,
       }, class: "inner" }, state.modeCode ? (h$4("spx-code", { "font-size": "14px", "border-radius": "0", filter: "saturate(2)" }, state.activeCode)) : (h$4("div", { class: "wrap" }, h$4("div", { style: {
-        height: state.activeComponent === 'spx-iframe' ||
-          state.activeComponent === 'spx-slider'
-          ? '100%'
-          : 'auto',
+        height: state.activeComponent === 'spx-iframe' ? '100%' : 'auto',
       }, id: "content", innerHTML: state.activeCode })))));
   }
   get el() { return this; }

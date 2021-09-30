@@ -28,10 +28,7 @@ export class SpxEditorContent {
             <div
               style={{
                 height:
-                  state.activeComponent === 'spx-iframe' ||
-                  state.activeComponent === 'spx-slider'
-                    ? '100%'
-                    : 'auto',
+                  state.activeComponent === 'spx-iframe' ? '100%' : 'auto',
               }}
               id="content"
               innerHTML={state.activeCode}
