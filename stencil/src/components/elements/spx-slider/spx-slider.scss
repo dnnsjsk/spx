@@ -158,6 +158,7 @@ $prevNextFilter: '';
 }
 
 .swiper-pagination-bullet {
+  vertical-align: middle;
   position: static;
   opacity: 1 !important;
   transition-duration: var(--spx-transition-duration);
