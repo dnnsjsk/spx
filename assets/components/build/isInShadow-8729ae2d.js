@@ -1,0 +1,11 @@
+/**
+ * Check if element is in Shadow DOM.
+ *
+ * @param {HTMLElement} node HTML Element to check.
+ * @returns {boolean} True if node is inside Shadow DOM.
+ */
+function isInShadow(node) {
+  return node.getRootNode() instanceof ShadowRoot;
+}
+
+export { isInShadow as i };

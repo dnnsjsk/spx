@@ -8,14 +8,14 @@ use spx\Get;
  * @date    25/10/2020
  * @since   1.2.1
  *
- * @param $field
- * @param $type
+ * @param        $field
+ * @param        $type
  * @param string $id
- * @param bool $encode
+ * @param bool   $encode
  *
  * @return string|void
  */
-function spxGetGallery( $field, $type, string $id = '', bool $encode = false ) {
+function spxGetGallery( $field, $type, string $id = '', bool $encode = FALSE ) {
 	return Get::gallery( $field, $type, $id, $encode );
 }
 
@@ -25,14 +25,14 @@ function spxGetGallery( $field, $type, string $id = '', bool $encode = false ) {
  * @date    22/09/2021
  * @since   4.0.0
  *
- * @param $field
- * @param $type
+ * @param        $field
+ * @param        $type
  * @param string $id
- * @param bool $encode
+ * @param bool   $encode
  *
  * @return string|void
  */
-function spxGetImages( $field, $type, string $id = '', bool $encode = false ) {
+function spxGetImages( $field, $type, string $id = '', bool $encode = FALSE ) {
 	return Get::images( $field, $type, $id, $encode );
 }
 

@@ -49,11 +49,11 @@ export class SpxEditorComponents {
     this.currentData = data;
   }
 
-  private setActive = (e) => {
-    if (e.target.getAttribute('name-inner')) {
-      state.activeTemplate = e.target.getAttribute('name-inner');
+  private setActive = (component, template = '') => {
+    if (template) {
+      state.activeTemplate = template;
     } else {
-      state.activeComponent = e.target.name;
+      state.activeComponent = component;
       state.activeTemplate =
         this.currentData[state.activeComponent].examples[0];
     }
@@ -102,7 +102,8 @@ export class SpxEditorComponents {
                   name={object.name}
                   tabindex={isActive ? '-1' : '0'}
                   class={`${isActive ? 'is-active' : ''}`}
-                  onClick={this.setActive}
+                  /* eslint-disable-next-line react/jsx-no-bind */
+                  onClick={() => this.setActive(object.name)}
                 >
                   {titleCase(
                     object.name.replace('spx-', '').replaceAll('-', ' ')
@@ -110,14 +111,14 @@ export class SpxEditorComponents {
                 </Button>
                 {object.examples.length >= 2 && (
                   <div class={isActive ? 'is-active' : ''}>
-                    {Object.values(object.examples).map((item) => {
+                    {Object.values(object.examples as string).map((item) => {
                       const isActiveName = state.activeTemplate === item;
 
                       return (
                         <Button
-                          name-inner={item}
                           class={isActiveName ? 'is-active' : ''}
-                          onClick={this.setActive}
+                          /* eslint-disable-next-line react/jsx-no-bind */
+                          onClick={() => this.setActive(object.name, item)}
                         >
                           {isActiveName && <span class="side" />}
                           <span class="text">

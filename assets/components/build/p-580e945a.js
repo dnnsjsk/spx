@@ -1,1 +1,0 @@
-function o(o){var i;(null===(i=null==o?void 0:o.el)||void 0===i?void 0:i.shadowRoot)&&o.el.shadowRoot.querySelectorAll("style[data-emotion]").forEach((o=>o.remove()))}export{o as g}
