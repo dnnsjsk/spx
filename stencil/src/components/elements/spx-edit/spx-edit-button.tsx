@@ -29,8 +29,10 @@ export class SpxEditButton {
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxEditButtonElement;
 
+  @State() discardCustom: boolean;
+  @State() editCustom: boolean;
   @State() loading: boolean = false;
-  @State() open: boolean = false;
+  @State() saveCustom: boolean;
 
   @Prop() test: boolean = false;
 
@@ -92,6 +94,8 @@ export class SpxEditButton {
   @Prop({ reflect: true }) loaderColor: string = '#ffffff';
 
   @Prop({ reflect: true }) loaderGap: string = '0.5em';
+
+  @Prop({ reflect: true, mutable: true }) open: boolean = false;
 
   @Prop({ reflect: true }) padding: string = '1em 1.2em';
 
@@ -174,6 +178,10 @@ export class SpxEditButton {
   /** Fires after pressing the save button. */
   @Event({ eventName: 'spxEditButtonSave' }) spxEditButtonSave: EventEmitter;
 
+  componentWillLoad() {
+    this.checkForSlots();
+  }
+
   componentDidLoad() {
     globalComponentDidLoad({
       el: this.el,
@@ -204,6 +212,7 @@ export class SpxEditButton {
         'top',
         'zIndex',
       ],
+      cb: this.checkForSlots,
     });
     this.spxEditButtonDidLoad.emit({ target: 'document' });
   }
@@ -211,6 +220,20 @@ export class SpxEditButton {
   componentWillUpdate() {
     globalComponentWillUpdate(this.el);
   }
+
+  private checkForSlots = () => {
+    if (this.el.querySelector('[slot="edit"]')) {
+      this.editCustom = true;
+    }
+
+    if (this.el.querySelector('[slot="discard"]')) {
+      this.discardCustom = true;
+    }
+
+    if (this.el.querySelector('[slot="save"]')) {
+      this.saveCustom = true;
+    }
+  };
 
   private clickEdit = () => {
     this.open = true;
@@ -350,7 +373,7 @@ export class SpxEditButton {
             onClick={this.clickEdit}
             class={this.styling === 'headless' ? styleButton : 'button'}
           >
-            {this.textEdit || <slot name="edit" />}
+            {this.editCustom ? <slot name="edit" /> : this.textEdit}
           </Button>
         ) : (
           [
@@ -363,7 +386,7 @@ export class SpxEditButton {
                   : 'button button--discard'
               }
             >
-              {this.textDiscard || <slot name="discard" />}
+              {this.discardCustom ? <slot name="discard" /> : this.textDiscard}
             </Button>,
 
             <Button
@@ -371,14 +394,14 @@ export class SpxEditButton {
               onClick={this.clickSave}
               class={this.styling === 'headless' ? styleButton : 'button'}
             >
-              {this.loading && (
+              {this.loading && !this.saveCustom && (
                 <spx-icon
                   class={this.styling === 'headless' ? styleLoader : 'loader'}
                   type="loader"
                 />
               )}
 
-              {this.textSave || <slot name="save" />}
+              {this.saveCustom ? <slot name="save" /> : this.textSave}
             </Button>,
           ]
         )}

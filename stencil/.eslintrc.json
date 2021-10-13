@@ -23,6 +23,7 @@
     "standard",
     "plugin:@stencil/recommended",
     "plugin:prettier/recommended",
+    "plugin:jest/recommended",
     "plugin:jsdoc/recommended"
   ]
 }

@@ -5,5 +5,12 @@
  * @returns {boolean} True if node is inside Shadow DOM.
  */
 export function isInShadow(node) {
-  return node.getRootNode() instanceof ShadowRoot;
+  let parent = node && node.parentNode;
+  while (parent) {
+    if (parent.toString() === '[object ShadowRoot]') {
+      return true;
+    }
+    parent = parent.parentNode;
+  }
+  return false;
 }

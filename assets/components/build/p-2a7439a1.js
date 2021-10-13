@@ -1,0 +1,1 @@
+import{i as o}from"./p-ddbac711.js";function r(r){return o(r)?r.getRootNode().host.shadowRoot:document}export{r as g}

@@ -38,7 +38,7 @@ export class SpxImageComparison {
 
   @State() width: number;
 
-  @Prop({ reflect: true }) active: boolean;
+  @Prop({ reflect: true, mutable: true }) active: boolean;
 
   /** @css */
   @Prop({ reflect: true }) color: string = '#ffffff';
@@ -98,6 +98,10 @@ export class SpxImageComparison {
     }
   }
 
+  componentWillLoad() {
+    this.active = false;
+  }
+
   componentDidLoad() {
     this.width = this.root.offsetWidth;
 
@@ -105,7 +109,6 @@ export class SpxImageComparison {
       this.scroller.style.pointerEvents = 'none';
     }
 
-    this.active = false;
     this.scroller.addEventListener('mousedown', () => {
       this.active = true;
     });

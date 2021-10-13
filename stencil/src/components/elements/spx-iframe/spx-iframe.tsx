@@ -30,15 +30,13 @@ const tag = 'spx-iframe';
 })
 export class SpxIframe {
   private iframe: HTMLIFrameElement;
+  private parent;
+  private parentHeight;
 
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxIframeElement;
 
-  @State() height: string;
   @State() loaded: boolean;
-  @State() parent;
-  @State() parentHeight;
-  @State() width: string;
 
   /** Automatically resize iframe to fit content. */
   @Prop() fit: boolean;
@@ -200,7 +198,7 @@ export class SpxIframe {
     return (
       <div class="inner">
         <iframe
-          style={{ width: this.size }}
+          style={{ width: this.size, display: this.loaded ? 'block' : 'none' }}
           ref={(el) => (this.iframe = el as HTMLIFrameElement)}
           tabindex="-1"
           src={!this.lazy ? this.src : ''}

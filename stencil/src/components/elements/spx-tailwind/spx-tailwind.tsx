@@ -8,7 +8,6 @@ import {
   State,
 } from '@stencil/core';
 import { globalComponentDidLoad } from '../../../utils/global/globalComponentDidLoad';
-import 'ionicons/dist/index';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
 import { shim } from 'twind/shim/server';
 import { twind } from '../../../utils/3rd/twind';

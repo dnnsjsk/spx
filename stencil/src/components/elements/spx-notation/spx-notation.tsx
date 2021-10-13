@@ -6,7 +6,6 @@ import {
   Prop,
   Element,
   Method,
-  State,
   Event,
   EventEmitter,
 } from '@stencil/core';
@@ -25,13 +24,12 @@ import { isInShadow } from '../../../utils/is/isInShadow';
   styleUrl: 'spx-notation.scss',
 })
 export class SpxNotation {
+  private annotation;
   private keyframes =
     '@keyframes rough-notation-dash { to { stroke-dashoffset: 0; } }';
 
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxNotationElement;
-
-  @State() annotation;
 
   /** Turn animation on or off when animation. */
   @Prop({ reflect: true }) animation: boolean = true;
@@ -78,8 +76,8 @@ export class SpxNotation {
 
   componentDidLoad() {
     if (
-      ((this.el.querySelector(':scope > span > span') &&
-        this.el.querySelector(':scope > span > span').innerHTML.length > 0) ||
+      ((this.el.querySelector('span > span') &&
+        this.el.querySelector('span > span').innerHTML.length > 0) ||
         this.group) &&
       this.autoplay
     ) {
@@ -124,7 +122,7 @@ export class SpxNotation {
 
     if (!this.group) {
       this.annotation = annotate(
-        this.el.querySelector(':scope > span > span'),
+        this.el.querySelector('span > span'),
         // @ts-ignore
         options
       );
@@ -132,7 +130,7 @@ export class SpxNotation {
       this.el.querySelectorAll('[data-spx-notation]').forEach((item) => {
         const obj = {};
         const string = item.getAttribute('data-spx-notation');
-        const arr = string.replaceAll(':', '').replaceAll(', ', ' ').split(' ');
+        const arr = string.replace(/:/g, '').replace(/, /g, ' ').split(' ');
 
         for (let i = 0; i < arr.length; i += 2) {
           obj[arr[i]] = isNaN(Number(arr[i + 1]))

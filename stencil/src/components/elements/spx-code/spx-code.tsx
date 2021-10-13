@@ -247,7 +247,7 @@ export class SpxCode {
       `<span aria-hidden="true" class="line-numbers-rows">${Array.from(
         { length: length },
         () => '<span></span>'
-      )}`.replaceAll(',', '');
+      )}`.replace(/,/g, '');
   };
 
   render() {

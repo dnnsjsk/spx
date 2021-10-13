@@ -17,9 +17,6 @@ export namespace Components {
         "classHeaderActive": string;
         "classHeaderIcon": string;
         "classHeaderIconActive": string;
-        "classHeaderIconContainer": string;
-        "classHeaderIconContainerActive": string;
-        "classHeaderIconContainerInactive": string;
         "classHeaderIconInactive": string;
         "classHeaderInactive": string;
         "classHeaderText": string;
@@ -484,6 +481,7 @@ export namespace Components {
         "left": string;
         "loaderColor": string;
         "loaderGap": string;
+        "open": boolean;
         "padding": string;
         "paddingXMax": number;
         "paddingXMin": number;
@@ -1674,9 +1672,6 @@ declare namespace LocalJSX {
         "classHeaderActive"?: string;
         "classHeaderIcon"?: string;
         "classHeaderIconActive"?: string;
-        "classHeaderIconContainer"?: string;
-        "classHeaderIconContainerActive"?: string;
-        "classHeaderIconContainerInactive"?: string;
         "classHeaderIconInactive"?: string;
         "classHeaderInactive"?: string;
         "classHeaderText"?: string;
@@ -2137,6 +2132,7 @@ declare namespace LocalJSX {
           * Fires after pressing the save button.
          */
         "onSpxEditButtonSave"?: (event: CustomEvent<any>) => void;
+        "open"?: boolean;
         "padding"?: string;
         "paddingXMax"?: number;
         "paddingXMin"?: number;

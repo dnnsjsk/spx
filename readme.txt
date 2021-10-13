@@ -15,6 +15,24 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 4.0.3 =
+* Code: fix border-radius being applied to the wrong side
+* Code: remove 'height' attribute
+* Code: remove 'overflow' attribute
+* Edit button: make sure slots are always used if present
+* Editor: Don't zom inputs on iOS devices
+* Editor: fix changing editor height on mobile after virtual keyboard has been used
+* Icon: fix alignment
+* Iframe: make sure iframe doesn't show before its loaded
+* Iframe: prevent potential extra render when initialising
+* Image Comparison: prevent potential extra render when initialising
+* Mockup: prevent potential extra render when initialising
+* Navigation: prevent potential extra render when initialising
+* Notation: prevent potential extra render when initialising and when in group mode
+* Slider: fix autoplay not working
+* Slider: make sure pagination bullets are always centered
+* Typewriter: prevent potential extra render when initialising
+
 = 4.0.2 =
 * Fix: PHP helpers not working correctly inside Oxygen
 

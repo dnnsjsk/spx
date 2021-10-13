@@ -105,7 +105,7 @@ export class SpxNavigation {
   /** @css */
   @Prop({ reflect: true }) fontSize: string = 'clamp(18px, 1.6vw, 20px)';
 
-  @Prop({ reflect: true }) isMobile: boolean;
+  @Prop({ reflect: true, mutable: true }) isMobile: boolean;
 
   /** Underlines all links. */
   @Prop({ reflect: true }) itemUnderline: boolean;

@@ -7,7 +7,6 @@ import {
   h,
   Listen,
   Prop,
-  State,
   Watch,
 } from '@stencil/core';
 import { globalComponentDidLoad } from '../../../utils/global/globalComponentDidLoad';
@@ -28,16 +27,11 @@ const tag = 'spx-mockup';
   shadow: true,
 })
 export class SpxMockup {
+  private mockup;
+  private parent;
+
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxMockupElement;
-
-  @State() height: string;
-  @State() innerElId;
-  @State() mockup;
-  @State() outerElId;
-  @State() parent;
-  @State() parentHeight;
-  @State() width: string;
 
   /**
    * Samsung S8 color.

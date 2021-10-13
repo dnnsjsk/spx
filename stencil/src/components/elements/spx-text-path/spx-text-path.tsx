@@ -9,7 +9,6 @@ import {
   Watch,
 } from '@stencil/core';
 import { globalComponentDidLoad } from '../../../utils/global/globalComponentDidLoad';
-import 'ionicons/dist/index';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
 import { setProperty } from '../../../utils/dom/setProperty';
 

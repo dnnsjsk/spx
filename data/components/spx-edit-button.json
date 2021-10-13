@@ -203,11 +203,21 @@
       "type": "string"
     },
     {
-      "attribute": "padding",
-      "default": "1em 1.2em",
+      "attribute": "open",
+      "default": "false",
       "description": "",
       "id": "spx-edit-button-19",
       "index": 19,
+      "name": "open",
+      "tags": [],
+      "type": "boolean"
+    },
+    {
+      "attribute": "padding",
+      "default": "1em 1.2em",
+      "description": "",
+      "id": "spx-edit-button-20",
+      "index": 20,
       "name": "padding",
       "tags": [],
       "type": "string"
@@ -216,8 +226,8 @@
       "attribute": "padding-x-max",
       "default": "1.4",
       "description": "",
-      "id": "spx-edit-button-20",
-      "index": 20,
+      "id": "spx-edit-button-21",
+      "index": 21,
       "name": "paddingXMax",
       "tags": [],
       "type": "number"
@@ -226,8 +236,8 @@
       "attribute": "padding-x-min",
       "default": "1",
       "description": "",
-      "id": "spx-edit-button-21",
-      "index": 21,
+      "id": "spx-edit-button-22",
+      "index": 22,
       "name": "paddingXMin",
       "tags": [],
       "type": "number"
@@ -236,8 +246,8 @@
       "attribute": "padding-y-max",
       "default": "1.2",
       "description": "",
-      "id": "spx-edit-button-22",
-      "index": 22,
+      "id": "spx-edit-button-23",
+      "index": 23,
       "name": "paddingYMax",
       "tags": [],
       "type": "number"
@@ -246,8 +256,8 @@
       "attribute": "padding-y-min",
       "default": "0.7",
       "description": "",
-      "id": "spx-edit-button-23",
-      "index": 23,
+      "id": "spx-edit-button-24",
+      "index": 24,
       "name": "paddingYMin",
       "tags": [],
       "type": "number"
@@ -256,8 +266,8 @@
       "attribute": "position",
       "default": "fixed",
       "description": "Position property of component.",
-      "id": "spx-edit-button-24",
-      "index": 24,
+      "id": "spx-edit-button-25",
+      "index": 25,
       "name": "position",
       "tags": [],
       "type": "\"absolute\" | \"fixed\" | \"relative\" | \"static\""
@@ -266,8 +276,8 @@
       "attribute": "right",
       "default": "1em",
       "description": "",
-      "id": "spx-edit-button-25",
-      "index": 25,
+      "id": "spx-edit-button-26",
+      "index": 26,
       "name": "right",
       "tags": [],
       "type": "string"
@@ -276,8 +286,8 @@
       "attribute": "styling",
       "default": "default",
       "description": "Styling.",
-      "id": "spx-edit-button-26",
-      "index": 26,
+      "id": "spx-edit-button-27",
+      "index": 27,
       "name": "styling",
       "tags": [
         {
@@ -291,8 +301,8 @@
       "attribute": "test",
       "default": "false",
       "description": "",
-      "id": "spx-edit-button-27",
-      "index": 27,
+      "id": "spx-edit-button-28",
+      "index": 28,
       "name": "test",
       "tags": [],
       "type": "boolean"
@@ -301,8 +311,8 @@
       "attribute": "text-discard",
       "default": "Discard",
       "description": "Discard button text.",
-      "id": "spx-edit-button-28",
-      "index": 28,
+      "id": "spx-edit-button-29",
+      "index": 29,
       "name": "textDiscard",
       "tags": [],
       "type": "string"
@@ -311,8 +321,8 @@
       "attribute": "text-edit",
       "default": "Edit site",
       "description": "Edit button text.",
-      "id": "spx-edit-button-29",
-      "index": 29,
+      "id": "spx-edit-button-30",
+      "index": 30,
       "name": "textEdit",
       "tags": [],
       "type": "string"
@@ -321,8 +331,8 @@
       "attribute": "text-save",
       "default": "Save",
       "description": "Save button text.",
-      "id": "spx-edit-button-30",
-      "index": 30,
+      "id": "spx-edit-button-31",
+      "index": 31,
       "name": "textSave",
       "tags": [],
       "type": "string"
@@ -330,8 +340,8 @@
     {
       "attribute": "top",
       "description": "",
-      "id": "spx-edit-button-31",
-      "index": 31,
+      "id": "spx-edit-button-32",
+      "index": 32,
       "name": "top",
       "tags": [],
       "type": "string"
@@ -340,8 +350,8 @@
       "attribute": "z-index",
       "default": "99",
       "description": "",
-      "id": "spx-edit-button-32",
-      "index": 32,
+      "id": "spx-edit-button-33",
+      "index": 33,
       "name": "zIndex",
       "tags": [],
       "type": "number"

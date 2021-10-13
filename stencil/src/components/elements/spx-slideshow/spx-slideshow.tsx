@@ -156,7 +156,7 @@ export class SpxSlideshow {
       el: this.el,
       container: this.container,
       cb: () => {
-        this.container.querySelectorAll(':scope > *').forEach((item) => {
+        this.container.querySelectorAll('.inner > *').forEach((item) => {
           const clone = item.cloneNode(true);
           this.clone.appendChild(clone);
         });

@@ -38,7 +38,7 @@ const tag = 'spx-slider';
   styleUrl: 'spx-slider.scss',
   shadow: true,
 })
-export class SpxScrollspy {
+export class SpxSlider {
   private container: HTMLElement;
   private mySwiper;
   private next: HTMLElement;
@@ -417,6 +417,12 @@ export class SpxScrollspy {
         speed: this.speed,
       },
     };
+
+    if (this.autoplay) {
+      this.mySwiper.autoplay.start();
+    } else {
+      this.mySwiper.autoplay.stop();
+    }
   };
 
   private update = () => {

@@ -4,7 +4,6 @@ import {
   // eslint-disable-next-line no-unused-vars
   h,
   Prop,
-  State,
   Method,
   Event,
   EventEmitter,
@@ -24,10 +23,10 @@ import { globalComponentWillUpdate } from '../../../utils/global/globalComponent
   shadow: true,
 })
 export class SpxTypewriter {
+  private typewriter;
+
   // eslint-disable-next-line no-undef
   @Element() el: HTMLSpxTypewriterElement;
-
-  @State() typewriter;
 
   /** Automatically starts writing. */
   @Prop({ reflect: true }) autoStart: boolean = true;

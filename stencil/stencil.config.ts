@@ -128,4 +128,14 @@ export const config: Config = {
     openBrowser: false,
     reloadStrategy: 'pageReload',
   },
+  testing: {
+    setupFilesAfterEnv: ['./jest.config.ts'],
+    transform: {
+      '^.+\\.(ts|tsx|js|jsx|css)$':
+        '<rootDir>/node_modules/@stencil/core/testing/jest-preprocessor.js',
+    },
+    transformIgnorePatterns: [
+      '/node_modules/(?!lodash-es|resize-observer|ionicons)',
+    ],
+  },
 };

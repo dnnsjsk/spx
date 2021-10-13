@@ -73,12 +73,6 @@ export class SpxAccordion {
 
   @Prop({ reflect: true }) classHeaderIconInactive: string;
 
-  @Prop({ reflect: true }) classHeaderIconContainer: string;
-
-  @Prop({ reflect: true }) classHeaderIconContainerActive: string;
-
-  @Prop({ reflect: true }) classHeaderIconContainerInactive: string;
-
   /** @css */
   @Prop({ reflect: true }) contentColor: string = 'var(--spx-color-gray-900)';
 

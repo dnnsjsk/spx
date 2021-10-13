@@ -1,0 +1,1 @@
+function o(o){let t=o&&o.parentNode;for(;t;){if("[object ShadowRoot]"===t.toString())return!0;t=t.parentNode}return!1}export{o as i}
