@@ -7,7 +7,7 @@
  * @since 4.0
  */
 
-if ( ! class_exists( 'spxOxygen' ) ) {
+if ( ! class_exists( 'spxOxygen' ) && apply_filters( 'spx/oxygen_elements', FALSE ) ) {
 
 	class spxOxygen {
 

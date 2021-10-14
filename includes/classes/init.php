@@ -18,7 +18,7 @@ class Init {
 		$localizeArray = [
 			'ajax'   => admin_url( 'admin-ajax.php' ),
 			'postId' => $post->ID,
-			'nonce' => wp_create_nonce( 'ajax-nonce' )
+			'nonce'  => wp_create_nonce( 'ajax-nonce' )
 		];
 
 		wp_enqueue_script(
@@ -75,42 +75,42 @@ class Init {
 	 */
 	private function lazyLoadAssets() {
 
-		$classes   = apply_filters( 'spx/lazyload_whitelist', [ 'oxygen-builder-body' ] );
+		$classes   = apply_filters( 'spx/lazyload_whitelist', [] );
 		$classesJS = implode( ',', $classes );
 
 		add_filter( 'wp_footer', function () use ( &$classesJS ) {
-
-			echo "<script type='text/javascript' id='spx-lazyload'>
-			function getAllTagMatches(regEx) {
-			  return Array.prototype.slice.call(document.body.querySelectorAll('*')).filter(function (el) { 
-			    return el.tagName.match(regEx);
-			  });
+			if ( ! defined( 'SHOW_CT_BUILDER' ) ) {
+				echo "<script type='text/javascript' id='spx-lazyload'>
+				function getAllTagMatches(regEx) {
+				  return Array.prototype.slice.call(document.body.querySelectorAll('*')).filter(function (el) { 
+				    return el.tagName.match(regEx);
+				  });
+				}
+	        
+	            const spxWhitelist = '$classesJS';
+				const spxWhiteListArray = spxWhitelist.replaceAll(' ', '').split(',');
+				let classNumber = 0;
+				spxWhiteListArray.forEach(item => {
+				  if (document.body.classList.contains(item)) {
+				    classNumber++;
+				  }
+			    });
+			    
+			    if (getAllTagMatches(/^spx/i).length >= 1 || classNumber >= 1) {
+				  document.querySelector('#spx-js').src = document.querySelector('#spx-js').getAttribute('data-src');
+				} else {
+                  if (document.querySelector('#spx-js')) {
+				    document.querySelector('#spx-js').remove();
+				  }
+				  if (document.querySelector('#spx-js-extra')) {
+				    document.querySelector('#spx-js-extra').remove();
+				  }
+				  if (document.querySelector('#spx-js-extra')) {
+				    document.querySelector('#spx-css').remove();
+				  }
+				}
+				</script>";
 			}
-		
-			const spxWhitelist = '$classesJS';
-			const spxWhiteListArray = spxWhitelist.replaceAll(' ', '').split(',');
-			let classNumber = 0;
-			spxWhiteListArray.forEach(item => {
-			  if (document.body.classList.contains(item)) {
-			    classNumber++;
-			  }
-		  	});
-		  	
-		  	if (getAllTagMatches(/^spx/i).length === 0 && classNumber === 0) {
-			  if (document.querySelector('#spx-js')) {
-			    document.querySelector('#spx-js').remove();
-			  }
-			  if (document.querySelector('#spx-js-extra')) {
-			    document.querySelector('#spx-js-extra').remove();
-			  }
-			  if (document.querySelector('#spx-js-extra')) {
-			    document.querySelector('#spx-css').remove();
-			  }
-			} else {
-			  document.querySelector('#spx-js').src = document.querySelector('#spx-js').getAttribute('data-src');
-			}
-			</script>";
-
 		} );
 
 	}
@@ -193,7 +193,7 @@ class Init {
 								if ( $key == 'images' ) {
 									$val = explode( ', ', $value );
 
-									$output .= $key . '="' . call_user_func( $helpers[ $key ], $val[0], $val[1], $val[2] ?: get_the_ID(), true ) . '" ';
+									$output .= $key . '="' . call_user_func( $helpers[ $key ], $val[0], $val[1], $val[2] ?: get_the_ID(), TRUE ) . '" ';
 								} else {
 									$output .= $key . '="' . call_user_func( $helpers[ $key ], $value, TRUE ) . '" ';
 								}

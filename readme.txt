@@ -15,6 +15,10 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 4.0.4 =
+* Fix: don't load whitelist logic in Oxygen
+* Fix: don't show spx category in Oxygen elements sidebar
+
 = 4.0.3 =
 * Code: fix border-radius being applied to the wrong side
 * Code: remove 'height' attribute
