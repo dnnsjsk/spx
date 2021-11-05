@@ -77,6 +77,33 @@
       "name": "lazy",
       "tags": [],
       "type": "boolean"
+    },
+    {
+      "attribute": "lightbox",
+      "description": "Will open images in a lightbox on click. Use 'spx-lightbox' and 'spx-lightbox-slider' properties and adjust its settings.",
+      "id": "spx-masonry-6",
+      "index": 6,
+      "name": "lightbox",
+      "tags": [],
+      "type": "boolean"
+    },
+    {
+      "attribute": "spx-lightbox",
+      "description": "Pass attributes to the inner &lt;spx-lightbox> component using a JSON string: { \"overlay-background\": \"red\" }",
+      "id": "spx-masonry-7",
+      "index": 7,
+      "name": "spxLightbox",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "spx-lightbox-slider",
+      "description": "Pass attributes to the inner &lt;spx-slider> component using a JSON string: { \"slides-per-view\": \"2.5\" }",
+      "id": "spx-masonry-8",
+      "index": 8,
+      "name": "spxLightboxSlider",
+      "tags": [],
+      "type": "string"
     }
   ],
   "events": [

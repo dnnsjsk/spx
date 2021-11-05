@@ -39,6 +39,7 @@ export function selectTemplate() {
       parser: 'html',
       plugins: [parserHtml],
     });
+    state.activeCode2 = state.activeCode;
 
     // Set controls.
     const newControls = {};

@@ -36,9 +36,11 @@
  - [spx-iframe](../spx-iframe)
  - [spx-image-comparison](../spx-image-comparison)
  - [spx-lightbox](../spx-lightbox)
+ - [spx-masonry](../spx-masonry)
  - [spx-navigation](../spx-navigation)
  - [spx-share](../spx-share)
  - [spx-slider](../spx-slider)
+ - [spx-slideshow](../spx-slideshow)
 
 ### Depends on
 
@@ -56,9 +58,11 @@ graph TD;
   spx-iframe --> spx-icon
   spx-image-comparison --> spx-icon
   spx-lightbox --> spx-icon
+  spx-masonry --> spx-icon
   spx-navigation --> spx-icon
   spx-share --> spx-icon
   spx-slider --> spx-icon
+  spx-slideshow --> spx-icon
   style spx-icon fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

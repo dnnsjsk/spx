@@ -111,6 +111,9 @@ export class SpxSlider {
   /** Amount of images to to be preloaded when lazy is enabled. */
   @Prop({ reflect: true }) lazyLoadPrevNext: number;
 
+  /** [prop:lightbox] */
+  @Prop({ reflect: true }) lightbox: boolean;
+
   /** Loops all slides infinitely. */
   @Prop({ reflect: true }) loop: boolean;
 
@@ -230,6 +233,12 @@ export class SpxSlider {
   /** Amount of slides shown at once. */
   @Prop({ reflect: true }) slidesPerView: number = 1;
 
+  /** [component:spx-lightbox] */
+  @Prop({ reflect: true }) spxLightbox: string;
+
+  /** [component:spx-slider] */
+  @Prop({ reflect: true }) spxLightboxSlider: string;
+
   /** At which slide component should start. */
   @Prop({ reflect: true }) start: number;
 
@@ -321,6 +330,7 @@ export class SpxSlider {
 
   private init = () => {
     helperImagesCreate({
+      lightbox: this.lightbox,
       images: this.images,
       el: this.el,
       container: this.container,

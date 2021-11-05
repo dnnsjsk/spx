@@ -67,6 +67,15 @@ export class SpxMasonry {
   /** Lazy load images. */
   @Prop({ reflect: true }) lazy: boolean;
 
+  /** [prop:lightbox] */
+  @Prop({ reflect: true }) lightbox: boolean;
+
+  /** [component:spx-lightbox] */
+  @Prop({ reflect: true }) spxLightbox: string;
+
+  /** [component:spx-slider] */
+  @Prop({ reflect: true }) spxLightboxSlider: string;
+
   @Watch('images')
   imagesChanged(newValue: string) {
     if (newValue) this.imagesArray = parse(newValue);
@@ -117,6 +126,7 @@ export class SpxMasonry {
 
   private recursiveInit = () => {
     helperImagesCreate({
+      lightbox: this.lightbox,
       images: this.images,
       el: this.el,
       container: this.container,

@@ -5,6 +5,10 @@ import { find } from 'lodash-es';
 import { Button } from '../../../elements/Button';
 import { getValue } from '../../../utils/editor/getValue';
 import { selectTemplate } from '../../../utils/editor/selectTemplate';
+// @ts-ignore
+import prettier from 'prettier/esm/standalone.mjs';
+// @ts-ignore
+import parserHtml from 'prettier/esm/parser-html.mjs';
 
 @Component({
   tag: 'spx-editor-controls',
@@ -23,6 +27,27 @@ export class SpxEditorControls {
     const id = e.target.getRootNode().host.id
       ? e.target.getRootNode().host.id
       : e.target.getRootNode().host.getRootNode().host.id;
+    const switcher =
+      e.target.getRootNode().host.tagName === 'SPX-CONTROL-SWITCH';
+
+    const html = document.createElement('div');
+    html.innerHTML = state.activeCode2 || state.activeCode;
+    const component = html.querySelector(':scope > *');
+
+    if (switcher) {
+      if (component.hasAttribute(id)) {
+        component.removeAttribute(id);
+      } else {
+        component.setAttribute(id, '');
+      }
+    } else {
+      component.setAttribute(id, e.target.value);
+    }
+
+    state.activeCode2 = prettier.format(html.innerHTML, {
+      parser: 'html',
+      plugins: [parserHtml],
+    });
 
     state.activeControlObject = {
       ...state.activeControlObject,

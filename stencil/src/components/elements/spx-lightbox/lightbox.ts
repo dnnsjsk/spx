@@ -8,6 +8,41 @@ export function lightbox(obj) {
   const onClick = (e) => {
     const padding = 'clamp(30px, 4vw, 40px)';
 
+    const background = obj.lightbox
+      ? obj.host.hasAttribute('spx-lightbox') &&
+        JSON.parse(obj.host.getAttribute('spx-lightbox'))['overlay-background']
+        ? JSON.parse(obj.host.getAttribute('spx-lightbox'))[
+            'overlay-background'
+          ]
+        : 'rgba(0,0,0,0.8)'
+      : obj.el.getAttribute('overlay-background');
+
+    const backdropFilter = obj.lightbox
+      ? obj.host.hasAttribute('spx-lightbox') &&
+        JSON.parse(obj.host.getAttribute('spx-lightbox'))[
+          'overlay-backdrop-filter'
+        ]
+        ? JSON.parse(obj.host.getAttribute('spx-lightbox'))[
+            'overlay-backdrop-filter'
+          ]
+        : 'var(--spx-backdrop-filter)'
+      : obj.el.getAttribute('overlay-backdrop-filter');
+
+    const closeButtonColor = obj.lightbox
+      ? obj.host.hasAttribute('spx-lightbox') &&
+        JSON.parse(obj.host.getAttribute('spx-lightbox'))['close-button-color']
+        ? JSON.parse(obj.host.getAttribute('spx-lightbox'))[
+            'close-button-color'
+          ]
+        : '#ffffff'
+      : obj.el.getAttribute('close-button-color');
+
+    const spxSlider = obj.lightbox
+      ? obj.host.hasAttribute('spx-lightbox-slider')
+        ? obj.host.getAttribute('spx-lightbox-slider')
+        : ''
+      : obj.el.getAttribute('spx-slider');
+
     modal = document.createElement('div');
     modal.style.position = 'fixed';
     modal.style.top = '0';
@@ -18,12 +53,8 @@ export function lightbox(obj) {
     modal.style.display = 'flex';
     modal.style.justifyContent = 'center';
     modal.style.alignItems = 'center';
-    modal.style.background = `var(--spx-lightbox-overlay-background, ${obj.el.getAttribute(
-      'overlay-background'
-    )})`;
-    modal.style.backdropFilter = `var(--spx-lightbox-overlay-backdrop-filter, ${obj.el.getAttribute(
-      'overlay-backdrop-filter'
-    )})`;
+    modal.style.background = `var(--spx-lightbox-overlay-background, ${background})`;
+    modal.style.backdropFilter = `var(--spx-lightbox-overlay-backdrop-filter, ${backdropFilter})`;
     modal.style.zIndex = '99999999999999999999999999999999999999';
 
     const modalInner = document.createElement('div');
@@ -52,9 +83,7 @@ export function lightbox(obj) {
     modalCloseIcon.setAttribute('size', '150%');
     modalCloseIcon.setAttribute(
       'color',
-      `var(--spx-lightbox-close-button-color, ${obj.el.getAttribute(
-        'close-button-color'
-      )})`
+      `var(--spx-lightbox-close-button-color, ${closeButtonColor})`
     );
 
     const slider = document.createElement('spx-slider');
@@ -68,12 +97,15 @@ export function lightbox(obj) {
 
     slider.setAttribute('start', e.target.getAttribute('data-index'));
 
-    if (obj.el.hasAttribute('spx-slider')) {
-      Object.entries(
-        JSON.parse(obj.el.getAttribute('spx-slider')) as unknown
-      ).forEach(([key, value]) => {
-        slider.setAttribute(key, value);
-      });
+    if (
+      obj.el.hasAttribute('spx-slider') ||
+      obj.host.hasAttribute('spx-lightbox-slider')
+    ) {
+      Object.entries(JSON.parse(spxSlider) as unknown).forEach(
+        ([key, value]) => {
+          slider.setAttribute(key, value);
+        }
+      );
     }
 
     modalClose.appendChild(modalCloseIcon);

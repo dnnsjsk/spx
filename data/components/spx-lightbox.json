@@ -69,7 +69,7 @@
     },
     {
       "attribute": "spx-slider",
-      "description": "Pass attributes to the inner <spx-slider> component using a JSON string: { \"slides-per-view\": \"2.5\" }",
+      "description": "Pass attributes to the inner &lt;spx-slider> component using a JSON string: { \"slides-per-view\": \"2.5\" }",
       "id": "spx-lightbox-5",
       "index": 5,
       "name": "spxSlider",

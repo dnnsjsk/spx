@@ -15,6 +15,12 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 4.0.5 =
+* Editor: changing controls adjusts code now
+* Masonry: add lightbox functionality
+* Slider: add lightbox functionality
+* Slideshow: add lightbox functionality
+
 = 4.0.4 =
 * Fix: don't load whitelist logic in Oxygen
 * Fix: don't show spx category in Oxygen elements sidebar

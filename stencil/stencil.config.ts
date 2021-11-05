@@ -76,8 +76,16 @@ async function generateCustomElementsJSON(docsData: JsonDocs) {
                 'Target element. Can take any querySelector value. (id, class, tag etc.)'
               )
               .replace(
+                /\[prop:lightbox\]/gm,
+                "Will open images in a lightbox on click. Use 'spx-lightbox' and 'spx-lightbox-slider' properties and adjust its settings."
+              )
+              .replace(
                 /\[component:spx-slider\]/gm,
-                'Pass attributes to the inner <spx-slider> component using a JSON string: { \\"slides-per-view\\": \\"2.5\\" }'
+                'Pass attributes to the inner &lt;spx-slider> component using a JSON string: { \\"slides-per-view\\": \\"2.5\\" }'
+              )
+              .replace(
+                /\[component:spx-lightbox\]/gm,
+                'Pass attributes to the inner &lt;spx-lightbox> component using a JSON string: { \\"overlay-background\\": \\"red\\" }'
               )
               .replace(
                 /\[event:loaded\]/gm,

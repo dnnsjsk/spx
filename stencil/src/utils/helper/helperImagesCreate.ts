@@ -1,4 +1,5 @@
 import { wrap } from '../dom/wrap';
+import { lightbox } from '../../components/elements/spx-lightbox/lightbox';
 
 /**
  * Check if component has children and create images.
@@ -16,6 +17,17 @@ export function helperImagesCreate(obj) {
 
       wrap(item, wrapper);
     });
+  };
+
+  const lightboxer = () => {
+    if (obj.lightbox) {
+      lightbox({
+        lightbox: obj.lightbox,
+        host: obj.container.getRootNode().host,
+        el: obj.container,
+        query: obj.container.querySelectorAll('img'),
+      });
+    }
   };
 
   if (!obj.images) {
@@ -44,10 +56,13 @@ export function helperImagesCreate(obj) {
       wrapper(div);
 
       obj.container.innerHTML = div.innerHTML;
+
+      lightboxer();
       return obj.cb();
     }
   } else {
     wrapper(obj.container);
+    lightboxer();
     return obj.cb();
   }
 }

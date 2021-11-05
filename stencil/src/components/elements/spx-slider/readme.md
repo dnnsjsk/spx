@@ -20,6 +20,7 @@
 | `images`                            | `images`                               | Gets images from an ACF or Metabox field.                 | `string`  | `undefined`                    |
 | `lazy`                              | `lazy`                                 | Lazy load images.                                         | `boolean` | `undefined`                    |
 | `lazyLoadPrevNext`                  | `lazy-load-prev-next`                  | Amount of images to to be preloaded when lazy is enabled. | `number`  | `undefined`                    |
+| `lightbox`                          | `lightbox`                             | [prop:lightbox]                                           | `boolean` | `undefined`                    |
 | `loop`                              | `loop`                                 | Loops all slides infinitely.                              | `boolean` | `undefined`                    |
 | `maxHeight`                         | `max-height`                           |                                                           | `string`  | `undefined`                    |
 | `navigation`                        | `navigation`                           |                                                           | `boolean` | `true`                         |
@@ -51,6 +52,8 @@
 | `slideMessagePrevious`              | `slide-message-previous`               | Screen reader message for previous slide.                 | `string`  | `'Previous slide'`             |
 | `slidesPerView`                     | `slides-per-view`                      | Amount of slides shown at once.                           | `number`  | `1`                            |
 | `speed`                             | `speed`                                | Sliding speed.                                            | `number`  | `1000`                         |
+| `spxLightbox`                       | `spx-lightbox`                         | [component:spx-lightbox]                                  | `string`  | `undefined`                    |
+| `spxLightboxSlider`                 | `spx-lightbox-slider`                  | [component:spx-slider]                                    | `string`  | `undefined`                    |
 | `start`                             | `start`                                | At which slide component should start.                    | `number`  | `undefined`                    |
 
 
@@ -73,17 +76,23 @@
 ### Used by
 
  - [spx-lightbox](../spx-lightbox)
+ - [spx-masonry](../spx-masonry)
+ - [spx-slider](.)
+ - [spx-slideshow](../spx-slideshow)
 
 ### Depends on
 
 - [spx-icon](../spx-icon)
+- [spx-slider](.)
 
 ### Graph
 ```mermaid
 graph TD;
-  spx-slider --> spx-icon
+  spx-slider --> spx-slider
   spx-icon --> ion-icon
   spx-lightbox --> spx-slider
+  spx-masonry --> spx-slider
+  spx-slideshow --> spx-slider
   style spx-slider fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

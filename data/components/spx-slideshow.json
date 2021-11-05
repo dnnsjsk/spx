@@ -97,11 +97,20 @@
       "type": "boolean"
     },
     {
+      "attribute": "lightbox",
+      "description": "Will open images in a lightbox on click. Use 'spx-lightbox' and 'spx-lightbox-slider' properties and adjust its settings.",
+      "id": "spx-slideshow-7",
+      "index": 7,
+      "name": "lightbox",
+      "tags": [],
+      "type": "boolean"
+    },
+    {
       "attribute": "max-width",
       "default": "300px",
       "description": "Max width of inner elements.",
-      "id": "spx-slideshow-7",
-      "index": 7,
+      "id": "spx-slideshow-8",
+      "index": 8,
       "name": "maxWidth",
       "tags": [
         {
@@ -115,8 +124,8 @@
       "attribute": "object-fit",
       "default": "contain",
       "description": "",
-      "id": "spx-slideshow-8",
-      "index": 8,
+      "id": "spx-slideshow-9",
+      "index": 9,
       "name": "objectFit",
       "tags": [
         {
@@ -129,8 +138,8 @@
     {
       "attribute": "overflow",
       "description": "If not set with this attribute, overflow should be set on the parent element.",
-      "id": "spx-slideshow-9",
-      "index": 9,
+      "id": "spx-slideshow-10",
+      "index": 10,
       "name": "overflow",
       "tags": [
         {
@@ -139,6 +148,24 @@
       ],
       "type": "string",
       "variable": "--spx-slideshow-overflow"
+    },
+    {
+      "attribute": "spx-lightbox",
+      "description": "Pass attributes to the inner &lt;spx-lightbox> component using a JSON string: { \"overlay-background\": \"red\" }",
+      "id": "spx-slideshow-11",
+      "index": 11,
+      "name": "spxLightbox",
+      "tags": [],
+      "type": "string"
+    },
+    {
+      "attribute": "spx-lightbox-slider",
+      "description": "Pass attributes to the inner &lt;spx-slider> component using a JSON string: { \"slides-per-view\": \"2.5\" }",
+      "id": "spx-slideshow-12",
+      "index": 12,
+      "name": "spxLightboxSlider",
+      "tags": [],
+      "type": "string"
     }
   ],
   "events": [

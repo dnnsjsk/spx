@@ -19,22 +19,30 @@ export class SpxEditorContent {
         }}
         class="inner"
       >
-        {state.modeCode ? (
-          <spx-code font-size="14px" border-radius="0" filter="saturate(2)">
-            {state.activeCode}
-          </spx-code>
-        ) : (
-          <div class="wrap">
-            <div
-              style={{
-                height:
-                  state.activeComponent === 'spx-iframe' ? '100%' : 'auto',
-              }}
-              id="content"
-              innerHTML={state.activeCode}
-            />
-          </div>
-        )}
+        <spx-code
+          style={{
+            display: state.modeCode ? 'block' : 'none',
+          }}
+          font-size="14px"
+          border-radius="0"
+          filter="saturate(2)"
+        >
+          {state.activeCode2 || state.activeCode}
+        </spx-code>
+        <div
+          style={{
+            display: state.modeCode ? 'none' : 'block',
+          }}
+          class={`wrap`}
+        >
+          <div
+            style={{
+              height: state.activeComponent === 'spx-iframe' ? '100%' : 'auto',
+            }}
+            id="content"
+            innerHTML={state.activeCode}
+          />
+        </div>
       </div>
     );
   }

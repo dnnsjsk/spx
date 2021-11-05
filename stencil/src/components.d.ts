@@ -696,6 +696,18 @@ export namespace Components {
           * Lazy load images.
          */
         "lazy": boolean;
+        /**
+          * [prop:lightbox]
+         */
+        "lightbox": boolean;
+        /**
+          * [component:spx-lightbox]
+         */
+        "spxLightbox": string;
+        /**
+          * [component:spx-slider]
+         */
+        "spxLightboxSlider": string;
     }
     interface SpxMockup {
         /**
@@ -1151,6 +1163,10 @@ export namespace Components {
          */
         "lazyLoadPrevNext": number;
         /**
+          * [prop:lightbox]
+         */
+        "lightbox": boolean;
+        /**
           * Loops all slides infinitely.
          */
         "loop": boolean;
@@ -1278,6 +1294,14 @@ export namespace Components {
          */
         "speed": number;
         /**
+          * [component:spx-lightbox]
+         */
+        "spxLightbox": string;
+        /**
+          * [component:spx-slider]
+         */
+        "spxLightboxSlider": string;
+        /**
           * At which slide component should start.
          */
         "start": number;
@@ -1317,6 +1341,10 @@ export namespace Components {
          */
         "lazy": boolean;
         /**
+          * [prop:lightbox]
+         */
+        "lightbox": boolean;
+        /**
           * Max width of inner elements.
           * @css
          */
@@ -1330,6 +1358,14 @@ export namespace Components {
           * @css
          */
         "overflow": string;
+        /**
+          * [component:spx-lightbox]
+         */
+        "spxLightbox": string;
+        /**
+          * [component:spx-slider]
+         */
+        "spxLightboxSlider": string;
     }
     interface SpxTailwind {
     }
@@ -2364,9 +2400,21 @@ declare namespace LocalJSX {
          */
         "lazy"?: boolean;
         /**
+          * [prop:lightbox]
+         */
+        "lightbox"?: boolean;
+        /**
           * [event:loaded]
          */
         "onSpxMasonryDidLoad"?: (event: CustomEvent<any>) => void;
+        /**
+          * [component:spx-lightbox]
+         */
+        "spxLightbox"?: string;
+        /**
+          * [component:spx-slider]
+         */
+        "spxLightboxSlider"?: string;
     }
     interface SpxMockup {
         /**
@@ -2826,6 +2874,10 @@ declare namespace LocalJSX {
          */
         "lazyLoadPrevNext"?: number;
         /**
+          * [prop:lightbox]
+         */
+        "lightbox"?: boolean;
+        /**
           * Loops all slides infinitely.
          */
         "loop"?: boolean;
@@ -2957,6 +3009,14 @@ declare namespace LocalJSX {
          */
         "speed"?: number;
         /**
+          * [component:spx-lightbox]
+         */
+        "spxLightbox"?: string;
+        /**
+          * [component:spx-slider]
+         */
+        "spxLightboxSlider"?: string;
+        /**
           * At which slide component should start.
          */
         "start"?: number;
@@ -2996,6 +3056,10 @@ declare namespace LocalJSX {
          */
         "lazy"?: boolean;
         /**
+          * [prop:lightbox]
+         */
+        "lightbox"?: boolean;
+        /**
           * Max width of inner elements.
           * @css
          */
@@ -3013,6 +3077,14 @@ declare namespace LocalJSX {
           * @css
          */
         "overflow"?: string;
+        /**
+          * [component:spx-lightbox]
+         */
+        "spxLightbox"?: string;
+        /**
+          * [component:spx-slider]
+         */
+        "spxLightboxSlider"?: string;
     }
     interface SpxTailwind {
         /**

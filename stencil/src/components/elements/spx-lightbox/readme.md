@@ -37,6 +37,7 @@ graph TD;
   spx-lightbox --> spx-slider
   spx-icon --> ion-icon
   spx-slider --> spx-icon
+  spx-slider --> spx-slider
   style spx-lightbox fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

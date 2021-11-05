@@ -81,6 +81,9 @@ export class SpxSlideshow {
   /** Lazy load images. */
   @Prop({ reflect: true }) lazy: boolean;
 
+  /** [prop:lightbox] */
+  @Prop({ reflect: true }) lightbox: boolean;
+
   /**
    * Max width of inner elements.
    *
@@ -97,6 +100,12 @@ export class SpxSlideshow {
    * @css
    */
   @Prop({ reflect: true }) overflow: string;
+
+  /** [component:spx-lightbox] */
+  @Prop({ reflect: true }) spxLightbox: string;
+
+  /** [component:spx-slider] */
+  @Prop({ reflect: true }) spxLightboxSlider: string;
 
   @Watch('images')
   imagesChanged(newValue: string) {
@@ -152,6 +161,7 @@ export class SpxSlideshow {
 
   private init = () => {
     helperImagesCreate({
+      lightbox: this.lightbox,
       images: this.images,
       el: this.el,
       container: this.container,

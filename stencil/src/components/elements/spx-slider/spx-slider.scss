@@ -94,12 +94,14 @@ $prevNextFilter: '';
   z-index: inherit;
   justify-content: space-between;
   align-items: center;
+  pointer-events:none;
 
   :host([navigation]:not([navigation='false'])) & {
     display: flex;
   }
 
   & > button {
+    pointer-events: auto;
     display: flex;
     justify-content: center;
     align-items: center;

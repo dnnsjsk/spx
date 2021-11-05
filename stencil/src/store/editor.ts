@@ -3,6 +3,7 @@ import { selectTemplate } from '../utils/editor/selectTemplate';
 
 const { state, onChange } = createStore({
   activeCode: '',
+  activeCode2: undefined,
   activeComponent: 'spx-accordion',
   activeControlObject: {},
   activeControls: [],
