@@ -15,6 +15,10 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 4.0.6 =
+* Enhancement: change admin page slug
+* New: React based admin settings page
+
 = 4.0.5 =
 * Editor: changing controls adjusts code now
 * Masonry: add lightbox functionality
