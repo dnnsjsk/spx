@@ -7,64 +7,69 @@
  * @since 4.0
  */
 
-if ( apply_filters( 'spx/oxygen_elements', FALSE ) ) {
+if (apply_filters("spx/oxygen_elements", false)) {
+    $path = SPX_DIR . "/data/components/";
+    $files = array_slice(scandir($path), 2);
 
-	$path  = SPX_DIR . '/data/components/';
-	$files = array_slice( scandir( $path ), 2 );
+    foreach ($files as $file) {
+        $name = basename($file, ".json");
 
-	foreach (
-		$files
+        $object = json_decode(file_get_contents($path . "/" . $file), true);
+        $name = $object["name"];
 
-		as $file
-	) {
+        if (pathinfo($file)["extension"] === "json") {
+            if (
+                !class_exists($name) &&
+                $name != "spx-navigation" &&
+                $name != "spx-notation"
+            ) {
+                $new_class = new class ($object) extends OxyEl {
+                    private $object;
 
-		$name = basename( $file, '.json' );
+                    public function __construct($object)
+                    {
+                        $this->object = $object;
+                        parent::__construct();
+                    }
 
-		$object = json_decode( file_get_contents( $path . '/' . $file ), TRUE );
-		$name   = $object['name'];
+                    function button_place()
+                    {
+                        return "spx::general";
+                    }
 
-		if ( pathinfo( $file )['extension'] === 'json' ) {
+                    function name()
+                    {
+                        return $this->object["name"];
+                    }
 
-			if ( ! class_exists( $name ) && $name != 'spx-navigation' && $name != 'spx-notation' ) {
-				$new_class = new class( $object ) extends OxyEl {
-					private $object;
+                    function tag()
+                    {
+                        return "div";
+                    }
 
-					public function __construct( $object ) {
-						$this->object = $object;
-						parent::__construct();
-					}
+                    function init()
+                    {
+                        $this->enableNesting();
+                    }
 
-					function button_place() {
-						return "spx::general";
-					}
+                    function render($options, $defaults, $content)
+                    {
+                        ?>
+                      <<?php echo $this->object[
+                          "name"
+                      ]; ?> class="oxy-inner-content" <?php do_action("oxygen_vsb_component_attr", $options, $this->options["tag"]); ?>><?php echo do_shortcode($content); ?></<?php echo $this->object["name"]; ?>>
+					<?php
+                    }
 
-					function name() {
-						return $this->object['name'];
-					}
+                    function controls()
+                    {
+                        return [];
+                    }
+                };
 
-					function tag() {
-						return 'div';
-					}
-
-					function init() {
-						$this->enableNesting();
-					}
-
-					function render( $options, $defaults, $content ) { ?>
-                      <<?php echo $this->object['name']; ?> class="oxy-inner-content" <?php do_action( "oxygen_vsb_component_attr", $options, $this->options['tag'] ); ?>><?php echo do_shortcode( $content ); ?></<?php echo $this->object['name']; ?>>
-					<?php }
-
-					function controls() {
-						return [];
-					}
-				};
-
-				$newClassname = get_class( $new_class );
-				class_alias( $newClassname, $name );
-			}
-
-		}
-
-	}
-
+                $newClassname = get_class($new_class);
+                class_alias($newClassname, $name);
+            }
+        }
+    }
 }

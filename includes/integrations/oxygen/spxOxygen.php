@@ -7,25 +7,32 @@
  * @since 4.0
  */
 
-if ( ! class_exists( 'spxOxygen' ) && apply_filters( 'spx/oxygen_elements', FALSE ) ) {
+if (!class_exists("spxOxygen") && apply_filters("spx/oxygen_elements", false)) {
+    class spxOxygen
+    {
+        function __construct()
+        {
+            add_action("oxygen_add_plus_sections", [$this, "registerSections"]);
+            add_action("oxygen_add_plus_spx_section_content", [
+                $this,
+                "registerSubSections",
+            ]);
+        }
 
-	class spxOxygen {
+        function registerSections()
+        {
+            CT_Toolbar::oxygen_add_plus_accordion_section("spx", __("spx"));
+        }
 
-		function __construct() {
-			add_action( 'oxygen_add_plus_sections', array( $this, 'registerSections' ) );
-			add_action( 'oxygen_add_plus_spx_section_content', array( $this, 'registerSubSections' ) );
-		}
+        function registerSubSections()
+        {
+            ?>
+          <h2><?php _e("General", "oxygen"); ?></h2>
+			<?php do_action("oxygen_add_plus_spx_general"); ?>
 
-		function registerSections() {
-			CT_Toolbar::oxygen_add_plus_accordion_section( "spx", __( "spx" ) );
-		}
+		<?php
+        }
+    }
 
-		function registerSubSections() { ?>
-          <h2><?php _e( "General", 'oxygen' ); ?></h2>
-			<?php do_action( "oxygen_add_plus_spx_general" ); ?>
-
-		<?php }
-	}
-
-	new spxOxygen();
+    new spxOxygen();
 }

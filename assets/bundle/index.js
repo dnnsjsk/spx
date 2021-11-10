@@ -26812,7 +26812,7 @@ const properties$b = [
 	},
 	{
 		attribute: "lightbox",
-		description: "Will open images in a lightbox on click.",
+		description: "Will open images in a lightbox on click. Use 'spx-lightbox' and 'spx-lightbox-slider' properties and adjust its settings.",
 		id: "spx-masonry-6",
 		index: 6,
 		name: "lightbox",
@@ -28451,7 +28451,7 @@ const properties$4 = [
 	},
 	{
 		attribute: "lightbox",
-		description: "Will open images in a lightbox on click.",
+		description: "Will open images in a lightbox on click. Use 'spx-lightbox' and 'spx-lightbox-slider' properties and adjust its settings.",
 		id: "spx-slider-13",
 		index: 13,
 		name: "lightbox",
@@ -29030,7 +29030,7 @@ const properties$3 = [
 	},
 	{
 		attribute: "lightbox",
-		description: "Will open images in a lightbox on click.",
+		description: "Will open images in a lightbox on click. Use 'spx-lightbox' and 'spx-lightbox-slider' properties and adjust its settings.",
 		id: "spx-slideshow-7",
 		index: 7,
 		name: "lightbox",

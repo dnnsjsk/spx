@@ -13,6 +13,7 @@
     "@jaames/iro": "^5.5.2",
     "@juggle/resize-observer": "^3.3.1",
     "@popperjs/core": "^2.9.2",
+    "@prettier/plugin-php": "^0.17.6",
     "@stencil/core": "^2.6.0",
     "@stencil/eslint-plugin": "^0.3.1",
     "@stencil/sass": "^1.4.1",
@@ -41,6 +42,7 @@
     "lodash-es": "^4.17.21",
     "macy": "^2.5.1",
     "modern-normalize": "^1.1.0",
+    "mutationobserver-shim": "^0.3.7",
     "nanoid": "^3.1.23",
     "nouislider": "^15.2.0",
     "prettier": "2.4.1",
@@ -54,8 +56,7 @@
     "typescript": "^4.2.4",
     "typewriter-effect": "^2.17.0",
     "uuid-by-string": "^3.0.4",
-    "vanilla-lazyload": "^17.3.1",
-    "mutationobserver-shim": "^0.3.7"
+    "vanilla-lazyload": "^17.3.1"
   },
   "license": "MIT"
 }

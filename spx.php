@@ -12,12 +12,12 @@
 
 use spx\init;
 
-define( 'SPX', __FILE__ );
-define( 'SPX_DIR', __DIR__ );
-define( 'SPX_STORE_URL', 'http://spx.dev' );
-define( 'SPX_ITEM_ID', 75 );
-define( 'SPX_ITEM_NAME', 'spx' );
-define( 'SPX_LICENSE_PAGE', 'spx' );
+define("SPX", __FILE__);
+define("SPX_DIR", __DIR__);
+define("SPX_STORE_URL", "http://spx.dev");
+define("SPX_ITEM_ID", 75);
+define("SPX_ITEM_NAME", "spx");
+define("SPX_LICENSE_PAGE", "spx");
 
 /**
  * Exit if accessed directly.
@@ -25,8 +25,8 @@ define( 'SPX_LICENSE_PAGE', 'spx' );
  * @date    15/07/2020
  * @since   1.0.0
  */
-if ( ! defined( 'ABSPATH' ) ) {
-	exit;
+if (!defined("ABSPATH")) {
+    exit();
 }
 
 /**
@@ -35,28 +35,39 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @date    15/07/2020
  * @since   1.0.0
  */
-require_once plugin_dir_path( __FILE__ ) . 'includes/classes/build.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/classes/prepare.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/classes/get.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/classes/set.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/classes/init.php';
+require_once plugin_dir_path(__FILE__) . "includes/classes/build.php";
+require_once plugin_dir_path(__FILE__) . "includes/classes/prepare.php";
+require_once plugin_dir_path(__FILE__) . "includes/classes/get.php";
+require_once plugin_dir_path(__FILE__) . "includes/classes/set.php";
+require_once plugin_dir_path(__FILE__) . "includes/classes/init.php";
 
-require_once plugin_dir_path( __FILE__ ) . 'includes/functions/edit-ajax-handler.php';
-require_once plugin_dir_path( __FILE__ ) . 'includes/functions/get.php';
+require_once plugin_dir_path(__FILE__) .
+    "includes/functions/edit-ajax-handler.php";
+require_once plugin_dir_path(__FILE__) . "includes/functions/get.php";
 
-if ( class_exists( 'OxyEl' ) ) {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/integrations/oxygen/spxOxygen.php';
-	require_once plugin_dir_path( __FILE__ ) . 'includes/integrations/oxygen/element.php';
-	require_once plugin_dir_path( __FILE__ ) . 'includes/integrations/oxygen/elements.php';
+if (class_exists("OxyEl")) {
+    require_once plugin_dir_path(__FILE__) .
+        "includes/integrations/oxygen/spxOxygen.php";
+    require_once plugin_dir_path(__FILE__) .
+        "includes/integrations/oxygen/element.php";
+    require_once plugin_dir_path(__FILE__) .
+        "includes/integrations/oxygen/elements.php";
 }
 
-if ( ! class_exists( 'EDD_SL_Plugin_Updater' ) ) {
-	include( plugin_dir_path( __FILE__ ) . 'includes/admin/edd-sl-updater.php' );
+if (!class_exists("EDD_SL_Plugin_Updater")) {
+    include plugin_dir_path(__FILE__) . "includes/admin/edd-sl-updater.php";
 }
 
-require_once plugin_dir_path( __FILE__ ) . "includes/admin/spx-updater.php";
+require_once plugin_dir_path(__FILE__) . "includes/admin/spx-updater.php";
 
-SpxPlugin::init( 'spx_', SPX_ITEM_NAME, SPX_STORE_URL, SPX_ITEM_ID, SPX_LICENSE_PAGE, SPX );
+SpxPlugin::init(
+    "spx_",
+    SPX_ITEM_NAME,
+    SPX_STORE_URL,
+    SPX_ITEM_ID,
+    SPX_LICENSE_PAGE,
+    SPX
+);
 
 /**
  * Init spx.

@@ -15,8 +15,9 @@ use spx\Get;
  *
  * @return string|void
  */
-function spxGetGallery( $field, $type, string $id = '', bool $encode = FALSE ) {
-	return Get::gallery( $field, $type, $id, $encode );
+function spxGetGallery($field, $type, string $id = "", bool $encode = false)
+{
+    return Get::gallery($field, $type, $id, $encode);
 }
 
 /**
@@ -32,8 +33,9 @@ function spxGetGallery( $field, $type, string $id = '', bool $encode = FALSE ) {
  *
  * @return string|void
  */
-function spxGetImages( $field, $type, string $id = '', bool $encode = FALSE ) {
-	return Get::images( $field, $type, $id, $encode );
+function spxGetImages($field, $type, string $id = "", bool $encode = false)
+{
+    return Get::images($field, $type, $id, $encode);
 }
 
 /**
@@ -47,6 +49,7 @@ function spxGetImages( $field, $type, string $id = '', bool $encode = FALSE ) {
  *
  * @return string|void
  */
-function spxGetNavigation( $name, bool $encode = FALSE ) {
-	return Get::navigation( $name, $encode );
+function spxGetNavigation($name, bool $encode = false)
+{
+    return Get::navigation($name, $encode);
 }

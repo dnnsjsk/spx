@@ -7,95 +7,95 @@
  * @since 2.0
  */
 
-if ( ! class_exists( 'spxOxyEl' ) ) {
+if (!class_exists("spxOxyEl")) {
+    class spxOxyEl extends OxyEl
+    {
+        function name()
+        {
+            return "spx Element";
+        }
 
-	class spxOxyEl extends OxyEl {
+        function tag()
+        {
+            return ["default" => "div"];
+        }
 
-		function name() {
-			return 'spx Element';
-		}
+        function init()
+        {
+            $this->enableNesting();
+        }
 
-		function tag() {
-			return array( 'default' => 'div' );
-		}
+        function render($options, $defaults, $content)
+        {
+            $tag = $options["spxElement"];
+            $attributes = $options["spxAttributes"];
 
-		function init() {
-			$this->enableNesting();
-		}
+            $output =
+                "<spx-" .
+                $tag .
+                ' class="oxy-inner-content" ' .
+                $attributes .
+                ">";
 
-		function render( $options, $defaults, $content ) {
-			$tag        = $options['spxElement'];
-			$attributes = $options['spxAttributes'];
+            if ($content) {
+                $output .= do_shortcode($content);
+            }
 
-			$output = '<spx-' . $tag . ' class="oxy-inner-content" ' . $attributes . '>';
+            $output .= " </spx-" . $tag . "> ";
 
-			if ( $content ) {
-				$output .= do_shortcode( $content );
-			}
+            echo $output;
+        }
 
-			$output .= ' </spx-' . $tag . '> ';
+        function class_names()
+        {
+            return [];
+        }
 
-			echo $output;
-		}
+        function controls()
+        {
+            $this->addOptionControl([
+                "type" => "dropdown",
+                "name" => "Component",
+                "slug" => "spxElement",
+            ])->setValue([
+                "accordion" => "Accordion",
+                "animate" => "Animate",
+                "class-toggle" => "Class Toggle",
+                "code" => "Code",
+                "edit-button" => "Edit Button",
+                "group" => "Group",
+                "icon" => "Icon",
+                "iframe" => "Iframe",
+                "image-comparison" => "Image Comparison",
+                "lightbox" => "Lightbox",
+                "masonry" => "Masonry",
+                "mockup" => "Mockup",
+                //'navigation'       => 'Navigation',
+                "notation" => "Notation",
+                "offset" => "Offset",
+                "scrollspy" => "Scrollspy",
+                "share" => "Share",
+                "slider" => "Slider",
+                "slideshow" => "Slideshow",
+                "text-path" => "Text Path",
+                "tailwind" => "Tailwind",
+                "typewriter" => "Typewriter",
+            ]);
 
-		function class_names() {
-			return array();
-		}
+            $this->addOptionControl([
+                "type" => "textarea",
+                "name" => __("Attributes"),
+                "slug" => "spxAttributes",
+                "base64" => true,
+            ]);
+        }
+    }
 
-		function controls() {
-			$this->addOptionControl(
-				array(
-					'type' => 'dropdown',
-					'name' => 'Component',
-					'slug' => 'spxElement',
-				)
-			)->setValue( array(
-					'accordion'        => 'Accordion',
-					'animate'          => 'Animate',
-					'class-toggle'     => 'Class Toggle',
-					'code'             => 'Code',
-					'edit-button'      => 'Edit Button',
-					'group'            => 'Group',
-					'icon'             => 'Icon',
-					'iframe'           => 'Iframe',
-					'image-comparison' => 'Image Comparison',
-					'lightbox'         => 'Lightbox',
-					'masonry'          => 'Masonry',
-					'mockup'           => 'Mockup',
-					//'navigation'       => 'Navigation',
-					'notation'         => 'Notation',
-					'offset'           => 'Offset',
-					'scrollspy'        => 'Scrollspy',
-					'share'            => 'Share',
-					'slider'           => 'Slider',
-					'slideshow'        => 'Slideshow',
-					'text-path'        => 'Text Path',
-					'tailwind'         => 'Tailwind',
-					'typewriter'       => 'Typewriter',
-				)
-			);
+    add_filter("oxy_base64_encode_options", function ($items) {
+        $items = array_merge($items, ["oxy-spx-element_spxAttributes"]);
 
-			$this->addOptionControl(
-				array(
-					"type"   => 'textarea',
-					"name"   => __( 'Attributes' ),
-					"slug"   => 'spxAttributes',
-					"base64" => TRUE
-				)
-			);
-		}
-	}
+        return $items;
+    });
 
-	add_filter( "oxy_base64_encode_options",
-		function ( $items ) {
-			$items = array_merge( $items, array(
-				'oxy-spx-element_spxAttributes',
-			) );
-
-			return $items;
-		}
-	);
-
-	new spxOxyEl();
-
+    new spxOxyEl();
 }
