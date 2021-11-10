@@ -15,7 +15,7 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
-= 4.0.6 =
+= 4.0.7 =
 * Enhancement: change admin page slug
 * New: React based admin settings page
 
