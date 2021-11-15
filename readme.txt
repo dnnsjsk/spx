@@ -15,6 +15,9 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 4.0.8 =
+* Code: fix line numbers
+
 = 4.0.7 =
 * Enhancement: change admin page slug
 * New: React based admin settings page

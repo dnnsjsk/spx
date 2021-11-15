@@ -374,7 +374,7 @@ code {
 }
 
 .line-numbers {
-  padding-left: 5.2rem;
+  padding-left: 80px;
   counter-reset: linenumber calc(var(--spx-code-line-numbers-start, 0) - 1);
 }
 
@@ -385,7 +385,7 @@ code {
   position: absolute;
   pointer-events: none;
   font-size: 100%;
-  left: -5.2rem;
+  left: -80px;
   width: 3.5em;
   letter-spacing: -1px;
   user-select: none;
