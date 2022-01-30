@@ -23,6 +23,10 @@ $overflow: '';
   animation-play-state: running;
   animation-duration: variable($tag, 'duration', $duration);
 
+  figure {
+    margin: 0;
+  }
+
   img {
     max-width: 100%;
     width: 100%;
@@ -34,7 +38,7 @@ $overflow: '';
     }
   }
 
-  & > div + div {
+  & > figure + figure {
     margin-left: variable($tag, 'gap', $gap);
   }
 }

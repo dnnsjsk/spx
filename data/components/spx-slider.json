@@ -135,10 +135,20 @@
       "type": "string"
     },
     {
-      "attribute": "lazy",
-      "description": "Lazy load images.",
+      "attribute": "keyboard",
+      "default": "false",
+      "description": "Control slider with arrow key when it is in viewport.",
       "id": "spx-slider-11",
       "index": 11,
+      "name": "keyboard",
+      "tags": [],
+      "type": "boolean"
+    },
+    {
+      "attribute": "lazy",
+      "description": "Lazy load images.",
+      "id": "spx-slider-12",
+      "index": 12,
       "name": "lazy",
       "tags": [],
       "type": "boolean"
@@ -146,8 +156,8 @@
     {
       "attribute": "lazy-load-prev-next",
       "description": "Amount of images to to be preloaded when lazy is enabled.",
-      "id": "spx-slider-12",
-      "index": 12,
+      "id": "spx-slider-13",
+      "index": 13,
       "name": "lazyLoadPrevNext",
       "tags": [],
       "type": "number"
@@ -155,8 +165,8 @@
     {
       "attribute": "lightbox",
       "description": "Will open images in a lightbox on click. Use 'spx-lightbox' and 'spx-lightbox-slider' properties and adjust its settings.",
-      "id": "spx-slider-13",
-      "index": 13,
+      "id": "spx-slider-14",
+      "index": 14,
       "name": "lightbox",
       "tags": [],
       "type": "boolean"
@@ -164,8 +174,8 @@
     {
       "attribute": "loop",
       "description": "Loops all slides infinitely.",
-      "id": "spx-slider-14",
-      "index": 14,
+      "id": "spx-slider-15",
+      "index": 15,
       "name": "loop",
       "tags": [],
       "type": "boolean"
@@ -173,8 +183,8 @@
     {
       "attribute": "max-height",
       "description": "",
-      "id": "spx-slider-15",
-      "index": 15,
+      "id": "spx-slider-16",
+      "index": 16,
       "name": "maxHeight",
       "tags": [
         {
@@ -188,8 +198,8 @@
       "attribute": "navigation",
       "default": "true",
       "description": "",
-      "id": "spx-slider-16",
-      "index": 16,
+      "id": "spx-slider-17",
+      "index": 17,
       "name": "navigation",
       "tags": [],
       "type": "boolean"
@@ -198,8 +208,8 @@
       "attribute": "navigation-backdrop-filter",
       "default": "var(--spx-backdrop-filter)",
       "description": "",
-      "id": "spx-slider-17",
-      "index": 17,
+      "id": "spx-slider-18",
+      "index": 18,
       "name": "navigationBackdropFilter",
       "tags": [
         {
@@ -213,8 +223,8 @@
       "attribute": "navigation-background",
       "default": "rgba(0,0,0,0.7)",
       "description": "",
-      "id": "spx-slider-18",
-      "index": 18,
+      "id": "spx-slider-19",
+      "index": 19,
       "name": "navigationBackground",
       "tags": [
         {
@@ -228,8 +238,8 @@
       "attribute": "navigation-background-hover",
       "default": "rgba(0,0,0,1)",
       "description": "",
-      "id": "spx-slider-19",
-      "index": 19,
+      "id": "spx-slider-20",
+      "index": 20,
       "name": "navigationBackgroundHover",
       "tags": [
         {
@@ -243,8 +253,8 @@
       "attribute": "navigation-border-radius",
       "default": "var(--spx-border-radius)",
       "description": "",
-      "id": "spx-slider-20",
-      "index": 20,
+      "id": "spx-slider-21",
+      "index": 21,
       "name": "navigationBorderRadius",
       "tags": [
         {
@@ -258,8 +268,8 @@
       "attribute": "navigation-color",
       "default": "#ffffff",
       "description": "",
-      "id": "spx-slider-21",
-      "index": 21,
+      "id": "spx-slider-22",
+      "index": 22,
       "name": "navigationColor",
       "tags": [
         {
@@ -273,8 +283,8 @@
       "attribute": "navigation-distance-x",
       "default": "12px",
       "description": "Navigation distance.",
-      "id": "spx-slider-22",
-      "index": 22,
+      "id": "spx-slider-23",
+      "index": 23,
       "name": "navigationDistanceX",
       "tags": [
         {
@@ -288,8 +298,8 @@
       "attribute": "navigation-icon-next",
       "default": "arrow-forward",
       "description": "Navigation icon type.",
-      "id": "spx-slider-23",
-      "index": 23,
+      "id": "spx-slider-24",
+      "index": 24,
       "name": "navigationIconNext",
       "tags": [],
       "type": "string"
@@ -298,8 +308,8 @@
       "attribute": "navigation-icon-prev",
       "default": "arrow-back",
       "description": "Navigation icon type.",
-      "id": "spx-slider-24",
-      "index": 24,
+      "id": "spx-slider-25",
+      "index": 25,
       "name": "navigationIconPrev",
       "tags": [],
       "type": "string"
@@ -308,8 +318,8 @@
       "attribute": "navigation-icon-type",
       "default": "ionicons",
       "description": "Navigation icon type.",
-      "id": "spx-slider-25",
-      "index": 25,
+      "id": "spx-slider-26",
+      "index": 26,
       "name": "navigationIconType",
       "tags": [],
       "type": "string"
@@ -318,8 +328,8 @@
       "attribute": "navigation-padding",
       "default": "12px",
       "description": "",
-      "id": "spx-slider-26",
-      "index": 26,
+      "id": "spx-slider-27",
+      "index": 27,
       "name": "navigationPadding",
       "tags": [
         {
@@ -333,8 +343,8 @@
       "attribute": "navigation-size",
       "default": "20px",
       "description": "Navigation size.",
-      "id": "spx-slider-27",
-      "index": 27,
+      "id": "spx-slider-28",
+      "index": 28,
       "name": "navigationSize",
       "tags": [
         {
@@ -348,8 +358,8 @@
       "attribute": "pagination",
       "default": "bullets",
       "description": "Pagination type.",
-      "id": "spx-slider-28",
-      "index": 28,
+      "id": "spx-slider-29",
+      "index": 29,
       "name": "pagination",
       "tags": [
         {
@@ -363,8 +373,8 @@
       "attribute": "pagination-backdrop-filter",
       "default": "var(--spx-backdrop-filter)",
       "description": "",
-      "id": "spx-slider-29",
-      "index": 29,
+      "id": "spx-slider-30",
+      "index": 30,
       "name": "paginationBackdropFilter",
       "tags": [
         {
@@ -378,8 +388,8 @@
       "attribute": "pagination-background",
       "default": "rgba(0,0,0,0.7)",
       "description": "",
-      "id": "spx-slider-30",
-      "index": 30,
+      "id": "spx-slider-31",
+      "index": 31,
       "name": "paginationBackground",
       "tags": [
         {
@@ -393,8 +403,8 @@
       "attribute": "pagination-bullets-background",
       "default": "var(--spx-color-gray-500)",
       "description": "",
-      "id": "spx-slider-31",
-      "index": 31,
+      "id": "spx-slider-32",
+      "index": 32,
       "name": "paginationBulletsBackground",
       "tags": [
         {
@@ -408,8 +418,8 @@
       "attribute": "pagination-bullets-background-active",
       "default": "#ffffff",
       "description": "",
-      "id": "spx-slider-32",
-      "index": 32,
+      "id": "spx-slider-33",
+      "index": 33,
       "name": "paginationBulletsBackgroundActive",
       "tags": [
         {
@@ -422,8 +432,8 @@
     {
       "attribute": "pagination-bullets-clickable",
       "description": "Make bullets clickable.",
-      "id": "spx-slider-33",
-      "index": 33,
+      "id": "spx-slider-34",
+      "index": 34,
       "name": "paginationBulletsClickable",
       "tags": [],
       "type": "boolean"
@@ -432,8 +442,8 @@
       "attribute": "pagination-bullets-dynamic",
       "default": "false",
       "description": "Will only keep a selected amount of bullets visible.",
-      "id": "spx-slider-34",
-      "index": 34,
+      "id": "spx-slider-35",
+      "index": 35,
       "name": "paginationBulletsDynamic",
       "tags": [],
       "type": "boolean"
@@ -442,8 +452,8 @@
       "attribute": "pagination-bullets-dynamic-amount",
       "default": "5",
       "description": "Amount of dynamic bullets.",
-      "id": "spx-slider-35",
-      "index": 35,
+      "id": "spx-slider-36",
+      "index": 36,
       "name": "paginationBulletsDynamicAmount",
       "tags": [],
       "type": "number"
@@ -452,8 +462,8 @@
       "attribute": "pagination-bullets-gap",
       "default": "6px",
       "description": "Space between the bullets.",
-      "id": "spx-slider-36",
-      "index": 36,
+      "id": "spx-slider-37",
+      "index": 37,
       "name": "paginationBulletsGap",
       "tags": [
         {
@@ -467,8 +477,8 @@
       "attribute": "pagination-bullets-size",
       "default": "6px",
       "description": "Size of the bullets.",
-      "id": "spx-slider-37",
-      "index": 37,
+      "id": "spx-slider-38",
+      "index": 38,
       "name": "paginationBulletsSize",
       "tags": [
         {
@@ -481,8 +491,8 @@
     {
       "attribute": "prev-next-filter",
       "description": "Filter property for the previous and next elements.",
-      "id": "spx-slider-38",
-      "index": 38,
+      "id": "spx-slider-39",
+      "index": 39,
       "name": "prevNextFilter",
       "tags": [
         {
@@ -496,8 +506,8 @@
       "attribute": "slide-message-first",
       "default": "This is the first slide",
       "description": "Screen reader message for first slide.",
-      "id": "spx-slider-39",
-      "index": 39,
+      "id": "spx-slider-40",
+      "index": 40,
       "name": "slideMessageFirst",
       "tags": [],
       "type": "string"
@@ -506,8 +516,8 @@
       "attribute": "slide-message-last",
       "default": "This is the last slide",
       "description": "Screen reader message for last slide.",
-      "id": "spx-slider-40",
-      "index": 40,
+      "id": "spx-slider-41",
+      "index": 41,
       "name": "slideMessageLast",
       "tags": [],
       "type": "string"
@@ -516,8 +526,8 @@
       "attribute": "slide-message-next",
       "default": "Next slide",
       "description": "Screen reader message for next slide.",
-      "id": "spx-slider-41",
-      "index": 41,
+      "id": "spx-slider-42",
+      "index": 42,
       "name": "slideMessageNext",
       "tags": [],
       "type": "string"
@@ -526,8 +536,8 @@
       "attribute": "slide-message-previous",
       "default": "Previous slide",
       "description": "Screen reader message for previous slide.",
-      "id": "spx-slider-42",
-      "index": 42,
+      "id": "spx-slider-43",
+      "index": 43,
       "name": "slideMessagePrevious",
       "tags": [],
       "type": "string"
@@ -536,8 +546,8 @@
       "attribute": "slides-per-view",
       "default": "1",
       "description": "Amount of slides shown at once.",
-      "id": "spx-slider-43",
-      "index": 43,
+      "id": "spx-slider-44",
+      "index": 44,
       "name": "slidesPerView",
       "tags": [],
       "type": "number"
@@ -546,8 +556,8 @@
       "attribute": "speed",
       "default": "1000",
       "description": "Sliding speed.",
-      "id": "spx-slider-44",
-      "index": 44,
+      "id": "spx-slider-45",
+      "index": 45,
       "name": "speed",
       "tags": [],
       "type": "number"
@@ -555,8 +565,8 @@
     {
       "attribute": "spx-lightbox",
       "description": "Pass attributes to the inner &lt;spx-lightbox> component using a JSON string: { \"overlay-background\": \"red\" }",
-      "id": "spx-slider-45",
-      "index": 45,
+      "id": "spx-slider-46",
+      "index": 46,
       "name": "spxLightbox",
       "tags": [],
       "type": "string"
@@ -564,8 +574,8 @@
     {
       "attribute": "spx-lightbox-slider",
       "description": "Pass attributes to the inner &lt;spx-slider> component using a JSON string: { \"slides-per-view\": \"2.5\" }",
-      "id": "spx-slider-46",
-      "index": 46,
+      "id": "spx-slider-47",
+      "index": 47,
       "name": "spxLightboxSlider",
       "tags": [],
       "type": "string"
@@ -573,8 +583,8 @@
     {
       "attribute": "start",
       "description": "At which slide component should start.",
-      "id": "spx-slider-47",
-      "index": 47,
+      "id": "spx-slider-48",
+      "index": 48,
       "name": "start",
       "tags": [],
       "type": "number"

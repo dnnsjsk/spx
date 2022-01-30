@@ -15,6 +15,16 @@ Supercharge your workflow using handy components for the next project. Works wit
 
 == Changelog ==
 
+= 4.0.10 =
+* Fix: PHP 8 errors when using shortcodes
+* Fix: make sure lazy loading fires when using image helper
+* Fix: prevent /false image url if lazy loading is used
+* Lightbox: fix JS errors
+* Masonry: use figure as image wrapper element instead of div
+* Slider: add 'keyboard' attribute to control Slider with arrow keys when it is in viewport
+* Slider: use figure as image wrapper element instead of div
+* Slideshow: use figure as image wrapper element instead of div
+
 = 4.0.9 =
 * Fix: PHP 8 warnings
 

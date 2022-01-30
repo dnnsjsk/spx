@@ -10,12 +10,18 @@ import { lightbox } from '../../components/elements/spx-lightbox/lightbox';
 export function helperImagesCreate(obj) {
   const wrapper = (el) => {
     Array.from(el.children).forEach((item) => {
-      const wrapper = document.createElement('div');
-      if (obj.el.tagName === 'SPX-SLIDER') {
-        wrapper.classList.add('swiper-slide');
-      }
+      if ((item as HTMLElement).tagName === 'FIGURE') {
+        if (obj.el.tagName === 'SPX-SLIDER') {
+          (item as HTMLElement).classList.add('swiper-slide');
+        }
+      } else {
+        const wrapper = document.createElement('figure');
+        if (obj.el.tagName === 'SPX-SLIDER') {
+          wrapper.classList.add('swiper-slide');
+        }
 
-      wrap(item, wrapper);
+        wrap(item, wrapper);
+      }
     });
   };
 
@@ -31,7 +37,7 @@ export function helperImagesCreate(obj) {
   };
 
   if (!obj.images) {
-    const div = document.createElement('div');
+    const figure = document.createElement('figure');
     const elements = obj.el.querySelectorAll('img');
 
     if (
@@ -50,12 +56,12 @@ export function helperImagesCreate(obj) {
         if (obj.el.tagName === 'SPX-SLIDER' && obj.lazy) {
           img.classList.add('swiper-lazy');
         }
-        div.append(img);
+        figure.append(img);
       });
 
-      wrapper(div);
+      wrapper(figure);
 
-      obj.container.innerHTML = div.innerHTML;
+      obj.container.innerHTML = figure.innerHTML;
 
       lightboxer();
       return obj.cb();

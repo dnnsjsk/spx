@@ -11,7 +11,8 @@ $gap: 10px;
     calc(#{variable($tag, 'gap', $gap)} / 2 * -1) 0
     calc(#{variable($tag, 'gap', $gap)} / 2 * -1);
 
-  & > div {
+  & > figure {
+    margin: 0;
     padding: variable($tag, 'gap', $gap) calc(#{variable($tag, 'gap', $gap)} / 2) 0
       calc(#{variable($tag, 'gap', $gap)} / 2);
     box-sizing: border-box;

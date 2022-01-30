@@ -17,6 +17,7 @@ import Swiper, {
   Thumbs,
   Lazy,
   EffectFade,
+  Keyboard,
 } from 'swiper';
 import { globalComponentDidLoad } from '../../../utils/global/globalComponentDidLoad';
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
@@ -25,6 +26,7 @@ import { Button } from '../../../elements/Button';
 import { setProperty } from '../../../utils/dom/setProperty';
 import { parse } from '../../../utils/strings/parse';
 import { helperImagesCreate } from '../../../utils/helper/helperImagesCreate';
+import { lazy } from '../../../utils/3rd/lazy';
 
 const tag = 'spx-slider';
 
@@ -104,6 +106,9 @@ export class SpxSlider {
    * @choice acf, mb
    */
   @Prop({ reflect: true }) imageSrc: string = 'acf';
+
+  /** Control slider with arrow key when it is in viewport. */
+  @Prop({ reflect: true }) keyboard: boolean = false;
 
   /** Lazy load images. */
   @Prop({ reflect: true }) lazy: boolean;
@@ -322,6 +327,13 @@ export class SpxSlider {
     this.spxSliderDidLoad.emit({ target: 'document' });
   }
 
+  componentDidRender() {
+    lazy({
+      el: this.el,
+      condition: this.lazy,
+    });
+  }
+
   componentWillUpdate() {
     this.setParams();
     this.mySwiper.update();
@@ -344,6 +356,7 @@ export class SpxSlider {
           Thumbs,
           Lazy,
           EffectFade,
+          Keyboard,
         ]);
 
         this.mySwiper = new Swiper(this.swiperContainer, {
@@ -385,6 +398,10 @@ export class SpxSlider {
         centeredSlides: this.centeredSlides,
         direction: 'horizontal',
         effect: this.effect as 'slide' | 'fade',
+        keyboard: {
+          enabled: this.keyboard,
+          onlyInViewport: false,
+        },
         lazy: this.lazy
           ? {
               ...this.mySwiper.params.lazy,

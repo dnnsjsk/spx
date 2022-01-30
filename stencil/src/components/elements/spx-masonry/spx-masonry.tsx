@@ -114,6 +114,13 @@ export class SpxMasonry {
     this.spxMasonryDidLoad.emit({ target: 'document' });
   }
 
+  componentDidRender() {
+    lazy({
+      el: this.el,
+      condition: this.lazy,
+    });
+  }
+
   componentWillUpdate() {
     this.macyState?.remove();
     this.init();

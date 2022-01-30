@@ -18,6 +18,7 @@
 | `imageSize`                         | `image-size`                           | WordPress media size when using the helper function.      | `string`  | `undefined`                    |
 | `imageSrc`                          | `image-src`                            | Gets images from an ACF or Metabox field.                 | `string`  | `'acf'`                        |
 | `images`                            | `images`                               | Gets images from an ACF or Metabox field.                 | `string`  | `undefined`                    |
+| `keyboard`                          | `keyboard`                             | Control slider with arrow key when it is in viewport.     | `boolean` | `false`                        |
 | `lazy`                              | `lazy`                                 | Lazy load images.                                         | `boolean` | `undefined`                    |
 | `lazyLoadPrevNext`                  | `lazy-load-prev-next`                  | Amount of images to to be preloaded when lazy is enabled. | `number`  | `undefined`                    |
 | `lightbox`                          | `lightbox`                             | [prop:lightbox]                                           | `boolean` | `undefined`                    |

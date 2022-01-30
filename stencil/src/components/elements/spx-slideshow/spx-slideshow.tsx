@@ -155,6 +155,13 @@ export class SpxSlideshow {
     this.spxSlideshowDidLoad.emit({ target: 'document' });
   }
 
+  componentDidRender() {
+    lazy({
+      el: this.el,
+      condition: this.lazy,
+    });
+  }
+
   componentWillUpdate() {
     globalComponentWillUpdate(this.el);
   }

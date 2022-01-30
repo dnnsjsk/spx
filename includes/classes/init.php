@@ -191,7 +191,7 @@ class Init
                     $helpers = [];
 
                     foreach ($object["properties"] as $prop) {
-                        $array[$prop["attribute"]] = $prop["default"]
+                        $array[$prop["attribute"]] = isset($prop["default"])
                             ? trim($prop["default"], '\'"')
                             : "";
                         array_walk_recursive($prop["tags"], function (
@@ -213,7 +213,7 @@ class Init
                     $output = "<" . $name . " ";
                     foreach ($a as $key => $value) {
                         if (!empty($value) || $value == "0") {
-                            if ($helpers[$key]) {
+                            if (isset($helpers[$key])) {
                                 if ($key == "images") {
                                     $val = explode(", ", $value);
 
@@ -224,7 +224,7 @@ class Init
                                             $helpers[$key],
                                             $val[0],
                                             $val[1],
-                                            $val[2] ?: get_the_ID(),
+	                                        $val[2] ?? get_the_ID(),
                                             true
                                         ) .
                                         '" ';

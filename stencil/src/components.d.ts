@@ -1155,6 +1155,10 @@ export namespace Components {
          */
         "images": string;
         /**
+          * Control slider with arrow key when it is in viewport.
+         */
+        "keyboard": boolean;
+        /**
           * Lazy load images.
          */
         "lazy": boolean;
@@ -2865,6 +2869,10 @@ declare namespace LocalJSX {
           * @function spxGetImages
          */
         "images"?: string;
+        /**
+          * Control slider with arrow key when it is in viewport.
+         */
+        "keyboard"?: boolean;
         /**
           * Lazy load images.
          */

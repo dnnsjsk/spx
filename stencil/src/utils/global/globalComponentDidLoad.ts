@@ -1,5 +1,4 @@
 import { mutationObserver } from '../observer/mutationObserver';
-import { lazy } from '../3rd/lazy';
 import { setProperty } from '../dom/setProperty';
 import { kebabize } from '../strings/kebabize';
 import { startsWith } from 'lodash-es';
@@ -57,10 +56,4 @@ export function globalComponentDidLoad(obj) {
       setProperty(obj.el, obj.tag, item, obj.el.getAttribute(kebabize(item)));
     });
   }
-
-  /** Lazy loading for image components. */
-  lazy({
-    el: obj.el,
-    condition: obj.lazy,
-  });
 }

@@ -38,8 +38,8 @@ export function lightbox(obj) {
       : obj.el.getAttribute('close-button-color');
 
     const spxSlider = obj.lightbox
-      ? obj.host.hasAttribute('spx-lightbox-slider')
-        ? obj.host.getAttribute('spx-lightbox-slider')
+      ? obj.host?.hasAttribute('spx-lightbox-slider')
+        ? obj.host?.getAttribute('spx-lightbox-slider')
         : ''
       : obj.el.getAttribute('spx-slider');
 
@@ -99,7 +99,7 @@ export function lightbox(obj) {
 
     if (
       obj.el.hasAttribute('spx-slider') ||
-      obj.host.hasAttribute('spx-lightbox-slider')
+      obj.host?.hasAttribute('spx-lightbox-slider')
     ) {
       Object.entries(JSON.parse(spxSlider) as unknown).forEach(
         ([key, value]) => {

@@ -14,6 +14,7 @@ import { globalComponentDidLoad } from '../../../utils/global/globalComponentDid
 import { globalComponentWillUpdate } from '../../../utils/global/globalComponentWillUpdate';
 import { Button } from '../../../elements/Button';
 import { setProperty } from '../../../utils/dom/setProperty';
+import { lazy } from '../../../utils/3rd/lazy';
 
 const tag = 'spx-image-comparison';
 
@@ -100,6 +101,13 @@ export class SpxImageComparison {
 
   componentWillLoad() {
     this.active = false;
+  }
+
+  componentDidRender() {
+    lazy({
+      el: this.el,
+      condition: this.lazy,
+    });
   }
 
   componentDidLoad() {

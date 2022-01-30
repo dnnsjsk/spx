@@ -1,0 +1,1 @@
+import{l as e}from"./p-2dd4b371.js";function o(o){o.condition&&new e({unobserve_entered:!0,unobserve_completed:!0},o.el.shadowRoot.querySelectorAll("[data-src]"))}export{o as l}
