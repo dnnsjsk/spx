@@ -1,7 +1,7 @@
 === spx ===
 Contributors: dnnsjsk
 Requires at least: 5.0
-Tested up to: 5.8.2
+Tested up to: 5.9.3
 Requires PHP: 7.0
 Stable tag: 2.0
 License: GPLv2 or later
@@ -14,6 +14,9 @@ A web component page builder for WordPress developers like you!
 Supercharge your workflow using handy components for the next project. Works with any theme, browser and existing code.
 
 == Changelog ==
+
+= 4.0.11 =
+* Fix: license activation not working for PHP 8+
 
 = 4.0.10 =
 * Fix: PHP 8 errors when using shortcodes

@@ -23,6 +23,7 @@
 | `fontSize`                     | `font-size`                       |                                                                           | `string`  | `'clamp(12px, 1.6vw, 16px)'`  |
 | `hideScrollbar`                | `hide-scrollbar`                  | Show scrollbar.                                                           | `boolean` | `false`                       |
 | `lazy`                         | `lazy`                            | Load component when it enters the viewport.                               | `boolean` | `undefined`                   |
+| `lineHighlight`                | `line-highlight`                  | Highlight lines.                                                          | `string`  | `undefined`                   |
 | `lineNumbers`                  | `line-numbers`                    | Enable line numbers.                                                      | `boolean` | `true`                        |
 | `lineNumbersBackground`        | `line-numbers-background`         |                                                                           | `string`  | `'var(--spx-color-gray-800)'` |
 | `lineNumbersColor`             | `line-numbers-color`              |                                                                           | `string`  | `'var(--spx-color-gray-400)'` |

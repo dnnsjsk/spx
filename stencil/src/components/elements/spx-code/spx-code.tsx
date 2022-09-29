@@ -92,6 +92,9 @@ export class SpxCode {
   /** Load component when it enters the viewport. */
   @Prop({ reflect: true }) lazy: boolean;
 
+  /** Highlight lines. */
+  @Prop({ reflect: true }) lineHighlight: string;
+
   /** Enable line numbers. */
   @Prop({ reflect: true }) lineNumbers: boolean = true;
 
@@ -253,7 +256,11 @@ export class SpxCode {
   render() {
     return (
       <div class="inner">
-        <pre tabindex="-1" class={this.lineNumbers && 'line-numbers'}>
+        <pre
+          data-line={this.lineHighlight}
+          tabindex="-1"
+          class={this.lineNumbers && 'line-numbers'}
+        >
           <code
             tabindex="-1"
             class={'language-' + this.type}

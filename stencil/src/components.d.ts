@@ -316,6 +316,10 @@ export namespace Components {
          */
         "lazy": boolean;
         /**
+          * Highlight lines.
+         */
+        "lineHighlight": string;
+        /**
           * Enable line numbers.
          */
         "lineNumbers": boolean;
@@ -1998,6 +2002,10 @@ declare namespace LocalJSX {
           * Load component when it enters the viewport.
          */
         "lazy"?: boolean;
+        /**
+          * Highlight lines.
+         */
+        "lineHighlight"?: string;
         /**
           * Enable line numbers.
          */

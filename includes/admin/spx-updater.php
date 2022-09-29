@@ -128,25 +128,25 @@ class SpxPlugin
     static function page()
     {
         ?>
-      <script>
-        var fabrikatPlugin = {
-          name: '<?php echo str_replace("_", "", self::$prefix); ?>',
-          pluginUrl: '<?php echo plugins_url("/", self::$file); ?>',
-          shopUrl: '<?php echo self::$store_url; ?>',
-          productId: '<?php echo self::$item_id; ?>',
-          currentUrl: '<?php echo home_url(); ?>',
-          licenseStatus: '<?php echo get_option(
-              self::$prefix . "license_status"
-          ); ?>',
-          licenseCode: '<?php echo trim(
-              get_option(self::$prefix . "license_key")
-          ); ?>',
-          settings: '<?php echo json_encode(
-              get_option(self::$prefix . "settings")
-          ); ?>'
-        };
-      </script>
-      <div id="fabrikat-plugin"></div>
+        <script>
+            var fabrikatPlugin = {
+                name: '<?php echo str_replace("_", "", self::$prefix); ?>',
+                pluginUrl: '<?php echo plugins_url("/", self::$file); ?>',
+                shopUrl: '<?php echo self::$store_url; ?>',
+                productId: '<?php echo self::$item_id; ?>',
+                currentUrl: '<?php echo home_url(); ?>',
+                licenseStatus: '<?php echo get_option(
+                    self::$prefix . "license_status"
+                ); ?>',
+                licenseCode: '<?php echo trim(
+                    get_option(self::$prefix . "license_key")
+                ); ?>',
+                settings: '<?php echo json_encode(
+                    get_option(self::$prefix . "settings")
+                ); ?>'
+            };
+        </script>
+        <div id="fabrikat-plugin"></div>
 		<?php
     }
 
@@ -169,7 +169,7 @@ class SpxPlugin
      *
      * @since 1.0
      */
-    function sanitize($new)
+    static function sanitize($new)
     {
         $old = get_option(self::$prefix . "license_key");
         if ($old && $old != $new) {
@@ -184,7 +184,7 @@ class SpxPlugin
      *
      * @since 1.0
      */
-    function fabrikatLicenseQuery()
+    static function fabrikatLicenseQuery()
     {
         if (wp_verify_nonce($_POST["nonce"], "ajax-nonce")) {
             $license = $_POST["license"]

@@ -17,7 +17,7 @@ class Init
 
         $localizeArray = [
             "ajax" => admin_url("admin-ajax.php"),
-            "postId" => $post->ID,
+            "postId" => isset($post) && $post->ID,
             "nonce" => wp_create_nonce("ajax-nonce"),
         ];
 

@@ -18233,7 +18233,7 @@ let SpxCode$1 = class extends HTMLElement {
     globalComponentWillUpdate(this.el);
   }
   render() {
-    return (h$4("div", { class: "inner" }, h$4("pre", { tabindex: "-1", class: this.lineNumbers && 'line-numbers' }, h$4("code", { tabindex: "-1", class: 'language-' + this.type, innerHTML: sanitize(this.contentInner) })), this.clipboard && (h$4(Button, { as: "button", class: "clipboard", ref: (el) => (this.clipboardButton = el), onClick: this.onClickClipboard, onEnter: this.onClickClipboard }, this.clipboardButtonText))));
+    return (h$4("div", { class: "inner" }, h$4("pre", { "data-line": this.lineHighlight, tabindex: "-1", class: this.lineNumbers && 'line-numbers' }, h$4("code", { tabindex: "-1", class: 'language-' + this.type, innerHTML: sanitize(this.contentInner) })), this.clipboard && (h$4(Button, { as: "button", class: "clipboard", ref: (el) => (this.clipboardButton = el), onClick: this.onClickClipboard, onEnter: this.onClickClipboard }, this.clipboardButtonText))));
   }
   get el() { return this; }
   static get watchers() { return {
@@ -28405,10 +28405,21 @@ const properties$4 = [
 		type: "string"
 	},
 	{
-		attribute: "lazy",
-		description: "Lazy load images.",
+		attribute: "keyboard",
+		"default": "false",
+		description: "Control slider with arrow key when it is in viewport.",
 		id: "spx-slider-11",
 		index: 11,
+		name: "keyboard",
+		tags: [
+		],
+		type: "boolean"
+	},
+	{
+		attribute: "lazy",
+		description: "Lazy load images.",
+		id: "spx-slider-12",
+		index: 12,
 		name: "lazy",
 		tags: [
 		],
@@ -28417,8 +28428,8 @@ const properties$4 = [
 	{
 		attribute: "lazy-load-prev-next",
 		description: "Amount of images to to be preloaded when lazy is enabled.",
-		id: "spx-slider-12",
-		index: 12,
+		id: "spx-slider-13",
+		index: 13,
 		name: "lazyLoadPrevNext",
 		tags: [
 		],
@@ -28427,8 +28438,8 @@ const properties$4 = [
 	{
 		attribute: "lightbox",
 		description: "Will open images in a lightbox on click. Use 'spx-lightbox' and 'spx-lightbox-slider' properties and adjust its settings.",
-		id: "spx-slider-13",
-		index: 13,
+		id: "spx-slider-14",
+		index: 14,
 		name: "lightbox",
 		tags: [
 		],
@@ -28437,8 +28448,8 @@ const properties$4 = [
 	{
 		attribute: "loop",
 		description: "Loops all slides infinitely.",
-		id: "spx-slider-14",
-		index: 14,
+		id: "spx-slider-15",
+		index: 15,
 		name: "loop",
 		tags: [
 		],
@@ -28447,8 +28458,8 @@ const properties$4 = [
 	{
 		attribute: "max-height",
 		description: "",
-		id: "spx-slider-15",
-		index: 15,
+		id: "spx-slider-16",
+		index: 16,
 		name: "maxHeight",
 		tags: [
 			{
@@ -28462,8 +28473,8 @@ const properties$4 = [
 		attribute: "navigation",
 		"default": "true",
 		description: "",
-		id: "spx-slider-16",
-		index: 16,
+		id: "spx-slider-17",
+		index: 17,
 		name: "navigation",
 		tags: [
 		],
@@ -28473,8 +28484,8 @@ const properties$4 = [
 		attribute: "navigation-backdrop-filter",
 		"default": "var(--spx-backdrop-filter)",
 		description: "",
-		id: "spx-slider-17",
-		index: 17,
+		id: "spx-slider-18",
+		index: 18,
 		name: "navigationBackdropFilter",
 		tags: [
 			{
@@ -28488,8 +28499,8 @@ const properties$4 = [
 		attribute: "navigation-background",
 		"default": "rgba(0,0,0,0.7)",
 		description: "",
-		id: "spx-slider-18",
-		index: 18,
+		id: "spx-slider-19",
+		index: 19,
 		name: "navigationBackground",
 		tags: [
 			{
@@ -28503,8 +28514,8 @@ const properties$4 = [
 		attribute: "navigation-background-hover",
 		"default": "rgba(0,0,0,1)",
 		description: "",
-		id: "spx-slider-19",
-		index: 19,
+		id: "spx-slider-20",
+		index: 20,
 		name: "navigationBackgroundHover",
 		tags: [
 			{
@@ -28518,8 +28529,8 @@ const properties$4 = [
 		attribute: "navigation-border-radius",
 		"default": "var(--spx-border-radius)",
 		description: "",
-		id: "spx-slider-20",
-		index: 20,
+		id: "spx-slider-21",
+		index: 21,
 		name: "navigationBorderRadius",
 		tags: [
 			{
@@ -28533,8 +28544,8 @@ const properties$4 = [
 		attribute: "navigation-color",
 		"default": "#ffffff",
 		description: "",
-		id: "spx-slider-21",
-		index: 21,
+		id: "spx-slider-22",
+		index: 22,
 		name: "navigationColor",
 		tags: [
 			{
@@ -28548,8 +28559,8 @@ const properties$4 = [
 		attribute: "navigation-distance-x",
 		"default": "12px",
 		description: "Navigation distance.",
-		id: "spx-slider-22",
-		index: 22,
+		id: "spx-slider-23",
+		index: 23,
 		name: "navigationDistanceX",
 		tags: [
 			{
@@ -28563,8 +28574,8 @@ const properties$4 = [
 		attribute: "navigation-icon-next",
 		"default": "arrow-forward",
 		description: "Navigation icon type.",
-		id: "spx-slider-23",
-		index: 23,
+		id: "spx-slider-24",
+		index: 24,
 		name: "navigationIconNext",
 		tags: [
 		],
@@ -28574,8 +28585,8 @@ const properties$4 = [
 		attribute: "navigation-icon-prev",
 		"default": "arrow-back",
 		description: "Navigation icon type.",
-		id: "spx-slider-24",
-		index: 24,
+		id: "spx-slider-25",
+		index: 25,
 		name: "navigationIconPrev",
 		tags: [
 		],
@@ -28585,8 +28596,8 @@ const properties$4 = [
 		attribute: "navigation-icon-type",
 		"default": "ionicons",
 		description: "Navigation icon type.",
-		id: "spx-slider-25",
-		index: 25,
+		id: "spx-slider-26",
+		index: 26,
 		name: "navigationIconType",
 		tags: [
 		],
@@ -28596,8 +28607,8 @@ const properties$4 = [
 		attribute: "navigation-padding",
 		"default": "12px",
 		description: "",
-		id: "spx-slider-26",
-		index: 26,
+		id: "spx-slider-27",
+		index: 27,
 		name: "navigationPadding",
 		tags: [
 			{
@@ -28611,8 +28622,8 @@ const properties$4 = [
 		attribute: "navigation-size",
 		"default": "20px",
 		description: "Navigation size.",
-		id: "spx-slider-27",
-		index: 27,
+		id: "spx-slider-28",
+		index: 28,
 		name: "navigationSize",
 		tags: [
 			{
@@ -28626,8 +28637,8 @@ const properties$4 = [
 		attribute: "pagination",
 		"default": "bullets",
 		description: "Pagination type.",
-		id: "spx-slider-28",
-		index: 28,
+		id: "spx-slider-29",
+		index: 29,
 		name: "pagination",
 		tags: [
 			{
@@ -28641,8 +28652,8 @@ const properties$4 = [
 		attribute: "pagination-backdrop-filter",
 		"default": "var(--spx-backdrop-filter)",
 		description: "",
-		id: "spx-slider-29",
-		index: 29,
+		id: "spx-slider-30",
+		index: 30,
 		name: "paginationBackdropFilter",
 		tags: [
 			{
@@ -28656,8 +28667,8 @@ const properties$4 = [
 		attribute: "pagination-background",
 		"default": "rgba(0,0,0,0.7)",
 		description: "",
-		id: "spx-slider-30",
-		index: 30,
+		id: "spx-slider-31",
+		index: 31,
 		name: "paginationBackground",
 		tags: [
 			{
@@ -28671,8 +28682,8 @@ const properties$4 = [
 		attribute: "pagination-bullets-background",
 		"default": "var(--spx-color-gray-500)",
 		description: "",
-		id: "spx-slider-31",
-		index: 31,
+		id: "spx-slider-32",
+		index: 32,
 		name: "paginationBulletsBackground",
 		tags: [
 			{
@@ -28686,8 +28697,8 @@ const properties$4 = [
 		attribute: "pagination-bullets-background-active",
 		"default": "#ffffff",
 		description: "",
-		id: "spx-slider-32",
-		index: 32,
+		id: "spx-slider-33",
+		index: 33,
 		name: "paginationBulletsBackgroundActive",
 		tags: [
 			{
@@ -28700,8 +28711,8 @@ const properties$4 = [
 	{
 		attribute: "pagination-bullets-clickable",
 		description: "Make bullets clickable.",
-		id: "spx-slider-33",
-		index: 33,
+		id: "spx-slider-34",
+		index: 34,
 		name: "paginationBulletsClickable",
 		tags: [
 		],
@@ -28711,8 +28722,8 @@ const properties$4 = [
 		attribute: "pagination-bullets-dynamic",
 		"default": "false",
 		description: "Will only keep a selected amount of bullets visible.",
-		id: "spx-slider-34",
-		index: 34,
+		id: "spx-slider-35",
+		index: 35,
 		name: "paginationBulletsDynamic",
 		tags: [
 		],
@@ -28722,8 +28733,8 @@ const properties$4 = [
 		attribute: "pagination-bullets-dynamic-amount",
 		"default": "5",
 		description: "Amount of dynamic bullets.",
-		id: "spx-slider-35",
-		index: 35,
+		id: "spx-slider-36",
+		index: 36,
 		name: "paginationBulletsDynamicAmount",
 		tags: [
 		],
@@ -28733,8 +28744,8 @@ const properties$4 = [
 		attribute: "pagination-bullets-gap",
 		"default": "6px",
 		description: "Space between the bullets.",
-		id: "spx-slider-36",
-		index: 36,
+		id: "spx-slider-37",
+		index: 37,
 		name: "paginationBulletsGap",
 		tags: [
 			{
@@ -28748,8 +28759,8 @@ const properties$4 = [
 		attribute: "pagination-bullets-size",
 		"default": "6px",
 		description: "Size of the bullets.",
-		id: "spx-slider-37",
-		index: 37,
+		id: "spx-slider-38",
+		index: 38,
 		name: "paginationBulletsSize",
 		tags: [
 			{
@@ -28762,8 +28773,8 @@ const properties$4 = [
 	{
 		attribute: "prev-next-filter",
 		description: "Filter property for the previous and next elements.",
-		id: "spx-slider-38",
-		index: 38,
+		id: "spx-slider-39",
+		index: 39,
 		name: "prevNextFilter",
 		tags: [
 			{
@@ -28777,8 +28788,8 @@ const properties$4 = [
 		attribute: "slide-message-first",
 		"default": "This is the first slide",
 		description: "Screen reader message for first slide.",
-		id: "spx-slider-39",
-		index: 39,
+		id: "spx-slider-40",
+		index: 40,
 		name: "slideMessageFirst",
 		tags: [
 		],
@@ -28788,8 +28799,8 @@ const properties$4 = [
 		attribute: "slide-message-last",
 		"default": "This is the last slide",
 		description: "Screen reader message for last slide.",
-		id: "spx-slider-40",
-		index: 40,
+		id: "spx-slider-41",
+		index: 41,
 		name: "slideMessageLast",
 		tags: [
 		],
@@ -28799,8 +28810,8 @@ const properties$4 = [
 		attribute: "slide-message-next",
 		"default": "Next slide",
 		description: "Screen reader message for next slide.",
-		id: "spx-slider-41",
-		index: 41,
+		id: "spx-slider-42",
+		index: 42,
 		name: "slideMessageNext",
 		tags: [
 		],
@@ -28810,8 +28821,8 @@ const properties$4 = [
 		attribute: "slide-message-previous",
 		"default": "Previous slide",
 		description: "Screen reader message for previous slide.",
-		id: "spx-slider-42",
-		index: 42,
+		id: "spx-slider-43",
+		index: 43,
 		name: "slideMessagePrevious",
 		tags: [
 		],
@@ -28821,8 +28832,8 @@ const properties$4 = [
 		attribute: "slides-per-view",
 		"default": "1",
 		description: "Amount of slides shown at once.",
-		id: "spx-slider-43",
-		index: 43,
+		id: "spx-slider-44",
+		index: 44,
 		name: "slidesPerView",
 		tags: [
 		],
@@ -28832,8 +28843,8 @@ const properties$4 = [
 		attribute: "speed",
 		"default": "1000",
 		description: "Sliding speed.",
-		id: "spx-slider-44",
-		index: 44,
+		id: "spx-slider-45",
+		index: 45,
 		name: "speed",
 		tags: [
 		],
@@ -28842,8 +28853,8 @@ const properties$4 = [
 	{
 		attribute: "spx-lightbox",
 		description: "Pass attributes to the inner &lt;spx-lightbox> component using a JSON string: { \"overlay-background\": \"red\" }",
-		id: "spx-slider-45",
-		index: 45,
+		id: "spx-slider-46",
+		index: 46,
 		name: "spxLightbox",
 		tags: [
 		],
@@ -28852,8 +28863,8 @@ const properties$4 = [
 	{
 		attribute: "spx-lightbox-slider",
 		description: "Pass attributes to the inner &lt;spx-slider> component using a JSON string: { \"slides-per-view\": \"2.5\" }",
-		id: "spx-slider-46",
-		index: 46,
+		id: "spx-slider-47",
+		index: 47,
 		name: "spxLightboxSlider",
 		tags: [
 		],
@@ -28862,8 +28873,8 @@ const properties$4 = [
 	{
 		attribute: "start",
 		description: "At which slide component should start.",
-		id: "spx-slider-47",
-		index: 47,
+		id: "spx-slider-48",
+		index: 48,
 		name: "start",
 		tags: [
 		],
@@ -46421,7 +46432,7 @@ const IonIcon = /*@__PURE__*/proxyCustomElement(Icon, [1,"ion-icon",{"mode":[102
 const SpxAccordion = /*@__PURE__*/proxyCustomElement(SpxAccordion$1, [1,"spx-accordion",{"classContent":[513,"class-content"],"classContentActive":[513,"class-content-active"],"classContentInactive":[513,"class-content-inactive"],"classContentText":[513,"class-content-text"],"classContentTextActive":[513,"class-content-text-active"],"classContentTextInactive":[513,"class-content-text-inactive"],"classHeader":[513,"class-header"],"classHeaderActive":[513,"class-header-active"],"classHeaderInactive":[513,"class-header-inactive"],"classHeaderText":[513,"class-header-text"],"classHeaderTextActive":[513,"class-header-text-active"],"classHeaderTextInactive":[513,"class-header-text-inactive"],"classHeaderIcon":[513,"class-header-icon"],"classHeaderIconActive":[513,"class-header-icon-active"],"classHeaderIconInactive":[513,"class-header-icon-inactive"],"contentColor":[513,"content-color"],"contentText":[513,"content-text"],"contentTextTag":[513,"content-text-tag"],"contentFontSize":[513,"content-font-size"],"contentFontSizeMax":[514,"content-font-size-max"],"contentFontSizeMin":[514,"content-font-size-min"],"gap":[513],"gapMax":[514,"gap-max"],"gapMin":[514,"gap-min"],"headerColor":[513,"header-color"],"headerFontSize":[513,"header-font-size"],"headerFontSizeMax":[514,"header-font-size-max"],"headerFontSizeMin":[514,"header-font-size-min"],"headerGap":[513,"header-gap"],"headerGapMax":[514,"header-gap-max"],"headerGapMin":[514,"header-gap-min"],"headerText":[513,"header-text"],"headerTextOpen":[513,"header-text-open"],"headerTextTag":[513,"header-text-tag"],"icon":[513],"iconType":[513,"icon-type"],"iconTransform":[513,"icon-transform"],"link":[513],"linkType":[513,"link-type"],"openState":[1540,"open"],"reverse":[516],"styling":[513],"contentCustom":[32],"disableAnimation":[32],"headerCustom":[32],"height":[32]}]);
 const SpxAnimate = /*@__PURE__*/proxyCustomElement(SpxAnimate$1, [1,"spx-animate",{"autoAlpha":[2,"auto-alpha"],"clipPath":[1,"clip-path"],"delay":[2],"duration":[2],"ease":[1],"filter":[1],"once":[4],"opacity":[2],"repeat":[2],"repeatDelay":[2,"repeat-delay"],"reverse":[4],"stagger":[2],"target":[1],"viewport":[4],"viewportThreshold":[514,"viewport-threshold"],"viewportRootMargin":[513,"viewport-root-margin"],"x":[8],"y":[8],"yoyo":[4]}]);
 const SpxClassToggle = /*@__PURE__*/proxyCustomElement(SpxClassToggle$1, [1,"spx-class-toggle",{"local":[513],"inner":[516],"target":[513],"toggle":[513],"classesArray":[32],"toggled":[32]}]);
-const SpxCode = /*@__PURE__*/proxyCustomElement(SpxCode$1, [1,"spx-code",{"background":[513],"borderRadius":[513,"border-radius"],"clipboard":[516],"clipboardButtonBackground":[513,"clipboard-button-background"],"clipboardButtonColor":[513,"clipboard-button-color"],"clipboardButtonFontSize":[513,"clipboard-button-font-size"],"clipboardButtonFontWeight":[520,"clipboard-button-font-weight"],"clipboardButtonPadding":[513,"clipboard-button-padding"],"clipboardButtonText":[513,"clipboard-button-text"],"clipboardButtonTextCopied":[513,"clipboard-button-text-copied"],"clipboardButtonTextTransform":[513,"clipboard-button-text-transform"],"content":[513],"filter":[513],"fontSize":[513,"font-size"],"hideScrollbar":[516,"hide-scrollbar"],"lazy":[516],"lineNumbers":[516,"line-numbers"],"lineNumbersBackground":[513,"line-numbers-background"],"lineNumbersColor":[513,"line-numbers-color"],"lineNumbersStart":[514,"line-numbers-start"],"maxWidth":[513,"max-width"],"padding":[513],"theme":[513],"type":[513],"whitespaceLeftTrim":[516,"whitespace-left-trim"],"whitespaceRemoveIndent":[516,"whitespace-remove-indent"],"whitespaceRemoveTrailing":[516,"whitespace-remove-trailing"],"whitespaceRightTrim":[516,"whitespace-right-trim"],"contentInner":[32],"text":[32]}]);
+const SpxCode = /*@__PURE__*/proxyCustomElement(SpxCode$1, [1,"spx-code",{"background":[513],"borderRadius":[513,"border-radius"],"clipboard":[516],"clipboardButtonBackground":[513,"clipboard-button-background"],"clipboardButtonColor":[513,"clipboard-button-color"],"clipboardButtonFontSize":[513,"clipboard-button-font-size"],"clipboardButtonFontWeight":[520,"clipboard-button-font-weight"],"clipboardButtonPadding":[513,"clipboard-button-padding"],"clipboardButtonText":[513,"clipboard-button-text"],"clipboardButtonTextCopied":[513,"clipboard-button-text-copied"],"clipboardButtonTextTransform":[513,"clipboard-button-text-transform"],"content":[513],"filter":[513],"fontSize":[513,"font-size"],"hideScrollbar":[516,"hide-scrollbar"],"lazy":[516],"lineHighlight":[513,"line-highlight"],"lineNumbers":[516,"line-numbers"],"lineNumbersBackground":[513,"line-numbers-background"],"lineNumbersColor":[513,"line-numbers-color"],"lineNumbersStart":[514,"line-numbers-start"],"maxWidth":[513,"max-width"],"padding":[513],"theme":[513],"type":[513],"whitespaceLeftTrim":[516,"whitespace-left-trim"],"whitespaceRemoveIndent":[516,"whitespace-remove-indent"],"whitespaceRemoveTrailing":[516,"whitespace-remove-trailing"],"whitespaceRightTrim":[516,"whitespace-right-trim"],"contentInner":[32],"text":[32]}]);
 const SpxControlColor = /*@__PURE__*/proxyCustomElement(SpxControlColor$1, [1,"spx-control-color",{"data":[1],"handleInput":[16],"label":[1],"value":[1025]}]);
 const SpxControlGroup = /*@__PURE__*/proxyCustomElement(SpxControlGroup$2, [1,"spx-control-group"]);
 const SpxControlInput = /*@__PURE__*/proxyCustomElement(SpxControlInput$1, [1,"spx-control-input",{"data":[1],"handleInput":[16],"label":[1],"min":[2],"max":[2],"placeholder":[1],"step":[2],"type":[1],"value":[1025]}]);
