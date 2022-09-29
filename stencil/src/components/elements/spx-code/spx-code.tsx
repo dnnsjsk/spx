@@ -15,6 +15,7 @@ import 'prismjs/components/prism-php.js';
 import 'prismjs/components/prism-json.js';
 import 'prismjs/components/prism-twig.js';
 import 'prismjs/plugins/normalize-whitespace/prism-normalize-whitespace.js';
+import 'prismjs/plugins/line-highlight/prism-line-highlight.js';
 import { globalComponentDidLoad } from '../../../utils/global/globalComponentDidLoad';
 import Clipboard from 'clipboard';
 import { intersectionObserver } from '../../../utils/observer/intersectionObserver';
