@@ -1,17 +1,6 @@
-=== spx ===
-Contributors: dnnsjsk
-Requires at least: 5.0
-Tested up to: 5.9.3
-Requires PHP: 7.0
-Stable tag: 2.0
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
+This was the first commercial plugin I released under my [Fabrikat](https://fabrikat.io) brand of WordPress plugins. It is a collection of Web Components to ease the development of WordPress sites. Over time, I have shifted my attention to [Blockstudio](https://blockstudio.dev/), which is the defacto successor of spx.
 
-A web component page builder for WordPress developers like you!
-
-== Description ==
-
-Supercharge your workflow using handy components for the next project. Works with any theme, browser and existing code.
+Feel free to reuse this code in whatever way you like!
 
 == Changelog ==
 
